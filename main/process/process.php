@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/process/process.php
 ** | Begin :		27/09/2005
-** | Last :			13/07/2007
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -28,7 +28,7 @@ $result = Fsb::$db->query($sql, 'process_');
 $update_id = array();
 while ($row = Fsb::$db->row($result))
 {
-	if ($row['process_last_timestamp'] < CURRENT_TIME - $row['process_step_timestamp'])
+	if ($row['process_step_timestamp'] > 0 && $row['process_last_timestamp'] < CURRENT_TIME - $row['process_step_timestamp'])
 	{
 		$function = $row['process_function'];
 		$update_id[] = $row['process_id'];
