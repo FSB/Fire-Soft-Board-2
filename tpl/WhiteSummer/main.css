@@ -1,6 +1,6 @@
 /*
 ** +---------------------------------------------------+
-** | Name :		~/tpl/WhiteSummer/main.css
+** | Name :	~/tpl/WhiteSummer/main.css
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
 ** |
@@ -14,7 +14,7 @@
 @import "fsbcode.css";
 @import "mooRainbow.css";
 
-/* Remise à zéro des principales balises */
+ /* Remise à zéro des principales balises */
 html, body, table, tr, th, td, blockquote, div, span, img, li, form, dl, dd, dt, pre, h1, h2, h3, h4, h5, h6
 {
 	margin: 0px;
@@ -30,13 +30,13 @@ img
 h3
 {
 	font-weight: bold;
-	font-size:1.3em;
+	font-size: 1.3em;
 }
 
 h4
 {
 	font-weight: normal;
-	font-size:1em;
+	font-size: 1em;
 }
 
 hr
@@ -207,7 +207,7 @@ a:hover
 /* Menu sous le header */
 #menu
 {
-	text-align:center;
+	text-align: center;
 	font-size: 1.2em;
 }
 
@@ -233,7 +233,6 @@ a:hover
 	height: 35px;
 	width: 15px;
 	float: left;
-
 }
 
 /* Bordure droite de la barre de navigation */
@@ -241,8 +240,8 @@ a:hover
 {
 	background-image: url(img/layout/nav_right.png);
 	height: 35px;
-	width:	15px;
-	float:	right;
+	width: 15px;
+	float: right;
 }
 
 /* Image de navigation */
@@ -266,7 +265,6 @@ a:hover
 	padding: 6px;
 	padding-bottom: 0px;
 	border: 1px solid #999999;
-	/*background-color: #E1E1E1;*/
 	background-color: #dde5ee;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
@@ -300,8 +298,8 @@ a:hover
 .round .rules
 {
 	border: 1px solid  #999999;
-	background:#CCCCCC;
-	padding:4px;
+	background: #CCCCCC;
+	padding: 4px;
 	margin-bottom: 4px;
 	height: 200px;
 	overflow: auto;
@@ -401,7 +399,6 @@ a:hover
 /* Entête des tableaux */
 .t th
 {
-	/*background-color: #BBBBBB;*/
 	background-color: #cdcdcd;
 	border-right: 1px solid #999999;
 	border-bottom: 1px solid #999999;
@@ -421,7 +418,6 @@ a:hover
 {
 	vertical-align: middle;
 }
-
 
 /* Tableau de formulaire */
 .form
@@ -561,8 +557,8 @@ a:hover
 /* Cellules pour l'affichage des sujets */
 .post td
 {
-	vertical-align:top;
-	margin-left:10px;
+	vertical-align: top;
+	margin-left: 10px;
 }
 
 /* Cellule contenant les informations des membres dans les sujets */
@@ -581,7 +577,7 @@ a:hover
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
 	border: none;
-	background:#F1F1F1;
+	background: #F1F1F1;
 	clear: both;
 }
 
@@ -926,7 +922,6 @@ a:hover
 /* Couleur des liens dans les titres des sujets */
 .topicinfo h3 a
 {
-	/*color: #242020;*/
 	color: #FF3B00;
 }
 
@@ -944,40 +939,40 @@ td.last_message
 
 /* Style de la pagination */
 .pagination_block
-{    
-    position: relative;
+{
+	position: relative;
 }
 
 /* Style sur le lien courant de la pagination */
 .pagination_block_cur
-{    
-    display: inline;
-    border: #77aadd solid 1px;
-    margin: 1px;
-    padding: 2px 5px 1px 5px;
-    background-color: #E7E8EF;
-    font-weight: bold;
-    cursor: pointer;
+{
+	display: inline;
+	border: #77aadd solid 1px;
+	margin: 1px;
+	padding: 2px 5px 1px 5px;
+	background-color: #E7E8EF;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 /* Style de la pop up Goto de la pagination */
 .pagination_form
 {
-    width: 130px;
-    position: absolute;
-    top: 25px;
-    right: 70px;
-    text-align: center;
-    border: #77aadd solid 1px;
-    background-color: #E7E8EF;
-    display: none;
+	width: 130px;
+	position: absolute;
+	top: 25px;
+	right: 70px;
+	text-align: center;
+	border: #77aadd solid 1px;
+	background-color: #E7E8EF;
+	display: none;
 }
 
 /* Style des input de saisie de text et bouton Go de la pagination */
 .pagination_form input
 {
-    margin: 4px;
-    padding: 2px 5px;
+	margin: 4px;
+	padding: 2px 5px;
 	width: 30px;
 }
 
@@ -1015,7 +1010,7 @@ td.last_message
 /* Délimiteur entre le message et la signature */
 .post_delimiter
 {
-	border-color: #CCCCCC;	
+	border-color: #CCCCCC;
 }
 
 /* Attente AJAX */

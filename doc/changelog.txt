@@ -36,6 +36,7 @@
 - Fix d'un bug au niveau de la récupération des FSBcodes autorisés dans la signature
 - Fix de la date du dernier message sur les sujets divisés
 - Fix et optimisation de la procédure de netoyage de base de donnée
+- Fix des @import dans l'éditeur CSS
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

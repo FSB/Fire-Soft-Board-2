@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_css.php
 ** | Begin :	05/07/2005
-** | Last :		06/08/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -14,6 +14,9 @@ class Css extends Fsb_model
 {
 	public $data = array();
 	private $basename = NULL, $dirname = NULL;
+
+	// Les import seront sauvés dans cette propriété
+	private $import = array();
 
 	/*
 	** Charge un fichier CSS
@@ -35,12 +38,46 @@ class Css extends Fsb_model
 	** -----
 	** $content ::	Contenu CSS à charger
 	** $filename ::	Chemin du fichier, qui servira d'identifiant
+	** $parent ::	Parent si le fichier actuel est importé
 	*/
-	public function load_content($content, $filename)
+	public function load_content($content, $filename, $parent = NULL)
 	{
+		// Suppression des commentaires inutiles
+		$content = preg_replace("#/\*.*?\*/(\r\n|\n)(\r\n|\n)#si", '', $content);
+
+		// Préparation du stockage des informations
 		$path = dirname($filename) . '/';
 		$basename = basename($filename);
 		$this->data[$basename] = array();
+		$p = &$this->data[$basename];
+
+		// Gestion des fichiers importés
+		if ($parent !== NULL)
+		{
+			if (!isset($this->import[$parent]))
+			{
+				$this->import[$parent] = array();
+			}
+			$this->import[$parent][] = $basename;
+		}
+		else
+		{
+			$this->import = array();
+		}
+
+		// Parse du fichier
+		preg_match_all("`(\/\*(.*?)\*\/)?\s*([a-zA-Z0-9_\-#<>\.: \*,\"\[\]=]*?)\s*\{(.*?)\}`si", $content, $m);
+		$count = count($m[0]);
+		for ($i = 0; $i < $count; $i++)
+		{
+			$properties = $this->parse_properties($m[4][$i]);
+
+			$p[] = array(
+				'name' =>		$m[3][$i],
+				'comments' =>	trim($m[2][$i]),
+				'properties' =>	$properties,
+			);
+		}
 
 		// On charge récursivement les @import
 		preg_match_all('#@import\s+(url\([^)]*?\)|.*?);#', $content, $m);
@@ -60,42 +97,8 @@ class Css extends Fsb_model
 
 			if (file_exists($path . $url))
 			{
-				$this->parse($path . $url, file_get_contents($path . $url));
+				$this->load_content(file_get_contents($path . $url), $path . $url, $basename);
 			}
-		}
-
-		// Chargement du fichier actuel
-		$this->parse($filename, $content);
-	}
-
-	/*
-	** Parse un fichier
-	** -----
-	** $filename ::		Nom du fichier (servira d'identifiant)
-	** $content ::		Contenu à parser
-	*/
-	private function parse($filename, $content)
-	{
-		// Suppression des commentaires inutiles
-		$content = preg_replace("#/\*.*?\*/(\r\n|\n)(\r\n|\n)#si", '', $content);
-
-		// Préparation du stockage des informations
-		$basename = basename($filename);
-		$this->data[$basename] = array();
-		$p = &$this->data[$basename];
-
-		// Parse du fichier
-		preg_match_all("`(\/\*(.*?)\*\/)?\s*([a-zA-Z0-9_\-#<>\.: \*,\"\[\]=]*?)\s*\{(.*?)\}`si", $content, $m);
-		$count = count($m[0]);
-		for ($i = 0; $i < $count; $i++)
-		{
-			$properties = $this->parse_properties($m[4][$i]);
-
-			$p[] = array(
-				'name' =>		$m[3][$i],
-				'comments' =>	trim($m[2][$i]),
-				'properties' =>	$properties,
-			);
 		}
 	}
 
@@ -157,9 +160,10 @@ class Css extends Fsb_model
 				$content .= "}\n\n";
 			}
 
+			// Header du fichier CSS
 			$header = "/*\n";
 			$header .= "** +---------------------------------------------------+\n";
-			$header .= "** | Name :	~/tpl/${path}${filename}\n";
+			$header .= "** | Name :	~/" . substr($path, strlen(ROOT)) . "${filename}\n";
 			$header .= "** | Project :	Fire-Soft-Board 2 - Copyright FSB group\n";
 			$header .= "** | License :	GPL v2.0\n";
 			$header .= "** |\n";
@@ -167,6 +171,16 @@ class Css extends Fsb_model
 			$header .= "** | ce fichier à condition de laisser cet entète.\n";
 			$header .= "** +---------------------------------------------------+\n";
 			$header .= "*/\n\n";
+
+			// Import des autres fichiers
+			if (isset($this->import[$filename]))
+			{
+				foreach ($this->import[$filename] AS $import)
+				{
+					$header .= "@import \"$import\";\n";
+				}
+				$header .= "\n";
+			}
 
 			fsb_write($path . '/' . $file, $header . $content);
 		}
