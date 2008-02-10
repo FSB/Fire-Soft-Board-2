@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/tools/tools_sql.php
 ** | Begin :	22/05/2005
-** | Last :		06/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -74,10 +74,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function show_index()
 	{
-		$result = Fsb::$db->list_tables();
-		while ($row = Fsb::$db->row($result, 'row'))
+		foreach (Fsb::$db->list_tables() AS $table)
 		{
-			$table = $row[0];
 			Fsb::$tpl->set_blocks('table', array(
 				'NAME' =>		$table,
 				'U_DATA' =>		sid('index.' . PHPEXT . '?p=tools_sql&amp;module=data&amp;table=' . $table),
@@ -222,11 +220,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// On récupère les tables pour le backup
-		$result = Fsb::$db->list_tables();
-		$list_table = array();
-		while ($row = Fsb::$db->row($result, 'row'))
+		foreach (Fsb::$db->list_tables() AS $table)
 		{
-			$list_table[$row[0]] = $row[0];
+			$list_table[$table] = $table;
 		}
 
 		Fsb::$tpl->set_vars(array(

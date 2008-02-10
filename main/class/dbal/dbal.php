@@ -68,7 +68,7 @@ abstract class Dbal extends Fsb_model
 	abstract public function affected_rows($result);
 	abstract public function field_type($result, $field, $table = NULL);
 	abstract public function get_field_type($result, $field, $table = NULL);
-	abstract public function list_tables();
+	abstract public function list_tables($limit = TRUE);
 	abstract public function query_multi_insert();
 	abstract public function sql_error();
 	abstract public function _close();

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/tools/tools_optimize.php
 ** | Begin :	23/06/2006
-** | Last :		09/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -263,8 +263,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 
 			// Mise à jour de la procédure
-			$update_array['process_step_timestamp'] = $process_step[$row['process_id']] * ONE_DAY;
-			Fsb::$db->update('process', $update_array, 'WHERE process_id = ' . $row['process_id']);
+			if (isset($process_launch[$row['process_id']]) || $row['process_step_timestamp'] != $process_step[$row['process_id']] * ONE_DAY)
+			{
+				$update_array['process_step_timestamp'] = $process_step[$row['process_id']] * ONE_DAY;
+				Fsb::$db->update('process', $update_array, 'WHERE process_id = ' . $row['process_id']);
+			}
 		}
 		Fsb::$db->free($result);
 		Fsb::$db->destroy_cache('process_');

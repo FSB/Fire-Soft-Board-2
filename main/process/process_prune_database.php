@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/process/process_prune_database.php
 ** | Begin :	11/07/2007
-** | Last :		18/10/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -23,11 +23,9 @@ function prune_database($tables = array())
 		case 'mysqli' :
 			if (!$tables)
 			{
-				$result = Fsb::$db->list_tables();
-				$tables = array();
-				while ($row = Fsb::$db->row($result, 'row'))
+				foreach (Fsb::$db->list_tables() AS $table)
 				{
-					$tables[] = '`' . $row[0] . '`';
+					$tables[] = '`' . $table . '`';
 				}
 			}
 			
@@ -37,20 +35,14 @@ function prune_database($tables = array())
 		break;
 
 		case 'pgsql' :
-			if ($tables)
+			if (!$tables)
 			{
-				foreach ($tables AS $table)
-				{
-					Fsb::$db->query('VACUUM ANALYZE ' . $table);
-				}
+				$tables = Fsb::$db->list_tables();
 			}
-			else
+
+			foreach ($tables AS $table)
 			{
-				$result = Fsb::$db->list_tables();
-				while ($row = Fsb::$db->row($result, 'row'))
-				{
-					Fsb::$db->query('VACUUM ANALYZE ' . $row[0]);
-				}
+				Fsb::$db->query('VACUUM ANALYZE ' . $table);
 			}
 		break;
 	}

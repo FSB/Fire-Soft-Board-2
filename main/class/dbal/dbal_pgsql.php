@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/dbal/dbal_pgsql.php
 ** | Begin :	18/07/2005
-** | Last :		25/12/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -216,12 +216,25 @@ class Dbal_pgsql extends Dbal
 
 	/*
 	** Renvoie un tableau contenant la liste des tables
+	** -----
+	** $limit ::	Si TRUE, ne récupère que les tables ayant le même préfixe que le forum
 	*/
-	public function list_tables()
+	public function list_tables($limit = TRUE)
 	{
+		$tables = array();
 		$sql = 'SELECT tablename FROM pg_tables
 					WHERE schemaname = \'public\'';
-		return ($this->query($sql));
+		$result = $this->query($sql);
+		while ($row = $this->row($result, 'row'))
+		{
+			if ($limit && substr($row[0], 0, strlen(SQL_PREFIX)) != SQL_PREFIX)
+			{
+				continue;
+			}
+			$tables[] = $row[0];
+		}
+
+		return ($tables);
 	}
 
 	/*
