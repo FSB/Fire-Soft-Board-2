@@ -1,0 +1,64 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_USER_FSBCARD_EXPORT}</h1>
+	<div class="desc">{LG_USER_FSBCARD_EXPORT_EXPLAIN}</div>
+	<table class="form large">
+		<tr>
+			<th><label for="export_options_id">{LG_USER_FSBCARD_EXPORT_OPTIONS} :</label></th>
+			<td>
+				<input type="radio" name="export_options" value="1" checked="checked" id="export_options_id" /> {LG_YES} &nbsp;
+				<input type="radio" name="export_options" value="0" /> {LG_NO}
+			</td>
+		</tr>
+		<tr>
+			<th><label for="export_avatar_id">{LG_USER_FSBCARD_EXPORT_AVATAR} :</label></th>
+			<td>
+				<input type="radio" name="export_avatar" value="1" checked="checked" id="export_avatar_id" /> {LG_YES} &nbsp;
+				<input type="radio" name="export_avatar" value="0" /> {LG_NO}
+			</td>
+		</tr>
+		<tr>
+			<th><label for="export_sig_id">{LG_USER_FSBCARD_EXPORT_SIG} :</label></th>
+			<td>
+				<input type="radio" name="export_sig" value="1" checked="checked" id="export_sig_id" /> {LG_YES} &nbsp;
+				<input type="radio" name="export_sig" value="0" /> {LG_NO}
+			</td>
+		</tr>
+		<tr>
+			<th><label for="export_register_id">{LG_USER_FSBCARD_EXPORT_REGISTER} :</label><br /><span class="small">{LG_USER_FSBCARD_EXPORT_REGISTER_EXPLAIN}</span></th>
+			<td>
+				<input type="radio" name="export_register" value="1" /> {LG_YES} &nbsp;
+				<input type="radio" name="export_register" value="0" checked="checked" id="export_register_id" /> {LG_NO}
+				<br /><input type="password" name="export_password" size="35" /> <b>({LG_USER_FSBCARD_PASSWORD})</b>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit_export" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+<div class="round">
+	<h1>{LG_USER_FSBCARD_IMPORT}</h1>
+	<div class="desc">{LG_USER_FSBCARD_IMPORT_EXPLAIN}</div>
+	<table class="form">
+		<tr>
+			<th><label for="import_file_id">{LG_USER_FSBCARD_IMPORT_FILE} :</label></th>
+			<td><input type="file" name="upload_fsbcard" id="import_file_id" size="35" /></d>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit_import" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

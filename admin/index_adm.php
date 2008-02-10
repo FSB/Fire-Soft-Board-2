@@ -1,0 +1,383 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :		~/admin/index_adm.php
+** | Begin :	03/04/2005
+** | Last :		13/11/2007
+** | User :		Genova
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est à jour, les derniers logs,
+** les comptes en attente d'activation.
+*/
+class Fsb_frame_child extends Fsb_admin_frame
+{
+	public $mode;
+
+	/*
+	** Constructeur
+	*/
+	public function main()
+	{
+		$this->mode = Http::request('mode');
+		$call = new Call($this);
+		$call->functions(array(
+			'mode' => array(
+				'refresh' =>	'refresh_menu',
+				'version' =>	'page_check_version',
+				'validate' =>	'page_activate_users',
+				'default' =>	'page_default_administration',
+			),
+		));
+	}
+
+	/*
+	** Page par défaut sur l'administration du forum
+	*/
+	public function page_default_administration()
+	{
+		Fsb::$tpl->set_file('adm_index.html');
+
+		// Les 5 derniers logs administratifs
+		$logs = Log::read(Log::ADMIN, 5);
+		foreach ($logs['rows'] AS $log)
+		{
+			Fsb::$tpl->set_blocks('log', array(
+				'STR' =>	$log['errstr'],
+				'INFO' =>	sprintf(Fsb::$session->lang('adm_list_log_info'), htmlspecialchars($log['u_nickname']), Fsb::$session->print_date($log['log_time'])),
+			));
+		}
+
+		// On affiche tous les comptes ?
+		$show_all = (Http::request('show_all')) ? TRUE : FALSE;
+
+		// Liste des comptes en attente de validation
+		$sql = 'SELECT u_id, u_nickname, u_joined, u_register_ip
+				FROM ' . SQL_PREFIX . 'users
+				WHERE u_activated = 0
+					AND u_confirm_hash = \'.\'
+					AND u_id <> ' . VISITOR_ID . '
+				ORDER BY u_joined DESC
+				' . (($show_all) ? '' : 'LIMIT 5');
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			Fsb::$tpl->set_blocks('wait', array(
+				'NICKNAME' =>		htmlspecialchars($row['u_nickname']),
+				'JOINED_IP' =>		sprintf(Fsb::$session->lang('adm_joined_ip'), Fsb::$session->print_date($row['u_joined']), $row['u_register_ip']),
+
+				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=user&amp;id=' . $row['u_id']),
+				'U_VALIDATE' =>		sid('index.' . PHPEXT . '?mode=validate&amp;id=' . $row['u_id']),
+			));
+		}
+		Fsb::$db->free($result);
+
+		// Liste des membres en ligne
+		$sql = 'SELECT s.s_id, s.s_ip, s.s_page, s.s_user_agent, u.u_nickname, u.u_color, u.u_activate_hidden, b.bot_id, b.bot_name
+			FROM ' . SQL_PREFIX . 'sessions s
+			LEFT JOIN ' . SQL_PREFIX . 'users u
+				ON u.u_id = s.s_id
+			LEFT JOIN ' . SQL_PREFIX . 'bots b
+				ON s.s_bot = b.bot_id
+			WHERE s.s_time > ' . intval(CURRENT_TIME - 300) . '
+			ORDER BY u.u_auth DESC, u.u_nickname, s.s_id';
+		$result = Fsb::$db->query($sql);
+		$id_array = array();
+		$ip_array = array();
+		$f_idx = $t_idx = $p_idx = array();
+		$logged = array('users' => array(), 'visitors' => array());
+		while ($row = Fsb::$db->row($result))
+		{
+			if ($row['bot_id'] !== NULL || $row['s_id'] == VISITOR_ID)
+			{
+				if (in_array($row['s_ip'], $ip_array))
+				{
+					continue ;
+				}
+				$ip_array[] = $row['s_ip'];
+				$type = 'visitors';
+
+				// Les bots ont leur propre couleur
+				if ($row['bot_id'] !== NULL)
+				{
+					$row['u_color'] = 'class="bot"';
+					$row['u_nickname'] = $row['bot_name'];
+				}
+			}
+			else
+			{
+				if (in_array($row['s_id'], $id_array))
+				{
+					continue ;
+				}
+				$id_array[] = $row['s_id'];
+				$type = 'users';
+			}
+
+			// Position du membre sur le forum
+			$id = NULL;
+			$method = 'forums';
+			if (strpos($row['s_page'], 'admin/') !== false)
+			{
+				$location = Fsb::$session->lang('adm_location_adm');
+				$url = 'admin/index.' . PHPEXT;
+				
+			}
+			else
+			{
+				$page = basename($row['s_page']);
+				$url = '';
+				$location = '';
+				if (preg_match('#^index\.' . PHPEXT . '\?p=([a-z0-9_]+)(&.*?)*$#', $page, $match) || preg_match('#^(forum|topic|sujet)-([0-9]+)-([0-9]+)\.html$#i', $page, $match))
+				{
+					$url = $match[0];
+					switch ($match[1])
+					{
+						case 'forum' :
+							$location = Fsb::$session->lang('adm_location_forum');
+							if (count($match) == 4)
+							{
+								$id = $match[2];
+							}
+							else
+							{
+								preg_match('#f_id=([0-9]+)#', $page, $match);
+								$id = (isset($match[1])) ? $match[1] : NULL;
+							}
+							if ($id) $f_idx[] = $id;
+						break;
+
+						case 'topic' :
+						case 'sujet' :
+							$location = Fsb::$session->lang('adm_location_topic');
+							if (count($match) == 4)
+							{
+								$method = 'topics';
+								$id = $match[2];
+								$t_idx[] = $id;
+							}
+							else if (preg_match('#t_id=([0-9]+)#', $page, $match))
+							{
+								$method = 'topics';
+								$id = (isset($match[1])) ? $match[1] : NULL;
+								if ($id) $t_idx[] = $id;
+							}
+							else
+							{
+								$method = 'posts';
+								preg_match('#p_id=([0-9]+)#', $page, $match);
+								$id = (isset($match[1])) ? $match[1] : NULL;
+								if ($id) $p_idx[] = $id;
+							}
+						break;
+
+						case 'post' :
+							preg_match('#mode=([a-z_]+)#', $page, $mode);
+							preg_match('#id=([0-9]+)#', $page, $match);
+							$id = (isset($match[1])) ? $match[1] : NULL;
+							switch ($mode[1])
+							{
+								case 'topic' :
+									$location = Fsb::$session->lang('adm_location_post_new');
+									if ($id) $f_idx[] = $id;
+								break;
+
+								case 'reply' :
+									$location = Fsb::$session->lang('adm_location_post_reply');
+									if ($id) $t_idx[] = $id;
+									$method = 'topics';
+								break;
+
+								case 'edit' :
+									$location = Fsb::$session->lang('adm_location_post_edit');
+									if ($id) $p_idx[] = $id;
+									$method = 'posts';
+								break;
+
+								case 'mp' :
+									$location = Fsb::$session->lang('adm_location_mp_write');
+								break;
+
+								case 'calendar_add' :
+									$location = Fsb::$session->lang('adm_location_calendar_event');
+								break;
+
+								case 'calendar_edit' :
+									$location = Fsb::$session->lang('adm_location_calendar_event_edit');
+								break;
+							}
+						break;
+
+						default :
+							if (Fsb::$session->lang('adm_location_' . $match[1]))
+							{
+								$location = Fsb::$session->lang('adm_location_' . $match[1]);
+							}
+						break;
+					}
+				}
+
+				if (!$location)
+				{
+					$location = Fsb::$session->lang('adm_location_index');
+					$url = 'index.' . PHPEXT;
+				}
+			}
+
+			$logged[$type][] = array(
+				'nickname' =>		Html::nickname($row['u_nickname'], $row['s_id'], $row['u_color']),
+				'agent' =>			$row['s_user_agent'],
+				'ip' =>				$row['s_ip'],
+				'location' =>		$location,
+				'url' =>			sid(ROOT . $url),
+				'method' =>			$method,
+				'id' =>				$id,
+			);
+
+
+		}
+		Fsb::$db->free($result);
+
+		// On récupère une liste des forums pour connaitre la position du membre sur le forum
+		$forums = array();
+		if ($f_idx)
+		{
+			$sql = 'SELECT f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name
+					FROM ' . SQL_PREFIX . 'forums f
+					LEFT JOIN ' . SQL_PREFIX . 'forums cat
+						ON f.f_cat_id = cat.f_id
+					WHERE f.f_id IN (' . implode(', ', $f_idx) . ')';
+			$result = Fsb::$db->query($sql, 'forums_');
+			$forums = Fsb::$db->rows($result, 'assoc', 'f_id');
+		}
+
+		// On récupère une liste des sujets pour connaitre la position du membre sur le forum
+		$topics = array();
+		if ($t_idx)
+		{
+			$sql = 'SELECT f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name, t.t_id, t.t_title
+					FROM ' . SQL_PREFIX . 'topics t
+					LEFT JOIN ' . SQL_PREFIX . 'forums f
+						ON f.f_id = t.f_id
+					LEFT JOIN ' . SQL_PREFIX . 'forums cat
+						ON f.f_cat_id = cat.f_id
+					WHERE t.t_id IN (' . implode(', ', $t_idx) . ')';
+			$result = Fsb::$db->query($sql, 'forums_');
+			$topics = Fsb::$db->rows($result, 'assoc', 't_id');
+		}
+
+		// On récupère une liste des messages pour connaitre la position du membre sur le forum
+		$posts = array();
+		if ($p_idx)
+		{
+			$sql = 'SELECT f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name, p.p_id, t.t_id, t.t_title
+					FROM ' . SQL_PREFIX . 'posts p
+					LEFT JOIN ' . SQL_PREFIX . 'topics t
+						ON p.t_id = t.t_id
+					LEFT JOIN ' . SQL_PREFIX . 'forums f
+						ON f.f_id = p.f_id
+					LEFT JOIN ' . SQL_PREFIX . 'forums cat
+						ON f.f_cat_id = cat.f_id
+					WHERE p.p_id IN (' . implode(', ', $p_idx) . ')';
+			$result = Fsb::$db->query($sql, 'forums_');
+			$posts = Fsb::$db->rows($result, 'assoc', 'p_id');
+		}
+
+		// On affiche les membres en ligne
+		foreach ($logged AS $type => $list)
+		{
+			if ($list)
+			{
+				Fsb::$tpl->set_blocks('logged', array(
+					'TITLE' =>		Fsb::$session->lang('adm_list_logged_' . $type),
+				));
+
+				foreach ($list AS $u)
+				{
+					// On définit si on cherche la liste des forums dans $forums ou $topics
+					$m = $u['method'];
+					$data_exists = ($u['id'] && isset(${$m}[$u['id']])) ? TRUE : FALSE;
+					$topic_exists = ($data_exists && isset(${$m}[$u['id']]['t_title'])) ? TRUE : FALSE;
+
+					Fsb::$tpl->set_blocks('logged.u', array(
+						'NICKNAME' =>		$u['nickname'],
+						'AGENT' =>			$u['agent'],
+						'IP' =>				$u['ip'],
+						'LOCATION' =>		$u['location'],
+						'URL' =>			$u['url'],
+						'CAT_NAME' =>		($data_exists) ? ${$m}[$u['id']]['cat_name'] : NULL,
+						'FORUM_NAME' =>		($data_exists) ? ${$m}[$u['id']]['f_name'] : NULL,
+						'TOPIC_NAME' =>		($topic_exists) ? htmlspecialchars(Parser::censor(${$m}[$u['id']]['t_title'])) : '',
+						'U_CAT' =>			($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . ${$m}[$u['id']]['cat_id']) : NULL,
+						'U_FORUM' =>		($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . ${$m}[$u['id']]['f_id']) : NULL,
+						'U_TOPIC' =>		($topic_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . ${$m}[$u['id']]['t_id']) : NULL,
+						'U_IP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=ip&amp;ip=' . $u['ip']),
+					));
+				}
+			}
+		}
+
+		Fsb::$tpl->set_vars(array(
+			'FSB_SUPPORT' =>		'http://www.fire-soft-board.com',
+			'FSB_LANG_SUPPORT' =>	Fsb::$session->lang('fsb_lang_support'),
+			'NEW_VERSION' =>		(fsb_version_compare(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) === -1) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : NULL,
+			'SHOW_ALL' =>			$show_all,
+
+			'U_SHOW_ALL' =>			sid('index.' . PHPEXT . '?show_all=true'),
+			'U_CHECK_VERSION' =>	sid('index.' . PHPEXT . '?mode=version'),
+		));
+	}
+
+	/*
+	** Page de vérification de la version
+	*/
+	public function page_check_version()
+	{
+		if (!$content = Http::get_file_on_server(FSB_REQUEST_SERVER, FSB_REQUEST_VERSION, 10))
+		{
+			Display::message('adm_unable_check_version');
+		}
+		@list($last_version, $url, $level) = explode("\n", $content);
+
+		// Aucune redirection
+		Fsb::$session->data['u_activate_redirection'] = 2;
+
+		if (fsb_version_compare(Fsb::$cfg->get('fsb_version'), $last_version) === -1)
+		{
+			Display::message(sprintf(Fsb::$session->lang('adm_old_version'), $last_version, Fsb::$cfg->get('fsb_version'), $url, $url, Fsb::$session->lang('adm_version_' . $level)) . '<br /><br />' . sprintf(Fsb::$session->lang('adm_click_view_newer'), $url));
+		}
+		else
+		{
+			Display::message('adm_version_ok', 'index.' . PHPEXT, 'index_adm');
+		}
+	}
+
+	/*
+	** Rafraichi le menu
+	*/
+	public function refresh_menu()
+	{
+		Fsb::$menu->refresh_menu();
+		Display::message('adm_well_refresh', 'index.' . PHPEXT, 'index_adm');
+	}
+
+	/*
+	** Active un compte de membre inactif
+	*/
+	public function page_activate_users()
+	{
+		$id = intval(Http::request('id'));
+		if ($id)
+		{
+			 User::confirm_account($id);
+		}
+
+		Http::redirect('index.' . PHPEXT);
+	}
+}
+
+/* EOF */

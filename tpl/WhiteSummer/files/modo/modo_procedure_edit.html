@@ -1,0 +1,96 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<switch name="proc_new">
+	<div class="round">
+		<h1>{LG_INFORMATION}</h1>
+		<table class="form">
+			<tr>
+				<th><label for="procedure_name_id">{LG_MODO_PROC_NAME} :</label></th>
+				<td><input type="text" name="procedure_name" id="procedure_name_id" value="{PROCEDURE_NAME}" size="35" maxlength="60" /></td>
+			</tr>
+			<tr>
+				<th><label>{LG_MODO_PROC_AUTH} :</label></th>
+				<td>{LIST_AUTH}</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_proc_name" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+</switch>
+
+<switch name="proc_source">
+	<div class="round">
+		<h1>{LG_MODO_PROC_EDITOR}</h1>
+		<table class="form">
+			<block name="line">
+				<tr>
+					<th>
+						<a href="{line.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+						<a href="{line.U_UP}"><img src="{IMG_UP}" alt="{LG_UP}" title="{LG_UP}" /></a>
+						<a href="{line.U_DOWN}"><img src="{IMG_DOWN}" alt="{LG_DOWN}" title="{LG_DOWN}" /></a>
+						<a href="{line.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+					</th>
+					<td><b>{line.EXPLAIN}</b><br />{line.CODE}</td>
+				</tr>
+			</block>
+			<tr>
+				<th></th>
+				<td>
+					<a href="{U_EDIT_FULL}" class="submit">{LG_MODO_PROC_EDIT_FULL}</a>
+					<a href="{U_ADD}" class="submit">{LG_MODO_PROC_ADD_FUNCTION}</a>
+				</td>
+			</tr>
+		</table>
+
+	</div>
+</switch>
+
+<switch name="proc_function">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>{LG_MODO_PROC_HELP}</div>
+	</div>
+
+	<div class="round">
+		<h1>{LG_MODO_PROC_EDIT_FUNCTION}</h1>
+		<switch name="show_explain_fct"><div class="desc">{EXPLAIN_FCT}</div></switch>
+		<table class="form">
+			<switch name="show_fcts">
+				<tr>
+					<th><label>{LG_MODO_PROC_CHOOSE_FUNCTION} :</label></th>
+					<td>{LIST_FUNCTIONS} <input type="submit" name="submit_function" value="{LG_SUBMIT}" class="submit" /></td>
+				</tr>
+			</switch>
+			<block name="args">
+				<tr>
+					<th><label>{args.TEXT} :</label><if content="$args.EXPLAIN"><br /><span class="small">{args.EXPLAIN}</span></if></th>
+					<td>{args.BUFFER}</td>
+				</tr>
+				<if content="$args.LAST_ROW">
+					<tr>
+						<th></th>
+						<td>{HIDDEN}<input type="submit" name="submit_fct_edit" value="{LG_MODO_PROC_SUBMIT_FCT}" class="submit" /></td>
+					</tr>
+				</if>
+			</block>
+		</table>
+	</div>
+</switch>
+
+<switch name="proc_source_edit">
+	<div class="info">
+		<h1>{LG_MODO_PROC_EDIT_FULL}</h1>
+		<div style="text-align: center">
+			<textarea name="source" style="width: 99%; height: 500px">{SOURCE}</textarea>
+			<div class="footer"><input type="submit" name="submit_edit_full" value="{LG_SUBMIT}" class="submit" /></div>
+		</div>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

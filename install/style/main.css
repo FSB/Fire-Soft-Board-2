@@ -1,0 +1,507 @@
+img
+{
+	border: none;
+}
+
+body
+{
+	background-color: #f5f8fc;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+/* Cadre entourant la page entière */
+.main
+{
+	border: 1px solid #77aadd;
+	padding: 10px;
+	background-color: #ffffff;
+}
+
+/* Style sur les liens principaux */
+a
+{
+	color: #FF5511;
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: #FF5511;
+	text-decoration: underline;
+}
+
+td.forum
+{
+	background-color: #f6f9fd;
+	border: 1px solid #77aadd;
+	padding: 5px;
+}
+
+/* Copyright du forum */
+.copyright
+{
+	font-weight: bold;
+	font-family: arial;
+	text-align: right;
+	font-size: 11px;
+}
+
+/* Listes */
+.list
+{
+	background-color: #f6f9fd;
+	border: 1px solid #6699bb;
+}
+
+option
+{
+	color: #000000;
+}
+
+optgroup
+{
+	color: #FF5511;
+}
+
+/* Couleur des membres du groupe "administrateur" */
+.admin, .admin:hover
+{
+	font-weight: bold;
+	color: #FF5511;
+}
+
+/* Couleur des membres du groupe "moderateurs globaux" */
+.modosup, .modosup:hover
+{
+	font-weight: bold;
+	color: #e6a000;
+}
+
+/* Couleur des membres du groupe "moderateurs" */
+.modo, .modo:hover
+{
+	color: #6688bb;
+}
+
+/* Couleur des membres du groupe "membres" */
+.user, .user:hover
+{
+	color: #000000;
+}
+
+a.menu
+{
+	border: 1px solid #6699bb;
+	display: block;
+	width: 125px;
+	line-height: 23px;
+	border-width: 0px 1px 1px 1px;
+	background-color: #f9fbfe;
+	padding-left: 15px;
+}
+
+a.menu_select
+{
+	border: 1px solid #6699bb;
+	display: block;
+	width: 125px;
+	line-height: 23px;
+	border-width: 0px 1px 1px 1px;
+	background-color: #f9fbfe;
+	padding-left: 15px;
+	font-weight: bold;
+}
+
+a.menu_first:hover
+{
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a.menu_first
+{
+	border: 1px solid #6699bb;
+	display: block;
+	width: 135px;
+	line-height: 23px;
+	border-width: 1px 1px 1px 1px;
+	background-color: #f4f6f9;
+	padding-left: 5px;
+	font-weight: bold;
+	color: #000000;
+}
+
+input.submit
+{
+	background-color: #f6f9fd;
+	border-color: #6699bb;
+}
+
+.maindiv
+{
+	border: 4px double #77aadd;
+	width: 99%;
+	background-color: #f6f9fd;
+	padding: 3px;
+}
+
+/* Style sur les liens de la pagination */
+.pagination_block a
+{
+	display: inline;
+	border: #77aadd solid 1px;
+	margin: 1px;
+	padding: 2px 5px 1px 5px;
+	background-color: #f6f9fd;
+	font-weight: bold;
+}
+
+/* Style sur les liens de la pagination lorsque le curseur passe dessus */
+.pagination_block a:hover
+{
+	text-decoration: none;
+}
+
+/* Style sur le lien courant de la pagination */
+.pagination_block_cur
+{
+	display: inline;
+	border: #77aadd solid 1px;
+	margin: 1px;
+	padding: 2px 5px 1px 5px;
+	background-color: #E7E8EF;
+	font-weight: bold;
+}
+
+td, a
+{
+	font-size: 11px;
+}
+
+legend
+{
+	margin-left: 10px;
+	font-weight: bold;
+	color: #DB5D1F;
+	font-size: 1.2em;
+	position: relative;
+	vertical-align: bottom;
+	text-transform: uppercase;
+}
+
+fieldset
+{
+	padding: 8px;
+	border: 3px double #77aadd;
+	background-color: #f6f9fd;
+	position: relative;
+	margin: 10px 0px 0px 0px;
+}
+
+* html fieldset
+{ 
+	padding: 0 10px 5px 10px; 
+}
+
+* html legend
+{ 
+	margin-bottom: -10px; 
+	margin-left: -7px;
+	top: -1.2em;
+}
+
+fieldset dl
+{
+	margin-bottom: 10px;
+	font-size: 11px;
+}
+
+fieldset dt
+{
+	width: 45%;
+	float: left;
+	border-right: 1px dotted #77aadd;
+}
+
+fieldset dt#strong
+{
+	font-weight: bold;
+}
+
+fieldset dt label
+{
+	font-weight: bold;
+}
+
+fieldset dt span
+{
+	font-size: 10px;
+	padding-right: 5px;
+}
+
+fieldset dd
+{
+	margin-left: 45%;
+	padding-left: 5px;
+	border-left: 1px dotted #77aadd;
+}
+
+/* Fix pour l'affichage des blocks, voir l'explication sur cette page : From http://www.positioniseverything.net/easyclearing.html */
+fieldset dl:after
+{
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+
+fieldset dl
+{
+	height: 1%;
+}
+
+fieldset dt#title, fieldset dd#title
+{
+	text-align: center;
+	font-weight: bold;
+	background-color: #E0E4EA;
+	padding: 3px;
+	border: 1px dotted #77aadd
+}
+
+fieldset #desc
+{
+	text-align: center;
+	border: 1px solid #77aadd;
+	background-color: #F8DBB1;
+	padding: 5px 5px 7px 5px;
+	font-size: 10px;
+}
+
+fieldset div#error, fieldset table td#error
+{
+	text-align: center;
+	border: 1px solid #77aadd;
+	background-color: #F8DBB1;
+	padding: 15px 5px 15px 5px;
+	font-weight: bold;
+}
+
+fieldset div
+{
+	padding-right: 20px;
+	background-color: #E0E4EA;
+	border: 1px dotted #77aadd;
+	text-align: right;
+}
+
+fieldset div#left
+{
+	padding-left: 15px;
+	background-color: transparent;
+	border: none;
+	text-align: left;
+	float: left;
+}
+
+/* Onglets de page */
+#module_border
+{
+	border: 1px #000000 dashed;
+	margin-top: 15px;
+	padding: 5px;
+}
+
+#module
+{
+	margin-left: 20px;
+	margin-bottom: 20px;
+	margin-top: -20px;
+}
+
+#module ul
+{
+	margin:0;
+	padding: 0;
+	list-style: none;
+}
+
+#module li
+{
+	display: inline;
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+#module a, #module span
+{
+	float:left;
+	border: 1px solid #77aadd;
+	background-color: #DADBDC;
+	margin-right: 2px;
+	text-decoration: none;
+	padding: 7px 6px 6px 6px;
+	font-weight: bold;
+	color: #4288AC;
+	font-size: 1.2em;
+	position: relative;
+	vertical-align: bottom;
+	text-transform: uppercase;
+	position: relative;
+	line-height: 15px;
+}
+
+#module a.current, #module a.current:hover, #module span.current, #module span.current:hover
+{
+	background-color: #FAF5F5;
+}
+
+#module a:hover
+{
+	background-color: #E7E8EA;
+}
+
+/* Texte d'explication en haut de page */
+h2
+{
+	margin: 0px;
+}
+
+#explain
+{
+	text-align: center;
+	border: 1px solid #77aadd;
+	background-color: #F8DBB1;
+	padding: 5px 5px 7px 5px;
+}
+
+#explain span
+{
+	font-size: 10px;
+}
+
+/* Boutton soumettre */
+#submit, #submit:hover
+{
+	border-bottom: 1px #000000 solid;
+	border-right: 1px #000000 solid;
+	border-top: 1px #8D8D8D solid;
+	border-left: 1px #8D8D8D solid;
+	padding: 3px;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: arial;
+	color: #000000;
+	background-color: #EFEBEB;
+	text-decoration: none;
+}
+
+#submit:focus
+{
+	border-top: 1px #000000 solid;
+	border-left: 1px #000000 solid;
+	border-bottom: 1px #8D8D8D solid;
+	border-right: 1px #8D8D8D solid;
+}
+
+/* Boutton annuler */
+#reset, #reset:hover
+{
+	border-bottom: 1px #000000 solid;
+	border-right: 1px #000000 solid;
+	border-top: 1px #8D8D8D solid;
+	border-left: 1px #8D8D8D solid;
+	padding: 3px;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: arial;
+	color: #000000;
+	background-color: #EFEBEB;
+	text-decoration: none;
+}
+
+#reset:focus
+{
+	border-top: 1px #000000 solid;
+	border-left: 1px #000000 solid;
+	border-bottom: 1px #8D8D8D solid;
+	border-right: 1px #8D8D8D solid;
+}
+
+#nav
+{
+	margin-bottom: 10px;
+	border: dotted 1px #77aadd;
+	background-color: #f0f1f5;
+	padding: 3px;
+	padding-left: 7px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+table#tab
+{
+	width: 100%;
+	margin: 3px;
+}
+
+table#tab td, table#tab th
+{
+	padding: 5px;
+}
+
+table#tab th, table#tab th a
+{
+	font-size: 14px;
+}
+
+table#tab th
+{
+	background-color: #E0E4EA;
+	border: 1px dotted #77aadd
+}
+
+table#tab span
+{
+	font-size: 10px;
+}
+
+#highlight:hover
+{
+	background-color: #E0E4EA;
+}
+
+/* Style pour les types de forums */
+#forum_type
+{
+	font-weight: bold;
+	color: #DB5D1F;
+}
+
+.ok
+{
+	color: #5AB830;
+	font-weight: bold;
+}
+
+.ko
+{
+	color: #D9361B;
+	font-weight: bold;
+}
+
+/* Div contenant les modules du portail */
+.portail_div
+{
+	border: 1px solid #77aadd;
+	width: 95%;
+	height: 120px;
+	text-align: center;
+	background-color: #f6f9fd;
+	padding: 5px;
+}

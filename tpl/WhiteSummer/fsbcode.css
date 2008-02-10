@@ -1,0 +1,191 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/fsbcode.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, reutiliser et redistribuer
+** | ce fichier à condition de laisser cet entete.
+** +---------------------------------------------------+
+*/
+
+/*
+** FSBcode [code=css]
+*/
+.sc_css_comment { color: #888888; }
+.sc_css_propertie, .sc_css_propertie:hover { color: red; cursor: help; border: 1px #000000 dotted; border-width: 0px 0px 1px 0px; text-decoration: none; }
+.sc_css_class { color: blue; }
+.sc_css_element { color: #22bb33; }
+.sc_css_quote { color: orange; }
+.sc_css_color { color: orange; cursor: help; text-decoration: none; }
+.sc_css_normal { font-weight: bold; }
+
+/*
+** FSBcode [code="html"]
+*/
+.sc_html_atrib { color: #FF0000; }
+.sc_html_comment { color: #666666; }
+.sc_html_tag { color: #274891; }
+.sc_html_tpl_tag { color: green; }
+.sc_html_quote { color: #D55EAA; }
+.sc_html_global { color: #ccaa22; }
+.sc_html_var { color: #ccaa22; }
+.sc_html_block { color: #558811; }
+
+/*
+** FSBcode [code=php]
+*/
+.sc_php_normal { color: #000000; }
+.sc_php_comment { color: #888888; }
+.sc_php_function, .sc_php_function:hover { color: red; cursor: help; border: 1px #000000 dotted; border-width: 0px 0px 1px 0px; text-decoration: none; }
+.sc_php_keyword { color: purple; font-weight: bold; }
+.sc_php_text { color: #428FE5; }
+.sc_php_var { color: #000000; }
+.sc_php_special_var { color: #000000; font-weight: bold; }
+
+/*
+** FSBcode [code="sql"]
+*/
+.sc_sql_function { color: #75DD89; }
+.sc_sql_keyword { color: #FF0000; font-weight: bold; }
+.sc_sql_numeric { color: #8AAEFF; }
+.sc_sql_text { color: #F388CC; }
+.sc_sql_operator { color: purple; font-weight: bold; }
+
+/* Boutton FSBcode */
+div.fsbcode
+{
+	border: none;
+	background-color: transparent;
+	padding: 0px;
+	margin: 0px;
+	font-weight: bold;
+	cursor: pointer;
+	display: inline;
+}
+
+/* Texte du boutton FSBcode */
+div.fsbcode div
+{
+	background-image: url(img/fsbcode_custom.gif);
+	height: 16px;
+	padding: 3px;
+	float: left;
+	padding-left: 7px;
+}
+
+/* Fermeture du boutton FSBcode */
+div.fsbcode span
+{
+	background-image: url(img/fsbcode_custom_right.gif);
+	width: 4px;
+	height: 22px;
+	display: block;
+	float: left;
+}
+
+/* FSBcode citation */
+.quote
+{
+	border: 1px dotted #000000;
+	margin: 8px 5px 8px 5px;
+}
+
+/* Titre de citation */
+.quote .quote_title
+{
+	background-color: #e0e6d9;
+	padding: 3px;
+	padding-left: 24px;
+	border-bottom: 1px dotted #000000;
+	font-weight: bold;
+	background-image: url('img/quote.gif');
+	background-repeat: no-repeat;
+}
+
+/* Contenu de la citation */
+.quote .quote_content
+{
+	padding: 5px;
+	background-color: #f0f2ed;
+	overflow: auto;
+}
+
+/* FSBcode code */
+.code
+{
+	border: 1px dotted #000000;
+	margin: 8px 5px 8px 5px;
+}
+
+/* Titre du code */
+.code .code_title
+{
+	background-color: #ededed;
+	padding: 3px;
+	padding-left: 24px;
+	border-bottom: 1px dotted #000000;
+	font-weight: bold;
+	background-image: url('img/code.gif');
+	background-repeat: no-repeat;
+}
+
+/* Contenu du code */
+.code .code_content
+{
+	margin: 0px;
+	background-color: #fcfcfc;
+	overflow: auto;
+	height: auto;
+	max-height: 300px;
+	white-space: pre;
+	padding: 3px;
+	font-family: Helvetica;
+	font-size: 0.9em;
+	margin-bottom: 1px;
+}
+
+/* FSBcode attach */
+.attach
+{
+	border: 1px dotted #000000;
+	margin: 8px 5px 8px 5px;
+}
+
+/* Titre du fichier joint */
+.attach .attach_title
+{
+	background-color: #ffdfdf;
+	padding: 3px;
+	padding-left: 18px;
+	border-bottom: 1px dotted #000000;
+	font-weight: bold;
+	background-image: url('img/attachment.gif');
+	background-repeat: no-repeat;
+}
+
+/* Contenu du fichier joint */
+.attach .attach_content
+{
+	background-color: #fff6f6;
+	white-space: pre;
+	padding: 3px;
+	font-family: Helvetica;
+	font-size: 0.9em;
+	margin-bottom: 1px;
+	overflow: auto;
+}
+
+/* Informations sur le fichier joint */
+.attach_data
+{
+	padding: 5px;
+	line-height: 18px;
+}
+
+/* Téléchargement */
+a.download
+{
+	font-weight: bold;
+	font-size: 18px;
+}

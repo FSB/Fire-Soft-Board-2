@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+	<head>
+		<title>Entrez votre message</title>
+		<onUpload set="description" append="true" />
+	</head>
+	<body>
+		<line name="description">
+			<type>textarea</type>
+			<lang>Votre message</lang>
+			<option>
+				<rows>300</rows>
+				<useWysiwyg />
+			</option>
+			<result>%s</result>
+		</line>
+	</body>
+</map>

@@ -1,0 +1,93 @@
+<include name="adm_header.html" />
+
+<fieldset>
+	<legend>{LG_ADM_FSB_INFO}</legend>
+	<if content="$NEW_VERSION">
+		<div class="desc">{NEW_VERSION}</div>
+	</if>
+	<dl>
+		<dt class="strong">{LG_ADM_FSB_VERSION} :</dt>
+		<dd>{FSB_VERSION} &nbsp; <b>(<a href="{U_CHECK_VERSION}">{LG_ADM_CHECK_VERSION}</a>)</b></dd>
+	</dl>
+	<dl>
+		<dt class="strong">{LG_ADM_FSB_SUPPORT} :</dt>
+		<dd><b><a href="{FSB_SUPPORT}">{FSB_SUPPORT}</a></b></dd>
+	</dl>
+	<if content="$FSB_LANG_SUPPORT">
+		<dl>
+			<dt class="strong">{LG_ADM_FSB_LANG_SUPPORT} :</dt>
+			<dd><b><a href="{FSB_LANG_SUPPORT}">{FSB_LANG_SUPPORT}</a></b></dd>
+		</dl>
+	</if>
+</fieldset>
+
+<fieldset>
+	<legend>{LG_ADM_LAST_LOGS}</legend>
+	<block name="log">
+		<if content="$log.FIRST_ROW"><ul></if>
+		<li style="margin-bottom: 5px"><b>{log.STR}</b><br /><span>{log.INFO}</span></li>
+		<if content="$log.LAST_ROW"></ul></if>
+	</block>
+	<blockelse name="log">
+		<div class="error">{LG_NO_RESULT}</div>
+	</blockelse>
+</fieldset>
+
+<fieldset>
+	<legend>{LG_ADM_ACCOUNT_WAITING}</legend>
+	<block name="wait">
+		<if content="$wait.FIRST_ROW"><div class="desc">{LG_ADM_ACCOUNT_WAITING_EXPLAIN}</div></if>
+		<dl>
+			<dt>
+				<b>{wait.NICKNAME} &nbsp; (<a href="{wait.U_EDIT}">{LG_ADM_WAIT_EDIT}</a>)</b>
+				<br ><span>{wait.JOINED_IP}</span>
+			</dt>
+			<dd><a href="{wait.U_VALIDATE}" class="submit">{LG_ADM_WAIT_VALIDATE}</a></dd>
+		</dl>
+		<if content="!$SHOW_ALL AND $wait.ITERATOR == 4"><div><a href="{U_SHOW_ALL}" class="submit">{LG_ADM_SHOW_ALL}</a></div></if>
+		<if content="$wait.LAST_ROW"></ul></if>
+	</block>
+	<blockelse name="wait">
+		<div class="error">{LG_NO_RESULT}</div>
+	</blockelse>
+</fieldset>
+
+<fieldset>
+	<legend>{LG_ADM_LIST_LOGGED}</legend>
+	<table class="tab">
+	<block name="logged">
+		<if content="$logged.FIRST_ROW">
+			<tr>
+				<th width="200">{LG_ADM_LIST_NICKNAME}</th>
+				<th width="150">{LG_ADM_LIST_IP}</th>
+				<th>{LG_ADM_LIST_LOCATION}</th>
+			</tr>
+		</if>
+		<tr>
+			<th colspan="3">{logged.TITLE}</th>
+		</tr>
+		<block name="logged.u">
+			<tr class="highlight">
+				<td align="center"><span title="{logged.u.AGENT}">{logged.u.NICKNAME}</span></td>
+				<td align="center"><a href="{logged.u.U_IP}">{logged.u.IP}</a></td>
+				<td align="center">
+					<b><a href="{logged.u.URL}">{logged.u.LOCATION}</a></b>
+					<if content="$logged.u.FORUM_NAME">
+						<br /><span class="small">
+							<a href="{logged.u.U_CAT}">{logged.u.CAT_NAME}</a> &#187; <a href="{logged.u.U_FORUM}">{logged.u.FORUM_NAME}</a>
+							<if content="$logged.u.TOPIC_NAME"> &#187; <a href="{logged.u.U_TOPIC}">{logged.u.TOPIC_NAME}</a></if>
+						</span>
+					</if>
+				</td>
+			</tr>
+		</block>
+	</block>
+	<blockelse name="logged">
+		<tr>
+			<td class="error">{LG_NO_RESULT}</td>
+		</tr>
+	</blockelse>
+	</table>
+</fieldset>
+
+<include name="adm_footer.html" />

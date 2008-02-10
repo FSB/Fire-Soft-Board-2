@@ -1,0 +1,439 @@
+<include name="adm_header.html">
+
+<switch name="tpl_list">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_ADM_TPL_INSTALL}</legend>
+		<dl>
+			<dt><label for="upload_tpl_id">{LG_ADM_TPL_CHOOSE} :</label></dt>
+			<dd>
+				<input type="file" name="upload_tpl" id="upload_tpl_id" size="35" />
+				<input type="submit" name="submit_install" value="{LG_SUBMIT}" class="submit" />
+				<br /><input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="export_tpl_id">{LG_ADM_TPL_EXPORT} :</label></dt>
+			<dd>
+				{LIST_TPL} <input type="submit" name="export_tpl" value="{LG_SUBMIT}" class="submit" /><br />
+				<input type="radio" name="export_tpl_ext" value="zip" checked="checked" id="export_tpl_id" /> {LG_ADM_TPL_EXPORT_ZIP} &nbsp;
+				<input type="radio" name="export_tpl_ext" value="tar" /> {LG_ADM_TPL_EXPORT_TAR} &nbsp;
+				<input type="radio" name="export_tpl_ext" value="tar.gz" /> {LG_ADM_TPL_EXPORT_GZ}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<block name="tpl">
+	<fieldset>
+		<legend>{tpl.NAME}</legend>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_AUTOR} :</dt>
+			<dd>{tpl.AUTOR}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_WEB} :</dt>
+			<dd><b><a href="{tpl.WEB}">{tpl.WEB}</a></b></dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_LICENSE} :</dt>
+			<dd>{tpl.LICENSE}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_USED_BY} :</dt>
+			<dd>{tpl.USED_BY}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_OPT} :</dt>
+			<dd>
+				<ul>
+					<li><b><a href="{tpl.U_EDIT_TPL}">{LG_ADM_TPL_EDIT}</a></b></li>
+					<li><b><a href="{tpl.U_EDIT_CSS}">{LG_ADM_TPL_CSS}</a></b></li>
+					<li><b><a href="{tpl.U_EDIT_IMG}">{LG_ADM_TPL_IMG}</a></b></li>
+				</ul>
+			</dd>
+		</dl>
+	</fieldset>
+	<br />
+	</block>
+	</form>
+</switch>
+
+<switch name="tpl_list_templates">
+	<fieldset>
+		<legend>{LG_ADM_TPL_EDIT_LIST}</legend>
+		<table class="tab">
+			<tr>
+				<th>{LG_ADM_TPL_FILE_NAME}</th>
+				<th width="150">{LG_ADM_TPL_FILE_SIZE}</th>
+				<th width="200">{LG_ADM_TPL_FILE_CACHE}</th>
+				<th width="75">{LG_EDIT}</th>
+			</tr>
+			<block name="tpl">
+				<tr>
+					<th colspan="4">{tpl.NAME}</th>
+				</tr>
+				<block name="tpl.f">
+					<tr class="highlight">
+						<td align="center">{tpl.f.NAME}</td>
+						<td align="center">{tpl.f.SIZE}</td>
+						<td align="center"><a href="{tpl.f.U_CACHE}"><b>{tpl.f.CACHE}</b></a></td>
+						<td align="center"><a href="{tpl.f.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></td>
+					</tr>
+				</block>
+			</block>
+		</table>
+	</fieldset>
+</switch>
+
+<switch name="tpl_edit_template">
+	<script type="text/javascript">
+	<!--
+	var can_use_codepress = (Nav_IE || Nav_Moz) ? true : false;
+
+	function get_codepress_content()
+	{
+		if (can_use_codepress)
+		{
+			var CodepressFrame = document.getElementById('codepress').contentWindow;
+			var CodepressContent = CodepressFrame.CodePress.getCode();
+			document.getElementById('content_id').value = CodepressContent;
+		}
+	}
+	//-->
+	</script>
+
+	<form action="{U_ACTION}" method="post" onsubmit="get_codepress_content()">
+	<fieldset>
+		<legend>{L_EDIT_TITLE}</legend>
+		<p align="center">
+			<textarea name="content" id="content_id" rows="20" style="width: 100%">{CONTENT}</textarea>
+			<iframe id="codepress" src="{U_CODEPRESS}" style="display: none"></iframe>
+			<script type="text/javascript">
+			<!--
+			if (can_use_codepress)
+			{
+				document.getElementById('content_id').style.display = 'none';
+				document.getElementById('codepress').style.display = 'block';
+				function test() { document.getElementById("codepress").innerHTML = 'toto'; }
+				setTimeout('test()', 1000);
+			}
+			//-->
+			</script>
+		</p>
+		<div>
+			<input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP} &nbsp; &nbsp; 
+			<input type="submit" name="submit_edit" value="{LG_ADM_TPL_EDIT_SAVE}" class="submit" /> 
+		</div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="tpl_list_css">
+	<block name="file">
+		<fieldset>
+			<legend>{LG_ADM_TPL_CSS_LIST} : {file.NAME} <a href="{file.U_EDIT}"><img src="adm_tpl/img/edit.gif" title="{LG_ADM_CSS_GLOBAL}" alt="{LG_ADM_CSS_GLOBAL}" /></a></legend>
+			<block name="file.css">
+				<dl>
+					<dt><label>{file.css.NAME}</label><if content="$file.css.DESC"><br /><span>{file.css.DESC}</span></if></dt>
+					<dd><a href="{file.css.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></dd>
+				</dl>
+			</block>
+		</fieldset>
+	</block>
+</switch>
+
+<switch name="tpl_edit_css">
+	<script type="text/javascript">
+	<!--
+	var rainbow_box = new Array;
+	var rainbow_i = 0;
+	window.addEvent('load', function()
+	{
+		rainbow_box[rainbow_i++] = new_rainbow('font_color');
+		rainbow_box[rainbow_i++] = new_rainbow('background_color');
+		rainbow_box[rainbow_i++] = new_rainbow('border_color');
+	});
+
+	function new_rainbow(id)
+	{
+		return (new MooRainbow(id + '_click', {
+				'startColor': [58, 142, 246],
+				'id': id,
+				'imgPath': '{ROOT}images/moorainbow/',
+				'onStart': function(color)
+				{
+					for (var i = 0; i < rainbow_i; i++)
+					{
+						if (rainbow_box[i] != this)
+						{
+							rainbow_box[i].hide(rainbow_box[i].layout);
+						}
+					}
+				},
+				'onComplete': function(color)
+				{
+					$(id).value = color.hex;
+				}
+			}));
+	}
+	-->
+	</script>
+
+	<switch name="preview">
+		<div style="width: 100%;{PREVIEW_STYLE}">{LG_ADM_CSS_PREVIEW}</div>
+		<br />
+	</switch>
+
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_OPTIONS}</legend>
+		<dl>
+			<dt><label>{LG_ADM_CSS_NAME} :</label></dt>
+			<dd>{LIST_CSS}<noscript> <input type="submit" value="{LG_SUBMIT}" name="choose_class" class="submit" /></noscript></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_CSS_MODE} :</label></dt>
+			<dd>{LIST_MODE}<noscript> <input type="submit" value="{LG_SUBMIT}" name="change_css_mode" class="submit" /></noscript></dd>
+		</dl>
+	</fieldset>
+
+	<switch name="simple_mode">
+		<fieldset class="message">
+			<legend>{LG_ADM_CSS_BACKGROUND}</legend>
+			<dl>
+				<dt><label for="background_color">{LG_ADM_CSS_BACKGROUND_COLOR} :</label></dt>
+				<dd>
+					<input type="text" id="background_color" name="background_color" value="{BACKGROUND_COLOR}" size="10" /> &nbsp;
+					<strong><a href="#" id="background_color_click">[{LG_COLOR_WINDOW}]</a></strong>
+				</dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_ADM_CSS_BACKGROUND_IMG} :</label></dt>
+				<dd>{LIST_BACKGROUND_IMG}</dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_ADM_CSS_REPEAT_LG} :</label></dt>
+				<dd>{LIST_REPEAT_IMG}</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="message">
+			<legend>{LG_ADM_CSS_FOREGROUND}</legend>
+			<dl>
+				<dt><label>{LG_ADM_CSS_FONT_STYLE} :</label></dt>
+				<dd>
+					<input type="checkbox" name="bold" value="1" {FONT_STYLE_BOLD} /> {LG_ADM_CSS_FONT_STYLE_BOLD} &nbsp;
+					<input type="checkbox" name="underline" value="1" {FONT_STYLE_UNDERLINE} /> {LG_ADM_CSS_FONT_STYLE_UNDERLINE} &nbsp;
+					<input type="checkbox" name="italic" value="1" {FONT_STYLE_ITALIC} /> {LG_ADM_CSS_FONT_STYLE_ITALIC}
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="font_color">{LG_ADM_CSS_FONT_COLOR} :</label></dt>
+				<dd>
+					<input type="text" id="font_color" name="font_color" value="{FONT_COLOR}" size="10" /> &nbsp;
+					<strong><a href="#" id="font_color_click">[{LG_COLOR_WINDOW}]</a></strong>
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="font_size">{LG_ADM_CSS_FONT_SIZE} :</label></dt>
+				<dd><input type="text" name="font_size" value="{FONT_SIZE}" size="5" /> {LIST_FONT_SIZE}</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="message">
+			<legend>{LG_ADM_CSS_BORDER}</legend>
+			<dl>
+				<dt><label for="border_color">{LG_ADM_CSS_BORDER_COLOR} :</label></dt>
+				<dd>
+					<input type="text" id="border_color" name="border_color" value="{BORDER_COLOR}" size="10" /> &nbsp;
+					<strong><a href="#" id="border_color_click">[{LG_COLOR_WINDOW}]</a></strong>
+				</dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_ADM_CSS_BORDER_TYPE} :</label></dt>
+				<dd>{LIST_BORDER_TYPE}</dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_ADM_CSS_BORDER_WIDTH} :</label></dt>
+				<dd>
+					<input type="text" name="border_width_up" value="{BORDER_WIDTH_UP}" size="5" /> {LG_UP}&nbsp;&nbsp;
+					<input type="text" name="border_width_right" value="{BORDER_WIDTH_RIGHT}" size="5" /> {LG_RIGHT}&nbsp;&nbsp;
+					<input type="text" name="border_width_down" value="{BORDER_WIDTH_DOWN}" size="5" /> {LG_DOWN}&nbsp;&nbsp;
+					<input type="text" name="border_width_left" value="{BORDER_WIDTH_LEFT}" size="5" /> {LG_LEFT}&nbsp;&nbsp;
+					{LIST_BORDER_WIDTH}
+				</dd>
+			</dl>
+			<switch name="other_style">
+			<else>
+				<div>
+					{HIDDEN}
+					<input type="submit" name="submit_edit_css" value="{LG_SUBMIT}" class="submit" />
+					<input type="submit" name="preview_css" value="{LG_ADM_CSS_PREVIEW}" class="reset" />
+				</div>
+			</switch>
+		</fieldset>
+
+		<switch name="other_style">
+			<fieldset class="message">
+				<legend>{LG_ADM_CSS_OTHER_STYLE}</legend>
+				<block name="other">
+					<dl>
+						<dt><label for="other_{other.ITERATOR}">{other.L_NAME} :</label></dt>
+						<dd><input type="text" name="{other.NAME}" id="other_{other.ITERATOR}" value="{other.VALUE}" size="25" /></dd>
+					</dl>
+				</block>
+				<div>
+					{HIDDEN}
+					<input type="submit" name="submit_edit_css" value="{LG_SUBMIT}" class="submit" />
+					<input type="submit" name="preview_css" value="{LG_ADM_CSS_PREVIEW}" class="reset" />
+				</div>
+			</fieldset>
+		</switch>
+	<else>
+		<fieldset class="message">
+			<legend>{LG_ADM_CSS_COMPLEX_MODE}</legend>
+			<p align="center"><textarea name="content" rows="15" cols="90">{CONTENT}</textarea></p>
+			<div>
+				{HIDDEN}
+				<input type="submit" name="submit_edit_css" value="{LG_SUBMIT}" class="submit" />
+				<input type="submit" name="preview_css" value="{LG_ADM_CSS_PREVIEW}" class="reset" />
+			</div>
+		</fieldset>
+	</switch>
+	</form>
+</switch>
+
+<switch name="tpl_img_list">
+	<fieldset>
+		<legend>{LG_ADM_IMG_LIST}</legend>
+		<block name="img">
+			<dl>
+				<dt class="strong">{img.NAME}</dt>
+				<dd><a href="{img.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></dd>
+			</dl>
+		</block>
+	</fieldset>
+</switch>
+
+<switch name="tpl_edit_img">
+	<form  action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_ADM_IMG_EDIT}</legend>
+		<dl>
+			<dt class="strong">{LG_ADM_IMG_KEY_NAME} :</dt>
+			<dd>{KEY_NAME}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_IMG_CURRENT} :</dt>
+			<dd><img src="{LINK_SHOW}" alt="{LINK_SHOW}" title="{LINK_SHOW}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="upload_img_id">{LG_ADM_IMG_UPLOAD} :</label></dt>
+			<dd><input type="file" name="upload_img" id="upload_img_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="link_img_id">{LG_ADM_IMG_LINK} :</label><br /><span>{LG_ADM_IMG_LINK_EXP}</span></dt>
+			<dd><input type="text" name="link_img" id="link_img_id" value="{LINK}" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_edit_img" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="tpl_streaming">
+	<form action="{U_ACTION}" method="post">
+	<block name="news">
+		<if content="$news.FIRST_ROW">
+			<fieldset>
+				<legend>{LG_OPTIONS}</legend>
+				<dl>
+					<dt><label for="use_ftp_id">{LG_USE_FTP} :</label></dt>
+					<dd><input type="checkbox" name="use_ftp" id="use_ftp_id" value="1" <if content="$USE_FTP">checked="checked"</if> /></dd>
+				</dl>
+			</fieldset>
+		</if>
+
+		<fieldset>
+			<legend>{news.TITLE}</legend>
+			<a href="{news.IMG}" target="_blank"><img src="{news.THUMB}" alt="{news.TPL_NAME}" title="{news.TPL_NAME}" style="float: left; margin: 5px" /></a>
+			<a href="{news.U_DOWNLOAD}" class="submit">{LG_ADM_TPL_DOWNLOAD}</a>
+			<if content="!$news.TPL_EXISTS">
+				<input type="submit" name="install_news_tpl[{news.U_INSTALL}]" value="{LG_ADM_TPL_INSTALL_NEWS}" class="submit" />
+			<else>
+				<span class="ko">&nbsp; {LG_ADM_TPL_NEWS_HAVE_TPL}</span>
+			</if>
+			<hr />
+			<ul style="list-style-type: none">
+				<li><b>{LG_ADM_TPL_NEWS_NAME} :</b> {news.TPL_NAME}</li>
+				<li><b>{LG_ADM_TPL_NEWS_AUTHOR} :</b> <a href="{news.EMAIL}">{news.AUTHOR}</a></li>
+				<if content="$news.WEBSITE"><li><b>{LG_ADM_TPL_NEWS_WEBSITE} :</b> <a href="{news.WEBSITE}">{news.WEBSITE}</a></li></if>
+				<li><b>{LG_ADM_TPL_NEWS_COPYRIGHT} :</b> {news.COPYRIGHT}</li>
+			</ul>
+			{news.DESC}
+		</fieldset>
+	</block>
+	<blockelse name="news">
+		<fieldset>
+			<legend>{LG_INFORMATION}</legend>
+			<div class="error">{LG_NO_RESULT}</div>
+		</fieldset>
+	</blockelse>
+	</form>
+</switch>
+
+<switch name="tpl_diff">
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_ADM_TPL_DIFF_TPL}</legend>
+		<div class="desc">{LG_ADM_TPL_DIFF_EXPLAIN}</div>
+		<dl>
+			<dt><label>{LG_ADM_TPL_DIFF_CHOOSE} :</label></dt>
+			<dd>{LIST_TPL1} {LG_ADM_TPL_DIFF_WITH} {LIST_TPL2}</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_TPL_DIFF_WRAP} :</label><br /><span>{LG_ADM_TPL_DIFF_WRAP_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="wrap" value="1" <if content="$AUTO_WRAP">checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="wrap" value="0" <if content="!$AUTO_WRAP">checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_TPL_DIFF_FILTER} :</label></dt>
+			<dd>
+				<input type="radio" name="filter" value="1" <if content="$FILTER">checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="filter" value="0" <if content="!$FILTER">checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_TPL_DIFF_FILES} :</label></dt>
+			<dd>{LIST_FILES}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TPL_DIFF_LEGEND} :</dt>
+			<dd>
+				<div class="diff_equal" style="width: 200px; height: 23px; text-align: center; padding-top: 7px; margin-bottom: 5px; font-weight: bold">{LG_ADM_TPL_DIFF_LEGEND_EQUAL}</div>
+				<div class="diff_change" style="width: 200px; height: 23px; text-align: center; padding-top: 7px; margin-bottom: 5px; font-weight: bold">{LG_ADM_TPL_DIFF_LEGEND_CHANGE}</div>
+				<div class="diff_drop" style="width: 200px; height: 23px; text-align: center; padding-top: 7px; margin-bottom: 5px; font-weight: bold">{LG_ADM_TPL_DIFF_LEGEND_DROP}</div>
+				<div class="diff_add" style="width: 200px; height: 23px; text-align: center; padding-top: 7px; margin-bottom: 5px; font-weight: bold">{LG_ADM_TPL_DIFF_LEGEND_ADD}</div>
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit_diff" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<block name="file">
+		<fieldset>
+			<legend>{file.FILENAME}</legend>
+			<table class="tab">
+				<block name="file.diff">
+					<tr>
+						<td width="50%" class="{file.diff.CLASS1}">{file.diff.FILE1}</td>
+						<td width="50%" class="{file.diff.CLASS2}">{file.diff.FILE2}</td>
+					</tr>
+				</block>
+			</table>
+		</fieldset>
+	</block>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

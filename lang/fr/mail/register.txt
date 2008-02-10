@@ -1,0 +1,9 @@
+Merci de vous être enregistré sur <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Conservez cet email, il contient vos identifiants de connexion:
+
+Login: {LOGIN}
+Mot de passe: {PASSWORD}
+
+~~~~~~~~~~
+{FORUM_SIG}

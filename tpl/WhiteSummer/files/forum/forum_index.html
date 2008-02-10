@@ -1,0 +1,37 @@
+<include name="header.html">
+<switch name="is_logged">
+	<div style="float: right"><a href="{U_MARKREAD_FORUMS}" class="markread">{LG_MARKREAD_FORUMS}</a></div>
+	<div id="last_visit"><switch name="ac_mods_last_visit_index">{L_LAST_VISIT_INDEX}&nbsp;</switch></div>
+</switch>
+
+<block name="cat">
+	<div class="round">
+		<h1>
+			<if content="!$IS_CAT"><img src="{IMG_OPEN}" alt="{LG_SHOW_HIDE_CAT}" title="{LG_SHOW_HIDE_CAT}" id="img_cat_{cat.CAT_ID}" onmouseover="this.style.cursor='pointer'" onclick="block_cookie_check('block_cat_{cat.CAT_ID}', this, '{IMG_OPEN}', '{IMG_CLOSE}', true)" /></if>
+			<a href="{cat.U_CAT}">{cat.NAME}</a>
+		</h1>
+		<div id="block_cat_{cat.CAT_ID}">
+			<include name="display_forums.html" />
+		</div>
+	</div>
+	<br />
+
+	<script type="text/javascript">
+	<!--
+	<if content="!$IS_CAT">block_cookie_read('block_cat_{cat.CAT_ID}', 'img_cat_{cat.CAT_ID}', '{IMG_CLOSE}', true);</if>
+	//-->
+	</script>
+</block>
+
+<blockelse name="cat">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{LG_NO_CAT_IN_FORUM}</div>
+		</div>
+	</div>
+</blockelse>
+
+<hr class="delimiter" />
+
+<include name="footer.html">

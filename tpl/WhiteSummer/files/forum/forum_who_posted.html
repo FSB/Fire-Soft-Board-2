@@ -1,0 +1,17 @@
+<include name="simple_header.html" />
+
+<div class="round">
+	<table class="t" cellspacing="0">
+		<tr>
+			<th colspan="2">{LG_FORUM_WHO_POSTED}</th>
+		</tr>
+		<block name="user">
+			<tr>
+				<td><a href="#" onclick="opener.location.href='{user.U_PROFILE}'" {user.COLOR}>{user.NICKNAME}</a></td>
+				<td width="120">{user.TOTAL}</td>
+			</tr>
+		</block>
+	</table>
+</div>
+
+<include name="simple_footer.html" />

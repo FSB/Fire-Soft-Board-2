@@ -1,0 +1,26 @@
+<if content="!$VAR_HEADER_EXISTS">
+	<include name="header.html" />
+</if>
+<switch name="show_menu_panel">
+	<include name="menu_header.html" />
+</switch>
+
+<form action="{U_ACTION}" method="post">
+<div class="info">
+	<h1>{LG_INFORMATION}</h1>
+	<blockquote>
+		{STR_CONFIRM}<br /><br />
+		<block name="hidden"><input type="hidden" name="{hidden.NAME}" value="{hidden.VALUE}" /></block>
+		<input type="submit" name="confirm_yes" value="{LG_YES}" class="submit"/> &nbsp; &nbsp;
+		<input type="submit" name="confirm_no" value="{LG_NO}" class="submit" />
+	</blockquote>
+</div>
+</form>
+<br />
+
+<switch name="show_menu_panel">
+	<include name="menu_footer.html" />
+</switch>
+<if content="$HANDLER_USE_FOOTER">
+	<include name="footer.html" />
+</if>

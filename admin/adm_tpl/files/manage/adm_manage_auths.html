@@ -1,0 +1,312 @@
+<include name="adm_header.html" />
+
+<switch name="auths_select">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_DEFAULT_TITLE}</legend>
+		<dl>
+			<dt><label>{L_DEFAULT_CHOOSE} :</label></dt>
+			<dd>{LIST_DEFAULT}</dd>
+		</dl>
+		<div><input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="auths_select_user">
+	<script type="text/javascript" src="{ROOT}main/javascript/ajax.js"></script>
+
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_MODULE_USERS}</legend>
+		<if content="$ERRSTR"><div class="error">{ERRSTR}</div></if>
+		<dl>
+			<dt><label>{LG_ADM_AUTHS_USERS_NICKNAME} :</label></dt>
+			<dd>
+				<input type="text" size="25" name="auth_nickname" value="{CURRENT_NICKNAME}" onkeyup="search_user(this.value, this, 'ajax_user', 'ajax_user_field')" id="ajax_user_field" />
+				<span style="visibility: hidden" id="ajax_user"></span>
+			</dd>
+		</dl>
+		<div><input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="auths_advanced">
+	<script type="text/javascript" language="javascript">
+	<!--
+	var groups_idx = new Array;
+	<block name="group_cat">
+	groups_idx[{group_cat.ITERATOR}] = new Array;
+	<block name="group_cat.group">groups_idx[{group_cat.ITERATOR}][{group_cat.group.ITERATOR}] = {group_cat.group.ID};
+	</block>
+	</block>
+	var list_auths = new Array(<block name="auth">'{auth.KEY}'<if content="!$auth.LAST_ROW">, </if></block>);
+
+	function set_column(is_checked, auth_key, cat)
+	{
+		for (var i = 0; i < groups_idx[cat].length; i++)
+		{
+			document.getElementById(auth_key + '_' + groups_idx[cat][i]).value = (is_checked) ? 1 : 0;
+		}
+	}
+
+	function set_line(is_checked, group_id)
+	{
+		for (var i = 0; i < list_auths.length; i++)
+		{
+			document.getElementById(list_auths[i] + '_' + group_id).value = (is_checked) ? 1 : 0;
+		}
+	}
+	//-->
+	</script>
+
+	<form name="permission" action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_OPTION}</legend>
+		<switch name="show_list">
+			<dl>
+				<dt><label>{L_LIST_NAME} :</label></dt>
+				<dd>{LIST_CHOOSE} <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" />{HIDDEN_MODE_TYPE}</dd>
+			</dl>
+		</switch>
+		<switch name="show_users_status">
+			<dl>
+				<dt><label>{LG_ADM_AUTHS_USERS_NICKNAME} :</label></dt>
+				<dd><input type="text" size="25" name="auth_nickname" value="{CURRENT_NICKNAME}" /> <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label>{LG_ADM_AUTHS_MODE} :</label></dt>
+			<dd>{LIST_MODE} <input type="submit" name="change_type" value="{LG_SUBMIT}" class="submit" />{HIDDEN_MODE_TYPE}</dd>
+		</dl>
+		<switch name="show_model">
+			<dl>
+				<dt><label>{L_ADM_AUTHS_MODEL} :</label></dt>
+				<dd>{LIST_MODEL} <input type="submit" name="submit_auth_model" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+		<switch name="show_users_status">
+			<dl>
+				<dt><label>{LG_ADM_AUTHS_USERS_STATUS} :</label></dt>
+				<dd>{LIST_USERS_STATUS} <input type="submit" name="submit_users_status" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+	</fieldset>
+	<br />
+
+	<block name="group_cat">
+		<div style="overflow: auto; width: 100%">
+		<fieldset>
+			<legend>{LG_ADM_AUTHS_TITLE} : {group_cat.NAME}</legend>
+			<table style="width: 100%; margin: 3px" cellspacing="0" cellpadding="5">
+				<tr>
+					<th width="150"></th>
+					<th width="20">{LG_ADM_AUTH_CHECKBOX}</th>
+					<block name="auth">
+						<th width="100"style="font-size: 10px">{auth.AUTH_NAME}</th>
+					</block>
+				</tr>
+				<tr>
+					<td>{LG_ADM_AUTH_CHECKBOX}</td>
+					<td width="20">&nbsp;</td>
+					<block name="auth">
+						<td align="center"><input type="checkbox" name="set_column_{auth.ITERATOR}" onclick="set_column(this.checked, '{auth.KEY}', '{group_cat.ITERATOR}')" /></td>
+					</block>
+				</tr>
+				<block name="group_cat.group">
+					<tr class="highlight">
+						<td><if content="$group_cat.group.GROUP_STYLE == ''">{group_cat.group.GROUP_NAME}<else><span {group_cat.group.GROUP_STYLE}>{group_cat.group.GROUP_NAME}</span></if></td>
+						<td width="20"><input type="checkbox" name="set_line_{group_cat.group.ID}" onclick="set_line(this.checked, {group_cat.group.ID})" /></td>
+						<block name="group_cat.group.g_auth">
+							<td align="center">{group_cat.group.g_auth.LIST}</td>
+						</block>
+					</tr>
+				</block>
+			</table>
+			<div>{HIDDEN}<input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+		</fieldset>
+		</div>
+	</block>
+	</form>
+</switch>
+
+<switch name="auths_normal">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_OPTION}</legend>
+		<switch name="show_list">
+			<dl>
+				<dt><label>{L_LIST_NAME} :</label></dt>
+				<dd>{LIST_CHOOSE} <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" />{HIDDEN_MODE_TYPE}</dd>
+			</dl>
+		</switch>
+		<switch name="show_users_status">
+			<dl>
+				<dt><label>{LG_ADM_AUTHS_USERS_NICKNAME} :</label></dt>
+				<dd><input type="text" size="25" name="auth_nickname" value="{CURRENT_NICKNAME}" /> <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label>{LG_ADM_AUTHS_MODE} :</label></dt>
+			<dd>{LIST_MODE} <input type="submit" name="change_type" value="{LG_SUBMIT}" class="submit" />{HIDDEN_MODE_TYPE}</dd>
+		</dl>
+		<switch name="show_model">
+			<dl>
+				<dt><label>{L_ADM_AUTHS_MODEL} :</label></dt>
+				<dd>{LIST_MODEL} <input type="submit" name="submit_auth_model" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+		<switch name="show_users_status">
+			<dl>
+				<dt><label>{LG_ADM_AUTHS_USERS_STATUS} :</label></dt>
+				<dd>{LIST_USERS_STATUS} <input type="submit" name="submit_users_status" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+	</fieldset>
+	<br />
+
+	<div style="overflow: auto; width: 100%">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_TITLE}</legend>
+		<table class="tab" cellspacing="0">
+			<tr>
+				<th width="150">&nbsp;</th>
+				<block name="auth">
+					<th>{auth.AUTH_NAME}</th>
+				</block>
+			</tr>
+			<block name="group_cat">
+				<tr>
+					<td><b>{group_cat.NAME}</b></td>
+					<block name="auth">
+						<td align="center">---</td>
+					</block>
+				</tr>
+				<block name="group_cat.group">
+					<tr class="highlight">
+						<td style="padding-left: 10px"><if content="$group_cat.group.GROUP_STYLE == ''">{group_cat.group.GROUP_NAME}<else><span {group_cat.group.GROUP_STYLE}>{group_cat.group.GROUP_NAME}</span></if></td>
+						<block name="group_cat.group.g_auth">
+							<td align="center">{group_cat.group.g_auth.LIST}</td>
+						</block>
+					</tr>
+				</block>
+			</block>
+		</table>
+		<div>{HIDDEN}<input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</div>
+	</form>
+</switch>
+
+<switch name="auths_easy">
+	<form name="permission" action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_OPTION}</legend>
+		<switch name="show_list">
+			<dl>
+				<dt><label>{L_LIST_NAME} :</label></dt>
+				<dd>{LIST_CHOOSE} <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" />{HIDDEN_MODE_TYPE}</dd>
+			</dl>
+		</switch>
+		<switch name="show_users_status">
+			<dl>
+				<dt><label>{LG_ADM_AUTHS_USERS_NICKNAME} :</label></dt>
+				<dd><input type="text" size="25" name="auth_nickname" value="{CURRENT_NICKNAME}" /> <input type="submit" name="choose_default" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label>{LG_ADM_AUTHS_MODE} :</label></dt>
+			<dd>{LIST_MODE} <input type="submit" name="change_type" value="{LG_SUBMIT}" class="submit" /></dd>
+		</dl>
+		<switch name="show_model">
+			<dl>
+				<dt><label>{L_ADM_AUTHS_MODEL} :</label></dt>
+				<dd>{LIST_MODEL} <input type="submit" name="submit_auth_model" value="{LG_SUBMIT}" class="submit" /></dd>
+			</dl>
+		</switch>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_TYPE_EASY}</legend>
+		<block name="auth">
+			<dl>
+				<dt><label>{auth.L_AUTH} :</label></dt>
+				<dd>{auth.AUTH}</dd>
+			</dl>
+		</block>
+		<div>{HIDDEN}<input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="auths_others">
+	<form name="permission" action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_MODULE_OTHERS}</legend>
+		<block name="auth">
+			<dl>
+				<dt><label>{auth.L_AUTH} :</label><br /><span>{auth.L_AUTH_EXPLAIN}</span></dt>
+				<dd>{auth.AUTH}</dd>
+			</dl>
+		</block>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="auths_check">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_AUTHS_CHECK}</legend>
+		<dl>
+			<dt><label>{LG_ADM_AUTHS_CHECK_GROUPS} :</label></dt>
+			<dd>
+				{LIST_GROUPS}
+				<input type="submit" name="submit_check_groups" value="{LG_SUBMIT}" class="submit" />
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="check_nickname_id">{LG_ADM_AUTHS_CHECK_USER} :</label></dt>
+			<dd>
+				<input type="text" name="check_nickname" id="check_nickname_id" value="{USER_NICKNAME}" size="25" />
+				<input type="submit" name="submit_check_user" value="{LG_SUBMIT}" class="submit" />
+			</dd>
+		</dl>
+	</fieldset>
+	</form>
+
+	<switch name="check_auths">
+		<block name="forum">
+			<if content="$forum.IS_CAT">
+				<if content="!$forum.FIRST_ROW">
+						</table>
+					</fieldset>
+					</div>
+				</if>
+				<div style="overflow: auto; width: 100%">
+				<fieldset>
+					<legend>{TITLE} : {forum.NAME}</legend>
+					<table class="tab" style="width: {TABLE_WIDTH}px" cellspacing="0">
+						<tr>
+							<th width="150"></th>
+							<block name="auth_name"><th style="font-size: 10px" width="75">{auth_name.NAME}</th></block>
+						</tr>
+			<else>
+				<tr class="highlight">
+					<td>{forum.NAME}</td>
+					<block name="forum.auth"><td align="center">
+							<if content="$forum.auth.VALUE"><span class="ok">{LG_YES}</span><else><span class="ko">{LG_NO}</span></if>
+					</td></block>
+				</tr>
+			</if>
+			<if content="$forum.LAST_ROW">
+					</table>
+				</fieldset>
+				</div>
+			</if>
+		</block>
+	</switch>
+</switch>
+
+<include name="adm_footer.html" />

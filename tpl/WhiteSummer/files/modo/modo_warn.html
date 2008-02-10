@@ -1,0 +1,124 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<call name="javascript" arg1="ajax.js" />
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_MODO_MODULE_WARN}</h1>
+	<table class="form large">
+		<tr>
+			<th><label for="nickname_id">{LG_MODO_USER_NICKNAME} :</label></th>
+			<td>
+				<input type="text" name="nickname" id="nickname_id" value="{THIS_NICKNAME}" size="20" maxlength="30" onkeyup="search_user(this.value, this, 'ajax_user', 'nickname_id')" />
+				<span style="visibility: hidden" id="ajax_user"></span>
+			</td>
+		</tr>
+		<tr>
+			<th><label>{LG_MODO_WARN_LIST} :</label></th>
+			<td>{LIST_MODE}</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+
+<switch name="nickname_error">
+	<div class="round">
+		<h1>{LG_INFORMATION}</h1>
+		<div class="content">
+			<div class="error">{LG_USER_NOT_EXISTS}</div>
+		</div>
+	</div>
+</switch>
+
+<switch name="warn_form">
+	<div class="round">
+		<h1>{L_WARN_USER}</h1>
+		<table class="form">
+			<tr>
+				<th><label for="warn_reason_id">{LG_MODO_WARN_REASON} :</label><br /><span class="small">{LG_MODO_WARN_REASON_EXPLAIN}</span></th>
+				<td><textarea rows="5" cols="60" name="warn_reason" id="warn_reason_id"></textarea></td>
+			</tr>
+			<tr>
+				<th><label for="warn_message_id">{LG_MODO_WARN_MESSAGE} :</label><br /><span class="small">{LG_MODO_WARN_MESSAGE_EXPLAIN}</span></th>
+				<td>
+					{LIST_MODE_MESSAGE}<br /><br />
+					<input type="text" name="warn_subject" size="25" maxlength="40" /> <b>({LG_MODO_WARN_SUBJECT})</b><br />
+					<textarea rows="5" cols="60" name="warn_message" id="warn_message_id"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="disable_post_id">{L_MODO_WARN_DISABLE_POST} :</label><br /><span class="small">{L_MODO_WARN_DISABLE_POST_EXP}</span></th>
+				<td>
+					<input type="checkbox" name="disable_post_check" id="disable_post_id" value="1" />
+					<input type="text" name="disable_post" size="6" maxlength="10" onfocus="document.getElementById('disable_post_id').checked = true;" />
+					{LIST_POST_STEP}
+					<if content="$POST_STATE"><p><b>{POST_STATE}</b></p></if>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="disable_read_id">{L_MODO_WARN_DISABLE_READ} :</label><br /><span class="small">{L_MODO_WARN_DISABLE_READ_EXP}</span></th>
+				<td>
+					<input type="checkbox" name="disable_read_check" id="disable_read_id" value="1" />
+					<input type="text" name="disable_read" size="6" maxlength="10" onfocus="document.getElementById('disable_read_id').checked = true;" />
+					{LIST_READ_STEP}
+					<if content="$READ_STATE"><p><b>{READ_STATE}</b></p></if>
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_warn" class="submit" value="{LG_SUBMIT}" /></td>
+			</tr>
+		</table>
+	</div>
+</switch>
+
+<switch name="warn_list">
+	<block name="warn">
+		<div class="round">
+			<h1>{warn.TITLE}</h1>
+			<table class="form">
+				<tr>
+					<th>{LG_MODO_WARN_DATE} :</th>
+					<td>{warn.DATE}</td>
+				</tr>
+				<tr>
+					<th>{LG_MODO_WARN_BY} :</th>
+					<td>{warn.NICKNAME}</td>
+				</tr>
+				<tr>
+					<th>{LG_MODO_WARN_STATE} :</th>
+					<td>{warn.WARN_STATE}</td>
+				</tr>
+				<tr>
+					<th>{LG_MODO_WARN_REASON} :</th>
+					<td>{warn.REASON}</td>
+				</tr>
+			</table>
+		</div>
+	</block>
+	<blockelse name="warn">
+		<div class="round">
+			<h1>{LG_INFORMATION}</h1>
+			<div class="content">
+				<div class="error">{LG_NO_RESULT}</div>
+			</div>
+		</div>
+	</blockelse>
+</switch>
+
+<switch name="warn_error">
+	<div class="round">
+		<h1>{LG_INFORMATION}</h1>
+		<div class="content">
+			<div class="error">{WARN_ERROR}</div>
+		</div>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

@@ -1,0 +1,252 @@
+<include name="adm_header.html" />
+
+<switch name="forums_management">
+	<script type="text/javascript">
+	<!--
+	cat_forum_open = new Array;
+	function show_cat_forum(id)
+	{
+		if (cat_forum_open[id])
+		{
+			document.getElementById('cat_id_' + id).style.display = 'block';
+			document.getElementById('cat_img_' + id).src = 'adm_tpl/img/open.gif';
+			cat_forum_open[id] = false;
+		}
+		else
+		{
+			document.getElementById('cat_id_' + id).style.display = 'none';
+			document.getElementById('cat_img_' + id).src = 'adm_tpl/img/close.gif';
+			cat_forum_open[id] = true;
+		}
+	}
+	-->
+	</script>
+
+	<form action="{U_ACTION}" method="post" name="management">
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<div>
+			<div class="left">
+			<a href="#" onclick="check_boxes('management', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('management', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+			<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+			<input type="submit" name="submit_lock" value="{LG_LOCK}" class="submit" />
+			<input type="submit" name="submit_unlock" value="{LG_UNLOCK}" class="submit" />
+			</div>
+			<input type="submit" name="submit_add_c" value="{LG_ADM_ADD_CAT}" class="submit" />
+		</div>
+	</fieldset>
+
+	<block name="cat">
+		<fieldset>
+			<legend>
+				<img src="adm_tpl/img/open.gif" id="cat_img_{cat.CAT_ID}" onmouseover="this.style.cursor='pointer'" onclick="block_cookie_check('cat_id_{cat.CAT_ID}', 'cat_img_{cat.CAT_ID}', 'adm_tpl/img/open.gif', 'adm_tpl/img/close.gif')" />
+				<input type="checkbox" name="action[]" value="{cat.CAT_ID}" />
+				{cat.CAT_NAME} &nbsp;
+				<a href="{cat.U_ADD_FORUM}"><img src="adm_tpl/img/add.gif" alt="{LG_ADM_ADD_FORUM}" title="{LG_ADM_ADD_FORUM}" /></a>
+				<a href="{cat.U_CAT_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+				<a href="{cat.U_CAT_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a> 
+				<a href="{cat.U_CAT_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_UP_CAT}" title="{LG_ADM_UP_CAT}" /></a>
+				<a href="{cat.U_CAT_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_DOWN_CAT}" title="{LG_ADM_DOWN_CAT}" /></a>
+			</legend>
+
+			<blockquote id="cat_id_{cat.CAT_ID}" style="margin: 0px">
+				<table class="tab" cellspacing="0">
+					<block name="cat.forum">
+						<tr class="highlight">
+							<td width="30"><input type="checkbox" name="action[]" value="{cat.forum.FORUM_ID}" /></td>
+							<td><span style="padding-left: {cat.forum.WIDTH}px; font-size: 12px; font-weight: bold">
+								<if content="$cat.forum.FORUM_TYPE"><span class="forum_type">{cat.forum.FORUM_TYPE}</span></if> {cat.forum.FORUM_NAME}
+							</span></td>
+							<td width="150"><span>{cat.forum.TOTAL_TOPIC}<br />{cat.forum.TOTAL_POST}</span></td>
+							<td width="170">
+								<a href="{cat.forum.U_FORUM_ADD}"><img src="adm_tpl/img/add.gif" alt="{LG_ADM_ADD_SUBFORUM}" title="{LG_ADM_ADD_SUBFORUM}" /></a>
+								<a href="{cat.forum.U_FORUM_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+								<a href="{cat.forum.U_FORUM_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+								<a href="{cat.forum.U_UP_FORUM}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_UP_FORUM}" title="{LG_ADM_UP_FORUM}" /></a>
+								<a href="{cat.forum.U_DOWN_FORUM}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_DOWN_FORUM}" title="{LG_ADM_DOWN_FORUM}" /></a>
+								<br /><b>&#187; <a href="{cat.forum.U_FORUM_OPERATION}" style="font-size: 9px">{LG_ADM_FORUM_OPERATION}</a></b>
+							</td>
+						</tr>
+					</block>
+				<blockelse name="cat.forum">
+					<tr><td class="error">{LG_ADM_NO_FORUMS}</td></tr>
+				</block>
+				</table>
+			</blockquote>
+		</fieldset>
+
+		<script type="text/javascript">
+		<!--
+		block_cookie_read('cat_id_{cat.CAT_ID}', 'cat_img_{cat.CAT_ID}', 'adm_tpl/img/close.gif');
+		-->
+		</script>
+	</block>
+	<blockelse name="cat">
+		<fieldset>
+			<legend>{LG_INFORMATION}</legend>
+			<div class="error">{LG_ADM_NO_CAT}</div>
+		</fieldset>
+	</block>
+	</form>
+</switch>
+
+<switch name="forums_cat_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="c_name_id">{LG_ADM_C_NAME} :</label></dd>
+			<dd><input type="text" name="c_name" id="c_name_id" value="{CAT_NAME}" maxlength="100" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="forums_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<switch name="error">
+		<div class="error">{CONTENT}</div>
+		</switch>
+		<dl>
+			<dt><label for="f_name_id">{LG_ADM_F_NAME} :</label></dt>
+			<dd><input type="text" name="f_name" id="f_name_id" value="{FORUM_NAME}" maxlength="100" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="f_text_id">{LG_ADM_F_DESC} :</label></dt>
+			<dd><textarea name="f_text" id="f_text_id" rows="3" cols="50">{FORUM_DESC}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="f_rules_id">{LG_ADM_F_RULES} :</label><br /><span>{LG_ADM_F_RULES_EXPLAIN}</span></dt>
+			<dd><textarea name="f_rules" id="f_rules_id" rows="3" cols="50">{FORUM_RULES}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_F_PARENT} :</label></dt>
+			<dd>{LIST_PARENT}</dd>
+		</dl>
+		<switch name="add_default_auth">
+			<dl>
+				<dt><label>{LG_ADM_FORUM_DEFAULT_AUTH} :</label><br /><span>{LG_ADM_FORUM_DEFAULT_AUTH_EXPLAIN}</span></dt>
+				<dd>{LIST_FORUMS_AUTH}</dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label for="f_status_id">{LG_ADM_F_STATUS} :</label></dt>
+			<dd>
+				<input type="radio" name="f_status" value="1" <if content="$FORUM_STATUS">id="f_status_id" checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="f_status" value="0" <if content="!$FORUM_STATUS">id="f_status_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="forum_color">{LG_ADM_FORUM_STYLE} :</label><br /><span>{LG_ADM_FORUM_STYLE_EXP}</span></dt>
+			<dd>
+				<input type="text" id="forum_color" name="f_style" value="{STYLE}" maxlength="255" size="50" /><br />
+				<input type="radio" name="f_style_type" value="" {STYLE_TYPE_NONE} /> {LG_ADM_FORUM_STYLE_NONE} &nbsp;
+				<input type="radio" name="f_style_type" id="f_style_type_id" value="color" {STYLE_TYPE_COLOR} /> <a href="#" onclick="window.open('index.php?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=forum_color&amp;radio=f_style_type_id', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_FORUM_STYLE_COLOR}</a> &nbsp;
+				<input type="radio" name="f_style_type" value="class" {STYLE_TYPE_CLASS} /> {LG_ADM_FORUM_STYLE_CLASS}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_FORUM_TYPE}</legend>
+		<div class="desc">{LG_ADM_FORUM_TYPE_EXPLAIN}</div>
+		<dl>
+			<dt><label for="f_type_id">{LG_ADM_FORUM_TYPE} :</label></dt>
+			<dd>
+				<input type="radio" name="f_type" value="<?php echo FORUM_TYPE_NORMAL ?>" <if content="$FORUM_TYPE == FORUM_TYPE_NORMAL">id="f_type_id" checked="checked"</if> /> {LG_ADM_FORUM_TYPE_NORMAL}<br />
+				<input type="radio" name="f_type" value="<?php echo FORUM_TYPE_SUBCAT ?>" <if content="$FORUM_TYPE == FORUM_TYPE_SUBCAT">id="f_type_id" checked="checked"</if> /> {LG_ADM_FORUM_TYPE_SUBCAT}<br />
+				<input type="radio" name="f_type" value="<?php echo FORUM_TYPE_INDIRECT_URL ?>" <if content="$FORUM_TYPE == FORUM_TYPE_INDIRECT_URL">id="f_type_id" checked="checked"</if> /> {LG_ADM_FORUM_TYPE_INDIRECT_URL}<br />
+				<input type="radio" name="f_type" value="<?php echo FORUM_TYPE_DIRECT_URL ?>" <if content="$FORUM_TYPE == FORUM_TYPE_DIRECT_URL">id="f_type_id" checked="checked"</if> /> {LG_ADM_FORUM_TYPE_DIRECT_URL}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="f_location_id">{LG_ADM_FORUM_LOCATION} :</label><br /><span>{LG_ADM_FORUM_LOCATION_EXPLAIN}</span></dt>
+			<dd><input type="text" name="f_location" id="f_location_id" value="{FORUM_LOCATION}" size="35" maxlength="250" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="f_password">{LG_ADM_FORUM_PASSWORD} :</label><br /><span>{LG_ADM_FORUM_PASSWORD_EXPLAIN}</span></dt>
+			<dd><input type="text" name="f_password" id="f_password_id" value="{FORUM_PASSWORD}" size="35" maxlength="50" /></dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_FORUM_OPTIONS}</legend>
+		<div class="desc">{LG_ADM_FORUM_OPTIONS_EXPLAIN}</div>
+		<dl>
+			<dt><label>{LG_ADM_FORUM_TPL} :</label><br /><span>{LG_ADM_FORUM_TPL_EXPLAIN}</span></dt>
+			<dd>{LIST_TPL}</dd>
+		</dl>
+		<dl>
+			<dt><label for="f_global_announce_id">{LG_ADM_FORUM_GLOBAL_ANNOUNCE} :</label><br /><span>{LG_ADM_FORUM_GLOBAL_ANNOUNCE_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="f_global_announce" value="1" <if content="$FORUM_GLOBAL_ANNOUNCE">id="f_global_announce_id" checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="f_global_announce" value="0" <if content="!$FORUM_GLOBAL_ANNOUNCE">id="f_global_announce_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="f_approve_id">{LG_ADM_FORUM_APPROVE} :</label><br /><span>{LG_ADM_FORUM_APPROVE_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="f_approve" value="<?php echo IS_NOT_APPROVED ?>" <if content="$FORUM_APPROVE == IS_NOT_APPROVED">id="f_approve_id" checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="f_approve" value="<?php echo IS_APPROVED ?>" <if content="$FORUM_APPROVE == IS_APPROVED">id="f_approve_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_FORUM_PRUNE}</legend>
+		<div class="desc">{LG_ADM_FORUM_PRUNE_EXPLAIN}</div>
+		<dl>
+			<dt><label for="f_prune_time_id">{LG_ADM_F_PRUNE_TIME} :</label><br /><span>{LG_ADM_F_PRUNE_TIME_EXPLAIN}</span></dt>
+			<dd><input type="text" name="f_prune_time" id="f_prune_time_id" value="{FORUM_PRUNE_TIME}" /> {LIST_PRUNE_TIME}</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_F_PRUNE_TOPIC_TYPE} :</label></dt>
+			<dd>{LIST_PRUNE_TYPE}</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<switch name="ac_mods_post_map">
+	<fieldset>
+		<legend>{LG_ADM_FORUM_MAP}</legend>
+		<div class="desc">{LG_ADM_FORUM_MAP_EXPLAIN}</div>
+		<dl>
+			<dt><label>{LG_ADM_FORUM_MAP_DEFAULT} :</label><br /><span>{LG_ADM_FORUM_MAP_DEFAULT_EXP}</span></dt>
+			<dd>{LIST_MAP}</dd>
+		</dl>
+		<dl>
+			<dt><label for="f_map_first_post_id">{LG_ADM_FORUM_MAP_FIRST} :</label><br /><span>{LG_ADM_FORUM_MAP_FIRST_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="f_map_first_post" value="<?php echo MAP_FP_ONLY ?>" <if content="$FORUM_MAP_FP_ONLY">id="f_map_first_post_id" checked="checked"</if> /> {LG_ADM_FORUM_MAP_FP_ONLY}<br />
+				<input type="radio" name="f_map_first_post" value="<?php echo MAP_ALL_POST ?>" <if content="$FORUM_MAP_ALL_POST">id="f_map_first_post_id" checked="checked"</if>/> {LG_ADM_FORUM_MAP_ALL_POST}<br />
+				<input type="radio" name="f_map_first_post" value="<?php echo MAP_FREE ?>" <if content="$FORUM_MAP_FREE">id="f_map_first_post_id" checked="checked"</if>/> {LG_ADM_FORUM_MAP_FREE}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</switch>
+	</form>
+</switch>
+
+<switch name="forums_operation">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_FORUM_OPERATION_MOVE}</legend>
+		<div class="desc">{LG_ADM_FORUM_OPERATION_MOVE_EXPLAIN}</div>
+		<dl>
+			<dt><label>{LG_ADM_FORUM_TARGET} :</label></dt>
+			<dd>{LIST_FORUM_TARGET}</dd>
+		</dl>
+		<div><input type="submit" name="submit_operation_move" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

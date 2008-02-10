@@ -1,0 +1,86 @@
+<include name="header.html" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<switch name="group_information">
+	<div class="round">
+		<h1>{LG_USERLIST_GROUP_INFORMATION}</h1>
+		<table class="form">
+			<if content="$GROUP_DESCRIPTION">
+				<tr>
+					<th>{LG_USERLIST_DESCRIPTION} :</th>
+					<td>{GROUP_DESCRIPTION}</td>
+				</tr>
+			</if>
+			<tr>
+				<th>{LG_USERLIST_STATUS} :</th>
+				<td>{GROUP_STATUS_HIDDEN}<br />{GROUP_STATUS_OPEN}</td>
+			</tr>
+			<switch name="group_register">
+				<tr>
+					<th>{LG_USERLIST_REGISTER} :</th>
+					<td><input type="submit" name="register_submit" class="submit" value="{LG_SUBMIT}" /></td>
+				</tr>
+			</switch>
+		</table>
+	</div>
+</switch>
+
+<div class="round">
+	<h1>{LG_SEARCH}</h1>
+	<table class="form">
+		<tr>
+			<th><label for="search_user_id">{LG_USERLIST_SEARCH} :</label></th>
+			<td>{LIST_SEARCH} &nbsp; <input type="text" name="search_user" id="search_user_id" value="{SEARCH_USER}" size="25" /></td>
+		</tr>
+		<tr>
+			<th><label>{LG_USERLIST_ORDER} :</label></th>
+			<td>{LIST_ORDER} {LIST_DIRECTION}</td>
+		</tr>
+		<tr>
+			<th><label>{LG_USERLIST_GROUP_ORDER} :</label></th>
+			<td>{LIST_GROUP}</td>
+		</tr>
+		<tr>
+			<th><label for="limit_id">{LG_USERLIST_LIMIT} :</label></th>
+			<td><input type="text" name="limit" id="limit_id" value="{USERLIST_LIMIT}" size="5" /></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+
+<br />
+<table style="width: 100%; margin-bottom: 3px">
+	<tr>
+		<td><b><a href="{U_USERLIST_MODULE}">[{USERLIST_MODULE}]</a></b></td>
+		<td align="right"><switch name="pagination">{PAGINATION}<else><br /></switch></td>
+	</tr>
+</table>
+
+<switch name="interface_simple">
+	<include name="forum/forum_userlist_simple.html" />
+<else>
+	<include name="forum/forum_userlist_advanced.html" />
+</switch>
+
+<switch name="pagination"><div style="text-align: right;">{PAGINATION}</div></switch>
+
+<switch name="is_group_moderator">
+	<div class="info">
+		<h1>{LG_OPTIONS}</h1>
+		<div>
+			<div style="float: right">
+				<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+				<input type="submit" name="submit_add" value="{LG_USERLIST_ADD}" class="submit" title="{LG_USERLIST_ADD_EXPLAIN}" />
+				<a href="#" onclick="check_boxes('form_box', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('form_box', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+			</div>
+			<input type="text" size="25" name="add_login" /> <input type="submit" value="{LG_USERLIST_ADD_USER}" name="submit_add_user" class="submit" />
+		</div>
+	</div>
+</switch>
+</form>
+
+<include name="footer.html" />

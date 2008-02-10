@@ -1,0 +1,10 @@
+Bonjour {NICKNAME},
+
+Vous avez modifié votre adresse email sur le forum <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Votre compte a donc été désactivé.
+
+Afin de pouvoir réactiver votre compte, vous devez cliquer sur le lien suivant: <a href="{U_CONFIRM}">{U_CONFIRM}</a>
+
+~~~~~~~~~~
+{FORUM_SIG}

@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteRule cat-([0-9]*).html index.php?p=index&cat=$1
+RewriteRule forum-([0-9]*)-([0-9]*).html index.php?p=forum&f_id=$1&page=$2
+RewriteRule topic-([0-9]*)-([0-9]*).html index.php?p=topic&t_id=$1&page=$2
+RewriteRule profile-([0-9]*).html index.php?p=userprofile&id=$1
+RewriteRule portail.html index.php?p=portail
+RewriteRule topic-author-([0-9]*).html index.php?p=search&mode=author_topic&id=$1
+RewriteRule topic-author-([0-9]*)-([0-9]*).html index.php?p=search&mode=author_topic&id=$1&page=$2
+RewriteRule author-([0-9]*).html index.php?p=search&mode=author&id=$1
+RewriteRule author-([0-9]*)-([0-9]*).html index.php?p=search&mode=author&id=$1&page=$2

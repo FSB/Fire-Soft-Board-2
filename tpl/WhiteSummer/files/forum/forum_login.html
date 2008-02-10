@@ -1,0 +1,58 @@
+<include name="header.html">
+
+<switch name="use_rsa">
+	<call name="javascript" arg1="biginteger.js" />
+	<call name="javascript" arg1="rsa.js" />
+</switch>
+
+<script type="text/javascript">
+<!--
+function submit_encrypt_rsa(t)
+{
+	<switch name="use_rsa">
+	add_field(t, 'hidden', 'hidden_rsa', '1');
+	encrypt_rsa_field(t, 'u_login', '{RSA_MOD}', '{RSA_EXP}');
+	encrypt_rsa_field(t, 'u_password', '{RSA_MOD}', '{RSA_EXP}');
+	</switch>
+}
+-->
+</script>
+
+<switch name="error"><include name="error_handler.html" /></switch>
+<form action="{U_ACTION}" method="post" onsubmit="submit_encrypt_rsa(this); return true">
+	<div class="round">
+		<h1>{L_LOGIN_CONNEXION}</h1>
+		<table class="form">
+			<tr>
+				<th><label for="u_login_id">{LG_LOGIN_LOGIN}</label></th>
+				<td>
+					<input type="text" size="25" name="u_login" id="u_login_id" value="{LOGIN}" tabindex="1" />
+					<if content="!$ADM_LOG"> [<a href="{U_REGISTER}">{LG_LOGIN_REGISTER}</a>]</if>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="u_password_id">{LG_LOGIN_PASSWORD}</label></th>
+				<td>
+					<input type="password" size="25" name="u_password" id="u_password_id" value="{PASSWORD}" tabindex="2" />
+					<if content="!$ADM_LOG"> [<a href="{U_FORGOT_PASSWORD}">{LG_LOGIN_FORGOT_PASSWORD}</a>]</if>
+				</td>
+			</tr>
+			<if content="!$ADM_LOG">
+				<tr>
+					<th><label for="auto_connexion_id">{LG_LOGIN_AUTO}</label></th>
+					<td><input type="checkbox" name="auto_connexion" id="auto_connexion_id" value="1" tabindex="3" {LOGIN_AUTO} /></td>
+				</tr>
+				<tr>
+					<th><label for="u_hidden_id">{LG_LOGIN_VISIBILITY}</label></th>
+					<td><input type="checkbox" name="u_hidden" id="u_hidden_id" value="1" tabindex="4" {LOGIN_VISIBILITY} /></td>
+				</tr>
+			</if>
+			<tr>
+				<th>{HIDDEN}</th>
+				<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" tabindex="5" /></td>
+			</tr>
+		</table>
+	</div>
+</form>
+
+<include name="footer.html">

@@ -1,0 +1,397 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :		~/admin/manage/manage_groups.php
+** | Begin :	17/05/2005
+** | Last :		13/12/2007
+** | User :		Genova
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Gestion, ajout, edition, suppression de groupes
+*/
+class Fsb_frame_child extends Fsb_admin_frame
+{
+	// Arguments de la page
+	public $id;
+	public $mode;
+
+	// Erreurs
+	public $errstr = array();
+
+	// Modules
+	public $module;
+
+	// Données du formulaire
+	public $data = array();
+
+	/*
+	** Constructeur
+	*/
+	public function main()
+	{
+		$this->id =		intval(Http::request('id'));
+		$this->mode =	Http::request('mode');
+
+		$call = new Call($this);
+		$call->module(array(
+			'list' =>		array('list', 'users'),
+			'default' =>	'list',
+			'url' =>		'index.' . PHPEXT . '?p=manage_groups',
+			'lang' =>		'adm_group_module_',
+		));
+
+		$call->post(array(
+			'submit' =>	':query_add_edit_groups',
+		));
+
+		$call->functions(array(
+			'module' => array(
+				'list' => array(
+					'mode' => array(
+						'add' =>		'page_add_edit_groups',
+						'edit' =>		'page_add_edit_groups',
+						'delete' =>		'page_delete_groups',
+						'default' =>	'page_default_groups',
+					),
+				),
+				'users' => array(
+					'mode' => array(
+						'default' =>	'page_default_groups_users',
+					),
+				),
+			),
+		));
+	}
+
+	/*
+	** Affiche la page par défaut de gestion des groupes
+	*/
+	public function page_default_groups()
+	{
+		Fsb::$tpl->set_switch('groups_management');
+		Fsb::$tpl->set_vars(array(
+			'U_ADD' =>	sid('index.' . PHPEXT . '?p=manage_groups&amp;module=list&amp;mode=add'),
+		));
+
+		$sql = 'SELECT g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color, COUNT(gu.g_id) AS g_count
+				FROM ' . SQL_PREFIX . 'groups g
+				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
+					ON g.g_id = gu.g_id
+				WHERE g.g_type <> ' . GROUP_SINGLE . '
+				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color
+				ORDER BY g.g_type, g.g_name';
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			$separator = FALSE;
+			if (!isset($have_separator) && $row['g_type'] != GROUP_SPECIAL)
+			{
+				$separator = TRUE;
+				$have_separator = TRUE;
+			}
+
+			Fsb::$tpl->set_blocks('group', array(
+				'NAME' =>			($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
+				'DESC' =>			($row['g_type'] == GROUP_SPECIAL) ? Fsb::$session->lang('adm_group_is_special') : $row['g_desc'],
+				'COUNT' =>			sprintf(String::plural('adm_group_count', $row['g_count']), $row['g_count']),
+				'STYLE' =>			$row['g_color'],
+				'SEPARATOR' =>		$separator,
+
+				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=edit&amp;id=' . $row['g_id']),
+				'U_DELETE' =>		($row['g_type'] != GROUP_SPECIAL) ? sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=delete&amp;id=' . $row['g_id']) : NULL,
+			));
+		}
+		Fsb::$db->free($result);
+	}
+
+	/*
+	** Affiche la page permettant d'ajouter / éditer des groupes
+	*/
+	public function page_add_edit_groups()
+	{
+		$lg_add_edit = ($this->mode == 'edit') ? Fsb::$session->lang('adm_group_edit') : Fsb::$session->lang('adm_group_add');
+		if ($this->mode == 'edit' && !$this->errstr)
+		{
+			$sql = 'SELECT g.*, u.u_nickname
+					FROM ' . SQL_PREFIX . 'groups g
+					LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
+						ON g.g_id = gu.g_id
+					LEFT JOIN ' . SQL_PREFIX . 'users u
+						ON gu.u_id = u.u_id
+							AND gu.gu_status = ' . GROUP_MODO . '
+					WHERE g.g_id = ' . $this->id . '
+						AND g.g_type <> ' . GROUP_SINGLE;
+			$result = Fsb::$db->query($sql);
+			if (!$this->data = Fsb::$db->row($result))
+			{
+				Display::message('no_result');
+			}
+
+			// On récupère les données du forum et la liste des modérateurs
+			$this->data['g_modo'] = $this->data['u_nickname'] . "\n";
+			while ($data = Fsb::$db->row($result))
+			{
+				$this->data['g_modo'] .= $data['u_nickname'] . "\n";
+			}
+			$this->data['g_modo'] = substr($this->data['g_modo'], 0, -1);
+			Fsb::$db->free($result);
+		}
+		else if (!$this->errstr)
+		{
+			$this->data['g_name'] = '';
+			$this->data['g_desc'] = '';
+			$this->data['g_modo'] = '';
+			$this->data['g_color'] = '';
+			$this->data['g_hidden'] = FALSE;
+			$this->data['g_open'] = FALSE;
+			$this->data['g_online'] = TRUE;
+			$this->data['g_rank'] = 0;
+			$this->data['g_type'] = GROUP_NORMAL;
+		}
+
+		// Style
+		$style_type = $style_content = '';
+		if ($getstyle = Html::get_style($this->data['g_color']))
+		{
+			list($style_type, $style_content) = $getstyle;
+		}
+
+		// Type du groupe ?
+		if ($this->data['g_type'] != GROUP_SPECIAL)
+		{
+			Fsb::$tpl->set_switch('is_not_special');
+		}
+
+		// Liste des rangs
+		$sql = 'SELECT rank_id, rank_name
+				FROM ' . SQL_PREFIX . 'ranks
+				WHERE rank_special = 1
+				ORDER BY rank_name';
+		$result = Fsb::$db->query($sql, 'ranks_');
+		$list_rank = array(0 => Fsb::$session->lang('none'));
+		while ($row = Fsb::$db->row($result))
+		{
+			$list_rank[$row['rank_id']] = '- ' . htmlspecialchars($row['rank_name']);
+		}
+		Fsb::$db->free($result);
+
+		Fsb::$tpl->set_switch('groups_add');
+		Fsb::$tpl->set_vars(array(
+			'L_ADD_EDIT' =>			$lg_add_edit,
+
+			'NAME' =>				$this->data['g_name'],
+			'DESC' =>				$this->data['g_desc'],
+			'MODO' =>				$this->data['g_modo'],
+			'STYLE' =>				htmlspecialchars($style_content),
+			'STYLE_TYPE_NONE' =>	(!$getstyle) ? 'checked="checked"' : '',
+			'STYLE_TYPE_COLOR' =>	($style_type == 'style') ? 'checked="checked"' : '',
+			'STYLE_TYPE_CLASS' =>	($style_type == 'class') ? 'checked="checked"' : '',
+			'GROUP_VISIBLE' =>		($this->data['g_hidden'] != GROUP_HIDDEN) ? TRUE : FALSE,
+			'GROUP_OPEN' =>			$this->data['g_open'],
+			'GROUP_ONLINE' =>		$this->data['g_online'],
+			'ERRSTR' =>				Html::make_errstr($this->errstr),
+			'LIST_RANKS' =>			Html::create_list('g_rank', $this->data['g_rank'], $list_rank),
+
+			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
+		));
+	}
+
+	/*
+	** Valide le formulaire d'ajout / édition de groupes
+	*/
+	public function query_add_edit_groups()
+	{
+		$this->data['g_name'] =			Http::request('g_name', 'post');
+		$this->data['g_desc'] =			Http::request('g_desc', 'post');
+		$this->data['g_hidden'] =		intval(Http::request('g_hidden', 'post'));
+		$this->data['g_open'] =			intval(Http::request('g_open', 'post'));
+		$this->data['g_online'] =		intval(Http::request('g_online', 'post'));
+		$this->data['g_rank'] =			intval(Http::request('g_rank', 'post'));
+		$this->data['g_modo'] =			trim(Http::request('g_modo', 'post'));
+		$this->data['g_color'] =		Html::set_style(Http::request('g_style_type', 'post'), trim(Http::request('g_style', 'post')), 'class="user"');
+
+		if (empty($this->data['g_name']))
+		{
+			$this->errstr[] = Fsb::$session->lang('fields_empty');
+		}
+
+		// Vérification du type de groupe (pour éviter les failles de sécurité sur l'édition de groupes spéciaux)
+		if ($this->mode == 'edit')
+		{
+			$sql = 'SELECT g_type, g_color
+					FROM ' . SQL_PREFIX . 'groups
+					WHERE g_id = ' . $this->id . '
+						AND g_type <> ' . GROUP_SINGLE;
+			if (!$row = Fsb::$db->request($sql))
+			{
+				Display::message('no_result');
+			}
+			$this->data['g_type'] = $row['g_type'];
+			$old_color = $row['g_color'];
+		}
+		else
+		{
+			$this->data['g_type'] = GROUP_NORMAL;
+		}
+
+		$modo_idx = array();
+		if ($this->data['g_type'] != GROUP_SPECIAL)
+		{
+			// Vérification des logins de modérateurs
+			// Suppression de doubles logins
+			$ary_modo = array_flip(array_flip(explode("\n", $this->data['g_modo'])));
+			$ary_modo = array_map('trim', $ary_modo);
+			$ary_modo = array_map('strtolower', $ary_modo);
+			$search_modo = '';
+			foreach ($ary_modo AS $login)
+			{
+				if ($login)
+				{
+					$search_modo .= '\'' . Fsb::$db->escape($login) . '\', ';
+				}
+			}
+			$search_modo = substr($search_modo, 0, -2);
+
+			// Vérification des logins
+			if ($search_modo)
+			{
+				$sql = 'SELECT u_id, u_nickname
+						FROM ' . SQL_PREFIX . 'users
+						WHERE LOWER(u_nickname) IN (' . $search_modo . ')';
+				$result = Fsb::$db->query($sql);
+				$flip_ary_modo = array_flip($ary_modo);
+				while ($row = Fsb::$db->row($result))
+				{
+					unset($flip_ary_modo[strtolower($row['u_nickname'])]);
+					$modo_idx[] = $row['u_id'];
+				}
+				Fsb::$db->free($result);
+
+				foreach (array_flip($flip_ary_modo) AS $bad_modo)
+				{
+					$this->errstr[] = sprintf(Fsb::$session->lang('adm_groups_bad_nickname'), htmlspecialchars($bad_modo));
+				}
+			}
+		}
+
+		if ($this->errstr)
+		{
+			return ;
+		}
+
+		// Plus besoin de la clef g_modo
+		unset($this->data['g_modo']);
+
+		// Ajout / Edition du groupe dans la base de donnée
+		if ($this->mode == 'edit')
+		{
+			Group::edit($this->id, $this->data, $modo_idx);
+			Log::add(Log::ADMIN, 'group_log_edit', $this->data['g_name']);
+		}
+		else
+		{
+			$this->id = Group::add($this->data, $modo_idx);
+			Log::add(Log::ADMIN, 'group_log_add', $this->data['g_name']);
+		}
+
+		Display::message('adm_group_submit_' . $this->mode, 'index.' . PHPEXT . '?p=manage_groups', 'manage_groups');
+	}
+
+	/*
+	** Page de suppression d'un groupe
+	*/
+	public function page_delete_groups()
+	{
+		if (check_confirm())
+		{
+			$sql = 'SELECT g_name, g_type
+					FROM ' . SQL_PREFIX . 'groups
+					WHERE g_id = ' . $this->id;
+			$result = Fsb::$db->query($sql);
+			$data = Fsb::$db->row($result);
+			Fsb::$db->free($result);
+
+			if ($data['g_type'] == GROUP_NORMAL)
+			{
+				Group::delete($this->id);
+
+				Log::add(Log::ADMIN, 'group_log_delete', $data['g_name']);
+			}
+
+			Display::message('adm_group_delete_well', 'index.' . PHPEXT . '?p=manage_groups', 'manage_groups');
+		}
+		else if (Http::request('confirm_no', 'post'))
+		{
+			Http::redirect('index.' . PHPEXT . '?p=manage_groups');
+		}
+		else
+		{
+			Display::confirmation(Fsb::$session->lang('adm_group_delete_confirm'), 'index.' . PHPEXT . '?p=manage_groups', array('module' => $this->module, 'mode' => $this->mode, 'id' => $this->id));
+		}
+	}
+
+	/*
+	** Affiche la page listant les groupes du forum avec leur caractéristiques
+	*/
+	public function page_default_groups_users()
+	{
+		// Recherche d'un membre ?
+		$errstr = '';
+		$search_data = NULL;
+		if (($nickname = Http::request('search_user', 'post')) && Http::request('submit_search_user', 'post'))
+		{
+			$sql = 'SELECT u_id
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_nickname = \'' . Fsb::$db->escape($nickname) . '\'';
+			$result = Fsb::$db->query($sql);
+			$search_data = Fsb::$db->row($result);
+			Fsb::$db->free($result);
+			if (!$search_data)
+			{
+				$errstr = sprintf(Fsb::$session->lang('adm_group_search_not_found'), htmlspecialchars($nickname));
+			}
+		}
+
+		Fsb::$tpl->set_switch('groups_users');
+
+		// Liste des groupes
+		$sql = 'SELECT g.g_id, g.g_name, g.g_hidden, g.g_open, g.g_color, COUNT(gu.g_id) AS g_count' . (($search_data) ? ', gu2.u_id' : '') . '
+				FROM ' . SQL_PREFIX . 'groups g
+				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
+					ON g.g_id = gu.g_id
+				' . (($search_data) ? 'LEFT JOIN ' . SQL_PREFIX . 'groups_users gu2 ON g.g_id = gu2.g_id AND gu2.u_id = ' . $search_data['u_id'] : '') . '
+				WHERE g.g_type <> ' . GROUP_SPECIAL . '
+					AND g.g_type <> ' . GROUP_SINGLE . '
+				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color';
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			if (!$search_data || $search_data['u_id'] == $row['u_id'])
+			{
+				Fsb::$tpl->set_blocks('group', array(
+					'NAME' =>			$row['g_name'],
+					'STYLE' =>			$row['g_color'],
+					'OPEN' =>			$row['g_open'],
+					'VISIBLE' =>		!$row['g_hidden'],
+					'COUNT' =>			sprintf(String::plural('adm_group_count', $row['g_count']), $row['g_count']),
+
+					'U_MANAGE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $row['g_id']),
+				));
+			}
+		}
+		Fsb::$db->free($result);
+
+		Fsb::$tpl->set_vars(array(
+			'NICKNAME' =>		htmlspecialchars($nickname),
+			'ERRSTR' =>			$errstr,
+
+			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=manage_groups&amp;module=users'),
+		));
+	}
+}
+
+/* EOF */

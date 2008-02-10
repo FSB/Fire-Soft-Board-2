@@ -1,0 +1,157 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/low.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entète.
+** +---------------------------------------------------+
+*/
+
+body
+{
+	font-family: "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 0px;
+}
+
+img
+{
+	border: none;
+}
+
+a
+{
+	color: #3452EF;
+}
+
+h1
+{
+	margin-left: 5px;
+}
+
+.small
+{
+	font-size: 11px;
+	color: #888888;
+}
+
+.header
+{
+	border: 1px dashed #000000;
+	margin: 5px;
+	padding: 5px;
+}
+
+.header .left
+{
+	float: left;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.header .right
+{
+	float: right;
+}
+
+.header .nav
+{
+	margin-top: 40px;
+}
+
+.footer
+{
+	border: 1px dashed #000000;
+	margin: 5px;
+	padding: 5px;
+}
+
+.footer .nav
+{
+	margin-bottom: 10px;
+}
+
+.nav
+{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.nickname
+{
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 14px;
+	color: #000000;
+}
+
+.pagination_block
+{
+	display: inline;
+}
+
+.pagination
+{
+	margin-left: 10px;
+}
+
+.pagination_block a
+{
+	display: inline;
+	margin: 1px;
+	padding: 2px 2px 1px 2px;
+	font-weight: bold;
+}
+
+.pagination_block_cur
+{
+	display: inline;
+	margin: 1px;
+	padding: 2px 2px 1px 2px;
+	font-weight: bold;
+}
+
+ul.index
+{
+	list-style-type: none;
+}
+
+ul.index a
+{
+	font-size: 18px;
+	color: #5E73E1;
+}
+
+ul.index a.cat
+{
+	font-weight: bold;
+	font-size: 22px;
+	color: #3452EF;
+}
+
+ul.forum
+{
+	list-style-type: decimal;
+}
+
+ul.forum a
+{
+	font-size: 16px;
+}
+
+div.post
+{
+	border: 1px solid #bbbbbb;
+	background-color: #f3f3f3;
+	padding: 2px;
+	margin: 5px;
+}
+
+div.post div.content
+{
+	background-color: #ffffff;
+	padding: 5px;
+	margin-top: 3px;
+}

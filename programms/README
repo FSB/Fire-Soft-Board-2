@@ -1,0 +1,10 @@
+Dans ce dossier se trouvent des fichiers qui ont servis (et servent toujours)
+au développement du projet.
+
+Ces fichiers sont protégés d'accès à l'aide d'une simple ligne de commande placée tout en haut de ceux ci,
+si vous souhaitez les utiliser supprimez cette ligne.
+
+ATTENTION : ces fichiers, sans la ligne de code protégeant leur accès, sont des failles
+de sécurité, car si une personne mal intentionée y avait accès elle pourrait facilement avoir accès à des données
+personnelles. Faites donc en sorte de prendre vos précautions si vous souhaitez les
+utiliser (en ne les utilisant qu'en local par exemple).

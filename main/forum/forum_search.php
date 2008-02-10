@@ -1,0 +1,960 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :			~/main/forum/forum_search.php
+** | Begin :		21/11/2005
+** | Last :			11/12/2007
+** | User :			Genova
+** | Project :		Fire-Soft-Board 2 - Copyright FSB group
+** | License :		GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Permet une recherche dans les messages du forum en fonction de divers paramètres.
+** Le fonctionement global de la page : on récupère une liste de message concerné par la recherche via les méthodes
+** search_*() dans la propriété $this->idx, puis on appel la méthode print_result() pour afficher le résultat en
+** fonction des messages récupérés.
+*/
+class Fsb_frame_child extends Fsb_frame
+{
+	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	public $_show_page_header_nav = TRUE;
+	public $_show_page_footer_nav = FALSE;
+	public $_show_page_stats = FALSE;
+
+	// Mode de la page
+	public $mode;
+
+	// Argument $id
+	public $id;
+
+	// Données du formulaire pour la recherche
+	public $keywords, $author, $in, $print, $forums, $topic, $date, $order, $direction;
+
+	// Objet de recherche
+	public $search;
+
+	// ID des messages pour le résultat de la recherche
+	public $idx = array();
+
+	// Navigation
+	public $nav = array();
+
+	// Page courante
+	public $page;
+
+	// Module de menu
+	public $module;
+
+	// Recherche indépendante
+	public $where = NULL;
+	public $count = NULL;
+
+	/*
+	** Constructeur
+	*/
+	public function main()
+	{
+		// Type de recherche (fulltext_mysql, fulltext_fsb ou like)
+		$this->search = Search::factory();
+
+		$this->mode =		Http::request('mode');
+		$this->print =		Http::request('print');
+		$this->author =		Http::request('author');
+		$this->in =			Http::request('in');
+		$this->order =		Http::request('order');
+		$this->direction =	strtolower(Http::request('direction'));
+		$this->date =		intval(Http::request('date'));
+		$this->page =		intval(Http::request('page'));
+		$this->id =			intval(Http::request('id'));
+		$this->topic =		intval(Http::request('topic'));
+		$this->keywords =	trim(Http::request('keywords'));
+		$this->forums =		(array) Http::request('forums');
+
+		if (!is_array($this->in) && !isset($this->in))
+		{
+			$this->in = array();
+		}
+		else if (!is_array($this->in))
+		{
+			$this->in = array($this->in);
+		}
+		$this->in = array_flip($this->in);
+
+		$this->forums = array_map('intval', $this->forums);
+		if (!$this->forums)
+		{
+			$this->forums = array_keys(Fsb::$session->data['auth']);
+		}
+		$this->forums = array_intersect(Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read')), $this->forums);
+
+		if ($this->direction != 'asc' && $this->direction != 'desc')
+		{
+			$this->direction = 'desc';
+		}
+
+		if (!in_array($this->order, array('t_last_p_time', 't_title', 't_total_view', 't_total_post')))
+		{
+			$this->order = 't_last_p_time';
+		}
+
+		$call = new Call($this);
+		$call->post(array(
+			'submit' =>				'result',
+			'submit_check' =>		':check_topics',
+		));
+
+		$call->functions(array(
+			'mode' => array(
+				'result' =>			'search_result',
+				'author' =>			'search_author',
+				'author_topic' =>	'search_author_topic',
+				'ownposts' =>		'search_ownposts',
+				'newposts' =>		'search_newposts',
+				'myself' =>			'search_myself',
+				'notification' =>	'search_notification',
+				'default' =>		'search_form',
+			),
+		));
+	}
+
+	/*
+	** Formulaire de recherche
+	*/
+	public function search_form()
+	{
+		// Suivant le type de recherche l'explication change
+		$search_explain = $this->search->explain();
+
+		// Liste des dates et des tris
+		$list_date = array(
+			0 =>			Fsb::$session->lang('search_date_all'),
+			ONE_DAY =>		Fsb::$session->lang('search_date_one_day'),
+			ONE_WEEK =>		Fsb::$session->lang('search_date_one_week'),
+			2 * ONE_WEEK =>	Fsb::$session->lang('search_date_two_weeks'),
+			ONE_MONTH =>	Fsb::$session->lang('search_date_one_month'),
+			2 * ONE_MONTH =>Fsb::$session->lang('search_date_two_months'),
+			6 * ONE_MONTH =>Fsb::$session->lang('search_date_six_months'),
+			ONE_YEAR =>		Fsb::$session->lang('search_date_one_year'),
+			2 * ONE_YEAR =>	Fsb::$session->lang('search_date_two_years'),
+		);
+
+		$list_order = array(
+			't_last_p_time' =>	Fsb::$session->lang('search_order_time'),
+			't_title' =>		Fsb::$session->lang('search_order_title'),
+			't_total_view' =>	Fsb::$session->lang('search_order_view'),
+			't_total_post' =>	Fsb::$session->lang('search_order_answer'),
+		);
+
+		$list_direction = array(
+			'asc' =>	Fsb::$session->lang('asc'),
+			'desc' =>	Fsb::$session->lang('desc'),
+		);
+
+		Fsb::$tpl->set_file('forum/forum_search.html');
+		Fsb::$tpl->set_vars(array(
+			'SEARCH_EXPLAIN' =>	$search_explain,
+			'LIST_DATE' =>		Html::create_list('date', 0, $list_date),
+			'LIST_ORDER' =>		Html::create_list('order', 't_last_p_time', $list_order),
+			'LIST_DIRECTION' =>	Html::create_list('direction', 'desc', $list_direction),
+
+			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=result'),
+		));
+
+		$this->generate_forum_list();
+	}
+
+	/*
+	** Fonction classique de recherche, via le formulaire de recherche.
+	** A chaque soumission du formulaire de recherche un cache pour la recherche est
+	** créé dans la table search_result. Le cache est récupéré quand le mode result est passé
+	** en paramètre.
+	*/
+	public function search_result()
+	{
+		// Instance du cache
+		$cache = Cache::factory('search', 'sql', 'cache_hash = \'' . Fsb::$db->escape(Fsb::$session->sid) . '\'');
+
+		// Cache de recherche ?
+		$cache_result = FALSE;
+		$this->mode = 'result';
+		if (!Http::request('submit') && $cache->exists(Fsb::$session->sid))
+		{
+			$cache_result = $cache->get(Fsb::$session->sid);
+			if ($cache_result)
+			{
+				$this->idx = $cache_result['idx'];
+				$this->print = $cache_result['print'];
+				$this->print_result();
+				return ;
+			}
+		}
+
+		// Aucun cache de recherche trouvé ...
+		if (!$cache_result)
+		{
+			// Vérification du formulaire
+			if (empty($this->keywords) && empty($this->author))
+			{
+				Display::message('search_keywords_empty');
+			}
+
+			if (!isset($this->in['post']) && !isset($this->in['title']))
+			{
+				Display::message('search_in_empty');
+			}
+
+			$this->search->search_in_post =		(isset($this->in['post'])) ? TRUE : FALSE;
+			$this->search->search_in_title =	(isset($this->in['title'])) ? TRUE : FALSE;
+			$this->search->search_link =		strtolower(Http::request('keywords_link', 'post'));
+
+			$this->idx = $this->search->launch($this->keywords, $this->author, $this->forums, $this->topic, $this->date);
+			$this->print_result();
+
+			// Suppression des anciens cache
+			$cache->garbage_colector(ONE_DAY);
+
+			// Création du cache de recherche
+			$cache->put(Fsb::$session->sid, array('print' => $this->print, 'idx' => $this->idx));
+		}
+	}
+
+	/*
+	** Cherche tous les messages d'un membre
+	** -----
+	** $nickname ::		Pseudonyme de l'auteur
+	*/
+	public function search_author($nickname = NULL)
+	{
+		if ($this->id == VISITOR_ID)
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT);
+		}
+
+		if ($nickname)
+		{
+			$sql = 'SELECT u_id
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_nickname = \'' . Fsb::$db->escape($nickname) . '\'';
+			$this->id = intval(Fsb::$db->get($sql, 'u_id'));
+		}
+		else
+		{
+			$sql = 'SELECT u_nickname
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_id = ' . $this->id;
+			$nickname = Fsb::$db->get($sql, 'u_nickname');
+		}
+		$this->tag_title = sprintf(Fsb::$session->lang('search_author_title'), $nickname) . ' :: ' . Fsb::$cfg->get('forum_name');
+
+		if (!$this->id)
+		{
+			Display::message('user_not_exists');
+		}
+
+		// Balise META pour la syndications RSS sur les derniers messages du membre
+		Http::add_meta('link', array(
+			'rel' =>		'alternate',
+			'type' =>		'application/rss+xml',
+			'title' =>		Fsb::$session->lang('rss'),
+			'href' =>		sid(ROOT . 'index.' . PHPEXT . '?p=rss&amp;mode=user&amp;id=' . $this->id),
+		));
+
+		$sql = 'SELECT COUNT(*) AS total
+				FROM ' . SQL_PREFIX . 'posts
+				WHERE u_id = ' . $this->id . '
+					AND u_id <> ' . VISITOR_ID . '
+					AND f_id IN (' . implode(', ', $this->forums) . ')';
+		$this->count = Fsb::$db->get($sql, 'total');
+		$this->where = 'p.u_id = ' . intval($this->id);
+
+		// Affichage sous forme de messages
+		$this->print = 'post';
+
+		$this->print_result();
+	}
+
+	/*
+	** Cherche tous les sujets d'un membre
+	** -----
+	** $nickname ::		Pseudonyme de l'auteur
+	*/
+	public function search_author_topic($nickname = NULL)
+	{
+		if ($this->id == VISITOR_ID)
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT);
+		}
+
+		if ($nickname)
+		{
+			$sql = 'SELECT u_id
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_nickname = \'' . Fsb::$db->escape($nickname) . '\'';
+			$this->id = Fsb::$db->get($sql, 'u_id');
+		}
+		else
+		{
+			$sql = 'SELECT u_nickname
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_id = ' . $this->id;
+			$nickname = Fsb::$db->get($sql, 'u_nickname');
+		}
+		$this->tag_title = sprintf(Fsb::$session->lang('search_author_topics_title'), $nickname) . ' :: ' . Fsb::$cfg->get('forum_name');
+
+		if (!$this->id)
+		{
+			Display::message('user_not_exists');
+		}
+
+		$sql = 'SELECT COUNT(*) AS total
+				FROM ' . SQL_PREFIX . 'topics
+				WHERE u_id = ' . $this->id . '
+					AND f_id IN (' . implode(', ', $this->forums) . ')';
+		$this->count = Fsb::$db->get($sql, 'total');
+
+		$sql = 'SELECT t_first_p_id
+				FROM ' . SQL_PREFIX . 'topics 
+				WHERE u_id = ' . intval($this->id);
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			$this->idx[] = $row['t_first_p_id'];
+		}
+		Fsb::$db->free($result);
+
+		// Affichage sous forme de messages
+		$this->print = 'topic';
+
+		$this->print_result();
+	}
+
+	/*
+	** Cherche les sujets dans lesquels on a posté
+	*/
+	public function search_ownposts()
+	{
+		if (!Fsb::$session->is_logged())
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT);
+		}
+
+		$this->where = 'p.u_id = ' . intval(Fsb::$session->id());
+
+		// Affichage sous forme de sujets
+		$this->print = 'topic';
+
+		$this->print_result();
+	}
+
+	/*
+	** Cherche tous les messages non lus
+	*/
+	public function search_newposts()
+	{
+		// L'invité ne peut accéder à cette page
+		if (!Fsb::$session->is_logged())
+		{
+			Display::message('not_allowed');
+		}
+
+		$this->nav[] = array(
+			'name' =>		Fsb::$session->lang('search_nav_not_read'),
+			'url' =>		'',
+		);
+
+		// Récupération du module
+		$unread_array = array('list', 'forums');
+		$this->module = Http::request('module');
+		if (!$this->module || !in_array($this->module, $unread_array))
+		{
+			if (!$this->module = Http::getcookie('unread_module'))
+			{
+				$this->module = 'list';
+			}
+		}
+		Http::cookie('unread_module', $this->module, CURRENT_TIME + ONE_MONTH);
+
+		// Création de la liste des modules
+		foreach ($unread_array AS $m)
+		{
+			Fsb::$tpl->set_blocks('module', array(
+				'IS_SELECT' =>	($this->module == $m) ? TRUE : FALSE,
+				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=newposts&amp;module=' . $m),
+				'NAME' =>		Fsb::$session->lang('search_unread_module_' . $m),
+			));
+		}
+
+		Fsb::$tpl->set_vars(array(
+			'MENU_HEADER_TITLE' =>	Fsb::$session->lang('search_title_not_read'),
+		));
+
+		// Génération des messages
+		$sql = 'SELECT t.t_last_p_id, tr.tr_last_time
+				FROM ' . SQL_PREFIX . 'topics t
+				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
+					ON t.t_id = tr.t_id
+						AND tr.u_id = ' . intval(Fsb::$session->id()) . '
+				WHERE (tr.tr_last_time IS NULL OR tr.tr_last_time < t.t_last_p_time)
+					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'];
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			$this->idx[] = $row['t_last_p_id'];
+		}
+		Fsb::$db->free($result);
+
+		switch ($this->module)
+		{
+			case 'list' :
+				$this->print = 'topic';
+			break;
+
+			case 'forums' :
+				$this->print = 'forum';
+			break;
+		}
+
+		Fsb::$tpl->set_switch('use_module');
+		Fsb::$tpl->set_switch('can_check');
+		Fsb::$tpl->set_vars(array(
+			'CHECK_LANG' =>		Fsb::$session->lang('search_markread'),
+		));
+
+		$this->print_result();
+	}
+
+	/*
+	** Cherche tous les sujets qu'on surveille
+	*/
+	public function search_notification()
+	{
+		// L'invité ne peut accéder à cette page
+		if (!Fsb::$session->is_logged())
+		{
+			Display::message('not_allowed');
+		}
+
+		$sql = 'SELECT t.t_first_p_id
+				FROM ' . SQL_PREFIX . 'topics_notification tn
+				INNER JOIN ' . SQL_PREFIX . 'topics t
+					ON tn.t_id = t.t_id
+				WHERE tn.u_id = ' . intval(Fsb::$session->id());
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			$this->idx[] = $row['t_first_p_id'];
+		}
+		Fsb::$db->free($result);
+
+		// Affichage sous forme de sujet
+		$this->print = 'topic';
+
+		// On peut cocher les sujets pour arréter de les surveiller
+		Fsb::$tpl->set_switch('can_check');
+		Fsb::$tpl->set_vars(array(
+			'CHECK_LANG' =>		Fsb::$session->lang('search_notification'),
+		));
+
+		$this->nav[] = array(
+			'name' =>		Fsb::$session->lang('search_nav_notification'),
+			'url' =>		'',
+		);
+
+		$this->print_result();
+	}
+
+	/*
+	** Traite les sujets cochés
+	*/
+	public function check_topics()
+	{
+		switch ($this->mode)
+		{
+			case 'newposts' :
+				$action_f = (array) Http::request('action_f', 'post');
+				if ($action_f)
+				{
+					$action_f = array_map('intval', $action_f);
+					Forum::markread('forum', $action_f);
+				}
+
+				$action = Http::request('action', 'post');
+				if ($action)
+				{
+					$action = array_map('intval', $action);
+					Forum::markread('topic', $action);
+				}
+			break;
+
+			case 'notification' :
+				$action = Http::request('action', 'post');
+
+				if ($action)
+				{
+					$action = array_map('intval', $action);
+
+					$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_notification
+							WHERE t_id IN (' . implode(', ', $action) . ')
+								AND u_id = ' . Fsb::$session->id();
+					Fsb::$db->query($sql);
+				}
+			break;
+		}
+
+		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=search&mode=' . $this->mode);
+	}
+
+	/*
+	** Affiche le résultat de la recherche, en se basant sur la propriété
+	** $this->idx qui a reçu le tableau des messages trouvés pour la recherche
+	*/
+	public function print_result()
+	{
+		if ($this->page < 1)
+		{
+			$this->page = 1;
+		}
+
+		$implode_idx = implode(', ', $this->idx);
+		$total = 0;
+		$total_page = 0;
+
+		// Affichage des résultats en messages ou en sujets
+		switch ($this->print)
+		{
+			case 'post' :
+				//
+				// Gestion de l'affichage des résultats de la recherche sous forme de messages
+				//
+				Fsb::$tpl->set_file('forum/forum_search_post.html');
+
+				if ($this->idx || $this->where)
+				{
+					$parser = new Parser();
+
+					// Nombre de message
+					if ($this->count === NULL)
+					{
+						$sql = 'SELECT COUNT(*) AS total
+								FROM ' . SQL_PREFIX . 'posts p
+								WHERE ' . (($this->where) ? $this->where : 'p.p_id IN (' . $implode_idx . ')') . '
+									AND p.p_approve = ' . IS_APPROVED
+									. (($this->forums) ? ' AND f_id IN (' . implode(', ', $this->forums) . ')' : '')
+									. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '');
+						$result = Fsb::$db->query($sql);
+						$tmp = Fsb::$db->row($result);
+						Fsb::$db->free($result);
+						$total = $tmp['total'];
+					}
+					else
+					{
+						$total = $this->count;
+					}
+					$total_page = ceil($total / Fsb::$cfg->get('post_per_page'));
+
+					// Récupération des mots clefs
+					$split_words = array();
+					if ($this->keywords)
+					{
+						foreach (preg_split('#[^\S]+#si', utf8_decode($this->keywords)) AS $word)
+						{
+							if ($word)
+							{
+								$split_words[] = utf8_encode($word);
+							}
+						}
+					}
+
+					// Pour l'affichage par message, on treansforme l'ordre de la date du dernier message par la date du message
+					if ($this->order == 't_last_p_time')
+					{
+						$order = 'p.p_time ' . $this->direction;
+					}
+					else
+					{
+						$order = 't.' . $this->order . ' ' . $this->direction . ', p.p_time';
+					}
+
+					// Liste des messages
+					$sql = 'SELECT p.p_id, p.p_text, p.p_nickname, p.u_id, p.p_time, p.p_map, t.t_id, t.t_title, t.t_first_p_id, f.f_id, f.f_name, f.f_color, cat.f_id AS cat_id, cat.f_name AS cat_name, u.u_color, u.u_auth
+							FROM ' . SQL_PREFIX . 'posts p
+							INNER JOIN ' . SQL_PREFIX . 'topics t
+								ON p.t_id = t.t_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums f
+								ON f.f_id = p.f_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums cat
+								ON cat.f_id = f.f_cat_id
+							LEFT JOIN ' . SQL_PREFIX . 'users u
+								ON p.u_id = u.u_id
+							WHERE ' . (($this->where) ? $this->where : 'p.p_id IN (' . $implode_idx . ')') . '
+								AND p.p_approve = ' . IS_APPROVED
+							. (($this->forums) ? ' AND f.f_id IN (' . implode(', ', $this->forums) . ')' : '')
+							. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
+							ORDER BY ' . $order . '
+							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('post_per_page')) . ', ' . Fsb::$cfg->get('post_per_page');
+					$result = Fsb::$db->query($sql);
+					while ($row = Fsb::$db->row($result))
+					{
+						// parse du message
+						$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+						$text = $parser->mapped_message($row['p_text'], $row['p_map']);
+						$post_title = htmlspecialchars(Parser::censor($row['t_title']));
+
+						// Highlight des mots clefs
+						foreach ($split_words AS $word)
+						{
+							$text = preg_replace('#(?!<.*)(?<!\w)(' . preg_quote($word, '#') . ')(?!\w|[^<>]*(?:</s(?:cript|tyle))?>)#is', '<span class="highlight_search">\\1</span>', $text);
+							$post_title = preg_replace('#(^|\s)(' . preg_quote($word, '#') . ')(\s|$)#i', '\\1<b class="highlight_search">\\2</b>\\3', $post_title);
+						}
+
+						Fsb::$tpl->set_blocks('result', array(
+							'NICKNAME' =>		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
+							'DATE' =>			Fsb::$session->print_date($row['p_time']),
+							'CONTENT' =>		$text,
+							'CAT_NAME' =>		$row['cat_name'],
+							'FORUM_NAME' =>		Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
+							'TOPIC_NAME' =>		$post_title,
+
+							'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id']) . '#p' . $row['p_id'],
+							'U_CAT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . $row['cat_id']),
+						));
+					}
+					Fsb::$db->free($result);
+				}
+			break;
+
+			case 'forum' :
+				//
+				// Gestion de l'affichage des résultats de la recherche sous forme de sujets, regroupés par forums
+				//
+				Fsb::$tpl->set_file('forum/forum_search_forum.html');
+
+				if ($this->idx)
+				{
+					// Calcul du nombre de sujets
+					switch (SQL_DBAL)
+					{
+						case 'sqlite' :
+							$sql = 'SELECT COUNT(*) AS total
+									FROM (
+										SELECT DISTINCT t_id
+										FROM ' . SQL_PREFIX . 'posts
+										WHERE p_id IN (' . $implode_idx . ')
+											AND p_approve = ' . IS_APPROVED
+											. (($this->forums) ? ' AND f_id IN (' . implode(', ', $this->forums) . ')' : '')
+											. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
+									)';
+						break;
+
+						default :
+							$sql = 'SELECT COUNT(DISTINCT t_id) AS total
+									FROM ' . SQL_PREFIX . 'posts
+									WHERE p_id IN (' . $implode_idx . ')
+										AND p_approve = ' . IS_APPROVED
+										. (($this->forums) ? ' AND f_id IN (' . implode(', ', $this->forums) . ')' : '')
+										. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '');
+						break;
+					}
+					$total = Fsb::$db->get($sql, 'total');
+					$total_page = ceil($total / Fsb::$cfg->get('topic_per_page'));
+
+					// Liste des sujets
+					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
+							FROM ' . SQL_PREFIX . 'posts p
+							INNER JOIN ' . SQL_PREFIX . 'topics t
+								ON p.t_id = t.t_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums f
+								ON p.f_id = f.f_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums cat
+								ON cat.f_id = f.f_cat_id
+							LEFT JOIN ' . SQL_PREFIX . 'users u
+								ON u.u_id = t.t_last_u_id
+							LEFT JOIN ' . SQL_PREFIX . 'users owner
+								ON t.u_id = owner.u_id
+							LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
+								ON p.t_id = tr.t_id
+									AND tr.u_id = ' . intval(Fsb::$session->id()) . '
+							WHERE p.p_id IN (' . implode(', ', $this->idx) . ')
+								AND p.p_approve = ' . IS_APPROVED
+							. (($this->forums) ? ' AND f.f_id IN (' . implode(', ', $this->forums) . ')' : '')
+							. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
+							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat_id, cat_name, tr.tr_last_time, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color, f.f_left
+							ORDER BY f.f_left, t.' . $this->order . ' ' . $this->direction . '
+							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('topic_per_page')) . ', ' . Fsb::$cfg->get('topic_per_page');
+					$result = Fsb::$db->query($sql);
+					$forum_id = NULL;
+					while ($row = Fsb::$db->row($result))
+					{
+						if ($forum_id != $row['f_id'])
+						{
+							Fsb::$tpl->set_blocks('f', array(
+								'ID' =>				$row['f_id'],
+								'FORUM' =>			$row['f_name'],
+								'CAT' =>			$row['cat_name'],
+								'U_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $row['f_id']),
+								'U_CAT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . $row['cat_id']),
+							));
+							$forum_id = $row['f_id'];
+						}
+
+						// Pagination du sujet
+						$total_topic_page = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
+						$topic_pagination = ($total_topic_page > 1) ? Html::pagination(0, $total_topic_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], NULL, TRUE) : FALSE;
+
+						// Sujet lu ?
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
+
+						// Image du sujet
+						if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')
+						{
+							$topic_img = (($is_read) ? '' : 'new_') . 'post' . (($row['t_status'] == LOCK) ? '_locked' : '');
+						}
+						else
+						{
+							$topic_img = (($is_read) ? '' : 'new_') . 'announce';
+						}
+
+						Fsb::$tpl->set_blocks('f.result', array(
+							'ID' =>				$row['t_id'],
+							'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+							'DESC' =>			htmlspecialchars(String::truncate($row['t_description'], 50)),
+							'IMG' =>			Fsb::$session->img($topic_img),
+							'VIEWS' =>			$row['t_total_view'],
+							'ANSWERS' =>		$row['t_total_post'] - 1,
+							'NICKNAME' =>		Html::nickname($row['t_last_p_nickname'], $row['t_last_u_id'], $row['u_color']),
+							'OWNER' =>			Html::nickname($row['owner_nickname'], $row['owner_id'], $row['owner_color']),
+							'FIRST_DATE' =>		Fsb::$session->print_date($row['t_time']),
+							'DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
+							'PAGINATION' =>		$topic_pagination,
+							'UNREAD' =>			($is_read) ? FALSE : TRUE,
+
+							'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
+							'U_LOGIN' =>		sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $row['t_last_u_id']),
+							'U_LAST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;' . $last_url),
+						));
+					}
+					Fsb::$db->free($result);
+				}
+			break;
+
+			case 'topic' :
+			default :
+				//
+				// Gestion de l'affichage des résultats de la recherche sous forme de sujets
+				//
+				Fsb::$tpl->set_file('forum/forum_search_topic.html');
+
+				if ($this->idx || $this->where)
+				{
+					// Calcul du nombre de sujets
+					if ($this->count === NULL)
+					{
+						switch (SQL_DBAL)
+						{
+							case 'sqlite' :
+								$sql = 'SELECT COUNT(*) AS total
+										FROM (
+											SELECT DISTINCT t_id
+											FROM ' . SQL_PREFIX . 'posts p
+											WHERE ' . (($this->where) ? $this->where : 'p.p_id IN (' . $implode_idx . ')') . '
+												AND p.p_approve = ' . IS_APPROVED
+												. (($this->forums) ? ' AND f_id IN (' . implode(', ', $this->forums) . ')' : '')
+												. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
+										)';
+							break;
+
+							default :
+								$sql = 'SELECT COUNT(DISTINCT p.t_id) AS total
+										FROM ' . SQL_PREFIX . 'posts p
+										WHERE ' . (($this->where) ? $this->where : 'p.p_id IN (' . $implode_idx . ')') . '
+											AND p.p_approve = ' . IS_APPROVED
+											. (($this->forums) ? ' AND f_id IN (' . implode(', ', $this->forums) . ')' : '')
+											. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '');
+							break;
+						}
+						$total = Fsb::$db->get($sql, 'total');
+					}
+					else
+					{
+						$total = $this->count;
+					}
+					$total_page = ceil($total / Fsb::$cfg->get('topic_per_page'));
+
+					// Liste des sujets
+					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
+							FROM ' . SQL_PREFIX . 'posts p
+							INNER JOIN ' . SQL_PREFIX . 'topics t
+								ON p.t_id = t.t_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums f
+								ON p.f_id = f.f_id
+							LEFT JOIN ' . SQL_PREFIX . 'forums cat
+								ON cat.f_id = f.f_cat_id
+							LEFT JOIN ' . SQL_PREFIX . 'users u
+								ON u.u_id = t.t_last_u_id
+							LEFT JOIN ' . SQL_PREFIX . 'users owner
+								ON t.u_id = owner.u_id
+							LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
+								ON p.t_id = tr.t_id
+									AND tr.u_id = ' . intval(Fsb::$session->id()) . '
+							WHERE ' . (($this->where) ? $this->where : 'p.p_id IN (' . $implode_idx . ')') . '
+								AND p.p_approve = ' . IS_APPROVED
+							. (($this->forums) ? ' AND f.f_id IN (' . implode(', ', $this->forums) . ')' : '')
+							. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
+							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat_id, cat_name, tr.tr_last_time, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color
+							ORDER BY t.' . $this->order . ' ' . $this->direction . '
+							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('topic_per_page')) . ', ' . Fsb::$cfg->get('topic_per_page');
+					$result = Fsb::$db->query($sql);
+					while ($row = Fsb::$db->row($result))
+					{
+						// Sujet lu ?
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
+
+						// Pagination du sujet
+						$total_page_topic = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
+						$topic_pagination = ($total_page_topic > 1) ? Html::pagination(0, $total_page_topic, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], NULL, TRUE) : FALSE;
+					
+						// Image du sujet
+						if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')
+						{
+							$topic_img = (($is_read) ? '' : 'new_') . 'post' . (($row['t_status'] == LOCK) ? '_locked' : '');
+						}
+						else
+						{
+							$topic_img = (($is_read) ? '' : 'new_') . 'announce';
+						}
+
+						Fsb::$tpl->set_blocks('result', array(
+							'ID' =>				$row['t_id'],
+							'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+							'DESC' =>			htmlspecialchars(String::truncate($row['t_description'], 50)),
+							'FORUM' =>			Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
+							'CAT' =>			$row['cat_name'],
+							'IMG' =>			Fsb::$session->img($topic_img),
+							'VIEWS' =>			$row['t_total_view'],
+							'ANSWERS' =>		$row['t_total_post'] - 1,
+							'NICKNAME' =>		Html::nickname($row['t_last_p_nickname'], $row['t_last_u_id'], $row['u_color']),
+							'OWNER' =>			Html::nickname($row['owner_nickname'], $row['owner_id'], $row['owner_color']),
+							'FIRST_DATE' =>		Fsb::$session->print_date($row['t_time']),
+							'DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
+							'PAGINATION' =>		$topic_pagination,
+							'UNREAD' =>			($is_read) ? FALSE : TRUE,
+
+							'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
+							'U_CAT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . $row['cat_id']),
+							'U_LOGIN' =>		sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $row['t_last_u_id']),
+							'U_LAST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;' . $last_url),
+						));
+					}
+					Fsb::$db->free($result);
+				}
+			break;
+		}
+
+		// Pagination
+		if ($total_page > 1)
+		{
+			Fsb::$tpl->set_switch('pagination');
+		}
+
+		// Suppression des paramètres inutiles order et direction s'ils valent leur valeur par défaut
+		$pagination = '';
+		if ($this->order != 't_last_p_time')
+		{
+			$pagination .= '&amp;order=' . $this->order;
+		}
+
+		if ($this->direction == 'desc')
+		{
+			$this->direction = '&amp;direction=' . $this->direction;
+		}
+
+		Fsb::$tpl->set_vars(array(
+			'PAGINATION' =>		Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;keywords=' . htmlspecialchars($this->keywords) . $pagination),
+			'TOTAL_RESULT' =>	sprintf(String::plural('search_total_result', $total), $total),
+			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=' . $this->mode . '&amp;module=' . $this->module),
+		));
+	}
+
+	/*
+	** Liste des forums autorisés
+	*/
+	public function get_auths_forums($forums)
+	{
+		$sql = 'SELECT child.f_id
+				FROM ' . SQL_PREFIX . 'forums parent
+				LEFT JOIN ' . SQL_PREFIX . 'forums child
+					ON child.f_left >= parent.f_left
+						AND child.f_right <= parent.f_right
+				' . (($forums) ? 'WHERE parent.f_id IN (' . implode(', ', $forums) . ')' : '');
+		$result = Fsb::$db->query($sql);
+		$return = array();
+		while ($row = Fsb::$db->row($result))
+		{
+			if (Fsb::$session->is_authorized($row['f_id'], 'ga_view') && Fsb::$session->is_authorized($row['f_id'], 'ga_view_topics') && Fsb::$session->is_authorized($row['f_id'], 'ga_read'))
+			{
+				$return[] = $row['f_id'];
+			}
+		}
+		Fsb::$db->free($result);
+
+		return ($return);
+	}
+
+	/*
+	** Génère la liste des forums pour la recherche
+	*/
+	public function generate_forum_list()
+	{
+		// Construction un arbre des forums
+		$tree = new Tree();
+		$tree->add_item(0, NULL, array(
+			'f_id' =>		0,
+			'f_level' =>	-1,
+			'f_name' =>		Fsb::$session->lang('search_all'),
+			'f_parent' =>	0,
+		));
+
+		$sql = 'SELECT f_id, f_name, f_level, f_parent, f_color
+				FROM ' . SQL_PREFIX . 'forums
+				ORDER BY f_left';
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			if (!$row['f_parent'] || Fsb::$session->is_authorized($row['f_id'], 'ga_view'))
+			{
+				$tree->add_item($row['f_id'], $row['f_parent'], $row);
+			}
+		}
+		Fsb::$db->free($result);
+
+		// On génère la liste des forums
+		$this->generate_forum_list_by_tree($tree->document);
+	}
+
+	/*
+	** Génération récursive de la liste des forums
+	*/
+	public function generate_forum_list_by_tree(&$children)
+	{
+		foreach ($children AS $child)
+		{
+			if ($child->get('f_parent') > 0 || $child->children())
+			{
+				Fsb::$tpl->set_blocks('f', array(
+					'ID' =>			$child->get('f_id'),
+					'NAME' =>		$child->get('f_name'),
+					'STYLE' =>		($child->get('f_color') != 'class="forum"') ? $child->get('f_color') : '',
+					'PADDING' =>	str_repeat('&nbsp;&nbsp; &nbsp; &nbsp; ', $child->get('f_level') + 1),
+					'IS_CAT' =>		($child->get('f_parent') == 0) ? TRUE : FALSE,
+					'CHILDREN' =>	implode(', ', $child->allChildren()),
+				));
+
+				$this->generate_forum_list_by_tree($child->children());
+			}
+		}
+	}
+}
+
+/* EOF */

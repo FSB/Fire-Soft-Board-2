@@ -1,0 +1,32 @@
+<include name="adm_header.html">
+
+<switch name="email_mass">
+	<switch name="error_handler">
+		<include name="error_handler.html" />
+	</switch>
+
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_GENERAL_EMAIL_EXPLAIN_TITLE}</legend>
+		<dl>
+			<dt><label for="email_subject_id">{LG_ADM_EMAIL_SUBJECT} :</label></dt>
+			<dd><input type="text" name="email_subject" id="email_subject_id" maxlength="60" size="35" value="{VALUE_SUBJECT}" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_EMAIL_GROUPS} :</label><br /><span>{LG_ADM_EMAIL_GROUPS_EXPLAIN}</span></dt>
+			<dd>{LIST_GROUPS}</dd>
+		</dl>
+		<dl>
+			<dt><label for="email_users_id">{LG_ADM_EMAIL_USERS} :</label><br /><span>{LG_ADM_EMAIL_USERS_EXPLAIN}</span></dt>
+			<dd><textarea name="email_users" id="email_users_id" rows="5" cols="30">{VALUE_USERS}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="email_content_id">{LG_ADM_EMAIL_CONTENT} :</label><br /><span>{LG_ADM_EMAIL_CONTENT_EXPLAIN}</span></dt>
+			<dd><textarea name="email_content" id="email_content_id" style="width: 99%; height: 400px">{VALUE_CONTENT}</textarea></dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

@@ -1,0 +1,50 @@
+<table class="advanced_userlist" cellspacing="3">
+	<tr>
+		<th colspan="3" class="title">{GROUP_LIST}</th>
+	</tr>
+	<block name="user">
+		<if content="$user.CAT_SEPARATOR">
+			<tr>
+				<th colspan="3">{user.CAT_SEPARATOR}</th>
+			</tr>
+		</if>
+
+		<if content="$user.INDENT > 0 AND $user.INDENT % 3 == 0"></tr></if>
+		<if content="$user.INDENT == 0 OR $user.INDENT % 3 == 0"><tr></if>
+
+		<td class="userinfo">
+			<div class="online">
+				<if content="$user.IS_ONLINE">
+					<img src="{IMG_ONLINE}" alt="{LG_ONLINE}" title="{LG_ONLINE}" />
+				<else>
+					<img src="{IMG_OFFLINE}" alt="{LG_OFFLINE}" title="{LG_OFFLINE}" />
+				</if>
+			</div>
+			<div class="avatar" <if content="!$user.AVATAR_WIDTH">style="overflow: hidden; width: {AVATAR_MAX_SIZE}px; height: {AVATAR_MAX_SIZE}px"</if>>
+				<if content="$user.AVATAR"><a href="{user.U_PROFILE}"><img src="{user.AVATAR}" <if content="$user.AVATAR_WIDTH">width="{user.AVATAR_WIDTH}" height="{user.AVATAR_HEIGHT}"</if> /></a></if>
+			</div>
+			<div class="profile">
+				<switch name="is_group_moderator"><input type="checkbox" name="action[]" id="action_{user.ITERATOR}" value="{user.ID}" <if content="$user.DISABLED">disabled="disabled"</if> /></switch>
+				<span style="font-size: 14px">{user.NICKNAME}</span> <if content="$user.AGE">({user.AGE})</if> {user.SEXE}<br />
+				<p>
+					<b>{LG_USERLIST_JOINED}</b> {user.JOINED}<br />
+					<switch name="ac_mods_last_visit_profil & ac_mods_update_last_visit"><if content="$user.LAST_VISIT"><b>{LG_USERLIST_LAST_VISIT}</b> {user.LAST_VISIT}<br /></if></switch>
+					<b>{LG_USERLIST_GROUP}</b> <a href="{user.U_GROUP}" {user.GROUP_COLOR}>{user.GROUP_NAME}</a><br />
+					<b>{LG_USERLIST_TOTAL_POST}</b> <if content="$user.TOTAL_POSTS > 0"><a href="{user.U_SEARCH_POSTS}">{user.TOTAL_POSTS}</a><else>{user.TOTAL_POSTS}</if><br />
+					<b>{LG_USERLIST_TOTAL_TOPIC}</b> <if content="$user.TOTAL_TOPICS > 0"><a href="{user.U_SEARCH_TOPICS}">{user.TOTAL_TOPICS}</a><else>{user.TOTAL_TOPICS}</if>
+				</p>
+			</div>
+		</td>
+
+		<if content="$user.LAST_ROW">
+			<if content="$user.INDENT % 3 == 0 OR $user.INDENT % 3 == 1"><td></td></if>
+			<if content="$user.INDENT % 3 == 0"><td></td></if>
+			</tr>
+		</if>
+	</block>
+	<blockelse name="user">
+		<tr><td class="error" colspan="3">{LG_NO_RESULT}</td></tr>
+	</blockelse>
+</table>
+
+<br />

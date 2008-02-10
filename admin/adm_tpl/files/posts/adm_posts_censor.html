@@ -1,0 +1,56 @@
+<include name="adm_header.html">
+
+<switch name="censor_list">
+	<fieldset>
+		<legend>{LG_ADM_CENSOR_MANAGE}</legend>
+		<table class="tab">
+		<block name="censor">
+			<if content="$censor.FIRST_ROW">
+				<tr>
+					<th>{LG_ADM_CENSOR_WORD}</th>
+					<th width="350">{LG_ADM_CENSOR_REPLACE}</th>
+					<th align="center" width="150"></th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center">{censor.CENSOR_WORD}</td>
+				<td align="center">{censor.CENSOR_REPLACE}</td>
+				<td align="center">
+					<a href="{censor.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
+					<a href="{censor.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="censor">
+			<tr><td class="error">{LG_NO_RESULT}</td></tr>
+		</blockelse>
+		</table>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_CENSOR_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="censor_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="cs_word_id">{LG_ADM_CENSOR_WORD} :</label></dt>
+			<dd><input type="text" name="cs_word" id="cs_word_id" value="{CENSOR_WORD}" maxlength="255" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="cs_replace_id">{LG_ADM_CENSOR_REPLACE} :</label></dt>
+			<dd><input type="text" name="cs_replace" id="cs_replace_id" value="{CENSOR_REPLACE}" maxlength="255" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_CENSOR_REGEXP} :</label><br /><span>{LG_ADM_CENSOR_REGEXP_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="cs_regexp" value="1" {CENSOR_REGEXP_YES} /> {LG_YES} &nbsp;
+				<input type="radio" name="cs_regexp" value="0" {CENSOR_REGEXP_NO} /> {LG_NO}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

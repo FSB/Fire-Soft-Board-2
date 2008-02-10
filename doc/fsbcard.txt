@@ -1,0 +1,52 @@
+<!--
+	Légende :
+		* pour les balises
+		- pour les attributs
+		(...) contient une chaîne de caractère
+		(x|y|z) prend soit la valeur x, soit la valeur y, soit la valeur z
+		<...> contient des balises enfant
+		#...# cette balise peut se répéter X fois
+		(!) signifie que cette option n'est actuellement pas implémentée au système
+-->
+
+<!--
+	@title=Format des fichiers FSBcards
+	@description=Explication des différentes balises composant les fichiers FSBcards, utilisés pour générer des exportations de profils
+-->
+
+* <fsbcard> <...> : Balise racine
+	- version (...) : Version de la FSBcard
+	- generator (...) : Générateur de la FSBcard
+	* <personal> <...> : Informations sur le profil personel du membre
+		* <template> (...) : Thème qui sera mis si celui ci est installé sur le forum de destination. Sinon le thème par défaut est choisi
+		* <lang> (...) : Langue qui sera mise si celle ci est installée sur le forum de destination. Si la langue par défaut est choisie
+		* <date> <...> : Affichage de la date sur le forum
+			* <utc> (...) : Décalage horaire
+			* <dst> (...) : Heure d'hiver / été
+		* <birthday> (...) : Date de naissance, sous format jj-mm-yyyy
+		* <sexe> (male|female|none) : Sexe
+	* <options> <...> : Options d'utilisateur
+		* <displayEmail> (extern|intern|hide) : externe permet d'afficher directement l'Email. intern permet l'envoie d'Email via le forum. hide ne permet aucun envoie d'Email.
+		* <notifyPost> (none|none_email|auto|auto_email) : permet d'être notifié ou pas des nouveaux messages. none n'active pas la notification. none_email envoie un Email pour les sujets qu'on surveille. auto permet de surveiller automatiquements les sujets dans lesquels on poste. auto_email permet de surveiller automatiquement et de recevoir des emails.
+		* <notifyMp> (true|false) : permet d'être notifié des nouveaux messages privés
+		* <sessionHidden> (true|false) : Définit si on apparait en caché ou pas
+		* <displayAvatar> (true|false) : Affiche ou pas les avatars dans les sujets
+		* <displayFsbcode /> : Afficher les FSBcodes
+			- posts (true|false) : Dans les messages
+			- sigs (true|false) : Dans les signatures
+		* <displayImg /> : Afficher les images
+			- posts (true|false) : Dans les messages
+			- sigs (true|false) : Dans les signatures
+		* <wysiwyg> (true|false) : Utiliser l'éditeur WYSIWYG
+		* <ajax> (true|false) : Utiliser l'ajax sur le forum
+		* <redirect> (none|direct|indirect) : Redirection dans les messages d'informations. direct pour une redirection instantannée, indirect pour une redirection meta
+	* <sig> (...) : Signature, prend en compte les sauts de ligne et les FSBcode
+	* <register> <...> : Inscription automatique. L'utilisateur devrait avoir le choix d'exporter ou non cette option, et le forum peut décider de ne pas l'implémenter (ou mieux, de pouvoir le désactiver)
+		* <login> (...) : Login de connexion
+		* <nickname> (...) : Pseudonyme de connexion
+		* <password> (...) : Mot de passe de connexion
+			- hash (md5|sha1|none) : Type de hash du mot de passe. Si none, le mot de passe est entré en clair. Dans FSB2 le mot de passe doit être entré en clair dans la FSBcard.
+		* <email> (...) : Adresse Email
+	* <avatar> <...> : Avatar personel
+		<content> (...) : Contenu de l'image si l'avatar avait été uploadé
+		<link> (...) : URL vers l'avatar

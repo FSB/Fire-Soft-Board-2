@@ -1,0 +1,28 @@
+<block name="field">
+	<tr>
+		<th><label for="pf_id_{field.NAME}">{field.LANG} :</label></th>
+		<td>
+			<if content="$field.TYPE == 'text'">
+				<input type="text" name="{field.NAME}" id="pf_id_{field.NAME}" value="{field.VALUE}" size="35" maxlength="{field.MAXLENGTH}" />
+			<elseif content="$field.TYPE == 'textarea'">
+				<textarea name="{field.NAME}" id="pf_id_{field.NAME}" rows="3" cols="40">{field.VALUE}</textarea>
+			<elseif content="$field.TYPE == 'radio'">
+				<block name="field.list">
+					<input type="radio" name="{field.NAME}" value="{field.list.VALUE}" <if content="$field.list.VALUE == $field.VALUE">checked="checked" id="pf_id_{field.NAME}"</if> /> {field.list.LANG}<br />
+				</block>
+			<elseif content="$field.TYPE == 'select'">
+				<select name="{field.NAME}" id="pf_id_{field.NAME}">
+					<block name="field.list">
+						<option value="{field.list.VALUE}" <if content="$field.list.VALUE == $field.VALUE">selected="selected"</if>>{field.list.LANG}</option>
+					</block>
+				</select>
+			<elseif content="$field.TYPE == 'multiple'">
+				<select name="{field.NAME}[]" size="{field.SIZELIST}" multiple="multiple" id="pf_id_{field.NAME}">
+					<block name="field.list">
+						<option value="{field.list.VALUE}" <if content="$field.list.IS_SELECT">selected="selected"</if>>{field.list.LANG}</option>
+					</block>
+				</select>
+			</if>
+		</td>
+	</tr>
+</block>

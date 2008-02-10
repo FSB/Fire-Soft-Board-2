@@ -1,0 +1,26 @@
+<include name="adm_header.html">
+
+<form action="{U_ACTION}" method="post">
+<block name="cat">
+	<fieldset>
+		<legend>
+			{cat.NAME} &nbsp;
+			<a href="{cat.U_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_MENU_UP}" title="{LG_ADM_MENU_UP}" border="0" /></a>
+			<a href="{cat.U_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_MENU_DOWN}" title="{LG_ADM_MENU_DOWN}" border="0" /></a>
+		</legend>
+		<block name="cat.link">
+			<dl>
+				<dt>&#187; {cat.link.NAME}</dt>
+				<dd>
+					{cat.link.LIST_AUTH} &nbsp;
+					<a href="{cat.link.U_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_MENU_UP}" title="{LG_ADM_MENU_UP}" border="0" /></a>
+					<a href="{cat.link.U_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_MENU_DOWN}" title="{LG_ADM_MENU_DOWN}" border="0" /></a>
+				</dd>
+			</dl>
+		</block>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+</block>
+</form>
+
+<include name="adm_footer.html">

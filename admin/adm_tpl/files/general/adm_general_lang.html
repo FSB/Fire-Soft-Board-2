@@ -1,0 +1,180 @@
+<include name="adm_header.html">
+
+<switch name="lang_list">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_ADM_LANG_INSTALL}</legend>
+		<dl>
+			<dt><label for="upload_lang_id">{LG_ADM_LANG_INSTALL_CHOOSE} :</label><br /><span>{LG_ADM_LANG_INSTALL_CHOOSE_EXP}</span></dt>
+			<dd>
+				<input type="file" name="upload_lang" size="35" id="upload_lang_id" />
+				<input type="submit" name="submit_install" value="{LG_SUBMIT}" class="submit" />
+				<br /><input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="export_lang_id">{LG_ADM_LANG_EXPORT} :</label></dt>
+			<dd>
+				<input type="submit" name="export_lang" value="{LG_SUBMIT}" class="submit" /><br />
+				<input type="radio" name="export_lang_ext" value="xml" id="export_lang_id" checked="checked" /> {LG_ADM_LANG_EXPORT_XML} &nbsp;
+				<input type="radio" name="export_lang_ext" value="zip" /> {LG_ADM_LANG_EXPORT_ZIP} &nbsp;
+				<input type="radio" name="export_lang_ext" value="tar" /> {LG_ADM_LANG_EXPORT_TAR} &nbsp;
+				<input type="radio" name="export_lang_ext" value="tar.gz" /> {LG_ADM_LANG_EXPORT_GZ}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_SEARCH}</legend>
+		<dl>
+			<dt><label for="search_id">{LG_ADM_LANG_SEARCH} :</label></dt>
+			<dd><input type="text" name="search" id="search_id" value="{SEARCH}" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="search_type_id">{LG_ADM_LANG_SEARCH_TYPE} :</label></dt>
+			<dd>
+				<input type="radio" name="search_type" id="search_type_id" value="value" {SEARCH_TYPE_V} /> {LG_ADM_LANG_TYPE_VALUE} &nbsp;
+				<input type="radio" name="search_type" value="key" {SEARCH_TYPE_K} /> {LG_ADM_LANG_TYPE_KEY}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_LANG_CHOOSE} :</label></dt>
+			<dd>{LIST_LANG}</dd>
+		</dl>
+		<dl>
+			<dt><label for="interval_id">{LG_ADM_LANG_INTERVAL} :</label></dt>
+			<dd><input type="text" name="interval" id="interval_id" value="{INTERVAL}" size="5" /></dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<switch name="pagination">
+		<br /><div align="right">{PAGINATION}</div>
+	</switch>
+
+	<fieldset>
+		<legend>{LG_ADM_LANG_LIST}</legend>
+		<block name="lang">
+			<if content="$lang.FIRST_ROW">
+				<dl>
+					<dt class="title">{LG_ADM_LANG_KEY}</dt>
+					<dd class="title">{LG_ADM_LANG_VALUE}</dd>
+				</dl>
+			</if>
+			<dl>
+				<dt><label for="key_{lang.ITERATOR}">{lang.KEY}</label></dt>
+				<dd>
+					<if content="$lang.IS_TEXTAREA == '1'">
+						<textarea id="key_{lang.ITERATOR}" name="lg_{lang.KEY}" rows="4" cols="45">{lang.VALUE}</textarea>
+					<else>
+						<input id="key_{lang.ITERATOR}" type="text" name="lg_{lang.KEY}" value="{lang.VALUE}" size="60" />
+					</if>
+				</dd>
+			</dl>
+			<if content="$lang.LAST_ROW">
+				<div>
+					<input type="submit" name="submit_lang" value="{LG_SUBMIT}" class="submit" />
+					<input type="reset" name="submit_lang" value="{LG_RESET}" class="reset" />
+					<input type="submit" name="submit_refresh" value="{LG_ADM_LANG_REFRESH}" class="submit" />
+				</div>
+			</if>
+		</block>
+		<blockelse name="lang"><div class="error">{LG_NO_RESULT}</div></blockelse>
+	</fieldset>
+
+	<switch name="pagination">
+		<br style="line-height: 10px" /><div align="right">{PAGINATION}</div>
+	</switch>
+
+	<fieldset>
+		<legend>{LG_ADM_LANG_ADD_KEY}</legend>
+		<dl>	
+			<dt><label for="add_key_id">{LG_ADM_LANG_KEY} :</label></dt>
+			<dd><input id="add_key_id" type="text" name="add_key" size="60" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="add_value_id">{LG_ADM_LANG_VALUE} :</label></dt>
+			<dd><textarea id="add_value_id" name="add_value" rows="4" cols="45"></textarea></dd>
+		</dl>
+		<div><input type="submit" name="submit_add" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="lang_mail">
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_INFORMATION}</legend>
+		<dl>
+			<dt><label>{LG_ADM_LANG_CHOOSE} :</label></dt>
+			<dd>{LIST_LANG}</dd>
+		</dl>
+		<div><input type="submit" name="submit_choose_lang" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset class="message">
+		<legend>{LG_ADM_LANG_MAIL}</legend>
+		<block name="mail">
+			<dl>
+				<dt class="strong">{mail.NAME}</dt>
+				<dd>
+					<if content="$mail.UPDATED"><input type="checkbox" name="email_default[{mail.NAME}]" /> {LG_ADM_LANG_MAIL_DEFAULT}<br /></if>
+					<textarea name="email[{mail.NAME}]" rows="10" cols="60">{mail.CONTENT}</textarea>
+				</dd>
+			</dl>
+			<br />
+		</block>
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}</dd>
+		</dl>
+		<div><input type="submit" name="submit_mail" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="lang_faq">
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_INFORMATION}</legend>
+		<dl>
+			<dt><label>{LG_ADM_LANG_CHOOSE} :</label></dt>
+			<dd>{LIST_LANG}</dd>
+		</dl>
+		<div><input type="submit" name="submit_choose_lang" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset class="message">
+		<legend>{LG_ADM_LANG_ADD_FAQ}</legend>
+		<dl>
+			<dt><label>Section de la FAQ :</label></dt>
+			<dd>{LIST_SECTION}</dd>
+		</dl>
+		<dl>
+			<dt><label for="faq_question_id">{LG_ADM_LANG_FAQ_QUESTION} :</label></dt>
+			<dd><input type="text" id="faq_question_id" name="faq_question" size="60" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="faq_answer_id">{LG_ADM_LANG_FAQ_ANSWER} :</label></dt>
+			<dd><textarea name="faq_answer" rows="10" cols="70"></textarea></dd>
+		</dl>
+		<div><input type="submit" name="submit_faq_add" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<block name="section">
+		<fieldset>
+			<legend>{section.TITLE}</legend>
+			<block name="section.item">
+				<blockquote>
+					<p><input type="text" name="section[{section.NAME}][{section.item.NAME}][question]" value="{section.item.QUESTION}" size="80" /></p>
+					<textarea name="section[{section.NAME}][{section.item.NAME}][answer]" rows="10" cols="80">{section.item.ANSWER}</textarea>
+				</blockquote>
+				<br />
+			</block>
+			<div><input type="submit" name="submit_faq" value="{LG_SUBMIT}" class="submit" /></div>
+		</fieldset>
+	</block>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

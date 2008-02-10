@@ -1,0 +1,27 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_USER_MODULE_ACTIVATE}</h1>
+	<table class="form">
+		<block name="activate">
+			<tr>
+				<th><label>{activate.LANG} :</label><if content="$activate.EXPLAIN"><br /><span class="small">{activate.EXPLAIN}</span></if></th>
+				<td>
+					<block name="activate.form">
+						<input type="{activate.TYPE}" name="{activate.NAME}<if content="$activate.TYPE == 'checkbox'">[]</if>" value="{activate.form.VALUE}" {activate.form.CHECKED} /> {activate.form.LANG}<if content="$activate.BR"><br /></if>
+					</block>
+				</td>
+			</tr>
+		</block>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

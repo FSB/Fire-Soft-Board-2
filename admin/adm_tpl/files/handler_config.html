@@ -1,0 +1,49 @@
+<block name="cat">
+	<fieldset>
+		<legend>{cat.NAME}</legend>
+		<if content="$cat.EXPLAIN"><div class="desc">{cat.EXPLAIN}</div></if>
+		<block name="cat.line">
+			<block name="cat.line.put_html_code">
+				<dl>
+					<dt>
+						<label>{cat.line.put_html_code.L_ACTION} :</label>
+						<if content="$cat.line.put_html_code.EXPLAIN"><br /><span>{cat.line.put_html_code.EXPLAIN}</span></if>
+					</dt>
+					<dd>{cat.line.put_html_code.CODE}</dd>
+				</dl>
+			</block>
+			<block name="cat.line.put_text">
+				<dl>
+					<dt>
+						<label for="{cat.line.put_text.NAME}_id">{cat.line.put_text.L_ACTION} :</label>
+						<if content="$cat.line.put_text.EXPLAIN"><br /><span>{cat.line.put_text.EXPLAIN}</span></if>
+					</dt>
+					<dd><input type="{cat.line.put_text.TYPE}" name="{cat.line.put_text.NAME}" id="{cat.line.put_text.NAME}_id" value="{cat.line.put_text.VALUE}" <block name="cat.line.put_text.option">{cat.line.put_text.option.OPT_NAME}="{cat.line.put_text.option.OPT_VALUE}" </block>/></dd>
+				</dl>
+			</block>
+			<block name="cat.line.put_textarea">
+				<dl>
+					<dt>
+						<label for="{cat.line.put_textarea.NAME}_id">{cat.line.put_textarea.L_ACTION} :</label>
+						<if content="$cat.line.put_textarea.EXPLAIN"><br /><span>{cat.line.put_textarea.EXPLAIN}</span></if>
+					</dt>
+					<dd><textarea name="{cat.line.put_textarea.NAME}" id="{cat.line.put_textarea.NAME}_id" <block name="cat.line.put_textarea.option">{cat.line.put_textarea.option.OPT_NAME}="{cat.line.put_textarea.option.OPT_VALUE}" </block>>{cat.line.put_textarea.VALUE}</textarea></dd>
+				</dl>
+			</block>
+			<block name="cat.line.put_boolean">
+				<dl>
+					<dt>
+						<label for="{cat.line.put_boolean.NAME}_id">{cat.line.put_boolean.L_ACTION} :</label>
+						<if content="$cat.line.put_boolean.EXPLAIN"><br /><span>{cat.line.put_boolean.EXPLAIN}</span></if>
+					</dt>
+					<dd>
+						<block name="cat.line.put_boolean.row">
+							<input type="radio" value="{cat.line.put_boolean.row.VALUE}" name="{cat.line.put_boolean.NAME}" <if content="$cat.line.put_boolean.row.CHECKED">id="{cat.line.put_boolean.NAME}_id" checked="checked"</if> /> {cat.line.put_boolean.row.LANG} {cat.line.put_boolean.SEPARATOR}
+						</block>
+					</dd>
+				</dl>
+			</block>
+		</block>
+		<if content="$cat.LAST_ROW"><div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div></if>
+	</fieldset>
+</block>

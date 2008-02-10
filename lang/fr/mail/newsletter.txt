@@ -1,0 +1,11 @@
+Bonjour,
+
+Vous avez reçu une newsletter de la part du forum <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Si cet Email contient du spam ou des propos abusifs veuillez contacter l'administrateur du forum.
+~~~~~~~~~~
+
+{CONTENT}
+
+~~~~~~~~~~
+Si vous souhaitez vous désinscrire à cette newsletter veuillez vous rendre à cette URL: <a href="{U_UNSUBSCRIBE}">{U_UNSUBSCRIBE}</a>.

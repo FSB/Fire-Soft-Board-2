@@ -1,0 +1,51 @@
+<variable name="VAR_HEADER_EXISTS" value="1" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{SITE_NAME}</title>
+	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/print.css">
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}"  />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+</head>
+<body>
+
+<h1>{TOPIC_NAME}</h1>
+
+<include name="navigation.html" />
+
+<switch name="poll">
+	<hr align="left" />
+	<b>{POLL_NAME}</b><br />
+	<table>
+		<block name="poll_option">
+			<tr>
+				<td width="50%" align="right">{poll_option.NAME} &nbsp; </td>
+				<td width="50%">{poll_option.CALCUL}% ({poll_option.TOTAL} / {POLL_TOTAL_VOTE})</td>
+			</tr>
+		</block>
+	</table>
+</switch>
+
+<block name="post">
+<hr align="left" />
+<p class="post">
+<a name="{post.ID}"></a>
+<if content="$post.IS_VISITOR">{post.NICKNAME}<else><a href="{post.U_LOGIN}">{post.NICKNAME}</a></if> - {post.DATE}
+</p>
+<hr align="left" />
+<p class="post">
+{post.CONTENT}
+</p>
+</block>
+
+<hr align="left" />
+
+<include name="navigation.html" />
+
+<br />
+<div class="copyright">
+	Forum <a href="http://www.fire-soft-board.com" target="_blank">Fire-Soft-Board</a> &copy; 2004 - {CURRENT_YEAR}
+</div>
+
+</body>
+</head>

@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Documentation sur le système de compression / décompression d'achives</title>
+<!--
+	Documentation sur le système de compression / décompression d'achives
+	
+	Name :		~/doc/compress.html
+	Begin :		14/10/2005
+	Last :		28/11/2006
+	User :		Genova
+	License :	GPL v2.0
+-->
+<link type="text/css" rel="stylesheet" href="style/doc.css">
+</head>
+<body>
+<div id="border">
+<table cellpadding="0" cellspacing="0" class="table_deco">
+		<tr class="bg_head">
+			<td id="logo" onclick="location.href='index.html'" onmouseover="this.style.cursor='pointer'"></td>
+			<td align="center">&nbsp;</td>
+		</tr>
+</table>
+<div id="content">
+
+<h1>Documentation sur le système de compression / décompression d'achives</h1>
+<p>Cette documentation explique comment créer des archives zip, tar ou tar.gz, et comment les décompresser, via la classe
+<span class="b">~/main/class/class_compress.php</span>. Cette classe necessite aussi la présence de la classe <span class="b">~/main/class/class_file.php</span>
+pour la gestion des fichiers.<br />Il est très important de noter que comme la classe File est utilisée en tant que gestionaire de fichier, vous travaillerez
+sur des fichiers positionés de façon absolue dans l'arborescence. C'est à dire que quelque soit l'endroit où vous vous trouvez dans l'arborescence du forum,
+vous devez simplement passer le nom du fichier depuis la racine du forum. Par exemple si vous travaillez dans le répertoire <span class="b">~/admin/</span>, et que vou
+souhaitez archiver le fichier <span class="b">~/main/process.php</span>, vous travaillerez avec le chemin <span class="b">main/process.php</span> et non pas
+avec <span class="b">../main/process.php</span>.</p><br />
+<span class="a">Créer une archive</span>.
+<p>Pour créer une archive, voilà la marche à suivre :
+<pre>// Inclusion des deux classes necessaires
+include(ROOT . 'main/class/class_file.' . PHPEXT);
+include(ROOT . 'main/class/class_compress.' . PHPEXT);
+
+// Instance d'un objet File qui servira à gérer les fichiers compressés. Vous pouvez passer true comme paramètre à File::method(), afin
+// d'utiliser une connexion FTP.
+$file = File::method(false);
+
+// Instance de la classe de compression.
+// Le premier argument est le nom de l'archive à créer, suivant l'extension utilisée (zip, tar, tar.gz), l'archive
+// sera compressée avec une des trois méthodes citées.
+// Le second argument est l'objet File pour la manipulation des fichiers
+$compress = new Compress('archive.zip', $file);
+
+// Ajoute des fichiers à l'archive
+$compress->add_file('monfichier.txt');
+$compress->add_file('smiley.gif');
+
+// Création de l'archive, qui sera stoquée dans archive.zip
+$compress->write();</pre>
+La méthode <span class="b">add_file()</span> a quelques propriétés suplémentaires :
+<ul>
+<li>Si vous passez en paramètre un répertoire, le contenu de ce répertoire sera archivé récursivement.</li>
+<li>Cette méthode peut prendre un second paramètre, qui servira à supprimer le chemin donner du nom du fichier. Par exemple :
+<pre>$compress->add_file('../chemin1/chemin2/chemin3/fichier.gif', '../chemin1/chemin2/');</pre>
+va ajouter le fichier <span class="b">../chemin1/chemin2/chemin3/fichier.gif</span> a l'archive, mais en le stoquant dans un répertoire
+<span class="b">chemin3/fichier.gif</span>.</li>
+<li>Cette méthode peut prendre un troisième paramètre, qui sera le contraire du second paramètre, c'est à dire qu'on peut ajouter un répertoire suplémentaire
+devant le nom du fichier, par exemple :
+<pre>$compress->add_file('fichier.gif', '', 'chemin/');</pre>
+enregistrera <span class="b">fichier.gif</span> dans un répertoire <span class="b">chemin/fichier.gif</span> dans l'archive.</li>
+</ul>
+La méthode <span class="b">write()</span> peut prendre un argument, qui est soit <span class="b">false</span> soit <span class="b">true</span>.
+Par défaut il vaut <span class="b">false</span>. Si vous lui passez <span class="b">true</span>, le fichier de l'archive ne sera pas écrit, et le code créé 
+sera simplement retourné. Par exemple :
+<pre>$source = $compress->write(TRUE);
+header("Pragma: no-cache");
+header("Content-Type: text/x-delimtext; name=\"fichier.zip\"");
+header("Content-disposition: attachment; filename=fichier.zip");
+echo $source;
+exit;</pre>
+lancera un téléchargement de l'archive via le navigateur.
+</p>
+<br /><br /><br />
+<span class="a">Extraire une archive</span>.
+<p>Pour extraire une archive, voilà la marche à suivre :
+<pre>// Inclusion des deux classes necessaires
+include(ROOT . 'main/class/class_file.' . PHPEXT);
+include(ROOT . 'main/class/class_compress.' . PHPEXT);
+
+// Instance d'un objet File qui servira à gérer les fichiers compressés. Vous pouvez passer true comme paramètre à File::method(), afin
+// d'utiliser une connexion FTP.
+$file = File::method(false);
+
+// Instance de la classe de compression.
+// Le premier argument est le nom de l'archive à extraire.
+// Le second argument est l'objet File pour la manipulation des fichiers
+$compress = new Compress('archive.zip', $file);
+
+// Extraction de l'archive
+$compress->extract('chemin/extraction/');</pre>
+tout simplement. La méthode <span class="b">extract()</span> prend en premier argument le dossier dans lequel l'archive sera extraite, et comme second argument
+un chemin qui sera supprimé du chemin des fichiers extraits, un peu comme le second argument de la méthode <span class="b">add_file()</span>.</p>
+
+</div>
+</div>
+</body>
+</html>

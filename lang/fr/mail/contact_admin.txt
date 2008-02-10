@@ -1,0 +1,9 @@
+Bonjour,
+
+Vous recevez ce message privé de la part d'un visiteur (IP: {IP} ; Adresse email: {EMAIL}) via le formulaire de contact d'administrateur sur 
+le forum <a href="{FORUM_URL}">{FORUM_NAME}</a>.
+
+Voici le contenu du message :
+~~~~~~~~~~
+
+{CONTENT}

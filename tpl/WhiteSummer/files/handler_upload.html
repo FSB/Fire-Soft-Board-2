@@ -1,0 +1,66 @@
+<variable name="VAR_HEADER_EXISTS" value="1" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{TAG_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<style type="text/css">
+	<!--
+	div
+	{
+		border: 1px #000000 solid;
+		background-color: #EEEEEE;
+		width: 265px;
+		height: 245px;
+		overflow: auto;
+	}
+
+	p
+	{
+		margin: 2px;
+		font-weight: bold;
+		font-size: 10px;
+		font-family: arial;
+	}
+
+	h3
+	{
+		margin: 5px;
+		margin-left: 10px;
+		font-size: 16px;
+		font-family: arial;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	-->
+	</style>
+
+	<script type="text/javascript">
+	<!--
+	function add_uploaded(id, cur, is_img, path)
+	{
+		content = (is_img) ? '[img]' + path + '[/img]' : '';
+		parent.insert_text('{MAP_ID}', '', '[attach=' + id + ']' + content, '', '[/attach]', '_upload', null);
+		parent.close_fsbcode_box('');
+		cur.checked = false;
+	}
+	//-->
+	</script>
+</head>
+
+<body>
+<div>
+	<h3>{LG_POST_UPLOAD_FRAME}</h3>
+	<block name="upload">
+		<p>
+			<input type="checkbox" onclick="add_uploaded('{upload.ID}', this, {upload.IS_IMG}, '{upload.PATH}')" />
+			<span title="{upload.TIME}">{upload.REALNAME}</span> ({upload.FILESIZE})
+		</p>
+	</block>
+	<blockelse name="upload">
+		<p style="padding: 5px">{LG_POST_NO_UPLOAD}</p>
+	</blockelse>
+</div>
+</body>
+</html>

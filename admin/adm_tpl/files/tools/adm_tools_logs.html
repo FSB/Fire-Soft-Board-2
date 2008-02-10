@@ -1,0 +1,56 @@
+<include name="adm_header.html" />
+
+<switch name="logs_list">
+	<form action="{U_ACTION}" method="post" name="form_log">
+	<switch name="show_pagination">
+		<div align="right">{PAGINATION}</div>
+	</switch>
+
+	<fieldset>
+		<legend>{LOG_NAME}</legend>
+		<table class="tab" cellspacing="0">
+		<block name="log">
+			<if content="$log.FIRST_ROW">
+				<tr>
+					<th>{LG_ADM_LOG_STR}</th>
+					<switch name="log_error">
+						<th width="25">{LG_ADM_LOG_LINE}</th>
+						<th>{LG_ADM_LOG_FILE}</th>
+					</switch>
+					<th width="150">{LG_ADM_LOG_TIME}</th>
+					<th width="125">{LG_ADM_LOG_USER}</th>
+					<th width="30">&nbsp;</th>
+				</tr>
+			</if>
+			<tr class="highlight">
+				<td>{log.STR}</td>
+				<switch name="log_error">
+					<td align="center">{log.LINE}</td>
+					<td align="center">{log.FILE}</td>
+				</switch>
+				<td align="center">{log.TIME}</td>
+				<td align="center">{log.USER}</td>
+				<td align="center"><input type="checkbox" value="{log.ID}" name="action[]" /></td>
+			</tr>
+		</block>
+		<blockelse name="log">
+			<tr>
+				<td class="error" colspan="6">{LG_NO_RESULT}</td>
+			</tr>
+		</blockelse>
+		</table>
+		<div>
+			<a href="#" onclick="check_boxes('form_log', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_log', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+			<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+		</div>
+	</fieldset>
+
+	<switch name="show_pagination">
+		<br style="line-height: 5px" />
+		<div align="right">{PAGINATION}</div>
+	</switch>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

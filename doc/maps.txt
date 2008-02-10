@@ -1,0 +1,60 @@
+<!--
+	Légende :
+		* pour les balises
+		- pour les attributs
+		(...) contient une chaîne de caractère
+		(x|y|z) prend soit la valeur x, soit la valeur y, soit la valeur z
+		<...> contient des balises enfant
+		#...# cette balise peut se répéter X fois
+		(!) signifie que cette option n'est actuellement pas implémentée au système
+-->
+
+<!--
+	@title=Format des fichiers MAPS
+	@description=Explication des différentes balises composant les fichiers MAPS, utilisés pour générer des formulaires sous FSB2
+-->
+
+* <map> <...> : Conteneur de la page
+	* <head> <...> : Header de la MAP
+		* <title> (...) : Titre de la MAP
+		* <template> (...) : Sera utilisé comme "texte" encadrant le message. %s sera remplacé par le contenu de la map (exemple : <template>Contenu du message : %s</template>)
+		* <onUpload /> : Appelé lors d'une upload de fichier
+			- set (...) : Champ cible où la balise [attach] sera mise
+			- append (true|false) : si true, la balise [attach] sera ajoutée au contenu du champ, si false elle écrasera le contenu du champ
+		* <description> (...) (!) : Description de la MAP (indépendant du champ texte description sur la page)
+			- set (true|false) (!) : si true, remplira le champ description sur la page. False par défaut
+		* <autor> <...> (!) : Informations sur l'auteur de la MAP
+			* <name> (...) (!) : Nom de l'auteur
+			* <email> (...) (!) : Email de l'auteur
+			* <website> (...) (!) : Site web de l'auteur
+		* <poll> <...> : Sondage par défaut
+			* <question> (...) : Question du sondage
+			* <answer> <...> : Réponses du sondage
+				- total : Total de réponses possibles, 1 par défaut (si inférieur à 1, sera remis à 1)
+				* <item> (...) #...# : Une réponse du sondage
+		* <type /> (!) : Type de sujet
+			- value (global|announce|topic) (!) : Type de sujet par défaut (topic sera utilisé par défaut)
+	* <body> <...> : Corps de la MAP
+		* <line> <...> #...# : Chaque ligne correspondra à une option du formulaire
+			- name (...) : Nom de la ligne. Doit être unique. Ce nom peut être utilisé par le champ set de la balise <onUpload />
+			* <type> (text|textarea|radio|checkbox|list|multilist) : Type de l'option
+			* <lang> (...) : Clef de langue utilisée lors du remplissage de la MAP
+				- key (...) (!) : Si la clef de langue existe, on affiche sa valeur. Sinon on affiche le texte par défaut
+			* <result> (...) : Utilisé pour le formatage de la valeur du champ dans le message. %s sera remplacé par la valeur (exemple : <result>Mon prénom : %s</result>)
+			* <option> <...> : Options de la ligne
+				* <list> <...> : En cas de liste (list ou multilist), contient les éléments
+					* <elem> (...) #...# : élément de la liste
+				* <default> (...) <...> : Valeur par défaut du champ (contient une chaine pour text, textarea, list, radio et une série d'éléments pour checkbox et multilist)
+					* <elem> (...) #...# : élément qui sera mis par défaut
+				* <rows> (...) : Pour un champ textarea, nombre de lignes
+				* <cols> (...) : Pour un champ textarea, nombre de colones
+				* <size> (...) : Pour un champ text, longueur
+				* <maxlength> (...) : Longueur maximale du texte pour les champs text et textarea
+				* <separator> (...) : Séparateur entre les éléments pour les champs multilist et checkbox
+				* <ifEmpty> (...) : Si la valeur est vide, on affiche le contenu de cette balise à la place du <result>
+			* <onSubmit /> (!) : Appelé une fois le formulaire soumis, pour ce champ
+				- regexp (...) (!) : prend en paramètre une regexp. Le contenu du champ devra vérifié cette regexp afin d'être validé. Uniquement valable pour les champs text. Exemple pour vérifier une adresse Email : .*?@.*?\..{2,4}
+			* <message> <...> (!) : Options sur le message
+				- useFsbcode (true|false) (!) : Parse des FSBcode
+				- useImg (true|false) (!) : Parse des images
+				- useHref (true|false) (!) : Parse des liens

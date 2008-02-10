@@ -1,0 +1,96 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<script type="text/javascript">
+<!--
+var gl_check_up = true;
+var gl_check_down = true;
+
+/*
+** Coche les checkbox situé en dessous / dessus d'une autre checkbox
+** -----
+** form_name ::		Nom du formulaire
+** element_name ::	Nom des checkbox
+** direction ::		up ou down
+** post_id ::		ID du message actuel
+*/
+function check_boxes_pos(form_name, element_name, direction, post_id)
+{
+	var chkboxes = document.forms[form_name].elements[element_name];
+	var count = chkboxes.length;
+
+	if (count)
+	{
+		for (var i = 0; i < count; i++)
+		{
+			if ((direction == 'down' && chkboxes[i].value >= post_id) || (direction == 'up' && chkboxes[i].value <= post_id))
+			{
+				eval("chkboxes[i].checked = gl_check_" + direction + ";");
+			}
+		}
+
+		eval("gl_check_" + direction + " ^= true;");
+	}
+	else
+	{
+		chkboxes.checked ^= true;
+	}
+	return (true);
+}
+//-->
+</script>
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<div class="round">
+	<h1>{LG_MODO_MODULE_SPLIT}</h1>
+	<table class="form">
+		<tr>
+			<th><label for="id_id">{LG_MODO_TOPIC_ID} :</label></th>
+			<td>
+				<input type="text" name="id" id="id_id" value="{THIS_ID}" size="5" maxlength="10" />
+				<input type="submit" name="submit_id" value="{LG_SUBMIT}" class="submit" />
+			</td>
+		</tr>
+		<switch name="show_topic">
+			<tr>
+				<th><label for="new_title_id">{LG_MODO_SPLIT_TITLE} :</label></th>
+				<td><input type="text" name="new_title" id="new_title_id" size="35" /></td>
+			</tr>
+			<tr>
+				<th><label>{LG_MODO_SPLIT_FORUM} :</label></th>
+				<td>{LIST_FORUM}</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_split" value="{LG_MODO_SPLIT_SUBMIT}" class="submit" /></td>
+			</tr>
+		</switch>
+	</table>
+</div>
+
+<switch name="show_topic">
+	<div class="round">
+		<h1>{TOPIC_NAME}</h1>
+		<block name="post">
+			<table class="post">
+			<tr>
+				<td class="userinfo" style="width: 100px">
+					<div class="userinfo_box">
+						<input type="checkbox" name="action[]" value="{post.ID}" />
+						<a href="#" onclick="check_boxes_pos('form_box', 'action[]', 'up', '{post.ID}'); return false;"><img src="{IMG_UP}" alt="" title="{LG_MODO_CHECK_UP}" border="0" /></a>
+						<a href="#" onclick="check_boxes_pos('form_box', 'action[]', 'down', '{post.ID}'); return false;"><img src="{IMG_DOWN}" alt="" title="{LG_MODO_CHECK_DOWN}" border="0" /></a>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">{post.NICKNAME} / {post.DATE}</div>
+					{post.CONTENT}
+				</td>
+			</tr>
+			</table>
+		</block>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

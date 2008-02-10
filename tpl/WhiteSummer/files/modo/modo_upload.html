@@ -1,0 +1,53 @@
+﻿<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
+<div class="round">
+	<h1>{LG_MODO_MODULE_UPLOAD}</h1>
+	<table class="t" cellspacing="0">
+	<block name="upload">
+		<if content="$upload.FIRST_ROW">
+			<tr>
+				<th><a href="{U_ORDER_FILENAME}">{LG_MODO_UPLOAD_FILENAME}</a></th>
+				<th width="100"><a href="{U_ORDER_FILESIZE}">{LG_MODO_UPLOAD_FILESIZE}</a></th>
+				<th width="200"><a href="{U_ORDER_FILETIME}">{LG_MODO_UPLOAD_FILETIME}</a></th>
+				<th width="150"><a href="{U_ORDER_NICKNAME}">{LG_MODO_UPLOAD_NICKNAME}</a></th>
+				<th width="150"><a href="{U_ORDER_AUTH}">{LG_MODO_UPLOAD_AUTH}</a></th>
+				<th width="75">&nbsp;</th>
+			</tr>
+		</if>
+		<tr>
+			<td align="center"><a href="{upload.DOWNLOAD}">{upload.FILENAME}</a></td>
+			<td align="center">{upload.FILESIZE}</td>
+			<td align="center">{upload.FILETIME}</td>
+			<td align="center">{upload.NICKNAME}</td>
+			<td align="center">{upload.AUTH}</td>
+			<td align="center"><input type="checkbox" name="action[]" value="{upload.ID}" /></td>
+		</tr>
+		<if content="$upload.LAST_ROW">
+			<tfoot>
+				<tr>
+					<td colspan="6">
+						<div style="text-align: right">
+							<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+							&nbsp; &nbsp; <a href="#" onclick="check_boxes('form_box', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+							<a href="#" onclick="check_boxes('form_box', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+						</div>
+					</td>
+				</tr>
+			</tfoot>
+		</if>
+	</block>
+	<blockelse name="upload">
+		<tr>
+			<td><div class="error">{LG_NO_RESULT}</div></td>
+		</tr>
+	</blockelse>
+	</table>
+</div>
+<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

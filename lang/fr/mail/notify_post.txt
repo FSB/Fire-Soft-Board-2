@@ -1,0 +1,10 @@
+Bonjour,
+
+Le sujet <a href="{TOPIC_URL}">{TOPIC_NAME}</a> que vous surveillez sur le forum <a href="{FORUM_URL}">{FORUM_NAME}</a> vient de recevoir une réponse.
+
+Vous pouvez suivre ce lien pour consulter la nouvelle réponse: <a href="{U_REPLY}">{U_REPLY}</a>
+
+Pour arrêter de surveiller ce sujet, cliquez sur le lien suivant: <a href="{U_STOP_NOTIFY}">{U_STOP_NOTIFY}</a>
+
+~~~~~~~~~~
+{FORUM_SIG}

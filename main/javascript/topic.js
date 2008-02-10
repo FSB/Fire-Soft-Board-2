@@ -1,0 +1,290 @@
+/*
+** +---------------------------------------------------+
+** | Name :			~/main/javascript/popup.js
+** | Begin :		03/10/2006
+** | Last :			08/11/2007
+** | User :			Genova
+** | License :		GPL v2.0
+** +---------------------------------------------------+
+*/
+
+var current_check = 0;
+
+/*
+** Vérifie en cas de vote à options multiple si on ne dépasse pas le nombre de vote
+** autorisé.
+*/
+function check_poll(current, max_vote)
+{
+	if (!current.checked)
+	{
+		current_check--;
+	}
+	else if (current_check >= max_vote)
+	{
+		current.checked = false;
+	}
+	else
+	{
+		current_check++;
+	}
+}
+
+/*
+** Affichage ou non de la réponse rapide
+*/
+function show_quick_reply()
+{
+	$('quick_reply').style.display = ($('quick_reply').style.display == 'none') ? 'block' : 'none';
+}
+
+/*
+** Redimensionne le textarea de l'édition rapide
+*/
+function resize_textarea(id, size)
+{
+	if (size < 0 && $(id).rows <= 5)
+	{
+		size = 0;
+	}
+	$(id).rows += size;
+}
+
+/*
+** Ouvre la fenêtre d'attente ajax
+*/
+function ajax_waiter_open()
+{
+	if (Nav_IE)
+	{
+		var scroll_y = document.body.scrollTop;
+	}
+	else
+	{
+		var scroll_y = window.pageYOffset;
+	}
+	$('ajax_waiter').style.top = scroll_y + 'px';
+	$('ajax_waiter').style.left = '0px';
+	$('ajax_waiter').innerHTML = '<img src="images/ajax-loader.gif" />';
+	$('ajax_waiter').style.display = 'block';
+}
+
+/*
+** Ferme la fenête d'attendre ajax
+*/
+function ajax_waiter_close()
+{
+	$('ajax_waiter').style.display = 'none';
+	$('ajax_waiter').innerHTML = '';
+}
+
+/*
+** Edition en live d'un message
+*/
+var ajax_is_in_edition_mode = new Array;
+var tabindex = 1;
+function edit_post_dynamic(id, post_id, is_first_post)
+{
+	// Si on était déjà en mode d'édition on annule
+	if (ajax_is_in_edition_mode[id])
+	{
+		// cancel_post_dynamic(id, post_id);
+		return ;
+	}
+	ajax_is_in_edition_mode[id] = true;
+
+	ajax_waiter_open();
+
+	var ajax = new Ajax();
+	ajax.onload = function(data)
+	{
+		if (!data)
+		{
+			return ;
+		}
+
+		if (data.getElementsByTagName('root').item(0))
+		{
+			content = data.getElementsByTagName('root').item(0).getElementsByTagName('line').item(0).firstChild.nodeValue;
+			title = data.getElementsByTagName('root').item(0).getElementsByTagName('title').item(0).firstChild.nodeValue;
+			html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post">';
+			if (is_first_post)
+			{
+				html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" value="' + htmlspecialchars(title) + '" /><br /><br />';
+			}
+			html += '<textarea style="width: 99%" rows="15" name="" id="' + id + '_ajax" tabindex="' + tabindex + '">' + content + '</textarea><p style="text-align: center">';
+			html += '<span style="float: left; margin-top: -13px"> &nbsp; &nbsp; ';
+			html += '<a href="javascript:resize_textarea(\'' + id + '_ajax\', -5)"><img src="' + topic['img_textarea_less'] + '" /></a> ';
+			html += '<a href="javascript:resize_textarea(\'' + id + '_ajax\', 5)"><img src="' + topic['img_textarea_more'] + '" /></a></span>';
+			html += '\<input type="button" class="reset" onclick="cancel_post_dynamic(\'' + id + '\', ' + post_id + ')" value="' + topic['lg_reset'] + '" tabindex="' + (tabindex + 1) + '" /> ';
+			html += '<a onclick="advanced_post_dynamic(\'' + id + '\', ' + post_id + ', ' + is_first_post + ')" class="reset" tabindex="' + (tabindex + 2) + '" >' + topic['lg_topic_advanced_edit'] + '</a> ';
+			html += '<input type="button" class="submit" onclick="submit_post_dynamic(\'' + id + '\', ' + post_id + ', false)" value="' + topic['lg_submit'] + '" tabindex="' + (tabindex + 3) + '" /></p>';
+			html += '<input type="hidden" name="preview_post" value="true" /></form>';
+			$(id).innerHTML = html;
+			tabindex += 4;
+		}
+		ajax_waiter_close();
+	}
+
+	ajax.onprogress = function (current)
+	{
+		ajax_waiter_open();
+	}
+	ajax.set_arg(AJAX_GET, 'mode', 'edit_post');
+	ajax.set_arg(AJAX_GET, 'id', post_id);
+	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
+}
+
+/*
+** Envoie vers l'édition avancée
+*/
+function advanced_post_dynamic(id, post_id, is_first_post)
+{
+	$(id + '_ajax').name = 'post_map_description';
+	$('title_' + id + '_ajax').name = 'post_title';
+	document.forms['form_dynamic_' + id].submit();
+}
+
+/*
+** Soumission du message
+*/
+function submit_post_dynamic(id, post_id, redirect)
+{
+	ajax_is_in_edition_mode[id] = false;
+
+	value = $(id + '_ajax').value;
+	value = value.replace(/\+/g, "&#43;");
+	if (value.trim().length < topic['cfg_post_min_length'])
+	{
+		alert(topic['lg_topic_alert_post']);
+		return ;
+	}
+
+	if ($('title_' + id + '_ajax'))
+	{
+		value_title = $('title_' + id + '_ajax').value.trim();
+		value_title = value_title.replace(/\+/g, "&#43;");
+		if (!value_title.length)
+		{
+			alert(topic['lg_topic_alert_title']);
+			return ;
+		}
+	}
+
+	ajax_waiter_open();
+
+	var ajax = new Ajax();
+	ajax.onload = function(data)
+	{
+		if (!data)
+		{
+			return ;
+		}
+
+		if (redirect)
+		{
+			location.href = topic['url_submit_ajax'] + '&id=' + post_id;
+		}
+		else if (data.getElementsByTagName('root').item(0).getElementsByTagName('content').item(0))
+		{
+			content = data.getElementsByTagName('root').item(0).getElementsByTagName('content').item(0).firstChild.nodeValue;
+			title = data.getElementsByTagName('root').item(0).getElementsByTagName('title').item(0).firstChild.nodeValue;
+			$(id).innerHTML = content;
+
+			if (title)
+			{
+				$('page_title').innerHTML = title;
+			}
+		}
+		ajax_waiter_close();
+	}
+
+	ajax.onprogress = function (current)
+	{
+		ajax_waiter_open();
+	}
+
+	// Envoie des requètes http
+	if ($('title_' + id + '_ajax'))
+	{
+		ajax.set_arg(AJAX_POST, 't_title', value_title);
+	}
+	ajax.set_arg(AJAX_POST, 'post_map_description', value);
+	ajax.set_arg(AJAX_GET, 'mode', 'submit_post');
+	ajax.set_arg(AJAX_GET, 'id', post_id);
+	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
+}
+
+/*
+** Remise en place du message initial
+*/
+function cancel_post_dynamic(id, post_id)
+{
+	ajax_is_in_edition_mode[id] = false;
+
+	var ajax = new Ajax();
+	ajax.onload = function(data)
+	{
+		if (!data)
+		{
+			return ;
+		}
+
+		if (data.getElementsByTagName('content').item(0))
+		{
+			content = data.getElementsByTagName('content').item(0).firstChild.nodeValue;
+			$(id).innerHTML = content;
+		}
+	}
+	ajax.set_arg(AJAX_GET, 'mode', 'show_post');
+	ajax.set_arg(AJAX_GET, 'id', post_id);
+	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
+}
+
+/*
+** Citation du message
+** -----
+** post_id ::		ID du message
+** form_id ::		ID du champ texte
+** open_id ::		ID du champ à ouvrir (reponse rapide par exemple)
+** is_wysiwyg ::	true si on est en mode WYSIWYG
+** is_mp ::			true si on doit récupérer les données de messages privés
+*/
+function quote_post(post_id, form_id, open_id, is_wysiwyg, is_mp)
+{
+	if (open_id && !$(open_id))
+	{
+		return ;
+	}
+
+	var ajax = new Ajax();
+	ajax.onload = function(data)
+	{
+		if (!data)
+		{
+			return ;
+		}
+
+		if (data.getElementsByTagName('content').item(0))
+		{
+			content = data.getElementsByTagName('content').item(0).firstChild.nodeValue;
+
+			if (open_id)
+			{
+				$(open_id).style.display = 'block';
+			}
+
+			if (!is_wysiwyg)
+			{
+				$(form_id).value = trim($(form_id).value + "\n" + content);
+			}
+			else
+			{
+				insert_wysiwyg_text(form_id, content);
+			}
+		}
+	}
+	ajax.set_arg(AJAX_GET, 'mode', (is_mp) ? 'quote_mp' : 'quote_post');
+	ajax.set_arg(AJAX_GET, 'id', post_id);
+	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
+}

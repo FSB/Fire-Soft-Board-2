@@ -1,0 +1,45 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/print.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, reutiliser et redistribuer
+** | ce fichier à condition de laisser cet entete.
+** +---------------------------------------------------+
+*/
+
+body
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+p.post
+{
+	font-size: 10px;
+}
+
+a, a.link
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+a:hover, a.link:hover
+{
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+hr
+{
+	border: solid #CCCCCC 0px;
+	border-width: 1px 0px 0px 0px;
+	width: 200px;
+}
+
+.copyright
+{
+	text-align: center;
+}

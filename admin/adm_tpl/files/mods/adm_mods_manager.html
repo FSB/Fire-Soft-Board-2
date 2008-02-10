@@ -1,0 +1,302 @@
+<include name="adm_header.html">
+
+<switch name="mods_list">
+	<form action="{U_ACTION}" method="post"  enctype="multipart/form-data">
+	<switch name="page_install">
+		<fieldset>
+			<legend>{LG_ADM_MODS_UPLOAD}</legend>
+			<dl>
+				<dt><label for="upload_mod_id">{LG_ADM_MODS_UPLOAD_PATH} :</label></dt>
+				<dd>
+					<input type="file" name="upload_mod" id="upload_mod_id" size="35" />
+					<br /><input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}
+				</dd>
+			</dl>
+			<div><input type="submit" name="submit_upload_mod" value="{LG_SUBMIT}" class="submit" /></div>
+		</fieldset>
+	</switch>
+	<fieldset>
+		<legend>{L_TITLE}</legend>
+		<table class="tab">
+		<block name="mod">
+			<if content="$mod.FIRST_ROW">
+				<tr>
+					<th width="200">{LG_ADM_MODS_NAME}</th>
+					<th width="100">{LG_ADM_MODS_VERSION}</th>
+					<th>{LG_ADM_MODS_DESCRIPTION}</th>
+					<th width="130">
+						<switch name="page_install">
+							{LG_ADM_MODS_INSTALL}
+						<else>
+							{LG_ADM_MODS_ACTIVATED}
+						</switch>
+					</th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center">
+					<b><a href="{mod.U_TEMPLATE}" title="<switch name="page_install">{LG_ADM_MODS_SEE_INSTALL}<else>{LG_ADM_MODS_DATA}</if>">{mod.NAME}</a></b>
+				</td>
+				<td align="center">
+					<if content="$mod.UPDATE_EXPLAIN"><b title="{mod.UPDATE_EXPLAIN}">[{LG_ADM_MODS_IS_UPDATE}]</b></if>
+					<if content="$mod.NEW_VERSION"><a href="{mod.U_TEMPLATE}" title="{LG_ADM_MODS_NEW_VERSION} ({mod.NEW_VERSION})" class="ko">{mod.VERSION}</a><else><span class="ok">{mod.VERSION}</span></if>
+				</td>
+				<td align="center">{mod.DESCRIPTION}</td>
+				<td align="center">
+					<switch name="page_install">
+						<a href="{mod.U_INSTALL}" class="submit">{LG_ADM_MODS_INSTALL}</a>
+					<else>
+						<input type="checkbox" name="action[]" value="{mod.CHECK_NAME}" <if content="$mod.CHECKED">checked="checked"</if> />
+					</switch>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="mod">
+			<tr>
+				<td class="error" colspan="4">{LG_ADM_MODS_NONE}</td>
+			</tr>
+		</blockelse>
+		</table>
+
+		<!--#
+			Ce bout de code assez complexe permet d'afficher un bouton submit si le block "mod" existe 
+			en au moins un exemplaire (on utilise le else), et si le switch "page_install" n'est pas activé.
+		#-->
+		<blockelse name="mod">
+		<else>
+			<switch name="!page_install">
+				<div><input type="submit" name="submit_mods" value="{LG_SUBMIT}" class="submit" /></div>
+			</switch>
+		</blockelse>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="mods_activation">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_ACTIVATION_TITLE}</legend>
+		<block name="mod">
+			<dl>
+				<dt><label for="mod_{mod.ITERATOR}">{mod.MOD_NAME} :</label><if content="$mod.MOD_EXPLAIN"><br /><span>{mod.MOD_EXPLAIN}</span></if></dt>
+				<dd>
+					<input type="radio" name="ac_{mod.NAME}" value="1" <if content="$mod.ACTIVATED">id="mod_{mod.ITERATOR}" checked="checked"</if> /> {LG_ACTIVATE} &nbsp;
+					<input type="radio" name="ac_{mod.NAME}" value="0" <if content="!$mod.ACTIVATED">id="mod_{mod.ITERATOR}" checked="checked"</if> /> {LG_DESACTIVATE}
+				</dd>
+			</dl>
+		</block>
+		<div><input type="submit" name="submit_activation" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="mods_backup">
+	<fieldset>
+		<legend>{LG_ADM_MODS_BACKUP_LIST}</legend>
+		<table class="tab">
+			<block name="file">
+				<if content="$file.FIRST_ROW">
+					<tr>
+						<th>{LG_ADM_MODS_FILENAME}</th>
+						<th width="100">{LG_ADM_MODS_COMPRESS}</th>
+						<th width="200">{LG_ADM_MODS_DATE}</th>
+						<th width="150"></th>
+					</tr>
+				</if>
+				<tr class="highlight">
+					<td align="center"><if content="$file.U_FILENAME"><a href="{file.U_FILENAME}">{file.FILENAME}</a><else>{file.FILENAME}</if></td>
+					<td align="center">{file.COMPRESS}</td>
+					<td align="center">{file.DATE}</td>
+					<td align="center"><a href="{file.U_RESTORE}" class="submit">{LG_ADM_MODS_RESTORE}</a></td>
+				</tr>
+			</block>
+			<blockelse name="file">
+				<tr><td class="error" colspan="4">{LG_NO_RESULT}</td></tr>
+			</block>
+		</table>
+	</fieldset>
+</switch>
+
+<switch name="mods_install">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_MODS_DATA}</legend>
+		<if content="$UPDATE_EXPLAIN"><div class="explain">{UPDATE_EXPLAIN}</div></if>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_NAME} :</dt>
+			<dd>{NAME}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_VERSION} :</dt>
+			<dd>{VERSION}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_DESCRIPTION} :</dt>
+			<dd>{DESCRIPTION}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_AUTHOR} :</dt>
+			<dd>
+				<block name="author">
+					<if content="$author.WEBSITE"><a href="{author.WEBSITE}">{author.NAME}</a><else>{author.NAME}</if> {author.EMAIL}
+					<if content="!$author.LAST_ROW"><br /></if>
+				</block>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_FILE_OPEN} :</dt>
+			<dd>{FILE_OPEN}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_FILE_JOINED} :</dt>
+			<dd>{FILE_JOINED}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_MODS_SQL} :</dt>
+			<dd>{SQL}</dd>
+		</dl>
+		<if content="$MOD_NOTE">
+			<dl>
+				<dt class="strong">{LG_ADM_MODS_NOTE} :</dt>
+				<dd>{MOD_NOTE}</dd>
+			</dl>
+		</if>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_MODS_INSTALL}</legend>
+		<dl>
+			<dt><label for="install_duplicat_id">{LG_ADM_MODS_INSTALL_DUPLICAT} :</label><br /><span>{LG_ADM_MODS_INSTALL_DUPLICAT_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="install_duplicat" id="install_duplicat_id" value="1" checked="checked" /> {LG_YES} &nbsp; 
+				<input type="radio" name="install_duplicat" value="0" /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="install_sql_id">{LG_ADM_MODS_INSTALL_SQL} :</label><br /><span>{LG_ADM_MODS_INSTALL_SQL_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="install_sql"id="install_sql_id"  value="1" checked="checked" /> {LG_YES} &nbsp; 
+				<input type="radio" name="install_sql" value="0" /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="install_file_id">{LG_ADM_MODS_INSTALL_FILE} :</label><br /><span>{LG_ADM_MODS_INSTALL_FILE_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="install_file" id="install_file_id" value="1" checked="checked" /> {LG_YES} &nbsp; 
+				<input type="radio" name="install_file" value="0" /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="format_backup_id">{LG_ADM_MODS_BACKUP_FORMAT} :</label><br /><span>{LG_ADM_MODS_BACKUP_FORMAT_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="format_backup" value="dir" /> {LG_ADM_MODS_BACKUP_DIR} &nbsp;
+				<input type="radio" name="format_backup" value="zip" /> {LG_ZIP} &nbsp; 
+				<input type="radio" name="format_backup" value="tar.gz" id="format_backup_id" checked="checked" /> {LG_TGZ} &nbsp;
+				<input type="radio" name="format_backup" value="tar" /> {LG_TAR} &nbsp;
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="use_ftp_id">{LG_USE_FTP} :</label></dt>
+			<dd><input type="checkbox" name="use_ftp" id="use_ftp_id" value="1" <if content="$USE_FTP">checked="checked"</if> /></dd>
+		</dl>
+		<div><input type="submit" name="submit_install" value="{LG_ADM_MODS_INSTALL}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="mods_error">
+	<fieldset>
+		<legend>{L_TITLE}</legend>
+		<table class="tab">
+			<tr>
+				<td><div class="error">{L_REPORT}</div></td>
+			</tr>
+			<block name="row">
+				<tr>
+					<th>{LG_ACTION} : {row.ACTION}</td>
+				</tr>
+				<tr>
+					<td>{row.ERROR}</td>
+				</tr>
+			</block>
+			</table>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_INFORMATION}</legend>
+		<div class="error">{L_RETURN_MODS}</div>
+	</fieldset>
+</switch>
+
+<switch name="mods_streaming">
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="message">
+		<legend>{LG_ADM_MODS_STREAM_LAST}</legend>
+		<block name="last_mod">
+			<dl>
+				<dt><b><a href="{last_mod.URL}">{last_mod.NAME}</a></b></dt>
+				<dd>{last_mod.DESC}</dd>
+			</dl>
+		</block>
+		<blockelse name="last_mod">
+			<div class="error">{LG_NO_RESULT}</div>
+		</blockelse>
+	</fieldset>
+
+	<switch name="show_cat_list">
+		<fieldset class="message">
+			<legend>{LG_ADM_MODS_CAT_LIST}</legend>
+			<block name="mod_cat">
+				<dl>
+					<dt><b><a href="{mod_cat.URL}">{mod_cat.NAME}</a></b><br />({mod_cat.TOTAL})</dt>
+					<dd>{mod_cat.DESC}</dd>
+				</dl>
+			</block>
+			<blockelse name="mod_cat">
+				<div class="error">{LG_NO_RESULT}</div>
+			</blockelse>
+		</fieldset>
+	</switch>
+
+	<switch name="show_mod_list">
+		<fieldset class="message">
+			<legend>{CAT_MODS_TITLE}</legend>
+			<block name="mod">
+				<dl>
+					<dt><b><a href="{mod.URL}">{mod.NAME}</a></b><br />({LG_ADM_MODS_AUTHOR} : <a href="{mod.U_AUTHOR}">{mod.AUTHOR}</a>)</dt>
+					<dd>{mod.DESC}</dd>
+				</dl>
+			</block>
+			<blockelse name="mod">
+				<div class="error">{LG_NO_RESULT}</div>
+			</blockelse>
+		</fieldset>
+	</switch>
+
+	<switch name="show_mod_content">
+		<fieldset>
+			<legend>{MOD_CONTENT_TITLE}</legend>
+			<dl>
+				<dt style="padding-left: 20px">
+					<b>{LG_ADM_MODS_NAME}</b> : {MOD_NAME}<br />
+					<b>{LG_ADM_MODS_VERSION}</b> : {MOD_VERSION}<br />
+					<b>{LG_ADM_MODS_AUTHOR}</b> : <b><a href="{MOD_CONTACT}">{MOD_AUTHOR}</a></b><br />
+					<if content="$MOD_WEBSITE"><b>{LG_ADM_MODS_AUTHOR_WEBSITE}</b> : <b><a href="{MOD_WEBSITE}">{MOD_WEBSITE}</a></b></if>
+				</dt>
+				<dd>
+					<a href="{U_DOWNLOAD_MOD}" class="submit">{LG_ADM_MODS_DOWNLOAD_FULL}</a>
+					<if content="$MOD_EXISTS">
+						<span class="ko">{LG_ADM_MODS_STREAM_EXISTS}</span>
+					<else>
+						<input type="submit" value="{LG_ADM_MODS_INSTALL_FULL}" name="install_stream" class="submit" />
+					</if>
+					<br /><b>{LG_USE_FTP}</b> : <input type="checkbox" name="use_ftp" id="use_ftp_id" value="1" <if content="$USE_FTP">checked="checked"</if> />
+				</dd>
+			</dl>
+			<blockquote>{MOD_DESCRIPTION}</blockquote>
+		</fieldset>
+	</switch>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

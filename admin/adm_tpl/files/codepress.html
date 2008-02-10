@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Codepress</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<link type="text/css" href="adm_tpl/codepress/codepress-{CODEPRESS_LANGUAGE}.css?timestamp=<?php echo time() ?>" rel="stylesheet" id="cp-lang-style" />
+	<script type="text/javascript" src="{ROOT}main/javascript/codepress.js?timestamp=<?php echo time() ?>"></script>
+	<script type="text/javascript">CodePress.language = '{CODEPRESS_LANGUAGE}';</script>
+</head>
+<body id="ffedt">
+	<script type="text/javascript">
+	<!--
+		value = parent.document.getElementById('content_id').value;
+		value = value.replace(/&/g, '&amp;');
+		value = value.replace(/</g, '&lt;');
+		value = value.replace(/>/g, '&gt;');
+		document.getElementById('ffedt').innerHTML = '\<pre id="ieedt">' + value + '\<\/pre>';
+	//-->
+	</script>
+</body>
+</html>

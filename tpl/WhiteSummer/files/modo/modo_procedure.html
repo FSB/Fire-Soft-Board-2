@@ -1,0 +1,27 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<div class="round">
+	<h1>{LG_MODO_MODULE_PROCEDURE}</h1>
+	<table class="form">
+		<block name="procedure">
+			<tr>
+				<th>{procedure.TITLE}</th>
+				<td>
+					<a href="{procedure.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+					<a href="{procedure.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="procedure">
+			<tr><td colspan="2"><div class="error">{LG_NO_RESULT}</div></td></tr>
+		</blockelse>
+		<tr>
+			<th></th>
+			<td><a href="{U_ADD}" class="submit">{LG_MODO_PROC_ADD}</a></td>
+		</tr>
+	</table>
+</div>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

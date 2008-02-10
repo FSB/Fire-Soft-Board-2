@@ -1,0 +1,99 @@
+<include name="adm_header.html" />
+
+<switch name="webftp_list">
+	<form name="webftp" action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<dl>
+			<dt><label for="upload_file_id">{LG_ADM_WEBFTP_UPLOAD} :</label></dt>
+			<dd>
+				<input type="file" name="upload_file" id="upload_file" size="35" />
+				<input type="submit" name="submit_upload" value="{LG_SUBMIT}" class="submit" />
+			</dd>
+		</dl>
+		<div style="text-align: left">
+			<a href="#" onclick="check_boxes('webftp', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('webftp', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+			&nbsp; <input type="text" name="chmod_files" maxlength="4" size="4" />
+			<input type="submit" name="submit_chmod" value="{LG_ADM_WEBFTP_CHMOD}" class="submit" />
+			&nbsp; &nbsp; <input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}
+		</div>
+	</fieldset>
+	<br />
+
+	<fieldset>
+		<legend><strong>{LG_ADM_WEBFTP_CURRENT_DIR} :</strong> {CURRENT_DIR}</legend>
+		<table class="tab">
+			<tr>
+				<th width="50">&nbsp;</th>
+				<th><a href="{U_WEBFTP_NAME}">{LG_ADM_WEBFTP_NAME}</a></th>
+				<th><a href="{U_WEBFTP_TYPE}">{LG_ADM_WEBFTP_TYPE}</a></th>
+				<th><a href="{U_WEBFTP_SIZE}">{LG_ADM_WEBFTP_SIZE}</a></th>
+				<th><a href="{U_WEBFTP_PERMS}">{LG_ADM_WEBFTP_PERMS}</a></th>
+				<th><a href="{U_WEBFTP_DATE}">{LG_ADM_WEBFTP_DATE}</a></th>
+				<th width="50">&nbsp;</th>
+			</tr>
+			<block name="file">
+				<tr>
+					<td width="50">
+						<input type="checkbox" name="action[]" value="{file.ACTION_NAME}" />
+						<img src="{file.IMG_TYPE}" alt="" />
+					</td>
+					<td align="center"><a href="{file.U_DIR}">{file.NAME}</a></td>
+					<td align="center">{file.TYPE}</td>
+					<td align="center">{file.SIZE}</td>
+					<td align="center">{file.PERMS}</td>
+					<td align="center">{file.DATE}</td>
+					<td align="center">
+						<if content="$file.CAN_EDIT"><a href="{file.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a></if>
+						<if content="$file.CAN_DELETE"><a href="{file.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a></if>
+					</td>
+				</tr>
+			</block>
+		</table>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="webftp_edit">
+	<script type="text/javascript">
+	<!--
+	var can_use_codepress = (Nav_IE || Nav_Moz) ? true : false;
+
+	function get_codepress_content()
+	{
+		if (can_use_codepress)
+		{
+			var CodepressFrame = document.getElementById('codepress').contentWindow;
+			var CodepressContent = CodepressFrame.CodePress.getCode();
+			document.getElementById('content_id').value = CodepressContent;
+		}
+	}
+	//-->
+	</script>
+
+	<form action="{U_ACTION}" method="post" onsubmit="get_codepress_content();">
+	<fieldset>
+		<legend>{FILENAME}</legend>
+		<blockquote style="margin: 0px">
+			<textarea name="content_file" id="content_id" rows="20" style="width: 100%">{CONTENT_FILE}</textarea>
+			<iframe id="codepress" src="{U_CODEPRESS}" style="display: none"></iframe>
+			<script type="text/javascript">
+			<!--
+			if (can_use_codepress)
+			{
+				document.getElementById('content_id').style.display = 'none';
+				document.getElementById('codepress').style.display = 'block';
+			}
+			//-->
+			</script>
+		</blockquote>
+		<div>
+			<input type="submit" name="submit_edit" value="{LG_SUBMIT}" class="submit" />
+			&nbsp; &nbsp; <input type="checkbox" name="use_ftp" value="1" <if content="$USE_FTP">checked="checked"</if> /> {LG_USE_FTP}
+		</div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

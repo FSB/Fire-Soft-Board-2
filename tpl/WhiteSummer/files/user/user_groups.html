@@ -1,0 +1,35 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="info">
+	<h1>{LG_USER_MODULE_GROUPS}</h1>
+	<div>
+		<div class="desc">{LG_USER_GROUPS_EXPLAIN}</div>
+		<input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" />
+	</div>
+</div>
+
+<block name="cat">
+	<div class="round">
+		<h1>{cat.LANG}</h1>
+		<div class="content">
+			<block name="cat.group">
+				<if content="$cat.group.FIRST_ROW"><ul style="list-style-type: none"></if>
+				<li>
+					<input type="radio" name="default_group" value="{cat.group.ID}" <if content="$DEFAULT_GROUP_ID == $cat.group.ID">checked="checked"</if> <if content="!$cat.group.SHOW_RADIO">disabled="disabled"</if> />
+					<a href="{cat.group.U_GROUP}" {cat.group.STYLE}>{cat.group.NAME}</a>
+					<if content="$cat.group.DESC"><br /><span class="small">{cat.group.DESC}</span></if>
+				</li>
+				<if content="$cat.group.LAST_ROW"></ul></if>
+			</block>
+			<blockelse name="cat.group">
+				<div class="error">{LG_NO_RESULT}</div>
+			</blockelse>
+		</div>
+	</div>
+</block>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

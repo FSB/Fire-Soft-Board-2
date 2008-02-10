@@ -1,0 +1,68 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="list_unapproved">
+	<div class="round">
+		<h1>{LG_MODO_MODULE_APPROVE}</h1>
+		<table class="t" cellspacing="0">
+			<block name="topic">
+				<if content="$topic.FIRST_ROW">
+					<tr>
+						<th>{LG_MODO_APPROVE_TOPIC}</th>
+						<th width="200">{LG_MODO_APPROVE_TOTAL}</th>
+					</tr>
+				</if>
+				<tr>
+					<td class="topicinfo">
+						<h3>
+							<if content="$topic.IS_NEW"><b>[{LG_MODO_APPROVE_NEW}]</b> </if>
+							<a href="{topic.U_TOPIC}" class="topicname">{topic.TITLE}</a>
+						</h3>
+						<span class="small">({topic.OWNER} &bull; {topic.DATE})</span>
+						<br /><span class="small"><i>{LG_FORUM} :</i> {topic.FORUM}</span>
+					</td>
+					<td align="center">{topic.TOTAL}</td>
+				</tr>
+			</block>
+			<blockelse name="topic">
+				<tr>
+					<td colspan="2" class="error">{LG_MODO_NO_APPROVE}</td>
+				</tr>
+			</blockelse>
+		</table>
+	</div>
+	<br />
+	<switch name="pagination"><div style="text-align: right">{PAGINATION}</div></switch>
+</switch>
+
+<switch name="list_unapproved_posts">
+	<div class="round">
+		<h1><if content="$IS_NEW"><b>[{LG_MODO_APPROVE_NEW}]</b> </if><a href="{U_TOPIC}">{TOPIC_TITLE}</a></h1>
+		<block name="post">
+			<table class="post">
+			<tr>
+				<td class="userinfo">
+					<div class="userinfo_box">
+						{post.NICKNAME}
+						<if content="$post.AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px;"><img src="{post.AVATAR}" alt="{post.AVATAR}" title="{post.AVATAR}" /></div></if>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">
+						<span>
+							<a href="{post.U_APPROVE}" class="submit">{LG_MODO_APPROVE}</a>
+							<a href="{post.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+							<a href="{post.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+						</span>
+						<b>{post.DATE}<if content="$post.IP"> / <a href="{post.U_IP}">{post.IP}</a></if></b>
+					</div>
+					<div class="message">{post.CONTENT}</div>
+				</td>
+			</tr>
+			</table>
+		</block>
+	</div>
+</switch>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

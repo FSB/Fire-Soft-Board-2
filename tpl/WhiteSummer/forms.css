@@ -1,0 +1,142 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/forms.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entëte.
+** +---------------------------------------------------+
+*/
+
+/* champ de recherche rapide (a remettre dans le main si tu veux) */
+#search_text
+{
+	background: #FFFFFF url(img/search.gif) no-repeat;
+	padding: 2px 2px 2px 18px;
+}
+
+/* Style sur les listes et bouttons de formulaires */
+input, select, .submit, .reset, textarea
+{
+	margin: 2px 0;
+	width: auto;
+	vertical-align: middle;
+	border: 1px solid #999999;
+	font-size: 11px;
+}
+
+/* Les bouttons submit */
+input[type="submit"], .submit, .reset
+{
+	background-color: #FAFAFA;
+}
+
+select, .submit, .reset
+{
+	cursor: pointer;
+}
+
+label 
+{
+	cursor: pointer;
+}
+
+/* Boutton de soumission */
+.submit, a.submit:hover
+{
+	padding: 2px 5px 2px 5px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000000;
+}
+
+.reset, a.reset:hover
+{
+	padding: 2px 5px 2px 5px;
+	font-weight: normal;
+	text-decoration: none;
+	color: #000000;
+}
+
+/* Champs de texte */
+textarea, input[type="text"]
+{
+	padding: 2px;
+	cursor: text;
+	font-size: 12px;
+}
+
+/* Options des listes */
+select option
+{	
+	padding:1px;
+	margin-right: 4px;
+	color: #000000;
+	font-weight: normal;
+}
+
+/* Titres des groupes d'options dans les listes */
+optgroup
+{
+	color: #FF5511;
+	font-weight: bold;
+}
+
+/* Effet de souris sur les formulaire */
+input:hover, button:hover, select:hover, textarea:hover, input:focus, button:focus, select:focus, textarea:focus, .submit:hover, .reset:hover
+{
+	border: 1px solid #FF6600;
+}
+
+/* Champs de type texte ou mot de passe */
+input[type="text"], input[type="password"]
+{
+	padding: 2px;
+	height: 14px;
+}
+
+/* Champs bouttons et soumission d'informations */
+input[type="submit"], input[type="button"]
+{
+	padding: 0 8px;
+	height: 20px;
+	cursor: pointer;
+}
+
+/* Champ de type radio ou checkbox */
+input[type="radio"], input[type="checkbox"]
+{
+	border: none;
+}
+
+/* Boutton WYSIWYG */
+input.wysiwyg_on, input.wysiwyg_off
+{
+	float: right;
+	background: transparent no-repeat;
+	height: 27px;
+	width: 96px;
+	border: none;
+}
+
+input.wysiwyg_on
+{
+	background-image: url(img/wysiwyg_on.gif);
+}
+
+input.wysiwyg_off
+{
+	background-image: url(img/wysiwyg_off.gif);
+}
+
+/* Style de l'iframe pour l'éditeur WYSIWYG */
+.wysiwyg_frame
+{
+	margin: 2px 0;
+	width: auto;
+	font-size: 11px;
+	vertical-align: middle;
+	background: #FFFFFF;
+	border: 1px solid #999999;
+}

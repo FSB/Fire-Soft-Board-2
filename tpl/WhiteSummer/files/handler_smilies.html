@@ -1,0 +1,89 @@
+<span id="content_smilies_{map.NAME}">
+</span>
+
+<script type="text/javascript">
+<!--
+<if content="!$SMILIES_BOX_EXISTS">
+	<variable name="SMILIES_BOX_EXISTS" value="true" />
+
+	function more_smilies(id)
+	{
+		$(id).style.display = (!$(id).style.display || $(id).style.display == 'none') ? 'block' : 'none';
+		$('more_smilies_text').innerHTML = (!$(id).style.display || $(id).style.display == 'none') ? '#addslashes{$LG_MORE_SMILIES}' : '#addslashes{$LG_LESS_SMILIES}';
+	}
+
+	select_str = new Array();
+	hide_select = false;
+	var inc = 0;
+	s = new Array;
+	max_len = 0;
+	cfg_fsb_path = '{CFG_FSB_PATH}/';
+
+	<block name="smiley_cat">
+		<if content="$smiley_cat.SIZEOF == 1">hide_select = true;</if>
+		<if content="$smiley_cat.FIRST_ROW">first_cat_id = {smiley_cat.CAT_ID};</if>
+		len = '{smiley_cat.CAT_NAME}'.length;
+		if (len > max_len)
+		{
+			max_len = len;
+		}
+		inc = 0;
+		s['{smiley_cat.CAT_ID}'] = new Array;
+
+		<block name="smiley_cat.smiley">
+			s['{smiley_cat.CAT_ID}'][inc++] = new Array('{smiley_cat.smiley.TAG}', '{smiley_cat.smiley.URL}', '{smiley_cat.smiley.TEXT}');
+		</block>
+	</block>
+
+	function create_smilies_table(cat, index, map_name)
+	{
+		if (cat == null)
+		{
+			cat = first_cat_id;
+		}
+
+		// On créé le tableau HTML des smileys
+		var content = '';
+		content += '<table class="smilies">' + ((!hide_select) ? '<tr><td align="center">' + select_str[map_name] + '<\/td><\/tr>' : '') + '<tr><td align="center">';
+		var iterator = 0;
+		var cat_length = s[cat].length;
+		for (iterator = 0; iterator < cat_length; iterator++)
+		{
+			if (iterator == 25)
+			{
+				content += '<span id="map_textarea_' + map_name + '_more" style="display: none">';
+			}
+
+			if (iterator > 0 && !(iterator % 5) && iterator != 25)
+			{
+				content += '<br style="line-height: 10px" \/>';
+			}
+
+			content += '<img src="' + s[cat][iterator][1] + '" id="smiley_id_' + iterator + '" title="' + s[cat][iterator][2] + '" onclick="insert_text(\'map_textarea_' + map_name + '\', \'fct_close_box_smiley\', \' ' + s[cat][iterator][0] + ' \', \'\', \'\', \'smiley\', \'' + cfg_fsb_path + s[cat][iterator][1] + '\')" onmouseover="this.style.cursor=\'pointer\'" /> ';
+
+			if (iterator >= 25 && iterator == cat_length - 1)
+			{
+				content += '<\/span><br \/><strong><a href="javascript:more_smilies(\'map_textarea_' + map_name + '_more\');" id="more_smilies_text">{LG_MORE_SMILIES}<\/a><\/strong>';
+			}
+		}
+
+		content += '\<\/td>\<\/tr>\<\/table>';
+		$('content_smilies_' + map_name).innerHTML = content;
+
+		// Index de base à la liste
+		if ($('list_' + map_name))
+		{
+			$('list_' + map_name).selectedIndex = index;
+		}
+	}
+</if>
+
+select_str['{map.NAME}'] = '<select onchange="create_smilies_table(this.value, this.selectedIndex, \'{map.NAME}\')" id="list_{map.NAME}">';
+<block name="smiley_cat">
+	select_str['{map.NAME}'] += '<option value="{smiley_cat.CAT_ID}">{smiley_cat.CAT_NAME}<\/option>';
+</block>
+select_str['{map.NAME}'] += '<\/select>';
+
+create_smilies_table(null, 0, '{map.NAME}')
+//-->
+</script>

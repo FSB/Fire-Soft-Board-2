@@ -1,0 +1,10 @@
+Bonjour,
+
+Vous recevez ce message car un nouveau membre s'est inscrit sur <a href="{FORUM_URL}">{FORUM_NAME}</a> et vous devez confirmer son inscription.
+
+Voici les informations sur ce nouveau membre :
+Pseudonyme: {NICKNAME}
+Adresse Email: {EMAIL}
+Adresse IP: {IP}
+
+Pour valider son inscription, vous pouvez vous rendre dans le panneau d'administration du forum, ou bien directement cliquer sur le lien suivant: <a href="{CONFIRM_URL}">{CONFIRM_URL}</a>.

@@ -1,0 +1,29 @@
+<switch name="dont_show_news">
+	<div class="info">
+		<h1>{LG_PM_NEWS_NO}</h1>
+		<div>
+			<div class="error">{LG_PM_NEWS_AUTH}</div>
+		</div>
+	</div>
+<else>
+	<block name="news">
+		<div class="info">
+			<h1>{news.NEW_NAME}</h1>
+			<div>
+				{news.NEW_AUTHOR}, {news.POST_AT} (<i>{news.NB_COMMENTS}</i>)
+				<hr style="border: 1px solid #000000; border-width: 1px 0px 0px 0px; width: 200px" align="left" />
+				{news.NEW_TEXT}
+				<br /><br />
+				<if content="$news.CAN_REPLY"><a href="{news.U_COMMENT}" class="submit">{LG_PM_COMMENT}</a></if>
+			</div>
+		</div>
+	</block>
+	<blockelse name="news">
+		<div class="info">
+			<h1>{LG_PM_NEWS_NO}</h1>
+			<div>
+				<div class="error">{LG_PM_NO_NEWS}</div>
+			</div>
+		</div>
+	</block>
+</switch>

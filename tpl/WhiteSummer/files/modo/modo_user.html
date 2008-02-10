@@ -1,0 +1,139 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<call name="javascript" arg1="ajax.js" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<div class="round">
+	<h1>{LG_OPTIONS}</h1>
+	<table class="form large">
+		<tr>
+			<th><label for="nickname_id">{LG_MODO_USER_NICKNAME} :</label></th>
+			<td>
+				<input type="text" name="nickname" id="nickname_id" value="{THIS_NICKNAME}" size="25" maxlength="30" onkeyup="search_user(this.value, this, 'ajax_user', 'nickname_id')" />
+				<span style="visibility: hidden" id="ajax_user"></span>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+
+<switch name="modo_user">
+	<div class="round">
+		<h1>{LG_MODO_USER_MODIFY}</h1>
+		<table class="form large">
+			<switch name="edit_extra">
+				<tr>
+					<th><label for="new_login_id">{LG_MODO_USER_NEW_LOGIN} :</label></th>
+					<td><input type="text" name="new_login" id="new_login_id" value="{NEW_LOGIN}" size="35" maxlength="20" /></td>
+				</tr>
+				<tr>
+					<th><label for="new_nickname_id">{LG_MODO_USER_NEW_NICKNAME} :</label></th>
+					<td><input type="text" name="new_nickname" id="new_nickname_id" value="{NEW_NICKNAME}" size="35" maxlength="20" /></td>
+				</tr>
+				<tr>
+					<th><label for="new_password_id">{LG_MODO_USER_NEW_PASSWORD} :</label></th>
+					<td><input type="password" name="new_password" id="new_password_id" value="{NEW_PASSWORD}" size="35" maxlength="30" /></td>
+				</tr>
+				<tr>
+					<th><label for="u_email_id">{LG_MODO_USER_EMAIL} :</label></th>
+					<td><input type="text" name="u_email" id="u_email_id" value="{USER_EMAIL}" size="35" maxlength="40" /></td>
+				</tr>
+			</switch>
+			<tr>
+				<th><label>{LG_MODO_USER_CAN_USE_AVATAR} :</label></th>
+				<td>
+					<input type="radio" name="u_can_use_avatar" value="1" {CAN_USE_AVATAR_YES} /> {LG_YES} &nbsp;
+					<input type="radio" name="u_can_use_avatar" value="0" {CAN_USE_AVATAR_NO} /> {LG_NO}
+				</td>
+			</tr>
+			<switch name="edit_extra">
+				<tr>
+					<th><label for="avatar_id">{LG_MODO_USER_AVATAR} :</label><br /><span class="small">{LG_MODO_USER_AVATAR_EXPLAIN}</span></th>
+					<td><input type="text" name="u_avatar" id="avatar_id" value="{NEW_AVATAR}" size="55" maxlength="255" /></td>
+				</tr>
+			</switch>
+			<tr>
+				<th><label>{LG_MODO_USER_CAN_USE_SIG} :</label></th>
+				<td>
+					<input type="radio" name="u_can_use_sig" value="1" {CAN_USE_SIG_YES} /> {LG_YES} &nbsp;
+					<input type="radio" name="u_can_use_sig" value="0" {CAN_USE_SIG_NO} /> {LG_NO}
+				</td>
+			</tr>
+			<switch name="edit_extra">
+				<tr>
+					<th><label>{LG_MODO_USER_RANK} :</label></th>
+					<td>{LIST_RANK}</td>
+				</tr>
+				<tr>
+					<th><label>{LG_MODO_USER_DEFAULT} :</label><br /><span>{LG_MODO_USER_DEFAULT_EXPLAIN}</span></th>
+					<td>{LIST_DEFAULT}</td>
+				</tr>
+				<tr>
+					<th><label for="new_sig_id">{LG_MODO_USER_NEW_SIG} :</label></th>
+					<td><textarea name="new_sig" id="new_sig_id" style="width: 500px; height: 120px">{NEW_SIG}</textarea></td>
+				</tr>
+			</switch>
+			<tr>
+				<th><label for="u_comment_id">{LG_MODO_USER_COMMENT} :</label><br /><span class="small">{LG_MODO_USER_COMMENT_EXPLAIN}</span></th>
+				<td><textarea name="u_comment" id="u_comment_id" style="width: 500px; height: 120px">{COMMENT}</textarea></td>
+			</tr>
+			<switch name="edit_extra">
+				<tr>
+					<th><label>{LG_MODO_USER_APPROVED} :</label></th>
+					<td>
+						<input type="radio" name="u_approve" value="<?php echo IS_APPROVED ?>" <if content="$USER_APPROVED == IS_APPROVED">checked="checked"</if> /> {LG_YES} &nbsp;
+						<input type="radio" name="u_approve" value="<?php echo IS_NOT_APPROVED ?>" <if content="$USER_APPROVED == IS_NOT_APPROVED">checked="checked"</if> /> {LG_NO}
+					</td>
+				</tr>
+				<switch name="is_not_administrator">
+					<tr>
+						<th><label>{LG_MODO_USER_ACTIVATED} :</label></th>
+						<td>
+							<input type="radio" name="u_activated" value="1" <if content="$USER_ACTIVATED">checked="checked"</if> /> {LG_YES} &nbsp;
+							<input type="radio" name="u_activated" value="0" <if content="!$USER_ACTIVATED">checked="checked"</if> /> {LG_NO}
+						</td>
+					</tr>
+					<tr>
+						<th><label>{LG_MODO_USER_DELETE} :</label><br /><span class="small">{LG_MODO_USER_DELETE_EXPLAIN}</span></th>
+						<td>
+							{LIST_USER_DELETE}<br />
+							<input type="checkbox" name="ban_username" value="1" /> {LG_MODO_USER_BAN_USERNAME} &nbsp; &nbsp;
+							<input type="checkbox" name="ban_email" value="1" /> {LG_MODO_USER_BAN_EMAIL}
+						</td>
+					</tr>
+				</switch>
+				<switch name="can_send_act_email">
+					<tr>
+						<th><label>{LG_MODO_USER_ACT_EMAIL} :</label></th>
+						<td><input type="submit" name="submit_act_email" value="{LG_SEND}" class="submit" /></td>
+					</tr>
+				</switch>
+			</switch>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_user" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+
+	<switch name="have_profil_fields">
+		<div class="round">
+			<h1>{LG_MODO_USER_PF}</h1>
+			<table class="form">
+				<include name="profil_fields.html" />
+				<tr>
+					<th></th>
+					<td><input type="submit" name="submit_user" value="{LG_SUBMIT}" class="submit" /></td>
+				</tr>
+			</table>
+		</div>
+	</switch>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

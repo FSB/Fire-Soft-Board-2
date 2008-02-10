@@ -1,0 +1,17 @@
+<fieldset style="width: 100%">
+	<legend>{LG_ADM_SQL_RESULT}</legend>
+	<table class="tab" cellspacing="0">
+	<block name="line">
+		<tr class="highlight">
+			<block name="line.field">
+				<if content="$line.ITERATOR == 0"><th>{line.field.STR}</th><else><td align="center">{line.field.STR}</td></if>
+			</block>
+		</tr>
+	</block>
+	<blockelse name="line">
+		<tr>
+			<td class="error">{LG_NO_RESULT}</td>
+		</tr>
+	</blockelse>
+	</table>
+</fieldset>

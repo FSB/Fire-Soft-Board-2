@@ -1,0 +1,16 @@
+<include name="adm_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<fieldset>
+	<legend>{LG_INFORMATION}</legend>
+	<div class="desc">
+		<span style="font-size: 12px; font-weight: bold">{STR_CONFIRM}</span><br /><br />
+		<block name="hidden"><input type="hidden" name="{hidden.NAME}" value="{hidden.VALUE}" /></block>
+		<input type="submit" name="confirm_yes" value="{LG_YES}" class="submit"/> &nbsp; &nbsp;
+		<input type="submit" name="confirm_no" value="{LG_NO}" class="submit" />
+	</div>
+</fieldset>
+</form>
+<br />
+
+<include name="adm_footer.html" />

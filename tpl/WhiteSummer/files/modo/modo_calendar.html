@@ -1,0 +1,31 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<div class="round">
+	<h1>{LG_MODO_CALENDAR_LIST}</h1>
+	<block name="event">
+		<table class="post">
+			<tr>
+				<td class="userinfo">
+					<div class="userinfo_box">
+						<a href="{event.U_EVENT}">{event.TITLE}</a>
+						<br /><br /><span> ({event.NICKNAME})</span>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">
+						<span><a href="{event.U_APPROVE}" class="submit">{LG_MODO_CALENDAR_APPROVE}</a></span>
+						{event.BEGIN}<if content="$event.END"> / {event.END}</if>
+					</div>
+					<div class="message">{event.CONTENT}</div>
+				</td>
+			</tr>
+		</table>
+	</block>
+	<blockelse name="event">
+		<div class="content"><div class="error">{LG_NO_RESULT}</div></div>
+	</blockelse>
+</div>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

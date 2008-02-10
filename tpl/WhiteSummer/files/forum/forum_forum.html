@@ -1,0 +1,140 @@
+<include name="header.html" />
+
+<switch name="forum_rules">
+	<div class="forumrules">
+		<h1>{LG_FORUM_MAIN_RULES}</h1>
+		<div>{FORUM_RULES}</div>
+	</div>
+</switch>
+
+<if content="$WARN_INFO">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{WARN_INFO}</div>
+		</div>
+	</div>
+</if>
+
+<block name="cat">
+	<switch name="is_logged"><div align="right"><a href="{U_SUBFORUM_MARKREAD}" class="markread">{LG_SUBFORUM_MARKREAD}</a></div></switch>
+	<div class="round">
+		<h1>{cat.NAME}</h1>
+		<include name="display_forums.html" />
+	</div>
+</block>
+
+<switch name="show_topics">
+<table width="100%">
+	<tr>
+		<td valign="bottom">
+			<switch name="forum_locked">
+				<if content="$CAN_POST_NEW"><a href="{U_TOPIC_NEW}"><img src="{IMG_LOCK}" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a><else><img src="{IMG_LOCK}" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" /></if>
+			<else>
+				<a href="{U_TOPIC_NEW}"><img src="<if content="$CAN_POST_NEW">{IMG_NEW_TOPIC}<else>{IMG_NEW_TOPIC_OFF}</if>" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a>
+			</switch>
+			<switch name="can_moderate_forum"><a href="{U_MODERATE_FORUM}"><img src="{IMG_MODERATE_FORUM}" alt="{LG_FORUM_MODERATE}" title="{LG_FORUM_MODERATE}" /></a></switch>
+		</td>
+		<td align="right" style="line-height: 22px">
+			<switch name="is_logged"><a href="{U_FORUM_MARKREAD}" class="markread">{LG_FORUM_MARKREAD}</a><br /></switch>
+			<switch name="forum_pagination">{PAGINATION}</switch>
+		</td>
+	</tr>
+</table>
+
+<form action="{U_ACTION}" method="post" name="form_forum">
+<switch name="moderation">
+	<div class="info">
+		<h1>{LG_FORUM_MENU_MODO}</h1>
+		<div style="text-align: right">
+			<input type="submit" name="moderation_lock" value="{LG_LOCK}" class="submit" />
+			<input type="submit" name="moderation_unlock" value="{LG_UNLOCK}" class="submit" />
+			<input type="submit" name="moderation_move" value="{LG_MOVE}" class="submit" />
+			<input type="submit" name="moderation_delete" value="{LG_DELETE}" class="submit" />
+			&nbsp; &nbsp;
+			<a href="#" onclick="check_boxes('form_forum', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_forum', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+		</div>
+	</div>
+</switch>
+
+<div class="round">
+	<h1>{L_TOPIC_LIST}</h1>
+	<block name="topic">
+		<table class="t" cellspacing="0">
+			<tr>
+				<th colspan="5">{topic.LANG}</th>
+			</tr>
+			<block name="topic.t">
+				<tr>
+					<td class="icons"><img src="{topic.t.IMG}" alt="{topic.t.IMG_ALT}" title="{topic.t.IMG_ALT}" /></td>
+					<td class="topicinfo">
+						<h3>
+							{topic.t.EXTRA_NAME} <a href="{topic.t.U_TOPIC}" class="topicname">{topic.t.NAME}</a>
+							<if content="$topic.t.PAGINATION"> &nbsp; {topic.t.PAGINATION}</if>
+						</h3>
+						<span class="small">
+							<switch name="ac_mods_topic_description"><if content="$topic.t.DESCRIPTION">{topic.t.DESCRIPTION}<br /></if></switch>
+							({topic.t.FIRST_LOGIN} &bull; {topic.t.FIRST_TIME})
+						</span>
+					</td>
+					<td width="125" align="center">
+						{LG_VIEWS} : {topic.t.VIEWS}<br />
+						{LG_ANSWERS} : <a href="#" title="{LG_FORUM_WHO_POSTED}" onclick="window.open('{topic.t.U_WHO_POSTED}', 'who_posted', 'width=350,height=500,scrollbars=yes'); return false">{topic.t.ANSWERS}</a>
+					</td>
+					<td class="last_message">
+						{topic.t.LAST_DATE}<br />
+						<a href="{topic.t.U_LAST_POST}"><img src="<if content="$topic.t.IS_READ">{IMG_LAST}<else>{IMG_LAST_NEW}</if>" alt="{LG_JUMP_TO_LAST_POST}" title="{LG_JUMP_TO_LAST_POST}" /></a>
+						{topic.t.LAST_LOGIN}
+					</td>
+					<switch name="moderation"><td width="50" align="center"><input type="checkbox" name="action[]" value="{topic.t.ID}" /></td></switch>
+				</tr>
+			</block>
+			<if content="$topic.LAST_ROW">
+				<tr>
+					<td colspan="5" align="center">
+						<b>{LG_FORUM_ORDER_TOPIC} :</b>
+						{LIST_ORDER_TOPIC} {LIST_DIR_TOPIC}
+						<input type="submit" name="submit_order" value="{LG_FORUM_ORDER_SUBMIT}" class="submit" />
+					</td>
+				</tr>
+			</if>
+		</table>
+	</block>
+	<blockelse name="topic">
+		<div class="content"><div class="error">{LG_FORUM_NO_TOPICS}</div></div>
+	</blockelse>
+</div>
+
+<switch name="moderation">
+	<div class="info">
+		<h1>{LG_FORUM_MENU_MODO}</h1>
+		<div style="text-align: right">
+			<input type="submit" name="moderation_lock" value="{LG_LOCK}" class="submit" />
+			<input type="submit" name="moderation_unlock" value="{LG_UNLOCK}" class="submit" />
+			<input type="submit" name="moderation_move" value="{LG_MOVE}" class="submit" />
+			<input type="submit" name="moderation_delete" value="{LG_DELETE}" class="submit" />
+			&nbsp; &nbsp;
+			<a href="#" onclick="check_boxes('form_forum', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_forum', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+		</div>
+	</div>
+</switch>
+</form>
+
+<table style="width: 100%; margin-top: 5px">
+	<tr>
+		<td width="50%">
+			<switch name="forum_locked">
+				<if content="$CAN_POST_NEW"><a href="{U_TOPIC_NEW}"><img src="{IMG_LOCK}" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a><else><img src="{IMG_LOCK}" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" /></if>
+			<else>
+				<a href="{U_TOPIC_NEW}"><img src="<if content="$CAN_POST_NEW">{IMG_NEW_TOPIC}<else>{IMG_NEW_TOPIC_OFF}</if>" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a>
+			</switch>
+		</td>
+		<td align="right" style="padding: 5px;"><switch name="forum_pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+
+</switch>
+
+<include name="footer.html" />

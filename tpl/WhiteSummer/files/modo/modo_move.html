@@ -1,0 +1,39 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<div class="round">
+	<h1>{LG_MODO_MODULE_MOVE}</h1>
+	<table class="form large">
+		<switch name="show_choose_id">
+			<tr>
+				<th><label for="id_id">{LG_MODO_TOPIC_ID} :</label></th>
+				<td>
+					<input type="text" name="id" id="id_id" value="{THIS_ID}" size="5" maxlength="10" />
+					<input type="submit" name="submit_id" value="{LG_SUBMIT}" class="submit" />
+				</td>
+			</tr>
+		</switch>
+		<switch name="show_move">
+			<tr>
+				<th><label>{LG_MODO_MOVE_FORUM} :</label></th>
+				<td>{LIST_FORUM}</td>
+			</tr>
+			<tr>
+				<th><label for="trace_topic_id">{LG_MODO_MOVE_TRACE} :</label></th>
+				<td>
+					<input type="radio" name="trace_topic" value="1" /> {LG_YES} &nbsp; &nbsp;
+					<input type="radio" name="trace_topic" id="trace_topic_id" value="0" checked="checked" /> {LG_NO}
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit" value="{LG_MODO_MOVE_SUBMIT}" class="submit" /></td>
+			</tr>
+		</switch>
+	</table>
+</div>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

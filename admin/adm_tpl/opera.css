@@ -1,0 +1,16 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/admin/adm_tpl/opera.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entète.
+** +---------------------------------------------------+
+*/
+
+/* Affichage des legendes */
+legend
+{
+	position: static;
+}

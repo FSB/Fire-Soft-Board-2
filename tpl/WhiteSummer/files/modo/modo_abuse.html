@@ -1,0 +1,122 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="list_abuse">
+	<div class="round">
+		<h1>{LG_MODO_MODULE_ABUSE}</h1>
+		<table class="t" cellspacing="0">
+			<block name="abuse">
+				<if content="$abuse.FIRST_ROW">
+					<tr>
+						<th>{LG_MODO_ABUSE_TOPIC}</th>
+						<th width="200">{LG_MODO_ABUSE_USER}</th>
+						<th width="150">{LG_MODO_ABUSE_DATE}</th>
+						<th width="100">{LG_MODO_ABUSE_TOTAL_COMMENT}</th>
+					</tr>
+				</if>
+				<tr>
+					<td>
+						<h3>
+							<if content="$abuse.IS_CLOSED">[{LG_MODO_ABUSE_CLOSED}] </if>
+							<a href="{abuse.U_ABUSE}" class="topicname">{abuse.TOPIC_TITLE}</a>
+						</h3>
+						<span class="small">
+							<if content="$abuse.IS_MP">({LG_MODO_ABUSE_MP})<else>{LG_FORUM} : {abuse.FORUM}</if>
+						</span>
+					</td>
+					<td align="center">{abuse.NICKNAME}</td>
+					<td align="center">{abuse.DATE}</td>
+					<td align="center">{abuse.TOTAL}</td>
+				</tr>
+			</block>
+			<blockelse name="abuse">
+				<tr>
+					<td colspan="3" class="error">{LG_MODO_NO_ABUSE}</td>
+				</tr>
+			</blockelse>
+		</table>
+	</div>
+	<br />
+	<switch name="pagination"><div style="text-align: right">{PAGINATION}</div></switch>
+</switch>
+
+<switch name="show_abuse">
+	<div class="round">
+		<h1>{LG_MODO_ABUSE_SHOW_MESSAGE}</h1>
+		<table class="post">
+			<tr>
+				<td class="userinfo">
+					<div class="userinfo_box">
+						{MESSAGE_NICKNAME}
+						<if content="$MESSAGE_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{MESSAGE_AVATAR}" alt="{MESSAGE_AVATAR}" title="{MESSAGE_AVATAR}" /></div></if>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">
+						<a href="{U_FORUM}">{MESSAGE_FORUM}</a> &#187; <a href="{U_TOPIC}">{MESSAGE_TOPIC}</a>
+						- {MESSAGE_DATE}<if content="$MESSAGE_IP"> / <a href="{U_IP}">{MESSAGE_IP}</a></if>
+					</div>
+					<p>{MESSAGE_CONTENT}</p>
+				</td>
+			</tr>
+		</table>
+
+		<table class="form">
+			<tr>
+				<th>{LG_MODO_ABUSE_MODERATE} :</th>
+				<td>
+					<if content="!$IS_MP">
+						<a href="{U_DELETE_TOPIC}"><img src="{IMG_DELETE_TOPIC}" alt="{LG_TOPIC_MODO_DELETE}" title="{LG_TOPIC_MODO_DELETE}" /></a>
+						<a href="{U_MOVE_TOPIC}"><img src="{IMG_MOVE_TOPIC}" alt="{LG_TOPIC_MODO_MOVE}" title="{LG_TOPIC_MODO_MOVE}" /></a>
+						<if content="$IS_LOCKED">
+							<a href="{U_UNLOCK_TOPIC}"><img src="{IMG_UNLOCK_TOPIC}" alt="{LG_TOPIC_MODO_UNLOCK}" title="{LG_TOPIC_MODO_UNLOCK}" /></a>
+						<else>
+							<a href="{U_LOCK_TOPIC}"><img src="{IMG_LOCK_TOPIC}" alt="{LG_TOPIC_MODO_LOCK}" title="{LG_TOPIC_MODO_LOCK}" /></a>
+						</if>
+						<a href="{U_SPLIT_TOPIC}"><img src="{IMG_SPLIT_TOPIC}" alt="{LG_TOPIC_MODO_SPLIT}" title="{LG_TOPIC_MODO_SPLIT}" /></a>
+						<a href="{U_MERGE_TOPIC}"><img src="{IMG_MERGE_TOPIC}" alt="{LG_TOPIC_MODO_MERGE}" title="{LG_TOPIC_MODO_MERGE}" /></a>
+						&nbsp; &nbsp;
+						<a href="{U_EDIT}"><img src="{IMG_EDIT}" title="{LG_EDIT}" alt="{LG_EDIT}" /></a>
+						<a href="{U_DELETE}"><img src="{IMG_DELETE}" title="{LG_DELETE}" alt="{LG_DELETE}" /></a>
+						<br /><br />
+					</if>
+					<if content="!$IS_VALIDATE"><a href="{U_VALIDATE}" class="submit">{LG_MODO_ABUSE_VALIDATE}</a></if>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<br />
+	<div class="round">
+		<h1>{LG_MODO_ABUSE_COMMENTS}</h1>
+		<block name="post">
+		<table class="post">
+			<tr>
+				<td class="userinfo">
+					<div class="userinfo_box">
+						{post.NICKNAME}
+						<if content="$post.U_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{post.U_AVATAR}" alt="{post.U_AVATAR}" title="{post.U_AVATAR}" /></div></if>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">{post.DATE}</div>
+					<p>{post.CONTENT}</p>
+				</td>
+			</tr>
+		</table>
+		</block>
+	</div>
+
+	<form action="{U_ACTION}" method="post">
+	<div class="info">
+		<h1>{LG_MODO_ABUSE_ADD_COMMENT}</h1>
+		<div style="text-align: center">
+			<textarea name="comment" rows="10" cols="80"></textarea>
+			<div class="footer"><input type="submit" name="submit_comment" value="{LG_SUBMIT}" class="submit"/></div>
+		</div>
+	</div>
+	</form>
+</switch>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

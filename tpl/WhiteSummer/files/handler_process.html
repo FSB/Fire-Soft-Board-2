@@ -1,0 +1,30 @@
+<include name="header.html">
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_INFORMATION}</h1>
+		<table class="form">
+		<tr>
+			<th><label for="process_id">{PROCESS_TEXT}</label></th>
+			<td>
+				<switch name="input_textarea">
+					<textarea name="{INPUT_IDENTIFIER}_value" id="process_id"  style="width: 99%; height: 150px">{DEFAULT_VALUE}</textarea>
+				<else>
+					<input type="text" name="{INPUT_IDENTIFIER}_value" value="{DEFAULT_VALUE}" id="process_id" size="60" />
+				</switch>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td>
+				<block name="hidden">
+					<input type="hidden" name="{hidden.NAME}" value="{hidden.VALUE}" />
+				</block>
+				<input type="submit" name="{INPUT_IDENTIFIER}" class="submit" value="{LG_SUBMIT}" />
+			</td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<include name="footer.html">

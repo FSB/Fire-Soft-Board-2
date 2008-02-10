@@ -1,0 +1,37 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="info">
+	<h1>{LG_OPTIONS}</h1>
+	<div>
+		<label for="keyword_id">{LG_FAQ_KEYWORDS} :</label>
+		<input type="text" id="keyword_id" name="keyword" value="{KEYWORD}" size="35" />
+		<input type="submit" name="submit" value="{LG_SEARCH}" class="submit" />
+	</div>
+</div>
+</form>
+
+<switch name="show_answer">
+	<div class="info">
+		<h1>{FAQ_QUESTION}</h1>
+		<div>{FAQ_ANSWER}</div>
+	</div>
+</switch>
+
+<div class="info">
+	<h1>{FAQ_SECTION}</h1>
+	<div>
+		<block name="area">
+			<if content="$area.FIRST_ROW"><ul></if>
+			<li><a href="{area.URL}" class="forumname">{area.NAME}</a></li>
+			<if content="$area.LAST_ROW"></ul></if>
+		</block>
+		<switch name="no_result">
+			<div class="error">{LG_FAQ_NO_RESULT}</div>
+		</switch>
+	</div>
+</div>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

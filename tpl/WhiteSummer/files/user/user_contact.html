@@ -1,0 +1,32 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{ERRSTR}</div>
+		</div>
+	</div>
+</switch>
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_USER_MODULE_CONTACT}</h1>
+	<div class="desc">{LG_USER_CONTACT_EXPLAIN}</div>
+	<switch name="have_profil_fields">
+		<table class="form">
+			<include name="profil_fields.html" />
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	<else>
+		<div class="content"><div class="error">{LG_USER_ERROR_CONTACT_NONE}</div></div>
+	</switch>
+</div>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

@@ -1,0 +1,99 @@
+<include name="functions.html" />
+<variable name="VAR_HEADER_EXISTS" value="1" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{TAG_TITLE}</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/main.css" />
+	<link type="text/nonsense" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/opera.css" />
+	<!--[if lte IE 6]><link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/ie6.css" /><![endif]-->
+	<!--[if IE 7]><link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/ie7.css" /><![endif]-->
+	<link rel="shortcut icon" href="{ROOT}tpl/{USER_TPL}/img/favicon.ico" />
+	<block name="meta">
+		<{meta.NAME} <block name="meta.attr">{meta.attr.KEY}="{meta.attr.VALUE}" </block>/>
+	</block>
+	<call name="javascript" arg1="mootools.js" />
+	<call name="javascript" arg1="common.js" />
+	<script type="text/javascript">
+	<!--
+	var FSB_ROOT = '{ROOT}';
+	var FSB_SID = '{SID}';
+	var FSB_PHPEXT = '{PHPEXT}';
+	-->
+	</script>
+
+	<if content="$HAVE_NEW_MP">
+		<call name="javascript" arg1="popup.js" />
+		<script type="text/javascript">
+		<!--
+		popup_open(300, 150, '{LG_INFORMATION}', '{POPUP_CONTENT}\<br \/\>\<a href="{U_REDIRECT_INBOX}">{LG_MP_NEW_POPUP_CLICK}\<\/a\>\<br \/\>\<br \/\>\<a href="javascript:popup_close()"\>{LG_MP_POPUP_CLOSE}\<\/a\>');
+		//-->
+		</script>
+	</if>
+</head>
+
+<body onload="<block name="onload">{onload.CODE};</block>">
+<a name="up"></a>
+<div id="ajax_waiter"></div>
+
+<div id="header">
+	<div class="left"></div>
+	<div class="right"></div>
+	<div class="top">
+		<div id="welcome_msg">
+			{HOME_TEXT}
+		</div>
+
+		<div id="right_menu">
+			<switch name="is_logged">
+				<switch name="modo_panel">
+					<switch name="is_admin"><a href="{U_ADMIN}">{LG_FORUM_MENU_ADMIN}</a> |</switch> <a href="{U_MODO}">{LG_FORUM_MENU_MODO}</a> <if content="$MODO_HAVE_MESSAGE"><b>({MODO_HAVE_MESSAGE})</b></if>
+					<switch name="show_group_modo">| <a href="{U_GROUPS_MODO}">{LG_FORUM_MENU_GROUPS}</a></switch> ::
+				</switch>
+				<a href="{U_NOT_READ}">{LG_FORUM_MENU_NOT_READ}</a> | <a href="{U_OWN_POSTS}">{LG_FORUM_MENU_OWN_POSTS}</a>
+				<switch name="ac_mods_topic_notification"> | <a href="{U_NOTIFICATION}">{LG_FORUM_MENU_NOTIFICATION}</a></switch>
+				<switch name="ac_mods_mp">| <a href="{U_MP}">{LG_FORUM_MENU_MP}</a></switch>
+			<else>
+				<switch name="ac_mods_contact_form"><a href="{U_CONTACT}">{LG_FORUM_MENU_CONTACT}</a> ::</switch>
+				<a href="{U_LOGIN}">{LG_FORUM_MENU_LOGIN}</a> ::
+				<a href="{U_REGISTER}">{LG_FORUM_MENU_REGISTER}</a>
+			</switch>
+		</div>
+	</div>
+
+	<a href="{U_INDEX}" id="header_left"><img src="{IMG_LOGO}" alt="{SITE_NAME}" title="{SITE_NAME}" /></a>
+
+	<div id="header_right">
+		<div id="header_quicksearch">
+			<switch name="is_logged">
+				<a href="{U_PROFILE}">{LG_FORUM_MENU_PROFILE}</a> |
+				<a href="{U_LOGOUT}">{LG_FORUM_MENU_LOGOUT}</a>
+			</switch>
+			<br />
+			<form id="form1" method="post" action="{U_QUICKSEARCH}">
+				<input type="submit" id="submit" name="submit" value="{LG_SEARCH}" class="submit" />
+				<input name="keywords" type="text" id="search_text" value="{QUICKSEARCH_LANG}" size="24" onfocus="if (this.value=='#addslashes{$QUICKSEARCH_LANG}') this.value='';" onblur="if (this.value=='') this.value='#addslashes{$QUICKSEARCH_LANG}';"/>
+			</form>
+		</div>
+	</div>
+
+	<h1>{SITE_NAME}</h1>
+	<h2>{SITE_DESCRIPTION}</h2>
+</div>
+
+<div id="menu">
+	<b>&#171;</b>
+		<switch name="ac_mods_portail"><a href="{U_PORTAIL}" title="{LG_FORUM_MENU_PORTAIL_EXPLAIN}">{LG_FORUM_MENU_PORTAIL}</a> -</switch>
+		<a href="{U_FAQ}" title="{LG_FORUM_MENU_FAQ_EXPLAIN}">{LG_FORUM_MENU_FAQ}</a> -
+		<a href="{U_SEARCH}" title="{LG_FORUM_MENU_SEARCH_EXPLAIN}">{LG_FORUM_MENU_SEARCH}</a> -
+		<a href="{U_USERLIST}" title="{LG_FORUM_MENU_USERLIST_EXPLAIN}">{LG_FORUM_MENU_USERLIST}</a>
+		<switch name="ac_mods_calendar & have_auth_calendar_read">- <a href="{U_CALENDAR}" title="{LG_FORUM_MENU_CALENDAR_EXPLAIN}">{LG_FORUM_MENU_CALENDAR}</a></switch>
+	<b>&#187;</b>
+</div>
+
+<switch name="forum_link_header"><include name="navigation.html" /></switch>
+
+<div class="main">

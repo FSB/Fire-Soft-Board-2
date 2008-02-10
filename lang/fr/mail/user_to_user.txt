@@ -1,0 +1,8 @@
+Bonjour {TO_NICKNAME},
+
+Vous avez reçu un Email de l'utilisateur {FROM_NICKNAME}, depuis le forum <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Si cet Email contient du spam ou des propos abusifs veuillez contacter l'administrateur du forum.
+~~~~~~~~~~
+
+{CONTENT}

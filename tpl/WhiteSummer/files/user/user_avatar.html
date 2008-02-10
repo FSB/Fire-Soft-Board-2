@@ -1,0 +1,90 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{CONTENT}</div>
+		</div>
+	</div>
+</switch>
+
+<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+<div class="round">
+	<h1>{LG_USER_MODULE_AVATAR}</h1>
+	<div class="desc">{AVATAR_EXPLAIN}</div>
+	<switch name="can_use_avatar">
+		<table class="form large">
+			<if content="$U_AVATAR">
+				<tr>
+					<th>{LG_USER_AVATAR_CURRENT} :</th>
+					<td>
+						<img src="{U_AVATAR}" alt="{U_AVATAR}" title="{U_AVATAR}" />
+						<switch name="delete_avatar"><br /><input type="submit" name="delete" value="{LG_DELETE}" class="reset" /></switch>
+					</td>
+				</tr>
+			</if>
+			<switch name="can_upload_avatar">
+				<tr>
+					<th><label for="upload_avatar_id">{LG_USER_UPLOAD_AVATAR} :</label><br /><span class="small">{LG_USER_UPLOAD_AVATAR_EXPLAIN}</span></th>
+					<td><input type="file" name="upload_avatar" id="upload_avatar_id" size="35" /></td>
+				</tr>
+				<tr>
+					<th><label for="link_upload_avatar_id">{LG_USER_LINK_UPLOAD_AVATAR} :</label><br /><span class="small">{LG_USER_UPLOAD_AVATAR_EXPLAIN}</span></th>
+					<td><input type="text" name="link_upload_avatar" id="link_upload_avatar_id" size="35" /></td>
+				</tr>
+			</switch>
+			<tr>
+				<th><label for="link_avatar_id">{LG_USER_LINK_AVATAR} :</label></th>
+				<td><input type="text" name="link_avatar" id="link_avatar_id" value="{USER_LINK_AVATAR}" size="35" /></td>
+			</tr>
+			<switch name="can_use_gallery">
+				<tr>
+					<th><label>{LG_USER_GALLERY_AVATAR} :</label></th>
+					<td>
+						{LIST_GALLERY}
+						<noscript><input type="submit" name="submit_gallery" value="{LG_USER_CHANGE_GALLERY}" /></noscript>
+					</td>
+				</tr>
+			</switch>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	<else>
+		<div class="error">{LG_CANT_USE_AVATAR}</div>
+	</switch>
+</div>
+
+<switch name="show_gallery">
+	<div class="round">
+		<h1>{LG_USER_GALLERY_AVATAR}</h1>
+		<div class="content">
+			<table style="width: 100%; border-spacing: 3px" cellspacing="3">
+			<block name="avatar">
+				<if content="$avatar.ITERATOR > 0 AND $avatar.ITERATOR % $PER_LINE == 0"></tr></if>
+				<if content="$avatar.ITERATOR == 0 OR $avatar.ITERATOR % $PER_LINE == 0"><tr></if>
+
+				<td>
+					<if content="!$avatar.IS_SELECTED">
+						<input type="radio" name="avatar_from_gallery" value="{avatar.IMG_NAME}" />
+					</if>
+					<img src="{avatar.IMG}" alt="{avatar.IMG_NAME}" title="{avatar.IMG_NAME}" border="0" align="middle" />
+				</td>
+
+				<if content="$avatar.LAST_ROW">
+					<if content="$avatar.ITERATOR % $PER_LINE == 0 OR $avatar.ITERATOR % $PER_LINE == 1"><td></td></if>
+					<if content="$avatar.ITERATOR % $PER_LINE == 0"><td></td></if>
+					</tr>
+				</if>
+			</block>
+			</table>
+		</div>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

@@ -1,0 +1,103 @@
+<include name="adm_header.html" />
+
+<switch name="fields_list">
+	<fieldset>
+		<legend>{PF_LIST}</legend>
+		<block name="pf">
+			<dl>
+				<dt class="strong">{pf.NAME}</dt>
+				<dd>
+					<a href="{pf.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
+					<a href="{pf.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a>
+					<a href="{pf.U_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_PF_UP}" title="{LG_ADM_PF_UP}" border="0" /></a>
+					<a href="{pf.U_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_PF_DOWN}" title="{LG_ADM_PF_DOWN}" border="0" /></a>
+				</dd>
+			</dl>
+		</block>
+		<blockelse name="pf">
+			<div class="error">{LG_NO_RESULT}</div><br />
+		</block>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_PF_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="fields_add">
+	<switch name="error">
+		<include name="error_handler.html" />
+	</switch>
+
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{PF_ADD}</legend>
+		<switch name="html_type">
+			<dl>
+				<dt><label>{LG_ADM_PF_TYPE} :</label></dt>
+				<dd>{LIST_PERSONAL_TYPE} <noscript><input type="submit" name="submit_type" value="{LG_ADM_PF_CHANGE_TYPE}" /></noscript></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_name">
+			<dl>
+				<dt><label for="pf_lang_id">{LG_ADM_PF_NAME} :</label><br /><span>{LG_ADM_PF_NAME_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_lang" id="pf_lang_id" value="{PF_LANG}" size="35" /></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_maxlength">
+			<dl>
+				<dt><label for="pf_maxlength_id">{LG_ADM_PF_MAXLENGTH} :</label><br /><span>{MAXLENGTH_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_maxlength" id="pf_maxlength_id" value="{PF_MAXLENGTH}" size="2" maxlength="3" /></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_regexp">
+			<dl>
+				<dt><label for="pf_regexp_id">{LG_ADM_PF_REGEXP} :</label><br /><span>{LG_ADM_PF_REGEXP_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_regexp" id="pf_regexp_id" value="{PF_REGEXP}" size="35" /></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_list">
+			<dl>
+				<dt><label for="pf_list_id">{LG_ADM_PF_LIST} :</label><br /><span>{LG_ADM_PF_LIST_EXPLAIN}</span></dt>
+				<dd><textarea name="pf_list" id="pf_list_id" rows="5" cols="40" />{PF_LIST}</textarea></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_height">
+			<dl>
+				<dt><label for="pf_sizelist_id">{LG_ADM_PF_SIZELIST} :</label><br /><span>{LG_ADM_PF_SIZELIST_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_sizelist" id="pf_sizelist_id" value="{PF_SIZELIST}" maxlength="2" size="2" /></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_output">
+			<dl>
+				<dt><label for="pf_output_id">{LG_ADM_PF_OUTPUT} :</label><br /><span>{LG_ADM_PF_OUTPUT_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_output" id="pf_output_id" value="{PF_OUTPUT}" maxlength="255" size="50" /></dd>
+			</dl>
+		</switch>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_PF_PRINT}</legend>
+		<dl>
+			<dt><label>{LG_ADM_PF_GROUPS} :</label><br /><span>{LG_ADM_PF_GROUPS_EXPLAIN}</span></dt>
+			<dd>{LIST_GROUPS}</dd>
+		</dl>
+		<dl>
+			<dt><label for="pf_topic_id">{LG_ADM_PF_REGISTER} :</label><br /><span>{LG_ADM_PF_REGISTER_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="pf_register" value="1" <if content="$PF_REGISTER">id="pf_register_id" checked="checked"</if> /> {LG_YES} &nbsp;
+				<input type="radio" name="pf_register" value="0" <if content="!$PF_REGISTER">id="pf_register_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<switch name="ac_mods_profile_fields_topic">
+			<dl>
+				<dt><label for="pf_topic_id">{LG_ADM_PF_TOPIC} :</label><br /><span>{LG_ADM_PF_TOPIC_EXPLAIN}</span></dt>
+				<dd>
+					<input type="radio" name="pf_topic" value="1" <if content="$PF_TOPIC">id="pf_topic_id" checked="checked"</if> /> {LG_YES} &nbsp;
+					<input type="radio" name="pf_topic" value="0" <if content="!$PF_TOPIC">id="pf_topic_id" checked="checked"</if> /> {LG_NO}
+				</dd>
+			</dl>
+		</switch>
+		<div><input type="submit" name="submit_check" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

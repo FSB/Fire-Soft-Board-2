@@ -1,0 +1,37 @@
+<include name="adm_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<fieldset>
+	<legend>{LG_FTP_IDENTIFIER}</legend>
+	<dl>
+		<dt><label for="ftp_host_id">{LG_FTP_HOST} :</label></dt>
+		<dd><input type="text" name="ftp_host" id="ftp_host_id" size="35" maxlength="100" value="{FTP_HOST}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ftp_login_id">{LG_FTP_LOGIN} :</label></dt>
+		<dd><input type="text" name="ftp_login" id="ftp_login_id" size="35" maxlength="100" value="{FTP_LOGIN}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ftp_password_id">{LG_FTP_PASSWORD} :</label></dt>
+		<dd><input type="password" name="ftp_password" id="ftp_password_id" size="35" maxlength="100" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ftp_port_id">{LG_FTP_PORT} :</label></dt>
+		<dd><input type="text" name="ftp_port" id="ftp_port_id" size="5" maxlength="10" value="{FTP_PORT}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ftp_path_id">{LG_FTP_PATH} :</label></dt>
+		<dd><input type="text" name="ftp_path" id="ftp_path_id" size="35" maxlength="100" value="{FTP_PATH}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="ftp_remind_id">{LG_FTP_REMIND} :</label></dt>
+		<dd><input type="checkbox" name="ftp_remind" id="ftp_remind_id" value="1" <if content="$FTP_REMIND">checked="checked"</if> /></dd>
+	</dl>
+	<div>
+		<block name="ftp_hidden"><input type="hidden" name="{ftp_hidden.NAME}" value="{ftp_hidden.VALUE}" /></block>
+		<input type="submit" name="ftp_submit" value="{LG_SUBMIT}" class="submit" />
+	</div>
+</fieldset>
+</form>
+
+<include name="adm_footer.html" />

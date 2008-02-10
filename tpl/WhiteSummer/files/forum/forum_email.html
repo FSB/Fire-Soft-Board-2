@@ -1,0 +1,47 @@
+<include name="header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{EMAIL_TO}</h1>
+	<switch name="page_contact"><div class="desc">{LG_CONTACT_EXPLAIN}</div><else><div class="desc">{LG_EMAIL_EXPLAIN}</div></if>
+	<table class="form">
+		<switch name="page_contact">
+			<tr>
+				<th><label>{LG_CONTACT_METHOD} :</label></th>
+				<td>{LIST_METHOD}</td>
+			</tr>
+			<tr>
+				<th><label>{LG_CONTACT_ADMIN} :</label></th>
+				<td>{LIST_ADMIN}</td>
+			</tr>
+			<tr>
+				<th><label for="email_id">{LG_CONTACT_YOUR_EMAIL} :</label><br /><span class="small">({LG_REQUIRED_FIELD})</span></th>
+				<td><input type="text" name="email" id="email_id" size="35" maxlength="60" /></td>
+			</tr>
+		</switch>
+		<tr>
+			<th><label for="title_id">{LG_EMAIL_TITLE} :</label></th>
+			<td><input type="text" name="title" id="title_id" size="35" maxlength="60" /></td>
+		</tr>
+		<tr>
+			<th><label for="content_id">{LG_EMAIL_CONTENT} :</label></th>
+			<td><textarea name="content" id="content_id" style="width: 700px; height: 300px"></textarea></td>
+		</tr>
+		<switch name="contact_captcha">
+			<tr>
+				<th><label>{LG_CONTACT_CAPTCHA} :</label><br /><span class="small">{LG_CONTACT_CAPTCHA_EXPLAIN}</span></th>
+				<td>
+					<img src="{CAPTCHA}" alt="" /><br />
+					<input type="text" name="captcha_code" size="6" maxlength="6" />
+				</td>
+			</tr>
+		</switch>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<include name="footer.html" />

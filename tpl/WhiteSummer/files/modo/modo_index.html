@@ -1,0 +1,33 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<div class="info">
+	<h1>{LG_MODO_INDEX_LAST_LOG}</h1>
+	<div>
+		<block name="last_log">
+			<if content="$last_log.FIRST_ROW"><ul></if>
+			<li><b>{last_log.EVENT} &nbsp; ({last_log.NICKNAME})</b></li>
+			<if content="$last_log.LAST_ROW"></ul></if>
+		</block>
+		<blockelse name="last_log">
+			<div class="error">{LG_NO_RESULT}</div>
+		</blockelse>
+	</div>
+</div>
+
+<div class="info">
+	<h1>{LG_MODO_INDEX_LAST_WARN}</h1>
+	<div>
+		<block name="last_warn">
+			<if content="$last_warn.FIRST_ROW"><ul></if>
+			<li><a href="{last_warn.U_EVENT}" class="forumname">{last_warn.EVENT}</a></li>
+			<if content="$last_warn.LAST_ROW"></ul></if>
+		</block>
+		<blockelse name="last_warn">
+			<div class="error">{LG_NO_RESULT}</div>
+		</blockelse>
+	</div>
+</div>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

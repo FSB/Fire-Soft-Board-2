@@ -1,0 +1,56 @@
+<table class="t" cellspacing="0">
+<block name="cat.forum">
+	<tr>
+		<if content="$cat.forum.TYPE == FORUM_TYPE_INDIRECT_URL">
+			<td class="icons"><img src="{IMG_FORUM_URL}" alt="{LG_FORUM_EXTERN_URL}" title="{LG_FORUM_EXTERN_URL}" /></td>
+			<td style="{cat.forum.WIDTH}">
+				<h3><a href="{cat.forum.U_FORUM}" class="forumname">{cat.forum.NAME}</a></h3>
+				{cat.forum.DESCRIPTION}
+			</td>
+			<td align="center" colspan="2">{cat.forum.TOTAL_CLICK}</td>
+		<elseif content="$cat.forum.TYPE == FORUM_TYPE_DIRECT_URL">
+			<td class="icons"><img src="{IMG_FORUM_URL}" alt="{LG_FORUM_EXTERN_URL}" title="{LG_FORUM_EXTERN_URL}" /></td>
+			<td style="{cat.forum.WIDTH}" colspan="3">
+				<h3><a href="{cat.forum.U_FORUM}" class="forumname">{cat.forum.NAME}</a></h3>
+				{cat.forum.DESCRIPTION}
+			</td>
+		<else>
+			<td class="icons">
+				<switch name="is_logged"><if content="!$cat.forum.IS_READ"><a href="{cat.forum.U_MARKREAD}" title="{LG_MARKREAD_FORUM}"></if></switch>
+				<if content="$cat.forum.IS_LOCKED">
+					<img src="<if content="$cat.forum.IS_READ">{IMG_FORUM_LOCKED}<else>{IMG_FORUM_LOCKED_NEW}</if>" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" />
+				<else>
+					<img <if content="$cat.forum.IS_READ">src="{IMG_FORUM}" alt="{LG_READ_POSTS}" title="{LG_READ_POSTS}"<else>src="{IMG_FORUM_NEW}" alt="{LG_MARKREAD_FORUM}" title="{LG_MARKREAD_FORUM}"</if> />
+				</if>
+				<switch name="is_logged"><if content="!$cat.forum.IS_READ"></a></if></switch>
+			</td>
+			<td style="{cat.forum.WIDTH}">
+				<h3><a href="{cat.forum.U_FORUM}" class="forumname">{cat.forum.NAME}</a></h3>
+				<if content="$cat.forum.DESCRIPTION">{cat.forum.DESCRIPTION}</if>
+				<block name="cat.forum.subforum">
+					<if content="$cat.forum.subforum.FIRST_ROW"><br /><span class="subforums"><span>{LG_SUBFORUMS} :</span></if>
+					<img <if content="$cat.forum.subforum.IS_READ">src="{IMG_SUBFORUM_UNREAD}" alt="{LG_READ_POSTS}" title="{LG_READ_POSTS}"<else>src="{IMG_SUBFORUM_READ}" alt="{LG_UNREAD_POSTS}" title="{LG_UNREAD_POSTS}"</if> />{cat.forum.subforum.NAME}
+					<if content="$cat.forum.subforum.LAST_ROW"></span></if>
+				</block>
+				<switch name="ac_mods_forums_moderators">
+					<block name="cat.forum.moderator">
+						<if content="$cat.forum.moderator.FIRST_ROW"><br /><span class="moderators"><span>{LG_FORUM_MODERATORS} :</span></if>
+						<a href="{cat.forum.moderator.URL}" {cat.forum.moderator.STYLE}>{cat.forum.moderator.NAME}</a><if content="$cat.forum.moderator.LAST_ROW"></span><else>, </if>
+					</block>
+				</switch>
+			</td>
+			<td width="120" align="center">{cat.forum.TOTAL_TOPIC}<br />{cat.forum.TOTAL_POST}</td>
+			<td class="last_message">
+				<if content="$cat.forum.HAVE_LAST">
+					<a href="{cat.forum.U_TOPIC}" title="{cat.forum.REAL_TITLE}">{cat.forum.TOPIC_TITLE}</a><br />
+					{cat.forum.DATE}<br />
+					<a href="{cat.forum.U_LAST_POST}"><img src="<if content="$cat.forum.IS_LAST_READ">{IMG_LAST}<else>{IMG_LAST_NEW}</if>" alt="{LG_JUMP_TO_LAST_POST}" title="{LG_JUMP_TO_LAST_POST}" /></a>
+					{cat.forum.NICKNAME}
+				<else>
+					<div align="center">-----</div>
+				</if>
+			</td>
+		</if>
+	</tr>
+</block>
+</table>

@@ -1,0 +1,62 @@
+<variable name="VAR_HEADER_EXISTS" value="1" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{LG_ADMIN_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<block name="meta">
+		<{meta.NAME} <block name="meta.attr">{meta.attr.KEY}="{meta.attr.VALUE}" </block>/>
+	</block>
+	<link type="text/css" rel="stylesheet" href="adm_tpl/adm_style.css" />
+	<link type="text/css" rel="stylesheet" href="adm_tpl/moorainbow.css" />
+	<link type="text/nonsense" rel="stylesheet" href="adm_tpl/opera.css" />
+	<!--[if IE 7]><link type="text/css" rel="stylesheet" href="adm_tpl/ie7.css" /><![endif]-->
+	<link rel="shortcut icon" href="adm_tpl/img/favicon.ico" />
+	<script type="text/javascript" src="{ROOT}main/javascript/mootools.js"></script>
+	<script type="text/javascript" src="{ROOT}main/javascript/common.js"></script>
+	<script type="text/javascript" src="{ROOT}main/javascript/admin.js"></script>
+	<script type="text/javascript">
+	<!--
+		var FSB_ROOT = '{ROOT}';
+		var FSB_SID = '{SID}';
+		var FSB_PHPEXT = '{PHPEXT}';
+		var block_menu = new Array(<block name="cat_menu">'menu_{cat_menu.ITERATOR}'<if content="!$cat_menu.LAST_ROW">, </if></block>);
+		var len = block_menu.length;
+	//-->
+	</script>
+</head>
+
+<body onload="init_admin()">
+<div class="main">
+
+<table width="100%">
+	<tr>
+		<td class="forum" colspan="2">
+			<strong>
+			<a href="{U_INDEX}">{LG_ADM_INDEX}</a>
+			- <a href="{U_INDEX_FORUM}">{LG_FORUM_INDEX}</a>
+			<switch name="is_fondator">- <a href="{U_EDIT_MENU}">{LG_EDIT_MENU}</a></switch>
+			- <a href="{U_REFRESH}">{LG_REFRESH_MENU}</a>
+			</strong>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" width="150">
+			<br style="line-height: 5px" /><div style="width: 150px;"><include name="adm_menu.html" /></div>
+		</td>
+		<td valign="top">
+			<br style="line-height: 5px" />
+			<switch name="use_module_page">
+				<include name="adm_module_header.html" />
+			</switch>
+			<div class="explain">
+				<h2>{EXPLAIN_TITLE}</h2>
+				<span>{EXPLAIN_DESC}</span>
+			</div>
+			<br />
+			<switch name="nav_exists">
+				<div class="nav">
+					<block name="nav"><if content="$nav.URL"><a href="{nav.URL}">{nav.NAME}</a><else>{nav.NAME}</if> <if content="!$nav.LAST_ROW">&#187;</if> </block>
+				</div>
+			</switch>

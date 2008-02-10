@@ -1,0 +1,11 @@
+<table id="tabs">
+	<tr>
+		<th colspan="2" class="title">{MENU_HEADER_TITLE}</th>
+	</tr>
+	<tr>
+		<td class="list">
+			<block name="module">
+				<a href="{module.URL}" <if content="$module.IS_SELECT">id="selected"</if>>{module.NAME}<if content="$module.INFO > 0"> ({module.INFO})</if></a>
+			</block>
+		</td>
+		<td valign="top" class="tabs_right">

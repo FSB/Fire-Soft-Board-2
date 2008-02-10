@@ -1,0 +1,88 @@
+<include name="adm_header.html">
+
+<switch name="fsbcode_list">
+	<fieldset>
+		<legend>{LG_ADM_FSBCODE_MANAGE}</legend>
+		<table class="tab">
+		<block name="fsbcode">
+			<if content="$fsbcode.FIRST_ROW">
+				<tr>
+					<th>{LG_ADM_FSBCODE_TAG}</th>
+					<th width="150" align="center">{LG_ADM_FSBCODE_STATE}</th>
+					<th width="150" align="center">{LG_ADM_FSBCODE_SIG}</th>
+					<th align="center" width="150"></th>
+				</tr>
+			</if>
+			<tr class="highlight">
+				<td align="center">{fsbcode.TAG}</td>
+				<td align="center"><if content="$fsbcode.ACTIVATED"><span class="ok">{LG_ADM_FSBCODE_IS_ACTIVATED}</span><else><span class="ko">{LG_ADM_FSBCODE_NOT_ACTIVATED}</span></if></td>
+				<td align="center"><if content="$fsbcode.SIG_ACTIVATED"><span class="ok">{LG_ADM_FSBCODE_IS_ACTIVATED}</span><else><span class="ko">{LG_ADM_FSBCODE_NOT_ACTIVATED}</span></if></td>
+				<td align="center">
+					<a href="{fsbcode.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+					<a href="{fsbcode.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="fsbcode">
+			<tr><td class="error">{LG_NO_RESULT}</td></tr>
+		</blockelse>
+		</table>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_FSBCODE_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="fsbcode_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="fsbcode_tag_id">{LG_ADM_FSBCODE_TAG}* :</label></dt>
+			<dd><input type="text" name="fsbcode_tag" id="fsbcode_tag_id" value="{FSBCODE_TAG}" maxlength="20" size="10" /></dd>
+		</dl>
+		<switch name="fsbcode_search">
+			<dl>
+				<dt><label for="fsbcode_search_id">{LG_ADM_FSBCODE_SEARCH}* :</label><br /><span>{LG_ADM_FSBCODE_SEARCH_EXPLAIN}</span></dt>
+				<dd><textarea name="fsbcode_search" id="fsbcode_search_id" rows="7" cols="60" />{FSBCODE_SEARCH}</textarea></dd>
+			</dl>
+			<dl>
+				<dt><label for="fsbcode_replace_id">{LG_ADM_FSBCODE_REPLACE}* :</label><br /><span>{LG_ADM_FSBCODE_REPLACE_EXPLAIN}</span></dt>
+				<dd><textarea name="fsbcode_replace" id="fsbcode_replace_id" rows="7" cols="60" />{FSBCODE_REPLACE}</textarea></dd>
+			</dl>
+		<else>
+			<dl>
+				<dt><label>{LG_ADM_FSBCODE_FCT} :</label></dt>
+				<dd><input type="text" name="fsbcode_fct" value="{FSBCODE_FCT}" maxlength="255" size="50" disabled="disabled" /></dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label for="fsbcode_img_id">{LG_ADM_FSBCODE_IMG} :</label><br /><span>{LG_ADM_FSBCODE_IMG_EXPLAIN}</dt>
+			<dd><input type="text" name="fsbcode_img" id="fsbcode_img_id" value="{FSBCODE_IMG}" maxlength="100" size="50" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="fsbcode_description_id">{LG_ADM_FSBCODE_DESCRIPTION} :</label><br /><span>{LG_ADM_FSBCODE_DESCRIPTION_EXPLAIN}</dt>
+			<dd><input type="text" name="fsbcode_description" id="fsbcode_description_id" value="{FSBCODE_DESCRIPTION}" maxlength="255" size="50" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="fsbcode_list_id">{LG_ADM_FSBCODE_LIST} :</label><br /><span>{LG_ADM_FSBCODE_LIST_EXPLAIN}</span></dt>
+			<dd><textarea name="fsbcode_list" id="fsbcode_list_id" rows="7" cols="60" />{FSBCODE_LIST}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_FSBCODE_ACTIVATED} :</label></dt>
+			<dd>
+				<input type="radio" name="fsbcode_activated" value="1" <if content="$FSBCODE_ACTIVATED">checked="checked"</if> /> {LG_YES} &nbsp;
+				<input type="radio" name="fsbcode_activated" value="0" <if content="!$FSBCODE_ACTIVATED">checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_FSBCODE_ACTIVATED_SIG} :</label></dt>
+			<dd>
+				<input type="radio" name="fsbcode_activated_sig" value="1" <if content="$FSBCODE_ACTIVATED_SIG">checked="checked"</if> /> {LG_YES} &nbsp;
+				<input type="radio" name="fsbcode_activated_sig" value="0" <if content="!$FSBCODE_ACTIVATED_SIG">checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

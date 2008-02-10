@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<title>Fire-Soft-Board v2</title>
+	<link type="text/css" rel="stylesheet" href="style/main.css" />
+	<link type="text/nonsense" rel="stylesheet" href="style/opera.css" />
+</head>
+
+<body>
+<div  class="main">
+
+<table width="100%">
+	<tr>
+		<td align="center" width="225" height="80" class="forum"><img src="style/logo.gif" alt="Installation" /></td>
+		<td class="forum" align="center"><b>{LG_INSTALL_WELCOME}</b></td>
+	</tr>
+</table>
+<br />
+
+<div id="module_border">
+	<div id="module">
+		<ul>
+			<block name="step">
+				<li><span <if content="$step.CURRENT_STEP">class="current"</if>>{step.NAME}</span></li>
+			</block>
+		</ul>
+	</div>
+	<br />
+
+	<form action="{U_ACTION}" method="post">
+	<switch name="step_home">
+		<!-- PREMIERE ETAPE -->
+		<fieldset>
+			<legend>{LG_INSTALL_HOME}</legend>
+			<div id="desc" style="text-align: left">{LG_INSTALL_PROCESS}</div>
+			<br />
+			<div><input type="submit" name="go_to_step_chmod" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+		</fieldset>
+
+		<switch name="localhost">
+			<fieldset>
+				<legend>{LG_INSTALL_QUICK}</legend>
+				<div id="desc">{LG_INSTALL_QUICK_EXPLAIN}</div>
+				<br />
+				<div><input type="submit" name="quick_install" value="{LG_SUBMIT}" id="submit" /></div>
+			</fieldset>
+		</switch>
+	</switch>
+
+	<switch name="step_chmod">
+		<fieldset>
+			<legend>{LG_INSTALL_CHMOD_TITLE}</legend>
+			<div id="desc">{LG_INSTALL_CHMOD_EXPLAIN}</div>
+			<br />
+			<div><input type="submit" name="go_to_step_db" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+			<block name="chmod">
+				<dl>
+					<dt>
+						<label for="chmod_id_{chmod.ITERATOR}">{chmod.PATH} :</label>
+						(<if content="$chmod.WRITE"><span class="ok">Est inscriptible</span><else><span class="ko">N'est pas inscriptible</span></if>)
+						<br /><span>{chmod.EXPLAIN}</span>
+					</dt>
+					<dd>
+						<input type="radio" name="{chmod.NAME}" value="1" <if content="!$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_YES}
+						&nbsp; <input type="radio" name="{chmod.NAME}" value="0" <if content="$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_NO}
+					</dd>
+				</dl>
+			</block>
+		</fieldset>
+
+		<fieldset>
+			<legend>{LG_INSTALL_CHMOD_FTP}</legend>
+			<div id="desc">{LG_INSTALL_CHMOD_FTP_EXPLAIN}</div>
+			<dl>
+				<dt><label for="ftp_host_id">{LG_INSTALL_FTP_HOST} :</label></dt>
+				<dd><input type="text" name="ftp_host" id="ftp_host_id" value="{FTP_HOST}" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="ftp_login_id">{LG_INSTALL_FTP_LOGIN} :</label></dt>
+				<dd><input type="text" name="ftp_login" id="ftp_login_id" value="{FTP_LOGIN}" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="ftp_password_id">{LG_INSTALL_FTP_PASSWORD} :</label></dt>
+				<dd><input type="password" name="ftp_password" id="ftp_password_id" value="{FTP_PASSWORD}" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="ftp_port_id">{LG_INSTALL_FTP_PORT} :</label></dt>
+				<dd><input type="text" name="ftp_port" id="ftp_port_id" value="{FTP_PORT}" size="5" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="ftp_path_id">{LG_INSTALL_FTP_PATH} :</label><br /><span>{LG_INSTALL_FTP_PATH_EXPLAIN}</span></dt>
+				<dd><input type="text" name="ftp_path" id="ftp_path_id" value="{FTP_PATH}" size="35" /></dd>
+			</dl>
+			<div><input type="submit" name="submit_chmod" value="{LG_INSTALL_CHMOD_SUBMIT}" id="submit" /></div>
+		</fieldset>
+	</switch>
+
+	<switch name="step_db">
+		<!-- SECONDE ETAPE -->
+		<script type="text/javascript" language="javascript">
+		<!--
+		var info_bdd = new Array();
+		info_bdd['0'] = '<dl><dt><label>{LG_INSTALL_SQL_PREFIX} :</label></dt><dd><input type="text" name="sql_prefix" value="{SQL_PREFIX}" /></dd></dl>';
+		info_bdd['1'] = '<dl><dt><label>{LG_INSTALL_SQL_SERVER} :</label></dt><dd><input type="text" name="sql_server" value="{SQL_SERVER}" /></dd></dl>';
+		info_bdd['2'] = '<dl><dt><label>{LG_INSTALL_SQL_PORT} :</label></dt><dd><input type="text" name="sql_port" value="{SQL_PORT}" style="width: 35px" /></dd></dl>';
+		info_bdd['3'] = '<dl><dt><label>{LG_INSTALL_SQL_LOGIN} :</label></dt><dd><input type="text" name="sql_login" value="{SQL_LOGIN}" /></dd></dl>';
+		info_bdd['4'] = '<dl><dt><label>{LG_INSTALL_SQL_PASSWORD} :</label></dt><dd><input type="password" name="sql_password" value="{SQL_PASSWORD}" /></dd></dl>';
+		info_bdd['5'] = '<dl><dt><label>{LG_INSTALL_SQL_DBNAME} :</label></dt><dd><input type="text" name="sql_dbname" value="{SQL_DBNAME}" /></dd></dl>';
+
+		function in_array(content, ary)
+		{
+			var len = ary.length;
+
+			for (var i = 0; i < len; i++)
+			{
+				if (ary[i] == content)
+				{
+					return (true);
+				}
+			}
+			return (false);
+		}
+
+		function db_change(dbal_name)
+		{
+			if (dbal_name == 'sqlite')
+			{
+				show = new Array(0, 5);
+			}
+			else
+			{
+				show = new Array(0, 1, 2, 3, 4, 5);
+			}
+
+			document.getElementById('db_change').innerHTML = '';
+			for (var i = 0; i < info_bdd.length; i++)
+			{
+				if (in_array(i, show))
+				{
+					document.getElementById('db_change').innerHTML += info_bdd[ i ];
+				}
+			}
+		}
+		//-->
+		</script>
+
+		<switch name="sql_error">
+			<fieldset>
+				<legend>{LG_INSTALL_INFORMATION}</legend>
+				<div id="error"><span class="ko">{SQL_ERROR}</span></div>
+			</fieldset>
+		</switch>
+
+		<fieldset>
+			<legend>{LG_INSTALL_SGBD}</legend>
+			<div id="desc">{LG_INSTALL_SGBD_EXPLAIN}</div>
+			<dl>
+				<dt><label>{LG_INSTALL_SGBD} :</label></dt>
+				<dd>{LIST_DBMS}</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset>
+			<legend>{LG_INSTALL_SGBD_CONNECT}</legend>
+			<div id="desc">{LG_INSTALL_SGBD_CONNECT_EXPLAIN}</div>
+			<span id="db_change">
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_PREFIX} :</label></dt>
+					<dd><input type="text" name="sql_prefix" value="{SQL_PREFIX}" size="10" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_SERVER} :</label></dt>
+					<dd><input type="text" name="sql_server" value="{SQL_SERVER}" size="25" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_PORT} :</label></dt>
+					<dd><input type="text" name="sql_port" value="{SQL_PORT}" style="width: 35px" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_LOGIN} :</label></dt>
+					<dd><input type="text" name="sql_login" value="{SQL_LOGIN}" size="25" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_PASSWORD} :</label></dt>
+					<dd><input type="password" name="sql_password" value="{SQL_PASSWORD}" size="25" /></dd>
+				</dl>
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_DBNAME} :</label></dt>
+					<dd><input type="text" name="sql_dbname" value="{SQL_DBNAME}" size="25" /></dd>
+				</dl>
+			</span>
+			<div><input type="submit" name="go_to_step_admin" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+		</fieldset>
+
+		<script type="text/javascript" language="javascript">
+		<!--
+		db_change(document.getElementById('sql_dbms_id').value);
+		//-->
+		</script>
+	</switch>
+
+<switch name="step_admin">
+<!-- TROISIEME ETAPE -->
+	<switch name="config_mode">
+		<fieldset>
+			<legend>{LG_INFORMATION}</legend>
+			<div id="error">{LG_INSTALL_WRITE_CONFIG}</div>
+			<pre>{CONFIG_CODE}</pre>
+			<div><input type="submit" name="go_to_step_admin" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+		</fieldset>
+	<else>
+		<fieldset>
+			<legend>{LG_INSTALL_ADMIN}</legend>
+			<dl>
+				<dt><label>{LG_INSTALL_ADMIN_LOGIN} :*</label></dt>
+				<dd><input type="text" name="login" value="{LOGIN}" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_INSTALL_ADMIN_NICKNAME} :</label><br /><span>{LG_INSTALL_ADMIN_NICKNAME_EXPLAIN}</span></dt>
+				<dd><input type="text" name="nickname" value="{NICKNAME}" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_INSTALL_ADMIN_PASSWORD} :*</label></dt>
+				<dd><input type="password" name="password" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_INSTALL_ADMIN_PASSWORD_CONFIRM} :*</label></dt>
+				<dd><input type="password" name="password_confirm" size="35" /></dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_INSTALL_ADMIN_EMAIL} :*</label></dt>
+				<dd><input type="text" name="email" value="{EMAIL}" size="35" /></dd>
+			</dl>
+			<div><input type="submit" name="go_to_step_end" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+		</fieldset>
+	</switch>
+</switch>
+
+<switch name="step_config">
+	<fieldset>
+		<legend>{LG_INSTALL_CONFIG_FORUM}</legend>
+		<div id="desc">{LG_INSTALL_CONFIG_FORUM_EXPLAIN}<br /><br /><input type="submit" name="go_to_step_config" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+		<dl>
+			<dt><label for="config_email_id">{LG_INSTALL_CONFIG_EMAIL} :</label><br /><span>{LG_INSTALL_CONFIG_EMAIL_EXPLAIN}</span></dt>
+			<dd><input type="text" name="config_email" id="config_email_id" size="35" value="{CONFIG_EMAIL}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="config_path_id">{LG_INSTALL_CONFIG_PATH} :</label><br /><span>{LG_INSTALL_CONFIG_PATH_EXPLAIN}</span></dt>
+			<dd><input type="text" name="config_path" id="config_path_id" size="35" value="{CONFIG_PATH}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="config_cookie_id">{LG_INSTALL_CONFIG_COOKIE} :</label><br /><span>{LG_INSTALL_CONFIG_COOKIE_EXPLAIN}</span></dt>
+			<dd><input type="text" name="config_cookie" id="config_cookie_id" size="35" value="fsb2_" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_INSTALL_UTC} :</label></dt>
+			<dd>{LIST_UTC}</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_INSTALL_UTC_DST} :</label></dt>
+			<dd>{LIST_UTC_DST}</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_INSTALL_CONFIG_MENU}</legend>
+		<dl>
+			<dt><label for="menu_webftp_id">{LG_INSTALL_CONFIG_MENU_WEBFTP} :</label><br /><span>{LG_INSTALL_CONFIG_MENU_WEBFTP_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="menu_webftp" value="admin" <if content="$MENU_WEBFTP == 'admin'">id="menu_webftp_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_MENU_ADMIN}<br />
+				<input type="radio" name="menu_webftp" value="fondator" <if content="$MENU_WEBFTP == 'fondator'">id="menu_webftp_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_MENU_FONDATOR}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="menu_sql_id">{LG_INSTALL_CONFIG_MENU_SQL} :</label><br /><span>{LG_INSTALL_CONFIG_MENU_SQL_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="menu_sql" value="admin" <if content="$MENU_SQL == 'admin'">id="menu_sql_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_MENU_ADMIN}<br />
+				<input type="radio" name="menu_sql" value="fondator" <if content="$MENU_SQL == 'fondator'">id="menu_sql_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_MENU_FONDATOR}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_INSTALL_CONFIG_SEARCH}</legend>
+		<dl>
+			<dt><label for="config_search_id">{LG_INSTALL_CONFIG_SEARCH} :</label><br /><span>{LG_INSTALL_CONFIG_SEARCH_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="config_search" value="fulltext_mysql" <if content="$USE_FULLTEXT_MYSQL">id="config_search_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_SEARCH_FULLTEXT_MYSQL}<br />
+				<input type="radio" name="config_search" value="fulltext_fsb" <if content="!$USE_FULLTEXT_MYSQL">id="config_search_id" checked="checked"</if> /> {LG_INSTALL_CONFIG_SEARCH_FULLTEXT_FSB}<br />
+				<input type="radio" name="config_search" value="like" /> {LG_INSTALL_CONFIG_SEARCH_LIKE}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_INSTALL_CONFIG_REWRITING}</legend>
+		<dl>
+			<dt><label for="config_rewriting_id">{LG_INSTALL_CONFIG_REWRITING} :</label><br /><span>{LG_INSTALL_CONFIG_REWRITING_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="config_rewriting" value="1"  /> {LG_INSTALL_YES} &nbsp;
+				<input type="radio" name="config_rewriting" value="0" id="config_rewriting_id" checked="checked" /> {LG_INSTALL_NO}<br />
+			</dd>
+		</dl>
+	</fieldset>
+</switch>
+
+<switch name="step_end">
+<!-- FIN -->
+	<fieldset>
+		<legend>{LG_INSTALL_INFORMATION}</legend>
+		<div id="desc">{LG_INSTALL_END}</div>
+		<br />
+		<div><a href="../index.php?p=index" id="submit">{LG_INSTALL_GO_FORUM}</a></div>
+	</fieldset>
+</switch>
+</form>
+
+</div>
+<br />
+<div class="copyright">Forum <a href="http://www.fire-soft-board.com">Fire-Soft-Board</a> &copy; 2004 - <?php echo date('Y') ?></div>
+</div>
+</body>
+</html>

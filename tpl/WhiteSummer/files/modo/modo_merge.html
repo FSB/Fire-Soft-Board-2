@@ -1,0 +1,88 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<div class="round">
+	<h1>{LG_MODO_MODULE_MERGE}</h1>
+	<switch name="show_merge"><div class="desc">{LG_MODO_MERGE_SUBMIT_EXPLAIN}</div></switch>
+	<table class="form large">
+		<tr>
+			<th><label for="id_id">{LG_MODO_TOPIC_ID} :</label></th>
+			<td>
+				<input type="text" name="id" id="id_id" value="{THIS_ID}" size="5" maxlength="10" />
+				<input type="submit" name="submit_id" value="{LG_SUBMIT}" class="submit" />
+			</td>
+		</tr>
+		<switch name="show_merge">
+			<tr>
+				<th><label for="merge_idx_id">{LG_MODO_MERGE_IDX} :</label><br /><span class="small">{LG_MODO_MERGE_IDX_EXPLAIN}</span></th>
+				<td><textarea name="merge_idx" id="merge_idx_id" rows="5" cols="10">{MERGE_IDX}</textarea></td>
+			</tr>
+			<tr>
+				<th><label for="merge_to_id">{LG_MODO_MERGE_TO} :</label><br /><span class="small">{LG_MODO_MERGE_TO_EXPLAIN}</span></th>
+				<td>
+					<input type="checkbox" id="merge_to_check_id" name="merge_to_check" onclick="$('merge_to_id').disabled = !this.checked" />
+					<input type="text" id="merge_to_id" name="merge_to" size="4" maxlength="6" />
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_merge" value="{LG_MODO_MERGE_SUBMIT}" class="submit" /></td>
+			</tr>
+		</switch>
+	</table>
+</div>
+
+<switch name="show_merge">
+	<script type="text/javascript">
+	<!--
+	$('merge_to_id').disabled = true;
+	function add_merge_id(topic_id, checked)
+	{
+		var content = trim($('merge_idx_id').value);
+		if (checked)
+		{
+			$('merge_idx_id').value = trim(content + "\n" + topic_id);
+		}
+		else
+		{
+			eval('var rep = content.replace(/' + topic_id + '/, \'\')');
+			$('merge_idx_id').value = trim(rep);
+		}
+	}
+	//-->
+	</script>
+
+	<div class="round">
+		<h1>{LG_MODO_MERGE_FIND}</h1>
+		<div class="desc">{LG_MODO_MERGE_FIND_EXPLAIN}</div>
+		<table class="form">
+			<tr>
+				<th><label for="find_title_id">{LG_MODO_MERGE_FIND_TITLE} :</label></th>
+				<td>
+					<input type="text" name="find_title" id="find_title_id" value="{FIND_TITLE}" size="50" />
+					<input type="submit" name="refresh_topics" value="{LG_MODO_MERGE_REFRESH}" class="submit" />
+				</td>
+			</tr>
+			<tr>
+				<th><label>{LG_MODO_MERGE_FIND_FORUMS} :</label></th>
+				<td>{LIST_MERGE_FORUMS}</td>
+			</tr>
+		</table>
+
+		<div class="content">
+			<block name="topic">
+				<if content="$topic.FIRST_ROW"><ul></if>
+				<li><input type="checkbox" onclick="add_merge_id('{topic.ID}', this.checked)" /> &nbsp; <a href="{topic.U_TOPIC}" class="topicname">{topic.TITLE}</a></li>
+				<if content="$topic.LAST_ROW"></ul></if>
+			</block>
+			<blockelse name="topic">
+				<div class="error">{LG_NO_RESULT}</div>
+			</blockelse>
+		</div>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

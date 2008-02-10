@@ -1,0 +1,47 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/ie6.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entète.
+** +---------------------------------------------------+
+*/
+
+/* Liste des données du posteur */
+.post .userinfo .list
+{
+	margin-left: 5px;
+}
+
+/* Fix du texte dans la barre de navigation pour IE6 */
+.nav strong
+{
+	position: relative;
+	top: 8px;
+}
+
+/* Fix des bas de tableaux collés au div */
+.round
+{
+	padding-bottom: 6px;
+}
+
+/* Fix de la bordure des caption qui semble disparaitre quand on met un padding-top */
+.current_month caption span, .current_month caption a 
+{
+	padding: 0px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+/* Fix de la bordure des caption qui semble disparaitre quand on met un padding-top */
+.current_month caption span
+{
+	padding: 0px;
+	padding-bottom: 4px;
+	padding-left: 50px;
+	padding-right: 50px;
+}

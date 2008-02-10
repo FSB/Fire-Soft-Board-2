@@ -1,0 +1,96 @@
+<include name="adm_header.html" />
+
+<switch name="ranks_list">
+	<fieldset>
+		<legend>{LG_ADM_RANK_TITLE}</legend>
+		<table class="tab">
+		<block name="rank">
+			<if content="$rank.FIRST_ROW">
+				<tr>
+					<th>{LG_ADM_RANK_IMG}</th>
+					<th>{LG_ADM_RANK_NAME}</th>
+					<th>{LG_ADM_RANK_QUOTA}</th>
+					<th>&nbsp;</th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center"><if content="$rank.RANK_IMG"><img src="{RANK_PATH}{rank.RANK_IMG}" alt="{rank.RANK_IMG}" /></if></td>
+				<td align="center"><span {rank.RANK_COLOR}>{rank.RANK_NAME}</span></td>
+				<td align="center"><if content="$rank.RANK_SPECIAL == '1'">{LG_ADM_RANK_SPECIAL}<else>{rank.RANK_QUOTA}</if></td>
+				<td align="center">
+					<a href="{rank.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
+					<a href="{rank.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="rank">
+			<tr>
+				<td class="error" colspan="4">{LG_NO_RESULT}</td>
+			</tr>
+		</block>
+		</table>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_RANK_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="ranks_add">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="rank_name_id">{LG_ADM_RANK_NAME} :</label></dt>
+			<dd><input type="text" name="rank_name" id="rank_name_id" value="{RANK_NAME}" size="35" maxlength="255" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="rank_quota_id">{LG_ADM_RANK_QUOTA} :</label></dt>
+			<dd><input type="text" name="rank_quota" id="rank_quota_id" value="{RANK_QUOTA}" size="4" maxlength="6" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_RANK_SPECIAL} :</label></dt>
+			<dd>
+				<input type="radio" name="rank_special" value="1" {RANK_SPECIAL_YES} /> {LG_YES} &nbsp; 
+				<input type="radio" name="rank_special" value="0" {RANK_SPECIAL_NO} /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="upload_rank_id">{LG_ADM_RANK_UPLOAD} :</label><br /><span>{ADM_RANK_UPLOAD_EXP}</span></dt>
+			<dd><input type="file" name="upload_rank" id="upload_rank_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_RANK_IMG} :</label></dt>
+			<dd>{LIST_RANK} &nbsp; &nbsp; &nbsp; <span id="content_rank_image"></span></dd>
+		</dl>
+		<dl>
+			<dt><label for="rank_style_id">{LG_ADM_RANK_STYLE} :</label><br /><span>{LG_ADM_RANK_STYLE_EXP}</span></dt>
+			<dd>
+				<input type="text" name="rank_style" id="rank_color" value="{RANK_STYLE_CONTENT}" size="50" /> &nbsp;
+				<br />
+				<input type="radio" name="rank_style_type" value="" <if content="!$RANK_STYLE_TYPE">checked="checked"</if> /> {LG_ADM_RANK_STYLE_TYPE_NONE} &nbsp;
+				<input type="radio" name="rank_style_type" id="rank_style_type" value="style" <if content="$RANK_STYLE_TYPE == 'style'">checked="checked"</if> /> <a href="#" onclick="window.open('index.php?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=rank_color&amp;radio=rank_style_type', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_RANK_STYLE_TYPE_S}</a> &nbsp; 
+				<input type="radio" name="rank_style_type" value="class" <if content="$RANK_STYLE_TYPE == 'class'">checked="checked"</if> /> {LG_ADM_RANK_STYLE_TYPE_C}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+
+	<script type="text/javascript">
+	<!--
+	function show_rank_image()
+	{
+		if (document.getElementById('select_rank_image').value != '0')
+		{
+			document.getElementById('content_rank_image').innerHTML = '<img id="rank_image" src="" align="middle" />';
+			document.getElementById('rank_image').src = '<?php echo RANK_PATH ?>' + document.getElementById('select_rank_image').value;
+		}
+		else
+		{
+			document.getElementById('content_rank_image').innerHTML = '';
+		}
+	}
+	show_rank_image();
+	//-->
+	</script>
+</switch>
+
+<include name="adm_footer.html" />

@@ -1,0 +1,65 @@
+<!--
+	Légende :
+		* pour les balises
+		- pour les attributs
+		(...) contient une chaîne de caractère
+		(x|y|z) prend soit la valeur x, soit la valeur y, soit la valeur z
+		<...> contient des balises enfant
+		#...# cette balise peut se répéter X fois
+		(!) signifie que cette option n'est actuellement pas implémentée au système
+-->
+
+<!--
+	@title=Format des procédures de modération
+	@description=Explication de la syntaxe pour créer des procédures de modération. Les procédures sont composés de séries de <function>. Dans cette documentation, les paramètres name="" utilisés pour appeler les fonctions sont concaténés au nom de la fonction, par exemple <function_var> devra en fait être <function name="var">.
+-->
+
+* <procedure> <...> : Contient les instructions de la procedure
+	* <function> <...> #...# : Appel d'une instruction. Elle contient des balises qui seront ses arguments. Les arguments prennent soit une valeur sous forme de chaîne de caractère, soit une fonction qui les renseignera avec sa valeur de retour.
+		- name (var|input|lock|unlock|send_mp|send_post|redirect|move|ban|warn|delete_post|delete_topic|userdata|global) : Fonction à exécuter
+	* <function_var> <...> #...# : name="var" déclaration de variable
+		* <varname> (...) : Nom de la variable
+		* <value> (...) : Valeur de la variable
+	* <function_input> <...> #...# : name="input" renseignement d'un champ texte
+		* <type> (text|textarea) : Type du champ texte
+		* <explain> (...) : Texte explicatif devant le champ
+		* <default> (...) : Valeur par défaut du champ
+	* <function_lock> <...> #...# : name="lock" verrouillage d'un sujet
+		* <topicID> (...) : ID du sujet à verrouiller
+	* <function_unlock> <...> #...# : name="unlock" déverrouillage d'un sujet
+		* <topicID> (...) : ID du sujet à déverrouiller
+	* <function_send_mp> <...> #...# : name="send_mp" envoyer un message privé
+		* <fromID> (...) : ID du membre envoyant le MP
+		* <toID> (...) : ID du membre receptionnant le MP
+		* <title> (...) : Titre du MP
+		* <content> (...) : Contenu du MP
+	* <function_send_post> <...> #...# : name="send_post" envoyer un message
+		* <fromID> (...) : ID du membre postant le message
+		* <topicID> (...) : ID du sujet où poster le message
+		* <content> (...) : Contenu du message
+	* <function_redirect> <...> #...# : name="redirect" rediriger vers une page, terminer la procédure
+		* <url> (...) : URL de redirection
+	* <function_move> <...> #...# : name="move" déplacer un sujet
+		* <topicID> (...) : ID du sujet à déplacer
+		* <forumID> (...) : ID du forum de destination
+		* <trace> (true|false) : Traceur pour le sujet
+	* <function_ban> <...> #...# : name="ban" bannir un membre
+		* <banType> (ip|login|mail) : Type de bannissement
+		* <banContent> (...) : Elément à bannir
+		* <reason> (...) : Raison du bannissement
+		* <banLength> (...) : Durée du bannissement
+	* <function_warn> <...> #...# : name="warn" avertir un membre
+		* <warnType> (more|less) : more pour ajouter un avertissement, less pour en supprimer un
+		* <warnUserID> (...) : ID du membre donnant l'avertissement
+		* <toID> (...) : ID du membre à qui on donne l'avertissement
+		* <reason> (...) : Raison pour l'avertissement
+	* <function_delete_post> <...> #...# : name="delete_post" suppression d'un message
+		* <postID> (...) : ID du message à supprimer
+	* <function_delete_topic> <...> #...# : name="delete_topic" suppression d'un sujet
+		* <topicID> (...) : ID du sujet à supprimer
+	* <function_userdata> <...> #...# : name="userdata" retourne des information sur un utilisateur
+		* <userID> (...) : ID du membre (prioritaire sur le pseudonyme du membre)
+		* <username> (...) : Pseudonyme du membre
+		* <return> (...) : Si cet argument est passé, il doit prendre en valeur un champ de la table fsb2_users, qui sera retourné. Sinon on retourne le tableau complet de données
+	* <function_global> <...> #...# : name="global" retourne la valeur d'une variable globale PHP
+		* <varname> (...) : Nom de la variable globale

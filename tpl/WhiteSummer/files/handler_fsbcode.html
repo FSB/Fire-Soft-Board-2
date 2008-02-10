@@ -1,0 +1,54 @@
+<iframe width="275" height="250" id="map_textarea_{map.NAME}_box_attach" name="map_textarea_{map.NAME}_box_attach" src="{map.U_BOX_UPLOAD}" scrolling="no" style="visibility: hidden; display: none; position: absolute; border: 0px solid #000000" marginwidth="0" marginheight="0"></iframe>
+
+<script type="text/javascript">
+<!--
+var get_pos_iterator = {map.POS_ITERATOR};
+use_wysiwyg['map_textarea_{map.NAME}'] = (!Nav_IE && !Nav_Moz && !Nav_Opera) ? false : <if content="$map.USE_WYSIWYG">true<else>false</if>;
+
+/*
+if (use_wysiwyg['map_textarea_{map.NAME}'])
+{
+	document.write('<img id="map_textarea_{map.NAME}_id_undo" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{IMG_FSBCODE_UNDO}" onclick="insert_text(\'map_textarea_{map.NAME}\', \'\', \'\', \'\', \'\', \'undo\', null)" onmouseover="fsbcode_background(this, true, \'{ROOT}tpl/{USER_TPL}\')" onmouseout="fsbcode_background(this, false, \'{ROOT}tpl/{USER_TPL}\')" title="" alt="" /> ');
+	document.write('<img id="map_textarea_{map.NAME}_id_redo" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{IMG_FSBCODE_REDO}" onclick="insert_text(\'map_textarea_{map.NAME}\', \'\', \'\', \'\', \'\', \'redo\', null)" title="" alt="" /> ');
+}
+*/
+//-->
+</script>
+
+<block name="fsbcode">
+	<if content="$fsbcode.ITERATOR > 0 AND $fsbcode.ITERATOR % 13 == 0"></tr></table></if>
+	<if content="$fsbcode.ITERATOR == 0 OR $fsbcode.ITERATOR % 13 == 0"><table><tr></if>
+
+	<td>
+		<if content="$fsbcode.IMG">
+			<img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{fsbcode.IMG}" onclick="insert_text('map_textarea_{map.NAME}', '{fsbcode.FCT}', '{fsbcode.OPEN}', '', '{fsbcode.CLOSE}', '{fsbcode.CODE}', null)" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}')" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" />
+		<else>
+			<div class="fsbcode" onclick="insert_text('map_textarea_{map.NAME}', '{fsbcode.FCT}', '{fsbcode.OPEN}', '', '{fsbcode.CLOSE}', '{fsbcode.CODE}', null)" title="{fsbcode.TEXT}" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}', true)" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}', true)"><div>{fsbcode.CODE}</div><span></span></div>
+		</if>
+	</td>
+
+	<if content="$fsbcode.LAST_ROW"></tr></table></if>
+</block>
+
+<script type="text/javascript">
+<!--
+load_rainbow('{map.NAME}');
+//-->
+</script>
+
+<table>
+	<block name="fsbcode_list">
+		<if content="$fsbcode_list.ITERATOR > 0 AND $fsbcode_list.ITERATOR % 15 == 0"></tr></if>
+		<if content="$fsbcode_list.ITERATOR == 0 OR $fsbcode_list.ITERATOR % 15 == 0"><tr></if>
+
+		<td>
+			<select title="{fsbcode_list.TEXT}" onchange="insert_text('map_textarea_{map.NAME}', '{fsbcode_list.FCT}', '[{fsbcode_list.CODE}=' + this.value + ']', '', '[/{fsbcode_list.CODE}]', '{fsbcode_list.CODE}', this.value); this.selectedIndex=0">
+				<block name="fsbcode_list.item">
+					<option value="{fsbcode_list.item.VALUE}" {fsbcode_list.item.STYLE}>{fsbcode_list.item.LANG}</option>
+				</block>
+			</select>
+		</td>
+
+		<if content="$fsbcode_list.LAST_ROW"></tr></if>
+	</block>
+</table>

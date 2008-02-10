@@ -1,0 +1,27 @@
+<form action="{U_POLL_ACTION}" method="post">
+<table class="poll">
+	<tr>
+		<th colspan="3" style="font-size: 16px">{POLL_NAME}</th>
+	</tr>
+	<block name="poll_option">
+		<tr>
+			<td width="50%" align="right">{poll_option.NAME} &nbsp; </td>
+			<td width="50%" align="left">
+				<switch name="can_use_poll">
+					<input type="{poll_option.INPUT}" name="poll_result[]" value="{poll_option.ID}" <if content="$poll_option.INPUT == 'checkbox'">onclick="check_poll(this, {POLL_MAX_VOTE})"</if> />
+				</switch>
+				<img src="{IMG_POLL_RESULT_LEFT}" alt="" height="15" /><img src="{IMG_POLL_RESULT}" width="{poll_option.WIDTH}" height="15" alt="" /><img src="{IMG_POLL_RESULT_RIGHT}" alt="" height="15" />
+				{poll_option.CALCUL}% ({poll_option.TOTAL} / {POLL_TOTAL_VOTE})
+			</td>
+		</tr>
+	</block>
+	<tr>
+		<td align="center" colspan="3">
+			<switch name="can_use_poll">
+				<span class="small"><i>{L_TOPIC_MAX_POLL}</i></span> &nbsp;
+				<input type="submit" name="submit_poll" value="{LG_VOTE}" />
+			</switch>
+		</td>
+	</tr>
+</table>
+</form>

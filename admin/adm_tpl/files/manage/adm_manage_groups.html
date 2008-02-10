@@ -1,0 +1,142 @@
+<include name="adm_header.html" />
+
+<switch name="groups_management">
+	<fieldset>
+		<legend>{LG_ADM_GROUP_LIST}</legend>
+		<table class="tab">
+		<block name="group">
+			<if content="$group.FIRST_ROW">
+				<tr>
+					<th width="150">{LG_ADM_GROUP_NAME}</th>
+					<th>{LG_ADM_GROUP_DESC}</th>
+					<th width="100">{LG_ADM_GROUP_TOTAL_MEMBER}</th>
+					<th width="100">{LG_ACTION}</th>
+				</tr>
+			</if>
+			<if content="$group.SEPARATOR">
+				<tr>
+					<th colspan="4">{LG_ADM_GROUP_IS_NOT_SPECIAL}</th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center"><span {group.STYLE}>{group.NAME}</span></td>
+				<td align="center">{group.DESC}</td>
+				<td align="center">{group.COUNT}</td>
+				<td align="center">
+					<a href="{group.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
+					<if content="$group.U_DELETE"><a href="{group.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a></if>
+				</td>
+			</tr>
+		</block>
+		<blockelse name="group">
+			<tr><td class="error">{LG_NO_RESULT}</td></tr>
+		</block>
+		</table>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_GROUP_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="groups_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<if content="$ERRSTR"><div class="error">{ERRSTR}</div></if>
+		<dl>
+			<dt><label for="g_name_id">{LG_ADM_GROUP_NAME}* :</label></dt>
+			<dd><input type="text" name="g_name" id="g_name_id" value="{NAME}" maxlength="100" size="35" /></dd>
+		</dl>
+		<switch name="is_not_special">
+			<dl>
+				<dt><label for="g_desc_id">{LG_ADM_GROUP_DESC} :</label></dt>
+				<dd><textarea name="g_desc" id="g_desc_id" rows="3" cols="50">{DESC}</textarea></dd>
+			</dl>
+			<dl>
+				<dt><label for="g_modo_id">{LG_ADM_GROUP_MODO} :</label><br /><span>{LG_ADM_GROUP_MODO_EXP}</span></dt>
+				<dd><textarea name="g_modo" id="g_modo_id" rows="3" cols="30">{MODO}</textarea></dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label for="group_color">{LG_ADM_GROUP_STYLE} :</label><br /><span>{LG_ADM_GROUP_STYLE_EXP}</span></dt>
+			<dd>
+				<input type="text" id="group_color" name="g_style" value="{STYLE}" maxlength="255" size="50" /><br />
+				<input type="radio" name="g_style_type" value="" {STYLE_TYPE_NONE} /> {LG_ADM_GROUP_STYLE_NONE} &nbsp;
+				<input type="radio" name="g_style_type" id="g_style_type_id" value="color" {STYLE_TYPE_COLOR} /> <a href="#" onclick="window.open('index.php?p=general_tpl&module=tpl&amp;mode=css_generator&amp;id=group_color&amp;radio=g_style_type_id', 'color_window', 'height=275,resizable=yes,width=650,scrollbars'); return false;">{LG_ADM_GROUP_STYLE_COLOR}</a> &nbsp;
+				<input type="radio" name="g_style_type" value="class" {STYLE_TYPE_CLASS} /> {LG_ADM_GROUP_STYLE_CLASS}
+			</dd>
+		</dl>
+		<switch name="is_not_special">
+			<dl>
+				<dt><label for="g_open_id">{LG_ADM_GROUP_OPEN} :</label><br /><span>{LG_ADM_GROUP_OPEN_EXPLAIN}</span></dt>
+				<dd>
+					<input type="radio" name="g_open" value="1" <if content="$GROUP_OPEN">id="g_open_id" checked="checked"</if> /> {LG_YES} &nbsp;
+					<input type="radio" name="g_open" value="0" <if content="!$GROUP_OPEN">id="g_open_id" checked="checked"</if> /> {LG_NO}
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="g_hidden_id">{LG_ADM_GROUP_HIDDEN} :</label><br /><span>{LG_ADM_GROUP_HIDDEN_EXPLAIN}</span></dt>
+				<dd>
+					<input type="radio" name="g_hidden" value="0" <if content="$GROUP_VISIBLE">id="g_hidden_id" checked="checked"</if> /> {LG_ADM_GROUP_VISIBLE} &nbsp;
+					<input type="radio" name="g_hidden" value="1" <if content="!$GROUP_VISIBLE">id="g_hidden_id" checked="checked"</if> /> {LG_ADM_GROUP_INVISIBLE}
+				</dd>
+			</dl>
+		</switch>
+		<dl>
+			<dt><label for="g_online_id">{LG_ADM_GROUP_ONLINE} :</label></dt>
+			<dd>
+				<input type="radio" name="g_online" value="1" <if content="$GROUP_ONLINE">id="g_online_id" checked="checked"</if> /> {LG_YES} &nbsp;
+				<input type="radio" name="g_online" value="0" <if content="!$GROUP_ONLINE">id="g_online_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_GROUP_RANK} :</label><br /><span>{LG_ADM_GROUP_RANK_EXPLAIN}</span></dt>
+			<dd>{LIST_RANKS}</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="groups_users">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_GROUP_SEARCH_USER}</legend>
+		<if content="$ERRSTR"><div class="error">{ERRSTR}</div></if>
+		<dl>
+			<dt><label for="search_user_id">{LG_ADM_GROUP_SEARCH_NICKNAME} :</label></dt>
+			<dd><input type="text" name="search_user" id="search_user_id" value="{NICKNAME}" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_search_user" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_GROUP_LIST}</legend>
+		<table class="tab">
+		<block name="group">
+			<if content="$group.FIRST_ROW">
+				<tr>
+					<th width="150">{LG_ADM_GROUP_NAME}</td>
+					<th width="150">{LG_ADM_GROUP_OPEN_STATE}</th>
+					<th width="150">{LG_ADM_GROUP_VISIBLE_STATE}</th>
+					<th width="100">{LG_ADM_GROUP_TOTAL_MEMBER}</th>
+					<th></th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center"><span {group.STYLE}>{group.NAME}</span></td>
+				<td align="center"><if content="$group.OPEN">{LG_ADM_GROUP_IS_OPEN}<else>{LG_ADM_GROUP_IS_CLOSE}</if></td>
+				<td align="center"><if content="$group.VISIBLE">{LG_ADM_GROUP_VISIBLE}<else>{LG_ADM_GROUP_INVISIBLE}</if></td>
+				<td align="center">{group.COUNT}</td>
+				<td align="center"><a href="{group.U_MANAGE}" class="submit">{LG_ADM_GROUP_MANAGE_USERS}</a></td>
+			</tr>
+		</block>
+		<blockelse name="group">
+			<tr>
+				<td class="error" colspan="5">{LG_NO_RESULT}</td>
+			</tr>
+		</block>
+		</table>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

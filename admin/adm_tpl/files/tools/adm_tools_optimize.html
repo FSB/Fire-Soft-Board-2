@@ -1,0 +1,91 @@
+<include name="adm_header.html">
+
+<switch name="optimize_chmod">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_OPTIMIZE_CHMOD}</legend>
+		<div class="desc">{LG_OPTIMIZE_CHMOD_EXPLAIN}</div>
+		<block name="chmod">
+			<dl>
+				<dt>
+					<label for="chmod_{chmod.ITERATOR}">{chmod.PATH} &nbsp; ({chmod.CHMOD}) &nbsp; 
+					<if content="$chmod.WRITE"><span class="ok">{LG_OPTIMIZE_IS_WRITABLE}</span><else><span class="ko">{LG_OPTIMIZE_IS_NOT_WRITABLE}</span></if> :</label>
+					<br /><span>{chmod.EXPLAIN}</span>
+				</dt>
+				<dd>
+					<input type="radio" name="optimize_chmod[{chmod.KEY}]" value="1" <if content="!$chmod.WRITE">id="chmod_{chmod.ITERATOR}" checked="checked"</if> /> {LG_YES} &nbsp; 
+					<input type="radio" name="optimize_chmod[{chmod.KEY}]" value="0" <if content="$chmod.WRITE">id="chmod_{chmod.ITERATOR}" checked="checked"</if> /> {LG_NO}
+				</dd>
+			</dl>
+		</block>
+		<dl>
+			<dt><label for="use_ftp_id">{LG_USE_FTP} :</label></dt>
+			<dd><input type="checkbox" name="use_ftp" id="use_ftp_id" value="1" <if content="$USE_FTP">checked="checked"</if> /></dd>
+		</dl>
+		<div><a href="{U_CHMOD_TPL}" class="reset">{SHOW_HIDE_TPL}</a> &nbsp; <input type="submit" name="submit_chmod" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="optimize_search">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_OPTIMIZE_SEARCH}</legend>
+		<switch name="fulltext_fsb">
+			<div class="desc">{LG_OPTIMIZE_SEARCH_EXPLAIN}<br /><br /><input type="submit" name="submit_search" value="{LG_SUBMIT}" class="submit" /></div>
+		<else>
+			<div class="error">{LG_OPTIMIZE_SEARCH_BAD}</div>
+		</switch>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="optimize_process">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_OPTIMIZE_PROCESS}</legend>
+		<div class="desc">{LG_OPTIMIZE_PROCESS_EXPLAIN}</div>
+		<table class="tab">
+		<block name="process">
+			<if content="$process.FIRST_ROW">
+				<tr>
+					<th></th>
+					<th width="175">{LG_OPTIMIZE_PROCESS_DATE}</th>
+					<th width="175">{LG_OPTIMIZE_PROCESS_NEXT}</th>
+					<th width="140">{LG_OPTIMIZE_PROCESS_STEP}</th>
+					<th width="50">{LG_OPTIMIZE_PROCESS_LAUNCH}</th>
+				</tr>
+			</if>
+			<tr>
+				<td><b>{process.NAME} :</b><if content="$process.EXPLAIN"><br /><span>{process.EXPLAIN}</span></if></td>
+				<td align="center">{process.LAST_DATE}</td>
+				<td align="center">{process.NEXT_DATE}</td>
+				<td align="center"><input type="text" name="process_step[{process.ID}]" value="{process.VALUE}" size="5" maxlength="4" /></td>
+				<td align="center"><input type="checkbox" name="process_launch[{process.ID}]" value="1" /></td>
+			</tr>
+		</block>
+		</table>
+		<div><input type="submit" name="submit_process" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="optimize_replace">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_OPTIMIZE_REPLACE_TITLE}</legend>
+		<div class="desc">{LG_OPTIMIZE_REPLACE_EXPLAIN}</div>
+		<dl>
+			<dt><label>{LG_OPTIMIZE_REPLACE_FROM} :</label></dt>
+			<dd><input type="text" name="replace_from" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_OPTIMIZE_REPLACE_TO} :</label></dt>
+			<dd><input type="text" name="replace_to" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_replace" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

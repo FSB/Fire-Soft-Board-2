@@ -1,0 +1,164 @@
+<include name="adm_header.html" />
+
+<switch name="users_list">
+	<form action="{U_ACTION}" method="post">
+	<fieldset class="profil">
+		<legend>{LG_SEARCH}</legend>
+		<dl>
+			<dt><label for="search_user_id">{LG_ADM_USERS_SEARCH} :</label></dt>
+			<dd><input type="text" name="search_user" id="search_user_id" value="{SEARCH_USER}" size="25" /></dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+
+	<switch name="pagination">
+		<br /><div align="right">{PAGINATION}</div>
+	</switch>
+
+	<fieldset>
+		<legend>{LG_ADM_USERS_LIST}</legend>
+		<table class="tab">
+		<block name="user">
+			<if content="$user.FIRST_ROW">
+				<tr>
+					<th width="50">{LG_ID}</th>
+					<th><a href="{U_SORT_NICKNAME}">{LG_ADM_USERS_NICKNAME}</a></th>
+					<th width="200"><a href="{U_SORT_JOINED}">{LG_ADM_USERS_JOINED}</a></th>
+					<th width="200"><a href="{U_SORT_STATS}">{LG_ADM_USERS_STATS}</a></th>
+					<th width="100">{LG_ACTION}</th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center">{user.ID}</td>
+				<td align="center">{user.NICKNAME}</td>
+				<td align="center">{user.JOINED}</td>
+				<td align="center">{user.POSTS}<br />{user.TOPICS}</td>
+				<td align="center"><a href="{user.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></td>
+			</tr>
+		</block>
+		<blockelse name="user">
+			<tr><td class="error">{LG_NO_RESULT}</td></tr>
+		</blockelse>
+		</table>
+	</fieldset>
+
+	<switch name="pagination">
+		<br style="line-height: 10px" /><div align="right">{PAGINATION}</div>
+	</switch>
+</switch>
+
+<switch name="users_prune">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_USERS_PRUNE}</legend>
+		<div class="desc">{LG_ADM_USERS_PRUNE_EXPLAIN}</div>
+		<dl>
+			<dt><label for="prune_nickname_id">{LG_ADM_USERS_PRUNE_NICKNAME} :</label><br /><span>{LG_ADM_USERS_PRUNE_NICKNAME_EXPLAIN}</span></dt>
+			<dd><textarea rows="4" cols="30" id="prune_nickname_id" name="prune_nickname"></textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="prune_email_id">{LG_ADM_USERS_PRUNE_EMAIL} :</label><br /><span>{LG_ADM_USERS_PRUNE_EMAIL_EXPLAIN}</span></dt>
+			<dd><input type="text" name="prune_email" id="prune_email_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="prune_ip_id">{LG_ADM_USERS_PRUNE_IP} :</label><br /><span>{LG_ADM_USERS_PRUNE_IP_EXPLAIN}</span></dt>
+			<dd><input type="text" name="prune_ip" id="prune_ip_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_USERS_PRUNE_JOINED} :</label><br /><span>{LG_ADM_USERS_PRUNE_JOINED_EXPLAIN}</span></dt>
+			<dd><input type="checkbox" name="prune_joined" value="1" /> {LIST_JOINED_POS} &nbsp; {LIST_JOINED_DAY} {LIST_JOINED_MONTH} {LIST_JOINED_YEAR}</dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_USERS_PRUNE_VISIT} :</label><br /><span>{LG_ADM_USERS_PRUNE_VISIT_EXPLAIN}</span></dt>
+			<dd><input type="checkbox" name="prune_visit" value="1" /> {LIST_VISIT_POS} &nbsp; {LIST_VISIT_DAY} {LIST_VISIT_MONTH} {LIST_VISIT_YEAR}</dd>
+		</dl>
+		<dl>
+			<dt><label for="prune_post_id">{LG_ADM_USERS_PRUNE_POST} :</label></dt>
+			<dd>{LIST_POST_OPERATOR} <input type="text" name="prune_post" id="prune_post_id" size="5"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="prune_topic_id">{LG_ADM_USERS_PRUNE_TOPIC} :</label></dt>
+			<dd>{LIST_TOPIC_OPERATOR} <input type="text" name="prune_topic" id="prune_topic_id" size="5"/></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_USERS_PRUNE_DELETE} :</label><br /><span>{LG_ADM_USERS_PRUNE_DELETE_EXPLAIN}</span></dt>
+			<dd>{LIST_DELETE}</dd>
+		</dl>
+		<div><input type="submit" name="submit_prune" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="users_gallery">
+	<fieldset>
+		<legend>{LG_ADM_USERS_GALLERY_LIST}</legend>
+		<div class="desc">{LG_ADM_USERS_GALLERY_EXPLAIN}</div>
+		<block name="gallery">
+			<dl>
+				<dt><b><a href="{gallery.URL}">{gallery.NAME}</a></b></dt>
+				<dd>
+					<a href="{gallery.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+					<a href="{gallery.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				</dd>
+			</dl>
+		</block>
+		<blockelse name="gallery">
+			<br />
+			<div class="error">{LG_NO_RESULT}</div>
+			<br />
+		</blockelse>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_USERS_GALLERY_ADD}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="users_gallery_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{ADD_GALLERY}</legend>
+		<dl>
+			<dt><label for="gallery_name_id">{LG_ADM_USERS_GALLERY_NAME} :</label><br /><span>{LG_ADM_USERS_GALLERY_NAME_EXPLAIN}</span></dt>
+			<dd><input type="text" name="gallery_name" id="gallery_name_id" value="{GALLERY_NAME}" size="35" maxlength="50" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="use_ftp_id">{LG_USE_FTP} :</label></dt>
+			<dd><input type="checkbox" name="use_ftp" id="use_ftp_id" value="1" <if content="$USE_FTP">checked="checked"</if> /></dd>
+		</dl>
+		<div><input type="submit" name="submit_gallery" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="users_gallery_show">
+	<fieldset>
+		<legend>{GALLERY_NAME}</legend>
+		<block name="avatar">
+			<dl>
+				<dt><img src="{avatar.IMG}" alt="{avatar.IMG}" title="{avatar.IMG}" /></dt>
+				<dd>
+					<a href="{avatar.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				</dd>
+			</dl>
+		</block>
+		<blockelse name="avatar">
+			<div class="error">{LG_NO_RESULT}</div>
+			<br />
+		</blockelse>
+		<div><a href="{U_ADD}" class="submit">{LG_ADM_USERS_ADD_AVATAR}</a></div>
+	</fieldset>
+</switch>
+
+<switch name="users_gallery_avatar">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_ADM_USERS_ADD_AVATAR}</legend>
+		<dl>
+			<dt><label for="upload_avatar_id">{LG_ADM_USERS_AVATAR_UPLOAD}</label><br /><span>{LG_ADM_USERS_AVATAR_UPLOAD_EXPLAIN} :</span></dt>
+			<dd><input type="file" name="upload_avatar" id="upload_avatar_id" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_avatar" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

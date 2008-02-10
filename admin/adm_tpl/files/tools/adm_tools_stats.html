@@ -1,0 +1,128 @@
+<include name="adm_header.html" />
+
+<switch name="stats_forum">
+	<fieldset>
+		<legend>{LG_ADM_SERVER_CONFIG}</legend>
+		<dl>
+			<dt class="strong">{LG_ADM_OS_TYPE} :</dt>
+			<dd>{OS_TYPE}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_PHP_VERSION} :</dt>
+			<dd>{PHP_VERSION} &nbsp; (<b><i><a href="{U_PHP_VERSION}">{LG_ADM_PHPINFO}</a></i></b>)</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SGBD_TYPE} :</dt>
+			<dd>{SGBD_TYPE} {SGBD_VERSION}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_CACHE_SYSTEM} :</dt>
+			<dd>{CACHE_SYSTEM}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_FSB_VERSION} :</dt>
+			<dd>{FSB_VERSION}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_FSB_CREATE}</dt>
+			<dd>{FSB_CREATE}</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_STATS}</legend>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_USERS} :</dt>
+			<dd>{TOTAL_USERS}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_AVERAGE_USERS} :</dt>
+			<dd>{AVERAGE_USERS}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_TOPICS} :</dt>
+			<dd>{TOTAL_TOPICS}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_AVERAGE_TOPICS} :</dt>
+			<dd>{AVERAGE_TOPICS}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_POSTS} :</dt>
+			<dd>{TOTAL_POSTS}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_AVERAGE_POSTS} :</dt>
+			<dd>{AVERAGE_POSTS}</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_MEMORY_TAKEN}</legend>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_SQL} :</dt>
+			<dd>{TOTAL_SQL}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SIZE_SQL} :</dt>
+			<dd>{SIZE_SQL}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_SMILEY} :</dt>
+			<dd>{TOTAL_SMILEY}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SIZE_SMILEY} :</dt>
+			<dd>{SIZE_SMILEY}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_AVATAR} :</dt>
+			<dd>{TOTAL_AVATAR}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SIZE_AVATAR} :</dt>
+			<dd>{SIZE_AVATAR}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_RANK} :</dt>
+			<dd>{TOTAL_RANK}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SIZE_RANK} :</dt>
+			<dd>{SIZE_RANK}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_TOTAL_UPLOAD} :</dt>
+			<dd>{TOTAL_UPLOAD}</dd>
+		</dl>
+		<dl>
+			<dt class="strong">{LG_ADM_SIZE_UPLOAD} :</dt>
+			<dd>{SIZE_UPLOAD}</dd>
+		</dl>
+	</fieldset>
+</switch>
+
+<switch name="stats_gd">
+	<form action="{U_ACTION}" method="post">
+	<block name="gd">
+		<fieldset>
+			<legend>{gd.LEGEND}</legend>
+			<dl>
+				<dt><label>{LG_ADM_STATS_BEGIN} :</label></dt>
+				<dd>{gd.LIST_MONTH_BEGIN} {gd.LIST_YEAR_BEGIN}</dd>
+			</dl>
+			<dl>
+				<dt><label>{LG_ADM_STATS_END} :</label></dt>
+				<dd>{gd.LIST_MONTH_END} {gd.LIST_YEAR_END}</dd>
+			</dl>
+			<div><input type="submit" name="submit_gd" value="{LG_SUBMIT}" class="submit" /></div>
+			<dl style="text-align: center">
+				<p><b>{gd.IMG_TITLE}</b></p>
+				<img src="{gd.IMG}" alt="{gd.IMG_TITLE}" title="{gd.IMG_TITLE}" />
+			</dl>
+		</fieldset>
+	</block>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

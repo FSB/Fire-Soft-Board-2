@@ -1,0 +1,162 @@
+<include name="adm_header.html">
+
+<switch name="smileys_list">
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<div>
+			<a href="{U_ADD}" class="submit">{LG_ADM_SMILEY_ADD}</a>
+			<a href="{U_CAT}" class="submit">{LG_ADM_SMILEY_ADD_CAT}</a>
+			<a href="{U_PACK}" class="submit">{LG_ADM_SMILEY_PACK_ADD}</a>
+			<a href="{U_PACK_EXPORT}" class="submit">{LG_ADM_SMILEY_CREATE_PACK}</a>
+		</div>
+	</fieldset>
+
+	<block name="smiley_cat">
+		<fieldset>
+			<legend>
+				{smiley_cat.CAT_NAME}
+				<a href="{smiley_cat.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+				<a href="{smiley_cat.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				<a href="{smiley_cat.U_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_UP}" title="{LG_ADM_SMILEY_UP}" /></a>
+				<a href="{smiley_cat.U_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_DOWN}" title="{LG_ADM_SMILEY_DOWN}" /></a>
+			</legend>
+			<table class="tab">
+			<block name="smiley_cat.smiley">
+				<if content="$smiley_cat.smiley.FIRST_ROW">
+					<tr>
+						<th width="300">{LG_ADM_SMILEY_TAG}</th>
+						<th>{LG_ADM_SMILEY_IMG}</th>
+						<th width="150">{LG_ADM_SMILEY_ACTION}</th>
+					</tr>
+				</if>
+				<tr id="sid{smiley_cat.smiley.SMILEY_ID}">
+					<td align="center">{smiley_cat.smiley.SMILEY_TAG}</td>
+					<td align="center"><img src="{smiley_cat.smiley.SMILEY_IMG}" alt="{smiley_cat.smiley.SMILEY_TAG}" /></td>
+					<td>
+						<a href="{smiley_cat.smiley.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+						<a href="{smiley_cat.smiley.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+						<a href="{smiley_cat.smiley.U_UP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_SMILEY_UP}" title="{LG_ADM_SMILEY_UP}" /></a>
+						<a href="{smiley_cat.smiley.U_DOWN}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_SMILEY_DOWN}" title="{LG_ADM_SMILEY_DOWN}" /></a>
+					</td>
+				</tr>
+			</block>
+			<blockelse name="smiley_cat.smiley">
+				<tr>
+					<td class="error" colspan="3">{LG_NO_RESULT}</td>
+				</tr>
+			</blockelse>
+			</table>
+		</fieldset>
+	</block>
+	<blockelse name="smiley_cat">
+		<fieldset>
+			<legend>{LG_INFORMATION}</legend>>
+			<div class="error">{LG_NO_RESULT}</div>
+		</fieldset>
+		<br />
+	</block>
+
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<div>
+			<a href="{U_ADD}" class="submit">{LG_ADM_SMILEY_ADD}</a>
+			<a href="{U_CAT}" class="submit">{LG_ADM_SMILEY_ADD_CAT}</a>
+			<a href="{U_PACK}" class="submit">{LG_ADM_SMILEY_PACK_ADD}</a>
+			<a href="{U_PACK_EXPORT}" class="submit">{LG_ADM_SMILEY_CREATE_PACK}</a>
+		</div>
+	</fieldset>
+</switch>
+
+<switch name="smileys_add">
+	<script type="text/javascript">
+	<!--
+	function show_smiley_image()
+	{
+		document.getElementById('content_smiley_image').innerHTML = '<img id="smiley_image" src="" align="middle" />';
+		document.getElementById('smiley_image').src = '<?php echo SMILEY_PATH ?>' + document.getElementById('select_smiley_image').value;
+	}
+	//-->
+	</script>
+
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="s_tag_id">{LG_ADM_SMILEY_TAG} :*</label></dt>
+			<dd><input type="text" name="s_tag" id="s_tag_id" value="{SMILEY_TAG}" size="10" maxlength="30" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="upload_smiley_id">{LG_ADM_SMILEY_UPLOAD}</label><br /><span>{LG_ADM_SMILEY_UPLOAD_EXP} :</span></dt>
+			<dd><input type="file" name="upload_smiley" id="upload_smiley_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_SMILEY_IMG} :</label></dt>
+			<dd>{LIST_SMILEY} &nbsp; &nbsp; &nbsp; <span id="content_smiley_image"></span></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_SMILEY_IMG_CAT} :</label></dt>
+			<dd>{LIST_CAT}</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+
+	<script type="text/javascript">
+	<!--
+	show_smiley_image();
+	//-->
+	</script>
+</switch>
+
+<switch name="smileys_add_cat">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{L_ADD_EDIT}</legend>
+		<dl>
+			<dt><label for="cat_name_id">{LG_ADM_SMILEY_CAT_NAME} :</label></dt>
+			<dd><input type="text" name="cat_name" id="cat_name_id" value="{CAT_NAME}" maxlength="250" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_cat" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="smileys_import">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{LG_ADM_SMILEY_PACK_ADD}</legend>
+		<dl>
+			<dt><label for="upload_pack_smiley_id">{LG_ADM_SMILEY_PACK_UPLOAD} :</label><br /><span>{LG_ADM_SMILEY_PACK_UPLOAD_EXP}</span></dt>
+			<dd><input type="file" name="upload_pack_smiley" id="upload_pack_smiley_id" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_pack" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<switch name="smileys_export">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_SMILEY_CREATE_PACK}</legend>
+		<dl>
+			<dt><label for="pack_name_id">{LG_ADM_SMILEY_PACK_NAME} :</label><br /><span>{LG_ADM_SMILEY_PACK_NAME_EXPLAIN}</span></dt>
+			<dd><input type="text" name="pack_name" id="pack_name_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label>{LG_ADM_SMILEY_PACK_CAT} :</label>
+			<dd>{LIST_CAT}</dd>
+		</dl>
+		<dl>
+			<dt><label for="pack_ext_id">{LG_ADM_SMILEY_PACK_EXT} :</label></dt>
+			<dd>
+				<input type="radio" name="pack_ext" value="zip" id="pack_ext_id" checked="checked" /> {LG_ZIP} &nbsp;
+				<input type="radio" name="pack_ext" value="tar" /> {LG_TAR} &nbsp;
+				<input type="radio" name="pack_ext" value="tar.gz" /> {LG_TGZ}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit_pack_export" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

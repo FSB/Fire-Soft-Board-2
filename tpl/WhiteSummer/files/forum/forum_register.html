@@ -1,0 +1,156 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<include name="error_handler.html" />
+</switch>
+
+<switch name="form_new">
+	<switch name="use_rsa">
+		<call name="javascript" arg1="biginteger.js" />
+		<call name="javascript" arg1="rsa.js" />
+	</switch>
+
+	<call name="javascript" arg1="ajax.js" />
+	<script type="text/javascript">
+	<!--
+	var register_lang = new Array();
+	register_lang['email_invalid'] =	'#addslashes{$LG_REGISTER_AJAX_EMAIL_INVALID}';
+	register_lang['email_used'] =		'#addslashes{$LG_REGISTER_AJAX_EMAIL_USED}';
+	register_lang['email_valid'] =		'#addslashes{$LG_REGISTER_AJAX_EMAIL_VALID}';
+	register_lang['login_used'] =		'#addslashes{$LG_REGISTER_AJAX_LOGIN_USED}';
+	register_lang['login_valid'] =		'#addslashes{$LG_REGISTER_AJAX_LOGIN_VALID}';
+	register_lang['nickname_middle'] =	'#addslashes{$LG_NICKNAME_CHARS_MIDDLE}';
+	register_lang['nickname_high'] =	'#addslashes{$LG_NICKNAME_CHARS_HIGH}';
+	register_lang['nickname_short'] =	'#addslashes{$LG_REGISTER_AJAX_NICKNAME_SHORT}';
+	register_lang['nickname_long'] =	'#addslashes{$LG_REGISTER_AJAX_NICKNAME_LONG}';
+	register_lang['nickname_used'] =	'#addslashes{$LG_REGISTER_AJAX_NICKNAME_USED}';
+	register_lang['nickname_valid'] =	'#addslashes{$LG_REGISTER_AJAX_NICKNAME_VALID}';
+	register_lang['password_weak'] =	'#addslashes{$LG_REGISTER_AJAX_PASSWORD_WEAK}';
+	register_lang['password_normal'] =	'#addslashes{$LG_REGISTER_AJAX_PASSWORD_NORMAL}';
+	register_lang['password_strong'] =	'#addslashes{$LG_REGISTER_AJAX_PASSWORD_STRONG}';
+
+	function submit_encrypt_rsa(t) {
+		<switch name="use_rsa">
+		add_field(t, 'hidden', 'hidden_rsa', '1');
+		encrypt_rsa_field(t, 'u_login', '{RSA_MOD}', '{RSA_EXP}');
+		encrypt_rsa_field(t, 'u_password', '{RSA_MOD}', '{RSA_EXP}');
+		encrypt_rsa_field(t, 'u_password_confirm', '{RSA_MOD}', '{RSA_EXP}');
+		encrypt_rsa_field(t, 'u_email', '{RSA_MOD}', '{RSA_EXP}');
+		</switch>
+	}
+	//-->
+	</script>
+	<call name="javascript" arg1="register.js" />
+
+	<form action="{U_ACTION}" method="post" onsubmit="submit_encrypt_rsa(this); return true;">
+	<div class="round">
+		<h1>{LG_REGISTER_MENU_NEW}</h1>
+        <div class="rules">{LG_FORUM_RULES}</div>
+		<switch name="test_password">
+			<div class="desc" style="text-align: left">
+				<a name="test"></a>
+			<p>{PASSWORD_RESULT}</p>
+			</div>
+		</switch>
+            
+	<table class="form">
+		<tr>
+			<th><label for="accept_rules_id">{LG_ACCEPT}</label></th>
+			<td><input type="checkbox" name="accept_rules" id="accept_rules_id" value="1" {ACCEPT_RULES} /><br /><span class="small">{LG_ACCEPT_RULES_EXPLAIN}</span></td>
+		</tr>
+		<tr>
+			<th><label for="u_login_id">{LG_REGISTER_LOGIN}</label></th>
+			<td><input type="text" name="u_login" id="u_login_id" maxlength="20" size="30" value="{LOGIN}" onkeyup="ajax_check_login()" /><span id="u_login_ajax_id"></span><br /><span class="small">{LG_REGISTER_LOGIN_EXPLAIN}</span></td>
+		</tr>
+		<tr>
+			<th><label for="u_nickname_id">{LG_REGISTER_NICKNAME}</label></th>
+			<td><input type="text" name="u_nickname" id="u_nickname_id" maxlength="20" size="30" value="{NICKNAME}" onkeyup="ajax_check_nickname()" /><span id="u_nickname_ajax_id"></span><br /><span class="small">{LG_REGISTER_NICKNAME_EXPLAIN}</span></td>
+		</tr>
+		<tr>
+			<th><label for="u_password_id">{LG_PASSWORD}</label></th>
+			<td>
+				<input type="password" name="u_password" id="u_password_id" maxlength="255" size="30" value="{PASSWORD}" onkeyup="ajax_check_password()" /> &nbsp;
+				<input type="submit" name="test_password" value="{LG_PASSWORD_TEST}" class="submit" />
+				<input type="submit" name="generate_password" value="{LG_PASSWORD_GENERATE}" class="submit" />
+				<br /><span class="small">{LG_REGISTER_PASSWORD_EXPLAIN}</span>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="u_password_confirm_id">{LG_PASSWORD_CONFIRM}</label></th>
+			<td><input type="password" name="u_password_confirm" id="u_password_confirm_id" maxlength="255" size="30" value="{PASSWORD_CONFIRM}" /><span id="u_password_ajax_id"></span></td>
+		</tr>
+		<tr>
+			<th><label for="u_email_id">{LG_EMAIL}</label></th>
+			<td>
+				<input type="text" name="u_email" id="u_email_id" maxlength="40" size="30" value="{EMAIL}" onkeyup="ajax_check_email()" /><span id="u_email_ajax_id"></span><br /><span class="small">{LG_REGISTER_EMAIL_EXPLAIN}</span>
+			</td>
+		</tr>
+		<switch name="can_use_visual_confirmation">
+		<tr>
+			<th><label for="u_visual_code_id">{LG_VISUAL_CODE}</label></th>
+			<td>
+				<img src="{CONFIRMATION_IMG}" alt="" id="visual_img_id" />
+				<br /><input type="text" name="u_visual_code" id="u_visual_code_id" maxlength="6" size="10" value="{CODE_CONFIRMATION}" />
+				<input type="button" value="{LG_REGISTER_REFRESH}" onclick="date=new Date();document.getElementById('visual_img_id').src = '{REFRESH_IMG}&amp;u='+date.getMilliseconds()" />
+				<br /><span class="small">{LG_REGISTER_CODE_EXPLAIN}</span>
+			</td>
+		</tr>
+		</switch>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+	</div>
+</switch>
+
+<switch name="form_fsbcard">
+	<form action="{U_ACTION}" method="post" enctype="multipart/form-data">
+    <div class="round">
+		<h1>{LG_REGISTER_MENU_FSBCARD}</h1>
+        <div class="rules">{LG_FORUM_RULES}</div>
+		<table class="form">
+			<tr>
+				<th><label for="accept_rules_id">{LG_ACCEPT}</label></th>
+				<td><input type="checkbox" name="accept_rules" id="accept_rules_id" value="1" {ACCEPT_RULES} /><br /><span class="small">{LG_ACCEPT_RULES_EXPLAIN}</span></td>
+			</tr>
+			<tr>
+				<th><label for="import_fsbcard_id">{LG_REGISTER_FSBCARD}</label></th>
+				<td><input type="file" name="upload_fsbcard" id="import_fsbcard_id" size="35" /><br /><span class="small">{LG_REGISTER_FSBCARD_EXPLAIN}</span></td>
+			</tr>
+			<switch name="can_use_visual_confirmation">
+			<tr>
+				<th><label for="u_visual_code_id">{LG_VISUAL_CODE}</label></th>
+				<td>
+					<img src="{CONFIRMATION_IMG}" alt="" border="0" id="visual_img_id" />
+					<br /><input type="text" name="u_visual_code" id="u_visual_code_id" maxlength="6" size="10" value="{CODE_CONFIRMATION}" />
+					<input type="button" value="{LG_REGISTER_REFRESH}" class="reset" onclick="date=new Date();document.getElementById('visual_img_id').src = '{REFRESH_IMG}&amp;u='+date.getMilliseconds()" />
+					<br /><span class="small">{LG_REGISTER_CODE_EXPLAIN}</span>
+				</td>
+			</tr>
+			</switch>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_fsbcard" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+</switch>
+
+<switch name="have_profil_fields">
+	<div class="round">
+		<h1>{LG_REGISTER_PERSONAL}</h1>
+		<table class="form">
+			<include name="profil_fields.html" />
+			<tr>
+				<th></th>
+				<td><input type="submit" name="<switch name="form_fsbcard">submit_fsbcard<else>submit</switch>" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

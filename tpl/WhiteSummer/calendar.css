@@ -1,0 +1,194 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/calendar.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entète.
+** +---------------------------------------------------+
+*/
+
+/* Calendrier */
+.calendar
+{
+	width: 100%;
+}
+
+/* Mois courant du calendrier */
+.current_month
+{
+	width: 100%;
+	border: 1px solid #AAAAAA;
+	border-width: 1px 1px 0px 0px;
+	background: #FFFFFF;
+	margin-bottom: 6px;
+}
+
+/* Entête du calendrier */
+.current_month caption
+{
+	text-align: left;
+	font-weight: bold;
+	margin: 4px 0px;
+	height: 19px;
+}
+
+/* Informations dans l'entête du calendrier */
+.current_month caption span, .current_month caption a 
+{
+	border: 1px solid #999999;
+	background: #EEEEEE;
+	margin-right: 2px;
+	padding: 4px;
+	color: #000000;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+/* Liens dans l'entête du calendrier */
+.current_month caption a
+{
+	font-weight: bold;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/* Mois du calendrier */
+.current_month caption span
+{
+	padding: 4px 50px 4px 50px;
+}
+
+/* Effet de souris sur le lien dans l'entête du calendrier */
+.current_month caption a:hover
+{
+	background: #CCCCCC;
+	text-decoration: none;
+}
+
+/* Nom des jours de la semaine dans le calendrier */
+.current_month th
+{
+	width: 14.3%;
+	padding: 3px;
+	border: 1px solid #AAAAAA;
+	border-width: 0px 0px 1px 1px;
+	font-weight: bold;
+}
+
+/* Case d'un jour du calendrier */
+.current_month td
+{
+	border: 1px solid #AAAAAA;
+	border-width: 0px 0px 1px 1px;
+	height: 70px;
+	vertical-align: top;
+	text-align: center;
+}
+
+/* Effet de souris sur la case de calendrier */
+.calendar .current_month td:hover, .calendar .month td:hover
+{
+	background: #EEEEEE;
+}
+
+/* Affichage du jour dans le calendrier */
+.current_month td .header
+{
+	background: #CCE4FF;
+	padding: 2px;
+	text-align: right;
+	color: #999999;
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+/* Effet de hover sur le header d'une case */
+.current_month td:hover .header
+{
+	background: #CCCCCC;
+}
+
+/* Jour actuel */
+.calendar .now
+{
+	background: #DDDDDD;
+}
+
+/* Header du jour actuel */
+.current_month .now .header
+{
+	background: #BBBBBB;
+	color: #FFFFFF;
+}
+
+/* Case vide */
+.calendar .empty, .calendar td.empty:hover
+{
+	background-color: #DDDDDD;
+}
+
+/* Calendrier à droite sur les mois suivants et précédents */
+.month
+{
+	background: #FFFFFF;
+	border: 1px solid #999999;
+	border-width: 1px 1px 0px 0px;
+}
+
+/* Entête des calendrier simple */
+.month caption
+{
+	padding: 4px;
+	text-align: center;
+	border: none;
+	background: none;
+	font-weight: bold;
+	height: 19px;
+}
+
+/* Cellule de calendrier simple */
+.month td
+{
+	height: 20px;
+	width: 20px;
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #999999;
+	border-width: 0px 0px 1px 1px;
+}
+
+/* Jour de la semaine de calendrier simple */
+.month th
+{
+	background: #DDDDDD;
+	font-weight: bold;
+	padding: 2px;
+	border: 1px solid #999999;
+	border-width: 0px 0px 1px 1px;
+}
+
+/* Evènements calendrier */
+ul.event
+{
+	margin: 0px;
+	margin-left: 2px;
+	padding: 0px;
+	font-size: 10px;
+	list-style-type: none;
+}
+
+/* Evènements normaux */
+ul.event .calendar_event_normal
+{
+	font-weight: bold;
+}
+
+/* Evènements anniversaires */
+ul.event .calendar_event_birthday
+{
+	color: #70A74F;
+	font-weight: bold;
+}

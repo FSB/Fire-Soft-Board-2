@@ -1,0 +1,9 @@
+Bonjour {NICKNAME},
+
+Vous recevez ce message car votre compte a été activé sur le forum <a href="{FORUM_URL}">{FORUM_NAME}</a>.
+
+Vous pouvez vous connecter avec vos identifiants de connexion (que vous avez saisi lors de l'inscription, et qui vous ont été rappelés dans un précédent email).
+
+A bientôt sur nos forums.
+~~~~~~~~~~
+{FORUM_SIG}

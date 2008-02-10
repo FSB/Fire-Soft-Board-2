@@ -1,0 +1,608 @@
+===== 2.0.0 - 25 décembre 2007 =====
+- Refonte totale du thème une seconde fois, pour le nouveau thème de la version finale
+- Ajout de la liste des groupes dans la liste des membres
+- Ajout du nombre de téléchargements d'un fichier uploadé dans le profil
+- Ajout du support de la balise <note> pour les MODS dans l'administration
+- Ajout d'une classe CSS sur les FSBcode B, I, U et STRIKE
+- Ajout d'une catégorie "modules" dans l'administration pour regrouper les pages administratives des modules
+- Ajout d'un lien vers le profil en cliquant sur l'avatar dans les sujets
+- Ajout de pagination dans la lecture des messages privée
+- Ajout de la possibilité de préciser si on doit ou non approuver les messages d'un membre particulier dans la modération
+- Ajout de la date d'upload d'un fichier dans les messages
+- Ajout d'un droit dans l'administration pour déterminer le droit minimum possible lors de l'upload de fichier
+- Ajout de champs pour améliorer la gestion des FSBcode et les afficher dans la fenêtre de réponse
+- Ajout de la possibilité de changer le groupe par défaut d'un membre dans la modération
+- Ajout d'une gestion automatique de l'heure d'été / hiver (suppression du menu  "Horaire" dans administration -> optimisation)
+- Ajout d'un boutton pour utiliser ou non le WYSIWYG dans la signature
+- Ajout de méthodes dans le SDK
+- Ajout de la possibilité de générer un mot de passe aléatoire lors de l'inscription
+- Ajout de la possibilité de choisir un port pour la base de donnée lors de l'installation
+- Suppression du fichier lang/***/lg_mods.php et ajout d'un dossier lang/***/mods/ pour y mettre les fichiers de langue des MODS (mods/lg_NOM_DU_MOD.php)
+- Suppression du champ "login" lors de la demande d'un nouveau mot de passe
+- Réorganisation de la structure du fichier de configuration des thèmes pour plus de clarté
+- Réorganisation de la gestion des messages / sujets à approuver, dans la modération
+- Fix de la couleur du membre dans le texte de bienvenue
+- Fix d'un notice sur sql_announce dans les forums
+- Fix du total de messages / sujets sur le forum après suppression de forums
+- Fix de plusieurs bugs dans le SDK
+- Fix d'un notice dans le cache SQL
+- Fix d'erreurs de fonctions sur PHP 5 dans les versions inférieures à la 5.1
+- Fix des droits pour passer un membre administrateur
+- Fix du texte pour approuver les évènements (le texte était inversé par rapport à l'action)
+- Fix des champs de profil pour ne pas utiliser le formatage si le champ n'est pas rempli
+- Fix d'un bug de redirection lors de la validation d'un compte par l'dministrateur sur le panneau admin
+- Fix du nombre de sujets / messages des forums en cas de déplacement de forum
+- Fix du type de backup pour les MODS
+- Fix du groupe par défaut lors de l'inscription d'un membre
+- Fix du groupe par défaut lors de la modification des droits sur le forum
+- Fix sur l'affichage des membres en attente dans un groupe
+- Fix de la citation AJAX des messages privés
+- Fix de la recherche de pseudonymes sur plusieurs pages
+- Fix de l'affichage de la gallerie d'avatars
+- Fix de l'insertion de messages trop grands en ajoutant une limite de caractères
+- Fix des images / textes trop larges dans les FSBcode ATTACH et QUOTE en mettant un overflow
+- Fix des titres vides après édition rapide
+- Fix de la connexion en invisible
+- Fix des smilies sous Firefox avec l'éditeur WYSIWYG
+- Fix de la liste des groupes en fonction des groupes invisibles ou pas
+- Fix de l'ajout de membres dans un groupe (rafraichissement des droits)
+- Fix de la localisation des membres sur le forum dans l'administration en ajoutant la gestion de l'URL rewriting
+- Fix du fichier .HTACCESS (programms/REWRITE_HTACCESS) pour l'URL rewriting (autor est corrigé en author)
+- Fix de fautes d'orthographes
+- Fix de l'ajout de fichier joints depuis l'icone dans les messages
+- Fix du nombre de téléchargements pour les images
+- Fix d'un notice lors de la création d'un forum sans nom
+- Fix de l'envoie des Emails lors de la confirmation des comptes par administrateur
+- Fix dans les envoies d'Email via SMTP
+- Fix de l'édition de langues
+- Fix des évènements de calendrier qui ne s'affichaient plus dans la légende
+- Fix de l'édition des évènements par un modérateur
+- Fix de l'upload des MODS avec l'extension .tar.gz
+- Fix de l'édition des images dans les thèmes
+- Fix de l'export de la base de donnée (qui n'exportait qu'une seule table)
+- Fix du lien vers le dernier message d'un sujet
+- Fix de l'icone en ligne / hors ligne dans la session
+- Fix du parse des Emails dans les messages
+- Fix d'un bug sur la méthode magique __sleep() dans certaines configurations PHP
+- Fix de la couleur de certains membres dans le "qui a posté" des sujets
+- Fix des images jointes en forçant le téléchargement lors du click sur le lien télécharger
+- Fix de la recherche de messages par auteur
+- Fix de l'édition de membres dont le pseudonyme contient un "
+- Fix de l'ancre du message posté via réponse rapide sous Opéra
+- Fix d'un bug Javascript dans la gestion avancée des droits
+- Fix du HTML dans les flux RSS du forum
+- Fix de l'adresse de contact, en redirigeant plutôt vers le formulaire de contact
+- Fix du positionement Javascript de la fenêtre des fichiers uploadés dans l'envoie de message
+- Fix d'un Notice dans la gestion des fichiers en cache
+- Fix de la boite de couleurs à côté du MooRainbow sous IE6
+- Fix de la vérification de la taille des logins, des titres de sujets et de quelques autres informations
+- Fix de suppression de forums avec ses enfants dans la gestion des forums
+- Fix du nombre d'invités sur le forum
+- Fix de la configuration et de la configuration du portail en ajoutant des vérifications sur les valeurs
+- Fix de la mise à jour de la date de dernière visite
+- Fix de l'envoie de MP via le formulaire de contact
+- Fix du nombre de MP non lus lors d'une suppression de messages privés dans les boites d'envoies et d'archives
+- Fix de l'export de smilies
+- Fix des MP archivés non lus
+- Fix d'entités HTML dans les titres des MP
+- Fix du titre de la page d'inscription
+- Fix de la liste des groupes dans la liste des membres (le groupe visiteur était en trop)
+
+
+===== 2.0.0.RC5 - 23 octobre 2007 =====
+- Passage du code du forum en PHP5, PHP4 n'est donc plus supporté par FSB2
+- Réorganisation du moteur en ajoutant de nouvelles classes regroupant certaines fonctions, modifiant l'accès aux globales, etc ..
+- Ajout d'une librairie de fonctions (fichier ~/sdk.php) pour faciliter le développement sur d'autres applications en utilisant les outils de FSB2
+- Ajout d'une option d'installation rapide en local (pour les tests)
+- Ajout du nombre de membres utilisant un thème
+- Ajout d'un gestionaire pour les fichiers uploadés, dans la modération
+- Ajout de l'obligation d'entrer un Email dans le formulaire de contact, et mise en valeur du fondateur
+- Ajout de la possibilité de désactiver la page de contact des administrateurs
+- Ajout de balises META description / keywords dans les sujets
+- Ajout d'un compteur de téléchargement sur les fichiers uploadés + des informations sur le nom du fichier et sa taille, et de droits par fichiers
+- Ajout d'un raccourci pour accéder plus facilement à l'édition avancée : un simple click lance la réponse rapide, un double click sur le message lance l'édition avancée
+- Ajout de la possibilité d'activer / désactiver un membre dans la modération d'un membre
+- Ajout d'un flux RSS pour voir les dernier messages postés par un membre
+- Ajout de la possibilité d'afficher les X prochains évènements du calendrier des X prochains jours sur l'index
+- Ajout d'une recherche Ajax sur le pseudonyme pour les droits dans l'administration et les membres dans la modération
+- Ajout d'une option permettant d'activer le HTML dans les messages pour les modérateurs globaux / administrateurs. Option désactivée par défaut.
+- Ajout d'un formulaire de recherche rapide dans les forums et les sujets
+- Ajout de la possibilité de bannir pseudonyme ou adresse Email dans la modération des membres
+- Ajout d'une procédure supprimant les données inutiles de la base de donnée (messages sans sujets, sujets sans messages, etc ..)
+- Ajout d'une page d'informations sur le forum (liste des mods, thèmes, rangs, etc ..)
+- Ajout de la gestion des fonctions de template dans la classe Tpl
+- Ajout du support des FSBcard pour exporter / importer son profil sur d'autres forums
+- Ajout du chiffrage RSA pour protéger les formulaires d'inscription et de connexion (dépendant de l'extension PHP Bcmath)
+- Ajout de la possibilité de choisir un groupe par défaut dans son profil, permettant ainsi de choisir sa couleur sur le forum.
+- Ajout d'une page administrative permettant la gestion des FSBcode actuels (désactivation, affichage, etc ..) et la création de nouveaux FSBcode. Refonte du parseur de FSBcode.
+- Ajout de l'implémentation des sondages par défaut dans le système de MAPS (balise <poll> dans le header de la MAP)
+- Ajout d'un lien vers les messages du membre dans les sujets sur le total de message du membre
+- Ajout du forum et du sujet le plus actif dans le profil des membres
+- Ajout du status en ligne / hors ligne dans le profil des membres
+- Ajout d'un lien "qui a posté" sur le nombre de réponses d'un sujet, affichant les personnes ayant postées dans ce sujet, classé par total de participation
+- Ajout de droits de lecture et d'écriture sur le calendrier. Les membres peuvent désormais avoir leurs évènements directement aprouvés
+- Ajout de droits sur l'affichage des statistiques et de la boite "qui est en ligne" sur l'index
+- Ajout d'un affichage de la date du type "il y a xx minutes (hh:mm)" pour les temps inférieurs à une heure
+- Ajout de la possibilité de renvoyer l'Email d'activation du membre dans la modération de son profile
+- Ajout d'une limite de flood sur les sujets (configurable dans l'administration)
+- Ajout de logs d'actions sur les utilisateurs (visible par les modérateurs dans le profil public)
+- Ajout d'une clef dans la table des fichiers joints pour éviter de retrouver le nom du fichier stoqué sur le serveur (sécurité augmentée)
+- Ajout d'une fonction de recherche dans les messages privés
+- Ajout de couleurs prédéfinies dans la palette de couleur
+- Ajout des couleurs sur les créateurs des sujets dans la liste des sujets
+- Ajout de la date de création du sujet sur les affichages de la recherche
+- Ajout de la gestion WYSIWYG des FSBcode CODE et QUOTE
+- Ajout de la possibilité de colorer les noms de forums
+- Ajout d'une mention sur le log des Emails dans le formulaire d'envoie d'Email
+- Ajout de la limitation de taille de la signature dans le profil
+- Ajout de la possibilité d'utiliser des clefs de langue simplement dans les MAPS {LG_CLEF_DE_LANGUE}
+- Ajout d'un nombre minimum de caractères pour les messages (configuration)
+- Ajout d'une couleur différente dans le calendrier pour évènements et anniversaires
+- Ajout d'une liste plus grande d'évènement dans le calendrier avant le regroupement en "X évènements"
+- Ajout d'une fonction pour effectuer des opérations sur les forums dans l'admin, comme déplacer tous les sujets d'un forum vers un autre
+- Ajout de la possibilité d'utiliser des clefs de langue dans les champs de profil via {LG_CLEF_DE_LANGUE}
+- Ajout des même possibilités sur les champs de contacts, que sur les champs personels
+- Ajout d'une possibilité de formatage d'affichage pour les champs de profil
+- Ajout d'un log des connexions, avec IP
+- Ajout de la possibilité de rapporter un message privé abusif
+- Ajout d'une popup permettant de se rendre à la page que l'on désire sur la pagination, en cliquant sur la page courante
+- Ajout d'un lien de sélection de code sur les balises CODE, pour sélectioner le contenu en un clique
+- Ajout d'un champ "fusionner avec" dans la fusion de sujet, pour fusioner le sujet en courrant avec un autre directement
+- Ajout de la modification des champs de profils personalisés dans la modération du membre
+- Amélioration du formulaire de recherche pour les IP
+- Amélioration de la recherche en ajoutant deux critères : date du message, et tri des messages
+- Amélioration de la liste des forums dans le formulaire de recherche
+- Amélioration de la sécurité des mots de passe générés automatiquement
+- Déplacement du sexe dans l'affichage des sujets (affiché à côté du pseudonyme désormais)
+- Optimisation des requêtes d'affichage de sujet (pour les gros forums)
+- Optimisation du cache stocké en base de donnée
+- Optimisation importante de la fonction recalculant les informations en cache dans les forums
+- Optimisation de la création de champs de profil avec SQLite (au niveau de la gestion des ajouts / suppressions de colones)
+- Refonte des procédures de modérations, en modifiant le langage des procédures (utilisation du XML, pour davantage de flexibilité et stabilité)
+- Refonte de la classe de génération des flux RSS (support RSS 2.0 et ATOM 0.3)
+- Refonte des messages abusifs en permettant une discussion des messages abusifs, et une organisation plus poussée
+- Refonte totale du thème WhiteSummer
+- Refonte de la gestion interne des mots de passe des membres, en sécurisant davantage les mots de passe, le cookie d'auto connexion et en facilitant les conversion d'autres forums vers FSB2
+- Refonte de l'affichage de la liste des membres (affichage des informations par celules)
+- Suppression du framework Artichow (gestion de graphiques avec la librairie GD, en PHP), au profit d'une classe plus simple
+- Suppression de la palette de couleur dans l'administrateur au profil d'un mini éditeur CSS
+- Suppression de la possibilité de choisir un répertoire pour ses smilies / rangs etc .. (inutile)
+- Suppression des répertoires cache/ dans les thèmes. Ajout d'un répertoire commun ~/cache/tpl/
+- Suppression des options "previsualiser HTML / PHP" dans l'édition des templates
+- Suppression de la description des smilies, les noms de smilies sont mis en alt / title désormais
+- Suppression des notifications MSN / Jabber (fonctions qui seront réintégérées probablements plus tard après stabilisations)
+- Suppression du pngbehavior.htc sous IE6, qui corrigeait la transparence, mais empéchait le redimensionement des PNG
+- Corrections orthographiques
+- Fix du débugage lors de l'installation
+- Fix titre de la page dana la fusion des sujets
+- Fix du calcul des modérateurs et de la couleur des membres des groupes, grosse optimisation
+- Fix de la fonction str_split en ajoutant une implémentation pour PHP4
+- Fix de la date de dernière visite sur l'index
+- Fix du chemin de l'image blanks.gif dans le fichier pngbehavior.htc
+- Fix des statistiques (inscrits, sujets et messages par jour)
+- Fix d'erreurs de clefs de langues sur les champs de profil personalisés
+- Fix d'un bug qui passait les sujets en annonce globale lors de l'édition du premier message
+- Fix de la recherche en affichant correctement les icones des sujets lus / non lus et du lien vers le dernier message
+- Fix du lien sur l'index pour marquer les forums lus s'il n'y a aucun message non lus
+- Fix d'un bug sur la coloration des mots clefs de la recherche
+- Fix du formulaire de contact en remettant le Captcha
+- Fix de l'affichage des fichiers commençant par un . (.htaccess par exemple) dans le webftp
+- Fix de la modération de masse en gardant le panneau ouvert même en cas de changement de pages sur le forum
+- Fix du rafraichissement du cache après avoir un créer un forum en dupliquant les droits
+- Fix des effets de fermeture de blocks en javascript pour IE6
+- Fix du nombre de résultats dans la recherche
+- Fix du changement d'adresse Email en cas d'inscription confirmée par Email
+- Fix du parseur XML en le réécrivant totalement de façon à ce qu'il soit plus souple, évolué et intuitif
+- Fix du FSBcode URL de façon à prendre en compte les sauts de ligne
+- Fix du parse automatique des URL pour éviter un bug avec le caractère ]
+- Fix d'une faille XSS sur les avatars liés à distance
+- Fix d'un bug sur des espaces étranges en UTF-8
+- Fix d'un bug sur l'overflow dans les messages
+- Fix de la fenêtre de chargement Ajax, en mettant plutôt un GIF pour plus de clartée
+- Fix d'une injection HTML sur les titres des sujets sur l'index
+- Fix d'une inversion dans les logs des modifications des droits du forum
+- Fix de quelques bugs au niveau du panneau de gestion de la base de donnée dans l'administration
+- Fix des fichiers en les passant tous au format UNIX
+- Fix de l'icone pour joindre des fichiers au message si l'upload a été désactivée
+- Fix de l'affichage des groupes invisibles pour les administrateurs
+- Fix d'une injection SQL dans la recherche de membres de l'administration
+- Fix d'un bug sur la recherche de membre inexistants dans la recherche avancée
+- Fix d'un bug sur les types de sujet lors d'une édition
+- Fix de la liste des groupes du membre dans son profil en permettant la selection du premier élément
+- Fix de l'ajout de clefs de langues en émpéchant d'en créer sans clef
+- Fix d'un bug sur les entités HTML dans l'édition des fichiers template du thème
+- Fix du report de message abusif en ajoutant le lien de navigation manquant
+- Fix de la validation des évènements de calendrier dans la modération en affichant le pseudonyme du membre
+- Fix d'un notice sur les commentaires en fin de coloration PHP
+- Fix d'un bug lors de l'annulation de l'édition rapide
+- Fix de redirection en boucle sur la page d'oublie du mot de passe quand on veut se connecter
+- Fix des pseudonymes des visiteurs dans les sujets (qui affichaient toujours le même)
+- Fix d'un bug sur le prefetch des flux RSS
+- Fix d'un bug sur l'index des mots dans le type de recherche fulltext_fsb
+- Fix du bug des sauts de ligne sous IE
+- Fix du bug qui cachait les avatars du profile lorsqu'on voulait cacher ceux des sujets
+- Fix d'un bug sur le parse des listes en WYSIWYG (qui passait les listes non numérotées en listes numérotées)
+- Fix de la description dans la fusion des sujets
+- Fix des sondages lors d'un sujet / forum vérouillé (sondage désormais fermé pour les votes)
+- Fix de l'affichage de la couleur sur le dernier inscrit
+- Fix de la couleur des membres / groupes dans la liste des modérateurs d'un forum
+- Fix du titre des pages de recherche des messages d'un membre pour améliorer le référencement
+- Fix des clefs de langues sur certains logs
+- Fix de la date de dernière visite dans les profils, en la cachant si le membre est en invisible
+- Fix des dates d'anniversaire antérieures à la date de naissance, sur la calendrier
+- Fix des attributs alt / title manquants sur les images principales
+- Fix de failles XSS
+- Fix des droits sur l'édition rapide dans les sujets verrouillés
+- Fix de la taille du texte lors de la transformation du texte via le WYSIWYG
+- Fix de la redirection lorsqu'on click sur le lien pour mettre les messages comme lus, dans une catégorie
+- Fix de la classe d'upload pour sécuriser totalement les fichiers
+- Fix de la vérification d'un domaine sous les serveurs windows
+- Fix de l'édition des MP (qui n'éditait qu'un MP sur deux)
+- Fix d'oublis de htmlspecialchars() dans la fenêtre d'envoie de messages
+- Fix d'un bug sur les multi listes des champs de profils personalisés
+- Fix d'un oublie de paramètre dans la reqêuet http pour le support automatique
+- Fix d'un bug sur l'ouverture / fermeture des forums dans l'administration en javascript
+- Fix d'un bug sur le tri des sujets du forum, dans l'URL de pagination
+- Fix des listes de groupes en triant désormais par nom et non plus par ID
+- Fix d'un bug sur les sondages qui permettait de créer des sondages sans aucune possibilité de réponse
+- Fix de la blacklist des MP de façon à ne pas blacklister les administrateurs / modérateurs globaux
+- Fix de la valeur par défaut du champ de notification automatique, qui désormais passera sur la valeur "Ne pas surveiller automatiquement, mais recevoir un Email pour les sujets que je surveil manuellement"
+- Fix de bug graphique sur la pagination avec internet explorer
+- Fix des avertissements donnés par procédure
+- Fix du backup / restauration de MODS. Ajout de la suppression de l'entrée du MOD dans la base de donnée, lors de la restauration
+- Fix du lien vers le dernier message d'un sujet lorsqu'un sujet non lu n'a encore jamais été lu
+- Fix de la classe Backup (réécriture de l'algorithme) de façon à gérer les gros volumes de données à sauver
+- Fix de l'envoie d'Email de masse à beaucoup de destinataires, en envoyant des Emails par block de 100 membres à la fois
+- Fix du nom du forum en filtrant avec htmlspecialchars()
+- Fix d'un manque de vérification sur qui pouvait approuver les évènements
+- Fix du parse des smilies, en traitant en premier lieu les smilies avec un tag plus long
+- Fix du WEBftp si hilight_file a été désactivé pour des "raisons de sécurité"
+- Fix de l'affichage des forums d'une catégorie unique, en ne prenant pas en compte le pliage de cette catégorie
+- Fix de l'indexation pour le moteur de recherche fulltext_fsb
+- Fix de la balise <isUpdate /> pour l'installation des MODS, en permettant de gérer correctement le MOD parent
+
+
+===== 2.0.0.RC4b - 22 Mai 2007 =====
+- Ajout de la possibilité de paramétrer les forums de façon à choisir la MAP que l'on veut lors des réponses
+- Ajout de la possibilité de désactiver le WYSIWYG sur l'ensemble du forum
+- Ajout de la possibilité de différencier les MAJ des MODS à lister dans l'administration des modules (balise <isUpdate /> dans le header)
+- Ajout d'une option de support automatique pour le forum
+- Corrections orthographiques
+- Fix de la classe Captcha, qui fonctionne désormais même si la librairie GD est désactivée
+- Fix des informations sur la MAP en cas de division de sujet
+- Fix d'un bug qui empéchait l'édition avancée des messages dans certaines configurations de droits
+- Fix d'un bug SQL sur le déplacement de sujet
+- Fix d'un bug sur l'insertion de smilies dans l'éditeur WYSIWYG
+- Fix d'un bug qui affichait le code HTML de certains FSBcode dans l'éditeur WYSIWYG
+- Fix de la configuration de la taille des avatars
+- Fix du chemin de l'image blanks.gif dans le fichier pngbehavior.htc
+- Fix de l'édition rapide en y mettant correctement les tabindex
+- Fix des droits sur la recherche
+- Fix de la restauration après installation de MODS dans l'administration
+
+
+===== 2.0.0.RC4a - 11 Mai 2007 =====
+- Ajout d'un évènement <onUpload /> dans le parseur XML des MAPS, d'une balise <template> pour la mise en forme de la page et d'une balise <ifEmpty> pour l'affichage de la map
+- Ajout d'une méthode à la classe debug affichant la mémoire utilisée par un script
+- Optimisation de la fonction de récupération des forums modérés
+- Fix d'erreurs XHTML
+- Fix de l'algorithme de calcul de robustesse des mots de passe
+- Fix de la couleur d'arrière plan des avatars dans le profil en ajoutant une CSS "nostyle"
+- Fix de l'affichage des groupes spéciaux dans la légende du forum
+- Fix de l'affichage des requêtes SQL en les cachant aux membres (sécurité)
+- Fix des sondages en imposant au minimum deux réponses
+- Fix des images uploadés dans le WYSIWYG
+- Fix de la CSS de la coloration syntaxique pour IE
+- Fix du streaming sur les thèmes et les MODS
+- Fix du chemin vers le pgbehavior.htc
+- Fix du support des options d'installation de module
+- Fix de la procédure de récupération de dernière version
+- Fix d'un oublie de fermeture de balise sur la coloration syntaxe des chaînes de caractère
+- Fix des espaces sur le FSBcode IMG
+- Fix du curseur de selection de couleur dans moorainbow
+- Fix du lien vers le dernier message d'un sujet en fonction de s'il reste des pages ou non après
+- Fix du parseur XML en ajoutant une vérification sur la fermeture des balises
+- Fix de sécurité sur le déplacement de sujets par un modérateur
+- Fix de sécurité sur la suppression de sujets par un modérateur
+- Fix de sécurité sur la division de sujets par un modérateur
+- Fix du nombre d'abus en cas de suppression de messages / sujets abusifs
+
+
+===== 2.0.0.RC4 - 6 Mai 2007 =====
+- Ajout d'information sur les mises à jour dans l'administration
+- Ajout de la possibilité de ne pas afficher les bots sur l'index
+- Ajout de palettes de couleurs avancées (mooRainbow) sur les FSBcode COLOR / BGCOLOR
+- Ajout de la raison dans la liste des banissements
+- Ajout de la possibilité de créer des clefs de langue dans l'administration des langues
+- Ajout d'overflow sur l'avatar dans les profils et les messages privés
+- Ajout du log des IP pour les messages privés
+- Ajout de la possibilité d'utiliser des FSBcode dans les règles du forum
+- Ajout du nombre de messages abusifs pour les modérateurs
+- Ajout du nombre de messages à approuver pour les modérateurs
+- Ajout de deux nouveaux smilies
+- Ajout d'un lien pour ajouter les forums de façon plus pratique dans le gestionaire de forum
+- Ajout de la possibilité de plier / déplier les catégories dans le gestionaire de forum
+- Optimisation conséquente de l'affichage de l'index (mise en cache dans les forums, des informations du dernier sujet)
+- Optimisation de la recherche des sujets et des messages des membres
+- Fix du cache FTP, en ajoutant une vérification de l'intégrité des données
+- Fix du contact des administrateurs en mettant le fondateur par défaut
+- Fix de la CSS pour IE7
+- Fix d'un bug sur la position des membres sur le forum, dans l'administration
+- Fix du parse des FSBcode IMG et URL
+- Fix des droits de visibilité de la liste des membres et du profil
+- Fix de la taille du champ de texte en passant en mode WYSIWYG
+- Fix d'un gros bug au niveau des droits
+- Fix des anniversaires si le champ est vide
+- Fix d'un bug sur les quota d'upload dans la configuration
+- Fix des droits pour répondre à une news
+- Fix du FSBcode LIST en cas d'imbrication avec des listes de numéros
+- Fix des caractères spéciaux dans les titre des flux RSS
+- Fix du tri sur les banissements
+- Fix des titres des pages pour une meilleur référencement
+- Fix du lien vers le dernier message non lu si celui ci est directement sur la page d'après
+- Fix de la popup de chargement des informations envoyées en ajax
+- Fix des erreurs UTF-8 dans le parse XML des messages (réécriture du parseur XML sans passer par l'extension XML)
+- Fix des numéros de page qui ne s'affichaient pas dans les messages non lus triés par forums
+- Fix d'un oublie du nom de la table dans la requête de mise à jour des forums
+- Fix de la classe GD en ajoutant le support des images BMP
+- Fix des informations sur la liste des membres en supprimant une mauvaise mise en cache
+- Fix d'un bug dans la classe diff, qui ajoutait des doublons lors de la mise en cache
+- Fix compatibilité SQLite / PostgreSQL
+- Fix des accents dans le nom des smilies
+- Fix du parse des smilies en supprimant la casse
+- Fix de la recherche dans les catégories / sous forums
+- Fix d'une bug sur les listes vides
+- Fix de la mise à jour de la configuration du portail en cas de valeur nulle
+- Fix du formatage du texte sur l'éditeur WYSIWYG avec les FSBcode CODE et QUOTE
+
+
+===== 2.0.0.RC3 - 11 Mars 2007 =====
+- Ajout d'une procédure du forum supprimant les marqueurs des fichiers déplacés, après 15 jours
+- Ajout de droits pour consulter la liste des membres, et les profils des membres
+- Ajout d'un lien pointant vers la liste des groupes si le membre est modérateur d'au moins un groupe
+- Ajout de la possibilité de préciser si le groupe s'affichera dans la légende du forum ou pas
+- Ajout d'une liste dans le profil public des membres permettant aux modérateurs de groupes d'ajouter directement un membre
+- Ajout d'un droit suplémentaire permettant de voir la liste des sujets sans pour autant en lire le contenu
+- Ajout d'un droit permettant de limiter l'accès à la modération de masse
+- Ajout du pseudonyme du posteur du sujet dans les recherches avec affichage type sujet / forum
+- Ajout d'un lien vers les avertissements en cliquant sur la barre
+- Modification de l'affichage de la liste des groupes du membre
+- Compression du fichier ~/main/lib/highlight/highlight_php.txt (taille divisée par 5)
+- Fix des IP des comptes en attente d'activation dans l'administration
+- Fix du changement d'ordre des smilies
+- Fix de l'affichage des groupes dans le profil en ajoutant les groupes spéciaux
+- Fix des légendes des boutons pour agrandir / diminuer le champ de réponse
+- Fix des checkbox sur l'édition avancée des droits
+- Fix de l'erreur Javascript "Unload.xxxx.each is not a function" sur le framework Mootools
+- Fix de l'ordre des droits de création / réponse de sujets dans la gestion des droits avancés
+- Fix du délestage des membres au niveau du critère de la date de dernière visite
+- Fix du délestage des membres en imposant l'entrée d'au moins un critère
+- Fix de la suppression de fichiers joints
+- Fix de l'affichage des sous forum (les sous-sous forums étaient affichés à tort
+- Fix du nom de la table procedure en sub_procedure lors de la création / mise à jour de procédures de modérations
+- Fix de l'aide sur les fonctions lors de la coloration syntaxique du PHP
+- Fix du chemin vers le fichier pngbehavior.htc pour IE
+- Fix du rafraichissement des droits lors du changement des droits globaux du forum
+- Fix du FSBcode ATTACH en supprimant le texte du FSBcode si le membre n'a pas les droits
+- Fix du bouton du FSBcode ATTACH qui n'apparait plus si la fonction d'upload est désactivée
+- Fix du thème et de la langue par défaut pour les invités
+- Fix du parse des smilies en prenant en compte les sauts de lignes les précédant
+- Fix des URL www. dans les champs personels
+- Fix de l'affichage de la barre de navigation pour les sujets qu'on ne peut pas lire
+- Fix du déplacement de plusieurs sujets via la modération de masse
+- Fix des injections HTML dans la configuration du forum
+- Fix de la classe d'installation des modules
+- Fix de la classe pour MySQL en ajoutant une vérification de la version
+- Fix du parse du code généré par le WYSIWYG
+- Fix de l'algo de gestion des droits avancés
+- Fix de la mise à jour des droits de modérations suite à la suppression d'un forum
+- Fix des mises à jour des procédures (nom de table incorrect)
+- Fix des avertissements dans les procédures, en ajoutant une vérification sur l'ID
+
+===== 2.0.0.RC2 - 28 Janvier 2007 =====
+- Ajout d'un overflow sur l'affichage des avatars dans les sujets
+- Ajout d'un target="_blank" sur les url des champs personalisés
+- Ajout d'une barre de progression lors des appels à Ajax pour ne pas dérouter l'utilisateur
+- Ajout d'une CSS pour IE7 fixant les fieldsets
+- Ajout de la modification du fsb_path dans la configuration
+- Ajout de la configuration de l'accès au webftp et à la base de donnée lors de l'installation
+- Ajout d'un onglet dans la page administration -> optimisation pour remplacer un mot par un autre dans la base de donnée (utile pour les migrations du forum)
+- Ajout des stats sur les fichiers uploadés
+- Ajout de listes plus clairs pour les quota d'upload dans l'administration
+- Mise en champs password des mots de passe MSN et Jabber dans l'administration
+- Les liens "rechercher les messages" et "rechercher les sujets" sont désormais innacessible sur le profil d'un membre n'ayant posté aucun message
+- Optimisation de la recherche des messages d'un membre en ajoutant un index sur la table _posts
+- optimisation générale des messages non lus
+- Fix du fuseau horaire par défaut lors de l'inscription d'un membre
+- Fix du FSBcode SIZE en empéchant la possibilité d'entrer une taille personalisée
+- Fix du parse des préfixe dans les requètes SQL
+- Fix du déplacement des champs personalisés
+- Fix de la liste des groupes d'un membre sur son profil public (affichait les groupes en attentes)
+- Fix du nom des modérateurs d'un forum sur l'index
+- Fix des anniversaires sur le calendrier (passés en approuvé, fix de l'age affiché)
+- Fix des images PNG ayant un canal alpha pour IE6
+- Fix des commentaires affichés sur le profil d'un membre (le parse du texte affichait des notices)
+- Fix de l'activation du répondeur automatique pour les messages privés
+- Fix de l'affichage du buffer de sorti en cas de maintenance du forum
+- Fix du FSBcode LIST pour un rendu valide XHTML
+- Fix du lien "plus de smilies"
+- Fix de l'upload d'avatar via URL
+- Fix de la faq pour l'url rewriting
+- Fix de l'affichage des smilies (suppression de l'espace obligatoire en fin de smiley)
+- Fix des descriptions de sujets trop longues en coupant les mots avec des espaces
+- Fix de la confirmation lors de la suppression d'une procédure de modération
+- Fix des messages privés lus / non lus lorsqu'il y a un répondeur
+- Fix du HTTP_USER_AGENT si le navigateur ne le fourni pas
+- Fix de l'édition rapide sous Safari en switchant directement sur l'édition avancée
+- Fix de l'affichage des groupes invisibles pour les personnes non membre
+- Fix du verrouillage des sujets, en permettant tout de même la création de nouveaux sujets
+- Fix du bug qui repasse la case "annonce" en "sujet" lors de la création d'un sujet après prévisualisation
+- Fix de l'affichage de la pagination sur la liste des membres
+- Fix de la redirection lors de la connexion pour pouvoir être rediriger vers une URL locale
+- Fix de la recherche de membres dans l'administration
+- Fix du texte des messages si on entre un simple 0
+- Fix de l'affichage graphique de l'ouverture / fermeture du block online
+- Fix de la réduction dynamique du champ texte dans la fenêtre d'envoie de messages
+- Fix de l'édition avancée ajax pour empécher le compteur d'édition de s'incrémenter
+- Fix de l'encodage UTF-8 en ajoutant un header depuis PHP
+- Fix des sondages, on empèche les visiteurs de voter
+- Fix des droits de modération dans les groupes (des membres pouvaient garder le status modérateur même après perte des droits du groupe)
+- Fix de la récupération et du traitement des superglobales
+- Fix des données du config_tpl lorsqu'on assigne un thème à un forum particulier
+- Fix de la suppression de messages privés archivés
+- Fix de la sécurité des fichiers uploadés
+- Fix de l'envoie de messages privés aux pseudonymes avec des apostrophes
+- Fix de l'algorithme d'auto délestage des forums
+- Fix de la liste des modérateur sur l'index, qui affichait parfois n'importe quoi
+- Fix des droits sur les procédures de modération
+- Fix de l'affichage des catégories invisibles dans la liste des forums
+- Fix des images uploadés dans l'éditeur WYSIWYG
+- Fix de l'ordre des groupes dans la légende de la boite online
+- Fix de l'algorithme de parse du HTML en FSBcode pour l'éditeur WYSIWYG
+- Fix de l'accès à la page de débugage des requètes SQL, pour les membres non autorisés
+- Fix du chemin par défaut dans les accès FTP si on est dans l'administration
+- Fix du nom de la table procédure, qui était un mot clef réservé en SQL si on ne met pas de préfix au forum
+- Fix de la suppression des membres, dont la session restait toujours active
+- Fix de la déconnexion des membres en vérifiant l'ID de session
+- Fix de la modification des images du thème depuis l'administration
+- Fix de la table users, en mettant à jour automatiquement les champs u_language et u_tpl si la langue ou le thème choisis n'existent pas
+- Fix de la suppression des fichiers joints
+- Fix du parse des adresses des images, en supprimant les espaces avant / après
+- Fix du texte d'explication sur le captcha pour le rendre plus lisible
+- Fix de la recherche des messages / sujets de membres dans des forums particuliers
+- Fix d'une erreur POSIX dans la class_tpl sur les regexp
+- Fix de la modification de la taille du texte via l'éditeur WYSIWYG
+- Fix de l'encodage des Emails, UTF-8 par défaut
+- Fix du droit sur le quota d'upload, qui n'étais pas pris en compte partout
+- Fix d'un notice sur le champ s_visual_try en cas de création de session sur la page d'enregistrement
+- Fix des border-radius sur les FSBcode CODE et QUOTE a cause de bugs étranges de bordures manquantes
+
+
+===== 2.0.0.RC1 - 25 Décembre 2006 =====
+- Ajout du tri par pseudonyme d'auteur dans les tris des sujets sur les forums
+- Ajout d'un lien dans le header permettant de voir les sujets dans lesquels on a posté
+- Ajout de logs pour les procédures de modérations
+- Ajout d'un lien sur la page de connexion permettant de s'inscrire
+- Ajout de l'édition du message privé tant que le destinataire ne l'a pas lu
+- Ajout du flux rss sur l'index
+- Ajout de l'affichage en live de la sécurité du mot de passe lors de l'inscription
+- Ajout des modifications sur la langue lors d'un export XML
+- Ajout d'une vérification interdisant l'accès aux pages préfetchées
+- Ajout de flux RSS par catégorie (cliquer sur les catégories, et ajouter le flux via le navigateur)
+- Ajout de la date dans les messages privés
+- Ajout du rafraichissement du captcha pour l'inscription
+- Ajout de logs pour l'édition des messages
+- Ajout de relations entre certaines pages (balise <link>)
+- Ajout de la langue et du titre du forum dans les flux RSS
+- Ajout d'un arrondi sur les fieldset (navigateurs gérants CSS3 et mozilla)
+- Ajout d'icones dans le menu administratif
+- Ajout de la classe Javascript moo.fx, permettant de gérer des effets d'affichage suplémentaires
+- Ajout d'une mise en cache des flux RSS
+- Modification du captcha (image de confirmation), en ajoutant des animations sur le bruit de fond
+- Modification du captcha maths (les additions), pour simplifier les opérations (opérations sur 1 ou 2 chiffre, au lieu de 1 à 3)
+- Modification des inclusions de fichiers pour les inclure de façon plus intéligente (via la fonction fsb_import())
+- Suppression du captcha dans les contacts administratifs
+- Suppression de la limite de caractère dans les news
+- Fix de la popup messages privés, s'affichant désormais en fonction du scroll
+- Fix de la confirmation des comptes par administration, ajout d'un droit sur la confirmation
+- Fix d'un bug sur l'export de langues en fichier XML
+- Fix d'un bug sur l'activation des comptes sur l'index de l'administration
+- Fix d'un bug qui empéchait de lire les flux RSS
+- Fix d'un bug sur le changement des dates dans le calendrier
+- Fix d'un bug sur les caractères accentués dans la censure
+- Fix d'un bug sur les envoies d'Email sur le forum
+- Fix d'un bug sur le changement d'Email des utilisateurs (les administrateurs ne sont plus concernés par la clef de confirmation)
+- Fix d'un bug sur le lien permettant aux invités de répondre aux sujets
+- Fix d'un bug sur la réponse rapide pour les invités et le captcha
+- Fix d'un bug passant les nouveaux sujets en annonce globale
+- Fix d'un bug sur l'édition rapide en ajax
+- Fix des fonctions gérant l'UTF8 en vérifiant corectement si l'extension MbString est chargée
+- Fix de la suppression des fichiers via webFTP, redirection vers le répertoire courant et non vers la racine
+- Fix de l'édition des images et des templates via l'éditeur de thème
+- Fix de la CSS et de bugs XHTML
+- Fix de l'affichage des FSBcodes dans la signature
+- Fix de l'affichage des smilies
+- Fix de l'encodage lors de l'envoie des Emails
+- Fix du quota de MP lors de l'archivage
+- Fix d'un bug sur le module online du portail
+- Fix de la fermeture des boites smilies / couleurs / upload dans le formulaire d'envoie de messages
+- Fix des images en imposant un alt à toutes les images des FSBcodes
+- Fix de la boite des smilies dans le formulaire de réponse
+- Fix de la recherche de mots accentués
+- Fix d'un bug sur l'affichage des champs personels pour les groupes
+- Fix d'un bug sur le déplacement des champs personels
+- Fix du lien d'activation du mot de passe pour les webmails préhistoriques comme hotmail
+- Fix du nombre de réponse a un sondage en cas de préview
+- Fix de la taille de la légende dans les fsbcode citation, code
+- Fix de l'envoie de messages privés à des pseudonymes avec des accents
+- Fix de la procédure d'optimisation des messages privés
+- Fix de la position du pseudonyme dans les sujets
+- Fix de l'affichage des caractères UTF-8 du à un bug de la censure
+- Fix du banissement pour empécher les ban des administrateurs
+- Fix de la suppression des procédures de modération
+- Fix du verrouillage de masse (ajout d'une protection sur l'ID du forum)
+- Fix de l'adresse IP du message de base lors de l'installation du forum
+- Fix sur l'activation des comptes lors de l'inscription (clef de langue manquante, IP non prise en compte)
+
+===== 2.0.0.BETA5.preRC1 - 21 novembre 2006 =====
+- Ajout de l'éditeur Codepress dans l'édition des templates (fichiers HTML)
+- Ajout d'un outil de comparaison des thèmes dans la gestion des thèmes
+- Ajout d'un lien dans la liste des CSS du thème pour modifier la CSS globale du thème
+- Ajout du support de procédures de modération, permettant l'execution d'actions modératrices via un pseudo script
+- Ajout d'une page dans le module de modération, permettant aux administrateurs de créer des procédures de modération
+- Ajout du support de l'UTF-8 au niveau de certaines fonctions PHP (strlen_utf8, substr_utf8)
+- Ajout de la modification de la FAQ et des Emails dans la gestion des langues
+- Ajout d'une mise en cache des anniversaires, par jour
+- Ajout des ages dans les anniversaires sur le calendrier
+- Ajout du support des notifications via le protocole Jabber
+- Ajout du support des notifications via le protocole MSNP9 (MSN messenger, windows live messenger)
+- Ajout de la possibilité de désactiver les inscriptions
+- Ajout d'une vérification empéchant de mettre comme mot de passe le pseudonyme
+- Ajout d'un cookie permettant de limiter l'incrémentation du nombre de "vu" dans les sujets (+1 par membre et par session)
+- Ajout des tailles max de l'avatar sur le profile avatar
+- Ajout d'une extension de la balise QUOTE, permettant un lien vers le message posté, et l'affichage d'une date
+- Ajout d'un onglet dans la page des optimisations, permettant d'appliquer un décalage horaires à des fuseaux définis
+- Ajout de la possibilité d'empécher les images, et les liens dans les signatures via la configuration
+- Ajout d'une image coloré sur les bouttons citer, lorsqu'on clique dessus
+- Ajout d'une vérification sur la longueur du pseudonyme lors de l'inscription (pour l'UTF-8)
+- Ajout de la suppression automatique du fichier install/install.php une fois l'installation du forum finie (sécurité)
+- Ajout de la possibilité de n'afficher un évènement calendrier que pour un groupe
+- Ajout de la possibilité d'archiver les messages privés envoyés
+- Modification des captcha, en ajoutant de nouvelles méthodes de confirmations visuelles, pour contrer le SPAM
+- Modification de l'envoie de notifications, en mettant la tache en arrière temps pour plus de fluidité
+- Modification de l'ordre des couleurs dans la palette de couleur
+- Modification du status invisible lors de la connexion, en fonction de si le boutton est coché ou non
+- Fix du bug qui empéchait les invités de cliquer sur le lien vers le dernier message d'un sujet
+- Fix d'un bug sur l'affichage des thèmes / langues dans le profil
+- Fix d'un bug qui empéchait d'ajouter un forum si on ne créait que des catégories vides
+- Fix d'un bug qui empéchait la création de champs de contact / personels dans la base de donnée
+- Fix d'un bug sur la recherche des caractères accentués
+- Fix d'un oubli du chmod du répertoire ~/cache/sql_backup/ lors de l'installation
+- Fix d'un bug sur le chmod via la classe File
+- Fix d'un bug de pagination dans la recherche de pseudonymes sur la liste des membres
+- Fix d'un bug sur la récupération de l'extension PHP des scripts
+- Fix d'une erreur SQL lors de l'ajout d'un nouveau groupe sans modérateur, mais avec un style
+- Fix d'un bug javascript sur la palette de couleur côté administration
+- Fix d'un notice sur le colorateur syntaxique CSS
+- Fix d'un bug sur le parseur de CSS (caractères accentués)
+- Fix des graphiques dans l'onglet statistiques sur les périodes de plusieurs mois
+
+===== 2.0.0 BETA 4 - 9 novembre 2006 =====
+- Support de l'encodage UTF-8 par défaut sur l'ensemble du forum
+- Correction de multiples problèmes d'affichage / javascript sur Internet Explorer et Opéra
+- Ajout d'un gestionaire pour la gallerie d'avatar Administration -> membres -> galleries
+- Ajout d'un éditeur de texte en javascript avec coloration syntaxique pour le webFTP
+- Ajout de la fonction de modération de fusion des sujets
+- Ajout d'une fonction d'édition des messages en AJAX
+- Ajout d'une fonction de citation de message multiples en AJAX
+- Ajout du support des caches PHP eAccelerator, Turck MMcache et APC
+- Ajout d'une fonction de streaming sur les thèmes, permettant d'installer des thèmes depuis notre site
+- Ajout d'une fonction de streaming sur les MODS, permettant d'installer des MODS depuis notre site
+- Ajout d'une page permettant aux invités de contacter les administrateurs (avec captcha)
+- Ajout d'un attribut float sur les FSBcode IMG permettant de positioner les images plus proprement
+- Ajout des anniversaires sur le calendrier
+- Ajout de la liste des fichiers uploadés dans les bouttons lors de l'envoie de message
+- Ajout de la revue des anciens messages lors d'une réponse Ã  un message privé
+- Ajout du support de la transparence dans les redimensionements d'avatars
+- Ajout de flux RSS sur les forums, et d'un flux sur l'index (ensemble du forum)
+- Ajout d'une page de modération permettant d'approuver les messages / sujets des membres (gestion par forum / membre)

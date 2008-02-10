@@ -1,0 +1,259 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :		~/admin/users/users_profile_fields.php
+** | Begin :	20/09/2005
+** | Last :		13/12/2007
+** | User :		Genova
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Gestion des champs personels / contact du profil
+*/
+class Fsb_frame_child extends Fsb_admin_frame
+{
+	// Arguments de la page
+	public $mode;
+	public $id;
+	public $module;
+	
+	// Données du formulaire
+	public $data = array();
+
+	// Type HTML choisi
+	public $type;
+
+	// Type de page
+	public $fields_type = PROFIL_FIELDS_PERSONAL;
+
+	// Erreurs
+	public $errstr = array();
+	
+	/*
+	** Constructeur
+	*/
+	public function main()
+	{
+		$this->mode =	Http::request('mode');
+		$this->id =		intval(Http::request('id'));
+
+		// On récupère le type HTML
+		$this->type = intval(Http::request('type', 'post|get'));
+
+		$call = new Call($this);
+		$call->module(array(
+			'list' =>		array('personal', 'contact'),
+			'url' =>		'index.' . PHPEXT . '?p=users_profile_fields',
+			'lang' =>		'adm_profile_fields_',
+			'default' =>	'personal',
+		));
+
+		$this->fields_type = ($this->module == 'contact') ? PROFIL_FIELDS_CONTACT : PROFIL_FIELDS_PERSONAL;
+		if ($this->module == 'contact')
+		{
+			$this->type = Profil_fields::TEXT;
+		}
+		
+		$call->post(array(
+			'submit_check' =>	':check_form_pf',
+		));
+
+		$call->functions(array(
+			'mode' => array(
+				'delete' =>		'delete_pf',
+				'add' =>		'add_edit_form_pf',
+				'edit' =>		'add_edit_form_pf',
+				'up' =>			'move_pf',
+				'down' =>		'move_pf',
+				'default' =>	'main_form_pf',
+			),
+		));
+	}
+	
+	/*
+	** Affiche le listing des champs existants, avec les boutons ajouter, éditer, etc ...
+	*/
+	public function main_form_pf()
+	{		
+		Fsb::$tpl->set_switch('fields_list');
+		Fsb::$tpl->set_vars(array(
+			'PF_LIST' =>	Fsb::$session->lang('adm_pf_' . $this->module),
+
+			'U_ADD' =>		sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=add&amp;module=' . $this->module),
+		));
+		
+		$sql = 'SELECT pf_id, pf_lang
+				FROM ' . SQL_PREFIX . 'profil_fields
+				WHERE pf_type = ' . $this->fields_type . '
+				ORDER BY pf_order';
+		$result = Fsb::$db->query($sql, 'profil_fields_');
+		while ($row = Fsb::$db->row($result))
+		{
+			Fsb::$tpl->set_blocks('pf', array(
+				'NAME' =>		String::parse_lang($row['pf_lang']),
+				
+				'U_EDIT' =>		sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=edit&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
+				'U_DELETE' =>	sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=delete&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
+				'U_UP' =>		sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=up&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
+				'U_DOWN' =>	sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=down&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
+			));
+		}
+		Fsb::$db->free($result);
+	}
+	
+	/*
+	** Formulaire d'ajout / edition de champs personels
+	*/
+	public function add_edit_form_pf()
+	{		
+		if ($this->errstr)
+		{
+			Fsb::$tpl->set_switch('error');
+			$this->data['pf_list'] = implode("\n", $this->data['pf_list']);
+			$this->data['pf_groups'] = explode(',', $this->data['pf_groups']);
+		}
+		else if ($this->mode == 'edit')
+		{
+			$sql = 'SELECT *
+					FROM ' . SQL_PREFIX . 'profil_fields
+					WHERE pf_id = ' . $this->id;
+			$this->data = Fsb::$db->request($sql);
+			if (!$this->data)
+			{
+				Display::message('no_result');
+			}
+			$this->data['pf_list'] = implode("\n", unserialize($this->data['pf_list']));
+			$this->data['pf_groups'] = explode(',', $this->data['pf_groups']);
+			$this->type = $this->data['pf_html_type'];
+		}
+		else
+		{
+			$this->data = array(
+				'pf_lang' =>		'',
+				'pf_regexp' =>		'',
+				'pf_groups' =>		array(),
+				'pf_topic' =>		FALSE,
+				'pf_register' =>	FALSE,
+				'pf_maxlength' =>	50,
+				'pf_sizelist' =>	5,
+				'pf_output' =>		'',
+				'pf_list' =>		'',
+			);
+		}
+		
+		if ($this->mode != 'edit' && $this->module == 'personal')
+		{
+			Fsb::$tpl->set_switch('html_type');
+		}
+		
+		// On génère la liste des types HTML
+		$list_type = array();
+		foreach (Profil_fields::$type AS $key => $data)
+		{
+			$list_type[$key] = Fsb::$session->lang('adm_pf_type_' . $data['name']);
+		}
+
+		Profil_fields_admin::form($this->type);
+		$info = Profil_fields::$type[$this->type];
+
+		Fsb::$tpl->set_switch('fields_add');
+		Fsb::$tpl->set_vars(array(
+			'CONTENT' =>			Html::make_errstr($this->errstr),
+			'PF_ADD' =>				Fsb::$session->lang('adm_pf_add_' . $this->module),
+			'PF_LANG' =>			htmlspecialchars($this->data['pf_lang']),
+			'PF_REGEXP' =>			htmlspecialchars($this->data['pf_regexp']),
+			'PF_MAXLENGTH' =>		$this->data['pf_maxlength'],
+			'PF_LIST' =>			$this->data['pf_list'],
+			'PF_SIZELIST' =>		$this->data['pf_sizelist'],
+			'PF_OUTPUT' =>			htmlspecialchars($this->data['pf_output']),
+			'PF_TOPIC' =>			($this->data['pf_topic']) ? TRUE : FALSE,
+			'PF_REGISTER' =>		($this->data['pf_register']) ? TRUE : FALSE,
+			'MAXLENGTH_EXPLAIN' =>	(isset($info['maxlength'])) ? sprintf(Fsb::$session->lang('adm_pf_maxlength_explain'), $info['maxlength']['min'] + 1, $info['maxlength']['max']) : '',
+			
+			'LIST_PERSONAL_TYPE' =>	Html::create_list('type', $this->type, $list_type, '', 'onchange="location.href=\'' . sid('index.' . PHPEXT . '?p=users_profile_fields&amp;module=personal&amp;mode=add&amp;type=') . '\' + this.value"'),
+			'LIST_GROUPS' =>		Html::list_groups('pf_groups[]', GROUP_SPECIAL |GROUP_NORMAL, $this->data['pf_groups'], TRUE),
+			
+			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;type=' . $this->type . '&amp;module=' . $this->module),
+		));
+	}
+	
+	/*
+	** Vérification des données du formulaire
+	*/
+	public function check_form_pf()
+	{
+		$this->data = Profil_fields_admin::validate($this->type, $this->errstr);
+		if (!$this->errstr)
+		{
+			$this->submit_form_pf();
+		}
+	}
+	
+	/*
+	** Soumet le formulaire
+	*/
+	public function submit_form_pf()
+	{
+		if ($this->mode == 'edit')
+		{
+			Profil_fields_admin::update($this->id, $this->data);
+		}
+		else
+		{
+			Profil_fields_admin::add($this->fields_type, $this->data);
+		}
+		Fsb::$db->destroy_cache('profil_fields_');
+		
+		Log::add(Log::ADMIN, 'pf_log_' . $this->mode, $this->data['pf_lang']);
+		Display::message('adm_pf_well_' . $this->mode, 'index.' . PHPEXT . '?p=users_profile_fields&amp;module=' . $this->module, 'users_' . $this->module);
+	}
+	
+	/*
+	** Supprime un champ personel
+	*/
+	public function delete_pf()
+	{
+		// On récupère le nom du champ, pour le log
+		$sql = 'SELECT pf_lang
+				FROM ' . SQL_PREFIX . 'profil_fields
+				WHERE pf_id = ' . $this->id;
+		if ($pf_lang = Fsb::$db->get($sql, 'pf_lang'))
+		{
+			// Boite de confirmation
+			if (check_confirm())
+			{
+				Profil_fields_admin::delete($this->id, $this->fields_type);
+				Fsb::$db->destroy_cache('profil_fields_');
+			
+				Log::add(Log::ADMIN, 'pf_log_delete', $pf_lang);
+
+				Display::message('adm_pf_well_delete', 'index.' . PHPEXT . '?p=users_profile_fields&amp;module=' . $this->module, 'users_' . $this->module);
+			}
+			else if (Http::request('confirm_no', 'post'))
+			{
+				Http::redirect('index.' . PHPEXT . '?p=users_profile_fields&module=' . $this->module);
+			}
+			else
+			{
+				Display::confirmation(Fsb::$session->lang('adm_pf_confirm_delete'), 'index.' . PHPEXT . '?p=users_profile_fields&module=' . $this->module, array('mode' => 'delete', 'id' => $this->id));
+				return ;
+			}
+		}
+		Http::redirect('index.' . PHPEXT . '?p=users_profile_fields&module=' . $this->module);
+	}
+	
+	/*
+	** Déplace un champ personel
+	*/
+	public function move_pf()
+	{
+		Profil_fields_admin::move($this->id, (($this->mode == 'up') ? -1 : 1), $this->fields_type);
+		Fsb::$db->destroy_cache('profil_fields_');
+		Http::redirect('index.' . PHPEXT . '?p=users_profile_fields&module=' . $this->module);
+	}
+}
+
+/* EOF */

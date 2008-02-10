@@ -1,0 +1,99 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="show_info_fsb">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_FSB}</h1>
+		<div class="content">{LG_INFO_FSB}</div>
+	</div>
+</switch>
+
+<switch name="show_info_rank">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_RANK}</h1>
+		<table class="form">
+			<block name="rank">
+				<tr>
+					<th><span {rank.STYLE}>{rank.NAME}</span><if content="$rank.IMG"><br /><img src="{rank.IMG}" alt="{rank.NAME}" title="{rank.NAME}" /></if></th>
+					<td>{rank.QUOTA}</td>
+				</tr>
+			</block>
+			<blockelse name="rank">
+				<tr><td colspan="2"><div class="error">{LG_NO_RESULT}</div></td></tr>
+			</blockelse>
+		</table>
+	</div>
+</switch>
+
+<switch name="show_info_tpl">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_TPL}</h1>
+		<table class="form">
+			<block name="tpl">
+				<tr>
+					<th class="strong">{tpl.NAME}</th>
+					<td>
+						<b>{LG_INFO_TPL_AUTHOR} :</b> {tpl.AUTHOR}
+						<if content="$tpl.WEB"><br /><b>{LG_INFO_TPL_WEB} :</b> {tpl.WEB}</if>
+						<if content="$tpl.EMAIL"><br /><b>{LG_INFO_TPL_EMAIL} :</b> {tpl.EMAIL}</if>
+						<br /><b>{LG_INFO_TPL_LICENSE} :</b> {tpl.LICENSE}
+					</td>
+				</tr>
+			</block>
+		</table>
+	</div>
+</switch>
+
+<switch name="show_info_mod">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_MOD}</h1>
+		<table class="form">
+			<block name="mod">
+				<tr>
+					<th><b>{mod.NAME}</b></th>
+					<td>
+						<b>{LG_INFO_MOD_AUTHOR} :</b> <if content="$mod.EMAIL"><a href="mailto:{mod.EMAIL}">{mod.AUTHOR}</a><else>{mod.AUTHOR}</if> <if content="$mod.WEBSITE"> - <a href="{mod.WEBSITE}">{mod.WEBSITE}</a></if><br />
+						<b>{LG_INFO_MOD_DESCRIPTION} :</b> {mod.DESCRIPTION}
+					</td>
+				</tr>
+			</block>
+			<blockelse name="mod">
+				<tr><td colspan="2"><div class="error">{LG_NO_RESULT}</div></td></tr>
+			</blockelse>
+		</table>
+	</div>
+</switch>
+
+<switch name="show_info_admin">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_ADMIN}</h1>
+		<div class="content">
+			<ul>
+				<block name="auth">
+					<li><b>{auth.LANG} :</b> <block name="auth.user">{auth.user.NAME}<if content="!$auth.user.LAST_ROW">, </if></block></li>
+				</block>
+			</ul>
+		</div>
+	</div>
+</switch>
+
+<switch name="show_info_lang">
+	<div class="round">
+		<h1>{LG_INFO_MODULE_LANG}</h1>
+		<table class="form">
+			<block name="lang">
+				<tr>
+					<th>{lang.NAME}</th>
+					<td>
+						<b>{LG_INFO_TPL_AUTHOR} :</b> {lang.AUTHOR}
+						<if content="$lang.WEBSITE"><br /><b>{LG_INFO_TPL_WEB} :</b> {lang.WEBSITE}</if>
+						<if content="$lang.EMAIL"><br /><b>{LG_INFO_TPL_EMAIL} :</b> {lang.EMAIL}</if>
+					</td>
+				</tr>
+			</block>
+		</table>
+	</div>
+</switch>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

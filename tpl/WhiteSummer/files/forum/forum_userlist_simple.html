@@ -1,0 +1,39 @@
+<div class="round">
+	<h1>{GROUP_LIST}</h1>
+	<table class="t" cellspacing="0">
+		<block name="user">
+			<if content="$user.FIRST_ROW">
+				<tr>
+					<th width="40">&#42;</th>
+					<th><a href="{U_ORDER_NICKNAME}">{LG_USERLIST_COLUMN_NICKNAME}</a></th>
+					<block name="column">
+						<th><a href="{column.U_ORDER}">{column.NAME}</a></th>
+					</block>
+					<switch name="is_group_moderator">
+						<th width="25">&nbsp;</th>
+					</switch>
+				</tr>
+			</if>
+			<if content="$user.CAT_SEPARATOR">
+				<tr>
+					<th colspan="{USERLIST_COLSPAN}">{user.CAT_SEPARATOR}</th>
+				</tr>
+			</if>
+			<tr class="highlight">
+				<td align="center">{user.RESULT}</td>
+				<td align="center">{user.NICKNAME}</td>
+				<block name="user.column">
+					<td align="center">{user.column.NAME}</td>
+				</block>
+				<switch name="is_group_moderator">
+					<td><input type="checkbox" name="action[]" value="{user.ID}" <if content="$user.DISABLED">disabled="disabled"</if> /></td>
+				</switch>
+			</tr>
+		</block>
+		<blockelse name="user">
+			<tr>
+				<td class="error">{LG_NO_RESULT}</td>
+			</tr>
+		</blockelse>
+	</table>
+</div>

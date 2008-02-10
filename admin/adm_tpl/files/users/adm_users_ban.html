@@ -1,0 +1,69 @@
+<include name="adm_header.html">
+
+<switch name="ban_list">
+	<form action="{U_ACTION}" method="post" name="ban_form">
+	<fieldset>
+		<legend>{LG_ADM_ADD_BAN}</legend>
+		<dl>
+			<dt><label>{LG_ADM_BAN_TYPE} :</label></dt>
+			<dd>{LIST_BAN_TYPE}</dd>
+		</dl>
+		<dl>
+			<dt><label for="ban_content_id">{LG_ADM_BAN_CONTENT} :</label></dt>
+			<dd><input type="text" id="ban_content_id" name="ban_content" maxlength="250" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="ban_reason_id">{LG_ADM_BAN_REASON} :</label></dt>
+			<dd><input type="text" id="ban_reason_id" name="ban_reason" maxlength="250" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="ban_length_id">{LG_ADM_BAN_LENGTH} :</label></dt>
+			<dd><input type="text" name="ban_length" maxlength="10" value="0" id="ban_length_id" /> {LIST_BAN_LENGTH}</dd>
+		</dl>
+		<dl>
+			<dt><label for="ban_cookie_id">{LG_ADM_BAN_COOKIE} :</label><br /><span>{LG_ADM_BAN_COOKIE_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="ban_cookie" value="1" /> {LG_YES} &nbsp; &nbsp;
+				<input type="radio" name="ban_cookie" id="ban_cookie_id" value="0" checked="checked" /> {LG_NO}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<fieldset>
+		<legend>{LG_ADM_BAN_LIST}</legend>
+		<table class="tab">
+		<block name="ban">
+			<if content="$ban.FIRST_ROW">
+				<tr>
+					<th width="20">&nbsp;</th>
+					<th width="100"><a href="{U_TYPE}">{LG_TYPE}</a></th>
+					<th width="100"><a href="{U_CONTENT}">{LG_CONTENT}</a></th>
+					<th><a href="{U_REASON}">{LG_ADM_BAN_REASON}</a></th>
+					<th width="200"><a href="{U_EXPIRE}">{LG_ADM_BAN_EXPIRE}</a></th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center"><input type="checkbox" name="action[]" value="{ban.BAN_ID}" /></td>
+				<td align="center">{ban.BAN_TYPE}</td>
+				<td align="center">{ban.BAN_CONTENT}</td>
+				<td align="center">{ban.BAN_REASON}</td>
+				<td align="center">{ban.BAN_EXPIRATION}</td>
+			</tr>
+		</block>
+		<blockelse name="ban">
+			<tr>
+				<td colspan="4" class="error">{LG_ADM_BAN_NONE}</td>
+			</tr>
+		</blockelse>
+		</table>
+		<div>
+			<a href="#" onclick="check_boxes('ban_form', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('ban_form', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+			&nbsp;&nbsp;<input type="submit" value="{LG_DELETE}" name="submit_delete" class="submit" />
+		</div>
+	</fieldset>
+	</form>
+</switch>
+
+<include name="adm_footer.html">

@@ -1,0 +1,13 @@
+<div id="quick_reply" style="margin-bottom: 5px">
+	<form action="{U_QUICK_REPLY_ACTION}" method="post" onsubmit="document.getElementById('submit_post_id').style.display='none';">
+		<textarea style="width: 99%; height: 200px" name="post_map_description" id="quick_reply_form"></textarea><br />
+		<input type="submit" name="preview_post" value="{LG_TOPIC_PREVIEW}" accesskey="p" class="reset" />
+		<input type="submit" name="submit_post" id="submit_post_id" value="{LG_SUBMIT}" accesskey="s" class="submit" />
+	</form>
+	<br />
+</div>
+<script type="text/javascript">
+<!--
+document.getElementById('quick_reply').style.display = 'none';
+//-->
+</script>

@@ -1,0 +1,24 @@
+<include name="header.html">
+
+<switch name="error">
+<include name="error_handler.html" />
+</switch>
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_LOGIN_FORGOT_PASSWORD}</h1>
+	<div class="desc">{LG_LOGIN_FORGOT_EXPLAIN}</div>
+	<table class="form">
+		<tr>
+			<th><label for="forgot_email_id">{LG_EMAIL}* :</label></th>
+			<td><input type="text" name="forgot_email" id="forgot_email_id" size="35" /></td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit_forgot" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+</form>
+
+<include name="footer.html">

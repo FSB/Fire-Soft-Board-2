@@ -1,0 +1,182 @@
+<include name="header.html" />
+<switch name="use_module">
+	<include name="menu_header.html" />
+</switch>
+
+<table width="100%" style="border-spacing: 3px" cellspacing="3">
+	<tr>
+		<td width="50%" valign="top">
+			<div class="round">
+				<switch name="ac_mods_update_last_visit"><switch name="ac_mods_online_in_topics">
+					<div style="float: right"><img <if content="$IS_ONLINE">src="{IMG_ONLINE}" alt="{LG_ONLINE}" title="{LG_ONLINE}"<else>src="{IMG_OFFLINE}" alt="{LG_OFFLINE}" title="{LG_OFFLINE}"</if> /></div>
+				</switch></switch>
+				<h1>{USER_NICKNAME}</h1>
+				<table class="form userprofile">
+					<tr>
+						<th>{LG_USERPROFILE_USER_JOINED}</th>
+						<td>{USER_JOINED}</td>
+					</tr>
+					<switch name="ac_mods_last_visit_profil & ac_mods_update_last_visit & show_last_visit">
+						<tr>
+							<th>{LG_USERPROFILE_LAST_VISIT}</th>
+							<td>{USER_LAST_VISIT}</td>
+						</tr>
+					</switch>
+					<tr>
+						<th>
+							{LG_USERPROFILE_POST_TOTAL}<br />
+							{LG_USERPROFILE_POST_RATE}<br />
+							{LG_USERPROFILE_POST_TOTAL_RATE}
+						</th>
+						<td>
+							{USER_POST_TOTAL}<br />
+							{USER_POST_RATE}<br />
+							{USER_POST_TOTAL_RATE}%
+						</td>
+					</tr>
+					<tr>
+						<th>
+							{LG_USERPROFILE_TOPIC_TOTAL}<br />
+							{LG_USERPROFILE_TOPIC_RATE}<br />
+							{LG_USERPROFILE_TOPIC_TOTAL_RATE}
+						</th>
+						<td>
+							{USER_TOPIC_TOTAL}<br />
+							{USER_TOPIC_RATE}<br />
+							{USER_TOPIC_TOTAL_RATE}%
+						</td>
+					</tr>
+					<if content="$ACTIV_FORUM">
+						<tr>
+							<th>{LG_USERPROFILE_ACTIV_FORUM}</th>
+							<td><b><a href="{U_ACTIV_FORUM}">{ACTIV_FORUM}</a></b> ({ACTIV_FORUM_POST})</td>
+						</tr>
+					</if>
+					<if content="$ACTIV_TOPIC">
+						<tr>
+							<th>{LG_USERPROFILE_ACTIV_TOPIC}</th>
+							<td><b><a href="{U_ACTIV_TOPIC}">{ACTIV_TOPIC}</a></b> ({ACTIV_TOPIC_POST})</td>
+						</tr>
+					</if>
+					<switch name="ac_mods_user_birthday">
+						<tr>
+							<th>{LG_USERPROFILE_AGE}</th>
+							<td>{USER_AGE}</td>
+						</tr>
+					</switch>
+					<switch name="ac_mods_user_sexe">
+						<tr>
+							<th>{LG_USERPROFILE_SEXE}</th>
+							<td>{USER_SEXE}</td>
+						</tr>
+					</switch>
+					<tr>
+						<th>{LG_USERPROFILE_GROUPS}</th>
+						<td>{LIST_GROUPS}</td>
+					</tr>
+				</table>
+			</div>
+			<block name="personal">
+				<if content="$personal.FIRST_ROW">
+					<div class="round">
+						<h1>{LG_USERPROFILE_PROFILE_FIELDS}</h1>
+						<table class="form userprofile">
+				</if>
+				<tr>
+					<th>{personal.LANG}</th>
+					<td><if content="$personal.VALUE">{personal.VALUE}<else>---</if></td>
+				</tr>
+				<if content="$personal.LAST_ROW">
+						</table>
+					</div>
+				</if>
+			</block>
+		</td>
+		<td valign="top">
+			<div class="round">
+				<h1>{LG_USERPROFILE_AVATAR}</h1>
+				<div class="content" align="center">
+					<switch name="have_rank">
+						<if content="$RANK_NAME"><span {RANK_STYLE}>{RANK_NAME}</span><br /></if>
+						<if content="$RANK_IMG"><img src="{RANK_IMG}" alt="{RANK_NAME}" title="{RANK_NAME}" /><br /></if>
+					</switch>
+					<if content="$USER_AVATAR"><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{USER_AVATAR}" alt="{LG_USERPROFILE_AVATAR}" title="{LG_USERPROFILE_AVATAR}" /></div><else>---</if>
+				</div>
+			</div>
+
+			<div class="round">
+				<h1>{LG_OPTIONS}</h1>
+				<div class="content">
+					<ul>
+						<li><b><if content="$USER_POST_TOTAL > 0"><a href="{U_SEARCH_POSTS}">{LG_USERPROFILE_SEARCH_POSTS}</a><else>{LG_USERPROFILE_SEARCH_POSTS}</if></b></li>
+						<li><b><if content="$USER_TOPIC_TOTAL"><a href="{U_SEARCH_TOPICS}">{LG_USERPROFILE_SEARCH_TOPICS}</a><else>{LG_USERPROFILE_SEARCH_TOPICS}</if></b></li>
+						<switch name="can_edit_user">
+							<li><b>({LG_FORUM_MENU_MODO}) <a href="{U_MODO_LINK}">{LG_USERPROFILE_MODO_LINK}</a></b></li>
+							<li><b>({LG_FORUM_MENU_MODO}) <a href="{U_MODO_WARN}">{LG_USERPROFILE_SHOW_WARN}</a></b></li>
+						</switch>
+						<switch name="show_groups_modo">
+							<li>
+								<form action="{U_ADD_GROUP}" method="post">
+									<b>({LG_FORUM_MENU_MODO})</b> {HIDDEN_ADD_LOGIN} {LIST_GROUPS_MODO} <input type="submit" name="submit_add_user" value="{LG_USERPROFILE_ADD_LOGIN}" class="submit" />
+								</form>
+							</li>
+						</switch>	
+					</ul>
+				</div>
+			</div>
+
+			<div class="round">
+				<h1>{LG_USERPROFILE_CONTACT}</h1>
+				<table class="form userprofile">
+					<switch name="ac_mods_mp">
+						<tr>
+							<th>{LG_USERPROFILE_MP}</th>
+							<td><a href="{USER_MP}" class="submit">{LG_USERPROFILE_SEND_CONTACT}</a></td>
+						</tr>
+					</switch>
+					<tr>
+						<th>{LG_USERPROFILE_EMAIL}</th>
+						<td><a href="{USER_EMAIL}" class="submit">{LG_USERPROFILE_SEND_CONTACT}</a></td>
+					</tr>
+					<block name="contact">
+						<tr>
+							<th>{contact.LANG}</th>
+							<td><if content="$contact.VALUE">{contact.VALUE}<else>---</if></td>
+						</tr>
+					</block>
+				</table>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<div class="round">
+				<h1>{LG_USERPROFILE_SIG}</h1>
+				<div class="content">
+					<if content="$USER_SIG">
+						<if content="$CFG_SIG_MAX_HEIGHT"><div style="max-height: {CFG_SIG_MAX_HEIGHT}px; overflow: hidden">{USER_SIG}</div><else>{USER_SIG}</if>
+					<else>
+						<div class="error">-----</div>
+					</if>
+				</div>
+			</div>
+		</td>
+	</tr>
+	<switch name="show_comments">
+		<tr>
+			<td colspan="2">
+				<div class="round">
+					<h1>{LG_USERPROFILE_COMMENTS}</h1>
+					<div class="content">
+						<if content="$USER_COMMENT"><blockquote>{USER_COMMENT}</blockquote><else><div class="error">{LG_USERPROFILE_NO_COMMENT}</div></if>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</switch>
+</table>
+
+<switch name="use_module">
+	<include name="menu_footer.html" />
+</switch>
+<include name="footer.html" />

@@ -1,0 +1,241 @@
+<include name="header.html" />
+<switch name="show_mp_header">
+	<include name="menu_header.html" />
+</switch>
+
+<switch name="forum_rules">
+	<div class="forumrules">
+		<h1>{LG_FORUM_MAIN_RULES}</h1>
+		<div>{FORUM_RULES}</div>
+	</div>
+</switch>
+
+<switch name="error">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{CONTENT}</div>
+		</div>
+	</div>
+</switch>
+
+<call name="javascript" arg1="ajax.js" />
+<call name="javascript" arg1="topic.js" />
+<call name="javascript" arg1="wysiwyg.js" />
+
+<form action="{U_ACTION}" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('submit_post_id').style.display='none';<block name="wysiwyg">send_wysiwyg('map_textarea_{wysiwyg.CLASS_NAME}');</block>">
+
+<switch name="preview">
+	<div class="round">
+		<h1>{LG_PREVIEW} (<a href="#post_box">{LG_POST_GOTO_POST_BOX}</a>)</h1>
+		<div class="content">{PREVIEW}</div>
+	</div>
+</switch>
+
+<switch name="(ac_mods_topic_description & post_description) | (ac_mods_post_map & can_change_map) | need_approve | post_login | post_login_to | post_title | post_calendar | post_type | show_attach_fsbcode">
+	<div class="round">
+		<h1>{POST_PAGE_NAME}</h1>
+		<switch name="need_approve"><div class="desc">{LG_POST_APPROVE_EXPLAIN}</div></switch>
+		<table class="form">
+			<switch name="post_login">
+				<tr>
+					<th><label for="post_login_id">{LG_POST_LOGIN} :</label></th>
+					<td><input type="text" name="post_login" id="post_login_id" size="35" maxlength="20" /></td>
+				</tr>
+			</switch>
+			<switch name="post_login_to">
+				<tr>	
+					<th><label for="post_login_to_id">{LG_POST_LOGIN_TO} :</label><switch name="mp_allow_multiple"><br /><span class="small">{LG_POST_LOGIN_TO_EXPLAIN}</span></if></th>
+					<td>
+						<switch name="mp_allow_multiple">
+							<textarea name="post_login_to" id="post_login_to_id" rows="3" cols="30">{POST_LOGIN_TO}</textarea>
+						<else>
+							<input type="text" name="post_login_to" id="post_login_to_id" value="{POST_LOGIN_TO}" size="35" maxlength="30" />
+						</if>
+					</td>
+				</tr>
+			</switch>
+			<switch name="post_title">
+				<tr>
+					<th><label for="post_title_id">{LG_POST_TITLE} :</label></th>
+					<td><input type="text" name="post_title" id="post_title_id" value="{POST_TITLE}" size="70" maxlength="60" /></td>
+				</tr>
+			</switch>
+			<switch name="ac_mods_topic_description"><switch name="post_description">
+				<tr>
+					<th><label for="post_description_id">{LG_POST_DESCRIPTION} :</label></th>
+					<td><input type="text" name="post_description" id="post_description_id" value="{POST_DESCRIPTION}" size="70" maxlength="250" /></td>
+				</tr>
+			</switch></switch>
+			<switch name="post_calendar">
+				<tr>
+					<th><label>{LG_POST_CALENDAR_BEGIN} :</label></th>
+					<td>{LIST_CALENDAR_BEGIN_DAY} {LIST_CALENDAR_BEGIN_MONTH} {LIST_CALENDAR_BEGIN_YEAR} {LG_AT} {LIST_CALENDAR_BEGIN_HOUR} {LG_H} {LIST_CALENDAR_BEGIN_MIN}</td>
+				</tr>
+				<tr>
+					<th><label>{LG_POST_CALENDAR_END} :</label></th>
+					<td>{LIST_CALENDAR_END_DAY} {LIST_CALENDAR_END_MONTH} {LIST_CALENDAR_END_YEAR} {LG_AT} {LIST_CALENDAR_END_HOUR} {LG_H} {LIST_CALENDAR_END_MIN}</td>
+				</tr>
+				<switch name="calendar_print">
+					<tr>
+						<th><label for="calendar_print_id">{LG_POST_CALENDAR_PRINT} :</label></th>
+						<td>
+							<input type="radio" name="calendar_print" value="-1" <if content="$CALENDAR_PRINT == -1">id="calendar_print_id" checked="checked"</if> /> {LG_POST_CALENDAR_PRINT_ALL} &nbsp; &nbsp;
+							<input type="radio" name="calendar_print" value="0" <if content="$CALENDAR_PRINT == 0">id="calendar_print_id" checked="checked"</if> /> {LG_POST_CALENDAR_PRINT_PERSONAL}
+							<br />
+							<input type="radio" name="calendar_print" value="1" <if content="$CALENDAR_PRINT == 1">id="calendar_print_id" checked="checked"</if> /> {LG_POST_CALENDAR_PRINT_GROUP} {LIST_CALENDAR_GROUPS}
+						</td>
+					</tr>
+				</switch>
+			</switch>
+			<switch name="post_type">
+				<block name="topic_type">
+					<if content="$topic_type.FIRST_ROW AND $topic_type.SIZEOF > 1">
+						<tr>
+							<th><label for="post_type_id">{LG_POST_TYPE} :</label></th>
+							<td>
+					</if>
+					<if content="$topic_type.SIZEOF > 1">
+						<input type="radio" name="post_type" value="{topic_type.VALUE}" <if content="$topic_type.CHECKED">id="post_type_id" checked="checked"</if> />
+						{topic_type.LANG} &nbsp; &nbsp;
+					</if>
+					<if content="$topic_type.LAST_ROW AND $topic_type.SIZEOF > 1">
+							</td>
+						</tr>
+					</if>
+				</block>
+			</switch>
+			<switch name="ac_mods_post_map">
+				<switch name="can_change_map">
+					<tr>
+						<th><label>{LG_POST_MAP} :</label></th>
+						<td>{LIST_SHEMA} <noscript><input type="submit" name="submit_change_shema" value="{LG_SUBMIT}" class="submit" /></noscript></td>
+					</tr>
+				</switch>
+			</switch>
+		</table>
+	</div>
+</switch>
+
+<div class="round">
+	<h1>{MAP_TITLE}</h1>
+	<div id="post_box">
+		<table class="form">
+			<include name="handler_map.html" />
+			<switch name="use_captcha">
+				<tr>
+					<th><label for="captcha_code_id">{LG_POST_USE_CAPTCHA} :</label><br /><span class="small">{LG_POST_USE_CAPTCHA_EXPLAIN}</span></th>
+					<td>
+						<input type="text" name="captcha_code" id="captcha_code_id" size="6" maxlength="6" /><br /><br />
+						<img src="{CAPTCHA_IMG}" alt="" border="0" />
+					</td>
+				</tr>
+			</switch>
+			<tr>
+				<th></th>
+				<td>
+					{HIDDEN}
+					<input type="submit" name="preview_post" value="{LG_PREVIEW}" accesskey="p" class="submit" />
+					<input type="submit" name="submit_post" value="{LG_SUBMIT}" accesskey="s" class="submit" id="submit_post_id" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<switch name="post_poll">
+	<div class="round">
+		<h1><img src="{IMG_CLOSE}" onmouseover="this.style.cursor='pointer'" onclick="block_check('poll_id', this, '{IMG_OPEN}', '{IMG_CLOSE}')" id="img_open_poll" alt="" /> {LG_POLL}</h1>
+		<div id="poll_id">
+		<table class="form">
+			<tr>
+				<th><label for="poll_name_id">{LG_POST_POLL_NAME} :</label></th>
+				<td><input type="text" name="poll_name" id="poll_name_id" maxlength="100" value="{POLL_NAME}" size="50" /></td>
+			</tr>
+			<tr>
+				<th><label for="poll_values_id">{LG_POST_POLL_VALUES} :</label><br /><span class="small">{LG_POST_POLL_VALUES_EXPLAIN}</span></th>
+				<td><textarea name="poll_values" id="poll_values_id" rows="4" cols="50">{POLL_VALUES}</textarea></td>
+			</tr>
+			<tr>
+				<th><label for="poll_max_vote_id">{LG_POST_POLL_MAX_VOTE} :</label></th>
+				<td><input type="text" name="poll_max_vote" id="poll_max_vote_id" maxlength="2" value="{POLL_MAX_VOTE}" size="2" /></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+	$('poll_id').style.display='none';
+	<if content="$POLL_NAME">block_check('poll_id', $('img_open_poll'), '{IMG_OPEN}', '{IMG_CLOSE}');</if>
+	//-->
+	</script>
+</switch>
+
+<switch name="can_upload">
+	<div class="round">
+		<h1><img src="{IMG_CLOSE}" onmouseover="this.style.cursor='pointer'" onclick="block_check('upload_id', this, '{IMG_OPEN}', '{IMG_CLOSE}')" alt="" /> {LG_POST_UPLOAD}</h1>
+		<div id="upload_id">
+		<div class="desc">{UPLOAD_EXPLAIN}</div>
+		<table class="form">
+			<tr>
+				<th><label for="upload_path_id">{LG_POST_UPLOAD_PATH} :</label></th>
+				<td><input type="file" name="upload_path" id="upload_path_id" /> <input type="submit" name="submit_upload" value="{LG_SEND}" class="submit" /></td>
+			</tr>
+			<tr>
+				<th><label>{LG_POST_UPLOAD_AUTH} :</label><br /><span class="small">{LG_POST_UPLOAD_AUTH_EXPLAIN}</span></th>
+				<td>{LIST_UPLOAD_AUTH}</td>
+			</tr>
+			<tr>
+				<th><label for="upload_comment_id">{LG_POST_UPLOAD_COMMENT} :</label></th>
+				<td><textarea name="upload_comment" id="upload_comment_id" rows="3" cols="40">{UPLOAD_COMMENT}</textarea></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+	$('upload_id').style.display='none';
+	//-->
+	</script>
+</switch>
+
+<switch name="topic_review">
+	<div id="topic_review">
+	<div class="round">
+		<h1>{LG_POST_TOPIC_REVIEW}</h1>
+		<block name="post">
+			<table class="post">
+				<tr>
+					<td class="userinfo">
+						<div class="userinfo_box">
+							<div style="text-align: center">{post.NICKNAME}</div>
+							<div style="overflow: hidden; width: {AVATAR_WIDTH}px; text-align: center">
+								<img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" />
+							</div>
+						</div>
+					</td>
+					<td class="postcontent">
+						<div class="postheader">
+							<if content="$CAN_QUICK_QUOTE">
+								<div style="float: right">
+									<a href="javascript:quote_post({post.ID}, 'map_textarea_post_map_description', false, use_wysiwyg['map_textarea_post_map_description'], <switch name="post_login_to">true<else>false</switch>)"><img src="{IMG_QUOTE_POST}" alt="{LG_POST_QUOTE}" title="{LG_POST_QUOTE}" /></a>
+								</div>
+							</if>
+							{post.DATE}
+						</div>
+						<div class="message">{post.CONTENT}</div>
+					</td>
+				</tr>
+			</table>
+		</block>
+	</div>
+	</div>
+</switch>
+</form>
+
+<switch name="show_mp_header">
+	<include name="menu_footer.html" />
+</switch>
+<include name="footer.html" />

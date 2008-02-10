@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{TAG_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/low.css" />
+	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/fsbcode.css" />
+	<script type="text/javascript" src="{ROOT}main/javascript/common.js"></script>
+</head>
+
+<body>
+
+<div class="header">
+	<div class="left"><a href="{U_HIGH_VERSION}">{HIGH_VERSION}</a></div>
+	<div class="right">
+		<a href="{U_FAQ}" title="{LG_FORUM_MENU_FAQ_EXPLAIN}">{LG_FORUM_MENU_FAQ}</a> -
+		<a href="{U_SEARCH}" title="{LG_FORUM_MENU_SEARCH_EXPLAIN}">{LG_FORUM_MENU_SEARCH}</a> -
+		<a href="{U_USERLIST}" title="{LG_FORUM_MENU_USERLIST_EXPLAIN}">{LG_FORUM_MENU_USERLIST}</a>
+	</div>
+	<div class="nav">
+		<a href="{U_LOW_INDEX}">{LG_FORUM_INDEX}</a>
+		<block name="nav_link">
+			&#187; <if content="$nav_link.URL"><a href="{nav_link.URL}">{nav_link.NAME}</a><else>{nav_link.NAME}</if>
+		</block>
+	</div>
+</div>
+
+<br />
+
+<switch name="low_index">
+	<ul class="index">
+	<block name="cat">
+		<li><a href="{cat.U_CAT}" class="cat">{cat.NAME}</a></li>
+		<block name="cat.forum">
+			<li style="margin-left: {cat.forum.MARGIN}px"><a href="{cat.forum.U_FORUM}">{cat.forum.NAME}</a> <span class="small">({cat.forum.TOTAL})</span></li>
+		</block>
+	</block>
+	</ul>
+</switch>
+
+<switch name="low_forum">
+	<h1>{FORUM_TITLE}</h1>
+	<block name="sub">
+		<if content="$sub.FIRST_ROW"><ul class="index"></if>
+		<li><a href="{sub.U_FORUM}">{sub.NAME}</a> <span class="small">({sub.TOTAL})</span></li>
+		<if content="$sub.LAST_ROW"></ul><br /><br /></if>
+	</block>
+
+	<if content="$PAGINATION"><div class="pagination"><b>{LG_LOW_PAGE}</b> {PAGINATION}</div></if>
+	<block name="topic">
+		<if content="$topic.FIRST_ROW"><ul class="forum"></if>
+		<li><if content="$topic.IS_ANNOUNCE"><b>{LG_LOW_NEED_READ}</b> </if><a href="{topic.U_TOPIC}">{topic.TITLE}</a> <span class="small">({topic.TOTAL})</span></li>
+		<if content="$topic.LAST_ROW"></ul></if>
+	</block>
+	<if content="$PAGINATION"><div class="pagination"><b>{LG_LOW_PAGE}</b> {PAGINATION}</div></if>
+</switch>
+
+<switch name="low_topic">
+	<h1>{TOPIC_TITLE}</h1>
+	<if content="$PAGINATION"><div class="pagination"><b>{LG_LOW_PAGE}</b> {PAGINATION}</div></if>
+	<block name="post">
+		<div class="post">
+			<a href="{post.U_NICKNAME}" class="nickname">{post.NICKNAME}</a> <span class="small">({post.DATE})</span>
+			<div class="content">{post.CONTENT}</div>
+		</div>
+	</block>
+	<if content="$PAGINATION"><div class="pagination"><b>{LG_LOW_PAGE}</b> {PAGINATION}</div></if>
+</switch>
+
+<br />
+
+<div class="footer">
+	<div class="nav">
+		<a href="{U_LOW_INDEX}">{LG_FORUM_INDEX}</a>
+		<block name="nav_link">
+			&#187; <if content="$nav_link.URL"><a href="{nav_link.URL}">{nav_link.NAME}</a><else>{nav_link.NAME}</if>
+		</block>
+	</div>
+	<div align="center">Forum <a href="http://www.fire-soft-board.com" target="_blank">Fire-Soft-Board</a> &copy; 2004 - {CURRENT_YEAR}</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<div class="info">
+	<h1>{LG_PM_LAST_POSTS}</h1>
+	<div>
+		<block name="pm_last_posts">
+			<if content="$pm_last_posts.FIRST_ROW"><ul></if>
+				<li>
+					{pm_last_posts.NICKNAME}, {pm_last_posts.DATE}
+					<br /><span style="margin-left: 5px"><b>&#187;&nbsp;</b><a href="{pm_last_posts.URL}">{pm_last_posts.TITLE}</a></span>
+				</li>
+			<if content="$pm_last_posts.LAST_ROW"></ul></if>
+		</block>
+	</div>
+</div>

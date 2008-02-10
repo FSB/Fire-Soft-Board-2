@@ -1,0 +1,43 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<include name="error_handler.html" />
+</switch>
+
+<div class="info">
+	<h1>{LG_OPTIONS}</h1>
+	<div>{LG_USER_UPLOAD_QUOTA} : {UPLOAD_QUOTA} / {FORUM_UPLOAD_QUOTA}</div>
+</div>
+
+<div class="round">
+	<h1>{LG_USER_MODULE_UPLOAD}</h1>
+	<table class="t" cellspacing="0">
+	<block name="upload">
+		<if content="$upload.FIRST_ROW">
+			<tr>
+				<th><a href="{U_ORDER_FILENAME}">{LG_USER_UPLOAD_FILENAME}</a></th>
+				<th width="100"><a href="{U_ORDER_FILESIZE}">{LG_USER_UPLOAD_FILESIZE}</a></th>
+				<th width="200"><a href="{U_ORDER_FILETIME}">{LG_USER_UPLOAD_FILETIME}</a></th>
+				<th width="100"><a href="{U_ORDER_TOTAL}">{LG_USER_UPLOAD_TOTAL}</a></th>
+				<th width="75">&nbsp;</th>
+			</tr>
+		</if>
+		<tr>
+			<td align="center"><a href="{upload.DOWNLOAD}">{upload.FILENAME}</a></td>
+			<td align="center">{upload.FILESIZE}</td>
+			<td align="center">{upload.FILETIME}</td>
+			<td align="center">{upload.TOTAL}</td>
+			<td align="center"><a href="{upload.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a></td>
+		</tr>
+	</block>
+	<blockelse name="upload">
+		<tr>
+			<td><div class="error">{LG_NO_RESULT}</div></td>
+		</tr>
+	</blockelse>
+	</table>
+</div>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

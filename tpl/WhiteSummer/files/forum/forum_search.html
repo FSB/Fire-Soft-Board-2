@@ -1,0 +1,77 @@
+<include name="header.html" />
+<script type="text/javascript">
+<!--
+function check_forum_list(t, idx) {
+	for (var i = 0; i < idx.length; i++) {
+		$('f' + idx[i]).checked = t.checked;
+	}
+}
+-->
+</script>
+<div class="round">
+	<h1>{LG_SEARCH}</h1>
+	<div class="desc">{SEARCH_EXPLAIN}</div>
+	<form action="{U_ACTION}" method="post">
+	<table class="form">
+		<tr>
+			<th><label for="keywords_id">{LG_SEARCH_KEYWORDS}</label></th>
+			<td>
+				<input type="text" name="keywords" id="keywords_id" size="50" />
+				<br />
+				<input type="radio" name="keywords_link" id="keywords_and" value="and" checked="checked" />
+				<label for="keywords_and">{LG_SEARCH_AND}</label>
+				<br />
+				<input type="radio" name="keywords_link" id="keywords_or" value="or" />
+				<label for="keywords_or">{LG_SEARCH_OR}</label>
+			</td>
+		</tr>
+		<tr>
+			<th><label for="author_id">{LG_SEARCH_AUTHOR}</label></th>
+			<td><input type="text" name="author" id="author_id" size="50" /></td>
+		</tr>
+		<tr>
+			<th>{LG_SEARCH_IN}</th>
+			<td>
+				<input type="checkbox" name="in[]" value="post" checked="checked" id="search_posts_id" />
+				<label for="search_posts_id">{LG_SEARCH_POST}</label> &nbsp; &nbsp;
+				<input type="checkbox" name="in[]" value="title" checked="checked" id="search_title_id" />
+				<label for="search_title_id">{LG_SEARCH_TITLE}</label>
+				</td>
+		</tr>
+		<tr>
+			<th>{LG_SEARCH_PRINT}</th>
+			<td>
+				<input type="radio" name="print" value="topic" id="print_topic_id" />
+				<label for="print_topic_id">{LG_SEARCH_TOPIC}</label> &nbsp; &nbsp;
+				<input type="radio" name="print" value="post" checked="checked" id="print_post_id" />
+				<label for="print_post_id">{LG_SEARCH_POST}</label>
+			</td>
+		</tr>
+		<tr>
+			<th>{LG_SEARCH_DATE}</th>
+			<td>{LIST_DATE}</td>
+		</tr>
+		<tr>
+			<th>{LG_SEARCH_ORDER}</th>
+			<td>{LIST_ORDER} {LIST_DIRECTION}</td>
+		</tr>
+		<tr>
+			<th>{LG_SEARCH_FORUM}</th>
+			<td>
+				<div id="forum_tree">
+					<block name="f">
+						<label>{f.PADDING}<input type="checkbox" name="forums[]" checked="checked" onclick="check_forum_list(this, [{f.CHILDREN}])" value="{f.ID}" id="f{f.ID}" />
+						<if content="$f.IS_CAT"><b>{f.NAME}</b><else><span {f.STYLE}>{f.NAME}</span></if></label>
+					</block>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+<include name="footer.html" />

@@ -1,0 +1,81 @@
+<include name="header.html" />
+<switch name="use_module">
+	<include name="menu_header.html" />
+</switch>
+
+<form action="{U_ACTION}" name="search" method="post">
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<switch name="can_check">
+				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
+			</switch>
+		</td>
+		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+
+<block name="f">
+	<div class="round">
+		<h1>
+			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" /></switch>
+			<a href="{f.U_CAT}">{f.CAT}</a> &#187; <a href="{f.U_FORUM}">{f.FORUM}</a>
+		</h1>
+		<table class="t" cellspacing="0">
+		<block name="f.result">
+			<tr>
+				<switch name="can_check"><td width="20" align="center"><input type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>
+				<td width="50" align="center"><img src="{f.result.IMG}" /></td>
+				<td class="topicinfo">
+					<h3><a href="{f.result.U_TOPIC}" class="topicname">{f.result.TITLE}</a>  <if content="$f.result.PAGINATION"> &nbsp; {f.result.PAGINATION}</if></h3>
+					<if content="$f.result.DESC"><span class="small">{f.result.DESC}</span><br /></if>
+					<span class="small">({f.result.OWNER} &bull; {f.result.FIRST_DATE})</span>
+				</td>
+				<td align="center" width="125">
+					{LG_VIEWS} : {f.result.VIEWS}<br />
+					{LG_ANSWERS} : {f.result.ANSWERS}
+				</td>
+				<td class="last_message">
+					{f.result.DATE}<br />
+					<a href="{f.result.U_LAST}"><img src="<if content="$f.result.UNREAD">{IMG_LAST_NEW}<else>{IMG_LAST}</if>" alt="{LG_JUMP_TO_LAST_POST}" title="{LG_JUMP_TO_LAST_POST}"  /></a>
+					{f.result.NICKNAME}
+				</td>
+			</tr>
+		</block>
+		<blockelse name="f.result">
+			<tr>
+				<td><div class="error">{LG_SEARCH_NO_RESULT}</div></td>
+			</tr>
+		</blockelse>
+		</table>
+	</div>
+</block>
+<blockelse name="f">
+	<div class="round">
+		<h1>{LG_SEARCH_RESULT}</h1>
+		<div class="content">
+			<div class="error">{LG_SEARCH_NO_RESULT}</div>
+		</div>
+	</div>
+</blockelse>
+
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<switch name="can_check">
+				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
+			</switch>
+		</td>
+		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+</form>
+
+<switch name="use_module">
+	<include name="menu_footer.html" />
+</switch>
+<include name="footer.html" />

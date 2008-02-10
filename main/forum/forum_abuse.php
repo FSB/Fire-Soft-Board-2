@@ -1,0 +1,136 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :		~/main/forum/forum_abuse.php
+** | Begin :	21/10/2005
+** | Last :		13/11/2007
+** | User :		Genova
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Affiche le formulaire permettant de signaler aux modérateurs un message abusif
+*/
+class Fsb_frame_child extends Fsb_frame
+{
+	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	public $_show_page_header_nav = TRUE;
+	public $_show_page_footer_nav = FALSE;
+	public $_show_page_stats = FALSE;
+
+	// ID du message
+	public $id;
+
+	// Mode (MP ou non)
+	public $mode;
+
+	// Navigation
+	public $nav = array();
+
+	/*
+	** Constructeur
+	*/
+	public function main()
+	{
+		$this->id =		intval(Http::request('id'));
+		$this->mode =	Http::request('mode');
+
+		$this->check_post();
+
+		$call = new Call($this);
+		$call->post(array(
+			'submit' =>	':submit_form',
+		));
+
+		$this->show_form();
+	}
+
+	/*
+	** Vérifie si le message existe
+	*/
+	public function check_post()
+	{
+		if (!Fsb::$mods->is_active('abuse') || !Fsb::$session->is_logged())
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT);
+		}
+
+		if ($this->mode == 'mp')
+		{
+			$sql = 'SELECT mp_id
+					FROM ' . SQL_PREFIX . 'mp
+					WHERE mp_id = ' . $this->id . '
+						AND ((mp_to = ' . Fsb::$session->id() . ' AND mp_type IN (' . MP_INBOX . ', ' . MP_SAVE_INBOX . '))
+						OR (mp_from = ' . Fsb::$session->id() . ' AND mp_type IN (' . MP_OUTBOX . ', ' . MP_SAVE_OUTBOX . ')))';
+			if (!Fsb::$db->request($sql))
+			{
+				Display::message('post_not_exists');
+			}
+		}
+		else
+		{
+			$sql = 'SELECT p_id, f_id
+					FROM ' . SQL_PREFIX . 'posts
+					WHERE p_id = ' . intval($this->id);
+			if (!$row = Fsb::$db->request($sql))
+			{
+				Display::message('post_not_exists');
+			}
+			$this->nav = Forum::nav($row['f_id'], array(), $this);
+		}
+	}
+
+	/*
+	** Affiche le formulaire pour signaler le message abusif
+	*/
+	public function show_form()
+	{
+		Fsb::$tpl->set_file('forum/forum_abuse.html');
+		Fsb::$tpl->set_vars(array(
+			'U_ACTION' =>	sid(ROOT . 'index.' . PHPEXT . '?p=abuse&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
+		));
+	}
+
+	/*
+	** Enregistre dans la base de donnée le signalement de message abusif
+	*/
+	public function submit_form()
+	{
+		$content = Http::request('content_abuse', 'post');
+		if ($this->mode == 'mp')
+		{
+			Fsb::$db->insert('posts_abuse', array(
+				'u_id' =>		Fsb::$session->id(),
+				'pa_time' =>	CURRENT_TIME,
+				'pa_text' =>	$content,
+				'pa_status' =>	IS_NOT_APPROVED,
+				'pa_mp_id' =>	$this->id,
+			));
+		}
+		else
+		{
+			$sql = 'SELECT t_id
+						FROM ' . SQL_PREFIX . 'posts
+						WHERE p_id = ' . $this->id;
+			$post_data = Fsb::$db->request($sql);
+
+			Fsb::$db->insert('posts_abuse', array(
+				'p_id' =>		$this->id,
+				'u_id' =>		Fsb::$session->id(),
+				't_id' =>		$post_data['t_id'],
+				'pa_time' =>	CURRENT_TIME,
+				'pa_text' =>	$content,
+				'pa_status' =>	IS_NOT_APPROVED,
+			));
+		}
+
+		Sync::signal(Sync::ABUSE);
+
+		$url = ($this->mode == 'mp') ? 'mp&amp;id=' . $this->id : 'topic&amp;p_id=' . $this->id . '#' . $this->id;
+		Display::message('abuse_submit', ROOT . 'index.' . PHPEXT . '?p=' . $url, 'forum_abuse');
+	}
+}
+
+/* EOF */

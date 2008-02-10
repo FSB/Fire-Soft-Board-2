@@ -1,0 +1,35 @@
+<include name="adm_header.html" />
+
+<switch name="portail_list">
+	<form name="portail_form" action="{U_ACTION}" method="post">
+	<switch name="show_config">
+		<include name="handler_config.html" />
+		<br />
+	</switch>
+
+	<table width="100%" cellpadding="3">
+		<tr>
+			<block name="pos">
+				<td valign="top" width="33%">
+					<block name="pos.portail">
+						<div class="portail_div">
+							<b style="font-size: 14px">{pos.portail.NAME}</b><br />
+							<a href="{pos.portail.U_UP}"><img src="adm_tpl/img/up.gif" style="padding-bottom: 5px" alt="" /></a><br />
+							<a href="{pos.portail.U_LEFT}"><img src="adm_tpl/img/left.gif" alt="" /></a>&nbsp; &nbsp;
+							<a href="{pos.portail.U_ACTIV}"><img src="{pos.portail.ACTIV_IMG}" alt="" /></a>
+							&nbsp; &nbsp;<a href="{pos.portail.U_RIGHT}"><img src="adm_tpl/img/right.gif" alt="" /></a><br />
+							<a href="{pos.portail.U_DOWN}"><img src="adm_tpl/img/down.gif" style="padding-top: 5px" alt="" /></a>
+							<if content="$pos.portail.HAVE_CONFIG">
+								<br /><br /><a href="{pos.portail.U_CONFIG}" class="submit">{LG_ADM_PM_CONFIGURATION}</a>
+							</if>
+						</div>
+						<br style="line-height: 10px" />
+					</block>
+				</td>
+			</block>
+		</tr>
+	</table>
+	</form>
+</switch>
+
+<include name="adm_footer.html" />

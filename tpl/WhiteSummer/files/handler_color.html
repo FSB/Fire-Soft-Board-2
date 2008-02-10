@@ -1,0 +1,39 @@
+<variable name="VAR_HEADER_EXISTS" value="1" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>{TAG_TITLE}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<script type="text/javascript">
+	<!--
+	function resize()
+	{
+		return;
+		if (parent.is_ie)
+		{
+			h = document.body.scrollHeight;
+			Lvisible = document.body.scrollWidth;
+		}
+		else
+		{
+			h = document.height;
+			Lvisible = document.width;
+		}
+		parent.document.getElementById('map_textarea_{MAP_NAME}_box_{COLOR_TYPE}').style.height = h;
+	}
+	//-->
+	</script>
+</head>
+<body onload="resize()">
+
+<table style="width: 128px; height: 81px; border: 1px #000000 solid; background-color: #EEEEEE" cellpadding="0" cellspacing="1">
+	<block name="color">
+		<if content="!( $color.ITERATOR % 8 )"><if content="$color.ITERATOR > 8"></tr></if><tr></if>
+		<td title="{color.HEXA}" width="16" height="9" style="background-color: #{color.HEXA}" onmouseover="this.style.cursor='pointer'" onclick="parent.insert_text('map_textarea_{MAP_NAME}', 'fct_close_box_{COLOR_TYPE}', '[{COLOR_TYPE}=#{color.HEXA}]', '', '[/{COLOR_TYPE}]', '{COLOR_TYPE}', '#{color.HEXA}')"></td>
+	</block>
+	</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{CONTENT}</div>
+		</div>
+	</div>
+</switch>
+
+<call name="javascript" arg1="wysiwyg.js" />
+<script type="text/javascript">
+<!--
+var lg_max_chars = '{LG_USER_SIG_SIZE_CHARS}';
+var lg_max_line = '{LG_USER_SIG_SIZE_LINE}';
+var max_chars = {MAX_CHARS};
+var max_line = {MAX_LINE};
+//-->
+</script>
+
+<form action="{U_ACTION}" method="post" onsubmit="send_wysiwyg('map_textarea_sig')">
+<switch name="preview">
+	<div class="round">
+		<h1>{LG_PREVIEW}</h1>
+		<div class="content">
+			<if content="$CFG_SIG_MAX_HEIGHT"><div style="max-height: {CFG_SIG_MAX_HEIGHT}px; overflow: hidden">{PREVIEW_SIG}</div><else>{PREVIEW_SIG}</if>
+		</div>
+	</div>
+</switch>
+
+<div class="round">
+	<h1>{LG_USER_MODULE_SIG}</h1>
+	<div class="content">
+		<block name="map">
+			<div>
+				<input type="submit" value=" " <if content="$map.USE_WYSIWYG">class="wysiwyg_on" name="set_wysiwyg_off"<else>class="wysiwyg_off" name="set_wysiwyg_on"</if> title="{LG_POST_WYSIWYG}" />
+				<include name="handler_fsbcode.html" />
+			</div>
+			<div>
+				<span style="font-weight: bold" id="show_count_char"></span><br />
+				<if content="$map.USE_WYSIWYG">
+					<iframe id="map_textarea_{map.NAME}" class="wysiwyg_frame" src="tpl/{USER_TPL}/files/iframe_wysiwyg.html" style="height: 200px; width: 99%"></iframe>
+					<textarea name="{map.NAME}" id="map_textarea_{map.NAME}_wysiwyg" style="display: none">{USER_SIG}</textarea>
+				<else>
+					<textarea id="map_textarea_{map.NAME}" name="sig" rows="10" style="height: 200px; width: 99%" onkeyup="count_char('map_textarea_sig', 'show_count_char')" onclick="close_fsbcode_box('')">{USER_SIG}</textarea>
+				</if>
+				<script type="text/javascript">
+				<!--
+				count_char('map_textarea_sig', 'show_count_char');
+				//-->
+				</script>
+			</div>
+		</block>
+
+		<div>
+			<input type="submit" name="preview" value="{LG_PREVIEW}" class="submit" /> &nbsp;
+			<input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" />
+		</div>
+	</div>
+</div>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

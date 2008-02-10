@@ -1,0 +1,214 @@
+<include name="header.html">
+
+<call name="javascript" arg1="highlight.js" />
+<call name="javascript" arg1="ajax.js" />
+<script type="text/javascript">
+<!--
+topic = new Array;
+topic['img_textarea_less'] = '{IMG_TEXTAREA_LESS}';
+topic['img_textarea_more'] = '{IMG_TEXTAREA_MORE}';
+topic['lg_reset'] = '{LG_RESET}';
+topic['lg_submit'] = '{LG_SUBMIT}';
+topic['lg_topic_alert_post'] = '{LG_TOPIC_ALERT_POST}';
+topic['lg_topic_alert_title'] = '{LG_TOPIC_ALERT_TITLE}';
+topic['lg_topic_advanced_edit'] = '{LG_TOPIC_ADVANCED_EDIT}';
+topic['url_submit_ajax'] = '<?php echo sid(ROOT . 'index.' . PHPEXT . '?p=post&mode=edit') ?>';
+topic['cfg_post_min_length'] = {CFG_POST_MIN_LENGTH};
+InitBulle();
+-->
+</script>
+<call name="javascript" arg1="topic.js" />
+
+<switch name="forum_rules">
+	<div class="forumrules">
+		<h1>{LG_FORUM_MAIN_RULES}</h1>
+		<div>{FORUM_RULES}</div>
+	</div>
+</switch>
+
+<if content="$WARN_INFO">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{WARN_INFO}</div>
+		</div>
+	</div>
+</if>
+
+<div id="bulle" style="position:absolute; visibility:hidden"></div>
+<table width="100%">
+	<tr>
+		<td valign="bottom">
+			<switch name="forum_locked">
+				<if content="$CAN_POST_NEW"><a href="{U_TOPIC_NEW}"><img src="{IMG_LOCK}" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a><else><img src="{IMG_LOCK}" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" /></if>
+			<else>
+				<a href="{U_TOPIC_NEW}"><img src="<if content="$CAN_POST_NEW">{IMG_NEW_TOPIC}<else>{IMG_NEW_TOPIC_OFF}</if>" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a>
+			</switch>
+			<switch name="topic_locked">
+				<switch name="can_reply"><a href="{U_TOPIC_REPLY}"><img src="{IMG_LOCK}" alt="{LG_TOPIC_REPLY}" title="{LG_TOPIC_REPLY}" /></a><else><img src="{IMG_LOCK}" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" /></switch>
+			<else>
+				<a href="{U_TOPIC_REPLY}"><img src="<switch name="can_reply">{IMG_ANSWER}<else>{IMG_ANSWER_OFF}</if>" alt="{LG_TOPIC_REPLY}" title="{LG_TOPIC_REPLY}" /></a>
+			</switch>
+		</td>
+		<td style="line-height: 25px; text-align: right;">
+			<switch name="ac_mods_print_topic"><a href="{U_TOPIC_PRINT}"><img src="{IMG_ICON_PRINT}" alt="{LG_PRINT}" title="{LG_PRINT}" /></a></switch>
+			<switch name="is_logged">
+				<switch name="ac_mods_topic_notification">
+					<a href="{U_TOPIC_NOTIFICATION}" class="markread"><if content="$NOTIFY == 'on'"><img src="{IMG_ICON_ON}" alt="{LG_TOPIC_NOTIFY_ON}" title="{LG_TOPIC_NOTIFY_ON}" /><else><img src="{IMG_ICON_OFF}" alt="{LG_TOPIC_NOTIFY_OFF}" title="{LG_TOPIC_NOTIFY_OFF}" /></if></a>
+				</switch>
+			</switch>
+			<switch name="ac_mods_rss"><a href="{U_RSS}"><img src="{IMG_ICON_RSS}" alt="{LG_RSS}" title="{LG_RSS}" /></a></switch>
+			<switch name="topic_pagination"><br />{PAGINATION}</switch>
+		</td>
+	</tr>
+</table>
+
+<div class="round">
+	<h1>{TOPIC_NAME}</h1>
+	<if content="$TOPIC_DESCRIPTION OR tpl_switch_exists('poll')">
+		<if content="$TOPIC_DESCRIPTION"><div id="topic_description">{TOPIC_DESCRIPTION}</div></if>
+		<switch name="poll"><include name="poll.html" /></switch>
+	</if>
+</div>
+
+<div class="round">
+	<block name="post">
+	<table class="post" id="p{post.ID}">
+		<tr>
+			<td class="userinfo">
+				<div class="userinfo_box">
+				<if content="$post.IS_VISITOR">
+					<span class="nickname">{post.NICKNAME}</span>
+					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR"><br /><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" /></if>
+				<else>
+					<div class="username">
+						<switch name="ac_mods_update_last_visit"><switch name="ac_mods_online_in_topics">
+							<img <if content="$post.IS_ONLINE">src="{IMG_ONLINE}" alt="{LG_ONLINE}" title="{LG_ONLINE}"<else>src="{IMG_OFFLINE}" alt="{LG_OFFLINE}" title="{LG_OFFLINE}"</if> />
+						</switch></switch>
+						{post.NICKNAME} <switch name="ac_mods_user_sexe">{post.SEXE}</switch>
+					</div>
+
+					<if content="$post.HAVE_RANK">
+						<div class="rank">
+							<if content="$post.RANK_NAME"><span {post.RANK_STYLE}>{post.RANK_NAME}</span></if>
+							<if content="$post.RANK_IMG"><br /><img src="{post.RANK_IMG}" alt="{post.RANK_NAME}" title="{post.RANK_NAME}" /></if>
+						</div>
+					</if>
+					
+					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR">
+						<!--<div style="text-align: center">-->
+						<div style="overflow: hidden; width: {AVATAR_WIDTH}px; max-height: {AVATAR_HEIGHT}px; margin: 0 auto; text-align: center">
+							<a href="{post.U_PROFILE}"><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" /></a>
+						</div>
+					</if>
+
+					<ul class="list">
+						<switch name="ac_mods_user_birthday">
+							<if content="$post.AGE"><li><b>{LG_TOPIC_AGE}</b> : {post.AGE}</li></if>
+						</switch>
+						<li><b>{LG_TOPIC_POSTS_TOTAL}</b> : <a href="{post.U_POSTS}">{post.POSTS}</a></li>
+						<li><b>{LG_TOPIC_USER_JOINED}</b> : {post.JOINED}</li>
+						<switch name="ac_mods_profile_fields_topic">
+							<block name="post.pf">
+								<li><b>{post.pf.LANG} :</b> {post.pf.VALUE}</li>
+							</block>
+						</switch>
+						<switch name="warn_user"><if content="$post.CAN_WARN">
+							<li><b>{LG_TOPIC_WARNS} :</b>
+								<div class="warn">
+									<a href="{post.U_WARN_LESS}"><img src="{IMG_WARN_DROP}" alt="{LG_TOPIC_WARN_LESS}" title="{LG_TOPIC_WARN_LESS}" /></a>
+									<block name="post.warn"><a href="{post.U_WARN}"><img src="{post.warn.IMG}" /></a></block>
+									<a href="{post.U_WARN_MORE}" title="{LG_TOPIC_WARN_MORE}"><img src="{IMG_WARN_ADD}" alt="{LG_TOPIC_WARN_MORE}" title="{LG_TOPIC_WARN_MORE}" /></a>
+								</div>
+							</li>
+						</if></switch>
+					</ul>
+				</if>
+				</div>
+			</td>
+			<td class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (Nav_Safari) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
+				<div class="postheader">
+					<span>
+                    	<if content="$post.HAVE_EDIT">{post.EDIT_DATA} &nbsp;</if>
+						<switch name="ac_mods_abuse">
+							<switch name="is_logged"><a href="{post.U_ABUSE}"><img src="{IMG_ABUSE}" alt="{LG_TOPIC_ABUSE}" title="{LG_TOPIC_ABUSE}" /></a></switch>
+						</switch>
+					
+						<if content="$post.CAN_EDIT">
+							<a href="{post.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+						</if>
+						<if content="$post.CAN_DELETE"><a href="{post.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" /></a></if>
+
+						<switch name="can_reply">
+							<if content="$USE_AJAX AND $post.CAN_QUICK_QUOTE">
+								<a href="{post.U_QUOTE}" onclick="if (Nav_Safari) return true; quote_post({post.ID}, 'quick_reply_form', 'quick_reply'); document.getElementById('quote_id_{post.ID}').src = '{IMG_QUOTE_POST_SELECTED}'; return false">
+							<else>
+								<a href="{post.U_QUOTE}">
+							</if>
+							<img src="{IMG_QUOTE_POST}" alt="{LG_TOPIC_QUOTE}" title="{LG_TOPIC_QUOTE}" id="quote_id_{post.ID}" /></a>
+						<else>
+							&nbsp;
+						</switch>
+					</span>
+
+					<a href="{post.U_LAST}"><img src="<if content="$post.IS_READ">{IMG_LAST}<else>{IMG_LAST_NEW}</if>" alt="{LG_TOPIC_THIS_POST}" title="{LG_TOPIC_THIS_POST}" /></a> {post.DATE}
+					<if content="$post.IP">- {LG_IP} : <a href="{post.U_IP}">{post.IP}</a></if>
+				</div>
+
+				<if content="$SHOW_LAST_POST AND $post.FIRST_ROW"><p><b><u>{LG_TOPIC_SHOW_LAST_POST}</u></b></p></if>
+				<div class="message" id="post_content_{post.ITERATOR}">{post.CONTENT}</div>
+				<if content="$post.HAVE_SIG">
+					<br /><hr class="post_delimiter" align="left" />
+					<if content="$CFG_SIG_MAX_HEIGHT"><div style="max-height: {CFG_SIG_MAX_HEIGHT}px; overflow: hidden">{post.SIG}</div><else>{post.SIG}</if>
+				</if>
+			</td>
+		</tr>
+	</table>
+	</block>
+</div>
+
+<table width="100%" style="margin-top: 5px">
+	<tr>
+		<td valign="top">
+			<switch name="topic_locked">
+				<switch name="can_reply"><a href="{U_TOPIC_REPLY}"><img src="{IMG_LOCK}" alt="{LG_TOPIC_REPLY}" title="{LG_TOPIC_REPLY}" /></a><else><img src="{IMG_LOCK}" alt="{LG_FORUM_LOCKED}" title="{LG_FORUM_LOCKED}" /></switch>
+			<else>
+				<a href="{U_TOPIC_REPLY}"><img src="<switch name="can_reply">{IMG_ANSWER}<else>{IMG_ANSWER_OFF}</if>" alt="{LG_TOPIC_REPLY}" title="{LG_TOPIC_REPLY}" /></a>
+			</switch>
+			<switch name="can_use_quick_reply">
+				<a href="javascript:show_quick_reply()"><img src="{IMG_QUICK_REPLY}" alt="{LG_TOPIC_QUICK_REPLY}" title="{LG_TOPIC_QUICK_REPLY}" /></a>
+			</switch>
+		</td>
+		<td align="right" style="padding: 5px;"><switch name="topic_pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+<br />
+
+<switch name="can_use_quick_reply">
+	<include name="quick_reply.html" />
+</switch>
+
+<switch name="modo_topic">
+	<div>
+		<a href="{U_DELETE_TOPIC}"><img src="{IMG_DELETE_TOPIC}" alt="{LG_TOPIC_MODO_DELETE}" title="{LG_TOPIC_MODO_DELETE}" /></a>
+		<a href="{U_MOVE_TOPIC}"><img src="{IMG_MOVE_TOPIC}" alt="{LG_TOPIC_MODO_MOVE}" title="{LG_TOPIC_MODO_MOVE}" /></a>
+		<if content="$IS_LOCKED">
+			<a href="{U_UNLOCK_TOPIC}"><img src="{IMG_UNLOCK_TOPIC}" alt="{LG_TOPIC_MODO_UNLOCK}" title="{LG_TOPIC_MODO_UNLOCK}" /></a>
+		<else>
+			<a href="{U_LOCK_TOPIC}"><img src="{IMG_LOCK_TOPIC}" alt="{LG_TOPIC_MODO_LOCK}" title="{LG_TOPIC_MODO_LOCK}" /></a>
+		</if>
+		<a href="{U_SPLIT_TOPIC}"><img src="{IMG_SPLIT_TOPIC}" alt="{LG_TOPIC_MODO_SPLIT}" title="{LG_TOPIC_MODO_SPLIT}" /></a>
+		<a href="{U_MERGE_TOPIC}"><img src="{IMG_MERGE_TOPIC}" alt="{LG_TOPIC_MODO_MERGE}" title="{LG_TOPIC_MODO_MERGE}" /></a>
+	</div>
+</switch>
+<switch name="list_procedure"> &nbsp;
+	<form action="{U_PROCEDURE_ACTION}" method="post">
+		{LIST_PROCEDURE} <input type="submit" value="{LG_GO}" class="submit" />
+	</form>
+</switch>
+
+<div align="right">
+	<form action="" method="post">{JUMPBOX} <input type="submit" name="noscript_list_forums" value="{LG_GO}" class="submit" /></form>
+</div>
+
+<include name="footer.html">

@@ -1,0 +1,46 @@
+<!--
+	Légende :
+		* pour les balises
+		- pour les attributs
+		(...) contient une chaîne de caractère
+		(x|y|z) prend soit la valeur x, soit la valeur y, soit la valeur z
+		<...> contient des balises enfant
+		#...# cette balise peut se répéter X fois
+		(!) signifie que cette option n'est actuellement pas implémentée au système
+-->
+
+<!--
+	@title=Format des MODS
+	@description=Explication des différentes balises composant les fichiers install.xml servant à l'installation automatique de modules
+-->
+
+* <mod> <...> : Conteneur des informations du MOD
+	* <header> <...> : Informations sur le MOD
+		* <name> (...) : Nom du MOD
+		* <version> (...) : Version du MOD
+		* <description> (...) : Description du MOD
+		* <autor> <...> #...# : Informations sur l'auteur
+			* <name> (...) : Nom de l'auteur
+			* <email> (...) : Email de l'auteur
+			* <website> (...) : Site web de l'auteur
+		* <copyright> (...) (!) : Copyright du MOD
+		* <history> <...> (!) : Historique du MOD
+			* <entry> <...> #...# (!) : Un évènement de l'historique
+				* <date> (...) (!) : Doit être au format jj/mm/aaaa
+				* <autor> (...) (!) : Auteur de l'évènement
+				* <text> (...) (!) : Description de l'évènement
+		* <note> (...) : Permet d'ajouter des informations textuelles concernant le MOD ou son installation
+		* <manualQueries> (...) : Requêtes suplémentaires à exécuter en cas d'installation manuelle
+		* <isUpdate /> : Si cette balise est présente, le MOD sera considéré comme une mise à jour, et par conséquent n'apparaitra pas dans la liste des MODS installés
+			- parent (...) : Nom du MOD parent, une mise à jour étant considérée comme une évolution d'un MOD, on entre ici le nom de ce MOD
+	* <instruction> <...> : Liste des instructions du MOD
+		* <line> <...> #...# : Une instruction du MOD
+			* <name> (open|find|after|before|replace|in line add|delete|sql|copy|php|end) : Type d'instruction
+			* <code> (...) : Pour les instructions find, after, before, replace, in line add et php, cette commande contiendra un code source
+			* <file> (...) : Pour l'instruction open, cette commande contient le nom du fichier à ouvrir
+			* <file> <...> #...# : Pour l'instruction copy ou php, cette commande contient la liste des fichiers à copier
+				* <filename> (...) : Nom du fichier à copier
+				* <duplicat> (...) : Copie du fichier dans les autres répertoires du dossier (langues, thèmes, etc..)
+				* <directory /> : S'il s'agit d'un répertoire à copier (avec son contenu)
+			* <query> (...) #...# : Contient une requête SQL à exécuter
+			* <duplicat> (...) : Pour l'instruction open, cette commande signalera qu'il faut aussi modifier les fichiers des autres répertoires du dossier (langues, thèmes, etc..)

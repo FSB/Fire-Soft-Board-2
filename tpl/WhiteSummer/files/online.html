@@ -1,0 +1,88 @@
+<switch name="have_auth_stats_box">
+	<div class="round">
+		<h1><img src="{IMG_OPEN}" alt="{LG_SHOW_HIDE_CAT}" title="{LG_SHOW_HIDE_CAT}" id="img_stat" onmouseover="this.style.cursor='pointer'" onclick="block_cookie_check('block_stat', this, '{IMG_OPEN}', '{IMG_CLOSE}', true)" /> {LG_STATS}</h1>
+		<div id="block_stat">
+			<table class="t" cellspacing="0">
+				<tr>
+					<td class="icons"><img src="{IMG_STATS}" alt="{LG_STATS}" title="{LG_STATS}" /></td>
+					<td>
+						{FORUM_STATS}<br />
+						{LG_STATS_LAST_USER} : {LAST_USER}
+						<switch name="ac_mods_online_show_current"><br />{MAX_VISITORS}</switch>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+		block_cookie_read('block_stat', 'img_stat', '{IMG_CLOSE}', true);
+	//-->
+	</script>
+</switch>
+
+<switch name="have_auth_stats_box & (ac_mods_online_show_current | ac_mods_online_show_today | ac_mods_online_show_birthday | show_calendar_stats)">
+	<div class="round">
+		<h1><img src="{IMG_OPEN}" alt="{LG_SHOW_HIDE_CAT}" title="{LG_SHOW_HIDE_CAT}" id="img_wio" onmouseover="this.style.cursor='pointer'" onclick="block_cookie_check('block_wio', this, '{IMG_OPEN}', '{IMG_CLOSE}', true)" /> {LG_WIO}</h1>
+		<div id="block_wio">
+		<table class="t" cellspacing="0">
+			<tr>
+				<td class="icons"><img src="{IMG_BLOCK_WIO}" alt="{LG_STATS}" title="{LG_STATS}" /></td>
+				<td>
+					<switch name="ac_mods_online_show_current">
+						<p>
+							{CURRENT_USER_ONLINE}<br />
+							{LG_ONLINE_LEGEND} :
+							<block name="online_legend">
+								<a href="{online_legend.URL}" <if content="$online_legend.CLASS">{online_legend.CLASS}<else>class="user"</if>>{online_legend.NAME}</a><if content="!$online_legend.LAST_ROW">, </if>
+							</block>
+							<block name="online">
+								<if content="$online.FIRST_ROW"><br /><b>&#187;</b></if>
+								<if content="$online.IS_HIDDEN"><i></if>
+								{online.NICKNAME}<if content="!$online.LAST_ROW">,</if>
+								<if content="$online.IS_HIDDEN"></i></if>
+							</block>
+						</p>
+					</switch>
+					<switch name="ac_mods_online_show_today">
+						<p>
+							{TODAY_USER_ONLINE}
+							<block name="online_today">
+								<if content="$online_today.FIRST_ROW"><br /><b>&#187;</b></if>
+								<if content="$online_today.IS_HIDDEN"><i></if>
+								{online_today.NICKNAME}<if content="!$online_today.LAST_ROW">,</if>
+								<if content="$online_today.IS_HIDDEN"></i></if>
+							</block>
+						</p>
+					</switch>
+					<switch name="ac_mods_online_show_birthday">
+						<p>
+							{USERS_BIRTHDAYS}
+							<block name="online_birthday">
+								<if content="$online_birthday.FIRST_ROW"><br /><b>&#187;</b></if>
+								{online_birthday.NICKNAME} ({online_birthday.AGE})<if content="!$online_birthday.LAST_ROW">,</if>
+							</block>
+						</p>
+					</switch>
+					<switch name="show_calendar_stats">
+						<p>
+							{CALENDAR_STATS}
+							<block name="calendar_stats">
+								<if content="$calendar_stats.FIRST_ROW"><br /><b>&#187;</b></if>
+								<b><a href="{calendar_stats.URL}">{calendar_stats.NAME}</a></b> ({calendar_stats.DATE})<if content="!$calendar_stats.LAST_ROW">,</if>
+							</block>
+						</p>
+					</switch>
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+	block_cookie_read('block_wio', 'img_wio', '{IMG_CLOSE}', true);
+	//-->
+	</script>
+</switch>

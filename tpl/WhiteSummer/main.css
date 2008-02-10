@@ -1,0 +1,1108 @@
+/*
+** +---------------------------------------------------+
+** | Name :		~/tpl/WhiteSummer/main.css
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** |
+** | Vous pouvez modifier, réutiliser et redistribuer
+** | ce fichier à condition de laisser cet entète.
+** +---------------------------------------------------+
+*/
+
+@import "calendar.css";
+@import "forms.css";
+@import "fsbcode.css";
+@import "mooRainbow.css";
+
+/* Remise à zéro des principales balises */
+html, body, table, tr, th, td, blockquote, div, span, img, li, form, dl, dd, dt, pre, h1, h2, h3, h4, h5, h6
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+/* Remise à zéro des images */
+img
+{
+	border: none;
+}
+
+h3
+{
+	font-weight: bold;
+	font-size:1.3em;
+}
+
+h4
+{
+	font-weight: normal;
+	font-size:1em;
+}
+
+hr
+{
+	border: none;
+	border-top: 1px solid #999999;
+	height: 1px;
+}
+
+/* Remise à zéro des tables */
+table
+{
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+html
+{
+	width: 100%;
+	height: 100%;
+}
+
+/* Corps de la page */
+body
+{
+	margin: 5px;
+	background-color: #F9F9F9;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/* Corps entre le header et le footer */
+.main
+{
+	margin: 6px;
+}
+
+/* Liens sur la page */
+a
+{
+	color: #FF3B00;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/* Effet de souris sur les liens */
+a:hover
+{
+	text-decoration: underline;
+}
+
+/* Boite contenant le header */
+#header
+{
+	background-image: url(img/layout/top_background.png);
+	height: 140px;
+}
+
+/* Bordure gauche du header */
+#header .left
+{
+	background-image: url(img/layout/top_left.png);
+	height: 140px;
+	width: 15px;
+	float: left;
+}
+
+/* Bordure droite du header */
+#header .right
+{
+	background-image: url(img/layout/top_right.png);
+	height: 140px;
+	width: 15px;
+	float: right;
+}
+
+/* Haut du header */
+#header .top
+{
+	padding-top: 12px;
+	height: 16px;
+}
+
+/* Texte de bienvenue */
+#header .top #welcome_msg
+{
+	float: left;
+}
+
+/* Menu en haut à droite du header */
+#header .top #right_menu
+{
+	text-align: right;
+}
+
+/* Titre du forum */
+#header h1
+{
+	font-size: 2.5em;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 15px;
+}
+
+/* Description du forum */
+#header h2
+{
+	font-size: 1.2em;
+	text-align: center;
+	font-weight: normal;
+}
+
+/* Zone du logo */
+#header_left
+{
+	float: left;
+	width: 300px;
+}
+
+/* Zone à droite du header contenant la recherche rapide le profil et la deconnexion */
+#header_right
+{
+	float: right;
+	width: 300px;
+	height: 105px;
+	text-align: right;
+}
+
+/* Style des liens profil et deconnexion */
+#header_right a
+{
+	color: #000000;
+}
+
+/* Recherche rapide du header */
+#header_quicksearch
+{
+	margin-top: 64px;
+}
+
+/* Champ de recherche rapide */
+#search_text
+{
+	width: 140px;
+	background: #FFFFFF url(img/search.gif) no-repeat;
+	padding: 2px 2px 2px 18px;
+}
+
+/* Options des MP */
+#mp_options img
+{
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+/* Recherche dans les MP */
+#mp_options form
+{
+	display: inline;
+}
+
+/* Quota de MP */
+#mp_options div
+{
+	float: right;
+}
+
+/* Menu sous le header */
+#menu
+{
+	text-align:center;
+	font-size: 1.2em;
+}
+
+/* Lien des menus */
+#menu a
+{
+	color: #000000;
+}
+
+/* Barre de navigation */
+.nav
+{
+	background: url(img/layout/nav_background.png);
+	height: 35px;
+	line-height: 35px;
+	vertical-align: middle;
+}
+
+/* Bordure gauche de la barre de navigation */
+.nav .left
+{
+	background-image: url(img/layout/nav_left.png);
+	height: 35px;
+	width: 15px;
+	float: left;
+
+}
+
+/* Bordure droite de la barre de navigation */
+.nav .right
+{
+	background-image: url(img/layout/nav_right.png);
+	height: 35px;
+	width:	15px;
+	float:	right;
+}
+
+/* Image de navigation */
+.nav img
+{
+	vertical-align: middle;
+}
+
+/* Copyright au pied du forum */
+#copyright
+{
+	text-align: right;
+	margin-right: 6px;
+	margin-bottom: 8px;
+}
+
+/* Boite principale */
+.round
+{
+	margin: 2px 0px 6px 0px;
+	padding: 6px;
+	padding-bottom: 0px;
+	border: 1px solid #999999;
+	/*background-color: #E1E1E1;*/
+	background-color: #dde5ee;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+}
+
+/* Titre des boites */
+.round h1
+{
+	font-size: 1.3em;
+	line-height: 18px;
+	vertical-align: middle;
+	margin-bottom: 6px;
+}
+
+/* Titres en lien sur les boites */
+.round h1 a
+{
+	color: #333333;
+}
+
+/* Images dans les titres des boites */
+.round h1 img
+{
+	vertical-align: middle;
+	margin: 0;
+	margin-right: 4px;
+}
+
+/* Règles du forum lors de l'inscription */
+.round .rules
+{
+	border: 1px solid  #999999;
+	background:#CCCCCC;
+	padding:4px;
+	margin-bottom: 4px;
+	height: 200px;
+	overflow: auto;
+	font-family: Courier, 'Courier New', sans-serif;
+}
+
+/* Petite boite d'information */
+.info
+{
+	border: #CCCCCC 1px solid;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	margin-bottom: 6px;
+	background-color: #F3F3F3;
+}
+
+/* Titre de la boite d'information */
+.info h1
+{
+	padding: 2px;
+	background: #CCCCCC;
+	font-size: 1.1em;
+}
+
+/* Contenu pour les informations */
+.info div
+{
+	padding: 5px;
+	margin: 0px;
+}
+
+/* Second type de contenu pour les informations */
+.info blockquote
+{
+	font-weight: bold;
+	font-size: 12px;
+	text-align: center;
+	padding: 5px;
+}
+
+/* Règles du forum */
+.forumrules
+{
+	border: #999999 1px solid;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	margin-bottom: 8px;
+	background-color: #F8DBB1;
+}
+
+/* Titre des règles du forum */
+.forumrules h1
+{
+	padding: 3px;
+	background: #e7c491;
+	font-size: 1.1em;
+	-moz-border-radius: 7px 7px 0px 0px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+}
+
+/* Contenu des règles du forum */
+.forumrules div
+{
+	padding: 10px 20px;
+	margin: 0px;
+}
+
+/* Tableaux principaux */
+.t
+{
+	width: 100%;
+	border: 1px solid #999999;
+	border-width: 1px 0px 0px 1px;
+	background-color: #F8F8F8;
+	margin-bottom: 6px;
+}
+
+/* Cellules */
+.t td
+{
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	padding: 3px;
+}
+
+/* Cellule contenant une icone de forum */
+.t td.icons
+{
+	width: 40px;
+	text-align: center;
+	border-right: none;
+}
+
+/* Entête des tableaux */
+.t th
+{
+	/*background-color: #BBBBBB;*/
+	background-color: #cdcdcd;
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	font-size: 1.1em;
+	padding: 2px;
+	margin-top: 4px;
+}
+
+/* Effet de souris sur les lignes */
+.t tr:hover
+{
+	background-color: #ECF1F7;
+}
+
+/* Images dans les tableaux */
+.t img
+{
+	vertical-align: middle;
+}
+
+
+/* Tableau de formulaire */
+.form
+{
+	width: 100%;
+	border: 1px solid #999999;
+	background-color: #F8F8F8;
+	margin-bottom: 6px;
+}
+
+/* Cellules du formulaire */
+.form td, .form th
+{
+	padding: 4px;
+	border-bottom: #EEEEEE 1px dotted;
+}
+
+/* Cellule à gauche du formulaire */
+.form th
+{
+	width: 220px;
+	text-align: right;
+	border-right: 1px dotted #999999;
+	vertical-align: top;
+	font-weight: bold;
+	padding-top: 7px;
+}
+
+/* Ligne du formulaire */
+.form tr
+{
+	margin-bottom: 6px;
+}
+
+/* Effet de souris sur la ligne du formulaire */
+.form tr:hover
+{
+	background-color: #F1F1F1;
+}
+
+/* Pied des formulaires */
+.form tfoot td
+{
+	text-align: center;
+}
+
+/* Formulaire large */
+.large th
+{
+	width: 300px;
+}
+
+/* Affichage dans le profil */
+.userprofile th
+{
+	width: 210px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+/* Contenu d'une boite */
+.content
+{
+	border: 1px solid #999999;
+	background-color: #F8F8F8;
+	margin-bottom: 6px;
+	padding: 3px;
+}
+
+/* Zone à onglets */
+#tabs
+{
+	width: 100%;
+}
+
+/* Titre du menu d'onglets */
+#tabs .title
+{
+	background: #DDDDDD;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 6px;
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+/* Liste des onglets */
+#tabs .list
+{
+	width: 200px;
+	padding: 4px;
+	vertical-align: top;
+}
+
+/* Lien sur un onglet */
+#tabs .list a
+{
+	white-space: nowrap;
+	display: block;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+	margin-bottom: 2px;
+	margin-left: 20px;
+	color: #000000;
+}
+
+/* Effet de souris en passant sur le lien d'un onglet */
+#tabs .list a:hover
+{
+	background: #CCCCCC;
+	text-decoration: none;
+}
+
+/* Onglet sellectionné */
+#tabs .list a#selected
+{
+	background: #BBBBBB;
+	color: #FFFFFF;
+	padding-left: 15px;
+}
+
+/* Cellule à droite des onglets */
+#tabs .tabs_right
+{
+	padding: 3px;
+}
+
+/* Tableau affichant un message d'un sujet */
+.post
+{
+	margin-bottom: 8px;
+	width: 100%;
+}
+
+/* Cellules pour l'affichage des sujets */
+.post td
+{
+	vertical-align:top;
+	margin-left:10px;
+}
+
+/* Cellule contenant les informations des membres dans les sujets */
+.post .userinfo
+{
+	width: 200px;
+	vertical-align: top;
+}
+
+/* Boite affichant les informations dans les sujets */
+.post .userinfo .userinfo_box
+{
+	margin-right: 8px;
+	padding: 4px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	border: none;
+	background:#F1F1F1;
+	clear: both;
+}
+
+/* Information sur le pseudonyme du membre */
+.post .userinfo .username
+{
+	height: 20px;
+	font-size: 1.1em;
+	border-bottom: 1px solid #CCCCCC;
+	vertical-align: middle;
+	margin-bottom: 2px;
+}
+
+/* Image en ligne à côté du pseudonyme */
+.post .userinfo .username img
+{
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+/* Affichage du rang */
+.post .userinfo .rank
+{
+	text-align: center;
+	color: #999999;
+	margin-bottom: 2px;
+}
+
+/* Information sur le profil */
+.post .userinfo ul.list
+{
+	margin: 0px;
+	padding: 3px;
+	padding-top: 5px;
+}
+
+.post .userinfo ul.list li
+{
+	list-style: none;
+}
+
+/* Avertissements du membre */
+.warn
+{
+	text-align: center;
+}
+
+.warn img
+{
+	vertical-align: middle;
+}
+
+/* Cellule affichant les messages */
+.post .postcontent
+{
+	border: none;
+	background: #FFFFFF;
+	padding: 3px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+}
+
+/* Entête du message */
+.post .postcontent .postheader
+{
+	line-height: 19px;
+	vertical-align: middle;
+	padding: 0px 4px;
+	margin-bottom: 3px;
+	height: 20px;
+	background: #CCE4FF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/* Images dans l'entête du message */
+.post .postcontent .postheader img
+{
+	vertical-align: middle;
+}
+
+/* Bouttons d'action sur le message */
+.post .postcontent .postheader span
+{
+	float: right;
+	color: #777777;
+}
+
+/* Pied du message */
+.post .postfooter
+{
+	text-align: right;
+	font-weight: bold;
+	font-size: 9px;
+	padding-top: 3px;
+}
+
+/* Contenu du message */
+.post .message
+{
+	padding: 5px;
+	overflow: auto;
+	clear: both;
+}
+
+/* Sondage */
+.poll
+{
+	width: 100%;
+	border: 1px solid #999999;
+	background-color: #F8F8F8;
+	margin-bottom: 6px;
+	padding: 5px;
+}
+
+/* Cellules du sondage */
+.poll td
+{
+	padding: 3px;
+}
+
+/* Images du sondage */
+.poll td img
+{
+	vertical-align: middle;
+}
+
+/* Arbre pour le moteur de recherche */
+#forum_tree
+{
+	overflow: auto;
+	max-height: 350px;
+	width: 350px;
+	border: 1px solid #999999;
+	background-color: #fafafa;
+}
+
+/* Texte de l'arbre */
+#forum_tree label
+{
+	vertical-align: middle;
+	display: block;
+	padding: 2px;
+}
+
+/* Effet de souris sur l'arbre */
+#forum_tree label:hover
+{
+	background-color: #f0f0f0;
+	cursor: pointer;
+}
+
+/* Sous forum sur l'index */
+.subforums span
+{
+	color: #9A9A9A;
+	font-weight: bold;
+	line-height: 17px;
+}
+
+/* Image du sous forum */
+.subforums img
+{
+	vertical-align: middle;
+	margin-right: 2px;
+	margin-left: 3px;
+}
+
+/* Liens des sous forums sur l'index */
+.subforums a
+{
+	font-weight: normal;
+}
+
+/* Liste des modérateurs sous un forum */
+.moderators span
+{
+	color: #9A9A9A;
+	line-height: 17px;
+}
+
+.dhtml_popup
+{
+	border: 1px solid #999999;
+	background: #DDDDDD;
+	position: absolute;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	padding: 4px;
+}
+
+.dhtml_popup .dhtml_popup_title
+{
+	padding: 2px 6px;
+	margin-bottom: 2px;
+	font-weight: bold;
+}
+
+/* Liste des membres avancée */
+.advanced_userlist
+{
+	width: 100%;
+	empty-cells: show;
+	border-spacing: 3px;
+}
+
+/* Header de la liste avancée */
+.advanced_userlist th, .advanced_userlist .title
+{
+	background: #DDDDDD;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 6px;
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+/* Titre de la liste avancée */
+.advanced_userlist .title
+{
+	background: #CCCCCC;
+}
+
+/* Cellules de la liste avancée */
+.advanced_userlist td
+{
+	width: 33%;
+}
+
+/* Cellule d'information sur un membre */
+.advanced_userlist td.userinfo
+{
+	border: 1px solid #999999;
+	background-color: #F8F8F8;
+	vertical-align: top;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+}
+
+/* Effet de souris sur la cellule */
+.advanced_userlist td.userinfo:hover
+{
+	background-color: #f0f5fc;
+}
+
+/* Avatar du membre dans la liste avancée */
+.advanced_userlist td.userinfo .avatar
+{
+	padding: 5px;
+	margin-right: 2px;
+	float: left;
+	width: 60px;
+}
+
+/* Profil du membre dans la liste */
+.advanced_userlist td.userinfo .profile
+{
+	float: left;
+}
+
+/* Profil du membre dans la liste */
+.advanced_userlist td.userinfo .profile p
+{
+	margin-left: 7px;
+	margin-top: 2px;
+	font-size: 11px;
+}
+
+/* Image en ligne dans le profil du membre */
+.advanced_userlist td.userinfo .online
+{
+	float: right;
+	margin-right: 3px;
+	margin-top: 3px;
+}
+
+/* Description */
+.desc
+{
+	border: 1px solid #999999;
+	background: #CCCCCC;
+	padding: 4px;
+	margin-bottom: 6px;
+}
+
+/* Affichage d'une erreur */
+.error, .info div .error, .t .error
+{
+	text-align: center;
+	border: 1px solid #AAAAAA;
+	background-color: #F8DBB1;
+	padding: 6px;
+	font-weight: bold;
+}
+
+/* Affichage d'une erreur dans un tableau */
+.t .error
+{
+	border: 1px solid #999999;
+	border-width: 0px 1px 1px 0px;
+}
+
+/* Description d'un sujet */
+#topic_description
+{
+	font-size: 1.1em;
+	border-top: 1px solid #AAAAAA;
+	color: #444444;
+	padding: 4px 20px;
+	font-weight: normal;
+}
+
+/* Revue d'un sujet */
+#topic_review
+{
+	overflow: auto;
+	width: 100%;
+	height: 400px;
+}
+
+/* Titre du sujet et informations */
+.topicinfo
+{
+	color: #777777;
+	line-height: 14px;
+}
+
+/* Titre du sujet */
+.topicinfo h3
+{
+	font-size: 1.2em;
+}
+
+/* Couleur des liens dans les titres des sujets */
+.topicinfo h3 a
+{
+	/*color: #242020;*/
+	color: #FF3B00;
+}
+
+.topicinfo h3 a.topicname
+{
+	color: #242020;
+}
+
+/* Cellule du dernier message */
+td.last_message
+{
+	width: 160px;
+	padding-left: 5px;
+}
+
+/* Style de la pagination */
+.pagination_block
+{    
+    position: relative;
+}
+
+/* Style sur le lien courant de la pagination */
+.pagination_block_cur
+{    
+    display: inline;
+    border: #77aadd solid 1px;
+    margin: 1px;
+    padding: 2px 5px 1px 5px;
+    background-color: #E7E8EF;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Style de la pop up Goto de la pagination */
+.pagination_form
+{
+    width: 130px;
+    position: absolute;
+    top: 25px;
+    right: 70px;
+    text-align: center;
+    border: #77aadd solid 1px;
+    background-color: #E7E8EF;
+    display: none;
+}
+
+/* Style des input de saisie de text et bouton Go de la pagination */
+.pagination_form input
+{
+    margin: 4px;
+    padding: 2px 5px;
+	width: 30px;
+}
+
+/* Style sur les liens de la pagination */
+.pagination_block a
+{
+	display: inline;
+	border: #77aadd solid 1px;
+	margin: 1px;
+	padding: 2px 5px 2px 5px;
+	background-color: #f6f9fd;
+	font-weight: bold;
+}
+
+.pagination_block a:hover
+{
+	background-color: #cce4ff;
+}
+
+/* Style sur les liens de la pagination lorsque le curseur passe dessus */
+.pagination_block a:hover
+{
+	text-decoration: none;
+}
+
+/* Délimiteur entre la boite en ligne et le reste */
+.delimiter
+{
+	border-top: dashed 1px #999999;
+	width: 50%;
+	margin-top: 18px;
+	margin-bottom: 18px;
+}
+
+/* Délimiteur entre le message et la signature */
+.post_delimiter
+{
+	border-color: #CCCCCC;	
+}
+
+/* Attente AJAX */
+#ajax_waiter
+{
+	width: 200px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	position: absolute;
+	display: none;
+	margin-left: 15px;
+	margin-top: 15px;
+	border: 1px solid #77aadd;
+	background-color: #f3f3f3;
+	z-index: 100;
+}
+
+/* Couleur des membres du groupe "administrateur" */
+.admin, .admin:hover
+{
+	font-weight: bold;
+	color: #e33d11;
+}
+
+/* Couleur des membres du groupe "moderateurs globaux" */
+.modosup, .modosup:hover
+{
+	font-weight: bold;
+	color: #bb891d;
+}
+
+/* Couleur des membres du groupe "moderateurs" */
+.modo, .modo:hover
+{
+	font-weight: bold;
+	color: #2eb214;
+}
+
+/* Couleur des membres du groupe "membres" */
+.user, .user:hover
+{
+	color: #000000;
+	font-weight: normal;
+}
+
+/* Couleur des bots */
+.bot
+{
+	color: #1F3E0D;
+	font-weight: normal;
+}
+
+/* couleur des forums */
+.forum
+{
+	color: #FF3B00;
+	font-weight: bold;
+}
+
+/* Texte plus petit */
+.small
+{
+	font-size: 9px;
+	font-weight: normal;
+}
+
+/* Surlignage des mots lors de la recherche */
+.highlight_search
+{
+	background-color: yellow;
+}
+
+/* OK */
+.ok
+{
+	color: #5AB830;
+	font-weight: bold;
+}
+
+/* Pas OK */
+.ko
+{
+	color: #D9361B;
+	font-weight: bold;
+}
+
+/* Table des smilies dans les messages */
+.smilies
+{
+	width: 100%;
+	padding: 1px;
+}

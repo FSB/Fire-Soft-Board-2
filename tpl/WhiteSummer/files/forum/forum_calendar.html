@@ -1,0 +1,67 @@
+<include name="header.html">
+
+<form action="{U_ACTION}" method="post">
+<table class="calendar">
+	<tr>
+		<td valign="top" style="padding-right: 20px">
+			<div class="round">
+				<table class="current_month" cellspacing="0">
+					<caption>
+						<a href="{U_PREVIOUS}">&#171;</a> <span>{CURRENT_MONTH}</span> <a href="{U_NEXT}">&#187;</a>
+					</caption>
+					<tr>
+						<block name="week_day"><th>{week_day.NAME}</th></block>
+					</tr>
+					<block name="day">
+						<if content="($day.ITERATOR % 7) == 0"><tr></if>
+						<if content="$day.FILL">
+							<td <if content="$day.CURRENT">class="now"</if>>
+								<div class="header">{day.NB}</div>
+								<ul class="event">
+								<block name="day.event">
+									<li><a href="{day.U_EVENT}" title="{day.event.TITLE}" class="<if content="$day.event.IS_BIRTHDAY">calendar_event_birthday<else>calendar_event_normal</if>">{day.event.NAME}</a></li>
+								</block>
+								</ul>
+							</td>
+						<else>
+							<td class="empty">&nbsp;</td>
+						</if>
+						<if content="$day.ITERATOR > 0 AND (($day.ITERATOR + 1) % 7) == 0"></tr></if>
+					</block>
+				</table>
+			</div>
+			<br />
+
+			<div class="info">
+				<h1>{LG_OPTIONS}</h1>
+				<blockquote>
+					<label>{LG_CALENDAR_GOTO} :</label> {LIST_MONTH} {LIST_YEAR} &nbsp; <input type="submit" name="goto_date" class="submit" value="{LG_GO}" />
+					<switch name="can_add_event"> &nbsp; <a href="{U_ADD_EVENT}" class="submit">{LG_CALENDAR_ADD_EVENT}</a></td></switch>
+				</blockquote>
+			</div>
+		</td>
+		<td valign="top" width="200">
+			<block name="sub">
+				<table class="month" cellspacing="0">
+					<caption>{sub.MONTH_NAME}</caption>
+					<tr>
+						<block name="sub.week_day"><th>{sub.week_day.NAME}</th></block>
+					</tr>
+					<block name="sub.day">
+						<if content="($sub.day.ITERATOR % 7) == 0"><tr></if>
+						<if content="$sub.day.FILL">
+							<td <if content="$sub.day.CURRENT">class="now"</if>><if content="$sub.day.HAVE_EVENT"><a href="{sub.day.U_EVENT}">{sub.day.NB}</a><else>{sub.day.NB}</if></td>
+						<else>
+							<td class="empty">&nbsp;</td>
+						</if>
+						<if content="$sub.day.ITERATOR > 0 AND (($sub.day.ITERATOR + 1) % 7) == 0"></tr></if>
+					</block>
+				</table>
+				<br />
+			</block>
+		</td>
+	</tr>
+</table>
+</form>
+
+<include name="footer.html">

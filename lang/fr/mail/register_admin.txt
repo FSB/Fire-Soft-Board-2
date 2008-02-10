@@ -1,0 +1,6 @@
+Merci de vous être enregistré sur <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Votre inscription sera prochainement validée par un administrateur, vous recevrez à ce moment là une confirmation par email et vous pourrez vous connecter.
+
+~~~~~~~~~~
+{FORUM_SIG}

@@ -1,0 +1,60 @@
+<include name="header.html">
+
+<form action="{U_ACTION}" method="post">
+<block name="event">
+	<div class="round">
+		<h1>{event.TITLE}</h1>
+		<table class="form">
+			<tr>
+				<th>{LG_CALENDAR_STATUS} :</th>
+				<td><if content="$event.IS_APPROVED"><span class="ok">{LG_CALENDAR_APPROVED}</span><else><span class="ko">{LG_CALENDAR_NOT_APPROVED}</span></if></td>
+			</tr>
+			<tr>
+				<th>{LG_CALENDAR_BY} :</th>
+				<td>{event.BY}</td>
+			</tr>
+			<tr>
+				<th>{LG_CALENDAR_BEGIN} :</th>
+				<td>{event.BEGIN}</td>
+			</tr>
+			<tr>
+				<th>{LG_CALENDAR_END} :</th>
+				<td>{event.END}</td>
+			</tr>
+			<tr>
+				<th>{LG_CALENDAR_DESCRIPTION} :</th>
+				<td>{event.CONTENT}</td>
+			</tr>
+			<if content="$event.CAN_EDIT">
+				<tr>
+					<th></th>
+					<td>
+						<a href="{event.U_EDIT}" class="submit">{LG_EDIT}</a>
+						<a href="{event.U_DELETE}" class="submit">{LG_DELETE}</a>
+						<switch name="can_approve">
+							<a href="{event.U_APPROVE}" class="submit"><if content="!$event.IS_APPROVED">{LG_CALENDAR_APPROVE}<else>{LG_CALENDAR_UNAPPROVE}</if></a>
+						</switch>
+					</td>
+				</tr>
+			</if>
+		</table>
+	</div>
+</block>
+<blockelse name="event">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>
+			<div class="error">{LG_CALENDAR_NO_EVENTS}</div>
+		</div>
+	</div>
+</blockelse>
+
+<div class="info">
+	<h1>{LG_OPTIONS}</h1>
+	<blockquote>
+		<label>{LG_CALENDAR_GOTO} :</label> {LIST_DAY} {LIST_MONTH} {LIST_YEAR} &nbsp; <input type="submit" name="goto_date" class="submit" value="{LG_GO}" />
+	</blockquote>
+</div>
+</form>
+
+<include name="footer.html">

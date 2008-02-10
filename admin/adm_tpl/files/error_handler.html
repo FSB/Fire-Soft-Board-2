@@ -1,0 +1,12 @@
+<if content="!$VAR_HEADER_EXISTS">
+	<include name="adm_header.html" />
+</if>
+
+<fieldset>
+	<legend>{LG_INFORMATION}</legend>
+	<div class="error">{CONTENT}</div>
+</fieldset>
+
+<if content="$HANDLER_USE_FOOTER">
+	<include name="adm_footer.html" />
+</if>

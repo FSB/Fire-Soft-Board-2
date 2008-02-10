@@ -1,0 +1,101 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<call name="javascript" arg1="ajax.js" />
+
+<form action="{U_ACTION}" method="post" name="form_box">
+<div class="round">
+	<h1>{LG_MODO_MODULE_IP}</h1>
+	<div class="desc">{LG_MODO_IP_EXPLAIN}</div>
+	<table class="form">
+		<tr>
+			<th><label for="id_id">{LG_MODO_IP_SEARCH_ID} :</label></th>
+			<td><input type="text" name="id" id="id_id" value="{THIS_ID}" size="5" maxlength="10" /></td>
+		</tr>
+		<tr>
+			<th><label for="id_ip">{LG_MODO_IP_SEARCH_IP} :</label></th>
+			<td><input type="text" name="ip" id="id_ip" value="{THIS_IP}" size="15" maxlength="20" /></td>
+		</tr>
+		<tr>
+			<th><label for="id_nickname">{LG_MODO_IP_SEARCH_NICKNAME} :</label></th>
+			<td>
+				<input type="text" name="nickname" id="id_nickname" value="{THIS_NICKNAME}" size="35" maxlength="30" onkeyup="search_user(this.value, this, 'ajax_user', 'id_nickname')" />
+				<span style="visibility: hidden" id="ajax_user"></span>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit_id" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+
+<switch name="show_result">
+	<switch name="show_result_user">
+		<div class="round">
+			<h1>{L_MODO_IP_USER}</h1>
+			<div class="content">
+				<block name="ip">
+					<if content="$ip.FIRST_ROW"><ul></if>
+					<li><b><a href="{ip.U_IP}">{ip.IP}</a></b> ({ip.TOTAL})</li>
+					<if content="$ip.LAST_ROW"></ul></if>
+				</block>
+				<blockelse name="ip">
+					<div class="error">{LG_NO_RESULT}</div>
+				</block>
+			</div>
+		</div>
+	</switch>
+
+	<switch name="show_result_other">
+		<div class="round">
+			<h1>{L_MODO_IP_OTHER}</h1>
+			<div class="content">
+				<block name="other">
+					<if content="$other.FIRST_ROW"><ul></if>
+					<li><b><a href="{other.U_LOGIN}">{other.LOGIN}</a></b> ({other.TOTAL})</li>
+					<if content="$other.LAST_ROW"></ul></if>
+				</block>
+				<blockelse name="other">
+					<div class="error">{LG_NO_RESULT}</div>
+				</block>
+			</div>
+		</div>
+	</switch>
+
+	<switch name="show_result_session">
+		<div class="round">
+			<h1>{L_MODO_IP_SESSION}</h1>
+			<div class="content">
+				<block name="session">
+					<if content="$session.FIRST_ROW"><ul></if>
+						<li><b><a href="{session.U_LOGIN}">{session.LOGIN}</a></b></li>
+					<if content="$session.LAST_ROW"></ul></if>
+				</block>
+				<blockelse name="session">
+					<div class="error">{LG_NO_RESULT}</div>
+				</block>
+			</div>
+		</div>
+	</switch>
+
+	<switch name="show_result_register">
+		<div class="round">
+			<h1>{L_MODO_IP_REGISTER}</h1>
+			<div class="content">
+				<block name="register">
+					<if content="$register.FIRST_ROW"><ul></if>
+					<li><b><a href="{register.U_LOGIN}">{register.LOGIN}</a></b></li>
+					<if content="$register.LAST_ROW"></ul></if>
+				</block>
+				<blockelse name="register">
+					<div class="error">{LG_NO_RESULT}</div>
+				</block>
+			</div>
+		</div>
+	</switch>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

@@ -1,0 +1,8 @@
+Bonjour,
+
+Vous venez de recevoir un nouveau message privé sur le forum <a href="{FORUM_URL}">{FORUM_NAME}</a> de la part de {LOGIN}.
+
+Vous pouvez accéder à votre boîte de réception en cliquant sur le lien suivant: <a href="{URL_INBOX}">{URL_INBOX}</a>
+
+~~~~~~~~~~
+{FORUM_SIG}

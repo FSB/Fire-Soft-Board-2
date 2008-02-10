@@ -1,0 +1,149 @@
+<include name="adm_header.html" />
+
+<form action="{U_ACTION}" method="post" name="form_sql">
+<if content="$MODULE == 'index'">
+	<fieldset>
+		<legend>{LG_ADM_SQL_LIST_TABLES}</legend>
+		<table class="tab" cellspacing="0">
+		<block name="table">
+			<tr class="highlight">
+				<td width="50"><input type="checkbox" name="action[]" value="{table.NAME}" /></td>
+				<td><strong>{table.NAME}</strong></td>
+				<td width="200" align="center">
+					<a href="{table.U_DATA}" class="submit">{LG_ADM_SQL_MODULE_DATA}</a>
+					<a href="{table.U_STRUCT}" class="submit">{LG_ADM_SQL_MODULE_STRUCT}</a>
+				</td>
+			</tr>
+		</block>
+		</table>
+
+		<div>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+			<input type="submit" name="submit_optimise" value="{LG_ADM_SQL_OPTIMISE}" class="submit" />
+			<input type="submit" name="submit_truncate" value="{LG_ADM_SQL_TRUNCATE}" class="submit" />
+			<input type="submit" name="submit_delete" value="{LG_ADM_SQL_DELETE}" class="submit" />
+		</div>
+	</fieldset>
+<elseif content="$MODULE == 'sql'">
+	<switch name="exec_in">
+	<div class="maindiv"><strong>&#187; {EXEC_IN}</strong></div>
+	<br />
+	</switch>
+
+	<fieldset class="message">
+		<legend>{LG_ADM_SQL_EXEC_QUERY}</legend>
+		<dl>
+			<dt><label for="query_id">{LG_ADM_SQL_QUERIES} :</label><br ><span>{LG_ADM_SQL_QUERIES_EXPLAIN}</span></dt>
+			<dd><textarea rows="10" cols="60" name="query" id="query_id">{QUERY}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="parse_query_id">{LG_ADM_SQL_PARSE_PREFIX} :</label><br /><span>{LG_ADM_SQL_PARSE_PREFIX_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="parse_prefix" id="parse_query_id" value="1" checked="checked" /> {LG_YES} &nbsp;
+				<input type="radio" name="parse_prefix" value="0" /> {LG_NO}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit_query" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	<br />
+
+	<switch name="show_result">
+		<switch name="show_pagination"><div align="right" style="margin: 5px"><strong>{PAGINATION}</strong></div></switch>
+		<include name="query_array.html" />
+		<switch name="show_pagination"><div align="right" style="margin: 5px"><strong>{PAGINATION}</strong></div></switch>
+	</switch>
+<elseif content="$MODULE == 'data'">
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<dl>
+			<dt><label for="table_id">{LG_ADM_SQL_TABLENAME} :</label></dt>
+			<dd><input type="text" name="table" value="{TABLE}" size="35" maxlength="100" /></dd>
+		</dl>
+		<div><input type="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<switch name="show_data">
+		<switch name="show_pagination"><div align="right" style="margin: 5px"><strong>{PAGINATION}</strong></div></switch>
+		<include name="query_array.html" />
+		<switch name="show_pagination"><div align="right" style="margin: 5px"><strong>{PAGINATION}</strong></div></switch>
+	</switch>
+<elseif content="$MODULE == 'struct'">
+	<fieldset>
+		<legend>{LG_OPTIONS}</legend>
+		<dl>
+			<dt><label for="table_id">{LG_ADM_SQL_TABLENAME} :</label></dt>
+			<dd><input type="text" name="table" value="{TABLE}" size="35" maxlength="100" /></dd>
+		</dl>
+		<div><input type="submit" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+
+	<switch name="show_struct">
+		<include name="query_array.html" />
+	</switch>
+<elseif content="$MODULE == 'export'">
+	<fieldset>
+		<legend>{LG_ADM_SQL_MODULE_EXPORT}</legend>
+		<dl>
+			<dt><label>{LG_ADM_SQL_BACKUP_TABLE} :</label></dt>
+			<dd>{BACKUP_LIST_TABLE}</dd>
+		</dl>
+		<dl>
+			<dt><label for="backup_multi_insert_id">{LG_ADM_BACKUP_MULTI_INSERT} :</label><br /><span>{LG_ADM_BACKUP_MULTI_INSERT_EXP}</span></dt>
+			<dd>
+				<input type="radio" name="backup_multi_insert" value="1" /> {LG_YES} &nbsp; &nbsp; 
+				<input type="radio" name="backup_multi_insert" id="backup_multi_insert_id" value="0" checked="checked" /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="backup_what_id">{LG_ADM_SQL_BACKUP_WHAT} :</label></dt>
+			<dd>
+				<input type="radio" name="backup_what" id="backup_what_id" value="<?php echo Backup::ALL ?>" checked="checked" /> {LG_ADM_SQL_BACKUP_DATASTRUCT}<br />
+				<input type="radio" name="backup_what" value="<?php echo Backup::STRUCT ?>" /> {LG_ADM_SQL_BACKUP_STRUCT}<br />
+				<input type="radio" name="backup_what" value="<?php echo Backup::DATA ?>" /> {LG_ADM_SQL_BACKUP_DATA}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="backup_type_id">{LG_ADM_SQL_BACKUP_TYPE} :</label></dt>
+			<dd>
+				<input type="radio" name="backup_type" id="backup_type_id" value="<?php echo Backup::OUTPUT ?>" checked="checked" /> {LG_ADM_SQL_BACKUP_RETURN}<br />
+				<input type="radio" name="backup_type" value="<?php echo Backup::DOWNLOAD ?>" /> {LG_ADM_SQL_BACKUP_NORMAL}<br />
+				<input type="radio" name="backup_type" value="<?php echo Backup::FTP ?>" /> {LG_ADM_SQL_BACKUP_STORE}
+			</dd>
+		</dl>
+		<div><input type="submit" name="submit_export" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+<elseif content="$MODULE == 'cache'">
+	<fieldset>
+		<legend>{LG_ADM_SQL_LIST_CACHE}</legend>
+		<div>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+			<input type="submit" name="submit_cache_delete" value="{LG_DELETE}" class="submit" />
+		</div>
+
+		<table class="tab">
+		<block name="cache">
+			<tr>
+				<td width="25"><input type="checkbox" name="action[]" value="{cache.HASH}" /></td>
+				<td>{cache.HASH}</td>
+				<td>{cache.QUERY}</td>
+			</tr>
+		</block>
+		<blockelse name="cache">
+			<tr>
+				<td class="error">{LG_NO_RESULT}</td>
+			</tr>
+		</blockelse>
+		</table>
+
+		<div>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+			<a href="#" onclick="check_boxes('form_sql', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+			<input type="submit" name="submit_cache_delete" value="{LG_DELETE}" class="submit" />
+		</div>
+	</fieldset>
+</if>
+</form>
+
+<include name="adm_footer.html" />

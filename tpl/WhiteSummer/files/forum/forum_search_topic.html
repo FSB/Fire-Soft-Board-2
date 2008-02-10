@@ -1,0 +1,69 @@
+<include name="header.html" />
+<switch name="use_module">
+	<include name="menu_header.html" />
+</switch>
+
+<form action="{U_ACTION}" name="search" method="post">
+<table style="width: 100%; margin-bottom: 3px">
+	<tr>
+		<td width="50%">
+			<switch name="can_check">
+				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
+			</switch>
+		</td>
+		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+
+<div class="round">
+	<h1>{LG_SEARCH_RESULT} ({TOTAL_RESULT})</h1>
+	<table class="t" cellspacing="0">
+	<block name="result">
+		<tr>
+			<switch name="can_check"><td width="20" align="center"><input type="checkbox" name="action[]" value="{result.ID}" /></td></switch>
+			<td width="50" align="center"><img src="{result.IMG}" alt="" /></td>
+			<td class="topicinfo">
+				<h3><a href="{result.U_TOPIC}" class="topicname">{result.TITLE}</a> <if content="$result.PAGINATION"> &nbsp; {result.PAGINATION}</if></h3>
+				<if content="$result.DESC"><span class="small">{result.DESC}</span><br /></if>
+				<span class="small">({result.OWNER} &bull; {result.FIRST_DATE})</span>
+				<br /><span class="small"><i>{LG_FORUM} :</i> <a href="{result.U_CAT}" class="forum">{result.CAT}</a> &#187; {result.FORUM}</span>
+			</td>
+			<td align="center" width="125">
+				{LG_VIEWS} : {result.VIEWS}<br />
+				{LG_ANSWERS} : {result.ANSWERS}
+			</td>
+			<td class="last_message">
+				{result.DATE}<br />
+				<a href="{result.U_LAST}"><img src="<if content="$result.UNREAD">{IMG_LAST_NEW}<else>{IMG_LAST}</if>" alt="{LG_JUMP_TO_LAST_POST}" title="{LG_JUMP_TO_LAST_POST}" /></a>
+				{result.NICKNAME}
+			</td>
+		</tr>
+	</block>
+	<blockelse name="result">
+		<tr>
+			<td colspan="4" class="error">{LG_SEARCH_NO_RESULT}</td>
+		</tr>
+	</blockelse>
+	</table>
+</div>
+
+<table width="100%">
+	<tr>
+		<td width="50%">
+			<switch name="can_check">
+				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
+			</switch>
+		</td>
+		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
+	</tr>
+</table>
+</form>
+
+<switch name="use_module">
+	<include name="menu_footer.html" />
+</switch>
+<include name="footer.html" />

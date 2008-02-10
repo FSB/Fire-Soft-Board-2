@@ -1,0 +1,119 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="mp_list">
+	<div class="info">
+		<h1>{LG_OPTIONS}</h1>
+		<div>
+			<div class="desc">{LG_MP_EXPLAIN_PRUNE}</div>
+			<div id="mp_options">
+				<div><strong>{LG_MP_QUOTA} : {CURRENT_MP} / {TOTAL_MP}</strong></div>
+				<a href="{U_MP_NEW}"><img src="{IMG_PM_NEW}" alt="{LG_MP_NEW}" title="{LG_MP_NEW}" style="vertical-align: middle" /></a>
+				<form action="{U_ACTION}" method="post">
+					<input type="text" name="mp_search" class="fieldtext" id="quicksearch_mp" value="{LG_MP_SEARCH}" onclick="clean_field('quicksearch_mp')" />
+					<input type="submit" name="search" class="submit" value="Rechercher" />
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<switch name="mp_pagination"><div style="text-align: right; margin-bottom: 5px">{PAGINATION}</div></switch>
+
+	<form action="{U_ACTION}" method="post" name="form_box">
+	<div class="round">
+		<h1>{BOX_NAME}</h1>
+		<table class="t" cellspacing="0">
+		<block name="mp">
+			<if content="$mp.FIRST_ROW">
+				<tr>
+					<th width="50">&nbsp;</th>
+					<th>{LG_MP_MESSAGE}</th>
+					<th width="180">{MP_SEND}</th>
+					<th width="150">{LG_MP_DATE}</th>
+					<th width="50"></th>
+				</tr>
+			</if>
+			<tr>
+				<td align="center" width="50"><img src="<if content="$mp.IMG_READ">{IMG_POST}<else>{IMG_NEW_POST}</if>" alt="" /></td>
+				<td align="center"><a href="{mp.U_NAME}">{mp.NAME}</a></td>
+				<td align="center">{mp.NICKNAME}</td>
+				<td width="150" align="center">{mp.DATE}</td>
+				<td width="50" align="center"><input type="checkbox" name="action[]" value="{mp.ID}" /></td>
+			</tr>
+			<if content="$mp.LAST_ROW">
+				<tr>
+					<td colspan="5" align="right">
+						<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+						<switch name="can_savebox">
+							<input type="submit" name="submit_savebox" value="{LG_MP_ARCHIVE}" class="submit" />
+						</switch>
+						&nbsp; &nbsp; <a href="#" onclick="check_boxes('form_box', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
+						<a href="#" onclick="check_boxes('form_box', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a>
+					</td>
+				</tr>
+				</table>
+			</if>
+		</block>
+		<blockelse name="mp">
+			<tr>
+				<td colspan="5" class="error">{LG_MP_EMPTY}</td>
+			</tr>
+			</table>
+		</blockelse>
+	</div>
+	</form>
+</switch>
+
+<switch name="mp_options">
+	<form action="{U_ACTION}" method="post">
+	<switch name="ac_mods_mp_blacklist">
+		<div class="round">
+			<h1><a href="{FAQ_FORUM_MP}">{LG_MP_BLACKLIST}</a></h1>
+			<table class="form">
+				<tr>
+					<th><label for="blacklist_add_id">{LG_MP_BLACKLIST_ADD} :</label></th>
+					<td>
+						<input type="text" name="blacklist_add" id="blacklist_add_id" size="25" />
+						<input type="submit" name="submit_blacklist_add" value="{LG_SUBMIT}" class="submit" />
+					</td>
+				</tr>
+				<tr>
+					<th><label>{LG_MP_BLACKLIST_DELETE} :</label></th>
+					<td>
+						<if content="$COUNT_BLACKLIST">
+							{LIST_BLACKLIST}<br />
+							<input type="submit" name="submit_blacklist_delete" value="{LG_DELETE}" class="submit" />
+						<else>
+							{LG_MP_BLACKLIST_EMPTY}
+						</if>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</switch>
+
+	<div class="round">
+		<h1><a href="{FAQ_FORUM_MP}">{LG_MP_AUTO_ANSWER}</a></h1>
+		<table class="form">
+			<tr>
+				<th><label>{LG_MP_AUTO_ANSWER_ACTIV} :</label></th>
+				<td>
+					<input type="radio" name="auto_answer_activ" value="1" {AUTO_ANSWER_ACTIV_YES} /> {LG_YES} &nbsp;
+					<input type="radio" name="auto_answer_activ" value="0" {AUTO_ANSWER_ACTIV_NO} /> {LG_NO}
+				</td>
+			</tr>
+			<tr>
+				<th><label>{LG_MP_AUTO_ANSWER_MESSAGE} :</label><br /><span class="small">{LG_MP_AUTO_ANSWER_MESSAGE_EXPLAIN}</span></th>
+				<td><textarea name="auto_answer_message" cols="40" rows="4">{AUTO_ANSWER_MESSAGE}</textarea></td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_auto_answer" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</switch>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

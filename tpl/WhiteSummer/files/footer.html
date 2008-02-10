@@ -1,0 +1,32 @@
+	<switch name="forum_stat">
+		<include name="online.html" />
+	</switch>
+
+	<br />
+
+	<!--
+	Notes sur le copyright :
+		Ce forum FSB est sous license GPL 2. Vous pouvez modifier chacun des fichiers du forum (y compris les fichiers du thème, les
+		images, la CSS, etc ...) et redistribuer tout, ou une partie de ce logiciel, comme vous l'entendez, à la seule condition que
+		les copyrights des fichiers soient respectés (dans les headers).
+		Concernant ce copyright dans les fichiers .html, affiché en bas de page du forum, nous souhaitons que vous le laissiez tel quel,
+		ou au minimum que vous laissiez le nom du forum avec le lien vers notre site web. Ce copyright est un remerciement pour
+		le travail que nous avons accompli gratuitement et bénévolement sur ce forum. Il contribue à faire connaitre le forum et à
+		mieux nous référencer.
+		Si vous supprimez ce copyright, ci dessous, vous ne recevrez aucun support de notre part sur notre forum officiel.
+	 -->
+</div>
+
+<switch name="forum_link_footer"><include name="navigation.html" /></switch>
+
+<div id="copyright">
+	<switch name="is_admin">{EXEC_TIME} [<switch name="show_debug_query"><a href="{U_DEBUG_QUERY}">{EXEC_QUERY}</a><else>{EXEC_QUERY}</switch>] ::</switch>
+	<a href="{U_LOW_FORUM}">{LG_LOW_FORUM}</a> ::
+	<a href="{U_FORUMINFO}">{LG_FORUMINFO}</a>
+	:: Forum <a href="http://www.fire-soft-board.com" target="_blank">Fire-Soft-Board</a> &copy; 2004 - {CURRENT_YEAR}
+</div>
+
+<a name="down"><img width="1" height="1" src="{PROCESS_IMG}" alt="." /></a>
+
+</body>
+</html>

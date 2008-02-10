@@ -1,0 +1,638 @@
+<?php
+/*
+** +---------------------------------------------------+
+** | Name :		~/main/class/class_fsbcard.php
+** | Begin :	05/07/2007
+** | Last :		04/09/2007
+** | User :		Genova
+** | Project :	Fire-Soft-Board 2 - Copyright FSB group
+** | License :	GPL v2.0
+** +---------------------------------------------------+
+*/
+
+/*
+** Gestion de FSBcard pour exporter son profil
+** Pour les spécifications consulter le schéma ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
+*/
+class Fsbcard extends Fsb_model
+{
+	// Objet XML
+	public $xml;
+
+	// Version des FSBcards
+	public $version = '1.0';
+
+	// Générateur
+	public $generator = 'fsb2';
+
+	// Liste des sexes disponibles
+	private $sexe = array('none', 'male', 'female');
+
+	// Liste des hashs disponibles
+	private $hash = array('none', 'md5', 'sha1');
+
+	// Liste des méthodes d'avatar disponibles
+	private $avatar = array('link', 'content');
+
+	// Options disponibles
+	private $options = array(
+		'notifyMp' =>			array('true', 'false'),
+		'sessionHidden' =>		array('true', 'false'),
+		'displayAvatar' =>		array('true', 'false'),
+		'wysiwyg' =>			array('true', 'false'),
+		'ajax' =>				array('true', 'false'),
+		'displayEmail' =>		array('extern', 'intern', 'hide'),
+		'notifyPost' =>			array('none', 'none_email', 'auto', 'auto_email'),
+		'redirect' =>			array('none', 'direct', 'indirect'),
+		'displayFsbcode' =>		array('posts' => array('true', 'false'), 'sigs' => array('true', 'false')),
+		'displayImg' =>			array('posts' => array('true', 'false'), 'sigs' => array('true', 'false')),
+	);
+
+	/*
+	** Constructeur qui instanticie un objet XML
+	*/
+	public function __construct()
+	{
+		// Instance d'un objet XML et création de la FSBcard
+		$this->xml = new Xml();
+		$this->xml->document->setTagName('fsbcard');
+		$this->xml->document->setAttribute('version', $this->version);
+		$this->xml->document->setAttribute('generator', $this->generator);
+
+		// Ajout de la balise pour les informations personelles
+		$item = $this->xml->document->createElement('personal');
+		$this->xml->document->appendChild($item);
+
+		// Ajout de la balise pour les informations d'inscription
+		$item = $this->xml->document->createElement('register');
+		$this->xml->document->appendChild($item);
+
+		// Ajout de la balise pour les options
+		$item = $this->xml->document->createElement('options');
+		$this->xml->document->appendChild($item);
+	}
+
+	/*
+	** Charge une FSBcard
+	** -----
+	** $filenamme ::	Chemin vers le fichier FSBcard
+	*/
+	public function load_file($filename)
+	{
+		if (!file_exists($filename))
+		{
+			trigger_error('Le fichier ' . $filename . ' n\'existe pas', FSB_ERROR);
+		}
+
+		$this->load_content(file_get_contents($filename));
+	}
+
+	/*
+	** Charge du code contenu dans une FSBcard
+	** -----
+	** $content ::		Contenu de la FSBcard
+	*/
+	public function load_content($content)
+	{
+		$this->xml->load_content($content);
+
+		// Vérification des informations de la FSBcard
+		if ($this->xml->document->getTagName() != 'fsbcard')
+		{
+			trigger_error('FSBcard : format incorect du fichier XML', FSB_ERROR);
+		}
+
+		if (!$this->xml->document->childExists('personal'))
+		{
+			$item = $this->xml->document->createElement('personal');
+			$this->xml->document->appendChild($item);
+		}
+
+		if (!$this->xml->document->childExists('register'))
+		{
+			$item = $this->xml->document->createElement('register');
+			$this->xml->document->appendChild($item);
+		}
+
+		if (!$this->xml->document->childExists('options'))
+		{
+			$item = $this->xml->document->createElement('options');
+			$this->xml->document->appendChild($item);
+		}
+	}
+
+	/*
+	** Retourne le code XML de la FSBcard
+	*/
+	public function generate()
+	{
+		return ($this->xml->document->asValidXML());
+	}
+
+	/*
+	** Thème du membre
+	*/
+	public function set_template($string)
+	{
+		$item = $this->xml->document->personal[0]->createElement('template');
+		$item->setData($string);
+		$this->xml->document->personal[0]->appendChild($item);
+	}
+
+	/*
+	** Thème du membre
+	*/
+	public function get_template()
+	{
+		if ($this->xml->document->personal[0]->childExists('template'))
+		{
+			return ($this->xml->document->personal[0]->template[0]->getData());
+		}
+		return (NULL);
+	}
+
+	/*
+	** Langue du membre
+	*/
+	public function set_lang($string)
+	{
+		$item = $this->xml->document->personal[0]->createElement('lang');
+		$item->setData($string);
+		$this->xml->document->personal[0]->appendChild($item);
+	}
+
+	/*
+	** Langue du membre
+	*/
+	public function get_lang()
+	{
+		if ($this->xml->document->personal[0]->childExists('lang'))
+		{
+			return ($this->xml->document->personal[0]->lang[0]->getData());
+		}
+		return (NULL);
+	}
+
+	/*
+	** Date de naissance (format dd-mm-yyyy)
+	*/
+	public function set_birthday($day, $month, $year)
+	{
+		if (!$day)
+		{
+			$day = '00';
+		}
+		else if (!$month)
+		{
+			$month = '00';
+		}
+		else if (!$year)
+		{
+			$year = '0000';
+		}
+
+		$birthday = String::add_zero($day, 2) . '-' . String::add_zero($month, 2) . '-' . String::add_zero($year, 4);
+		$item = $this->xml->document->personal[0]->createElement('birthday');
+		$item->setData($birthday);
+		$this->xml->document->personal[0]->appendChild($item);
+	}
+
+	/*
+	** Date de naissance (format dd-mm-yyyy)
+	*/
+	public function get_birthday()
+	{
+		if ($this->xml->document->personal[0]->childExists('birthday') && !$this->xml->document->personal[0]->birthday[0]->hasChildren())
+		{
+			$birthday = $this->xml->document->personal[0]->birthday[0]->getData();
+			$split = explode('-', $birthday);
+			if (count($split) != 3)
+			{
+				return (array(NULL, NULL, NULL));
+			}
+			return (array(String::add_zero($split[0], 2), String::add_zero($split[1], 2), String::add_zero($split[2], 4)));
+		}
+		return (array(NULL, NULL, NULL));
+	}
+
+	/*
+	** Sexe du membre
+	*/
+	public function set_sexe($string)
+	{
+		if (!in_array($string, $this->sexe))
+		{
+			$string = $this->sexe[0];
+		}
+
+		$item = $this->xml->document->personal[0]->createElement('sexe');
+		$item->setData($string);
+		$this->xml->document->personal[0]->appendChild($item);
+	}
+
+	/*
+	** Sexe du membre
+	*/
+	public function get_sexe()
+	{
+		if ($this->xml->document->personal[0]->childExists('sexe'))
+		{
+			$sexe = $this->xml->document->personal[0]->sexe[0]->getData();
+			if (!in_array($sexe, $this->sexe))
+			{
+				$sexe = $this->sexe[0];
+			}
+			return ($sexe);
+		}
+		return (NULL);
+	}
+
+	/*
+	** Fuseau horaire
+	*/
+	public function set_date($utc, $dst)
+	{
+		if (!isset($GLOBALS['_utc'][$utc]))
+		{
+			$utc = 0;
+		}
+
+		if ($dst != 0 && $dst != 1)
+		{
+			$dst = 0;
+		}
+
+		$item = $this->xml->document->personal[0]->createElement('date');
+		$this->xml->document->personal[0]->appendChild($item);
+
+		$item = $this->xml->document->personal[0]->date[0]->createElement('utc');
+		$item->setData($utc);
+		$this->xml->document->personal[0]->date[0]->appendChild($item);
+
+		$item = $this->xml->document->personal[0]->date[0]->createElement('dst');
+		$item->setData($dst);
+		$this->xml->document->personal[0]->date[0]->appendChild($item);
+	}
+
+	/*
+	** Fuseau horaire
+	*/
+	public function get_date()
+	{
+		if ($this->xml->document->personal[0]->childExists('date'))
+		{
+			$utc = $dst = 0;
+			if ($this->xml->document->personal[0]->date[0]->childExists('utc'))
+			{
+				$utc = $this->xml->document->personal[0]->date[0]->utc[0]->getData();
+			}
+
+			if ($this->xml->document->personal[0]->date[0]->childExists('dst'))
+			{
+				$dst = $this->xml->document->personal[0]->date[0]->dst[0]->getData();
+			}
+
+			if (!isset($GLOBALS['_utc'][$utc]))
+			{
+				$utc = 0;
+			}
+
+			if ($dst != 0 && $dst != 1)
+			{
+				$dst = 0;
+			}
+
+			return (array($utc, $dst));
+		}
+		return (array(NULL, NULL));
+	}
+
+	/*
+	** Signature du membre
+	*/
+	public function set_sig($string)
+	{
+		$item = $this->xml->document->createElement('sig');
+		$item->setData($string);
+		$this->xml->document->appendChild($item);
+	}
+
+	/*
+	** Signature du membre
+	*/
+	public function get_sig()
+	{
+		if ($this->xml->document->childExists('sig'))
+		{
+			return (String::unhtmlspecialchars($this->xml->document->sig[0]->getData()));
+		}
+		return (NULL);
+	}
+
+	/*
+	** Login de connexion
+	*/
+	public function set_login($string)
+	{
+		$item = $this->xml->document->register[0]->createElement('login');
+		$item->setData($string);
+		$this->xml->document->register[0]->appendChild($item);
+	}
+
+	/*
+	** Login de connexion
+	*/
+	public function get_login()
+	{
+		if ($this->xml->document->register[0]->childExists('login'))
+		{
+			return ($this->xml->document->register[0]->login[0]->getData());
+		}
+		return (NULL);
+	}
+
+	/*
+	** Pseudonyme de connexion
+	*/
+	public function set_nickname($string)
+	{
+		$item = $this->xml->document->register[0]->createElement('nickname');
+		$item->setData($string);
+		$this->xml->document->register[0]->appendChild($item);
+	}
+
+	/*
+	** Pseudonyme de connexion
+	*/
+	public function get_nickname()
+	{
+		if ($this->xml->document->register[0]->childExists('nickname'))
+		{
+			return ($this->xml->document->register[0]->nickname[0]->getData());
+		}
+		return (NULL);
+	}
+
+	/*
+	** Mot de passe de connexion
+	*/
+	public function set_password($string, $hash = 'none')
+	{
+		if ($hash == 'md5' || $hash == 'sha1')
+		{
+			$string = $hash($string);
+		}
+		else
+		{
+			$hash = 'none';
+		}
+
+		$item = $this->xml->document->register[0]->createElement('password');
+		$item->setData($string);
+		$item->setAttribute('hash', $hash);
+		$this->xml->document->register[0]->appendChild($item);
+	}
+
+	/*
+	** Mot de passe de connexion
+	*/
+	public function get_password()
+	{
+		if ($this->xml->document->register[0]->childExists('password'))
+		{
+			$password = $this->xml->document->register[0]->password[0]->getData();
+			$hash = $this->xml->document->register[0]->password[0]->getAttribute('hash');
+
+			if (!in_array($hash, $this->hash))
+			{
+				$hash = $this->hash[0];
+			}
+			return (array($password, $hash));
+		}
+		return (array(NULL, 'none'));
+	}
+
+	/*
+	** Adresse Email
+	*/
+	public function set_email($string)
+	{
+		$item = $this->xml->document->register[0]->createElement('email');
+		$item->setData($string);
+		$this->xml->document->register[0]->appendChild($item);
+	}
+
+	/*
+	** Adresse Email
+	*/
+	public function get_email()
+	{
+		if ($this->xml->document->register[0]->childExists('email'))
+		{
+			return ($this->xml->document->register[0]->email[0]->getData());
+		}
+		return (NULL);
+	}
+
+	/*
+	** Avatar
+	*/
+	public function set_avatar($string, $method)
+	{
+		if (!in_array($method, $this->avatar))
+		{
+			$method = $this->avatar[0];
+		}
+
+		$link = $string;
+		$content = NULL;
+		if ($method == 'content')
+		{
+			$link = Fsb::$cfg->get('fsb_path') . $link;
+			if (@getimagesize($link))
+			{
+				$content = base64_encode(file_get_contents($string));
+			}
+		}
+
+		$item = $this->xml->document->createElement('avatar');
+		$this->xml->document->appendChild($item);
+
+		$item = $this->xml->document->avatar[0]->createElement('link');
+		$item->setData($link);
+		$this->xml->document->avatar[0]->appendChild($item);
+
+		$item = $this->xml->document->avatar[0]->createElement('content');
+		$item->setData($content);
+		$this->xml->document->avatar[0]->appendChild($item);
+	}
+
+	/*
+	** Avatar
+	*/
+	public function get_avatar()
+	{
+		if ($this->xml->document->childExists('avatar'))
+		{
+			$link = $content = NULL;
+			if ($this->xml->document->avatar[0]->childExists('link'))
+			{
+				$link = $this->xml->document->avatar[0]->link[0]->getData();
+			}
+
+			if ($this->xml->document->avatar[0]->childExists('content'))
+			{
+				$content = $this->xml->document->avatar[0]->content[0]->getData();
+			}
+
+			if ($content)
+			{
+				$content = base64_decode($content);
+			}
+			return (array($link, $content));
+		}
+		return (array(NULL, NULL));
+	}
+
+	/*
+	** Gestion des options d'utilisateur
+	*/
+	public function set_option($key, $value)
+	{
+		if (!isset($this->options[$key]))
+		{
+			return (NULL);
+		}
+
+		$item = $this->xml->document->options[0]->createElement($key);
+
+		// Valeurs et attributs pour cette option
+		$attributes = $values = array();
+		foreach ($this->options[$key] AS $k => $v)
+		{
+			if (is_array($v))
+			{
+				$attributes[$k] = $v;
+			}
+			else
+			{
+				$values[] = $v;
+			}
+		}
+
+		// $value est une valeur ou un attribut ?
+		if (is_array($value))
+		{
+			foreach ($value AS $k => $v)
+			{
+				if (!isset($attributes[$k]))
+				{
+					continue ;
+				}
+
+				if (is_bool($v))
+				{
+					$v = ($v === TRUE) ? 'true' : 'false';
+				}
+
+				if (!in_array($v, $attributes[$k]))
+				{
+					$value[$k] = $attributes[$k][0];
+				}
+				$item->setAttribute($k, $v);
+			}
+		}
+		else
+		{
+			if (is_bool($value))
+			{
+				$value = ($value === TRUE) ? 'true' : 'false';
+			}
+
+			if (!in_array($value, $values))
+			{
+				$value = $values[0];
+			}
+			$item->setData($value);
+		}
+
+		$this->xml->document->options[0]->appendChild($item);
+	}
+
+	/*
+	** Lit une option
+	*/
+	public function get_option($key)
+	{
+		if (!isset($this->options[$key]) || !$this->xml->document->options[0]->childExists($key))
+		{
+			return (NULL);
+		}
+
+		// Valeurs et attributs pour cette option
+		list($attributes, $values) = $this->options_info($key);
+
+		if ($attributes)
+		{
+			$return = array();
+			foreach ($attributes AS $k => $v)
+			{
+				$attr = $this->xml->document->options[0]->{$key}[0]->getAttribute($k);
+				if (!in_array($attr, $v))
+				{
+					$attr = NULL;
+				}
+
+				if ($attr == 'true')
+				{
+					$attr = TRUE;
+				}
+				else if ($attr == 'false')
+				{
+					$attr = FALSE;
+				}
+				$return[$k] = $attr;
+			}
+			return ($return);
+		}
+		else
+		{
+			$return = $this->xml->document->options[0]->{$key}[0]->getData();
+			if (!in_array($return, $values))
+			{
+				return (NULL);
+			}
+
+			if ($return == 'true')
+			{
+				$return = TRUE;
+			}
+			else if ($return == 'false')
+			{
+				$return = FALSE;
+			}
+			return ($return);
+		}
+	}
+
+	/*
+	** Retourne les informations sur une option
+	*/
+	private function options_info($key)
+	{
+		$attributes = $values = array();
+		foreach ($this->options[$key] AS $k => $v)
+		{
+			if (is_array($v))
+			{
+				$attributes[$k] = $v;
+			}
+			else
+			{
+				$values[] = $v;
+			}
+		}
+		return (array($attributes, $values));
+	}
+}
+/* EOF */

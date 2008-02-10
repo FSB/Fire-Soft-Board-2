@@ -1,0 +1,20 @@
+<if content="!$VAR_HEADER_EXISTS">
+	<include name="header.html" />
+</if>
+<switch name="show_menu_panel">
+	<include name="menu_header.html" />
+</switch>
+
+<div class="round">
+	<h1>{LG_INFORMATION}</h1>
+	<div class="content">
+		<div class="error">{CONTENT}</div>
+	</div>
+</div>
+
+<switch name="show_menu_panel">
+	<include name="menu_footer.html" />
+</switch>
+<if content="$HANDLER_USE_FOOTER">
+	<include name="footer.html" />
+</if>

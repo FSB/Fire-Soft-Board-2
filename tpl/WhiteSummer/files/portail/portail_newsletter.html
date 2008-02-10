@@ -1,0 +1,41 @@
+<switch name="show_newsletter">
+	<form action="{U_PM_NEWSLETTER_ACTION}" method="post">
+	<div class="info">
+		<h1>{LG_PM_NEWSLETTER}</h1>
+		<div>
+			<div class="desc">
+				<switch name="is_logged">
+					{LG_PM_NEWSLETTER_REGISTER}<br />
+					<input type="submit" name="submit_newsletter" value="{L_NEWSLETTER_SUBMIT}" class="submit" />
+				<else>
+					{LG_PM_NEWSLETTER_NEED_LOG}
+				</switch>
+			</div>
+
+			<switch name="is_admin"><b>({LG_ADMIN}) <a href="{U_PM_NEWSLETTER_ADMIN}">{LG_PM_NEWSLETTER_ADMIN}</a></b></switch>
+		</div>
+	</div>
+	</form>
+<else>
+	<include name="header.html" />
+	<form action="{U_PM_NEWSLETTER_ACTION}" method="post">
+	<div class="round">
+		<h1>{LG_PM_NEWSLETTER}</h1>
+		<table class="form">
+			<tr>
+				<th><label for="pm_newsletter_subject_id">{LG_PM_NEWSLETTER_SUBJECT} :</label></th>
+				<td><input type="text" name="pm_newsletter_subject" id="pm_newsletter_subject_id" size="35" maxlength="50" value="{DEFAULT_SUBJECT}" /></td>
+			</tr>
+			<tr>
+				<th><label for="pm_newsletter_content_id">{LG_PM_NEWSLETTER_CONTENT} :</label><br /><span class="small">{LG_PM_NEWSLETTER_CONTENT_EXP}</span></th>
+				<td><textarea rows="7" cols="60" name="pm_newsletter_content" id="pm_newsletter_content_id"></textarea></dd>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_newsletter_send" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+	</form>
+	<include name="footer.html" />
+</switch>

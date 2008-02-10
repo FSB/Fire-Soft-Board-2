@@ -1,0 +1,34 @@
+<include name="header.html" />
+<switch name="use_module">
+	<include name="menu_header.html" />
+</switch>
+
+<div class="round">
+	<h1>{LG_USERPROFILE_MODULE_LOGS}</h1>
+	<table class="t" cellspacing="0">
+		<tr>
+			<th>{LG_USERPROFILE_LOG_INFO}</th>
+			<th>{LG_USERPROFILE_LOG_DATE}</th>
+			<th>{LG_USERPROFILE_LOG_BY}</th>
+			<switch name="can_see_ip"><th>{LG_USERPROFILE_LOG_IP}</th></switch>
+		</tr>
+		<block name="log">
+			<tr>
+				<td>{log.INFO}</td>
+				<td width="150" align="center">{log.DATE}</td>
+				<td width="150" align="center">{log.BY}</td>
+				<switch name="can_see_ip"><td width="120" align="center"><a href="{log.U_IP}">{log.IP}</a></td></switch>
+			</tr>
+		</block>
+		<blockelse name="log">
+			<tr>
+				<td colspan="4"><div class="error">{LG_NO_RESULT}</div></td>
+			</tr>
+		</blockelse>
+	</table>
+</div>
+
+<switch name="use_module">
+	<include name="menu_footer.html" />
+</switch>
+<include name="footer.html" />

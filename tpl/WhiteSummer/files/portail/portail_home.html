@@ -1,0 +1,20 @@
+<div class="info">
+	<h1>{LG_PM_HOME}</h1>
+	<div style="text-align: center">
+		<switch name="is_logged">
+			<b>{LG_PM_WELCOME} {HOME_USER_NICKNAME}</b><br />
+			<img src="{HOME_USER_AVATAR}" alt="{HOME_AVATAR_ALT}" title="{HOME_AVATAR_ALT}" />
+			<p>{HOME_MP}</p>
+			<p>{HOME_USER_STATS}</p>
+			<p>{HOME_SUGGESTION}</p>
+		<else>
+			<p><b>{LG_PM_WELCOME}</b></p>
+			<p>{HOME_SUGGESTION}</p>
+			<br />
+			<div>
+				<a href="{HOME_REGISTER}" class="submit">{LG_FORUM_MENU_REGISTER}</a><br /><br />
+				<a href="{HOME_LOGIN}" class="submit">{LG_FORUM_MENU_LOGIN}</a>
+			</div>
+		</switch>
+	</div>
+</div>

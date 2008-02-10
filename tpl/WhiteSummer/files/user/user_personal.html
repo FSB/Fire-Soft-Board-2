@@ -1,0 +1,83 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<switch name="error">
+	<div class="info">
+		<h1>{LG_INFORMATION}</h1>
+		<div>{CONTENT}</div>
+	</div>
+</switch>
+
+<form action="{U_ACTION}" method="post">
+<div class="round">
+	<h1>{LG_USER_MODULE_PERSONAL}</h1>
+	<table class="form">
+		<switch name="edit_nickname">
+			<tr>
+				<th><label for="u_nickname_id">{LG_USER_EDIT_NICKNAME} :</label></th>
+				<td><input type="text" name="u_nickname" id="u_nickname_id" value="{USER_NICKNAME}" size="25" /></td>
+			</tr>
+		</switch>
+		<switch name="show_ranks">
+			<tr>
+				<th><label>{LG_USER_CHOOSE_RANK} :</label></th>
+				<td>{LIST_RANKS}</td>
+			</tr>
+		</switch>
+		<switch name="can_change_tpl">
+			<tr>
+				<th><label>{LG_USER_TPL} :</label></th>
+				<td>{LIST_TPL}</td>
+			</tr>
+		</switch>
+		<switch name="can_change_lang">
+			<tr>
+				<th><label>{LG_USER_LANG} :</label></th>
+				<td>{LIST_LANG}</td>
+			</tr>
+		</switch>
+		<tr>
+			<th><label>{LG_USER_UTC} :</label></th>
+			<td>{LIST_UTC}</td>
+		</tr>
+		<tr>
+			<th><label>{LG_USER_UTC_DST} :</label></th>
+			<td>{LIST_UTC_DST}</td>
+		</tr>
+		<switch name="ac_mods_user_birthday">
+			<tr>
+				<th><label>{LG_USER_BIRTHDAY} :</label></th>
+				<td>{LG_DAY} : {LIST_DAY} &nbsp; {LG_MONTH} : {LIST_MONTH} &nbsp; {LG_YEAR} : {LIST_YEAR}</td>
+			</tr>
+		</switch>
+		<tr>
+			<th><label>{LG_USER_SEXE} :</label></th>
+			<td>
+				<input type="radio" name="u_sexe" value="1" {SEXE_MALE} /> {LG_SEXE_MALE}<br />
+				<input type="radio" name="u_sexe" value="2" {SEXE_FEMALE} /> {LG_SEXE_FEMALE}<br />
+				<input type="radio" name="u_sexe" value="0" {SEXE_NONE} /> {LG_SEXE_NONE}
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+		</tr>
+	</table>
+</div>
+
+<switch name="have_profil_fields">
+	<div class="round">
+		<h1>{LG_USER_PROFIL_FIELDS}</h1>
+		<table class="form">
+			<include name="profil_fields.html" />
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+</switch>
+</form>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />

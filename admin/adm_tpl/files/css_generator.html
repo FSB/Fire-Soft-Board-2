@@ -1,0 +1,126 @@
+<include name="adm_simple_header.html">
+
+<script type="text/javascript" src="{ROOT}main/javascript/ajax.js"></script>
+<script type="text/javascript">
+<!--
+function submit_css_generator()
+{
+	var ajax = new Ajax();
+	ajax.onload = function(data)
+	{
+		if (!data)
+		{
+			return ;
+		}
+
+		opener.document.getElementById('{OPENER_ID}').value = data;
+		<if content="$RADIO_ID">opener.document.getElementById('{RADIO_ID}').checked = true;</if>
+		window.close();
+	}
+
+	ajax.set_arg(AJAX_GET, 'p', 'general_tpl');
+	ajax.set_arg(AJAX_GET, 'module', 'tpl');
+	ajax.set_arg(AJAX_GET, 'mode', 'css_generator');
+	ajax.set_arg(AJAX_POST, 'submit_css_generator', 'true');
+	if (document.css_form.bold.checked) ajax.set_arg(AJAX_POST, 'bold', document.css_form.bold.checked);
+	if (document.css_form.underline.checked) ajax.set_arg(AJAX_POST, 'underline', document.css_form.underline.checked);
+	if (document.css_form.italic.checked) ajax.set_arg(AJAX_POST, 'italic', document.css_form.italic.checked);
+	ajax.set_arg(AJAX_POST, 'font_color', document.css_form.font_color.value);
+	ajax.set_arg(AJAX_POST, 'background_color', document.css_form.background_color.value);
+	ajax.set_arg(AJAX_POST, 'font_size', document.css_form.font_size.value);
+	ajax.set_arg(AJAX_POST, 'font_size_unit', document.css_form.font_size_unit.value);
+	ajax.send('index.' + FSB_PHPEXT, AJAX_MODE_TXT);
+}
+
+var rainbow_box = new Array;
+var rainbow_i = 0;
+window.addEvent('load', function()
+{
+	rainbow_box[rainbow_i++] = new_rainbow('font_color');
+	rainbow_box[rainbow_i++] = new_rainbow('background_color');
+});
+
+function new_rainbow(id)
+{
+	return (new MooRainbow(id + '_click', {
+			'startColor': [58, 142, 246],
+			'id': id,
+			'imgPath': '{ROOT}images/moorainbow/',
+			'onStart': function(color)
+			{
+				for (var i = 0; i < rainbow_i; i++)
+				{
+					if (rainbow_box[i] != this)
+					{
+						rainbow_box[i].hide(rainbow_box[i].layout);
+					}
+				}
+			},
+			'onComplete': function(color)
+			{
+				$(id).value = color.hex;
+			},
+			'onLayout': function()
+			{
+				var colors = [
+					['#000000', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'],
+					['#202020', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080'],
+					['#404040', '#c00000', '#c0c000', '#00c000', '#00c0c0', '#0000c0', '#c000c0'],
+					['#808080', '#ff4040', '#ffff40', '#40ff40', '#40ffff', '#4040ff', '#ff40ff'],
+					['#c0c0c0', '#ff8080', '#ffff80', '#80ff80', '#80ffff', '#8080ff', '#ff80ff'],
+					['#ffffff', '#ffc0c0', '#ffffc0', '#c0ffc0', '#c0ffff', '#c0c0ff', '#ffc0ff']
+				];
+
+				var html = '';
+				for (var i = 0; i < 7; i++)
+				{
+					html += '<div style="height: 16px; width: 95px;">';
+					for (var j = 0; j < 6; j++)
+					{
+						attr = '$(\'' + this.options.id + '\').value = \'' + colors[j][i] + '\';for (var i = 0; i < rainbow_i; i++){rainbow_box[i].hide(rainbow_box[i].layout);}';
+						html += '<div onclick="' + attr + '" onmouseover="this.style.cursor=\'pointer\';" style="width: 15px; height: 15px; background: ' + colors[j][i] + '; margin: ' + ((j == 0) ? '0' : '-15') + 'px 0 0 ' + (j * 16) + 'px; "></div>';
+					}
+					html += '</div>';
+				}
+
+				this.layout.innerHTML = this.layout.innerHTML + '<div class="moor-defaultColors">' + html + '</div>';
+			}
+		}));
+}
+-->
+</script>
+
+<form name="css_form" action="">
+<fieldset>
+	<legend>{LG_ADM_TPL_CSS_GENERATOR}</legend>
+	<dl>
+		<dt><label>{LG_ADM_CSS_FONT_STYLE} :</label></dt>
+		<dd>
+			<input type="checkbox" name="bold" value="1" /> {LG_ADM_CSS_FONT_STYLE_BOLD} &nbsp;
+			<input type="checkbox" name="underline" value="1" /> {LG_ADM_CSS_FONT_STYLE_UNDERLINE} &nbsp;
+			<input type="checkbox" name="italic" value="1" /> {LG_ADM_CSS_FONT_STYLE_ITALIC}
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="font_color">{LG_ADM_CSS_FONT_COLOR} :</label></dt>
+		<dd>
+			<input type="text" id="font_color" name="font_color" value="{FONT_COLOR}" size="10" /> &nbsp;
+			<strong><a href="#" id="font_color_click">[{LG_COLOR_WINDOW}]</a></strong>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="background_color">{LG_ADM_CSS_BACKGROUND_COLOR} :</label></dt>
+		<dd>
+			<input type="text" id="background_color" name="background_color" value="{BACKGROUND_COLOR}" size="10" /> &nbsp;
+			<strong><a href="#" id="background_color_click">[{LG_COLOR_WINDOW}]</a></strong>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="font_size">{LG_ADM_CSS_FONT_SIZE} :</label></dt>
+		<dd><input type="text" name="font_size" value="{FONT_SIZE}" size="5" /> {LIST_FONT_SIZE}</dd>
+	</dl>
+	<div><input type="button" name="submit" value="{LG_SUBMIT}" class="submit" onclick="submit_css_generator()" /></div>
+</fieldset>
+</form>
+
+<include name="adm_simple_footer.html">

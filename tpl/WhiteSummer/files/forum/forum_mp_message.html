@@ -1,0 +1,52 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<form action="{U_ACTION}" method="post">
+<div class="info">
+	<h1>{LG_OPTIONS}</h1>
+	<div id="mp_options">
+		<div>
+			<input type="hidden" name="action[]" value="{MP_ID}" />
+			<input type="submit" name="submit_delete" value="{LG_DELETE}" class="submit" />
+			<switch name="can_savebox"><input type="submit" name="submit_savebox" value="{LG_MP_ARCHIVE}" class="submit" /></switch>
+		</div>
+
+		<a href="{U_MP_NEW}"><img src="{IMG_PM_NEW}" alt="{LG_MP_NEW}" title="{LG_MP_NEW}" /></a>
+		<if content="$MP_CAN_REPLY">
+			<a href="{U_MP_REPLY}"><img src="{IMG_ANSWER}" alt="{LG_MP_REPLY}" title="{LG_MP_REPLY}" /></a>
+		</if>
+	</div>
+</div>
+
+<if content="$PAGINATION"><div style="text-align: right;">{PAGINATION}</div></if>
+
+<div class="round">
+	<h1>{MP_TITLE}</h1>
+	<block name="mp">
+		<table class="post">
+			<tr>
+				<td class="userinfo">
+					<div class="userinfo_box" align="center">
+						<if content="$mp.U_EDIT_MP"><a href="{mp.U_EDIT_MP}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a><br /></if>
+						{mp.NICKNAME}
+						<if content="$mp.U_AVATAR"><br /><img src="{mp.U_AVATAR}" alt="{mp.U_AVATAR}" title="{mp.U_AVATAR}" /></if>
+					</div>
+				</td>
+				<td class="postcontent">
+					<div class="postheader">
+						<span><a href="{mp.U_ABUSE}"><img src="{IMG_ABUSE}" title="{LG_MP_ABUSE}" alt="{LG_MP_ABUSE}" /></a></span>
+						{mp.DATE} <if content="$mp.IP">- {LG_IP} : <a href="{mp.U_IP}">{mp.IP}</a></if>
+					</div>
+					<p>{mp.CONTENT}</p>
+				</td>
+			</tr>
+		</table>
+	</block>
+	</div>
+</div>
+</form>
+
+<if content="$PAGINATION"><div style="text-align: right;">{PAGINATION}</div></if>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />
