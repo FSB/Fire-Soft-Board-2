@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_split.php
 ** | Begin :	24/10/2005
-** | Last :		21/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -59,7 +59,7 @@ class Page_modo_split extends Fsb_model
 	{
 		$parser = new Parser();
 
-		$sql = 'SELECT p.p_id, p.p_text, p.u_id, p.p_nickname, p.p_time, p.p_map, t.f_id, t.t_title, u.u_color, u.u_auth
+		$sql = 'SELECT p.p_id, p.t_id, p.p_text, p.u_id, p.p_nickname, p.p_time, p.p_map, t.f_id, t.t_title, u.u_color, u.u_auth
 				FROM ' . SQL_PREFIX . 'posts p
 				LEFT JOIN ' . SQL_PREFIX . 'topics t
 					ON p.t_id = t.t_id
@@ -85,10 +85,19 @@ class Page_modo_split extends Fsb_model
 			// Messages
 			do
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
+
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				Fsb::$tpl->set_blocks('post', array(
 					'ID' =>			$row['p_id'],
-					'CONTENT' =>	$parser->mapped_message($row['p_text'], $row['p_map']),
+					'CONTENT' =>	$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 					'NICKNAME' =>	Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
 					'DATE' =>		Fsb::$session->print_date($row['p_time']),
 

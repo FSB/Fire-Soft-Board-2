@@ -22,7 +22,7 @@ if (use_wysiwyg['map_textarea_{map.NAME}'])
 		<if content="$fsbcode.IMG">
 			<img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{fsbcode.IMG}" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}')" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" />
 		<else>
-			<div class="fsbcode" onclick="textEditor['map_textarea_{map.NAME}').add('{fsbcode.CODE}')" title="{fsbcode.TEXT}" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}', true)" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}', true)"><div>{fsbcode.CODE}</div><span></span></div>
+			<div class="fsbcode" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}', true)" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}', true)"><div>{fsbcode.CODE}</div><span></span></div>
 		</if>
 	</td>
 

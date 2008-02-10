@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser.php
 ** | Begin :	13/03/2005
-** | Last :		20/12/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -37,8 +37,9 @@ class Parser extends Fsb_model
 	** Parse du texte
 	** -----
 	** $str ::			Chaîne de caractère à parser.
+	** $info ::			Tableau d'informations (variables prédéfinies)
 	*/
-	public function message($str)
+	public function message($str, $info = array())
 	{
 		// Prise en compte du HTML ?
 		if ($this->parse_html)
@@ -64,7 +65,7 @@ class Parser extends Fsb_model
 			$fsbcode->parse_img = $this->parse_img;
 			$fsbcode->is_signature = $this->is_signature;
 			$fsbcode->parse_eof = FALSE;
-			$str = $fsbcode->parse($str);
+			$str = $fsbcode->parse($str, $info);
 		}
 		else
 		{
@@ -96,12 +97,13 @@ class Parser extends Fsb_model
 	** -----
 	** $str ::			Chaîne du message
 	** $map_name ::		Nom de la MAP
+	** $info ::			Tableau d'informations (variables prédéfinies)
 	*/
-	public function mapped_message($str, $map_name)
+	public function mapped_message($str, $map_name, $info = array())
 	{
 		$str = Map::parse_message($str, $map_name);
 
-		return ($this->message($str));
+		return ($this->message($str, $info));
 	}
 
 	/*
@@ -121,7 +123,7 @@ class Parser extends Fsb_model
 	** -----
 	** $str ::		Texte de la signature
 	*/
-	public function sig($str)
+	public function sig($str, $info = array())
 	{
 		$old_parse_fsbcode = $this->parse_fsbcode;
 		$old_parse_img = $this->parse_img;
@@ -130,7 +132,7 @@ class Parser extends Fsb_model
 		$this->is_signature = TRUE;
 
 		$str = htmlspecialchars($str);
-		$str = $this->message($str);
+		$str = $this->message($str, $info);
 
 		$this->is_signature = FALSE;
 		$this->parse_fsbcode = $old_parse_fsbcode;

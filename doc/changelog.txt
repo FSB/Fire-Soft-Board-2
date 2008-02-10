@@ -33,6 +33,8 @@
 - Fix de l'auteur d'un sujet en cas de fusion
 - Fix de l'upload des MODS
 - Fix d'un bug sur les critères dans le délestage des membres
+- Fix d'un bug au niveau de la récupération des FSBcodes autorisés dans la signature
+- Fix de la date du dernier message sur les sujets divisés
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

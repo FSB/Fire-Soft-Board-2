@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/user/user_sig.php
 ** | Begin :	09/11/2005
-** | Last :		21/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -113,9 +113,17 @@ class Page_user_sig extends Fsb_model
 			$preview_sig = Parser_wysiwyg::encode(htmlspecialchars($preview_sig));
 		}
 
+		// Informations passées au parseur de message
+		$parser_info = array(
+			'u_id' =>			Fsb::$session->id(),
+			'p_nickname' =>		Fsb::$session->data['u_nickname'],
+			'u_auth' =>			Fsb::$session->auth(),
+			'is_sig' =>			TRUE,
+		);
+
 		Fsb::$tpl->set_switch('preview');
 		Fsb::$tpl->set_vars(array(
-			'PREVIEW_SIG' =>	$parser->sig($preview_sig),
+			'PREVIEW_SIG' =>	$parser->sig($preview_sig, $parser_info),
 		));
 	}
 

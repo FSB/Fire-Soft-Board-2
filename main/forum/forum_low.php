@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_low.php
 ** | Begin :	23/09/2007
-** | Last :		20/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -301,7 +301,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Affichage des messages
 		$parser = new Parser();
 
-		$sql = 'SELECT p.*, u.u_auth
+		$sql = 'SELECT p.u_id, p.f_id, p.t_id, p.p_nickname, p.p_time, p.p_text, p.p_map, u.u_auth
 				FROM ' . SQL_PREFIX . 'posts p
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = p.u_id
@@ -310,9 +310,18 @@ class Fsb_frame_child extends Fsb_frame
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['p_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'f_id' =>			$row['f_id'],
+				't_id' =>			$row['t_id'],
+			);
+
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 			Fsb::$tpl->set_blocks('post', array(
-				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map']),
+				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 				'NICKNAME' =>		htmlspecialchars($row['p_nickname']),
 				'DATE' =>			Fsb::$session->print_date($row['p_time']),
 

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/portail/portail_news.php
 ** | Begin :		28/11/2005
-** | Last :			21/01/2008
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -42,9 +42,18 @@ class Page_portail_news extends Fsb_model
 			$result = Fsb::$db->query($sql);
 			while ($row = Fsb::$db->row($result))
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
+
 				// Parse du message
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
-				$text = $parser->mapped_message($row['p_text'], $row['p_map']);
+				$text = $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 
 				Fsb::$tpl->set_blocks('news', array(
 					'NEW_NAME' =>			Parser::title($row['t_title']),

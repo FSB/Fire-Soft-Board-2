@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_moderation.php
 ** | Begin :	04/10/2006
-** | Last :		10/12/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -373,7 +373,7 @@ class Moderation extends Fsb_model
 		$sql = 'SELECT p_id, p_time, p_nickname, u_id
 					FROM ' . SQL_PREFIX . 'posts
 					WHERE t_id = ' . $topic_id . '
-					ORDER BY p_time
+					ORDER BY p_time DESC
 					LIMIT 1';
 		$result = Fsb::$db->query($sql);
 		$new_last_post = Fsb::$db->row($result);

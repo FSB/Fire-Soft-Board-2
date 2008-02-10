@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_calendar.php
 ** | Begin :	17/09/2006
-** | Last :		12/10/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -61,13 +61,21 @@ class Page_modo_calendar extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['u_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'c_id' =>			$row['c_id'],
+			);
+
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 			Fsb::$tpl->set_blocks('event', array(
 				'TITLE' =>		htmlspecialchars($row['c_title']),
 				'BEGIN' =>		Fsb::$session->print_date($row['c_begin']),
 				'END' =>		($row['c_end'] > $row['c_begin']) ? Fsb::$session->print_date($row['c_end']) : '',
 				'NICKNAME' =>	Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
-				'CONTENT' =>	$parser->mapped_message($row['c_content'], 'classic'),
+				'CONTENT' =>	$parser->mapped_message($row['c_content'], 'classic', $parser_info),
 
 				'U_EVENT' =>	sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;mode=event&amp;time=' . $row['c_begin']),
 				'U_APPROVE' =>	sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=calendar&amp;mode=approve&amp;id=' . $row['c_id']),

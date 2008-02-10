@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser_fsbcode.php
 ** | Begin :	16/07/2007
-** | Last :		16/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -16,7 +16,7 @@
 class Parser_fsbcode extends Fsb_model
 {
 	// Mise en cache des FSBcode
-	private static $cache_fsbcode = NULL;
+	private static $cache_fsbcode = array();
 
 	// Si TRUE, on n'affiche que les FSBcode visibles par le WYSIWYG
 	public $only_wysiwyg = FALSE;
@@ -30,25 +30,36 @@ class Parser_fsbcode extends Fsb_model
 	// Parse d'une signature ?
 	public $is_signature = FALSE;
 
+	// Variables prédéfinies qu'on peut potentiellement parser
+	private $static_vars = array(
+		'{USER_NICKNAME}' =>	'p_nickname',
+		'{USER_ID}' =>			'u_id',
+		'{TOPIC_ID}' =>			't_id',
+		'{FORUM_ID}' =>			'f_id',
+	);
+
 	/*
 	** Lance le parsing des FSBcode à partir des informations contenues dans la table fsb2_fsbcode
+	** -----
+	** $str ::	Chaîne de caractères à parser
+	** $info ::	Tableau d'informations (variables prédéfinies)
 	*/
-	public function parse($str)
+	public function parse($str, $info = array())
 	{
 		// On récupère les informations sur les FSBcode
-		if (self::$cache_fsbcode === NULL)
+		if (!isset(self::$cache_fsbcode[$this->is_signature]))
 		{
 			$sql = 'SELECT *
 					FROM ' . SQL_PREFIX . 'fsbcode
-					WHERE fsbcode_activated = 1
+					WHERE fsbcode_activated' . (($this->is_signature) ? '_sig' : '') . ' = 1
 					ORDER BY fsbcode_priority DESC';
 			$result = Fsb::$db->query($sql, 'fsbcode_');
 			$list = Fsb::$db->rows($result);
-			self::$cache_fsbcode = $list;
+			self::$cache_fsbcode[$this->is_signature] = $list;
 		}
 		else
 		{
-			$list = self::$cache_fsbcode;
+			$list = self::$cache_fsbcode[$this->is_signature];
 		}
 
 		// On parcourt la liste des FSBcode pour parser le message
@@ -91,7 +102,7 @@ class Parser_fsbcode extends Fsb_model
 			// FSBcode géré par un remplacement du code HTML
 			else
 			{
-				$str = $this->parse_fsbcode_patterns($str, $data['fsbcode_search'], $data['fsbcode_replace']);
+				$str = $this->parse_fsbcode_patterns($str, $data['fsbcode_search'], $data['fsbcode_replace'], $info);
 			}
 		}
 
@@ -112,8 +123,9 @@ class Parser_fsbcode extends Fsb_model
 	** $str ::		Chaîne à parser
 	** $search ::	Recherche de FSBcode
 	** $replace ::	Remplacement du FSBcode
+	** $info ::		Tableau d'informations (variables prédéfinies)
 	*/
-	private function parse_fsbcode_patterns($str, $search, $replace)
+	private function parse_fsbcode_patterns($str, $search, $replace, $info = array())
 	{
 		// Création d'un pattern à partir de la chaîne de recherche
 		$vars = array();
@@ -139,6 +151,12 @@ class Parser_fsbcode extends Fsb_model
 		while (preg_match('#' . $search . '#si', $str))
 		{
 			$str = preg_replace('#' . $search . '#si', str_replace(array("\r\n", "\n"), array(" ", " "), $replace), $str);
+		}
+
+		// Parse des variables prédéfinies
+		foreach ($this->static_vars AS $varname => $key)
+		{
+			$str = str_replace($varname, (isset($info[$key])) ? $info[$key] : '', $str);
 		}
 		return ($str);
 	}

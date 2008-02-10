@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_approve.php
 ** | Begin :	07/11/2006
-** | Last :		21/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -89,7 +89,7 @@ class Page_modo_approve extends Fsb_model
 
 		$parser = new Parser();
 
-		$sql = 'SELECT t.t_id, t.t_title, t.t_approve, p.p_id, p.p_text, p.p_map, p.p_nickname, p.p_time, p.u_ip, u.u_id, u.u_color, u.u_avatar, u.u_avatar_method, u.u_can_use_avatar
+		$sql = 'SELECT t.t_id, t.f_id, t.t_title, t.t_approve, p.p_id, p.p_text, p.p_map, p.p_nickname, p.p_time, p.u_ip, u.u_id, u.u_color, u.u_avatar, u.u_avatar_method, u.u_can_use_avatar, u.u_auth
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'posts p
 					ON t.t_id = p.t_id
@@ -110,11 +110,20 @@ class Page_modo_approve extends Fsb_model
 
 			do
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
+
 				$avatar = User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_can_use_avatar']);
 				Fsb::$tpl->set_blocks('post', array(
 					'NICKNAME' =>		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
 					'DATE' =>			Fsb::$session->print_date($row['p_time']),
-					'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map']),
+					'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 					'AVATAR' =>			$avatar,
 					'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
 

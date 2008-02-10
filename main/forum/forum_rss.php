@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_rss.php
 ** | Begin :		02/06/2006
-** | Last :			22/01/2008
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -86,7 +86,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Liste des messages
-		$sql = 'SELECT p.p_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_description, t.f_id, u.u_activate_email, u.u_email, u.u_auth
+		$sql = 'SELECT p.p_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_description, t.f_id, t.t_id, u.u_activate_email, u.u_email, u.u_auth
 				FROM ' . SQL_PREFIX . 'posts p
 				INNER JOIN ' . SQL_PREFIX . 'topics t
 					ON p.t_id = t.t_id
@@ -115,10 +115,19 @@ class Fsb_frame_child extends Fsb_frame
 
 			do
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
-					htmlspecialchars($parser->mapped_message($row['p_text'], $row['p_map'])),
+					htmlspecialchars($parser->mapped_message($row['p_text'], $row['p_map'], $parser_info)),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
 					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&p_id=' . $row['p_id'] . '#p' . $row['p_id']),
 					$row['p_time']
@@ -139,7 +148,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Liste des messages
-		$sql = 'SELECT f.f_name, p.p_id, p.p_text, p.p_time, p.p_nickname, p.p_map, t.t_id, t.t_title, t.t_description, u.u_activate_email, u.u_email, u.u_auth
+		$sql = 'SELECT f.f_name, p.p_id, p.u_id, p.f_id, p.p_text, p.p_time, p.p_nickname, p.p_map, t.t_id, t.t_title, t.t_description, u.u_activate_email, u.u_email, u.u_auth
 				FROM ' . SQL_PREFIX . 'forums f
 				LEFT JOIN ' . SQL_PREFIX . 'topics t
 					ON f.f_id = t.f_id
@@ -165,11 +174,19 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			do
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
-					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
+					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info)),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
 					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&t_id=' . $row['t_id']),
 					$row['p_time']
@@ -185,7 +202,7 @@ class Fsb_frame_child extends Fsb_frame
 	public function rss_index()
 	{
 		// Liste des messages
-		$sql = 'SELECT f.f_name, p.p_id, p.p_text, p.p_time, p.p_nickname, p.p_map, t.t_id, t.t_title, t.t_description, u.u_activate_email, u.u_email
+		$sql = 'SELECT f.f_name, p.p_id, p.f_id, p.u_id, p.p_text, p.p_time, p.p_nickname, p.p_map, t.t_id, t.t_title, t.t_description, u.u_activate_email, u.u_email, u.u_auth
 				FROM ' . SQL_PREFIX . 'forums f
 				LEFT JOIN ' . SQL_PREFIX . 'topics t
 					ON f.f_id = t.f_id
@@ -212,10 +229,19 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			do
 			{
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['p_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
+
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
-					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
+					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info)),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
 					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&t_id=' . $row['t_id']),
 					$row['p_time']

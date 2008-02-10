@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/ajax.php
 ** | Begin :	26/09/2006
-** | Last :		21/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -233,12 +233,21 @@ function ajax_submit_post($id)
 	$parser = new Parser();
 	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+	// Informations passées au parseur de message
+	$parser_info = array(
+		'u_id' =>			$data['u_id'],
+		'p_nickname' =>		$data['p_nickname'],
+		'u_auth' =>			$data['u_auth'],
+		'f_id' =>			$data['f_id'],
+		't_id' =>			$data['t_id'],
+	);
+
 	// Parse et affichage du message
 	$xml = new Xml();
 	$xml->document->setTagName('root');
 
 	$item = $xml->document->createElement('content');
-	$item->setData($parser->mapped_message($content, 'classic'));
+	$item->setData($parser->mapped_message($content, 'classic', $parser_info));
 	$xml->document->appendChild($item);
 
 	$item = $xml->document->createElement('title');
@@ -253,7 +262,7 @@ function ajax_submit_post($id)
 */
 function ajax_show_post($id)
 {
-	$sql = 'SELECT p.p_text, p.u_id, t.f_id, t.t_first_p_id, u.u_auth
+	$sql = 'SELECT p.p_text, p.u_id, p.p_nickname, t.t_id, t.f_id, t.t_first_p_id, u.u_auth
 			FROM ' . SQL_PREFIX . 'posts p
 			LEFT JOIN ' . SQL_PREFIX . 'topics t
 				ON p.t_id = t.t_id
@@ -274,12 +283,21 @@ function ajax_show_post($id)
 	$parser = new Parser();
 	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+	// Informations passées au parseur de message
+	$parser_info = array(
+		'u_id' =>			$data['u_id'],
+		'p_nickname' =>		$data['p_nickname'],
+		'u_auth' =>			$data['u_auth'],
+		'f_id' =>			$data['f_id'],
+		't_id' =>			$data['t_id'],
+	);
+
 	// Parse et affichage du message
 	$xml = new Xml();
 	$xml->document->setTagName('root');
 
 	$item = $xml->document->createElement('content');
-	$item->setData($parser->mapped_message($data['p_text'], 'classic'));
+	$item->setData($parser->mapped_message($data['p_text'], 'classic', $parser_info));
 	$xml->document->appendChild($item);
 
 	return ($xml->document->asValidXML());

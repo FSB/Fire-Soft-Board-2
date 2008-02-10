@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/sdk.php
 ** | Begin :	06/08/2007
-** | Last :		11/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -280,6 +280,14 @@ class Fsb_sdk extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['u_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'is_sig' =>			TRUE,
+			);
+
 			// Informations sur le membre
 			$row['u_avatar'] =		User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_can_use_avatar']);
 			$row['rank'] =			User::get_rank($row['u_total_post'], $row['u_rank_id']);
@@ -290,7 +298,7 @@ class Fsb_sdk extends Fsb_model
 			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], FALSE);
 			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE;
 			$row['nickname'] =		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']);
-			$row['u_signature'] =	$parser->sig($row['u_signature']);
+			$row['u_signature'] =	$parser->sig($row['u_signature'], $parser_info);
 
 			$users[] = $row;
 		}
@@ -439,6 +447,14 @@ class Fsb_sdk extends Fsb_model
 		{
 			$parser->parse_html = FALSE;
 
+			// Informations passées au parseur de message
+			$parser_sig_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['p_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'is_sig' =>			TRUE,
+			);
+
 			// Informations sur le posteur du message
 			$row['u_avatar'] =		User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_can_use_avatar']);
 			$row['rank'] =			User::get_rank($row['u_total_post'], $row['u_rank_id']);
@@ -449,11 +465,20 @@ class Fsb_sdk extends Fsb_model
 			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], FALSE);
 			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE;
 			$row['nickname'] =		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']);
-			$row['u_signature'] =	$parser->sig($row['u_signature']);
+			$row['u_signature'] =	$parser->sig($row['u_signature'], $parser_sig_info);
+
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['p_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'f_id' =>			$row['f_id'],
+				't_id' =>			$row['t_id'],
+			);
 
 			// Informations sur le message
 			$parser->parse_html =	(Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
-			$row['p_text'] =		$parser->mapped_message($row['p_text'], $row['p_map']);
+			$row['p_text'] =		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 			$row['p_timestamp'] =	$row['p_time'];
 			$row['p_time'] =		Fsb::$session->print_date($row['p_time'], TRUE, NULL, TRUE);
 			$posts[] = $row;

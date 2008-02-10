@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_mp.php
 ** | Begin :		06/10/2005
-** | Last :			11/01/2008
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -624,8 +624,16 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['u_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'mp_id' =>			$row['mp_id'],
+			);
+
 			Fsb::$tpl->set_blocks('mp', array(
-				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic'),
+				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic', $parser_info),
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['mp_time']),
 				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,

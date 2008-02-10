@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/forum/forum_calendar.php
 ** | Begin :		17/06/2006
-** | Last :			13/12/2007
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -361,10 +361,18 @@ class Fsb_frame_child extends Fsb_frame
 				list($day, $month, $year, $hour, $min) = explode(' ', date('d n Y H i', $row['c_end']));
 				$end = ($min == '00' && $hour == '00') ? sprintf(Fsb::$session->lang('calendar_event_date'), sprintf(Fsb::$session->lang('format_date'), $day, Fsb::$session->lang('month_' . $month), $year)) : sprintf(Fsb::$session->lang('calendar_event_date2'), sprintf(Fsb::$session->lang('format_date'), $day, Fsb::$session->lang('month_' . $month), $year), $hour, $min);
 
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['u_id'],
+					'p_nickname' =>		$row['u_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'c_id' =>			$row['c_id'],
+				);
+
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				Fsb::$tpl->set_blocks('event', array(
 					'TITLE' =>			htmlspecialchars($row['c_title']),
-					'CONTENT' =>		$parser->mapped_message($row['c_content'], 'classic'),
+					'CONTENT' =>		$parser->mapped_message($row['c_content'], 'classic', $parser_info),
 					'BEGIN' =>			$begin,
 					'END' =>			$end,
 					'CAN_EDIT' =>		(($row['u_id'] == Fsb::$session->id() && Fsb::$session->is_logged()) || Fsb::$session->is_authorized('approve_event')) ? TRUE : FALSE,

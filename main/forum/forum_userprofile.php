@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_userprofile.php
 ** | Begin :		28/09/2005
-** | Last :			17/01/2008
+** | Last :			10/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -161,6 +161,14 @@ class Fsb_frame_child extends Fsb_frame
 			'href' =>		sid(ROOT . 'index.' . PHPEXT . '?p=rss&amp;mode=user&amp;id=' . $this->id),
 		));
 
+		// Informations passées au parseur de message
+		$parser_info = array(
+			'u_id' =>			$this->data['u_id'],
+			'p_nickname' =>		$this->data['u_nickname'],
+			'u_auth' =>			$this->data['u_auth'],
+			'is_sig' =>			TRUE,
+		);
+
 		Fsb::$tpl->set_file('forum/forum_userprofile.html');
 		Fsb::$tpl->set_vars(array(
 			'USER_NICKNAME' =>			$this->page_title,
@@ -173,7 +181,7 @@ class Fsb_frame_child extends Fsb_frame
 			'USER_TOPIC_TOTAL' =>		$this->data['u_total_topic'],
 			'USER_TOPIC_RATE' =>		$this->data['topic_rate'],
 			'USER_TOPIC_TOTAL_RATE' =>	$this->data['topic_total_rate'],
-			'USER_SIG' =>				(Fsb::$cfg->get('activate_sig') && $this->data['u_can_use_sig']) ? $parser->sig($this->data['u_signature']) : '',
+			'USER_SIG' =>				(Fsb::$cfg->get('activate_sig') && $this->data['u_can_use_sig']) ? $parser->sig($this->data['u_signature'], $parser_info) : '',
 			'USER_AGE' =>				($this->data['u_age']) ? sprintf(Fsb::$session->lang('age_format'), $this->data['u_age']) : Fsb::$session->lang('userprofile_age_none'),
 			'USER_SEXE' =>				($this->data['sexe'] != '') ? $this->data['sexe'] : Fsb::$session->lang('userprofile_sexe_none'),
 			'USER_JOINED' =>			Fsb::$session->print_date($this->data['u_joined']),

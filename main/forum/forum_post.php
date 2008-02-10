@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_post.php
 ** | Begin :	03/10/2005
-** | Last :		21/01/2008
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -647,9 +647,26 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			Fsb::$session->id(),
+				'p_nickname' =>		Fsb::$session->data['u_nickname'],
+				'u_auth' =>			Fsb::$session->auth(),
+			);
+
+			if (isset($this->data['f_id']))
+			{
+				$parser_info['f_id'] = $this->data['f_id'];
+			}
+
+			if (isset($this->data['t_id']))
+			{
+				$parser_info['t_id'] = $this->data['t_id'];
+			}
+
 			Fsb::$tpl->set_switch('preview');
 			Fsb::$tpl->set_vars(array(
-				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map),
+				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map, $parser_info),
 			));
 		}
 		else if (Http::request('submit_upload', 'post') && Fsb::$mods->is_active('upload'))
@@ -754,7 +771,7 @@ class Fsb_frame_child extends Fsb_frame
 		$parser = new Parser();
 
 		// On selectionne les anciens messages
-		$sql = 'SELECT p.p_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, u.u_color, u.u_auth, u.u_avatar, u.u_avatar_method, u.u_activate_avatar
+		$sql = 'SELECT p.p_id, p.f_id, p.t_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, u.u_color, u.u_auth, u.u_avatar, u.u_avatar_method, u.u_activate_avatar
 				FROM ' . SQL_PREFIX . 'posts p
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON p.u_id = u.u_id
@@ -767,11 +784,20 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['p_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'f_id' =>			$row['f_id'],
+				't_id' =>			$row['t_id'],
+			);
+
 			Fsb::$tpl->set_blocks('post', array(
 				'ID' =>				$row['p_id'],
 				'NICKNAME' =>		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['p_time']),
-				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map']),
+				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 				'USER_AVATAR' =>	sprintf(Fsb::$session->lang('user_avatar'), htmlspecialchars($row['p_nickname'])),
 
 				'U_AVATAR' =>		User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_activate_avatar']),
@@ -816,12 +842,20 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['u_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'mp_id' =>			$row['mp_id'],
+			);
+
 			Fsb::$tpl->set_switch('topic_review');
 			Fsb::$tpl->set_blocks('post', array(
 				'ID' =>				$row['mp_id'],
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['mp_time']),
-				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic'),
+				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic', $parser_info),
 			));
 		}
 		Fsb::$db->free($result);

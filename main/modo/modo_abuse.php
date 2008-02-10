@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_abuse.php
 ** | Begin :	20/10/2005
-** | Last :		25/12/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -191,10 +191,19 @@ class Page_modo_abuse extends Fsb_model
 		{
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['poster_id'],
+				'p_nickname' =>		$row['poster_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'f_id' =>			$row['f_id'],
+				't_id' =>			$row['t_id'],
+			);
+
 			$avatar = User::get_avatar($row['poster_avatar'], $row['poster_avatar_method'], $row['poster_can_use_avatar']);
 			Fsb::$tpl->set_vars(array(
 				'MESSAGE_NICKNAME' =>	Html::nickname($row['poster_nickname'], $row['poster_id'], $row['poster_color']),
-				'MESSAGE_CONTENT' =>	$parser->mapped_message($row['content'], $row['map']),
+				'MESSAGE_CONTENT' =>	$parser->mapped_message($row['content'], $row['map'], $parser_info),
 				'MESSAGE_FORUM' =>		(!$mp_id) ? htmlspecialchars($row['f_name']) : '',
 				'MESSAGE_TOPIC' =>		Parser::title($row['title']),
 				'MESSAGE_DATE' =>		Fsb::$session->print_date($row['time']),
@@ -223,10 +232,19 @@ class Page_modo_abuse extends Fsb_model
 			{
 				$parser->parse_html = FALSE;
 
+				// Informations passées au parseur de message
+				$parser_info = array(
+					'u_id' =>			$row['poster_comment_id'],
+					'p_nickname' =>		$row['poster_comment_nickname'],
+					'u_auth' =>			$row['u_auth'],
+					'f_id' =>			$row['f_id'],
+					't_id' =>			$row['t_id'],
+				);
+
 				$avatar = User::get_avatar($row['poster_comment_avatar'], $row['poster_comment_avatar_method'], $row['poster_comment_can_use_avatar']);
 				Fsb::$tpl->set_blocks('post', array(
 					'NICKNAME' =>		Html::nickname($row['poster_comment_nickname'], $row['poster_comment_id'], $row['poster_comment_color']),
-					'CONTENT' =>		$parser->message($row['pa_text']),
+					'CONTENT' =>		$parser->message($row['pa_text'], $parser_info),
 					'DATE' =>			Fsb::$session->print_date($row['pa_time']),
 
 					'U_AVATAR' =>		$avatar,

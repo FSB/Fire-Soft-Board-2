@@ -321,9 +321,18 @@ class Fsb_frame_child extends Fsb_frame
 				$edit_str = sprintf(Fsb::$session->lang('topic_edit_data'), $row['p_edit_total'], $edit_nickname, Fsb::$session->print_date($row['p_edit_time']));
 			}
 
+			// Informations passées au parseur de message
+			$parser_info = array(
+				'u_id' =>			$row['u_id'],
+				'p_nickname' =>		$row['p_nickname'],
+				'u_auth' =>			$row['u_auth'],
+				'f_id' =>			$row['f_id'],
+				't_id' =>			$row['t_id'],
+			);
+
 			// On peut parser le HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
-			$content = $parser->mapped_message($row['p_text'], $row['p_map']);
+			$content = $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 
 			Fsb::$tpl->set_blocks('post', $post_array['data'] += array(
 				'CONTENT' =>		$content,
@@ -516,13 +525,21 @@ class Fsb_frame_child extends Fsb_frame
 		$age =	User::get_age($row['u_birthday']);
 		$sexe =	User::get_sexe($row['u_sexe']);
 
+		// Informations passées au parseur de message
+		$parser_info = array(
+			'u_id' =>			$row['u_id'],
+			'p_nickname' =>		$row['p_nickname'],
+			'u_auth' =>			$row['u_auth'],
+			'is_sig' =>			TRUE,
+		);
+
 		$parser = new Parser();
 		$ary = array();
 		$ary['data'] = array(
 			'IS_VISITOR' =>			($row['u_id'] == VISITOR_ID) ? TRUE : FALSE,
 			'IS_ONLINE' =>			($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE,
 			'NICKNAME' =>			Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
-			'SIG' =>				$parser->sig($row['u_signature']),
+			'SIG' =>				$parser->sig($row['u_signature'], $parser_info),
 			'RANK_NAME' =>			$rank['name'],
 			'RANK_IMG' =>			$rank['img'],
 			'RANK_STYLE' =>			$rank['style'],
