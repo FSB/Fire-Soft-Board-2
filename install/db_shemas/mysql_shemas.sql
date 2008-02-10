@@ -124,11 +124,11 @@ CREATE TABLE fsb2_fsbcode (
   fsbcode_fct varchar(50) NOT NULL,
   fsbcode_priority int(11) NOT NULL,
   fsbcode_wysiwyg tinyint(4) NOT NULL,
-  fsbcode_activated tinyint(4) NOT NULL,
-  fsbcode_activated_sig tinyint(4) NOT NULL,
+  fsbcode_activated tinyint(4) NOT NULL default '1',
+  fsbcode_activated_sig tinyint(4) NOT NULL default '1',
+  fsbcode_menu tinyint(4) NOT NULL default '1',
   fsbcode_inline tinyint(4) NOT NULL,
   fsbcode_img varchar(100) NOT NULL,
-  fsbcode_javascript varchar(50) NOT NULL,
   fsbcode_description varchar(255) NOT NULL,
   fsbcode_list text NOT NULL,
   fsbcode_order int(11) NOT NULL,
@@ -336,6 +336,7 @@ CREATE TABLE fsb2_posts (
   KEY f_id (f_id),
   KEY t_id (t_id),
   KEY u_id (u_id),
+  KEY f_per_user (u_id, f_id),
   FULLTEXT KEY p_text (p_text)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

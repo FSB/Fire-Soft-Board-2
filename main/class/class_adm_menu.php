@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_adm_menu.php
 ** | Begin :	02/04/2005
-** | Last :		27/11/2007
+** | Last :		12/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -64,6 +64,11 @@ class Adm_menu extends Fsb_model
 
 			foreach ($ary AS $subary)
 			{
+				if ($cat == 'mods' && $subary['page'] != 'mods_manager' && !Fsb::$mods->is_active(substr($subary['page'], 5)))
+				{
+					continue;
+				}
+
 				$lg_page = (Fsb::$session->lang('menu_' . $subary['page'])) ? Fsb::$session->lang('menu_' . $subary['page']) : $subary['page'];
 				Fsb::$tpl->set_blocks('cat_menu.menu', array(
 					'U_MENU' =>		sid('index.' . PHPEXT . '?p=' . $subary['page']),

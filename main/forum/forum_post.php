@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_post.php
 ** | Begin :	03/10/2005
-** | Last :		22/12/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -55,12 +55,6 @@ class Fsb_frame_child extends Fsb_frame
 	// En mode preview
 	public $preview = FALSE;
 
-	// Changement du mode WYSIWYG
-	public $change_wysiwyg = FALSE;
-
-	// Le message envoyé est en mode wysiwyg
-	public $hidden_wysiwyg = FALSE;
-
 	// Utilisation du code de confirmation visuelle
 	public $use_captcha = FALSE;
 
@@ -96,7 +90,6 @@ class Fsb_frame_child extends Fsb_frame
 		$this->upload_comment = trim(Http::request('upload_comment', 'post'));
 		$this->id =				intval(Http::request('id'));
 		$this->u_id =			intval(Http::request('u_id'));
-		$this->hidden_wysiwyg = intval(Http::request('hidden_wysiwyg', 'post'));
 		$this->mp_parent =		intval(Http::request('mp_parent', 'post'));
 
 		if ($this->poll_max_vote < 1)
@@ -140,12 +133,6 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else if (Http::request('preview_post', 'post'))
 		{
-			$this->preview = TRUE;
-		}
-		else if (Http::request('set_wysiwyg_on', 'post') !== NULL || Http::request('set_wysiwyg_off', 'post') !== NULL)
-		{
-			$this->change_wysiwyg = TRUE;
-			$this->update_wysiwyg();
 			$this->preview = TRUE;
 		}
 
@@ -654,24 +641,21 @@ class Fsb_frame_child extends Fsb_frame
 		// Prévisualisation
 		if ($this->preview)
 		{
-			$this->content = Map::build_map_content($this->post_map, $this->hidden_wysiwyg);
+			$this->content = Map::build_map_content($this->post_map);
 			$this->title = trim(Http::request('post_title', 'post'));
 
-			if (!$this->change_wysiwyg)
-			{
-				$parser = new Parser();
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
+			$parser = new Parser();
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
 
-				Fsb::$tpl->set_switch('preview');
-				Fsb::$tpl->set_vars(array(
-					'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map),
-				));
-			}
+			Fsb::$tpl->set_switch('preview');
+			Fsb::$tpl->set_vars(array(
+				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map),
+			));
 		}
 		else if (Http::request('submit_upload', 'post') && Fsb::$mods->is_active('upload'))
 		{
 			// En cas d'upload de fichier on reproduit aussi le formulaire
-			$this->content = Map::build_map_content($this->post_map, $this->hidden_wysiwyg);
+			$this->content = Map::build_map_content($this->post_map);
 		}
 
 		// Formulaire de la MAP
@@ -688,7 +672,7 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				$nav_ary[] = array(
 					'url' =>	sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->data['t_id']),
-					'name' =>	(strlen($this->data['t_title']) > 40) ? htmlspecialchars(String::substr($this->data['t_title'], 0, 30) . '(...)') : htmlspecialchars($this->data['t_title']),
+					'name' =>	(strlen($this->data['t_title']) > 40) ? Parser::title(String::substr($this->data['t_title'], 0, 30) . '(...)') : Parser::title($this->data['t_title']),
 				);
 			}
 
@@ -745,7 +729,7 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_vars(array(
 			'POST_PAGE_NAME' =>		$page_name,
 			'POST_LOGIN_TO' =>		$this->post_login_to,
-			'POST_TITLE' =>			htmlspecialchars($this->title),
+			'POST_TITLE' =>			Parser::title($this->title),
 			'POST_DESCRIPTION' =>	htmlspecialchars($this->description),
 			'LIST_SHEMA' =>			(isset($list_shema)) ? $list_shema : '',
 			'CONTENT' =>			Html::make_errstr($this->errstr),
@@ -871,7 +855,7 @@ class Fsb_frame_child extends Fsb_frame
 	public function check_form()
 	{
 		// On récupère sous forme XML le message
-		$this->content = Map::build_map_content($this->post_map, $this->hidden_wysiwyg);
+		$this->content = Map::build_map_content($this->post_map);
 
 		// Contenu de la page vide, ou inférieur au nombre de caractères par message
 		$classic_content = trim(Http::request('post_map_description', 'post'));
@@ -965,6 +949,14 @@ class Fsb_frame_child extends Fsb_frame
 			if ($this->data['f_map_default'])
 			{
 				$this->post_map = $this->data['f_map_default'];
+			}
+		}
+		// Edition de sujet
+		else if ($this->mode == 'edit')
+		{
+			if (empty($this->title))
+			{
+				$this->errstr[] = Fsb::$session->lang('post_need_title');
 			}
 		}
 		// Calendrier
@@ -1289,7 +1281,7 @@ class Fsb_frame_child extends Fsb_frame
 			$attach_code = '[attach=' . $id . '] [img:alt=' . $upload->filename . ',title=' . $upload->filename . ']' . Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=download&nocount&id=' . $id . "[/img]\n" . htmlspecialchars($this->upload_comment) . '[/attach]';
 
 			// Editeur wysiwyg ?
-			if ($this->hidden_wysiwyg && $this->post_map == 'classic')
+			if ($this->post_map == 'classic' && Http::request('post_map_description_hiden', 'post'))
 			{
 				$attach_code = Parser_wysiwyg::decode($attach_code);
 			}
@@ -1356,7 +1348,7 @@ class Fsb_frame_child extends Fsb_frame
 				'FILESIZE' =>	convert_size($row['upload_filesize']),
 				'TIME' =>		Fsb::$session->print_date($row['upload_time']),
 				'IS_IMG' =>		(strpos($row['upload_mimetype'], 'image/') !== FALSE) ? 'true' : 'false',
-				'PATH' =>		ROOT . 'index.' . PHPEXT . '?p=download&amp;file=' . urlencode($row['upload_filename']),
+				'PATH' =>		ROOT . 'index.' . PHPEXT . '?p=download&amp;id=' . $row['upload_id'],
 			));
 		}
 		Fsb::$db->free($result);

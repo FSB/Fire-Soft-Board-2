@@ -402,7 +402,7 @@ class Tpl extends Fsb_model
 	*/
 	private function compile_scripting(&$content)
 	{
-		$content = preg_replace_callback("/<(else)?if content=\"([a-zA-Z0-9 \n\t\-\+\*\/%=_\(\)'\"\.\$!<>\\\]*?)\">/si", array(&$this, 'compile_scripting_vars'), $content);
+		$content = preg_replace_callback("/<(else)?if content=\"([a-zA-Z0-9 \n\t\-\+\*\/%=_\(\)'\"\.\$!<>:\\\]*?)\">/si", array(&$this, 'compile_scripting_vars'), $content);
 		$content = preg_replace_callback('/<switch name="([a-z0-9_&|! \(\)]+)">/si', array(&$this, 'compile_switch'), $content);
 		$content = preg_replace('/<else>/si', "<?php } else { ?>", $content);
 		$content = preg_replace('/<variable name="([A-Z0-9_]+)" value="(.*?)"( *\/)?>/si', "<?php Fsb::\$tpl->set_vars(array('\\1' => '\\2'), Fsb::\$tpl->alias) ?>", $content);

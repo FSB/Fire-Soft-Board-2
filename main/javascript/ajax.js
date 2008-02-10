@@ -2,7 +2,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/ajax.js
 ** | Begin :		20/10/2006
-** | Last :			26/06/2007
+** | Last :			16/01/2008
 ** | User :			Genova
 ** | License :		GPL v2.0
 ** +---------------------------------------------------+
@@ -229,4 +229,32 @@ function Ajax()
 	{
 		throw new Error("Impossible de charger un objet XMLHttpRequest");
 	}
+}
+
+/*
+** Ouvre la fenêtre d'attente ajax
+*/
+function ajax_waiter_open()
+{
+	if (Nav_IE)
+	{
+		var scroll_y = document.body.scrollTop;
+	}
+	else
+	{
+		var scroll_y = window.pageYOffset;
+	}
+	$('ajax_waiter').style.top = scroll_y + 'px';
+	$('ajax_waiter').style.left = '0px';
+	$('ajax_waiter').innerHTML = '<img src="images/ajax-loader.gif" />';
+	$('ajax_waiter').style.display = 'block';
+}
+
+/*
+** Ferme la fenête d'attendre ajax
+*/
+function ajax_waiter_close()
+{
+	$('ajax_waiter').style.display = 'none';
+	$('ajax_waiter').innerHTML = '';
 }

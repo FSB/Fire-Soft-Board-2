@@ -648,11 +648,9 @@ a:hover
 /* Entête du message */
 .post .postcontent .postheader
 {
-	line-height: 19px;
 	vertical-align: middle;
-	padding: 0px 4px;
+	padding: 3px;
 	margin-bottom: 3px;
-	height: 20px;
 	background: #CCE4FF;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -889,6 +887,11 @@ a:hover
 	border-width: 0px 1px 1px 0px;
 }
 
+.t div.error
+{
+	border-width: 1px;
+}
+
 /* Description d'un sujet */
 #topic_description
 {
@@ -1105,4 +1108,17 @@ td.last_message
 {
 	width: 100%;
 	padding: 1px;
+}
+
+.editor_tabs
+{
+	margin-right: 2px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 3px;
+	background-image: url(img/wysiwyg_tab.png);
+	width: 100px;
+	height: 16px;
+	position: relative;
+	float: left;
 }

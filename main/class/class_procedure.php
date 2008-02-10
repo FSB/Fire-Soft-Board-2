@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_procedure.php
 ** | Begin :	30/10/2006
-** | Last :		10/10/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -37,6 +37,7 @@ class Procedure extends Fsb_model
 		'redirect' =>		array('url'),
 		'global' =>			array('varname'),
 		'userdata' =>		array(),
+		'watch_topic' =>	array('topicID' => 'intval', 'watch'),
 	);
 
 	/*
@@ -482,6 +483,28 @@ class Procedure extends Fsb_model
 	private function process_global()
 	{
 		return ($GLOBALS[$argv['varname']]);
+	}
+
+	/*
+	** Surveille un sujet
+	*/
+	private function process_watch_topic($argv)
+	{
+		if ($argv['watch'] == 'true')
+		{
+			Fsb::$db->insert('topics_notification', array(
+				't_id' =>		array($argv['topicID'], TRUE),
+				'u_id' =>		array(Fsb::$session->id(), TRUE),
+				'tn_status' =>	IS_NOT_NOTIFIED,
+			), 'REPLACE');
+		}
+		else
+		{
+			$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_notification
+					WHERE t_id = ' . $argv['topicID'] . '
+						AND u_id = ' . Fsb::$session->id();
+			Fsb::$db->query($sql);
+		}
 	}
 }
 

@@ -12,40 +12,15 @@
 			<if content="$map.TYPE == 'text'">
 				<input type="text" name="{map.NAME}" value="{map.VALUE}" size="{map.SIZE}" maxlength="{map.MAXLENGTH}" />
 			<elseif content="$map.TYPE == 'textarea'">
-				<input type="submit" value=" " <if content="$map.USE_WYSIWYG">class="wysiwyg_on" name="set_wysiwyg_off"<else>class="wysiwyg_off" name="set_wysiwyg_on"</if> title="{LG_POST_WYSIWYG}" />
 				<include name="handler_fsbcode.html" />
-				<if content="$map.USE_WYSIWYG">
-					<iframe id="map_textarea_{map.NAME}" style="height: {map.ROWS}px; width: 99%" class="wysiwyg_frame" src="tpl/{USER_TPL}/files/iframe_wysiwyg.html"></iframe>
-					<textarea name="{map.NAME}" id="map_textarea_{map.NAME}_wysiwyg" style="display: none">{map.VALUE}</textarea>
-					<span style="margin-top: -13px">
-						<br />
-						&nbsp; &nbsp; <a href="javascript:change_textarea_size('map_textarea_{map.NAME}', -5)"><img src="{IMG_TEXTAREA_LESS}" alt="{LG_POST_TEXTAREA_DECREASE}" title="{LG_POST_TEXTAREA_DECREASE}" /></a>
-						<a href="javascript:change_textarea_size('map_textarea_{map.NAME}', 5)"><img src="{IMG_TEXTAREA_MORE}" alt="{LG_POST_TEXTAREA_INCREASE}" title="{LG_POST_TEXTAREA_INCREASE}" /></a>
-					</span>
-
-					<if content="$map.USE_WYSIWYG">
-						<script type="text/javascript">
-						<!--
-							if (!use_wysiwyg['map_textarea_{map.NAME}'])
-							{
-								document.getElementById('map_textarea_{map.NAME}').style.display = 'none';
-								document.getElementById('map_textarea_{map.NAME}_wysiwyg').style.display = 'block';
-							}
-							else
-							{
-								document.write('<input type="hidden" name="hidden_wysiwyg" value="1" />');
-							}
-						//-->
-						</script>
-					</if>
-				<else>
-					<textarea id="map_textarea_{map.NAME}" name="{map.NAME}" style="height: {map.ROWS}px; width: 99%;" onclick="close_fsbcode_box('')">{map.VALUE}</textarea>
-					<span style="margin-top: -13px">
-						<br />
-						&nbsp; &nbsp; <a href="javascript:change_textarea_size('map_textarea_{map.NAME}',-5)"><img src="{IMG_TEXTAREA_LESS}" alt="{LG_POST_TEXTAREA_DECREASE}" title="{LG_POST_TEXTAREA_DECREASE}" /></a>
-						<a href="javascript:change_textarea_size('map_textarea_{map.NAME}',5)"><img src="{IMG_TEXTAREA_MORE}" alt="{LG_POST_TEXTAREA_INCREASE}" title="{LG_POST_TEXTAREA_INCREASE}" /></a>
-					</span>
-				</if>
+				<div>
+					<textarea id="map_textarea_{map.NAME}" name="{map.NAME}" style="height: {map.ROWS}px; width: 99%;" onclick="close_box()">{map.VALUE}</textarea>
+				</div>
+				<div style="margin-top: -15px">
+					<br />
+					&nbsp; &nbsp; <a href="javascript:textEditor['map_textarea_{map.NAME}'].w.change_textarea_size(-5)"><img src="{IMG_TEXTAREA_LESS}" alt="{LG_POST_TEXTAREA_DECREASE}" title="{LG_POST_TEXTAREA_DECREASE}" /></a>
+					<a href="javascript:textEditor['map_textarea_{map.NAME}'].w.change_textarea_size(5)"><img src="{IMG_TEXTAREA_MORE}" alt="{LG_POST_TEXTAREA_INCREASE}" title="{LG_POST_TEXTAREA_INCREASE}" /></a>
+				</div>
 				<input type="hidden" name="map_textarea_{map.NAME}_rows" id="map_textarea_{map.NAME}_rows" value="{map.ROWS}" />
 			<elseif content="$map.TYPE == 'radio'">
 				<block name="map.radio">

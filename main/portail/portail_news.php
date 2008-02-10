@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/portail/portail_news.php
 ** | Begin :		28/11/2005
-** | Last :			17/07/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -47,7 +47,7 @@ class Page_portail_news extends Fsb_model
 				$text = $parser->mapped_message($row['p_text'], $row['p_map']);
 
 				Fsb::$tpl->set_blocks('news', array(
-					'NEW_NAME' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+					'NEW_NAME' =>			Parser::title($row['t_title']),
 					'NEW_TEXT' =>			$text,
 					'NEW_AUTHOR' =>			sprintf(Fsb::$session->lang('pm_post_by'), Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color'])),
 					'NB_COMMENTS' =>		sprintf(String::plural('pm_total_comment', $row['t_total_post'] - 1), $row['t_total_post'] - 1), 

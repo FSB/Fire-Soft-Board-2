@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/cst.php
 ** | Begin :		12/09/2005
-** | Last :			17/12/2007
+** | Last :			12/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -15,7 +15,7 @@
 define('OS_SERVER', (preg_match('/^WIN/', PHP_OS)) ? 'windows' : 'unix');
 define('EOF', (OS_SERVER == 'windows') ? "\r\n" : "\n");
 define('OS_SLASH', (OS_SERVER == 'windows') ? "\\" : "/");
-define('IS_LOCALHOST', (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ? TRUE : FALSE);
+define('IS_LOCALHOST', (isset($_SERVER['HTTP_HOST']) && (preg_match('#^localhost(:[0-9]+)?$#i', $_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ? TRUE : FALSE);
 
 // Extensions PHP importantes pour FSB2
 define('PHP_EXTENSION_GD', (extension_loaded('gd')) ? TRUE : FALSE);
@@ -53,12 +53,6 @@ define('ONE_YEAR', (365 * ONE_DAY));
 
 // Temps au dela duquel les messages non lus ne sont plus pris en compte
 define('MAX_UNREAD_TOPIC_TIME', CURRENT_TIME - (3 * ONE_MONTH));
-
-// Répertoires
-define('SMILEY_PATH', ROOT . 'images/smileys/');
-define('AVATAR_PATH', ROOT . 'images/avatars/');
-define('RANK_PATH', ROOT . 'images/ranks/');
-define('MAPS_PATH', ROOT . 'main/maps/');
 
 // Types de groupes
 define('GROUP_SPECIAL', 1);

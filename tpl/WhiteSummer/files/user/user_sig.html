@@ -10,17 +10,33 @@
 	</div>
 </switch>
 
+<call name="javascript" arg1="ajax.js" />
 <call name="javascript" arg1="wysiwyg.js" />
 <script type="text/javascript">
 <!--
+FSB_editor_lg = [];
+FSB_editor_lg['ltab'] = '#addslashes{$LG_EDITOR_TEXT}';
+FSB_editor_lg['ltab_explain'] = '#addslashes{$LG_EDITOR_TEXT_EXPLAIN}';
+FSB_editor_lg['rtab'] = '#addslashes{$LG_EDITOR_WYSIWYG}';
+FSB_editor_lg['rtab_explain'] = '#addslashes{$LG_EDITOR_WYSIWYG_EXPLAIN}';
+
 var lg_max_chars = '{LG_USER_SIG_SIZE_CHARS}';
 var lg_max_line = '{LG_USER_SIG_SIZE_LINE}';
 var max_chars = {MAX_CHARS};
 var max_line = {MAX_LINE};
+
+function count_char(id, id_show_box)
+{
+	if (!$(id + '_wysiwyg'))
+	{
+		var len = ($(id)) ? $(id).value.length : 0;
+		$(id_show_box).innerHTML = ((max_chars > 0) ? lg_max_chars + ((len) ? len + ' / ' : '0 / ') + max_chars : '') + '&nbsp; &nbsp; &nbsp;' + ((max_line > 0) ? lg_max_line + max_line : '');
+	}
+}
 //-->
 </script>
 
-<form action="{U_ACTION}" method="post" onsubmit="send_wysiwyg('map_textarea_sig')">
+<form action="{U_ACTION}" method="post" onsubmit="textEditor['map_textarea_sig'].send()">
 <switch name="preview">
 	<div class="round">
 		<h1>{LG_PREVIEW}</h1>
@@ -32,20 +48,14 @@ var max_line = {MAX_LINE};
 
 <div class="round">
 	<h1>{LG_USER_MODULE_SIG}</h1>
-	<div class="content">
+	<div class="content form">
 		<block name="map">
 			<div>
-				<input type="submit" value=" " <if content="$map.USE_WYSIWYG">class="wysiwyg_on" name="set_wysiwyg_off"<else>class="wysiwyg_off" name="set_wysiwyg_on"</if> title="{LG_POST_WYSIWYG}" />
 				<include name="handler_fsbcode.html" />
 			</div>
 			<div>
 				<span style="font-weight: bold" id="show_count_char"></span><br />
-				<if content="$map.USE_WYSIWYG">
-					<iframe id="map_textarea_{map.NAME}" class="wysiwyg_frame" src="tpl/{USER_TPL}/files/iframe_wysiwyg.html" style="height: 200px; width: 99%"></iframe>
-					<textarea name="{map.NAME}" id="map_textarea_{map.NAME}_wysiwyg" style="display: none">{USER_SIG}</textarea>
-				<else>
-					<textarea id="map_textarea_{map.NAME}" name="sig" rows="10" style="height: 200px; width: 99%" onkeyup="count_char('map_textarea_sig', 'show_count_char')" onclick="close_fsbcode_box('')">{USER_SIG}</textarea>
-				</if>
+				<div><textarea id="map_textarea_{map.NAME}" name="sig" style="height: 200px; width: 99%" onkeyup="count_char('map_textarea_sig', 'show_count_char')" onclick="close_box()">{USER_SIG}</textarea></div>
 				<script type="text/javascript">
 				<!--
 				count_char('map_textarea_sig', 'show_count_char');

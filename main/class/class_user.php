@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_user.php
 ** | Begin :	13/07/2007
-** | Last :		11/12/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -585,7 +585,7 @@ class User extends Fsb_model
 			{
 				$notify_list[$row['u_language']] = array();
 			}
-			$notify_list[$row['u_language']][] = $row[$row['u_email']];
+			$notify_list[$row['u_language']][] = $row['u_email'];
 		}
 		Fsb::$db->free($result);
 

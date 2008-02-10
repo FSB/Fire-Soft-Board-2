@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/mods/mods_manager.php
 ** | Begin :	10/08/2005
-** | Last :		02/12/2007
+** | Last :		13/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -143,7 +143,6 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 			}
 		}
-		$mods_version['test'] = '1.0.1';
 
 		Fsb::$tpl->set_switch('mods_list');
 		Fsb::$tpl->set_vars(array(
@@ -314,8 +313,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		foreach ($module->xml->document->header[0]->author AS $author_handler)
 		{
 			$email = $author_handler->email[0]->getData();
-			$website = $author_handler->website[0]->getData();
-			if (!preg_match('#^(http|https|ftp)://#', $website))
+			$website = ($author_handler->childExists('website')) ? $author_handler->website[0]->getData() : '';
+			if ($website && !preg_match('#^(http|https|ftp)://#', $website))
 			{
 				$website = 'http://' . $website;
 			}
@@ -654,7 +653,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			$upload = new Upload('upload_mod');
 			$upload->allow_ext(array('zip', 'tar', 'gz'));
-			$mod_name = $upload->store(ROOT . 'mods/');
+			$mod_name = $upload->store(ROOT . 'mods/', TRUE);
 
 			// Cette ligne permettra de mettre en champ caché le MOD si on utilise une connexion FTP
 			$_POST['upload_mod'] = $mod_name;

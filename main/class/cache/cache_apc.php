@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/cache/cache_apc.php
 ** | Begin :	21/10/2006
-** | Last :		20/08/2007
+** | Last :		30/12/2007
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -23,9 +23,13 @@ class Cache_apc extends Cache
 
 	// Identifiant unique pour différencier les types de cache
 	private static $key_id = 0;
+	private $id = 0;
 
 	// Type de cache
 	public $cache_type = 'Alternative PHP Cache';
+
+	// Hash unique
+	private $uniq_hash = '';
 
 	/*
 	** Constructeur
@@ -33,8 +37,11 @@ class Cache_apc extends Cache
 	public function __construct()
 	{
 		self::$key_id++;
+		$this->id = self::$key_id;
+
+		$this->uniq_hash = (file_exists(ROOT . 'config/config.' . PHPEXT)) ? md5_file(ROOT . 'config/config.' . PHPEXT) : md5(dirname($_SERVER['PHP_SELF']));
 	
-		$this->stack = ($this->exists('_apc_keys_' . self::$key_id)) ? $this->get('_apc_keys_' . self::$key_id) : array();
+		$this->stack = ($this->exists('_apc_keys_' . $this->id)) ? $this->get('_apc_keys_' . $this->id) : array();
 		if (!is_array($this->stack))
 		{
 			$this->stack = array();
@@ -47,7 +54,7 @@ class Cache_apc extends Cache
 	*/
 	public function exists($hash)
 	{
-		return ((apc_fetch($hash) !== FALSE) ? TRUE : FALSE);
+		return ((apc_fetch($hash . $this->uniq_hash) !== FALSE) ? TRUE : FALSE);
 	}
 
 	/*
@@ -57,7 +64,7 @@ class Cache_apc extends Cache
 	*/
 	public function get($hash)
 	{
-		return (unserialize(apc_fetch($hash)));
+		return (unserialize(apc_fetch($hash . $this->uniq_hash)));
 	}
 
 	/*
@@ -70,11 +77,11 @@ class Cache_apc extends Cache
 	*/
 	public function put($hash, $array, $comments = '', $timestamp = NULL)
 	{
-		apc_store($hash, serialize($array), $this->ttl);
+		apc_store($hash . $this->uniq_hash, serialize($array), $this->ttl);
 
 		// On garde en mémoire la clef mise en cache
 		$this->stack[$hash] = ($timestamp) ? $timestamp : CURRENT_TIME;
-		apc_store('_apc_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		apc_store('_apc_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*
@@ -94,9 +101,9 @@ class Cache_apc extends Cache
 	*/
 	public function delete($hash)
 	{
-		apc_delete($hash);
+		apc_delete($hash . $this->uniq_hash);
 		unset($this->stack[$hash]);
-		apc_store('_apc_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		apc_store('_apc_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*
@@ -110,7 +117,7 @@ class Cache_apc extends Cache
 		{
 			if ($prefix === NULL || substr($key, 0, strlen($prefix)) == $prefix)
 			{
-				apc_delete($key);
+				apc_delete($key . $this->uniq_hash);
 				unset($this->stack[$key]);
 			}
 		}
@@ -127,11 +134,11 @@ class Cache_apc extends Cache
 		{
 			if ($timestamp < (CURRENT_TIME - $time))
 			{
-				apc_delete($key);
+				apc_delete($key . $this->uniq_hash);
 				unset($this->stack[$key]);
 			}
 		}
-		apc_store('_apc_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		apc_store('_apc_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*

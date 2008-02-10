@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/dbal/dbal.php
 ** | Begin :	26/10/2005
-** | Last :		24/12/2007
+** | Last :		28/12/2007
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -457,6 +457,7 @@ abstract class Dbal extends Fsb_model
 
 		unset($this->cache_field_type, $this->cache_query, $this->iterator_query);
 		$this->_close();
+		$this->id = NULL;
 	}
 
 	/*

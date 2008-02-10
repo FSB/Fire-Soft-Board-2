@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/cache/cache_ftp.php
 ** | Begin :	21/10/2006
-** | Last :		22/12/2007
+** | Last :		06/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -67,7 +67,7 @@ class Cache_ftp extends Cache
 		{
 			return ($this->store[$hash]);
 		}
-		$include = include($this->path . $hash . '.' . PHPEXT);
+		$include = @include($this->path . $hash . '.' . PHPEXT);
 		return (@unserialize($include));
 	}
 
@@ -157,9 +157,9 @@ class Cache_ftp extends Cache
 		$fd = opendir($this->path);
 		while ($file = readdir($fd))
 		{
-			if ($file{0} != '.' && preg_match('#^.*?\.' . PHPEXT . '$#', $file) && is_readable($this->path . $file))
+			if ($file{0} != '.' && preg_match('#^(.*?)\.' . PHPEXT . '$#', $file, $m) && is_readable($this->path . $file))
 			{
-				$return[] = $file;
+				$return[] = $m[1];
 			}
 		}
 		closedir($fd);

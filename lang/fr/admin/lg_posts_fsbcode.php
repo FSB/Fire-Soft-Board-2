@@ -38,6 +38,10 @@ return (array (
   'adm_fsbcode_list_explain' => 'Ne renseignez ce champ que s\'il s\'agit d\'une liste (comme pour les FSBcode Police ou Taille). Entrez les éléments de votre liste en les séparant par un saut de ligne.',
   'adm_fsbcode_description' => 'Description du FSBcode',
   'adm_fsbcode_description_explain' => 'La description du FSBcode apparaît en laissant la souris sur le bouton dans la fenêtre de réponse. En laissant ce champ vide, le forum regardera s\'il existe une clef de langue fsbcode_TAG pour les FSBcodes simple et fsbcode_text_TAG pour les listes.',
+  'adm_fsbcode_up' => 'Monter le FSBcode',
+  'adm_fsbcode_down' => 'Descendre le FSBcode',
+  'adm_fsbcode_menu' => 'Afficher une icone du FSBcode',
+  'adm_fsbcode_menu_explain' => 'En cochant OUI, si le FSBcode est activé, son image (ou le cas échéant son icone) apparaîtra dans la liste des FSBcode au dessus du forumulaire d\'envoie de messages.',
 ));
 
 

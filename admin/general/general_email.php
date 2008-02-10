@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/general/general_email.php
 ** | Begin :	22/06/2006
-** | Last :		25/12/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -134,44 +134,47 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function send_email()
 	{
 		@set_time_limit(0);
+		
+		if (!$this->data['groups'])
+		{
+			Display::message('adm_email_no_dest');
+		}
 
 		// On récupère les membres des groupes
-		if ($this->data['groups'])
+		$send_email = TRUE;
+		$result_email = TRUE;
+		$this->data['groups'] = array_map('intval', $this->data['groups']);
+		$sql = 'SELECT u.u_id, u.u_language, u.u_email
+				FROM ' . SQL_PREFIX . 'groups g
+				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
+					ON gu.g_id = g.g_id
+				INNER JOIN ' . SQL_PREFIX . 'users u
+					ON gu.u_id = u.u_id
+				WHERE g.g_id IN (' . implode(', ', $this->data['groups']) . ')
+					AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
+				GROUP BY u.u_id, u.u_language, u.u_email';
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
 		{
-			$send_email = TRUE;
-			$this->data['groups'] = array_map('intval', $this->data['groups']);
-			$sql = 'SELECT u.u_id, u.u_language, u.u_email
-					FROM ' . SQL_PREFIX . 'groups g
-					LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
-						ON gu.g_id = g.g_id
-					INNER JOIN ' . SQL_PREFIX . 'users u
-						ON gu.u_id = u.u_id
-					WHERE g.g_id IN (' . implode(', ', $this->data['groups']) . ')
-						AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
-					GROUP BY u.u_id, u.u_language, u.u_email';
-			$result = Fsb::$db->query($sql);
-			while ($row = Fsb::$db->row($result))
+			if (!isset($this->data['idx'][$row['u_language']]))
 			{
-				if (!isset($this->data['idx'][$row['u_language']]))
-				{
-					$this->data['idx'][$row['u_language']] = array();
-				}
-				$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
-				$this->total++;
-
-				// On limite le nombre de destinataires (100 par défaut) par Email en BCC
-				$send_email = FALSE;
-				if ($this->total == $this->max_user_per_email)
-				{
-					$result_email = TRUE;
-					$this->send_email_part($result_email);
-					$this->data['idx'] = array();
-					$send_email = TRUE;
-					$this->total = 0;
-				}
+				$this->data['idx'][$row['u_language']] = array();
 			}
-			Fsb::$db->free($result);
+			$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
+			$this->total++;
+
+			// On limite le nombre de destinataires (100 par défaut) par Email en BCC
+			$send_email = FALSE;
+			if ($this->total == $this->max_user_per_email)
+			{
+				$result_email = TRUE;
+				$this->send_email_part($result_email);
+				$this->data['idx'] = array();
+				$send_email = TRUE;
+				$this->total = 0;
+			}
 		}
+		Fsb::$db->free($result);
 
 		if (!$send_email)
 		{
@@ -179,7 +182,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		Log::add(Log::EMAIL, 'mass', $this->data['content']);
-		Display::message(($result) ? 'adm_email_send_well' : 'adm_email_send_bad', 'index.' . PHPEXT . '?p=general_email', 'general_email');
+		Display::message(($result_email) ? 'adm_email_send_well' : 'adm_email_send_bad', 'index.' . PHPEXT . '?p=general_email', 'general_email');
 	}
 
 	/*

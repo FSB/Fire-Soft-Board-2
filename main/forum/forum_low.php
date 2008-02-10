@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_low.php
 ** | Begin :	23/09/2007
-** | Last :		23/09/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -230,7 +230,7 @@ class Fsb_frame_child extends Fsb_frame
 		while ($row = Fsb::$db->row($result))
 		{
 			Fsb::$tpl->set_blocks('topic', array(
-				'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+				'TITLE' =>			Parser::title($row['t_title']),
 				'IS_ANNOUNCE' =>	($row['t_type'] <= 1) ? TRUE : FALSE,
 				'TOTAL' =>			sprintf(String::plural('low_answer', $row['t_total_post'] - 1), $row['t_total_post'] - 1),
 
@@ -260,12 +260,12 @@ class Fsb_frame_child extends Fsb_frame
 		// Navigation de la page
 		$this->nav = Forum::nav($data['f_id'], array(array(
 			'url' =>		sid(ROOT . 'index.' . PHPEXT . '?p=low&amp;mode=topic&amp;id=' . $data['t_id']),
-			'name' =>		htmlspecialchars(Parser::censor($data['t_title'])),
+			'name' =>		Parser::title($data['t_title']),
 		)), $this);
 
 		Fsb::$tpl->set_switch('low_topic');
 		Fsb::$tpl->set_vars(array(
-			'TOPIC_TITLE' =>		htmlspecialchars(Parser::censor($data['t_title'])),
+			'TOPIC_TITLE' =>		Parser::title($data['t_title']),
 			'U_HIGH_VERSION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->id),
 		));
 

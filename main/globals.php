@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/globals.php
 ** | Begin :		18/12/2005
-** | Last :			13/11/2007
+** | Last :			20/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -77,6 +77,8 @@ $GLOBALS['_rewrite'] = array(
 	'#index.' . PHPEXT . '\?p=search&(amp;)?mode=author&(amp;)?id=([0-9]+)&(amp;)?(keywords=([^&]*))?&(amp;)?page=([0-9]+)$#i' => 'author-\\3-\\8.html',
 	'#index.' . PHPEXT . '\?p=search&(amp;)?mode=author_topic&(amp;)?id=([0-9]+)$#i' => 'topic-author-\\3-1.html',
 	'#index.' . PHPEXT . '\?p=search&(amp;)?mode=author_topic&(amp;)?id=([0-9]+)&(amp;)?(keywords=([^&]*))?&(amp;)?page=([0-9]+)$#i' => 'topic-author-\\3-\\8.html',
+	'#index.' . PHPEXT . '\?p=rss&(amp;)?mode=index&(amp;)?cat=([0-9]+)#i' => 'rss-\\3.xml',
+	'#index.' . PHPEXT . '\?p=rss&(amp;)?mode=([a-z_]+)&(amp;)?id=([0-9]+)#i' => 'rss-\\2-\\4.xml',
 );
 
 // Liste des fuseaux horraires standards UTC

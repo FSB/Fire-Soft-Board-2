@@ -1,32 +1,35 @@
 ﻿<include name="header.html" />
 <include name="menu_header.html" />
 
-<form action="{U_ACTION}" method="post" name="form_box">
-<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
-<div class="round">
-	<h1>{LG_MODO_MODULE_UPLOAD}</h1>
-	<table class="t" cellspacing="0">
-	<block name="upload">
-		<if content="$upload.FIRST_ROW">
+<switch name="upload_index">
+	<form action="{U_ACTION}" method="post" name="form_box">
+	<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
+	<div class="round">
+		<h1>{LG_MODO_MODULE_UPLOAD}</h1>
+		<table class="t" cellspacing="0">
+		<block name="upload">
+			<if content="$upload.FIRST_ROW">
+				<tr>
+					<th><a href="{U_ORDER_FILENAME}">{LG_MODO_UPLOAD_FILENAME}</a></th>
+					<th width="100"><a href="{U_ORDER_FILESIZE}">{LG_MODO_UPLOAD_FILESIZE}</a></th>
+					<th width="200"><a href="{U_ORDER_FILETIME}">{LG_MODO_UPLOAD_FILETIME}</a></th>
+					<th width="150"><a href="{U_ORDER_NICKNAME}">{LG_MODO_UPLOAD_NICKNAME}</a></th>
+					<th width="150"><a href="{U_ORDER_AUTH}">{LG_MODO_UPLOAD_AUTH}</a></th>
+					<th width="75">&nbsp;</th>
+				</tr>
+			</if>
 			<tr>
-				<th><a href="{U_ORDER_FILENAME}">{LG_MODO_UPLOAD_FILENAME}</a></th>
-				<th width="100"><a href="{U_ORDER_FILESIZE}">{LG_MODO_UPLOAD_FILESIZE}</a></th>
-				<th width="200"><a href="{U_ORDER_FILETIME}">{LG_MODO_UPLOAD_FILETIME}</a></th>
-				<th width="150"><a href="{U_ORDER_NICKNAME}">{LG_MODO_UPLOAD_NICKNAME}</a></th>
-				<th width="150"><a href="{U_ORDER_AUTH}">{LG_MODO_UPLOAD_AUTH}</a></th>
-				<th width="75">&nbsp;</th>
+				<td align="center"><a href="{upload.DOWNLOAD}">{upload.FILENAME}</a></td>
+				<td align="center">{upload.FILESIZE}</td>
+				<td align="center">{upload.FILETIME}</td>
+				<td align="center">{upload.NICKNAME}</td>
+				<td align="center">{upload.AUTH}</td>
+				<td align="center">
+					<a href="{upload.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+					<input type="checkbox" name="action[]" value="{upload.ID}" />
+				</td>
 			</tr>
-		</if>
-		<tr>
-			<td align="center"><a href="{upload.DOWNLOAD}">{upload.FILENAME}</a></td>
-			<td align="center">{upload.FILESIZE}</td>
-			<td align="center">{upload.FILETIME}</td>
-			<td align="center">{upload.NICKNAME}</td>
-			<td align="center">{upload.AUTH}</td>
-			<td align="center"><input type="checkbox" name="action[]" value="{upload.ID}" /></td>
-		</tr>
-		<if content="$upload.LAST_ROW">
-			<tfoot>
+			<if content="$upload.LAST_ROW">
 				<tr>
 					<td colspan="6">
 						<div style="text-align: right">
@@ -36,18 +39,40 @@
 						</div>
 					</td>
 				</tr>
-			</tfoot>
-		</if>
-	</block>
-	<blockelse name="upload">
-		<tr>
-			<td><div class="error">{LG_NO_RESULT}</div></td>
-		</tr>
-	</blockelse>
-	</table>
-</div>
-<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
-</form>
+			</if>
+		</block>
+		<blockelse name="upload">
+			<tr>
+				<td><div class="error">{LG_NO_RESULT}</div></td>
+			</tr>
+		</blockelse>
+		</table>
+	</div>
+	<if content="$PAGINATION"><div style="text-align: right; margin-top: 10px;">{PAGINATION}</div></if>
+	</form>
+</switch>
+
+<switch name="upload_edit">
+	<form action="{U_ACTION}" method="post">
+	<div class="round">
+		<h1>{LG_MODO_UPLOAD_EDIT}</h1>
+		<table class="form">
+			<tr>
+				<th><label for="upload_realname_id">{LG_MODO_UPLOAD_FILENAME} :</label></th>
+				<td><input type="text" name="upload_realname" id="upload_realname_id" value="{UPLOAD_NAME}" size="60" maxlength="255" /></td>
+			</tr>
+			<tr>
+				<th><label>{LG_MODO_UPLOAD_AUTH} :</label></th>
+				<td>{LIST_AUTH}</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td><input type="submit" name="submit_edit" value="{LG_SUBMIT}" class="submit" /></td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</switch>
 
 <include name="menu_footer.html" />
 <include name="footer.html" />

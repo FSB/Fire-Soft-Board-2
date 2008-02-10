@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/class/class_send.php
 ** | Begin :		04/10/2005
-** | Last :			10/12/2007
+** | Last :			11/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -92,7 +92,7 @@ class Send extends Fsb_model
 				$sql_notification[] = $row['u_id'];
 			}
 
-			if ($row['u_mp_auto_answer_activ'] && $from_id <> VISITOR_ID)
+			if ($row['u_mp_auto_answer_activ'] && Fsb::$cfg->get('mp_auto_activated') && $from_id <> VISITOR_ID)
 			{
 				// Génération XML du message du répondeur
 				$message = new Xml();
@@ -482,7 +482,7 @@ class Send extends Fsb_model
 			$notify->set_subject(sprintf(Fsb::$session->lang('subject_notify_post'), $t_title));
 			$notify->set_template(ROOT . 'lang/' . $mail_lang . '/mail/notify_post.txt');
 			$notify->set_vars(array(
-				'TOPIC_NAME' =>		htmlspecialchars($t_title),
+				'TOPIC_NAME' =>		Parser::title($t_title),
 				'TOPIC_URL' =>		Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&t_id=' . $t_id,
 				'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
 				'FORUM_URL' =>		Fsb::$cfg->get('fsb_path'),

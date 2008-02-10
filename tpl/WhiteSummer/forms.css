@@ -110,26 +110,6 @@ input[type="radio"], input[type="checkbox"]
 	border: none;
 }
 
-/* Boutton WYSIWYG */
-input.wysiwyg_on, input.wysiwyg_off
-{
-	float: right;
-	background: transparent no-repeat;
-	height: 27px;
-	width: 96px;
-	border: none;
-}
-
-input.wysiwyg_on
-{
-	background-image: url(img/wysiwyg_on.gif);
-}
-
-input.wysiwyg_off
-{
-	background-image: url(img/wysiwyg_off.gif);
-}
-
 /* Style de l'iframe pour l'éditeur WYSIWYG */
 .wysiwyg_frame
 {
@@ -137,6 +117,6 @@ input.wysiwyg_off
 	width: auto;
 	font-size: 11px;
 	vertical-align: middle;
-	background: #FFFFFF;
+	background-color: #FFFFFF;
 	border: 1px solid #999999;
 }

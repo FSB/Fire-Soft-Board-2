@@ -463,12 +463,12 @@ class Moderation extends Fsb_model
 		Fsb::$db->free($result);
 
 		// Calcul du premier message du sujet
-		$sql = 'SELECT p_id
+		$sql = 'SELECT p_id, u_id
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE t_id = ' . $t_id . '
 				ORDER BY p_time
 				LIMIT 1';
-		$first_p_id = Fsb::$db->get($sql, 'p_id');
+		$first_post = Fsb::$db->request($sql);
 
 		// Mise à jour du compteur de message du sujet, et du dernier message
 		Fsb::$db->update('topics', array(
@@ -477,7 +477,8 @@ class Moderation extends Fsb_model
 			't_last_u_id' =>		$last['u_id'],
 			't_last_p_time' =>		$last['p_time'],
 			't_last_p_nickname' =>	$last['p_nickname'],
-			't_first_p_id' =>		$first_p_id,
+			't_first_p_id' =>		$first_post['p_id'],
+			'u_id' =>				$first_post['u_id'],
 		), 'WHERE t_id = ' . $t_id);
 
 		Moderation::_delete_topics($idx);

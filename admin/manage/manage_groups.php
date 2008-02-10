@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/manage/manage_groups.php
 ** | Begin :	17/05/2005
-** | Last :		13/12/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -126,19 +126,25 @@ class Fsb_frame_child extends Fsb_admin_frame
 					WHERE g.g_id = ' . $this->id . '
 						AND g.g_type <> ' . GROUP_SINGLE;
 			$result = Fsb::$db->query($sql);
-			if (!$this->data = Fsb::$db->row($result))
+			if (!$data = Fsb::$db->row($result))
 			{
 				Display::message('no_result');
 			}
+			$this->data = $data;
 
-			// On récupère les données du forum et la liste des modérateurs
-			$this->data['g_modo'] = $this->data['u_nickname'] . "\n";
-			while ($data = Fsb::$db->row($result))
+			// On récupère la liste des modérateurs
+			$modo = array();
+			do
 			{
-				$this->data['g_modo'] .= $data['u_nickname'] . "\n";
+				if ($data['u_nickname'])
+				{
+					$modo[] = $data['u_nickname'];
+				}
 			}
-			$this->data['g_modo'] = substr($this->data['g_modo'], 0, -1);
+			while ($data = Fsb::$db->row($result));
 			Fsb::$db->free($result);
+
+			$this->data['g_modo'] = implode("\n", $modo);
 		}
 		else if (!$this->errstr)
 		{

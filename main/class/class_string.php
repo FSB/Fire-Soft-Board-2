@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_string.php
 ** | Begin :	19/06/2007
-** | Last :		17/10/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -357,6 +357,17 @@ class String extends Fsb_model
 		$str = preg_replace('#\{LG_([a-zA-Z0-9_]*?)\}#e', 'Fsb::$session->lang(strtolower(\'$1\'))', $str);
 
 		return ($str);
+	}
+
+	/*
+	** Formatage des grands nombre suivant la langue
+	** -----
+	** $nb ::	Nombre à formater
+	** $dec ::	Nombre de décimales
+	*/
+	public function number_format($nb, $dec = 0)
+	{
+		return (number_format($nb, $dec, Fsb::$session->lang('nb_format_dec'), Fsb::$session->lang('nb_format_thousands')));
 	}
 }
 

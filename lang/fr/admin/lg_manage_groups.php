@@ -11,7 +11,7 @@
 
 return (array (
   'manage_groups_explain_title' => 'Gestion des groupes d\'utilisateurs',
-  'manage_groups_explain_desc' => 'Un groupe est un ensemble de personnes éventuellement modéré par un ou plusieurs modérateurs de groupe (pouvant ajouter, supprimer, etc ... des membres à ce groupe), auquel on peut assigner directement des permissions qui seront appliquées à tous les membres du groupe. Vous pouvez par exemple créer un groupe "test" qui pourra modérer un de vos forums, toutes les personnes membres de ce groupe pourront donc le modérer sans avoir à leur donner, membre par membre, les permissions . Vous pouvez ici créer, modifier, supprimer autant de groupes que vous le souhaitez.',
+  'manage_groups_explain_desc' => 'Un groupe est un ensemble de personnes éventuellement modéré par un ou plusieurs modérateurs de groupe (pouvant ajouter, supprimer, etc ... des membres à ce groupe), auquel on peut assigner directement des permissions qui seront appliquées à tous les membres du groupe. Vous pouvez par exemple créer un groupe "test" qui pourra modérer un de vos forums, toutes les personnes membres de ce groupe pourront donc le modérer sans avoir à leur donner, membre par membre, les permissions. Vous pouvez ici créer, modifier, supprimer autant de groupes que vous le souhaitez.',
   'adm_group_module_list' => 'Gestion des groupes',
   'adm_group_module_users' => 'Gestion des membres',
   'adm_group_list' => 'Liste des groupes',

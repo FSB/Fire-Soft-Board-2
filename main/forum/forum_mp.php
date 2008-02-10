@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_mp.php
 ** | Begin :		06/10/2005
-** | Last :			22/12/2007
+** | Last :			11/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -43,6 +43,11 @@ class Fsb_frame_child extends Fsb_frame
 		if (!Fsb::$session->is_logged())
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=mp');
+		}
+
+		if (!Fsb::$cfg->get('mp_activated'))
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT);
 		}
 
 		$this->box = Http::request('box');

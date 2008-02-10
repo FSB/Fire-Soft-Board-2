@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser_wysiwyg.php
 ** | Begin :	16/07/2007
-** | Last :		12/12/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -15,6 +15,11 @@
 */
 class Parser_wysiwyg extends Fsb_model
 {
+	// Pour le parseur WYSIWYG (status dans la pile)
+	const TAG_OPEN = 1;
+	const TAG_CLOSE = 2;
+	const TEXT = 3;
+
 	/*
 	** Parse des FSBcode uniquement affichables sur le WYSIWYG
 	** -----
@@ -34,363 +39,415 @@ class Parser_wysiwyg extends Fsb_model
 	}
 
 	/*
-	** Parse une chaine de caractère envoyée via l'éditeur WYSIWYG en chaine de caractère valide pour le forum
-	** (remplacement des balises HTML par des balises FSBcode)
+	** Parse une chaîne de caractère HTML pour la transformer en FSBcode
 	** -----
-	** $str ::		Chaine de caractères à parser
+	** $str ::		Chaîne à parser
 	*/
 	public static function encode($str)
 	{
-		//echo nl2br(htmlspecialchars($str)) . '<hr />';
+		//echo "<xmp>$str</xmp><hr />";
 
-		// On remplace les balises <img> par <img></img>
-		$str = preg_replace('#<img (.*?)>#i', '<img \\1></img>', $str);
+		// On ferme quelques balises
+		$str = preg_replace('#<img(.*?)>#i', '<img\\1></img>', $str);
 
-		// On supprime le Javascript / style
-		$str = preg_replace('#<script.*?>.*?</script>#si', '', $str);
-		$str = preg_replace('#<style.*?>.*?</style>#si', '', $str);
-
-		// On remplace les &nbsp;
+		// On remplace les &nbsp; par des espaces
 		$str = str_replace('&nbsp;', ' ', $str);
 
-		// Pas de \n en mode wysiwyg, tout est géré en HTML
-		$str = str_replace(array("\r", "\n"), array('', ''), $str);
+		// Représente la pile dans laquelle sera mis le texte à reconstruire
+		$stack = array();
 
-		// On récupère la liste des balises et on les parcourt pour les remplacer de façon logique
-		// par leurs bonnes balises de fermetures.
-		// Par exemple :
-		//		<span style="font-style: italic;"><span style="font-weight: bold;">test</span></span>
-		// sera remplacé par
-		//		[i][b]test[/b][/i]
-		// avec un traitement normal à base de preg_replace() on aurait obtenu le code invalide :
-		//		[i][b]test[/i][/b]
-		preg_match_all('#<(/)?.*?>#si', $str, $tokens);
+		// On récupère l'ensemble des balises HTML de la chaîne
+		preg_match_all('#<(/)?([a-zA-Z_][a-zA-Z0-9_]*?)( .*?)?>#s', $str, $tokens, PREG_OFFSET_CAPTURE);
 		$count_tokens = count($tokens[0]);
-		$stack_replace = array();
-		$closed_tag = array();
-		for ($i = 0; $i < $count_tokens; $i++)
+		for ($i = 0, $offset = 0, $id = 1; $i < $count_tokens; $i++)
 		{
-			if ($tokens[1][$i] == '/')
+			$state =	($tokens[1][$i][0] == '/') ? self::TAG_CLOSE : self::TAG_OPEN;
+			$name =		strtolower($tokens[2][$i][0]);
+			$length =	strlen($tokens[0][$i][0]);
+			$text =		substr($str, $offset, $tokens[0][$i][1] - $offset);
+
+			// Ajout du texte à la pile de données			
+			if ($text)
 			{
-				if ($stack_replace[count($stack_replace) - 1] != 'null')
-				{
-					$str = preg_replace('#' . preg_quote($tokens[0][$i], '#') . '#i', $stack_replace[count($stack_replace) - 1], $str, 1);
-					preg_match_all('#\[/[a-zA-Z0-9]*?\]#', $stack_replace[count($stack_replace) - 1], $reverse);
-					for ($j = 0; $j < count($reverse[0]); $j++)
-					{
-						array_pop($closed_tag);
-					}
-				}
-				array_pop($stack_replace);
+				$stack[] = array(
+					'type' =>		self::TEXT,
+					'content' =>	$text,
+				);
 			}
-			else
+
+			switch ($state)
 			{
-				// Parse des propriétés CSS dans les atributs de la balise
-				$current_replace = $next_replace = '';
-
-				// <br /> ?
-				if (preg_match('#<br( |/|>)#i', $tokens[0][$i]))
-				{
-					$current_replace .= "\n";
-				}
-
-				// On parse tout le style contenut dans style=""
-				if (preg_match('#<([a-zA-Z]*?) .*?style="(.*?)"#i', $tokens[0][$i], $match))
-				{
-					// Si la balise qui contenait style="" est une balise de formatage
-					switch (strtolower($match[1]))
+				// Parse des tags fermés
+				case self::TAG_CLOSE :
+					// On parcourt la pile à la recherche de la première balise ouverte du même type qu'on trouve (et non fermée)
+					$count_stack = count($stack);
+					for ($j = $count_stack - 1, $find_id = 0; $j >= 0; $j--)
 					{
+						// On ajoute la fermeture du tag à la pile si : on tombe sur le premier tag ouvert ayant le même nom que le tag qu'on ferme
+						// actuellement ou si on tombe sur un tag ouvert avec une ID similaire à celle du tag qu'on ferme
+						if ($stack[$j]['type'] == self::TAG_OPEN && $stack[$j]['tag'] == $name && ($find_id == 0 || $find_id == $stack[$j]['id']) && isset($stack[$j]['close']))
+						{
+							$find_id = $stack[$j]['id'];
+							$stack[] = array(
+								'type' =>		self::TAG_CLOSE,
+								'content' =>	$stack[$j]['close'],
+							);
+
+							// On supprime l'indice 'close' pour montrer que ces tags ont été fermés (on pourra ainsi les afficher)
+							unset($stack[$j]['close']);
+						}
+
+						// Petite optimisation pour ne pas parcourir le reste de la pile inutilement, puisqu'on a récupéré ce dont on avait besoin
+						if ($find_id != 0 && (!isset($stack[$j]['id']) || $find_id != $stack[$j]['id']))
+						{
+							break;
+						}
+					}
+				break;
+
+				// Parse des tags ouverts
+				case self::TAG_OPEN :
+					// Récupération des attributs dans un tableau
+					$attr = array();
+					if (is_array($tokens[3][$i]))
+					{
+						preg_match_all('#\s([a-zA-Z_]+?)="([^"]*?)"#', $tokens[3][$i][0], $m);
+						$count_attr = count($m[0]);
+						for ($j = 0; $j < $count_attr; $j++)
+						{
+							$attr[strtolower($m[1][$j])] = $m[2][$j];
+						}
+					}
+
+					// Ici on empile les balises qui seront ajouté à $stack
+					$s = array();
+
+					// Transformation des tags en style
+					switch ($name)
+					{
+						// Gras
 						case 'b' :
 						case 'strong' :
-							$current_replace .= '[b]';
-							$next_replace .= '[/b]';
+							$s[] = 'b';
 						break;
 
-						case 'em' :
+						// Italique
 						case 'i' :
-							$current_replace .= '[i]';
-							$next_replace .= '[/i]';
+						case 'em' :
+							$s[] = 'i';
 						break;
 
+						// Souligné
 						case 'u' :
-							$current_replace .= '[u]';
-							$next_replace .= '[/u]';
+							$s[] = 'u';
 						break;
 
+						// Barré
 						case 'strike' :
-							$current_replace .= '[strike]';
-							$next_replace .= '[/strike]';
+							$s[] = 'strike';
+						break;
+
+						// Code informatique
+						case 'code' :
+							$s[] = 'code' . ((isset($attr['args'])) ? '=' . $attr['args'] : '');
+						break;
+
+						// Citation
+						case 'blockquote' :
+							$s[] = 'quote';
+						break;
+
+						// Liste
+						case 'ul' :
+							$s[] = 'list';
+						break;
+
+						// Liste ordonnée
+						case 'ol' :
+							if (isset($attr['style']) && preg_match('#list-style-type: disc;#i', $attr['style']))
+							{
+								$s[] = 'list';
+							}
+							else
+							{
+								$s[] = 'list=1';
+							}
+						break;
+
+						// Puce de liste
+						case 'li' :
+							$stack[] = array(
+								'type' =>		self::TAG_OPEN,
+								'content' =>	'[*]',
+								'tag' =>		$name,
+								'id' =>			$id,
+							);
+						break;
+
+						// Images
+						case 'img' :
+							if (!isset($attr['src']))
+							{
+								break;
+							}
+
+							$url = $attr['src'];
+							$args = ':';
+
+							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
+							// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
+							if (isset($attr['realsrc']))
+							{
+								$url = $attr['realsrc'];
+							}
+
+							if (isset($attr['alt']))
+							{
+								$args .= 'alt=' . $attr['alt'] . ',';
+							}
+
+							if (isset($attr['title']))
+							{
+								$args .= 'title=' . $attr['title'] . ',';
+							}
+
+							if (isset($attr['width']))
+							{
+								$args .= 'width=' . $attr['width'] . ',';
+							}
+							else if (isset($attr['style']) && preg_match('#width: ([0-9]+)px#i', $attr['style'], $m))
+							{
+								$args .= 'width=' . $m[1] . ',';
+							}
+
+							if (isset($attr['height']))
+							{
+								$args .= 'height=' . $attr['height'] . ',';
+							}
+							else if (isset($attr['style']) && preg_match('#height: ([0-9]+)px#i', $attr['style'], $m))
+							{
+								$args .= 'height=' . $m[1] . ',';
+							}
+
+							$args = substr($args, 0, -1);
+
+							$s[] = 'img' . $args;
+							$s[] = '__text__=' . $url;
+						break;
+
+						// Liens hypertexte
+						case 'a' :
+							if (!isset($attr['href']))
+							{
+								break;
+							}
+							$url = $attr['href'];
+
+							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
+							// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
+							if (isset($attr['realsrc']))
+							{
+								$url = $attr['realsrc'];
+							}
+
+							// Adresse email ?
+							if (preg_match('#^mailto:#i', $match[1]))
+							{
+								$s[] = 'mail=' . substr($url, 7);
+							}
+							else
+							{
+								$s[] = 'url=' . $url;
+							}
+						break;
+
+						// Sauts de ligne
+						case 'br' :
+							$stack[] = array(
+								'type' =>		self::TAG_OPEN,
+								'content' =>	"\n",
+								'tag' =>		'',
+								'id' =>			$id,
+							);
+						break;
+
+						// Fichiers joints
+						case 'div' :
+							if (isset($attr['type']) && $attr['type'] == 'attach')
+							{
+								$s[] = 'attach' . ((isset($attr['args'])) ? '=' . $attr['args'] : '');
+							}
 						break;
 					}
 
-					$split = explode(';', trim($match[2]));
-					foreach ($split AS $style)
+					// Parse du style
+					if (isset($attr['style']))
 					{
-						// Pour la police
-						if (preg_match('#font-family: (.*?)$#i', $style, $submatch))
+						$split = explode(';', $attr['style']);
+						foreach ($split AS $style)
 						{
-							$current_replace .= '[font=' . $submatch[1] . ']';
-							$next_replace .= '[/font]';
-						}
-						// Pour la taille
-						else if (preg_match('#font-size: ([0-9\-]*?)px$#i', $style, $submatch))
-						{
-							$current_replace .= '[size=' . $submatch[1] . ']';
-							$next_replace .= '[/size]';
-						}
-						// Pour le text-align
-						else if (preg_match('#text-align: (center|left|right|justify)#i', $style, $submatch))
-						{
-							$current_replace .= '[align=' . $submatch[1] . ']';
-							$next_replace .= '[/align]';
-						}
-						// Pour le color / background-color
-						else if (preg_match('#(color|background-color): rgb\(([0-9]{1,3}), ?([0-9]{1,3}), ?([0-9]{1,3})\)#i', $style, $submatch))
-						{
-							$color_str = ($submatch[1] == 'background-color') ? 'bgcolor' : 'color';
-							$hexa = '#' . String::add_zero(dechex($submatch[2]), 2) . String::add_zero(dechex($submatch[3]), 2) . String::add_zero(dechex($submatch[4]), 2);
-							$current_replace .= '[' . $color_str . '=' . $hexa . ']';
-							$next_replace .= '[/' . $color_str . ']';
-						}
-						else
-						{
-							// Styles simple à parser
-							switch (trim($style))
+							$split2 = explode(':', $style);
+							if (count($split2) == 2)
 							{
-								case 'font-weight: bold' :
-									$current_replace .= '[b]';
-									$next_replace .= '[/b]';
-								break;
+								$property = strtolower(trim($split2[0]));
+								$value = trim($split2[1]);
+								switch ($property)
+								{
+									case 'font-weight' :
+										if ($value == 'bold')
+										{
+											$s[] = 'b';
+										}
+									break;
 
-								case 'font-style: italic' :
-									$current_replace .= '[i]';
-									$next_replace .= '[/i]';
-								break;
+									case 'font-style' :
+										if ($value == 'italic')
+										{
+											$s[] = 'i';
+										}
+									break;
 
-								case 'text-decoration: underline' :
-									$current_replace .= '[u]';
-									$next_replace .= '[/u]';
-								break;
+									case 'text-decoration' :
+										switch ($value)
+										{
+											case 'underline' :
+												$s[] = 'u';
+											break;
 
-								case 'text-decoration: line-through' :
-									$current_replace .= '[strike]';
-									$next_replace .= '[/strike]';
-								break;
+											case 'line-through' :
+												$s[] = 'strike';
+											break;
 
-								case 'text-decoration: underline line-through' :
-								case 'text-decoration: line-through underline' :
-									$current_replace .= '[u][strike]';
-									$next_replace .= '[/u][/strike]';
-								break;
+											case 'underline line-through' :
+											case 'line-through underline' :
+												$s[] = 'u';
+												$s[] = 'strike';
+											break;
+										}
+									break;
+
+									case 'color' :
+									case 'background-color' :
+										$color = $value;
+										if (preg_match('#^rgb\(([0-9]{1,3}), ?([0-9]{1,3}), ?([0-9]{1,3})\)#i', $value, $m))
+										{
+											$color = '#' . String::add_zero(dechex($m[1]), 2) . String::add_zero(dechex($m[2]), 2) . String::add_zero(dechex($m[3]), 2);
+										}
+
+										$tagname = ($property == 'color') ? 'color' : 'bgcolor';
+										$s[] = $tagname . '=' . $color;
+									break;
+
+									case 'font-family' :
+										$s[] = 'font=' . $value;
+									break;
+
+									case 'font-size' :
+										if (preg_match('#^([0-9]+)px$#i', $value, $m))
+										{
+											$s[] = 'size=' . $m[1];
+										}
+									break;
+
+									case 'text-align' :
+										if (in_array(strtolower($value), array('center', 'left', 'right', 'justify')))
+										{
+											$s[] = 'align=' . $value;
+										}
+									break;
+								}
 							}
 						}
 					}
-				}
 
-				// Parse des balises "classiques"
-				switch (strtolower($tokens[0][$i]))
-				{
-					case '<b>' :
-					case '<strong>' :
-						$current_replace .= '[b]';
-						$next_replace .= '[/b]';
-					break;
-
-					case '<em>' :
-					case '<i>' :
-						$current_replace .= '[i]';
-						$next_replace .= '[/i]';
-					break;
-
-					case '<u>' :
-						$current_replace .= '[u]';
-						$next_replace .= '[/u]';
-					break;
-
-					case '<strike>' :
-						$current_replace .= '[strike]';
-						$next_replace .= '[/strike]';
-					break;
-				}
-
-				// Parse de l'attribut "size"
-				if (preg_match('#size="?([0-9\-]*?)"?#i', $tokens[0][$i], $match))
-				{
-					$tmp_ary_size = array('1' => '8', '2' => '10', '3' => '16', '5' => '20', '6' => '24');
-					if (!isset($tmp_ary_size[$match[1]]))
+					// Gestion des couleurs
+					if (isset($attr['color']))
 					{
-						$match[1] = 3;
-					}
-					$size = $tmp_ary_size[$match[1]];
-					$current_replace .= '[size=' . $size . ']';
-					$next_replace .= '[/size]';
-				}
-
-				// Parse de l'attribut "color"
-				if (preg_match('#color="([^"]+)"#i', $tokens[0][$i], $match))
-				{
-					$current_replace .= '[color=' . $match[1] . ']';
-					$next_replace .= '[/color]';
-				}
-
-				// Parse de l'attribut "align"
-				if (preg_match('#align="(left|center|right|justify)"#i', $tokens[0][$i], $match))
-				{
-					$current_replace .= '[align=' . $match[1] . ']';
-					$next_replace .= '[/align]';
-				}
-
-				// Parse de l'attribut "face"
-				if (preg_match('#face="(.*?)"#i', $tokens[0][$i], $match))
-				{
-					$current_replace .= '[font=' . $match[1] . ']';
-					$next_replace .= '[/font]';
-				}
-
-				// Parse des listes
-				if (preg_match('#<ul ?#i', $tokens[0][$i]) || preg_match('#<ol [^>]*list-style-type: disc;#i', $tokens[0][$i]))
-				{
-					$current_replace .= '[list]';
-					$next_replace .= '[/list]';
-				}
-				else if (preg_match('#<ol ?#i', $tokens[0][$i]))
-				{
-					$current_replace .= '[list=1]';
-					$next_replace .= '[/list]';
-				}
-				else if (preg_match('#<li ?#i', $tokens[0][$i]))
-				{
-					$current_replace .= '[*]';
-					$next_replace .= '';
-				}
-
-				// Parse des images
-				if (preg_match('#<img #i', $tokens[0][$i]) && preg_match('#src="(.*?)"#i', $tokens[0][$i], $match))
-				{
-					$img = '[img:';
-					$url = $match[1];
-
-					// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
-					// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
-					if (preg_match('#realsrc="(.*?)"#i', $tokens[0][$i], $fix))
-					{
-						$url = $fix[1];
+						$s[] = 'color=' . $attr['color'];
 					}
 
-					if (preg_match('#alt="(.*?)"#i', $tokens[0][$i], $match))
+					// Gestion de la taille de police
+					if (isset($attr['size']))
 					{
-						$img .= 'alt=' . $match[1] . ',';
+						$size = intval($attr['size']);
+						$tmp_size = array('1' => '8', '2' => '10', '3' => '16', '5' => '20', '6' => '24');
+						$size = (!isset($tmp_size[$size])) ? $tmp_size[3] : $tmp_size[$size];
+						$s[] = 'size=' . $size;
 					}
 
-					if (preg_match('#title="(.*?)"#i', $tokens[0][$i], $match))
+					// Gestion de l'alignement du texte
+					if (isset($attr['align']) && preg_match('#^(left|center|right|justify)$#i', $attr['align'], $m))
 					{
-						$img .= 'title=' . $match[1] . ',';
+						$s[] = 'align=' . $m[1];
 					}
 
-					if (preg_match('#width(: |=")(.*?)(px|")#i', $tokens[0][$i], $match))
+					// Gestion de la police
+					if (isset($attr['face']))
 					{
-						$img .= 'width=' . $match[2] . ',';
+						$s[] = 'font=' . $attr['face'];
 					}
 
-					if (preg_match('#height(: |=")(.*?)(px|")#i', $tokens[0][$i], $match))
+					// Ajout de $s à $stack
+					foreach ($s AS $v)
 					{
-						$img .= 'height=' . $match[2] . ',';
-					}
-					$img = substr($img, 0, -1);
-					$current_replace .= $img . ']' . $url . '[/img]';
-				}
-
-				// Parse des liens hypertextes
-				if (preg_match('#<a #i', $tokens[0][$i]) && preg_match('#href="(.*?)"#i', $tokens[0][$i], $match))
-				{
-					if (preg_match('#^mailto:#i', $match[1]))
-					{
-						$current_replace .= '[mail=' . substr($match[1], 7) . ']';
-						$next_replace .= '[/mail]';
-					}
-					else
-					{
-						// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
-						// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
-						if (preg_match('#realsrc="(.*?)"#i', $tokens[0][$i], $fix))
+						$close = $v;
+						if (preg_match('#^([a-z_]+?)(:|=)(.*?)$#i', $close, $m))
 						{
-							$match[1] = $fix[1];
+							$close = $m[1];
 						}
 
-						$current_replace .= '[url=' . $match[1] . ']';
-						$next_replace .= '[/url]';
-					}
-				}
-
-				// Parse des citations, code
-				if (preg_match('#<div #i', $tokens[0][$i]) && preg_match('#type="(quote|code)"#i', $tokens[0][$i], $match))
-				{
-					$add = '';
-					if (preg_match('#args="(.*?)"#i', $tokens[0][$i], $args) && trim($args[1]))
-					{
-						$add = '=' . trim($args[1]);
-					}
-					$current_replace .= '[' . $match[1] . $add . ']';
-					$next_replace .= '[/' . $match[1] . ']';
-				}
-
-				// En cas de paragraphe on ajoute un saut à la ligne
-				$add_ln = '';
-				if (preg_match('#<p ?#i', $tokens[0][$i]))
-				{
-					 $add_ln = "\n";
-				}
-
-				if ($current_replace || $add_ln)
-				{
-					// On inverse les balises dans $next_replace, ainsi [/i][/u] deviendra [/u][/i]
-					preg_match_all('#\[/[a-zA-Z0-9]*?\]#', $next_replace, $reverse);
-					$reverse = array_reverse($reverse[0]);
-					foreach ($reverse AS $tag)
-					{
-						array_push($closed_tag, $tag);
-					}
-					$next_replace = implode('', $reverse);
-					unset($reverse);
-
-					// On remplace la balise courante par $current_replace
-					$str = preg_replace('#' . preg_quote($tokens[0][$i], '#') . '#i', $current_replace . $add_ln, $str, 1);
-					if ($next_replace != 'none')
-					{
-						array_push($stack_replace, $next_replace);
+						if ($close == '__text__')
+						{
+							$stack[] = array(
+								'type' =>		self::TEXT,
+								'content' =>	$m[3],
+							);
+						}
+						else
+						{
+							$stack[] = array(
+								'type' =>		self::TAG_OPEN,
+								'content' =>	'[' . $v . ']',
+								'tag' =>		$name,
+								'id' =>			$id,
+								'close' =>		'[/' . $close . ']',
+							);
+						}
 					}
 
-					// Toutes les balises HTML avant la balise actuelle doivent être supprimées
-					if (($current_replace_pos = @strpos($str, $current_replace)) !== FALSE)
-					{
-						$previous = substr($str, 0, $current_replace_pos);
-						$previous = preg_replace_multiple('#<p ?.*>#si', "\n", $previous);
-						$previous = preg_replace_multiple('#<.*?>#si', '', $previous);
-						$str = $previous . substr($str, $current_replace_pos);
-
-					}
-				}
-				else
-				{
-					array_push($stack_replace, 'null');
-				}
+					$id++;
+				break;
 			}
+
+			// On déplace l'offset de lecture du texte à la fin de la balise
+			$offset = $tokens[0][$i][1] + $length;
 		}
 
-		// On ferme les balises FSBcode restantes
-		foreach ($closed_tag AS $tag)
+		// Ajout de la dernière partie du message
+		$stack[] = array(
+			'type' =>		self::TEXT,
+			'content' =>	substr($str, $offset),
+		);
+
+		// Reconstruction du message
+		$return = '';
+		foreach ($stack AS $line)
 		{
-			$str .= $tag;
+			// Les tags ouverts et non fermés ne sont pas mis dans le texte
+			if ($line['type'] == self::TAG_OPEN && isset($line['close']))
+			{
+				continue;
+			}
+
+			$return .= $line['content'];
 		}
 
-		// On supprime toutes les autres balides HTML
-		$str = preg_replace_multiple('#<.*?>#si', '', $str);
-		$str = preg_replace(array('#&amp;#', '#&lt;#', '#&gt;#'), array('&', '<', '>'), $str);
+		$return = String::unhtmlspecialchars($return);
 
-		//echo nl2br(htmlspecialchars($str)) . '<hr />';
+		//echo "<xmp>$return</xmp><hr />";
 		//exit;
 
-		return ($str);
+		return ($return);
 	}
 }
 

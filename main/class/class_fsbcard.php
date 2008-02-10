@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_fsbcard.php
 ** | Begin :	05/07/2007
-** | Last :		04/09/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -448,7 +448,7 @@ class Fsbcard extends Fsb_model
 		$content = NULL;
 		if ($method == 'content')
 		{
-			$link = Fsb::$cfg->get('fsb_path') . $link;
+			$link = Fsb::$cfg->get('fsb_path') . '/' . $link;
 			if (@getimagesize($link))
 			{
 				$content = base64_encode(file_get_contents($string));

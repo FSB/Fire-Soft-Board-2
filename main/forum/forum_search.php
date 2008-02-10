@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_search.php
 ** | Begin :		21/11/2005
-** | Last :			11/12/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -600,7 +600,7 @@ class Fsb_frame_child extends Fsb_frame
 						// parse du message
 						$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 						$text = $parser->mapped_message($row['p_text'], $row['p_map']);
-						$post_title = htmlspecialchars(Parser::censor($row['t_title']));
+						$post_title = Parser::title($row['t_title']);
 
 						// Highlight des mots clefs
 						foreach ($split_words AS $word)
@@ -718,7 +718,7 @@ class Fsb_frame_child extends Fsb_frame
 
 						Fsb::$tpl->set_blocks('f.result', array(
 							'ID' =>				$row['t_id'],
-							'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+							'TITLE' =>			Parser::title($row['t_title']),
 							'DESC' =>			htmlspecialchars(String::truncate($row['t_description'], 50)),
 							'IMG' =>			Fsb::$session->img($topic_img),
 							'VIEWS' =>			$row['t_total_view'],
@@ -827,7 +827,7 @@ class Fsb_frame_child extends Fsb_frame
 
 						Fsb::$tpl->set_blocks('result', array(
 							'ID' =>				$row['t_id'],
-							'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+							'TITLE' =>			Parser::title($row['t_title']),
 							'DESC' =>			htmlspecialchars(String::truncate($row['t_description'], 50)),
 							'FORUM' =>			Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
 							'CAT' =>			$row['cat_name'],

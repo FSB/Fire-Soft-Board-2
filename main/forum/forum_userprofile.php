@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_userprofile.php
 ** | Begin :		28/09/2005
-** | Last :			27/11/2007
+** | Last :			17/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -248,16 +248,21 @@ class Fsb_frame_child extends Fsb_frame
 
 		// Forum dans lequel le membre est le plus actif
 		$forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'));
-		$sql = 'SELECT f.f_id, f.f_name, COUNT(p.p_id) AS total
-				FROM ' . SQL_PREFIX . 'posts p
-				LEFT JOIN ' . SQL_PREFIX . 'forums f
-					ON f.f_id = p.f_id
-				WHERE p.u_id = ' . $this->id
-				. (($forums_idx) ? ' AND p.f_id IN (' . implode(', ', $forums_idx) . ')' : '')
-				. ' GROUP BY f.f_id, f.f_name
+		$sql = 'SELECT f_id, COUNT(*) AS total
+				FROM ' . SQL_PREFIX . 'posts
+				WHERE u_id = ' . $this->id
+				. (($forums_idx) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '')
+				. ' GROUP BY f_id
 				ORDER BY total DESC
 				LIMIT 1';
-		$this->data['activ_forum'] = Fsb::$db->request($sql);
+		$f = Fsb::$db->request($sql);
+		$this->data['activ_forum']['f_id'] = $f['f_id'];
+		$this->data['activ_forum']['total'] = $f['total'];
+
+		$sql = 'SELECT f_name
+				FROM ' . SQL_PREFIX . 'forums
+				WHERE f_id = ' . $this->id;
+		$this->data['activ_forum']['f_name'] = Fsb::$db->get($sql, 'f_name');
 
 		// Sujet dans lequel le membre est le plus actif
 		$sql = 'SELECT t.t_id, t.t_title, COUNT(p.p_id) AS total

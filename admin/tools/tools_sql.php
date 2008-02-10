@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/tools/tools_sql.php
 ** | Begin :	22/05/2005
-** | Last :		13/12/2007
+** | Last :		06/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -252,7 +252,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 				Fsb::$db->cache->delete($hash);
 			}
 
-			Http::redirect('index.' . PHPEXT . '?p=tools_sql&module=cache');
+			Display::message('adm_sql_cache_deleted', 'index.' . PHPEXT . '?p=tools_sql&module=cache', 'tools_sql');
+
+			Http::redirect();
 		}
 
 		// Liste des fichiers mis en cache SQL
@@ -262,9 +264,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$query = '';
 			if (Fsb::$db->cache->cache_type == 'FSB FTP cache')
 			{
-				$fd_cache = fopen(ROOT . 'cache/sql/' . $hash, 'r');
-				$content = fread($fd_cache, filesize(ROOT . 'cache/sql/' . $hash));
-				fclose($fd_cache);
+				$content = file_get_contents(ROOT . 'cache/sql/' . $hash . '.' . PHPEXT);
 
 				// Parse de la requète
 				$query = '';

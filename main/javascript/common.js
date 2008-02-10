@@ -2,7 +2,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/common.js
 ** | Begin :		19/12/2005
-** | Last :			29/10/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -12,6 +12,7 @@
 // Navigateur utilisé
 var Nav_Agent =		navigator.userAgent.toLowerCase();
 var Nav_IE =		((Nav_Agent.indexOf("msie") != -1)  && (Nav_Agent.indexOf("opera") == -1)) ? true : false;
+var Nav_IE7 =		(Nav_IE && (Nav_Agent.indexOf("msie 7") != -1)) ? true : false;
 var Nav_IE6 =		(Nav_IE && (Nav_Agent.indexOf("msie 6") != -1)) ? true : false;
 var Nav_Moz =		(Nav_Agent.indexOf("firefox") != -1) ? true : false;
 var Nav_Opera =		(Nav_Agent.indexOf("opera") != -1 && parseInt(navigator.appVersion) >= 9) ? true : false;
@@ -183,10 +184,16 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 
 /*
 ** Equivalent htmlspecialchars() en php
+** -----
+** str ::			Chaîne à parser
+** protect_amp ::	Parse des &amp;
 */
-function htmlspecialchars(str)
+function htmlspecialchars(str, protect_amp)
 {
-	str = str.replace(/&/g, "&amp;");
+	if (!protect_amp)
+	{
+		str = str.replace(/&/g, "&amp;");
+	}
 	str = str.replace(/</g, "&lt;");
 	str = str.replace(/>/g, "&gt;");
 	str = str.replace(/\"/g, "&quot;");
@@ -200,7 +207,7 @@ function unhtmlspecialchars(str)
 {
 	str = str.replace(/&lt;/g, "<");
 	str = str.replace(/&gt;/g, ">");
-	str = str.replace(/&quote;/g, "\"");
+	str = str.replace(/&quot;/g, "\"");
 	str = str.replace(/&amp;/g, "&");
 	return (str);
 }

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_split.php
 ** | Begin :	24/10/2005
-** | Last :		27/09/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -78,7 +78,7 @@ class Page_modo_split extends Fsb_model
 			// Données du sujet
 			Fsb::$tpl->set_switch('show_topic');
 			Fsb::$tpl->set_vars(array(
-				'TOPIC_NAME' =>		htmlspecialchars($row['t_title']),
+				'TOPIC_NAME' =>		Parser::title($row['t_title']),
 				'LIST_FORUM' =>		Html::list_forums(get_forums(), $row['f_id'], 'split_forum', FALSE),
 			));
 

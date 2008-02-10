@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_map.php
 ** | Begin :	22/11/2005
-** | Last :		17/10/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -122,9 +122,18 @@ class Map extends Fsb_model
 				case 'textarea' :
 					$block['ROWS'] = (Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) : (($option->childExists('rows')) ? $option->rows[0]->getData() : 10);
 					$block['COLS'] = (Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) : (($option->childExists('cols')) ? $option->cols[0]->getData() : 60);
-					$block['USE_WYSIWYG'] = (Fsb::$mods->is_active('wysiwyg') && Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE;
+					$block['USE_WYSIWYG'] = (Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE;
 					$block['ONUPLOAD'] = ($onupload_set == $name) ? TRUE : FALSE;
 					$block['ONUPLOAD_APPEND'] = ($onupload_append == 'true') ? TRUE : FALSE;
+
+					// On ajoute des fonctions javascript à charger au démarage de la page
+					Fsb::$tpl->set_blocks('onload', array(
+						'CODE' =>		'textEditor[\'map_textarea_' . $block['NAME']. '\'] = new FSB_editor_interface(\'map_textarea_post_map_' . $name . '\', \'' . (($block['USE_WYSIWYG']) ? 'wysiwyg' : 'text') . '\', ' . intval(Fsb::$mods->is_active('wysiwyg')) . ')',
+					));
+
+					Fsb::$tpl->set_blocks('wysiwyg', array(
+						'CLASS_NAME' =>		'post_map_' . $name,
+					));
 
 					// Ajout du onclick lors de la soumission ?
 					if ($block['USE_WYSIWYG'])
@@ -136,15 +145,6 @@ class Map extends Fsb_model
 						$block['VALUE'] = Parser_wysiwyg::decode($block['VALUE']);
 
 						Fsb::$tpl->set_switch('use_wysiwyg');
-
-						// On ajoute des fonctions javascript à charger au démarage de la page
-						Fsb::$tpl->set_blocks('onload', array(
-							'CODE' =>		'init_wysiwyg(\'map_textarea_post_map_' . $name . '\')',
-						));
-
-						Fsb::$tpl->set_blocks('wysiwyg', array(
-							'CLASS_NAME' =>		'post_map_' . $name,
-						));
 					}
 					Fsb::$tpl->set_blocks('map', $block);
 				break;
@@ -249,7 +249,7 @@ class Map extends Fsb_model
 	** $map ::			MAP du message
 	** $is_wysiwyg ::	Si le contenu est passé par l'éditeur wysiwyg (les balises HTML en trop sont supprimées)
 	*/
-	public static function build_map_content($map, $is_wysiwyg = TRUE)
+	public static function build_map_content($map, $is_wysiwyg = FALSE)
 	{
 		$parser = new Parser();
 
@@ -277,7 +277,7 @@ class Map extends Fsb_model
 					}
 
 					// En cas d'éditeur WYSIWYG on parse le code HTML généré
-					if ($type == 'textarea' && $is_wysiwyg)
+					if ($type == 'textarea' && ($is_wysiwyg || Http::request($match[0] . '_hidden', 'post')))
 					{
 						$value = Parser_wysiwyg::encode($value);
 					}

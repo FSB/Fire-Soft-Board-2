@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/cache/cache_eaccelerator.php
 ** | Begin :	21/10/2006
-** | Last :		20/08/2007
+** | Last :		30/12/2007
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -23,16 +23,25 @@ class Cache_eaccelerator extends Cache
 
 	// Identifiant unique pour différencier les types de cache
 	private static $key_id = 0;
+	private $id = 0;
 
 	// Type de cache
 	public $cache_type = 'eAccelerator cache';
+
+	// Hash unique
+	private $uniq_hash = '';
 
 	/*
 	** Constructeur
 	*/
 	public function __construct()
 	{
-		$this->stack = ($this->exists('_eaccelerator_keys_' . self::$key_id)) ? $this->get('_eaccelerator_keys_' . self::$key_id) : array();
+		self::$key_id++;
+		$this->id = self::$key_id;
+
+		$this->uniq_hash = (file_exists(ROOT . 'config/config.' . PHPEXT)) ? md5_file(ROOT . 'config/config.' . PHPEXT) : md5(dirname($_SERVER['PHP_SELF']));
+
+		$this->stack = ($this->exists('_eaccelerator_keys_' . $this->id)) ? $this->get('_eaccelerator_keys_' . $this->id) : array();
 		if (!is_array($this->stack))
 		{
 			$this->stack = array();
@@ -45,7 +54,7 @@ class Cache_eaccelerator extends Cache
 	*/
 	public function exists($hash)
 	{
-			return ((eaccelerator_get($hash) !== NULL) ? TRUE : FALSE);
+			return ((eaccelerator_get($hash . $this->uniq_hash) !== NULL) ? TRUE : FALSE);
 	}
 
 	/*
@@ -55,7 +64,7 @@ class Cache_eaccelerator extends Cache
 	*/
 	public function get($hash)
 	{
-		return (unserialize(eaccelerator_get($hash)));
+		return (unserialize(eaccelerator_get($hash . $this->uniq_hash)));
 	}
 
 	/*
@@ -68,11 +77,11 @@ class Cache_eaccelerator extends Cache
 	*/
 	public function put($hash, $array, $comments = '', $timestamp = NULL)
 	{
-		eaccelerator_put($hash, serialize($array), $this->ttl);
+		eaccelerator_put($hash . $this->uniq_hash, serialize($array), $this->ttl);
 
 		// On garde en mémoire la clef mise en cache
 		$this->stack[$hash] = ($timestamp) ? $timestamp : CURRENT_TIME;
-		eaccelerator_put('_eaccelerator_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		eaccelerator_put('_eaccelerator_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*
@@ -92,9 +101,9 @@ class Cache_eaccelerator extends Cache
 	*/
 	public function delete($hash)
 	{
-		eaccelerator_rm($hash);
+		eaccelerator_rm($hash . $this->uniq_hash);
 		unset($this->stack[$hash]);
-		eaccelerator_put('_eaccelerator_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		eaccelerator_put('_eaccelerator_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*
@@ -108,7 +117,7 @@ class Cache_eaccelerator extends Cache
 		{
 			if ($prefix === NULL || substr($key, 0, strlen($prefix)) == $prefix)
 			{
-				eaccelerator_rm($key);
+				eaccelerator_rm($key . $this->uniq_hash);
 				unset($this->stack[$key]);
 			}
 		}
@@ -125,11 +134,11 @@ class Cache_eaccelerator extends Cache
 		{
 			if ($timestamp < (CURRENT_TIME - $time))
 			{
-				eaccelerator_rm($key);
+				eaccelerator_rm($key . $this->uniq_hash);
 				unset($this->stack[$key]);
 			}
 		}
-		eaccelerator_put('_eaccelerator_keys_' . self::$key_id, serialize($this->stack), ONE_MONTH);
+		eaccelerator_put('_eaccelerator_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*

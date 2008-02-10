@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_approve.php
 ** | Begin :	07/11/2006
-** | Last :		11/12/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -68,7 +68,7 @@ class Page_modo_approve extends Fsb_model
 		while ($row = Fsb::$db->row($result))
 		{
 			Fsb::$tpl->set_blocks('topic', array(
-				'TITLE' =>		htmlspecialchars(Parser::censor($row['t_title'])),
+				'TITLE' =>		Parser::title($row['t_title']),
 				'TOTAL' =>		$row['total_unapproved'],
 				'OWNER' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'FORUM' =>		Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
@@ -102,7 +102,7 @@ class Page_modo_approve extends Fsb_model
 		if ($row = Fsb::$db->row($result))
 		{
 			Fsb::$tpl->set_vars(array(
-				'TOPIC_TITLE' =>	htmlspecialchars(Parser::censor($row['t_title'])),
+				'TOPIC_TITLE' =>	Parser::title($row['t_title']),
 				'IS_NEW' =>			($row['t_approve'] == IS_NOT_APPROVED) ? TRUE : FALSE,
 
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),

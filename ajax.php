@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/ajax.php
 ** | Begin :	26/09/2006
-** | Last :		08/11/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -42,6 +42,8 @@ $ajax->add_event(Ajax::XML, 'show_post',		'ajax_show_post',		intval(Http::reques
 $ajax->add_event(Ajax::XML, 'quote_post',		'ajax_quote_post',		intval(Http::request('id')));
 $ajax->add_event(Ajax::XML, 'quote_mp',			'ajax_quote_mp',		intval(Http::request('id')));
 $ajax->add_event(Ajax::TXT, 'search_user',		'ajax_search_user',		trim(Http::request('nickname')));
+$ajax->add_event(Ajax::TXT, 'editor_text',		'ajax_editor_text');
+$ajax->add_event(Ajax::TXT, 'editor_wysiwyg',		'ajax_editor_wysiwyg');
 
 $ajax->trigger(Http::request('mode'));
 
@@ -240,7 +242,7 @@ function ajax_submit_post($id)
 	$xml->document->appendChild($item);
 
 	$item = $xml->document->createElement('title');
-	$item->setData(htmlspecialchars(Parser::censor($post_title)));
+	$item->setData(Parser::title($post_title), FALSE);
 	$xml->document->appendChild($item);
 
 	return ($xml->document->asValidXML());
@@ -321,10 +323,16 @@ function ajax_quote_post($id)
 	}
 	unset($xml);
 
+	$content = '[quote=' . htmlspecialchars($data['p_nickname']) . ',t=' . $data['p_time'] . ',id=' . $data['p_id'] . ']' . trim($content) . '[/quote]';
+	if (Http::request('is_wysiwyg'))
+	{
+		$content = parser_wysiwyg::decode($content);
+	}
+
 	// Génération de l'affichage
 	$xml = new Xml();
 	$xml->document->setTagName('content');
-	$xml->document->setData('[quote=' . htmlspecialchars($data['p_nickname']) . ',t=' . $data['p_time'] . ',id=' . $data['p_id'] . ']' . trim($content) . '[/quote]', FALSE);
+	$xml->document->setData($content, FALSE);
 
 	return ($xml->document->asValidXML());
 }
@@ -354,10 +362,16 @@ function ajax_quote_mp($id)
 	$content = $xml->document->line[0]->getData();
 	unset($xml);
 
+	$content = '[quote=' . htmlspecialchars($data['u_nickname']) . ',t=' . $data['mp_time'] . ']' . trim($content) . '[/quote]';
+	if (Http::request('is_wysiwyg'))
+	{
+		$content = parser_wysiwyg::decode($content);
+	}
+
 	// Génération de l'affichage
 	$xml = new Xml();
 	$xml->document->setTagName('content');
-	$xml->document->setData('[quote=' . htmlspecialchars($data['u_nickname']) . ',t=' . $data['mp_time'] . ']' . trim($content) . '[/quote]');
+	$xml->document->setData($content);
 
 	return ($xml->document->asValidXML());
 }
@@ -388,6 +402,38 @@ function ajax_search_user($nickname)
 		}
 	}
 	return (NULL);
+}
+
+/*
+** Transforme du texte issu de l'éditeur de texte en texte pour l'éditeur WYSIWYG
+*/
+function ajax_editor_text()
+{
+	if (Fsb::$session->is_logged())
+	{
+		Fsb::$db->update('users', array(
+			'u_activate_wysiwyg' =>		TRUE,
+		), 'WHERE u_id = ' . Fsb::$session->id());
+	}
+
+	$content = String::fsb_utf8_decode(utf8_encode(str_replace('&#43;', '+', Http::request('content', 'post'))));
+	return (Parser_wysiwyg::decode($content));
+}
+
+/*
+** Transforme du texte issu de l'éditeur WYSIWYG en texte normal
+*/
+function ajax_editor_wysiwyg()
+{
+	if (Fsb::$session->is_logged())
+	{
+		Fsb::$db->update('users', array(
+			'u_activate_wysiwyg' =>		FALSE,
+		), 'WHERE u_id = ' . Fsb::$session->id());
+	}
+
+	$content = String::fsb_utf8_decode(utf8_encode(str_replace('&#43;', '+', Http::request('content', 'post'))));
+	return (Parser_wysiwyg::encode($content));
 }
 
 exit;

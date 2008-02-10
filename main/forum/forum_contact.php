@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_contact.php
 ** | Begin :		31/10/2006
-** | Last :			20/12/2007
+** | Last :			11/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -60,7 +60,7 @@ class Fsb_frame_child extends Fsb_frame
 		);
 
 		// MP désactivés ?
-		if (!Fsb::$mods->is_active('mp'))
+		if (!Fsb::$cfg->get('mp_activated'))
 		{
 			unset($list_method['mp']);
 		}
@@ -185,7 +185,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'mp' :
-				if (Fsb::$mods->is_active('mp'))
+				if (Fsb::$cfg->get('mp_activated'))
 				{
 					$to_id = array();
 					foreach ($bcc AS $data)

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/user/user_sig.php
 ** | Begin :	09/11/2005
-** | Last :		12/12/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -40,15 +40,6 @@ class Page_user_sig extends Fsb_model
 				$this->submit_form();
 			}
 		}
-		else if (Http::request('set_wysiwyg_on', 'post') !== NULL || Http::request('set_wysiwyg_off', 'post') !== NULL)
-		{
-			$this->check_form();
-			if (!$this->errstr)
-			{
-				$this->preview_sig();
-			}
-			$this->update_wysiwyg();
-		}
 		else if (Http::request('preview', 'post'))
 		{
 			$this->check_form();
@@ -76,16 +67,17 @@ class Page_user_sig extends Fsb_model
 		// Valeur de la signature
 		$value = htmlspecialchars(($this->sig) ? $this->sig : Fsb::$session->data['u_signature']);
 
-		// Si l'éditeur WYSIWYG est activé
-		if (Fsb::$session->data['u_activate_wysiwyg'])
+		if (Http::request('sig_hidden', 'post') || Fsb::$session->data['u_activate_wysiwyg'])
 		{
-			Fsb::$tpl->set_switch('use_wysiwyg');
-			Fsb::$tpl->set_blocks('onload', array(
-				'CODE' =>		'init_wysiwyg(\'map_textarea_sig\')',
-			));
-
 			$value = Parser_wysiwyg::decode($value);
 		}
+
+		Fsb::$tpl->set_switch('use_wysiwyg');
+		Fsb::$tpl->set_blocks('onload', array(
+			'CODE' =>	'textEditor[\'map_textarea_sig\'] = new FSB_editor_interface(\'map_textarea_sig\', \'' . ((Fsb::$session->data['u_activate_wysiwyg']) ? 'wysiwyg' : 'text') . '\', ' . intval(Fsb::$mods->is_active('wysiwyg')) . ')',
+		));
+
+		
 
 		Fsb::$tpl->set_file('user/user_sig.html');
 		Fsb::$tpl->set_vars(array(
@@ -116,9 +108,9 @@ class Page_user_sig extends Fsb_model
 		$parser = new Parser();
 
 		$preview_sig = $this->sig;
-		if (Fsb::$session->data['u_activate_wysiwyg'])
+		if (Http::request('sig_hidden', 'post'))
 		{
-			$preview_sig = Parser_wysiwyg::encode($preview_sig);
+			$preview_sig = Parser_wysiwyg::encode(htmlspecialchars($preview_sig));
 		}
 
 		Fsb::$tpl->set_switch('preview');
@@ -160,20 +152,6 @@ class Page_user_sig extends Fsb_model
 
 		Log::user(Fsb::$session->id(), 'update_sig');
 		Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=sig', 'forum_profil');
-	}
-
-	/*
-	** Mise à jour du WYSIWYG
-	*/
-	public function update_wysiwyg()
-	{
-		if (Fsb::$session->is_logged())
-		{
-			Fsb::$session->data['u_activate_wysiwyg'] = (Http::request('set_wysiwyg_on', 'post') !== NULL) ? TRUE : FALSE;
-			Fsb::$db->update('users', array(
-				'u_activate_wysiwyg' =>		Fsb::$session->data['u_activate_wysiwyg'],
-			), 'WHERE u_id = ' . Fsb::$session->id());
-		}
 	}
 }
 

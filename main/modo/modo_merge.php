@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_merge.php
 ** | Begin :	25/10/2006
-** | Last :		14/08/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -114,7 +114,7 @@ class Page_modo_merge extends Fsb_model
 		{
 			Fsb::$tpl->set_blocks('topic', array(
 				'ID' =>			$row['t_id'],
-				'TITLE' =>		htmlspecialchars($row['t_title']),
+				'TITLE' =>		Parser::title($row['t_title']),
 
 				'U_TOPIC' =>	sid(ROOT . 'index.' . PHPEXT . '?p=topics&amp;t_id=' . $row['t_id']),
 			));

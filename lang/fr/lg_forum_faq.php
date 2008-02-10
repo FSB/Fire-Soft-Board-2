@@ -450,7 +450,7 @@ $GLOBALS['faq_data'] = array (
 			messages. Ainsi vous pourrez par exemple créer un formulaire de présentation avec tous les champs que vous définirez vous
 			même. Vous pouvez donc modifier comme vous le voulez le formulaire d\'envoi de message.<br /><br />
 			Pour installer de nouvelles MAPS vous devez télécharger le fichier .xml de la MAP, et le mettre dans le répertoire
-			<strong>' . MAPS_PATH . '</strong> de votre forum. Vous trouverez de l\'aide sur la création de MAPS, ainsi que des
+			<strong>~/main/maps/</strong> de votre forum. Vous trouverez de l\'aide sur la création de MAPS, ainsi que des
 			exemples disponibles sur notre <a href="http://www.fire-soft-board.com/maps.php" target="_blank">site web</a>.
 		',
     ),

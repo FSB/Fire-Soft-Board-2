@@ -128,12 +128,12 @@
 			<div class="round">
 				<h1>{LG_USERPROFILE_CONTACT}</h1>
 				<table class="form userprofile">
-					<switch name="ac_mods_mp">
+					<if content="$CFG_MP_ACTIVATED">
 						<tr>
 							<th>{LG_USERPROFILE_MP}</th>
 							<td><a href="{USER_MP}" class="submit">{LG_USERPROFILE_SEND_CONTACT}</a></td>
 						</tr>
-					</switch>
+					</if>
 					<tr>
 						<th>{LG_USERPROFILE_EMAIL}</th>
 						<td><a href="{USER_EMAIL}" class="submit">{LG_USERPROFILE_SEND_CONTACT}</a></td>

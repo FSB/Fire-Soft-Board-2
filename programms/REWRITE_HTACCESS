@@ -8,3 +8,5 @@ RewriteRule topic-author-([0-9]*).html index.php?p=search&mode=author_topic&id=$
 RewriteRule topic-author-([0-9]*)-([0-9]*).html index.php?p=search&mode=author_topic&id=$1&page=$2
 RewriteRule author-([0-9]*).html index.php?p=search&mode=author&id=$1
 RewriteRule author-([0-9]*)-([0-9]*).html index.php?p=search&mode=author&id=$1&page=$2
+RewriteRule rss-([0-9]*).rss index.php?p=rss&mode=index&cat=$1
+RewriteRule rss-([a-z_]+)-([0-9]*).rss index.php?p=rss&mode=$1&id=$2

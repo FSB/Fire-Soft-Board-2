@@ -66,7 +66,7 @@
 
 <switch name="mp_options">
 	<form action="{U_ACTION}" method="post">
-	<switch name="ac_mods_mp_blacklist">
+	<if content="$CFG_MP_BLACKLIST_ACTIVATED">
 		<div class="round">
 			<h1><a href="{FAQ_FORUM_MP}">{LG_MP_BLACKLIST}</a></h1>
 			<table class="form">
@@ -90,8 +90,9 @@
 				</tr>
 			</table>
 		</div>
-	</switch>
+	</if>
 
+	<if content="$CFG_MP_AUTO_ACTIVATED">
 	<div class="round">
 		<h1><a href="{FAQ_FORUM_MP}">{LG_MP_AUTO_ANSWER}</a></h1>
 		<table class="form">
@@ -112,6 +113,7 @@
 			</tr>
 		</table>
 	</div>
+	</if>
 	</form>
 </switch>
 

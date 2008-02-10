@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/manage/manage_forums.php
 ** | Begin :	04/04/2005
-** | Last :		17/12/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -565,7 +565,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		Fsb::$tpl->set_switch('forums_operation');
 		Fsb::$tpl->set_vars(array(
-			'LIST_FORUM_TARGET' =>		Html::list_forums($this->forums, $this->id, 'move_target'),
+			'LIST_FORUM_TARGET' =>		Html::list_forums($this->forums, $this->id, 'move_target', FALSE),
 
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=manage_forums&amp;mode=operation&amp;id=' . $this->id),
 		));
@@ -577,6 +577,18 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function operation_move()
 	{
 		$to_id = intval(Http::request('move_target', 'post'));
+
+		// Vérification du forum
+		$sql = 'SELECT f_id
+				FROM ' . SQL_PREFIX . 'forums
+				WHERE f_id = ' . $to_id . '
+					AND f_id <> ' . $this->id . '
+					AND f_parent <> 0';
+		if (!Fsb::$db->request($sql))
+		{
+			Http::redirect('index.' . PHPEXT . '?p=manage_forums&mode=operation&id=' . $this->id);
+		}
+
 		if (check_confirm())
 		{
 			$tmp = array_select($this->forums, 'f_id', $this->id);

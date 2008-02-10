@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_forum.php
 ** | Begin :		12/05/2005
-** | Last :			19/12/2007
+** | Last :			20/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -389,7 +389,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			Fsb::$tpl->set_blocks('topic.t', array(
 				'ID' =>					$row['t_id'],
-				'NAME' =>				htmlspecialchars(Parser::censor($row['t_title'])),
+				'NAME' =>				Parser::title($row['t_title']),
 				'EXTRA_NAME' =>			(($row['t_trace'] == $this->id) ? '[' . Fsb::$session->lang('moved') . ']' : '') . (($row['t_poll'] == TOPIC_POLL) ? '[' . Fsb::$session->lang('poll') . ']' : ''),
 				'FIRST_LOGIN' =>		Html::nickname($row['f_u_nickname'], $row['f_u_id'], $row['f_u_color']),
 				'FIRST_TIME' =>			Fsb::$session->print_date($row['t_time']),

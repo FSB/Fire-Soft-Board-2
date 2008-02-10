@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_rss.php
 ** | Begin :		02/06/2006
-** | Last :			08/08/2007
+** | Last :			22/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -106,7 +106,7 @@ class Fsb_frame_child extends Fsb_frame
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
 			$this->rss->open(
-				htmlspecialchars($row['t_title']),
+				Parser::title($row['t_title']),
 				htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->id),
@@ -117,10 +117,10 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				$this->rss->add_entry(
-					htmlspecialchars($row['t_title']),
-					htmlspecialchars(str_replace('<br />', ' ', $parser->mapped_message($row['p_text'], $row['p_map']))),
+					Parser::title($row['t_title']),
+					htmlspecialchars($parser->mapped_message($row['p_text'], $row['p_map'])),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
-					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id'] . '#p' . $row['p_id']),
+					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&p_id=' . $row['p_id'] . '#p' . $row['p_id']),
 					$row['p_time']
 				);
 			}
@@ -168,10 +168,10 @@ class Fsb_frame_child extends Fsb_frame
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
 				$this->rss->add_entry(
-					htmlspecialchars($row['t_title']),
-					htmlspecialchars(str_replace('<br />', ' ', ($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map']))),
+					Parser::title($row['t_title']),
+					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
-					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
+					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&t_id=' . $row['t_id']),
 					$row['p_time']
 				);
 			}
@@ -214,10 +214,10 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				$this->rss->add_entry(
-					htmlspecialchars($row['t_title']),
-					htmlspecialchars(str_replace('<br />', ' ', ($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map']))),
+					Parser::title($row['t_title']),
+					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
-					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
+					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&t_id=' . $row['t_id']),
 					$row['p_time']
 				);
 			}
@@ -252,7 +252,7 @@ class Fsb_frame_child extends Fsb_frame
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
 			$this->rss->open(
-				htmlspecialchars($row['t_title']),
+				Parser::title($row['t_title']),
 				htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->id),
@@ -263,10 +263,10 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 				$this->rss->add_entry(
-					htmlspecialchars($row['t_title']),
-					htmlspecialchars(str_replace('<br />', ' ', $parser->mapped_message($row['p_text'], $row['p_map']))),
+					Parser::title($row['t_title']),
+					htmlspecialchars($parser->mapped_message($row['p_text'], $row['p_map'])),
 					(($row['u_activate_email'] & 2) ? 'mailto:' . $row['u_email'] : Fsb::$cfg->get('forum_mail')) . ' ' . htmlspecialchars($row['p_nickname']),
-					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id'] . '#p' . $row['p_id']),
+					sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=topic&p_id=' . $row['p_id'] . '#p' . $row['p_id']),
 					$row['p_time']
 				);
 			}

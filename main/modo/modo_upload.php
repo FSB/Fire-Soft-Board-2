@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_upload.php
 ** | Begin :	25/05/2007
-** | Last :		11/09/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -20,12 +20,17 @@ class Page_modo_upload extends Fsb_model
 {
 	public $page;
 	public $per_page = 50;
+	public $mode;
+	public $id;
 
 	/*
 	** Constructeur
 	*/
 	public function __construct()
 	{
+		$this->mode = Http::request('mode');
+		$this->id = intval(Http::request('id'));
+
 		$this->page = Http::request('page');
 		if ($this->page < 1)
 		{
@@ -36,7 +41,20 @@ class Page_modo_upload extends Fsb_model
 		{
 			$this->delete_uploaded_files();
 		}
-		$this->show_uploaded_files();
+
+		if (Http::request('submit_edit', 'post'))
+		{
+			$this->submit_edit_file();
+		}
+
+		if ($this->mode == 'edit')
+		{
+			$this->edit_file();
+		}
+		else
+		{
+			$this->show_uploaded_files();
+		}
 	}
 
 	/*
@@ -64,6 +82,7 @@ class Page_modo_upload extends Fsb_model
 		$total_page = $total / $this->per_page;
 
 		Fsb::$tpl->set_file('modo/modo_upload.html');
+		Fsb::$tpl->set_switch('upload_index');
 		Fsb::$tpl->set_vars(array(
 			'PAGINATION' =>		($total_page > 1) ? Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=' . $order . '&amp;direction=' . $direction) : NULL,
 	
@@ -92,9 +111,75 @@ class Page_modo_upload extends Fsb_model
 				'DOWNLOAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=download&amp;id=' . $row['upload_id']),
 				'AUTH' =>			Fsb::$session->lang($GLOBALS['_auth_level'][$row['upload_auth']]),
 				'ID' =>				$row['upload_id'],
+
+				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;mode=edit&amp;id=' . $row['upload_id']),
 			));
 		}
 		Fsb::$db->free($result);
+	}
+
+	/*
+	** Edition d'un fichier
+	*/
+	public function edit_file()
+	{
+		$sql = 'SELECT upload_realname, upload_auth
+				FROM ' . SQL_PREFIX . 'upload
+				WHERE upload_id = ' . $this->id;
+		if (!$data = Fsb::$db->request($sql))
+		{
+			Display::message('attached_file_not_exists');
+		}
+
+		// Liste des droits pour le téléchargement
+		$list_upload_auth = array(
+			VISITOR =>	Fsb::$session->lang('visitor'),
+			USER =>		Fsb::$session->lang('user'),
+			MODO =>		Fsb::$session->lang('modo'),
+			MODOSUP =>	Fsb::$session->lang('modosup'),
+			ADMIN =>	Fsb::$session->lang('admin'),
+		);
+
+		foreach (array_keys($list_upload_auth) AS $k)
+		{
+			if ($k < Fsb::$session->data['auth']['other']['download_file'][1])
+			{
+				unset($list_upload_auth[$k]);
+			}
+		}
+
+		Fsb::$tpl->set_file('modo/modo_upload.html');
+		Fsb::$tpl->set_switch('upload_edit');
+		Fsb::$tpl->set_vars(array(
+			'UPLOAD_NAME' =>	htmlspecialchars($data['upload_realname']),
+			'LIST_AUTH' =>		Html::create_list('upload_auth', $data['upload_auth'], $list_upload_auth),
+
+			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;mode=edit&amp;id=' . $this->id),
+		));
+	}
+
+	/*
+	** Soumission de l'édition d'un fichier
+	*/
+	public function submit_edit_file()
+	{
+		$sql = 'SELECT upload_id
+				FROM ' . SQL_PREFIX . 'upload
+				WHERE upload_id = ' . $this->id;
+		if (!Fsb::$db->request($sql))
+		{
+			Display::message('attached_file_not_exists');
+		}
+
+		$data = array(
+			'upload_realname' =>	trim(Http::request('upload_realname', 'post')),
+			'upload_auth' =>		intval(Http::request('upload_auth', 'post')),
+		);
+
+		Fsb::$db->update('upload', $data, 'WHERE upload_id = ' . $this->id);
+
+		Log::add(Log::MODO, 'edit_upload', $data['upload_realname']);
+		Display::message('modo_upload_well_edit', ROOT . 'index.' . PHPEXT . '?p=modo&module=upload', 'modo_upload');
 	}
 
 	/*

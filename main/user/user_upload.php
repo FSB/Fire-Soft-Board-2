@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/user/user_upload.php
 ** | Begin :	03/01/2006
-** | Last :		11/09/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -21,21 +21,36 @@ if (Fsb::$mods->is_active('upload') && Fsb::$session->is_authorized('upload_file
 */
 class Page_user_upload extends Fsb_model
 {
+	public $mode;
+	public $id;
+
 	/*
 	** Constructeur
 	*/
 	public function __construct()
 	{
-		$mode = Http::request('mode');
+		$this->mode = Http::request('mode');
+		$this->id = intval(Http::request('id'));
 
-		if ($mode == 'delete')
-		{
-			$this->delete_file();
-		}
-		else
-		{
-			$this->show_files();
-		}
+		$call = new Call($this);
+		$call->module(array(
+			'list' =>		array('tpl', 'extern', 'diff'),
+			'url' =>		'index.' . PHPEXT . '?p=general_tpl',
+			'lang' =>		'adm_tpl_',
+			'default' =>	'tpl',
+		));
+
+		$call->post(array(
+			'submit_edit' =>	':submit_edit_file',
+		));
+
+		$call->functions(array(
+			'mode' => array(
+				'edit' =>		'edit_file',
+				'delete' =>		'delete_file',
+				'default' =>	'show_files',
+			),
+		));
 	}
 
 	/*
@@ -60,13 +75,12 @@ class Page_user_upload extends Fsb_model
 		$sql = 'SELECT SUM(upload_filesize) AS total_filesize
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE u_id = ' . Fsb::$session->id();
-		$result = Fsb::$db->query($sql);
-		$row = Fsb::$db->row($result);
-		Fsb::$db->free($result);
-		$upload_quota = intval($row['total_filesize']);
+		$data = Fsb::$db->request($sql);
+		$upload_quota = intval($data['total_filesize']);
 
 		// Parse de variables de template
 		Fsb::$tpl->set_file('user/user_upload.html');
+		Fsb::$tpl->set_switch('upload_index');
 		Fsb::$tpl->set_vars(array(
 			'FORUM_UPLOAD_QUOTA' =>	(Fsb::$session->is_authorized('upload_quota_unlimited')) ? Fsb::$session->lang('unlimited') : convert_size(Fsb::$cfg->get('upload_quota')),
 			'UPLOAD_QUOTA' =>		convert_size($upload_quota),
@@ -91,10 +105,77 @@ class Page_user_upload extends Fsb_model
 				'TOTAL' =>			$row['upload_total'],
 				'DOWNLOAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=download&amp;id=' . $row['upload_id']),
 
+				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=upload&amp;mode=edit&amp;id=' . $row['upload_id']),
 				'U_DELETE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=upload&amp;mode=delete&amp;id=' . $row['upload_id']),
 			));
 		}
 		Fsb::$db->free($result);
+	}
+
+	/*
+	** Edition d'un fichier
+	*/
+	public function edit_file()
+	{
+		Fsb::$tpl->set_file('user/user_upload.html');
+		Fsb::$tpl->set_switch('upload_edit');
+
+		$sql = 'SELECT upload_realname, upload_auth
+				FROM ' . SQL_PREFIX . 'upload
+				WHERE upload_id = ' . $this->id . '
+					AND u_id = ' . Fsb::$session->id();
+		if (!$data = Fsb::$db->request($sql))
+		{
+			Display::message('attached_file_not_exists');
+		}
+
+		// Liste des droits pour le téléchargement
+		$list_upload_auth = array(
+			VISITOR =>	Fsb::$session->lang('visitor'),
+			USER =>		Fsb::$session->lang('user'),
+			MODO =>		Fsb::$session->lang('modo'),
+			MODOSUP =>	Fsb::$session->lang('modosup'),
+			ADMIN =>	Fsb::$session->lang('admin'),
+		);
+
+		foreach (array_keys($list_upload_auth) AS $k)
+		{
+			if ($k < Fsb::$session->data['auth']['other']['download_file'][1])
+			{
+				unset($list_upload_auth[$k]);
+			}
+		}
+
+		Fsb::$tpl->set_vars(array(
+			'UPLOAD_NAME' =>	htmlspecialchars($data['upload_realname']),
+			'LIST_AUTH' =>		Html::create_list('upload_auth', $data['upload_auth'], $list_upload_auth),
+
+			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=upload&amp;mode=edit&amp;id=' . $this->id),
+		));
+	}
+
+	/*
+	** Soumission de l'édition d'un fichier
+	*/
+	public function submit_edit_file()
+	{
+		$sql = 'SELECT upload_id
+				FROM ' . SQL_PREFIX . 'upload
+				WHERE upload_id = ' . $this->id . '
+					AND u_id = ' . Fsb::$session->id();
+		if (!Fsb::$db->request($sql))
+		{
+			Display::message('attached_file_not_exists');
+		}
+
+		$data = array(
+			'upload_realname' =>	trim(Http::request('upload_realname', 'post')),
+			'upload_auth' =>		intval(Http::request('upload_auth', 'post')),
+		);
+
+		Fsb::$db->update('upload', $data, 'WHERE upload_id = ' . $this->id);
+
+		Display::message('user_upload_well_edit', ROOT . 'index.' . PHPEXT . '?p=profile&module=upload', 'forum_profil');
 	}
 
 	/*

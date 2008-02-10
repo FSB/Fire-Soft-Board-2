@@ -44,6 +44,7 @@ return (array (
   'adm_sql_result' => 'Résultat',
   'adm_backup_multi_insert' => 'Insertions multiples',
   'adm_backup_multi_insert_exp' => 'Affiche les requêtes d\'exportation de données sous la forme d\'une requête de multi insertion',
+  'adm_sql_cache_deleted' => 'Les fichiers en cache ont bien été supprimés',
 ));
 
 

@@ -40,9 +40,20 @@
 	<!--
 	function add_uploaded(id, cur, is_img, path)
 	{
-		content = (is_img) ? '[img]' + path + '[/img]' : '';
-		parent.insert_text('{MAP_ID}', '', '[attach=' + id + ']' + content, '', '[/attach]', '_upload', null);
-		parent.close_fsbcode_box('');
+		
+		if (parent.textEditor['{MAP_ID}'].w.current == 'wysiwyg')
+		{
+			content = (is_img) ? '<img src="' + path + '" realsrc="' + path + '" />' : '&nbsp;';
+			content = '<div type="attach" args="' + id + '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' + content + '</div><br />';
+		}
+		else
+		{
+			content = (is_img) ? '[img]' + path + '[/img]' : '';
+			content = '[attach=' + id + ']' + content + '[/attach]';
+		}
+
+		parent.textEditor['{MAP_ID}'].insert(content, true);
+		parent.textEditor['{MAP_ID}'].w.close_box();
 		cur.checked = false;
 	}
 	//-->

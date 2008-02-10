@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/sdk.php
 ** | Begin :	06/08/2007
-** | Last :		13/12/2007
+** | Last :		11/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -95,6 +95,11 @@
 **	rsa_decrypt()				Décrypte les champs du formulaire chiffrés en RSA
 */
 
+if (!defined('FSB_SDK'))
+{
+	define('FSB_SDK', TRUE);
+}
+
 if (!defined('ROOT'))
 {
 	define('ROOT', './');
@@ -109,7 +114,7 @@ if (!defined('FORUM'))
 	// Pas d'appel direct de la page, sauf dans le cadre d'applications internes
 	$sdkmode = Http::request('sdkmode', 'get');
 
-	if (strpos($_SERVER['PHP_SELF'], 'sdk.php') && !in_array($sdkmode, array('captcha')))
+	if (strpos($_SERVER['PHP_SELF'], 'sdk.' . PHPEXT) && !in_array($sdkmode, array('captcha')))
 	{
 		exit;
 	}
@@ -121,7 +126,7 @@ if (!defined('FORUM'))
 class Fsb_sdk extends Fsb_model
 {
 	// Version du SDK
-	public $version = '1.1.0';
+	public $version = '1.1.1';
 
 	// Dernière erreur rencontrée
 	public $errstr = '';
@@ -299,7 +304,7 @@ class Fsb_sdk extends Fsb_model
 	** -----
 	** $total ::	Nombre de membres à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
 	*/
-	public function get_best_posters($forums = '*', $total = 15)
+	public function get_best_posters($total = 15)
 	{
 		return ($this->get_users($total, 'u_total_post DESC, u_joined DESC'));
 	}
@@ -309,7 +314,7 @@ class Fsb_sdk extends Fsb_model
 	** -----
 	** $total ::	Nombre de membres à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
 	*/
-	public function get_worst_posters($forums = '*', $total = 15)
+	public function get_worst_posters($total = 15)
 	{
 		return ($this->get_users($total, 'u_total_post DESC, u_joined DESC'));
 	}
@@ -843,7 +848,7 @@ class Fsb_sdk extends Fsb_model
 						'content' =>	$parser->mapped_message($row['c_content'], 'classic'),
 						'begin' =>		$row['c_begin'],
 						'end' =>		$row['c_end'],
-						'url' =>		sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;mode=event&amp;time=' . $row['c_begin']),
+						'url' =>		sid(FSB_PATH . 'index.' . PHPEXT . '?p=calendar&amp;mode=event&amp;time=' . $row['c_begin']),
 						'name' =>		htmlspecialchars($row['c_title']),
 						'date' =>		($row['c_end'] - ONE_DAY > $row['c_begin']) ? date('d/m/Y', $row['c_begin']) . ' - ' . date('d/m/Y', $row['c_end']) : date('d/m/Y', $row['c_begin']),
 					);
@@ -1050,7 +1055,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function url_topic($topic_id)
 	{
-		return (sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $topic_id));
+		return (sid(FSB_PATH . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $topic_id));
 	}
 
 	/*
@@ -1060,7 +1065,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function url_post($post_id)
 	{
-		return (sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $post_id . '#' . $post_id));
+		return (sid(FSB_PATH . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $post_id . '#' . $post_id));
 	}
 
 	/*
@@ -1070,7 +1075,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function url_forum($forum_id)
 	{
-		return (sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum_id));
+		return (sid(FSB_PATH . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum_id));
 	}
 
 	/*
@@ -1080,7 +1085,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function url_user($user_id)
 	{
-		return (sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $user_id));
+		return (sid(FSB_PATH . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $user_id));
 	}
 
 	/*
@@ -1088,7 +1093,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function url_index()
 	{
-		return (sid(ROOT . 'index.' . PHPEXT . '?p=index'));
+		return (sid(FSB_PATH . 'index.' . PHPEXT . '?p=index'));
 	}
 
 	//
@@ -1103,7 +1108,7 @@ class Fsb_sdk extends Fsb_model
 	*/
 	public function template_path($dir)
 	{
-		Fsb::$tpl->tpl_dir = $dir;
+		Fsb::$tpl->set_template($dir);
 	}
 
 	//
@@ -1132,7 +1137,7 @@ class Fsb_sdk extends Fsb_model
 			$mode = 'new';
 		}
 
-		return (ROOT . 'sdk.' . PHPEXT . '?sdkmode=captcha&amp;mode=' . $mode . '&amp;uniqid=' . md5(rand(1, time())));
+		return (FSB_PATH . 'sdk.' . PHPEXT . '?sdkmode=captcha&amp;mode=' . $mode . '&amp;uniqid=' . md5(rand(1, time())));
 	}
 
 	/*
@@ -1196,8 +1201,8 @@ class Fsb_sdk extends Fsb_model
 	public function rsa_encrypt()
 	{
 		// Librairies javascript necessaires
-		$html = '<script type="text/javascript" src="' . ROOT . 'main/javascript/biginteger.js"></script>' . "\n";
-		$html .= '<script type="text/javascript" src="' . ROOT . 'main/javascript/rsa.js"></script>' . "\n";
+		$html = '<script type="text/javascript" src="' . FSB_PATH . 'main/javascript/biginteger.js"></script>' . "\n";
+		$html .= '<script type="text/javascript" src="' . FSB_PATH . 'main/javascript/rsa.js"></script>' . "\n";
 		$html .= '<script type="text/javascript"><!--' . "\n";
 		$html .= 'function submit_rsa(t) {' . "\n";
 

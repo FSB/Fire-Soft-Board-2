@@ -251,7 +251,7 @@ class Module extends Fsb_model
 		$this->file_open = ROOT . $this->handler->file[0]->getData();
 		if (!$this->get_config('install') && (!file_exists($this->file_open) || !is_readable($this->file_open)))
 		{
-			$this->error(Module::MOD_ERROR_FILE_NOT_FOUND, $this->file_open);
+			$this->error(self::MOD_ERROR_FILE_NOT_FOUND, $this->file_open);
 			$this->file_open = NULL;
 		}
 		else
@@ -271,7 +271,7 @@ class Module extends Fsb_model
 			$this->find_code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
 			if (!preg_match('#' . preg_quote($this->find_code, '#') . '#', $this->file_content))
 			{
-				$this->error(Module::MOD_ERROR_CODE_NOT_FOUND, '<pre style="overflow: auto; width: 100%">' . htmlspecialchars($this->find_code) . '</pre>', str_replace('//', '/', $this->file_open));
+				$this->error(self::MOD_ERROR_CODE_NOT_FOUND, '<pre style="overflow: auto; width: 100%">' . htmlspecialchars($this->find_code) . '</pre>', str_replace('//', '/', $this->file_open));
 			}
 		}
 	}
@@ -351,7 +351,7 @@ class Module extends Fsb_model
 				{
 					if (!Fsb::$db->simple_query($query))
 					{
-						$this->error(Module::MOD_ERROR_SQL, Fsb::$db->sql_error(), $query);
+						$this->error(self::MOD_ERROR_SQL, Fsb::$db->sql_error(), $query);
 					}
 				}
 			}
@@ -370,6 +370,11 @@ class Module extends Fsb_model
 				$filename = $file_handler->filename[0]->getData();
 				$duplicat = ($file_handler->childExists('duplicat')) ? $file_handler->duplicat[0]->getData() : NULL;
 				$directory = ($file_handler->childExists('directory')) ? $file_handler->directory[0]->getData() : NULL;
+
+				if ($duplicat[strlen($duplicat) - 1] != '/')
+				{
+					$duplicat .= '/';
+				}
 
 				// Duplication de fichier = copier un fichier dans plusieurs répertoires similaires, par
 				// exemple les langues, thèmes, etc ...
@@ -514,7 +519,7 @@ class Module extends Fsb_model
 				}
 				else if (!is_writable(dirname(ROOT . $path)))
 				{
-					$this->error(Module::MOD_ERROR_DIR_NOT_WRITABLE, dirname(ROOT . $path));
+					$this->error(self::MOD_ERROR_DIR_NOT_WRITABLE, dirname(ROOT . $path));
 				}
 			}
 		}
@@ -522,6 +527,10 @@ class Module extends Fsb_model
 		if ($this->get_config('install'))
 		{
 			return ($this->file->write($to, file_get_contents(ROOT . $from)));
+		}
+		else if (!file_exists(ROOT . $from))
+		{
+			$this->error(self::MOD_ERROR_FILE_NOT_FOUND, $from);
 		}
 	}
 
@@ -543,7 +552,7 @@ class Module extends Fsb_model
 		}
 		else if (!$this->file->chmod($filename, 0666, FALSE) && !is_writable($this->file_open))
 		{
-			$this->error(Module::MOD_ERROR_PERMISSION_DENIED, $this->file_open);
+			$this->error(self::MOD_ERROR_PERMISSION_DENIED, $this->file_open);
 		}
 	}
 
@@ -687,7 +696,7 @@ class Module extends Fsb_model
 				return ('exec');
 
 			default :
-				$this->error(Module::MOD_ERROR_UNKNOWN_INSTRUCTION, $keyword);
+				$this->error(self::MOD_ERROR_UNKNOWN_INSTRUCTION, $keyword);
 				return (NULL);
 		}
 	}

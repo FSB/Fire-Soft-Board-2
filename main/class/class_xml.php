@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_xml.php
 ** | Begin :	31/05/2007
-** | Last :		08/11/2007
+** | Last :		15/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -520,6 +520,14 @@ class Xml_element extends Fsb_model
 		$xml = '<?xml version="1.0" encoding="' . $charset . '" standalone="no"?>' . "\n";
 		$xml .= $this->asXml();
 		return ($xml);
+	}
+
+	/*
+	** Si un enfant n'existe pas, on retourne un array() vide
+	*/
+	public function __get($property)
+	{
+		return (array());
 	}
 }
 

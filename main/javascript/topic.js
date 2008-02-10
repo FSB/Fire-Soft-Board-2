@@ -2,7 +2,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/popup.js
 ** | Begin :		03/10/2006
-** | Last :			08/11/2007
+** | Last :			20/01/2008
 ** | User :			Genova
 ** | License :		GPL v2.0
 ** +---------------------------------------------------+
@@ -51,34 +51,6 @@ function resize_textarea(id, size)
 }
 
 /*
-** Ouvre la fenêtre d'attente ajax
-*/
-function ajax_waiter_open()
-{
-	if (Nav_IE)
-	{
-		var scroll_y = document.body.scrollTop;
-	}
-	else
-	{
-		var scroll_y = window.pageYOffset;
-	}
-	$('ajax_waiter').style.top = scroll_y + 'px';
-	$('ajax_waiter').style.left = '0px';
-	$('ajax_waiter').innerHTML = '<img src="images/ajax-loader.gif" />';
-	$('ajax_waiter').style.display = 'block';
-}
-
-/*
-** Ferme la fenête d'attendre ajax
-*/
-function ajax_waiter_close()
-{
-	$('ajax_waiter').style.display = 'none';
-	$('ajax_waiter').innerHTML = '';
-}
-
-/*
 ** Edition en live d'un message
 */
 var ajax_is_in_edition_mode = new Array;
@@ -107,11 +79,12 @@ function edit_post_dynamic(id, post_id, is_first_post)
 		{
 			content = data.getElementsByTagName('root').item(0).getElementsByTagName('line').item(0).firstChild.nodeValue;
 			title = data.getElementsByTagName('root').item(0).getElementsByTagName('title').item(0).firstChild.nodeValue;
-			html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post">';
+			html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post" onsubmit="advanced_post_dynamic(\'' + id + '\', ' + post_id + ', ' + is_first_post + ')">';
 			if (is_first_post)
 			{
-				html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" value="' + htmlspecialchars(title) + '" /><br /><br />';
+				html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" value="' + htmlspecialchars(title, true) + '" /><br /><br />';
 			}
+
 			html += '<textarea style="width: 99%" rows="15" name="" id="' + id + '_ajax" tabindex="' + tabindex + '">' + content + '</textarea><p style="text-align: center">';
 			html += '<span style="float: left; margin-top: -13px"> &nbsp; &nbsp; ';
 			html += '<a href="javascript:resize_textarea(\'' + id + '_ajax\', -5)"><img src="' + topic['img_textarea_less'] + '" /></a> ';
@@ -247,10 +220,10 @@ function cancel_post_dynamic(id, post_id)
 ** post_id ::		ID du message
 ** form_id ::		ID du champ texte
 ** open_id ::		ID du champ à ouvrir (reponse rapide par exemple)
-** is_wysiwyg ::	true si on est en mode WYSIWYG
+** editor_obj ::	pointe sur l'éditeur (passer null pour ne pas utiliser de wysiwyg)
 ** is_mp ::			true si on doit récupérer les données de messages privés
 */
-function quote_post(post_id, form_id, open_id, is_wysiwyg, is_mp)
+function quote_post(post_id, form_id, open_id, editor_obj, is_mp)
 {
 	if (open_id && !$(open_id))
 	{
@@ -274,17 +247,18 @@ function quote_post(post_id, form_id, open_id, is_wysiwyg, is_mp)
 				$(open_id).style.display = 'block';
 			}
 
-			if (!is_wysiwyg)
+			if (!editor_obj || editor_obj.w.current == 'text')
 			{
 				$(form_id).value = trim($(form_id).value + "\n" + content);
 			}
 			else
 			{
-				insert_wysiwyg_text(form_id, content);
+				editor_obj.insert(content, true);
 			}
 		}
 	}
 	ajax.set_arg(AJAX_GET, 'mode', (is_mp) ? 'quote_mp' : 'quote_post');
 	ajax.set_arg(AJAX_GET, 'id', post_id);
+	ajax.set_arg(AJAX_GET, 'is_wysiwyg', ((editor_obj && editor_obj.w.current == 'wysiwyg') ? '1' : '0'));
 	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
 }

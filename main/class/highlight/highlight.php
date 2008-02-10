@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/class/highlight/highlight.php
 ** | Begin :		27/09/2005
-** | Last :			13/08/2007
+** | Last :			07/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -45,7 +45,7 @@ abstract class Highlight extends Fsb_model
 		}
 		$str = file_get_contents($filename);
 
-		return ($this->parse($str));
+		return ($this->_parse($str));
 	}
 
 	/*

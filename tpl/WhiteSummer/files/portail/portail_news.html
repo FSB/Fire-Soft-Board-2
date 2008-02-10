@@ -1,15 +1,15 @@
 <switch name="dont_show_news">
-	<div class="info">
+	<div class="round">
 		<h1>{LG_PM_NEWS_NO}</h1>
-		<div>
+		<div class="content">
 			<div class="error">{LG_PM_NEWS_AUTH}</div>
 		</div>
 	</div>
 <else>
 	<block name="news">
-		<div class="info">
+		<div class="round">
 			<h1>{news.NEW_NAME}</h1>
-			<div>
+			<div class="content">
 				{news.NEW_AUTHOR}, {news.POST_AT} (<i>{news.NB_COMMENTS}</i>)
 				<hr style="border: 1px solid #000000; border-width: 1px 0px 0px 0px; width: 200px" align="left" />
 				{news.NEW_TEXT}
@@ -19,9 +19,9 @@
 		</div>
 	</block>
 	<blockelse name="news">
-		<div class="info">
+		<div class="round">
 			<h1>{LG_PM_NEWS_NO}</h1>
-			<div>
+			<div class="content">
 				<div class="error">{LG_PM_NO_NEWS}</div>
 			</div>
 		</div>

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/modo/modo_procedure_exec.php
 ** | Begin :	11/11/2006
-** | Last :		14/08/2007
+** | Last :		21/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -83,7 +83,7 @@ class Page_modo_procedure_exec extends Fsb_model
 		$procedure->set_var('this.last_post_id', $t['t_last_p_id']);
 
 		// Titre du sujet
-		$procedure->set_var('this.topic_title', $t['t_title']);
+		$procedure->set_var('this.topic_title', Parser::title($t['t_title']));
 
 		// Utilisateur executant la procédure
 		$procedure->set_var('this.user', Fsb::$session->data);

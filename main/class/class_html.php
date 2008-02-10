@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_html.php
 ** | Begin :	19/06/2007
-** | Last :		23/12/2007
+** | Last :		11/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -215,7 +215,7 @@ class Html extends Fsb_model
 			$html = '<optgroup label="' . Fsb::$session->lang('jumpbox_label') . '">';
 			$html .= '<option value="?p=index">' . Fsb::$session->lang('forum_index') . '</option>';
 			$html .= '<option value="?p=faq">' . Fsb::$session->lang('jumpbox_faq') . '</option>';
-			$html .= (Fsb::$mods->is_active('mp')) ? '<option value="?p=mp">' . Fsb::$session->lang('jumpox_mp') . '</option>' : '';
+			$html .= (Fsb::$cfg->get('mp_activated')) ? '<option value="?p=mp">' . Fsb::$session->lang('jumpox_mp') . '</option>' : '';
 			$html .= '<option value="?p=userlist&amp;g_id=' . GROUP_SPECIAL_USER . '">' . Fsb::$session->lang('jumpbox_userlist') . '</option>';
 			$html .= '<option value="?p=profile&amp;module=personal">' . Fsb::$session->lang('jumpbox_profile') . '</option>';
 			$html .= '</optgroup>';
@@ -450,7 +450,7 @@ class Html extends Fsb_model
 		}
 		else
 		{
-			return (sprintf(Fsb::$session->style['other']['nickname_link'], sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $u_id), $color, htmlspecialchars($nickname)));
+			return (sprintf(Fsb::$session->style['other']['nickname_link'], sid(FSB_PATH . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $u_id), $color, htmlspecialchars($nickname)));
 		}
 	}
 
@@ -469,7 +469,7 @@ class Html extends Fsb_model
 			$color = 'class="forum"';
 		}
 
-		$url = ($location) ? $location : sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $id);
+		$url = ($location) ? $location : sid(FSB_PATH . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $id);
 		return (sprintf(Fsb::$session->style['other']['forum_link'], $url, $color, $forum));
 	}
 

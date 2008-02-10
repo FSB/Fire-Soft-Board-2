@@ -68,6 +68,11 @@ class Cache_sql extends Cache
 	*/
 	public function get($hash)
 	{
+		if (!$this->exists($hash))
+		{
+			return (NULL);
+		}
+
 		if ($this->data[$hash]['serialized'])
 		{
 			$this->data[$hash]['content'] = @unserialize($this->data[$hash]['content']);

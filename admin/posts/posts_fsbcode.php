@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/posts/posts_fsbcode.php
 ** | Begin :	17/07/2007
-** | Last :		13/12/2007
+** | Last :		12/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -37,6 +37,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'add' =>		'page_add_edit_fsbcode',
 				'edit' =>		'page_add_edit_fsbcode',
 				'delete' =>		'page_delete_fsbcode',
+				'up' =>			'page_move_fsbcode',
+				'down' =>		'page_move_fsbcode',
 				'default' =>	'page_default_fsbcode',
 			),
 		));
@@ -65,7 +67,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'SIG_ACTIVATED' =>	($row['fsbcode_activated_sig']) ? TRUE : FALSE,
 
 				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=edit&amp;id=' . $row['fsbcode_id']),
-				'U_DELETE' =>		sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=delete&amp;id=' . $row['fsbcode_id'])
+				'U_DELETE' =>		sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=delete&amp;id=' . $row['fsbcode_id']),
+				'U_UP' =>			sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=up&amp;id=' . $row['fsbcode_id']),
+				'U_DOWN' =>			sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=down&amp;id=' . $row['fsbcode_id']),
 			));
 		}
 		Fsb::$db->free($result);
@@ -98,6 +102,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'fsbcode_fct' =>			'',
 				'fsbcode_activated' =>		TRUE,
 				'fsbcode_activated_sig' =>	TRUE,
+				'fsbcode_menu' =>			TRUE,
 			);
 		}
 
@@ -118,6 +123,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FSBCODE_ACTIVATED' =>		($data['fsbcode_activated']) ? TRUE : FALSE,
 			'FSBCODE_ACTIVATED_SIG' =>	($data['fsbcode_activated_sig']) ? TRUE : FALSE,
 			'FSBCODE_FCT' =>			$data['fsbcode_fct'],
+			'FSBCODE_MENU' =>			($data['fsbcode_menu']) ? TRUE : FALSE,
 
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
 		));
@@ -137,11 +143,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'fsbcode_description' =>	trim(Http::request('fsbcode_description', 'post')),
 			'fsbcode_activated' =>		intval(Http::request('fsbcode_activated', 'post')),
 			'fsbcode_activated_sig' =>	intval(Http::request('fsbcode_activated_sig', 'post')),
+			'fsbcode_menu' =>			intval(Http::request('fsbcode_menu', 'post')),
 		);
 
 		$errstr = array();
 
-		if (!$data['fsbcode_tag'] || !$data['fsbcode_search'])
+		$sql = 'SELECT fsbcode_fct
+				FROM ' . SQL_PREFIX . 'fsbcode
+				WHERE fsbcode_id = ' . $this->id;
+		$f = Fsb::$db->request($sql);
+
+		if (!$data['fsbcode_tag'] || (!$f['fsbcode_fct'] && !$data['fsbcode_search']))
 		{
 			$errstr[] = Fsb::$session->lang('fields_empty');
 		}
@@ -226,6 +238,44 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Log::add(Log::ADMIN, 'censor_log_delete');
 
 		Display::message('adm_censor_well_delete', 'index.' . PHPEXT . '?p=posts_censor', 'posts_censor');
+	}
+
+	/*
+	** Déplace un FSBcode avec un autre
+	*/
+	public function page_move_fsbcode()
+	{
+		$move = ($this->mode == 'up') ? -1 : 1;
+
+		// Position du FSBcode courant
+		$sql = 'SELECT fsbcode_order
+				FROM ' . SQL_PREFIX . 'fsbcode
+				WHERE fsbcode_id = ' . $this->id;
+		$d = Fsb::$db->request($sql);
+
+		if ($d)
+		{
+			// ID du FSBcode à switcher
+			$sql = 'SELECT fsbcode_id
+					FROM ' . SQL_PREFIX . 'fsbcode
+					WHERE fsbcode_order = ' . ($d['fsbcode_order'] + $move);
+			$swap_fsbcode_id = Fsb::$db->get($sql, 'fsbcode_id');
+
+			if ($swap_fsbcode_id)
+			{
+				// Mise à jour de la position des deux FSBcodes
+				Fsb::$db->update('fsbcode', array(
+					'fsbcode_order' =>	($d['fsbcode_order'] + $move),
+				), 'WHERE fsbcode_id = ' . intval($this->id));
+
+				Fsb::$db->update('fsbcode', array(
+					'fsbcode_order' =>	$d['fsbcode_order'],
+				), 'WHERE fsbcode_id = ' . $swap_fsbcode_id);
+
+				Fsb::$db->destroy_cache('fsbcode_');
+			}
+		}
+		Http::redirect('index.' . PHPEXT . '?p=posts_fsbcode');
 	}
 }
 

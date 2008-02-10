@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/profil/profil_fields_forum.php
 ** | Begin :	19/09/2005
-** | Last :		05/11/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -181,7 +181,15 @@ class Profil_fields_forum extends Profil_fields
 			}
 
 			// On récupère la valeur du champ
-			$value = (isset($user_data[$field_name . '_' . $row['pf_id']]) && $user_data[$field_name . '_' . $row['pf_id']]) ? $user_data[$field_name . '_' . $row['pf_id']] : NULL;
+			$value = NULL;
+			if (isset($user_data[$field_name . '_' . $row['pf_id']]))
+			{
+				if ($user_data[$field_name . '_' . $row['pf_id']] || in_array($row['pf_html_type'], array(self::RADIO, self::SELECT, self::MULTIPLE)))
+				{
+					$value = $user_data[$field_name . '_' . $row['pf_id']];
+				}
+			}
+
 			if ($value !== NULL)
 			{
 				switch ($row['pf_html_type'])

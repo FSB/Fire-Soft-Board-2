@@ -59,7 +59,7 @@
 				content += '<br style="line-height: 10px" \/>';
 			}
 
-			content += '<img src="' + s[cat][iterator][1] + '" id="smiley_id_' + iterator + '" title="' + s[cat][iterator][2] + '" onclick="insert_text(\'map_textarea_' + map_name + '\', \'fct_close_box_smiley\', \' ' + s[cat][iterator][0] + ' \', \'\', \'\', \'smiley\', \'' + cfg_fsb_path + s[cat][iterator][1] + '\')" onmouseover="this.style.cursor=\'pointer\'" /> ';
+			content += '<img src="' + s[cat][iterator][1] + '" id="smiley_id_' + iterator + '" title="' + s[cat][iterator][2] + '" onclick="textEditor[\'map_textarea_' + map_name + '\'].smiley(\'' + s[cat][iterator][0] + '\', \'' + cfg_fsb_path + s[cat][iterator][1] + '\')" onmouseover="this.style.cursor=\'pointer\'" /> ';
 
 			if (iterator >= 25 && iterator == cat_length - 1)
 			{

@@ -83,8 +83,6 @@ return (array (
   'adm_activation_mod_user_sexe_explain' => 'Permet aux membres de préciser leur sexe, celui-ci est affiché dans le profil et les sujets',
   'adm_activation_mod_quick_reply' => 'Réponse rapide',
   'adm_activation_mod_quick_reply_explain' => 'Ajoute un formulaire de réponse en bas des sujets',
-  'adm_activation_mod_mp_blacklist' => 'Blacklist de la messagerie privée',
-  'adm_activation_mod_mp_blacklist_explain' => 'Permet aux membres d\'ajouter d\'autres membres dans une blacklist personnelle. Tout message privé envoyé par A à un membre B ayant blacklisté A sera automatiquement supprimé dès la réception',
   'adm_activation_mod_update_last_visit' => 'Fonctions liées à la dernière visite',
   'adm_activation_mod_update_last_visit_explain' => 'Ajoute une requête supplémentaire par page. Cette fonction n\'apporte rien de visible mais est nécessaire pour faire fonctionner les fonctions "Membres en ligne dans les sujets", "Date de dernière visite sur l\'index", "Date de dernière visite sur le profil"',
   'adm_activation_mod_online_in_topics' => 'Membres en ligne dans les sujets',

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/online.php
 ** | Begin :		20/09/2005
-** | Last :			17/12/2007
+** | Last :			07/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -285,7 +285,7 @@ if (Fsb::$session->is_authorized('online_box'))
 if (Fsb::$session->is_authorized('stats_box'))
 {
 	Fsb::$tpl->set_vars(array(
-		'FORUM_STATS' =>			sprintf(String::plural('forum_stat', Fsb::$cfg->get('total_users')), Fsb::$cfg->get('total_users'), Fsb::$cfg->get('total_posts'), Fsb::$cfg->get('total_topics')),
+		'FORUM_STATS' =>			sprintf(String::plural('forum_stat', Fsb::$cfg->get('total_users')), String::number_format(Fsb::$cfg->get('total_users')), String::number_format(Fsb::$cfg->get('total_posts')), String::number_format(Fsb::$cfg->get('total_topics'))),
 		'LAST_USER' =>				Html::nickname(Fsb::$cfg->get('last_user_login'), Fsb::$cfg->get('last_user_id'), Fsb::$cfg->get('last_user_color')),
 	));
 }

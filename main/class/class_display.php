@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_display.php
 ** | Begin :	19/06/2007
-** | Last :		13/12/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -127,11 +127,15 @@ class Display extends Fsb_model
 				$GLOBALS['_show_page_header_nav'] = TRUE;
 				$GLOBALS['_show_page_footer_nav'] = FALSE;
 				$GLOBALS['_show_page_stats'] = FALSE;
-				if (defined('FORUM'))
+
+				if (Fsb::$frame)
 				{
-					Fsb::$frame->frame_header();
+					if (defined('FORUM'))
+					{
+						Fsb::$frame->frame_header();
+					}
+					Fsb::$frame->frame_footer();
 				}
-				Fsb::$frame->frame_footer();
 
 				exit;
 			break;
@@ -234,7 +238,7 @@ class Display extends Fsb_model
 			}
 		}
 
-		if (defined('FORUM') || defined('IN_ADM'))
+		if (Fsb::$frame && (defined('FORUM') || defined('IN_ADM')))
 		{
 			Fsb::$frame->frame_footer();
 		}
@@ -350,12 +354,18 @@ class Display extends Fsb_model
 	** Génère l'affichage des FSBcodes
 	** -----
 	** $in_sig ::		TRUE si on est dans l'édition de signature
+	** $where ::		Clause WHERE alternative
 	*/
-	public static function fsbcode($in_sig = FALSE)
+	public static function fsbcode($in_sig = FALSE, $where = NULL)
 	{
-		$sql = 'SELECT fsbcode_tag, fsbcode_img, fsbcode_javascript, fsbcode_description, fsbcode_list
+		if ($where === NULL)
+		{
+			$where = 'WHERE fsbcode_activated' . (($in_sig) ? '_sig' : '') . ' = 1 AND fsbcode_menu = 1';
+		}
+
+		$sql = 'SELECT fsbcode_tag, fsbcode_img, fsbcode_description, fsbcode_list
 				FROM ' . SQL_PREFIX . 'fsbcode
-				WHERE fsbcode_activated' . (($in_sig) ? '_sig' : '') . ' = 1
+				' . $where . '
 				ORDER BY fsbcode_order';
 		$result = Fsb::$db->query($sql, 'fsbcode_');
 		while ($row = Fsb::$db->row($result))
@@ -385,7 +395,6 @@ class Display extends Fsb_model
 					'OPEN' =>		'[' . $code . ']',
 					'TEXT' =>		($row['fsbcode_description']) ? htmlspecialchars($row['fsbcode_description']) : Fsb::$session->lang('fsbcode_' . $code),
 					'CLOSE' =>		'[/' . $code . ']',
-					'FCT' =>		$row['fsbcode_javascript'],
 				));
 			}
 			// ... ou liste ?
@@ -394,7 +403,6 @@ class Display extends Fsb_model
 				Fsb::$tpl->set_blocks('fsbcode_list', array(
 					'CODE' =>		$code,
 					'TEXT' =>		($row['fsbcode_description']) ? htmlspecialchars($row['fsbcode_description']) : Fsb::$session->lang('fsbcode_' . $code),
-					'FCT' =>		$row['fsbcode_javascript'],
 				));
 			
 				Fsb::$tpl->set_blocks('fsbcode_list.item', array(

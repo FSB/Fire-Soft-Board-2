@@ -99,6 +99,12 @@ class Page_modo_procedure extends Fsb_model
 				'url' =>				array('select_url'),
 			),
 		),
+		'watch_topic' => array(
+			'argv' => array(
+				'topicID' =>			array('select_text', 15, '{this.topic_id}', 15),
+				'watch' =>				'select_boolean',
+			),
+		),
 	);
 
 	/*
@@ -510,6 +516,7 @@ class Page_modo_procedure extends Fsb_model
 				break;
 
 				case 'trace' :
+				case 'watch' :
 					$parse_arg = (Http::request($argname, 'post')) ? 'true' : 'false';
 				break;
 

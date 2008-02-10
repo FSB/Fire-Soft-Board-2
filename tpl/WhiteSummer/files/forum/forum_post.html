@@ -22,8 +22,17 @@
 <call name="javascript" arg1="ajax.js" />
 <call name="javascript" arg1="topic.js" />
 <call name="javascript" arg1="wysiwyg.js" />
+<script type="text/javascript">
+<!--
+FSB_editor_lg = [];
+FSB_editor_lg['ltab'] = '#addslashes{$LG_EDITOR_TEXT}';
+FSB_editor_lg['ltab_explain'] = '#addslashes{$LG_EDITOR_TEXT_EXPLAIN}';
+FSB_editor_lg['rtab'] = '#addslashes{$LG_EDITOR_WYSIWYG}';
+FSB_editor_lg['rtab_explain'] = '#addslashes{$LG_EDITOR_WYSIWYG_EXPLAIN}';
+-->
+</script>
 
-<form action="{U_ACTION}" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('submit_post_id').style.display='none';<block name="wysiwyg">send_wysiwyg('map_textarea_{wysiwyg.CLASS_NAME}');</block>">
+<form action="{U_ACTION}" method="post" enctype="multipart/form-data" onsubmit="document.getElementById('submit_post_id').style.display='none';<block name="wysiwyg">textEditor['map_textarea_{wysiwyg.CLASS_NAME}'].send();</block>">
 
 <switch name="preview">
 	<div class="round">
@@ -220,7 +229,7 @@
 						<div class="postheader">
 							<if content="$CAN_QUICK_QUOTE">
 								<div style="float: right">
-									<a href="javascript:quote_post({post.ID}, 'map_textarea_post_map_description', false, use_wysiwyg['map_textarea_post_map_description'], <switch name="post_login_to">true<else>false</switch>)"><img src="{IMG_QUOTE_POST}" alt="{LG_POST_QUOTE}" title="{LG_POST_QUOTE}" /></a>
+									<a href="javascript:quote_post({post.ID}, 'map_textarea_post_map_description', false, textEditor['map_textarea_post_map_description'], <switch name="post_login_to">true<else>false</switch>)"><img src="{IMG_QUOTE_POST}" alt="{LG_POST_QUOTE}" title="{LG_POST_QUOTE}" /></a>
 								</div>
 							</if>
 							{post.DATE}

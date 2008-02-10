@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser_fsbcode.php
 ** | Begin :	16/07/2007
-** | Last :		20/12/2007
+** | Last :		16/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -154,7 +154,7 @@ class Parser_fsbcode extends Fsb_model
 		// Pour l'éditeur WYSIWYG, on parse l'affichage différement
 		if ($this->only_wysiwyg)
 		{
-			return ('<div type="quote" args="' . htmlspecialchars($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</div>');
+			return ('<blockquote args="' . htmlspecialchars($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</div>');
 		}
 
 		// Sans arguments
@@ -212,7 +212,7 @@ class Parser_fsbcode extends Fsb_model
 		// Pour l'éditeur WYSIWYG, on parse l'affichage différement
 		if ($this->only_wysiwyg)
 		{
-			return ('<div type="code" args="' . htmlspecialchars($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</div>');
+			return ('<code args="' . htmlspecialchars($arg) . '" style="display: block; border: 1px dashed #000000; margin: 3px; padding: 3px">' . $this->block_fsbcode($content) . '</div>');
 		}
 
 		// Sans arguments
@@ -305,6 +305,12 @@ class Parser_fsbcode extends Fsb_model
 	{
 		$arg = $m[2];
 		$content = $m[3];
+
+		// Pour l'éditeur WYSIWYG, on parse l'affichage différement
+		if ($this->only_wysiwyg)
+		{
+			return ('<div type="attach" args="' . intval($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</div>');
+		}
 
 		// Informations sur le fichier
 		$sql = 'SELECT upload_total, upload_auth, upload_filesize, upload_realname, upload_time
@@ -430,7 +436,7 @@ class Parser_fsbcode extends Fsb_model
 	private function block_fsbcode($str)
 	{
 		$str = str_replace(array(':', '[', ']', ')', '('), array('&#58;', '&#91;', '&#93;', '&#41;', '&#40;'), $str);
-		return (str_replace('\"', '"', $str));
+		return ($str);
 	}
 }
 /* EOF */

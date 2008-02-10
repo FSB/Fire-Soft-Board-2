@@ -23,6 +23,7 @@ return (array (
   'adm_email_send_bad' => 'L\'envoi de l\'email a échoué',
   'adm_email_need_content' => 'Vous devez entrer un message pour l\'email',
   'adm_email_content_explain' => 'Vous pouvez utiliser du HTML dans votre email de masse.',
+  'adm_email_no_dest' => 'Veuillez sélectionner des destinataires pour votre Email de masse',
 ));
 
 

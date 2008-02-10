@@ -505,3 +505,56 @@ table#tab span
 	background-color: #f6f9fd;
 	padding: 5px;
 }
+
+a.convert
+{
+	font-size: 13px;
+	font-weight: bold;
+}
+
+ul.tabs
+{
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+ul.tabs a
+{
+	text-align: left;
+	border: 1px solid #6699bb;
+	display: block;
+	width: 200px;
+	line-height: 23px;
+	border-width: 0px 1px 1px 1px;
+	background-color: #f9fbfe;
+	color: #000000;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+ul.tabs a#first
+{
+	border-top-width: 1px;
+}
+
+ul.tabs .selected
+{
+	color: #6688aa;
+	padding-left: 20px;
+	width: 190px;
+}
+
+ul.tabs a:hover, ul.tabs a#selected:hover
+{	
+	color: #DB5D1F;
+}
+
+#information
+{
+	border: 1px solid #77aadd;
+	background-color: #F8DBB1;
+	padding: 5px 5px 7px 5px;
+	margin: 2px;
+	font-size: 10px;
+}

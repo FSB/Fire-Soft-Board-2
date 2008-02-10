@@ -63,3 +63,6 @@
 		* <return> (...) : Si cet argument est passé, il doit prendre en valeur un champ de la table fsb2_users, qui sera retourné. Sinon on retourne le tableau complet de données
 	* <function_global> <...> #...# : name="global" retourne la valeur d'une variable globale PHP
 		* <varname> (...) : Nom de la variable globale
+	* <function_watch_topic> <...> #...# : name="watch_topic" surveillance d'un sujet
+		* <topicID> (...) : ID du sujet à surveiller
+		* <watch> (on|off) : true si on surveille le sujet, false si on ne le surveille pas

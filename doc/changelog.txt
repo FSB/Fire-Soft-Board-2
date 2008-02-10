@@ -1,3 +1,40 @@
+===== 2.0.1 - 8 janvier 2008 =====
+- Refonte de l'éditeur WYSIWYG
+- Optimisations importantes de requêtes SQL
+- Intégration du convertisseur FSB1 -> FSB2 dans la procédure d'installation du forum
+- Ajout d'une procédure automatique pour recalculer les derniers sujets des forums
+- Ajout du déplacement des FSBcode entre dans l'administration
+- Ajout de la possibilité de cacher l'icone d'un FSBcode
+- Ajout d'une procédure de modération pour surveiller un sujet
+- Ajout d'une option dans l'administration pour ajouter des membres
+- Ajout de configuration pour désactiver la blacklist et le répondeur dans les messages privés
+- Ajout de la possibilité d'éditer ses fichiers joints (nom du fichier, droits du fichier)
+- Ajout de la gestion de l'url rewriting sur les flux RSS
+- Fix de la mise en cache avec APC / Eaccelerator et Memcache
+- Fix de la suppression des fichiers en cache pour le cache FTP
+- Fix de bugs dans le SDK
+- Fix des entités HTML dans le titre du dernier sujet sur l'index
+- Fix des \" dans la coloration syntaxique
+- Fix de la liste des modérateurs d'un groupe dans l'administration
+- Fix des nombres dans les statistiques du forum en ajoutant un formatage suivant la norme de la langue
+- Fix du commentaire sur les fichiers uploadés qui ont été supprimés, ou dont on a pas les droits de téléchargement
+- Fix du lien de l'avatar dans l'import de FSBcard
+- Fix des champs personels lorsqu'on sélectionne le premier élément d'une liste
+- Fix de l'envoie d'un email de masse quand on ne sélectionne pas de destinataires
+- Fix des CHMOD des thèmes dans optimisation -> chmod
+- Fix d'un bug sur l'édition rapide (formulaire validé avec la touche entre)
+- Fix de l'édition avancée des titres des sujets (il était possible de mettre un titre vide)
+- Fix des balises META description dans les sujets (plus pertinentes)
+- Fix des liens dans les flux RSS
+- Fix de la désactivation du WYSIWYG sur le forum
+- Fix des droits sur la boite de statistique sur l'index
+- Fix du déplacement des sujets d'un forum vers une catégorie
+- Fix des sauts de ligne dans les flux RSS
+- Fix de l'auteur d'un sujet en cas de fusion
+- Fix de l'upload des MODS
+- Fix d'un bug sur les critères dans le délestage des membres
+
+
 ===== 2.0.0 - 25 décembre 2007 =====
 - Refonte totale du thème une seconde fois, pour le nouveau thème de la version finale
 - Ajout de la liste des groupes dans la liste des membres

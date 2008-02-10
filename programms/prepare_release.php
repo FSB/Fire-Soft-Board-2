@@ -10,7 +10,7 @@
 ** +---------------------------------------------------+
 */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
 
 /*
 ** Supprimes les fichiers mis en cache, ainsi que ces foutus Thumbs.db, vide le fichier config, prépare les index.html, etc ...

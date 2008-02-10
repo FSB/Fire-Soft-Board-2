@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_forum.php
 ** | Begin :	02/07/2005
-** | Last :		05/11/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -54,8 +54,8 @@ class Forum extends Fsb_model
 			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], $forum['f_last_p_time'], $forum['f_last_t_id'], $forum['tr_last_time'], $forum['last_unread_id']);
 
 			// On tronque le titre du sujet ?
-			$topic_title = htmlspecialchars(Parser::censor($forum['f_last_t_title']));
-			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : htmlspecialchars(String::substr($topic_title, 0, 20)) . '...';
+			$topic_title = Parser::title($forum['f_last_t_title']);
+			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : Parser::title(String::substr($forum['f_last_t_title'], 0, 20)) . '...';
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TYPE' =>			$forum['f_type'],
@@ -192,21 +192,14 @@ class Forum extends Fsb_model
 		$result = $select->execute();
 		while ($row = Fsb::$db->row($result))
 		{
-			if (!$row['tr_last_time'])
+			if (!$row['tr_last_time'] || $row['tr_last_time'] < $row['t_last_p_time'])
 			{
 				Fsb::$db->insert('topics_read', array(
-					'u_id' =>			Fsb::$session->id(),
-					't_id' =>			$row['t_id'],
+					'u_id' =>			array(Fsb::$session->id(), TRUE),
+					't_id' =>			array($row['t_id'], TRUE),
 					'p_id' =>			$row['t_last_p_id'],
 					'tr_last_time' =>	$row['t_last_p_time'],
-				), 'INSERT', TRUE);
-			}
-			else if ($row['tr_last_time'] < $row['t_last_p_time'])
-			{
-				Fsb::$db->update('topics_read', array(
-					'tr_last_time' =>		$row['t_last_p_time'],
-					'p_id' =>				$row['t_last_p_id'],
-				), 'WHERE u_id = ' . Fsb::$session->id() . ' AND t_id = ' . $row['t_id']);
+				), 'REPLACE', TRUE);
 			}
 		}
 		Fsb::$db->free($result);
@@ -237,11 +230,8 @@ class Forum extends Fsb_model
 	/*
 	** Renvoie un tableau avec comme clef l'ID du forum en en valeur
 	** le nombre de sujets non lus.
-	** -----
-	** $level ::			Niveau du forum
-	** $where ::			Condition sur la requète
 	*/
-	public static function get_topics_read($level, $where = '')
+	public static function get_topics_read()
 	{
 		// Cette requète récupère pour chaque forum, le nombre de messages non lus.
 		$link = (SQL_DBAL != 'sqlite') ? 'f.' : '';

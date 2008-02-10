@@ -139,7 +139,6 @@ class Page_modo_move extends Fsb_model
 					WHERE t_id IN (' . $this->idx . ')'
 					. ' AND f_id IN (' . Fsb::$session->moderated_forums() . ')';
 			$result = Fsb::$db->query($sql);
-			echo $this->idx;
 			$this->idx = array();
 			while ($row = Fsb::$db->row($result))
 			{

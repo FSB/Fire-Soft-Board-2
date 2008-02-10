@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/index_adm.php
 ** | Begin :	03/04/2005
-** | Last :		13/11/2007
+** | Last :		20/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -311,7 +311,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						'URL' =>			$u['url'],
 						'CAT_NAME' =>		($data_exists) ? ${$m}[$u['id']]['cat_name'] : NULL,
 						'FORUM_NAME' =>		($data_exists) ? ${$m}[$u['id']]['f_name'] : NULL,
-						'TOPIC_NAME' =>		($topic_exists) ? htmlspecialchars(Parser::censor(${$m}[$u['id']]['t_title'])) : '',
+						'TOPIC_NAME' =>		($topic_exists) ? Parser::title(${$m}[$u['id']]['t_title']) : '',
 						'U_CAT' =>			($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . ${$m}[$u['id']]['cat_id']) : NULL,
 						'U_FORUM' =>		($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . ${$m}[$u['id']]['f_id']) : NULL,
 						'U_TOPIC' =>		($topic_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . ${$m}[$u['id']]['t_id']) : NULL,

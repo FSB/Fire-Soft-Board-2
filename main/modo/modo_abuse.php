@@ -109,7 +109,7 @@ class Page_modo_abuse extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$title = ($row['pa_mp_id']) ? htmlspecialchars($row['mp_title']) : htmlspecialchars(Parser::censor($row['t_title']));
+			$title = ($row['pa_mp_id']) ? Parser::title($row['mp_title']) : Parser::title($row['t_title']);
 
 			Fsb::$tpl->set_blocks('abuse', array(
 				'TOPIC_TITLE' =>	$title,
@@ -196,7 +196,7 @@ class Page_modo_abuse extends Fsb_model
 				'MESSAGE_NICKNAME' =>	Html::nickname($row['poster_nickname'], $row['poster_id'], $row['poster_color']),
 				'MESSAGE_CONTENT' =>	$parser->mapped_message($row['content'], $row['map']),
 				'MESSAGE_FORUM' =>		(!$mp_id) ? htmlspecialchars($row['f_name']) : '',
-				'MESSAGE_TOPIC' =>		htmlspecialchars(Parser::censor($row['title'])),
+				'MESSAGE_TOPIC' =>		Parser::title($row['title']),
 				'MESSAGE_DATE' =>		Fsb::$session->print_date($row['time']),
 				'MESSAGE_IP' =>			(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
 				'MESSAGE_AVATAR' =>		$avatar,

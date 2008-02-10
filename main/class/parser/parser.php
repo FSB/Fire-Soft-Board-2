@@ -105,6 +105,18 @@ class Parser extends Fsb_model
 	}
 
 	/*
+	** Parse un titre de sujet
+	** -----
+	** $str ::		Chaîne à parser
+	*/
+	public function title($str)
+	{
+		$str = htmlspecialchars(self::censor($str));
+		$str = preg_replace('#&amp;\#x([0-9a-f]{4})#i', '&#x\\1', $str);
+		return ($str);
+	}
+
+	/*
 	** Parse des signatures
 	** -----
 	** $str ::		Texte de la signature

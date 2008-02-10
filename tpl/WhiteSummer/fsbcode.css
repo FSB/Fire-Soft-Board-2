@@ -141,7 +141,6 @@ div.fsbcode span
 	white-space: pre;
 	padding: 3px;
 	font-family: Helvetica;
-	font-size: 0.9em;
 	margin-bottom: 1px;
 }
 
@@ -171,7 +170,6 @@ div.fsbcode span
 	white-space: pre;
 	padding: 3px;
 	font-family: Helvetica;
-	font-size: 0.9em;
 	margin-bottom: 1px;
 	overflow: auto;
 }

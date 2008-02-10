@@ -48,6 +48,31 @@
 	</switch>
 </switch>
 
+<switch name="users_add">
+	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_ADM_USERS_ADD_NEW}</legend>
+		<dl>
+			<dt><label for="u_login_id">{LG_ADM_USERS_ADD_LOGIN} :</label></dt>
+			<dd><input type="text" name="u_login" id="u_login_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="u_nickname_id">{LG_ADM_USERS_ADD_NICKNAME} :</label><br /><span>{LG_ADM_USERS_ADD_NICKNAME_EXPLAIN}</span></dt>
+			<dd><input type="text" name="u_nickname" id="u_nickname_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="u_password_id">{LG_ADM_USERS_ADD_PASSWORD} :</label></dt>
+			<dd><input type="text" name="u_password" id="u_password_id" size="35" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="u_email_id">{LG_ADM_USERS_ADD_EMAIL} :</label></dt>
+			<dd><input type="text" name="u_email" id="u_email_id" size="35" /></dd>
+		</dl>
+		<div><input type="submit" name="submit_add" value="{LG_SUBMIT}" class="submit" /></div>
+	</fieldset>
+	</form>
+</switch>
+
 <switch name="users_prune">
 	<form action="{U_ACTION}" method="post">
 	<fieldset>

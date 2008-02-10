@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/tools/tools_optimize.php
 ** | Begin :	23/06/2006
-** | Last :		12/12/2007
+** | Last :		09/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -18,14 +18,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	// Liste des dossiers à chmod
 	public $chmod = array(
 		'cache_sql' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
-		'cache_xml' =>	array('path' => 'cache/xml/', 'chmod' => 0777),
+		'cache_tpl' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
+		'cache_xml' =>	array('path' => 'cache/tpl/', 'chmod' => 0777),
 		'avatars' =>	array('path' => 'images/avatars/', 'chmod' => 0777),
 		'ranks' =>		array('path' => 'images/ranks/', 'chmod' => 0777),
 		'smilies' =>	array('path' => 'images/smileys/', 'chmod' => 0777),
 		'save' =>		array('path' => 'mods/save/', 'chmod' => 0777),
 		'upload' =>		array('path' => 'upload/', 'chmod' => 0777),	
 	);
-	public $show_tpl = FALSE;
 
 	// Nombre de messages à indexer par appel de la procédure d'indexation de la recherche
 	public $index_posts = 500;
@@ -38,8 +38,6 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function main()
 	{
-		$this->show_tpl = Http::request('show_tpl');
-
 		$call = new Call($this);
 		$call->module(array(
 			'list' =>		array('chmod', 'process', 'search', 'replace'),
@@ -84,41 +82,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 			));
 		}
 
-		// Affiche les cache/ des thèmes ?
-		if ($this->show_tpl)
-		{
-			Fsb::$tpl->set_blocks('chmod', array(
-				'CHMOD' =>		'0777',
-				'WRITE' =>		is_writable(ROOT . 'admin/adm_tpl/cache/'),
-				'PATH' =>		ROOT . 'admin/adm_tpl/cache/',
-				'EXPLAIN' =>	Fsb::$session->lang('optimize_chmod_adm_tpl'),
-				'KEY' =>		'adm_tpl',
-			));
-
-			$fd = opendir(ROOT . 'tpl/');
-			while ($file = readdir($fd))
-			{
-				if ($file[0] != '.' && is_dir(ROOT . 'tpl/' . $file))
-				{
-					Fsb::$tpl->set_blocks('chmod', array(
-						'CHMOD' =>		'0777',
-						'WRITE' =>		is_writable(ROOT . 'tpl/' . $file . '/cache/'),
-						'PATH' =>		ROOT . 'tpl/' . $file . '/cache/',
-						'EXPLAIN' =>	sprintf(Fsb::$session->lang('optimize_chmod_tpl'), $file),
-						'KEY' =>		'tpl_' . $file,
-					));
-				}
-			}
-			closedir($fd);
-		}
-
 		// Variables
 		Fsb::$tpl->set_vars(array(
-			'SHOW_HIDE_TPL' =>	($this->show_tpl) ? Fsb::$session->lang('optimize_hide_tpl') : Fsb::$session->lang('optimize_show_tpl'),
 			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=tools_optimize&amp;module=chmod'),
-			'U_CHMOD_TPL' =>	sid('index.' . PHPEXT . '?p=tools_optimize&amp;module=chmod' . (($this->show_tpl) ? '' : '&amp;show_tpl=true')),
 		));
 	}
 
@@ -154,20 +122,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			foreach ($list AS $key => $value)
 			{
-				if ($value)
+				if ($value && isset($this->chmod[$key]))
 				{
-					if (isset($this->chmod[$key]))
-					{
-						$file->chmod($this->chmod[$key]['path'], $this->chmod[$key]['chmod']);
-					}
-					else if ($key == 'adm_tpl')
-					{
-						$file->chmod('admin/adm_tpl/cache/', 0777);
-					}
-					else if (preg_match('#^tpl_(.*?)$#i', $key, $match) && is_dir(ROOT . 'tpl/' . $match[1]))
-					{
-						$file->chmod('tpl/' . $match[1], 0777);
-					}
+					$file->chmod($this->chmod[$key]['path'], $this->chmod[$key]['chmod']);
 				}
 			}
 		}

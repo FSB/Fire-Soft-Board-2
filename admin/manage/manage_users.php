@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/manage/manage_users.php
 ** | Begin :	08/10/2006
-** | Last :		13/12/2007
+** | Last :		10/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -55,7 +55,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$call = new Call($this);
 		$call->module(array(
-			'list' =>		array('list', 'prune', 'gallery'),
+			'list' =>		array('list', 'add', 'prune', 'gallery'),
 			'url' =>		'index.' . PHPEXT . '?p=manage_users',
 			'lang' =>		'adm_users_',
 			'default' =>	'list',
@@ -65,6 +65,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'submit_prune' =>	':submit_prune',
 			'submit_gallery' =>	':submit_gallery',
 			'submit_avatar' =>	':submit_avatar',
+			'submit_add' =>		':submit_add',
 		));
 
 		$call->functions(array(
@@ -81,6 +82,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					),
 				),
 				'prune' =>		'page_prune_users',
+				'add' =>		'page_add_users',
 				'default' =>	'page_list_users',
 			),
 		));
@@ -148,6 +150,77 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		$query = '&amp;order=' . $order . '&amp;direction=' . $direction . '&amp;page=' . $this->page . '&amp;search_user=' . $this->search_user;
 		return (sid('index.' . PHPEXT . '?p=manage_users&amp;module=list' . $query));
+	}
+
+	/*
+	** Formulaire d'ajout de membres
+	*/
+	public function page_add_users()
+	{
+		Fsb::$tpl->set_switch('users_add');
+		Fsb::$tpl->set_vars(array(
+			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=manage_users&amp;module=add'),
+		));
+	}
+
+	/*
+	** Ajout d'un utilisateur
+	*/
+	public function submit_add()
+	{
+		$data = array(
+			'u_login' =>		trim(Http::request('u_login', 'post')),
+			'u_nickname' =>		trim(Http::request('u_nickname', 'post')),
+			'u_password' =>		trim(Http::request('u_password', 'post')),
+			'u_email' =>		trim(Http::request('u_email', 'post')),
+		);
+
+		if (!$data['u_nickname'])
+		{
+			$data['u_nickname'] = $data['u_login'];
+		}
+
+		// Vérification du login
+		if (!$data['u_login'])
+		{
+			Display::message('adm_users_add_error_login');
+		}
+
+		if (User::login_exists($data['u_login']))
+		{
+			Display::message('adm_users_add_error_login_exists');
+		}
+
+		// Vérification du mot de passe
+		if (!$data['u_password'])
+		{
+			Display::message('adm_users_add_error_password');
+		}
+
+		// Vérification du pseudonyme
+		if (User::nickname_exists($data['u_nickname']))
+		{
+			Display::message('adm_users_add_error_nickname_exists');
+		}
+
+		// Vérification de l'email
+		if (!User::email_valid($data['u_email'], FALSE))
+		{
+			Display::message('adm_users_add_error_email');
+		}
+
+		if (User::email_exists($data['u_email']))
+		{
+			Display::message('adm_users_add_error_email_exists');
+		}
+
+		Fsb::$db->transaction('begin');
+		User::add($data['u_login'], $data['u_nickname'], $data['u_password'], $data['u_email']);
+		Fsb::$db->transaction('commit');
+
+		Log::add(Log::ADMIN, 'users_add', $data['u_nickname']);
+
+		Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
 	}
 
 	/*
@@ -266,14 +339,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$nicknames =		trim(Http::request('prune_nickname', 'post'));
 			$email =			trim(Http::request('prune_email', 'post'));
 			$ip =				trim(Http::request('prune_ip', 'post'));
+			$post =				trim(Http::request('prune_post', 'post'));
+			$topic =			trim(Http::request('prune_topic', 'post'));
 			$joined_day =		intval(Http::request('joined_day', 'post'));
 			$joined_month =		intval(Http::request('joined_month', 'post'));
 			$joined_year =		intval(Http::request('joined_year', 'post'));
 			$visit_day =		intval(Http::request('visit_day', 'post'));
 			$visit_month =		intval(Http::request('visit_month', 'post'));
 			$visit_year =		intval(Http::request('visit_year', 'post'));
-			$post =				intval(Http::request('prune_post', 'post'));
-			$topic =			intval(Http::request('prune_topic', 'post'));
 
 			// Maintenant on construit petit à petit la requète qui va récupérer les membres à supprimer
 			$build_sql = '';
@@ -348,23 +421,23 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 
 			// En fonction du nombre de messages
-			if ($post)
+			if (strlen($post))
 			{
 				if (!in_array($post_operator, $this->operators))
 				{
 					$post_operator = '=';
 				}
-				$build_sql .= ' AND u_total_post ' . $post_operator . ' ' . $post . "\n";
+				$build_sql .= ' AND u_total_post ' . $post_operator . ' ' . intval($post) . "\n";
 			}
 
 			// En fonction du nombre de sujets
-			if ($topic)
+			if (strlen($topic))
 			{
 				if (!in_array($topic_operator, $this->operators))
 				{
 					$topic_operator = '=';
 				}
-				$build_sql .= ' AND u_total_topic ' . $topic_operator . ' ' . $topic . "\n";
+				$build_sql .= ' AND u_total_topic ' . $topic_operator . ' ' . intval($topic) . "\n";
 			}
 
 			// Aucun paramètre entré

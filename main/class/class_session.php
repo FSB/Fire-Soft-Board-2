@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_session.php
 ** | Begin :	10/03/2005
-** | Last :		20/12/2007
+** | Last :		22/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -115,7 +115,7 @@ class Session extends Fsb_model
 		{
 			$this->data['u_language'] = Fsb::$cfg->get('default_lang');
 		}
-		else if (!is_dir(ROOT . 'lang/' . $this->data['u_language']))
+		else if (!$this->data['u_language'] || !is_dir(ROOT . 'lang/' . $this->data['u_language']))
 		{
 			$this->data['u_language'] = Fsb::$cfg->get('default_lang');
 			Fsb::$db->update('users', array(
@@ -148,7 +148,7 @@ class Session extends Fsb_model
 		{
 			$this->data['u_tpl'] = Fsb::$cfg->get('default_tpl');
 		}
-		else if (!is_dir(ROOT . 'tpl/' . $this->data['u_tpl']))
+		else if (!$this->data['u_tpl'] || !is_dir(ROOT . 'tpl/' . $this->data['u_tpl']))
 		{
 			$this->data['u_tpl'] = Fsb::$cfg->get('default_tpl');
 			Fsb::$db->update('users', array(
@@ -188,7 +188,7 @@ class Session extends Fsb_model
 		// Création des switch des droits
 		foreach ($this->data['auth']['other'] AS $k => $v)
 		{
-			if ($v)
+			if ($v[0])
 			{
 				Fsb::$tpl->set_switch('have_auth_' . $k);
 			}

@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_debug.php
 ** | Begin :	27/08/2005
-** | Last :		12/07/2007
+** | Last :		07/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -87,11 +87,8 @@ class Debug extends Fsb_model
 		if ($this->url_begin == '')
 		{
 			$request_method = (isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-			$request_uri = (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : getenv('REQUEST_URI');
-			if (!$request_uri)
-			{
-				$request_uri = (isset($_SERVER['PHP_SELF']) && isset($_SERVER['QUERY_STRING'])) ? $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] : '';
-			}
+			$request_uri = (isset($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
+			$request_uri .= '?' . $_SERVER['QUERY_STRING'];
 
 			$this->url_begin = str_replace('&', '&amp;', $request_uri) . ((strpos($request_uri, '?') != FALSE) ? '&amp;' : '?');
 			$this->url_end = '&amp;method=' . $request_method . (($request_method == 'POST') ? '&amp;post_ary=' . urlencode(serialize($_POST)) : '');

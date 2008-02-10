@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/cache/cache.php
 ** | Begin :	20/06/2006
-** | Last :		13/08/2007
+** | Last :		11/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -29,6 +29,8 @@ abstract class Cache extends Fsb_model
 	abstract public function garbage_colector($time);
 	abstract public function list_keys();
 
+	private static $clearstatcache = FALSE;
+
 	/*
 	** Retourne une instance de la classe cache en fonction des données passées
 	** -----
@@ -38,6 +40,12 @@ abstract class Cache extends Fsb_model
 	*/
 	public static function factory($path, $type = 'auto', $where = '')
 	{
+		if (!self::$clearstatcache)
+		{
+			clearstatcache();
+			self::$clearstatcache = TRUE;
+		}
+
 		if ($type == 'auto')
 		{
 			if (extension_loaded('eaccelerator') && function_exists('eaccelerator_put'))

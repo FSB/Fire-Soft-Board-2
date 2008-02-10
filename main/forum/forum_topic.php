@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/forum/forum_topic.php
 ** | Begin :		12/10/2005
-** | Last :			22/12/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -188,7 +188,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Navigation de la page
 		$this->nav = Forum::nav($this->topic_data['f_id'], array(array(
 			'url' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']),
-			'name' =>		htmlspecialchars(Parser::censor($this->topic_data['t_title'])),
+			'name' =>		Parser::title($this->topic_data['t_title']),
 		)), $this);
 
 		// Peut utiliser la réponse rapide ?
@@ -293,6 +293,7 @@ class Fsb_frame_child extends Fsb_frame
 		$result = Fsb::$db->query($sql);
 
 		$cache_post_array = array();
+		$iterator = 0;
 		while ($row = Fsb::$db->row($result))
 		{
 			// On récupère les données statiques du posteur
@@ -322,9 +323,10 @@ class Fsb_frame_child extends Fsb_frame
 
 			// On peut parser le HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$content = $parser->mapped_message($row['p_text'], $row['p_map']);
 
 			Fsb::$tpl->set_blocks('post', $post_array['data'] += array(
-				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map']),
+				'CONTENT' =>		$content,
 				'DATE' =>			Fsb::$session->print_date($row['p_time'], TRUE, NULL, $extra_format),
 				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
 				'ID' =>				$row['p_id'],
@@ -345,6 +347,18 @@ class Fsb_frame_child extends Fsb_frame
 				'U_IP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=ip&amp;id=' . $row['p_id']),
 			));
 
+			// Balise META pour la description du sujet
+			if ($iterator == 0)
+			{
+				$desc = String::substr(preg_replace('#<.*?>#si', ' ', htmlspecialchars($this->topic_data['t_description']) . ' ' . $content), 0, 150);
+				$desc = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $desc);
+				$desc = preg_replace('#\s{2,}#', ' ', $desc);
+				Http::add_meta('meta', array(
+					'name' =>		'Description',
+					'content' =>	$desc,
+				));
+			}
+
 			// Affichage des avertissements ?
 			if ($post_array['data']['CAN_WARN'])
 			{
@@ -361,6 +375,8 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				Profil_fields_forum::topic_show($post_array['fields']);
 			}
+
+			$iterator++;
 		}
 		Fsb::$db->free($result);
 		unset($select);
@@ -398,12 +414,6 @@ class Fsb_frame_child extends Fsb_frame
 			'href' =>		sid(ROOT . 'index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->topic_data['t_id']),
 		));
 
-		// Balise META pour la description du sujet
-		Http::add_meta('meta', array(
-			'name' =>		'Description',
-			'content' =>	$this->topic_data['t_title'] . ' ' . htmlspecialchars($this->topic_data['t_description']),
-		));
-
 		// Relation
 		Http::add_relation($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']);
 
@@ -427,7 +437,7 @@ class Fsb_frame_child extends Fsb_frame
 			'FORUM_RULES' =>			$parser->message($this->topic_data['f_rules']),
 			'IS_LOCKED' =>				($this->topic_data['t_status'] == LOCK) ? TRUE : FALSE,
 			'JUMPBOX' =>				$jumpbox,
-			'TOPIC_NAME' =>				htmlspecialchars(Parser::censor($this->topic_data['t_title'])),
+			'TOPIC_NAME' =>				Parser::title($this->topic_data['t_title']),
 			'CAN_SEE_AVATAR' =>			(Fsb::$session->data['u_activate_avatar']) ? TRUE : FALSE,
 			'CAN_POST_NEW' =>			(!$can_create_post || ($this->topic_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator'))) ? FALSE : TRUE,
 			'USE_AJAX' =>				(Fsb::$session->data['u_activate_ajax']) ? TRUE : FALSE,
@@ -563,8 +573,8 @@ class Fsb_frame_child extends Fsb_frame
 		else
 		{
 			Fsb::$db->insert('topics_notification', array(
-				't_id' =>		$this->topic_data['t_id'],
-				'u_id' =>		Fsb::$session->id(),
+				't_id' =>		array($this->topic_data['t_id'], TRUE),
+				'u_id' =>		array(Fsb::$session->id(), TRUE),
 				'tn_status' =>	IS_NOT_NOTIFIED,
 			), 'REPLACE');
 		}
@@ -580,21 +590,14 @@ class Fsb_frame_child extends Fsb_frame
 		// Marquer le sujet lu
 		if (Fsb::$session->is_logged() && $this->topic_data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
 		{
-			if (!$this->topic_data['tr_last_time'])
+			if (!$this->topic_data['tr_last_time'] || $this->topic_data['tr_last_time'] < $this->topic_data['t_last_p_time'])
 			{
 				Fsb::$db->insert('topics_read', array(
-					'u_id' =>			Fsb::$session->id(),
-					't_id' =>			$this->topic_data['t_id'],
+					'u_id' =>			array(Fsb::$session->id(), TRUE),
+					't_id' =>			array($this->topic_data['t_id'], TRUE),
 					'p_id' =>			$this->topic_data['t_last_p_id'],
 					'tr_last_time' =>	$this->topic_data['t_last_p_time'],
-				));
-			}
-			else if ($this->topic_data['tr_last_time'] < $this->topic_data['t_last_p_time'])
-			{
-				Fsb::$db->update('topics_read', array(
-					'tr_last_time' =>	$this->topic_data['t_last_p_time'],
-					'p_id' =>			$this->topic_data['t_last_p_id'],
-				), 'WHERE u_id = ' . Fsb::$session->id() . ' AND t_id = ' . $this->topic_data['t_id']);
+				), 'REPLACE');
 			}
 
 			// Remise à jour de la notification du membre

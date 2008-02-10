@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/portail/portail_last_posts.php
 ** | Begin :		08/11/2005
-** | Last :			29/10/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -39,7 +39,7 @@ class Page_portail_last_posts extends Fsb_model
 			while ($row = Fsb::$db->row($result))
 			{
 				Fsb::$tpl->set_blocks('pm_last_posts', array(
-					'TITLE' =>			htmlspecialchars(Parser::censor($row['t_title'])),
+					'TITLE' =>			Parser::title($row['t_title']),
 					'NICKNAME' =>		sprintf(Fsb::$session->lang('pm_post_by'), Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color'])),
 					'DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
 					'URL' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['t_last_p_id']) . '#p' . $row['t_last_p_id'],

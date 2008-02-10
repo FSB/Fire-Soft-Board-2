@@ -12,6 +12,8 @@
 return (array (
   'charset' => 'UTF-8',
   'fsb_lang_support' => '',
+  'nb_format_dec' => ',',
+  'nb_format_thousands' => ' ',
   'about_fsb' => 'Crédits',
   'submit' => 'Soumettre',
   'reset' => 'Annuler',
@@ -261,6 +263,7 @@ return (array (
   'return_to_users_personal' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page de gestion des champs personnels',
   'return_to_logs' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page des logs',
   'return_to_tools_optimize' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page d\'optimisation du forum',
+  'return_to_tools_sql' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page du gestionaire de base de données',
   'return_to_general_email' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page d\'envoi d\'emails de masse',
   'return_to_general_portail' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page de gestion du portail',
   'user_connect' => 'Votre login',
@@ -284,8 +287,8 @@ return (array (
   'stats' => 'Statistiques',
   'wio' => 'Qui est en ligne',
   'online_legend' => 'Légende',
-  'forum_stat' => 'Il y a %d membre enregistré qui a posté un total de %d messages et %d sujets',
-  'forum_stats' => 'Il y a %d membres enregistrés qui ont posté un total de %d messages et %d sujets',
+  'forum_stat' => 'Il y a %s membre enregistré qui a posté un total de %s messages et %s sujets',
+  'forum_stats' => 'Il y a %s membres enregistrés qui ont posté un total de %s messages et %s sujets',
   'current_user_online' => 'Il y a %d visiteur(s) sur le forum: <i>%d membre(s) (dont %d invisible(s)) et %d invité(s)</i>',
   'today_user_online' => 'Il y a %d membre qui a visité ce forum aujourd\'hui, dont %d invisible(s)',
   'today_user_onlines' => 'Il y a %d membres qui ont visité ce forum aujourd\'hui, dont %d invisible(s)',
@@ -464,6 +467,10 @@ return (array (
   'wysiwyg' => 'WYSIWYG',
   'quicksearch' => 'Recherche rapide',
   'fopen_error' => 'Impossible d\'ouvrir ou de créer le fichier "%s", vérifiez les droits d\'écriture sur ce fichier ou sur le dossier.',
+  'editor_text' => 'Texte',
+  'editor_text_explain' => 'Affiche le message avec les FSBcode en clair',
+  'editor_wysiwyg' => 'Wysiwyg',
+  'editor_wysiwyg_explain' => 'Vous voyez en direct ce que vous écrivez à l\'écran avec les formatages (gras, italique, etc.)',
 ));
 
 

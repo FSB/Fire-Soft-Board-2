@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<title>Fire-Soft-Board v2</title>
+	<link type="text/css" rel="stylesheet" href="style/main.css" />
+	<link type="text/nonsense" rel="stylesheet" href="style/opera.css" />
+	<if content="$REFRESH_URL AND $REFRESH_AUTO">
+		<meta http-equiv="refresh" content="3; {REFRESH_URL}" />
+	</if>
+</head>
+
+<body>
+<div  class="main">
+
+<table width="100%">
+	<tr>
+		<td align="center" width="225" height="80" class="forum"><img src="style/logo.gif" alt="Installation" /></td>
+		<td class="forum" align="center"><b>{CONVERT_WELCOME}</b></td>
+	</tr>
+</table>
+
+<div id="information">{LG_CONVERT_INFORMATION}</div>
+
+<table width="100%">
+	<tr>
+		<td width="200" valign="top">
+			<ul class="tabs">
+				<block name="menu">
+					<li><a href="{menu.URL}" <if content="$menu.FIRST_ROW">id="first"</if> <if content="$menu.SELECTED">class="selected"</if>>{menu.NAME}</a></li>
+				</block>
+			</ul>
+		</td>
+		<td valign="top">
+			<switch name="error">
+				<fieldset>
+					<legend>{LG_INFORMATION}</legend>
+					<div id="error">{ERRSTR}</div>
+				</fieldset>
+			<else>
+				<if content="$REFRESH_URL AND !$NEXT_PAGE">
+					<fieldset>
+						<legend>{LG_INFORMATION}</legend>
+						<div id="desc" style="text-align: left">
+							{LG_CONVERT_REFRESH_EXPLAIN}<br /><br />
+							{PROGRESS}
+						</div>
+						<br />
+						<div style="text-align: left"><a href="{REFRESH_URL}" id="submit">{LG_CONVERT_REFRESH}</a></div>
+					</fieldset>
+				</if>
+
+				<if content="$NEXT_PAGE">
+					<fieldset>
+						<legend>{LG_INFORMATION}</legend>
+						<div style="text-align: left"><a href="{NEXT_PAGE}" id="submit">{LG_CONVERT_NEXT_PAGE}</a></div>
+					</fieldset>
+				</if>
+
+				<if content="$CONVERT_DONE">
+					<fieldset>
+						<legend>{LG_INFORMATION}</legend>
+						<p><b>{LG_CONVERT_DONE}</b></p>
+					</fieldset>
+				</if>
+
+				<switch name="output_print">
+					<fieldset>
+						<legend>{LG_CONVERT_OUTPUT_QUERIES}</legend>
+						<pre>{OUTPUT_QUERIES}</pre>
+					</fieldset>
+				<else>
+					<switch name="page_index">
+					<form action="{U_ACTION}" method="post">
+						<fieldset>
+							<legend>{LG_CONVERT_FORM}</legend>
+							<dl>
+								<dt><label>{LG_CONVERT_OUTPUT} :</label></dt>
+								<dd>
+									<input type="radio" name="output" value="<?php echo Convert::OUTPUT_FILE ?>" <if content="$OUTPUT == Convert::OUTPUT_FILE">checked="checked"</if> /> {LG_CONVERT_OUTPUT_FILE}<br />
+									<input type="radio" name="output" value="<?php echo Convert::OUTPUT_DB ?>" <if content="$OUTPUT == Convert::OUTPUT_DB">checked="checked"</if> /> {LG_CONVERT_OUTPUT_DB}<br />
+									<input type="radio" name="output" value="<?php echo Convert::OUTPUT_PRINT ?>" <if content="$OUTPUT == Convert::OUTPUT_PRINT">checked="checked"</if> /> {LG_CONVERT_OUTPUT_PRINT}
+								</dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_CONVERT_STEP_USERS} :</label></dt>
+								<dd><input type="text" name="step_users" value="{STEP_USERS}" style="width: 45px" maxlength="6" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_CONVERT_STEP_TOPICS} :</label></dt>
+								<dd><input type="text" name="step_topics" value="{STEP_TOPICS}" style="width: 45px" maxlength="6" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_CONVERT_STEP_POSTS} :</label></dt>
+								<dd><input type="text" name="step_posts" value="{STEP_POSTS}" style="width: 45px" maxlength="6" /></dd>
+							</dl>
+							<div id="desc">{LG_CONVERT_EXPLAIN_SQL}</div>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_PREFIX} :</label></dt>
+								<dd><input type="text" name="sql_prefix" value="{SQL_PREFIX}" size="10" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_SERVER} :</label></dt>
+								<dd><input type="text" name="sql_server" value="{SQL_SERVER}" size="25" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_PORT} :</label></dt>
+								<dd><input type="text" name="sql_port" value="{SQL_PORT}" style="width: 35px" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_LOGIN} :</label></dt>
+								<dd><input type="text" name="sql_login" value="{SQL_LOGIN}" size="25" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_PASSWORD} :</label></dt>
+								<dd><input type="password" name="sql_password" value="{SQL_PASSWORD}" size="25" /></dd>
+							</dl>
+							<dl>
+								<dt><label>{LG_INSTALL_SQL_DBNAME} :</label></dt>
+								<dd><input type="text" name="sql_dbname" value="{SQL_DBNAME}" size="25" /></dd>
+							</dl>
+							<block name="conf">
+								<if content="$conf.FIRST_ROW"><div id="desc">{LG_CONVERT_ADDITIONAL_CONF}</div></if>
+								<dl>
+									<dt><label>{conf.LANG} :</label><if content="$conf.EXPLAIN"><br /><span class="small">{conf.EXPLAIN}</span></if></dt>
+									<dd>{conf.HTML}</dd>
+								</dl>
+							</block>
+							<div><input type="submit" name="submit" value="{LG_SUBMIT}" id="submit" /></div>
+						</fieldset>
+					</form>
+					</switch>
+				</switch>
+			</switch>
+		</td>
+	</tr>
+</table>
+
+</div>
+<br />
+<div class="copyright">Forum <a href="http://www.fire-soft-board.com">Fire-Soft-Board</a> &copy; 2004 - <?php echo date('Y') ?></div>
+</body>
+</html>

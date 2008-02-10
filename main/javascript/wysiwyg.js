@@ -2,60 +2,1098 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/wysiwyg.js
 ** | Begin :		13/08/2005
-** | Last :			13/12/2007
+** | Last :			21/01/2008
 ** | User :			Genova
 ** | License :		GPL v2.0
 ** +---------------------------------------------------+
 */
 
 // Variables globales
-var color_palet_pos = new Array;
-var color_palet_list = new Array;
-var editor = new Array;
-var editor_window = new Array;
-var use_wysiwyg = new Array;
-var open_current_box = '';
 var rainbow_box = new Array;
 var rainbow_i = 0;
+var editor_box = [];
 
 /*
-** Initialise l'éditeur WYSIWYG
+** Interface permettant de passer d'un objet de type FSB_editor_text à un objet
+** FSB_editor_wysiwyg très facilement.
+** -----
+** id ::			ID du WYSIWYG
+** type ::			text ou wysiwyg
+** use_wysiwyg ::	permet l'utilisation du wysiwyg ou non
 */
-function init_wysiwyg(id)
+var FSB_editor_interface = new Class(
 {
-	if (Nav_IE || Nav_Opera)
+	w: null,
+	
+	initialize: function(id, type, use_wysiwyg)
 	{
-		editor[id] = window.frames[id].document;
-		editor_window[id] = window.frames[id];
-		editor[id].designMode = 'On';
-	}
-	else if (Nav_Moz)
-	{
-		editor[id] = $(id).contentDocument;
-		editor_window[id] = $(id).contentWindow;
-	}
-	else
-	{
-		return ;
-	}
+		if (!Nav_IE7 && !Nav_Moz && !Nav_Opera)
+		{
+			type = 'text';
+		}
 
-	if(!editor[id].body)
-	{
-		setTimeout('init_wysiwyg(\'' + id + '\')', 20);
-	}
-	else
-	{
-		editor[id].body.innerHTML = format_wysiwyg_text($(id + '_wysiwyg').value);
-		if (Nav_Moz)
+		if (!use_wysiwyg)
 		{
-			editor[id].designMode = 'On';
+			type = 'text';
 		}
-		else if (Nav_IE)
+
+		if (type == 'text')
 		{
-			set_wysiwyg_command(id, 'b', '', '', '');
+			new FSB_editor_text(id, this, use_wysiwyg);
 		}
+		else
+		{
+			new FSB_editor_wysiwyg(id, this, use_wysiwyg);
+		}
+	},
+
+	add: function(type)
+	{
+		this.w.add(type);
+	},
+
+	insert: function(str, html)
+	{
+		this.w._insert(str, html);
+	},
+
+	smiley: function(name, src)
+	{
+		this.w._smiley(name, src);
+	},
+
+	send: function()
+	{
+		this.w._send();
+	},
+
+	change_mode: function(tab)
+	{
+		this.w.change_mode(tab);
 	}
-}
+});
+
+/*
+** Editeur de texte
+*/
+var FSB_editor = new Class(
+{
+	/*
+	** Constructeur
+	** -----
+	** id ::		ID du WYSIWYG
+	** iface ::		Pointeur vers l'interface
+	** show_tabs ::	Affiche les onglets pour passer d'un mode à l'autre
+	*/
+	initialize: function(id, iface, show_tabs)
+	{
+		this.iface = iface;
+		this.iface.w = this;
+		this.id = id;
+		this.edit = $(this.id);
+
+		// Navigateur courant
+		var Nav_Agent =		navigator.userAgent.toLowerCase();
+		this.nav_ie =		((Nav_Agent.indexOf("msie") != -1)  && (Nav_Agent.indexOf("opera") == -1)) ? true : false;
+		this.nav_mozilla =	(Nav_Agent.indexOf("firefox") != -1) ? true : false;
+		this.nav_opera =	(Nav_Agent.indexOf("opera") != -1 && parseInt(navigator.appVersion) >= 9) ? true : false;
+
+		this.load_rainbow();
+		if (show_tabs)
+		{
+			this.load_tabs();
+		}
+		this._start_editor();
+	},
+
+	/*
+	** Charge MooRainbow pour les palettes de couleur
+	*/
+	load_rainbow: function()
+	{
+		load_rainbow(this.id);
+	},
+
+	/*
+	** Charge les onglets dans l'éditeur
+	*/
+	load_tabs: function()
+	{
+		// Si les onglets sont déjà chargés, on passe cette étape
+		if ($(this.id + '_tabs'))
+		{
+			return ;
+		}
+
+		if (!Nav_IE7 && !Nav_Moz && !Nav_Opera)
+		{
+			return ;
+		}
+
+		// Ajout des onglets pour le WYSIWYG
+		var tabs = document.createElement('div');
+		tabs.style.display = 'none';
+		tabs.style.height = '19px';
+		tabs.setAttribute('id', this.id + '_tabs');
+
+		var ltab = document.createElement('div');
+		ltab.setAttribute('id', this.id + '_tabs_ltab');
+		ltab.setAttribute('class', 'editor_tabs');
+		ltab.setAttribute('title', FSB_editor_lg['ltab_explain']);
+		if (this.nav_ie)
+		{
+			var add = (this.current == 'text') ? 3 : 0;
+			ltab.style.position = 'absolute';
+			ltab.style.backgroundImage = 'url(tpl/WhiteSummer/img/wysiwyg_tab.png)';
+			ltab.style.width = '100px';
+			ltab.style.height = '16px';
+			ltab.style.paddingTop = '3px';
+			ltab.style.marginLeft = '2px';
+			ltab.style.marginTop = (this.current == 'text') ? (add + 2) + 'px' : (add + 1) + 'px';
+			ltab.style.fontWeight = 'bold';
+			ltab.style.textAlign = 'center';
+		}
+		else
+		{
+			ltab.style.top = (this.current == 'text') ? '3px' : '2px';
+		}
+
+		ltab.innerHTML = FSB_editor_lg['ltab'];
+		ltab.onmouseover = function()
+		{
+			this.style.cursor = 'pointer';
+		}
+
+		ltab.iface = this.iface;
+		ltab.onclick = function()
+		{
+			this.iface.change_mode(this);
+		}
+		tabs.appendChild(ltab);
+
+		var rtab = document.createElement('div');
+		rtab.setAttribute('class', 'editor_tabs');
+		rtab.setAttribute('id', this.id + '_tabs_rtab');
+		rtab.setAttribute('title', FSB_editor_lg['rtab_explain']);
+		if (this.nav_ie)
+		{
+			rtab.style.position = 'absolute';
+			rtab.style.backgroundImage = 'url(tpl/WhiteSummer/img/wysiwyg_tab.png)';
+			rtab.style.width = '100px';
+			rtab.style.height = '16px';
+			rtab.style.paddingTop = '3px';
+			rtab.style.marginLeft = '104px';
+			rtab.style.marginTop = (this.current == 'wysiwyg') ? (add + 2) + 'px' : (add + 1) + 'px';
+			rtab.style.fontWeight = 'bold';
+			rtab.style.textAlign = 'center';
+		}
+		else
+		{
+			rtab.style.top = (this.current == 'wysiwyg') ? '3px' : '2px';
+		}
+		rtab.innerHTML = FSB_editor_lg['rtab'];
+		rtab.onmouseover = function()
+		{
+			this.style.cursor = 'pointer';
+		}
+
+		rtab.iface = this.iface;
+		rtab.onclick = function()
+		{
+			this.iface.change_mode(this);
+		}
+		tabs.appendChild(rtab);
+
+		$(this.id).parentNode.appendChild(tabs);
+		$(this.id + '_tabs').injectBefore(this.id);
+		$(this.id + '_tabs').style.display = 'block';
+	},
+
+	/*
+	** Insert la mise en forme dans le texte, au niveau de la sélection
+	** ------
+	** type ::		Type de mise en forme
+	*/
+	add: function(type)
+	{
+		this._add(type);
+	},
+
+	/*
+	** Parse des variables dans la chaîne
+	** -----
+	** src ::		Chaîne de caractère à parser
+	** replace ::	Chaîne de remplacement
+	*/
+	parse_vars: function(src, replace)
+	{
+		// On remplace {TEXT} par replace
+		reg = new RegExp('\{TEXT\}', 'g');
+		src = src.replace(reg, replace);
+
+		// On remplace {TEXTNOTNULL} par replace s'il y a un contenu, sinon par &nbsp;
+		reg = new RegExp('\{TEXTNOTNULL\}', 'g');
+		if (!replace.length)
+		{
+			src = src.replace(reg, '&nbsp;');
+		}
+		else
+		{
+			src = src.replace(reg, replace);
+		}
+		return (src);
+	},
+
+	/*
+	** Modifie la taille du champ texte
+	*/
+	change_textarea_size: function(size)
+	{	
+		size_col = size;
+		if (size < 0 && parseInt($(this.id).style.height) <= 75)
+		{
+			size = 0;
+		}
+		$(this.id).style.height = (parseInt($(this.id).style.height) + 15 * size) + "px";
+
+		$(this.id + '_rows').value = parseInt($(this.id).style.height);
+	},
+
+	/*
+	** Change le mode d'édition courrant
+	** -----
+	** tab ::	Pointeur vers l'onglet courrant
+	*/
+	change_mode: function(tab)
+	{
+		if (tab.id == tab.parentNode.id + '_ltab')
+		{
+			var next = tab.parentNode.id + '_rtab';
+			var type = 'text';
+		}
+		else
+		{
+			var next = tab.parentNode.id + '_ltab';
+			var type = 'wysiwyg';
+		}
+
+		if (this.current == type)
+		{
+			return ;
+		}
+
+		// Modification graphique des onglets
+		if (this.nav_ie)
+		{
+			var add = (this.current == 'wysiwyg') ? 2 : 0;
+			tab.style.marginTop = (add + 2) + 'px';
+			$(next).style.marginTop = (add + 1) + 'px';
+		}
+		else
+		{
+			tab.style.top = '3px';
+			$(next).style.top = '2px';
+		}
+
+		this.send_ajax();
+	},
+
+	/*
+	** Envoie le message en AJAX afin qu'il soit correctement parsé
+	*/
+	send_ajax: function()
+	{
+		ajax_waiter_open();
+		ajax_wait_response = true;
+
+		this._send();
+
+		var ajax = new Ajax();
+		ajax.obj = this;
+		ajax.onload = function(data)
+		{
+			ajax_waiter_close();
+			if (this.obj.current == 'wysiwyg')
+			{
+				$(this.obj.id + '_wysiwyg').value = data;
+				new FSB_editor_text(this.obj.id, this.obj.iface);
+			}
+			else
+			{
+				$(this.obj.id).style.display = 'none';
+				$(this.obj.id).value = data;
+				new FSB_editor_wysiwyg(this.obj.id, this.obj.iface);
+			}
+		}
+
+		ajax.onprogress = function (current)
+		{
+			ajax_waiter_open();
+		}
+
+		if (this.current == 'wysiwyg')
+		{
+			ajax.set_arg(AJAX_POST, 'content', $(this.id + '_wysiwyg').value);
+		}
+		else
+		{
+			ajax.set_arg(AJAX_POST, 'content', $(this.id).value);
+		}
+
+		ajax.set_arg(AJAX_GET, 'mode', 'editor_' + this.current);
+		ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+		$(this.id).value = '';
+	},
+
+	/*
+	** Affiche une boite flotante
+	** -----
+	** box_type ::	nom de la boite
+	** flag ::		Si true, on ferme forcément la boite
+	*/
+	show_box: function(box_type, flag)
+	{
+		var box_id = this.id + "_box_" + box_type;
+		var box_type_id = $(this.id + "_id_" + box_type);
+
+		$(box_id).style.left = box_type_id.getLeft() + "px";
+		$(box_id).style.top  = (box_type_id.getTop() + 25) + "px";
+
+		// On ajoute l'ID de la box à la liste
+		if (editor_box[box_id] == undefined)
+		{
+			editor_box.push(box_id);
+		}
+
+		if (!flag && !editor_box[box_id])
+		{
+			$(box_id).style.visibility = 'visible';
+			$(box_id).style.display = 'inline';
+			editor_box[box_id] = true;
+		}
+		else
+		{
+			$(box_id).style.visibility = 'hidden';
+			$(box_id).style.display = 'none';
+			editor_box[box_id] = false;
+		}
+	},
+
+	close_box: function()
+	{
+		editor_box.each(function(key, value)
+		{
+			editor_box[key] = false;
+			$(key).style.display = 'none';
+			$(key).style.visibility = 'hidden';
+		});
+	}
+});
+
+/*
+** Editeur de texte classique
+*/
+var FSB_editor_text = FSB_editor.extend(
+{
+	current: 'text',
+
+	/*
+	** Initialise l'éditeur
+	*/
+	_start_editor: function()
+	{
+		// On était en mode WYSIWYG ?
+		if ($(this.id + '_hidden'))
+		{
+			// On renomme correctement les ID
+			$(this.id).id = this.id + '_tmp';
+			$(this.id + '_wysiwyg').id = this.id;
+			this.edit = $(this.id);
+
+			// Style du textarea
+			$(this.id).style.width = $(this.id + '_tmp').style.width;
+			$(this.id).style.height = $(this.id + '_tmp').style.height;
+
+			// Suppression de l'Iframe
+			$(this.id).parentNode.removeChild($(this.id + '_tmp'));
+
+			// Visibilité textarea
+			$(this.id).style.display = 'block';
+			$(this.id + '_hidden').value = '0';
+		}
+
+		this.doc = this.edit;
+	},
+
+	/*
+	** Ecrit dans l'éditeur WYSIWYG
+	** -----
+	** type ::		Identifiant de la commande (par exemple b, u, align=center, size=16)
+	*/
+	_add: function(type)
+	{
+		var close = type;
+
+		// Gestion des commandes du type align=center
+		var reg = new RegExp('^([a-z0-9_]+)=(.*)$', '');
+		if (reg.test(type))
+		{
+			var m = reg.exec(type);
+			var close = m[1];
+		}
+
+		switch (type)
+		{
+			// Liste d'éléments
+			case 'list' :
+				var elem = '';
+				var add_elem = '';
+				var iterator = 1;
+				var str = this._get_selection();
+
+				if (str == '')
+				{
+					while (elem = prompt("Element numéro " + iterator + " de la liste :", ''))
+					{
+						add_elem = add_elem + ((add_elem) ? "\n" : "") + "[*]" + elem;
+						iterator++;
+					}
+				}
+				else
+				{
+					add_elem = str;
+				}
+
+				if (add_elem)
+				{
+					this._insert_text(add_elem, '[list]', '[/list]');
+				}
+			break;
+
+			case 'attach' :
+				this.show_box('attach');
+			break;
+
+			case 'color' :
+			case 'bgcolor' :
+			break;
+
+			default :	
+				this._insert_text('{TEXT}', '[' + type + ']', '[/' + close + ']');
+			break;
+		}
+	},
+
+	/*
+	** Ajoute un smiley
+	** -----
+	** name ::		Nom du smiley
+	** src ::		Adresse du smiley
+	*/
+	_smiley: function(name, src)
+	{
+		this._insert_text('', ' ' + name + ' ', '');
+	},
+
+	/*
+	** Retourne le texte sélectionné
+	*/
+	_get_selection: function()
+	{
+		if (this.nav_ie)
+		{
+			return (this.doc.selection.createRange().text);
+		}
+		else
+		{
+			return (this.edit.value.substring(this.edit.selectionStart, this.edit.selectionEnd));
+		}
+	},
+
+	/*
+	** Insert du texte à la position courante
+	** -----
+	** str ::		Chaîne de caractère à afficher. Les occurences de {TEXT} seront remplacées par la sélection
+	** open ::		Paramètre optionel, chaîne de caractère à ajouter au début
+	** close ::		Paramètre optionel, chaîne de caractère à ajouter à la fin
+	*/
+	_insert_text: function(str, open, close)
+	{
+		this.edit.focus();
+
+		if (!open) open = '';
+		if (!close) close = '';
+
+		// Internet explorer
+		if (document.selection && this.edit.createTextRange)
+		{
+			this.edit.focus(this.edit.caretPos);
+			this.edit.caretPos = document.selection.createRange().duplicate();
+			this.edit.caretPos.text = this.parse_vars(open + str + close, this.edit.caretPos.text);
+		}
+		// Mozilla
+		else if (this.edit.selectionStart || this.edit.selectionStart == '0')
+		{
+			var x =			this.edit.scrollTop;
+			var selStart =	this.edit.selectionStart;
+			var selEnd =	this.edit.selectionEnd;
+			var selLength = selEnd - selStart;
+			var textStart = this.edit.value.substring(0, selStart);
+			var textEnd =	this.edit.value.substring(selEnd, this.edit.textLength);
+
+			// Valeur de la chaîne centrale
+			if (selLength != 0 && open != '')
+			{
+				str = this.parse_vars(str, (this.edit.value).substring(selStart, selEnd));
+			}
+			else
+			{
+				str = this.parse_vars(str, '');
+			}
+
+			// Gestion du scroll dans le textarea
+			if (x == 0 && (this.edit.textLength == selStart))
+			{
+				 x = this.edit.textLength + 200;
+			}
+
+			// Modifications dans le texte
+			this.edit.value = textStart + open + str + close + textEnd;
+			var txt = open + str + close;
+			var cur_pos = selStart + txt.length;
+			this.edit.scrollTop = x;
+
+			// Gestion du texte sélectionné après insertions
+			if (!(selLength != 0 && open != ''))
+			{
+				this.edit.selectionStart = selStart + open.length;
+				this.edit.selectionEnd = this.edit.selectionStart + str.length;
+			}
+			else
+			{
+				this.edit.selectionStart = selStart + open.length;
+				this.edit.selectionEnd = selEnd + open.length;
+			}
+		}
+		else
+		{
+			this.edit.value += open + str + close;
+		}
+	},
+
+	/*
+	** Ajoute du texte
+	** -----
+	** str ::	Chaîne de caractère
+	** html ::	Utilisation du HTML ?
+	*/
+	_insert: function(str, html)
+	{
+		this._insert_text('', str, '');
+	},
+
+	/*
+	** Méthode appelée lors de la soumission du formulaire
+	*/
+	_send: function()
+	{
+	}
+});
+
+/*
+** Editeur WYSIWYG
+*/
+var FSB_editor_wysiwyg = FSB_editor.extend(
+{
+	current: 'wysiwyg',
+
+	/*
+	** Initialise l'éditeur
+	*/
+	_start_editor: function()
+	{
+		// Création de l'iframe
+		var iframe = document.createElement('iframe');
+		iframe.setAttribute('class', 'wysiwyg_frame');
+		iframe.style.width = $(this.id).style.width;
+		iframe.style.height = $(this.id).style.height;
+		iframe.style.display = 'none';
+		iframe.id = this.id + '_tmp';
+		$(this.id).parentNode.appendChild(iframe);
+
+		// Modification des ID : le textarea devient ID_tmp et l'iframe prend l'ID dans this.id
+		$(this.id).id = this.id + '_wysiwyg'
+		$(this.id + '_tmp').id = this.id;
+
+		// Dissimulation du textarea, et affichage de l'iframe
+		$(this.id + '_wysiwyg').style.display = 'none';
+		$(this.id).style.display = 'block';
+
+		// Création d'un input hidden pour le wysiwyg
+		var input = document.createElement('input');
+		input.setAttribute('type', 'hidden');
+		input.setAttribute('name', $(this.id + '_wysiwyg').name + '_hidden');
+		input.setAttribute('id', this.id + '_hidden');
+		input.setAttribute('value', '1');
+		$(this.id).parentNode.appendChild(input);
+
+		// Initialisation du designMode
+		if (this.nav_ie)
+		{
+			this.doc = window.frames[this.id].document;
+			this.win = window.frames[this.id];
+			this.doc.designMode = 'On';
+		}
+		else if (this.nav_opera)
+		{
+			this.doc = $(this.id).document;
+			this.win = $(this.id);
+			this.doc.designMode = 'On';
+		}
+		else if (this.nav_mozilla)
+		{
+			this.doc = $(this.id).contentDocument;
+			this.win = $(this.id).contentWindow;
+		}
+		else
+		{
+			return ;
+		}
+
+		if (!this.doc)
+		{
+			setTimeout('window.frames[\'' + this.id + '\'].document.designMode = \'On\';', 20);
+		}
+		else
+		{
+			// On créé le contenu de l'iframe
+			this.doc.open();
+			this.doc.write('<html><head><style type="text/css">body{margin:1px;font-size: 12px;font-family: Verdana, Arial, Helvetica, sans-serif;};p{margin:0px;}</style></head><body>' + this._format_text($(this.id + '_wysiwyg').value) + '</body></html>');
+			this.doc.close();
+
+			if (this.nav_mozilla)
+			{
+				this.doc.designMode = 'On';
+			}
+		}
+
+		this.win.focus();
+	},
+
+	/*
+	** Ecrit dans l'éditeur WYSIWYG
+	** -----
+	** type ::		Identifiant de la commande (par exemple b, u, align=center, size=16)
+	*/
+	_add: function(type)
+	{
+		// Gestion des commandes du type align=center
+		var reg = new RegExp('^([a-z0-9_]+)=(.*)$', '');
+		var args = null;
+		if (reg.test(type))
+		{
+			var m = reg.exec(type);
+			type = m[1];
+			args = m[2];
+		}
+
+		// Execution des commandes
+		switch (type)
+		{
+			// Texte gras
+			case 'b' :
+				this.doc.execCommand('bold', false, null);
+			break;
+
+			// Texte italique
+			case 'i' :
+				this.doc.execCommand('italic', false, null);
+			break;
+
+			// Texte souligné
+			case 'u' :
+				this.doc.execCommand('underline', false, null);
+			break;
+
+			// Texte barré
+			case 'strike' :
+				this.doc.execCommand('Strikethrough', false, null);
+			break;
+
+			// Type de police
+			case 'font' :
+				this.doc.execCommand('fontname', false, args);
+			break;
+
+			case 'list' :
+				this.doc.execCommand('insertunorderedlist', false, null);
+			break;
+
+			// Annuler l'action
+			case 'undo' :
+				this.doc.execCommand('undo', false, null);
+			break;
+
+			// Rétablir l'action
+			case 'redo' :
+				this.doc.execCommand('redo', false, null);
+			break;
+
+			// Taille du texte
+			case 'size' :
+				var tmp_ary_size = new Array();
+					tmp_ary_size['8'] = '1';
+					tmp_ary_size['10'] = '2';
+					tmp_ary_size['16'] = '3';
+					tmp_ary_size['20'] = '5';
+					tmp_ary_size['24'] = '6';
+				args = tmp_ary_size[args];
+				this.doc.execCommand('fontsize', false, args);
+			break;
+
+			// Alignement du texte
+			case 'align' :
+				switch (args)
+				{
+					case 'left' :
+						this.doc.execCommand('justifyleft', false, null);
+					break;
+
+					case 'center' :
+						this.doc.execCommand('justifycenter', false, null);
+					break;
+
+					case 'right' :
+						this.doc.execCommand('justifyright', false, null);
+					break;
+
+					case 'justify' :
+						this.doc.execCommand('justifyfull', false, null);
+					break;
+				}
+			break;
+
+			// Citation
+			case 'quote' :
+				this._insert_text('<blockquote style="border: 1px dashed #000000; margin: 3px; padding: 3px">{TEXTNOTNULL}</blockquote><br />', true);
+			break;
+
+			// Code informatique
+			case 'code' :
+				if (!args)
+				{
+					args = 'none';
+				}
+				this._insert_text('<code args="' + args + '" style="display: block; border: 1px dashed #000000; margin: 3px; padding: 3px">{TEXTNOTNULL}</code><br />', true);
+			break;
+
+			// Lien hypertexte
+			case 'url' :
+				var url = prompt('Entrez votre URL (adresse) :', 'http://');
+				var str = this._get_selection();
+
+				if (url != null)
+				{
+					if (str == '')
+					{
+						str = prompt('Donnez un nom au lien :', '');
+					}
+
+					if (str != '')
+					{
+						this._insert_text('<a href="' + url + '" realsrc="' + url + '">' + str + '</a>', true);
+					}
+					else
+					{
+						this._insert_text('<a href="' + url + '" realsrc="' + url + '">' + url + '</a>', true);
+					}
+				}
+			break;
+
+			// Adresse email
+			case 'mail' :
+				var url = prompt('Entrez l\'adresse Email :', '');
+				var str = this._get_selection();
+
+				if (url != null)
+				{
+					if (str == '')
+					{
+						str = prompt('Entrez le nom du corespondant :', '');
+					}
+
+					if (str != '')
+					{
+						this._insert_text('<a href="mailto:' + url + '">' + str + '</a>', true);
+					}
+					else
+					{
+						this._insert_text('<a href="mailto:' + url + '">' + url + '</a>', true);
+					}
+				}
+			break;
+
+			// Image
+			case 'img' :
+				var url = prompt('Entrez l\'URL (adresse) de l\'image :', 'http://');
+				
+				if (url != null)
+				{
+					this._insert_text('<img src="' + url + '" realsrc="' + url + '" />', true);
+				}
+			break;
+			
+			// Couleur du texte
+			case 'color' :
+				if (args)
+				{
+					this.doc.execCommand('forecolor', false, args);
+				}
+			break;
+
+			// Couleur d'arrière plan du texte
+			case 'bgcolor' :
+				if (args)
+				{
+					if (Nav_IE)
+					{
+						this.doc.execCommand('backcolor', false, args);
+					}
+					else if (Nav_Moz || Nav_Opera)
+					{
+						this.doc.execCommand('hilitecolor', false, args);
+					}
+				}
+			break;
+
+			// Fichiers joints
+			case 'attach' :
+				this.show_box('attach');
+			break;
+
+			// Par défaut sinon, on insère le texte avec des FSBcode en dur
+			default :
+				this._insert_text('[' + type + ']{TEXT}[/' + type + ']');
+			break;
+		}
+
+		this.win.focus();
+	},
+
+	/*
+	** Ajoute un smiley
+	** -----
+	** name ::		Nom du smiley
+	** src ::		Adresse du smiley
+	*/
+	_smiley: function(name, src)
+	{
+		this._insert_text(' <img src="' + src + '" realsrc="' + src + '" /> ', true);
+		this.win.focus();
+	},
+
+	/*
+	** Retourne le texte sélectionné
+	*/
+	_get_selection: function()
+	{
+		if (this.nav_ie)
+		{
+			return (this.doc.selection.createRange().text);
+		}
+		else
+		{
+			return (this.doc.getSelection());
+		}
+	},
+
+	/*
+	** Insert du texte à la position courante
+	** -----
+	** str ::		Chaîne de caractère à afficher. Les occurences de {TEXT} seront remplacées par la sélection
+	** html ::		Si on passe true, on autorise le HTML
+	*/
+	_insert_text: function(str, html)
+	{
+		str = this.parse_vars(str, this._get_selection());
+		if (!html) str = htmlspecialchars(str);
+		str = this._format_text(str);
+		if (this.nav_ie)
+		{
+			var sel = this.doc.selection;
+			this.win.focus();
+			if (sel != null)
+			{
+				var rang = sel.createRange();
+				rang.select();
+				rang.pasteHTML(str);
+			}
+
+		}
+		else if (this.nav_mozilla)
+		{
+			var fragment = this.doc.createDocumentFragment();
+			var div = this.doc.createElement('div');
+			div.innerHTML = str;
+			while (div.firstChild)
+			{
+				fragment.appendChild(div.firstChild);
+			}
+			this._insertNodeAtSelection(fragment);
+		}
+		else if (this.nav_opera)
+		{
+			this.doc.execCommand('InsertHTML', false, str);
+		}
+	},
+
+	/*
+	** Insère une node DOM à la sélection du texte
+	** (code repris du RTE libre Htmlarea)
+	*/
+	_insertNodeAtSelection: function(toBeInserted)
+	{
+		if (!this.nav_ie)
+		{
+			var sel = this.win.getSelection();
+			var range = this._createRange(sel);
+			sel.removeAllRanges();
+			range.deleteContents();
+			var node = range.startContainer;
+			var pos = range.startOffset;
+			switch (node.nodeType)
+			{
+				case 3 :
+					if (toBeInserted.nodeType == 3)
+					{
+						node.insertData(pos, toBeInserted.data);
+						range = this._createRange();
+						range.setEnd(node, pos + toBeInserted.length);
+						range.setStart(node, pos + toBeInserted.length);
+						sel.addRange(range);
+					}
+					else
+					{
+						node = node.splitText(pos);
+						var selnode = toBeInserted;
+						if (toBeInserted.nodeType == 11)
+						{
+							selnode = selnode.firstChild;
+						}
+						node.parentNode.insertBefore(toBeInserted, node);
+						this._selectNodeContents(selnode);
+					}
+				break;
+
+				case 1 :
+					var selnode = toBeInserted;
+					if (toBeInserted.nodeType == 11)
+					{
+						selnode = selnode.firstChild;
+					}
+					node.insertBefore(toBeInserted, node.childNodes[pos]);
+					this._selectNodeContents(selnode);
+				break;
+			}
+		}
+		else
+		{
+			return (null);
+		}
+	},
+
+	/*
+	** Sélectionne la node
+	** (code repris du RTE libre Htmlarea)
+	*/
+	_selectNodeContents: function(node, pos)
+	{
+		this.win.focus();
+		var range;
+		var collapsed = (typeof pos != "undefined");
+		if (this.nav_ie)
+		{
+			range = this.doc.body.createTextRange();
+			range.moveToElementText(node);
+			(collapsed) && range.collapse(pos);
+			range.select();
+		}
+		else
+		{
+			var sel = this.win.getSelection();
+			range = this.doc.createRange();
+			range.selectNodeContents(node);
+			(collapsed) && range.collapse(pos);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
+	},
+
+	/*
+	** (code repris du RTE libre Htmlarea)
+	*/
+	_createRange: function(sel)
+	{
+		if (this.nav_ie)
+		{
+			return sel.createRange();
+		}
+		else
+		{
+			this.win.focus();
+			if (typeof sel != "undefined")
+			{
+				try
+				{
+					return sel.getRangeAt(0);
+				}
+				catch(e)
+				{
+					return (this.doc.createRange());
+				}
+			}
+			else
+			{
+				return this.doc.createRange();
+			}
+		}
+	},
+
+	/*
+	** Ajoute du texte
+	** -----
+	** str ::	Chaîne de caractère
+	** html ::	Utilisation du HTML ?
+	*/
+	_insert: function(str, html)
+	{
+		this._insert_text(str, html);
+	},
+
+	/*
+	** Remplaces les espaces et tabulations par leur équivalent HTML
+	** -----
+	** str ::		Chaîne à parser
+	*/
+	_format_text: function(str)
+	{
+		str = str.replace(/\r\n/g, '<br />');
+		str = str.replace(/\n/g, '<br />');
+		str = str.replace(/\t/g, '&nbsp; &nbsp;');
+		str = str.replace(/  /g, '&nbsp; ');
+		str = str.replace(/  /g, ' &nbsp;');
+		return (str);
+	},
+
+	/*
+	** Méthode appelée lors de la soumission du formulaire
+	*/
+	_send: function()
+	{
+		$(this.id + '_wysiwyg').value = this.doc.body.innerHTML;
+		$(this.id + '_wysiwyg').value.replace('/&amp;/', '&');
+	}
+});
 
 /*
 ** Alterne l'image d'arrière plan des FSBcodes
@@ -88,803 +1126,75 @@ function fsbcode_background(current, mode, template_path, extended)
 }
 
 /*
-** Lance la procédure d'insertion de FSBcode
-** -----
-** id ::			ID du textarea
-** name ::			Fonction en argument
-** open ::			Ouverture
-** defaultText ::	Texte central
-** close ::			Fermeture
-** code ::			Code du FSBcode concerné
-** args ::			Arguments potentiels pour l'éditeur WYSIWYG
-*/
-function insert_text(id, fct, open, defaultText, close, code, args)
-{
-	// Appels de procédures complexes pour l'insertion de la balise de mise en forme
-	if (fct)
-	{
-		eval("var back = " + fct + "(id, args);");
-		if (back && !use_wysiwyg[id])
-		{
-			launch_insert_text(id, open, defaultText, close);
-		}
-	}
-	// Appel de procédures simples (gras, italique, souligné, etc..)
-	else
-	{
-		if (use_wysiwyg[id])
-		{
-			set_wysiwyg_command(id, code, args, open, close);
-		}
-		else
-		{
-			launch_insert_text(id, open, defaultText, close);
-		}
-	}
-}
-
-/*
-** Insertion de texte dans un textarea
-** -----
-** id ::			ID du textarea
-** open ::			Ouverture
-** defaultText ::	Texte central
-** close ::			Fermeture
-*/
-function launch_insert_text(id, open, defaultText, close)
-{
-	var txtarea = $(id);
-
-	txtarea.focus();
-
-	// IE support
-	if (document.selection) 
-	{
-		insert_ie(open, defaultText, close, txtarea);
-	}
-	// MOZILLA support
-	else if (txtarea.selectionStart || txtarea.selectionStart == '0')
-	{
-		insert_mozilla(open, defaultText, close, txtarea);
-	}
-	else
-	{
-		txtarea.value += open + defaultText + close;
-	}
-}
-
-function insert_ie(open, defaultText, close, txtarea)
-{
-	if (txtarea.createTextRange)
-	{
-		txtarea.focus(txtarea.caretPos);
-		txtarea.caretPos = document.selection.createRange().duplicate();
-		if (txtarea.caretPos.text.length > 0  && open != '')
-		{
-			defaultText = txtarea.caretPos.text;
-		}
-		txtarea.caretPos.text = open + defaultText + close;
-	}
-}
-
-function insert_mozilla(open, defaultText, close, txtarea)
-{
-	var x = txtarea.scrollTop;
- 	var selStart = txtarea.selectionStart;
-	var selEnd = txtarea.selectionEnd;
-	var selLength = selEnd - selStart;
-	var textStart = txtarea.value.substring(0,selStart);
-	var textEnd = txtarea.value.substring(selEnd, txtarea.textLength);
-
-	if (selLength != 0 && open != '')
-	{
-		defaultText = (txtarea.value).substring(selStart, selEnd)
-	}
-
-	if (x == 0 && (txtarea.textLength == selStart))
-	{
-		 x = txtarea.textLength + 200;
-	}
-	txtarea.value = textStart + open + defaultText + close + textEnd;
-	var txt = open + defaultText + close;
- 	var cur_pos = selStart + txt.length;
-	txtarea.scrollTop = x;
-
-	if (!(selLength != 0 && open != ''))
-	{
-		txtarea.selectionStart = selStart + open.length;
-		txtarea.selectionEnd = txtarea.selectionStart + defaultText.length;
-	}
-	else
-	{
-		txtarea.selectionStart = selStart + open.length;
-		txtarea.selectionEnd = selEnd + open.length;
-	}
-}
-
-/*
-** Renvoie la position d'un coté d'un élément
-** -----
-** id ::		ID de l'élément
-** pos ::		Nom de la position (Left, Top, etc ...)
-*/
-function getPos(id, pos)
-{
-	eval("var Offset = id.offset" + pos + ";");
-	var ParentOffset = id.offsetParent;
-	var i = get_pos_iterator;
-
-	while (i > 0)
-	{
-		eval("Offset += ParentOffset.offset" + pos + ";");
-		ParentOffset = ParentOffset.offsetParent;
-		i--;
-	}
-
-	return (Offset);
-}
-
-/*
-** Modifie la taille du champ texte
-*/
-function change_textarea_size(id, size)
-{	
-	size_col = size;
-	if (size < 0 && parseInt($(id).style.height) <= 75)
-	{
-		size = 0;
-	}
-	$(id).style.height = (parseInt($(id).style.height) + 15 * size) + "px";
-
-	$(id + '_rows').value = parseInt($(id).style.height);
-}
-
-/*
-** Compte le nombre de caractère du textarea en permanance
-** -----
-** id ::			ID du textarea
-** id_show_box ::	ID de la boite dans laquelle on affiche le nombre de caractères
-*/
-function count_char(id, id_show_box)
-{
-	if (!use_wysiwyg[id])
-	{
-		var len = ($(id)) ? $(id).value.length : 0;
-		$(id_show_box).innerHTML = ((max_chars > 0) ? lg_max_chars + ((len) ? len + ' / ' : '0 / ') + max_chars : '') + '&nbsp; &nbsp; &nbsp;' + ((max_line > 0) ? lg_max_line + max_line : '');
-	}
-}
-
-/*
-** Lance une commande pour l'éditeur WYSIWYG
-** -----
-** id ::		ID de la frame
-** tag_open ::	Tag d'ouverture
-** tag_close ::	Tag de fermeture
-** code ::		Code du FSBcode
-** args ::		Arguments
-*/
-function set_wysiwyg_command(id, code, args, tag_open, tag_close)
-{
-	switch (code)
-	{
-		case 'b' :
-			editor[id].execCommand('bold', false, null);
-		break;
-
-		case 'i' :
-			editor[id].execCommand('italic', false, null);
-		break;
-
-		case 'u' :
-			editor[id].execCommand('underline', false, null);
-		break;
-
-		case 'strike' :
-			editor[id].execCommand('Strikethrough', false, null);
-		break;
-
-		case 'size' :
-			var tmp_ary_size = new Array();
-				tmp_ary_size['8'] = '1';
-				tmp_ary_size['10'] = '2';
-				tmp_ary_size['16'] = '3';
-				tmp_ary_size['20'] = '5';
-				tmp_ary_size['24'] = '6';
-			args = tmp_ary_size[args];
-			editor[id].execCommand('fontsize', false, args);
-		break;
-
-		case 'align' :
-			switch (args)
-			{
-				case 'left' :
-					editor[id].execCommand('justifyleft', false, null);
-				break;
-
-				case 'center' :
-					editor[id].execCommand('justifycenter', false, null);
-				break;
-
-				case 'right' :
-					editor[id].execCommand('justifyright', false, null);
-				break;
-
-				case 'justify' :
-					editor[id].execCommand('justifyfull', false, null);
-				break;
-			}
-		break;
-
-		case 'font' :
-			editor[id].execCommand('fontname', false, args);
-		break;
-
-		case 'undo' :
-			editor[id].execCommand('undo', false, null);
-		break;
-
-		case 'redo' :
-			editor[id].execCommand('redo', false, null);
-		break;
-
-		default :
-			insert_wysiwyg_text(id, tag_open + select_text(id) + tag_close);
-		break;
-	}
-	editor_window[id].focus();
-}
-
-/*
-** Remplace le code selectioné courament par un texte passé en paramètre
-** Concerne uniquement l'éditeur WYSIWYG
-** -----
-** id ::		ID du textarea
-** text ::		Code remplacement
-** use_html ::	Peut utiliser du HTML ?
-*/
-function insert_wysiwyg_text(id, text, use_html)
-{
-	if (!use_html)
-	{
-		text = htmlspecialchars(text);
-	}
-	text = format_wysiwyg_text(text);
-	if (Nav_IE)
-	{
-		var sel = editor[id].selection;
-		editor_window[id].focus();
-		if (sel != null)
-		{
-			var rang = sel.createRange();
-			rang.select();
-			rang.pasteHTML(text);
-		}
-
-	}
-	else if (Nav_Moz || Nav_Opera)
-	{
-		editor[id].execCommand('InsertHTML', false, text);
-	}
-}
-
-/*
-** Formate le texte en mettant correctement les espaces
-*/
-function format_wysiwyg_text(text)
-{
-	text = text.replace(/\r\n/g, '<br />');
-	text = text.replace(/\n/g, '<br />');
-	text = text.replace(/\t/g, '&nbsp; &nbsp;');
-	text = text.replace(/  /g, '&nbsp; ');
-	text = text.replace(/  /g, ' &nbsp;');
-	return (text);
-}
-
-/*
-** Renvoie le texte courament selectionné
-** Concerne uniquement l'éditeur WYSIWYG
-*/
-function select_text(id)
-{
-	if (use_wysiwyg[id])
-	{
-		if (Nav_IE)
-		{
-			var sel = editor[id].selection;
-			if (sel != null)
-			{
-				var rang = sel.createRange()
-			}
-			rang.select();
-			return (rang.text);
-		}
-		else
-		{
-			return (editor_window[id].getSelection());
-		}
-	}
-	else
-	{
-		var txtarea = $(id);
-		if (Nav_IE)
-		{
-			if (txtarea.createTextRange)
-			{
-				txtarea.focus(txtarea.caretPos);
-				txtarea.caretPos = document.selection.createRange().duplicate();
-				if (txtarea.caretPos.text.length > 0)
-				{
-					defaultText = txtarea.caretPos.text;
-				}
-			}
-		}
-		else
-		{
-			var selStart = txtarea.selectionStart;
-			var selEnd = txtarea.selectionEnd;
-			var selLength = selEnd - selStart;
-			defaultText = (txtarea.value).substring(selStart, selEnd);
-		}
-		return (defaultText);
-	}
-}
-
-/*
-** Envoie le contenu de l'iframe vers un textarea
-*/
-function send_wysiwyg(id)
-{
-	$(id + '_wysiwyg').value = editor[id].body.innerHTML;
-	$(id + '_wysiwyg').value.replace('/&amp;/', '&');
-}
-
-/*
-** ===== Cas particuliers de FSBcode (URL, images, etc ...)
-*/
-
-/*
-** Fonction appelée lors du click sur le fsbcode QUOTE
-*/
-function fct_fsbcode_quote(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		var defaultText = select_text(id);
-		if (!defaultText.length)
-		{
-			defaultText = '&nbsp;';
-		}
-		insert_wysiwyg_text(id, '<div type="quote" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' + defaultText + '</div>', true);
-	}
-	else
-	{
-		launch_insert_text(id, '[quote]', '', '[/quote]');
-	}
-}
-
-/*
-** Fonction appelée lors du click sur le fsbcode CODE
-*/
-function fct_fsbcode_code(id, args)
-{
-	if (!args)
-	{
-		args = 'none';
-	}
-
-	if (use_wysiwyg[id])
-	{
-		var defaultText = select_text(id);
-		if (!defaultText.length)
-		{
-			defaultText = '&nbsp;';
-		}
-		insert_wysiwyg_text(id, '<div type="code" args="' + args + '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' + defaultText + '</div>', true);
-	}
-	else
-	{
-		launch_insert_text(id, '[code=' + args + ']', '', '[/code]');
-	}
-}
-
-/*
-** Fonction appelée lors du click sur une URL
-*/
-function fct_fsbcode_url(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		// En mode WYSIWYG
-		var defaultText = select_text(id);
-		var url = prompt('Entrez votre URL (adresse) :', 'http://');
-
-		if (url != null)
-		{
-			if (defaultText == '')
-			{
-				defaultText = prompt('Donnez un nom au lien :', '');
-			}
-
-			if (defaultText != '')
-			{
-				insert_wysiwyg_text(id, '<a href="' + url + '" realsrc="' + url + '">' + defaultText + '</a>', true);
-			}
-			else
-			{
-				insert_wysiwyg_text(id, '<a href="' + url + '" realsrc="' + url + '">' + url + '</a>', true);
-			}
-			editor_window[id].focus();
-		}
-	}
-	else
-	{
-		// En mode normal
-		launch_insert_text(id, '[url]', '', '[/url]');
-	}
-
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur une image
-*/
-
-function fct_fsbcode_img(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		// En mode WYSIWYG
-		var url = prompt('Entrez l\'URL (adresse) de l\'image :', 'http://');
-		
-		if (url != null)
-		{
-			insert_wysiwyg_text(id, '<img src="' + url + '" realsrc="' + url + '" />', true);
-			editor_window[id].focus();
-		}
-	}
-	else
-	{
-		// En mode normal
-		launch_insert_text(id, '[img]', '', '[/img]');
-	}
-
-	return (false);
-}
-
-
-/*
-** Fonction appelée lors du click sur l'adresse E-mail
-*/
-function fct_fsbcode_mail(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		// En mode WYSIWYG
-		var defaultText = select_text(id);
-		var url = prompt('Entrez l\'adresse Email :', '');
-
-		if (url != null)
-		{
-			if (defaultText == '')
-			{
-				defaultText = prompt('Entrez le nom du corespondant :', '');
-			}
-
-			if (defaultText != '')
-			{
-				insert_wysiwyg_text(id, '<a href="mailto:' + url + '">' + defaultText + '</a>', true);
-			}
-			else
-			{
-				insert_wysiwyg_text(id, '<a href="mailto:' + url + '">' + url + '</a>', true);
-			}
-			editor_window[id].focus();
-		}
-	}
-	else
-	{
-		// En mode normal
-		launch_insert_text(id, '[mail]', '', '[/mail]');
-	}
-
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur la liste
-*/
-function fct_fsbcode_list(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		// En mode WYSIWYG
-		editor[id].execCommand('insertunorderedlist', false, null);
-		editor_window[id].focus();
-	}
-	else
-	{
-		// En mode normal
-		var elem = '';
-		var add_elem = '';
-		var iterator = 1;
-		var defaultText = select_text(id);
-
-		if (defaultText == '')
-		{
-			while (elem = prompt("Element numéro " + iterator + " de la liste :", ''))
-			{
-				add_elem = add_elem + ((add_elem) ? "\n" : "") + "[*]" + elem;
-				iterator++;
-			}
-		}
-		else
-		{
-			add_elem = defaultText;
-		}
-
-		if (add_elem)
-		{
-			launch_insert_text(id, '[list]', add_elem, '[/list]');
-		}
-	}
-
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur la liste numéroté
-*/
-function fct_fsbcode_list_num(id, args)
-{
-	if (use_wysiwyg[id])
-	{
-		// En mode WYSIWYG
-		editor[id].execCommand('insertorderedlist', false, null);
-		editor_window[id].focus();
-	}
-	else
-	{
-		// En mode normal
-		var elem = '';
-		var add_elem = '';
-		var iterator = 1;
-		var defaultText = select_text(id);
-
-		if (defaultText == '')
-		{
-			while (elem = prompt("Element numéro " + iterator + " de la liste :", ''))
-			{
-				add_elem = add_elem + ((add_elem) ? "\n" : "") + "[*]" + elem;
-				iterator++;
-			}
-		}
-		else
-		{
-			add_elem = defaultText;
-		}
-
-		if (add_elem)
-		{
-			launch_insert_text(id, '[list=1]', add_elem, '[/list]');
-		}
-	}
-
-	return (false);
-}
-
-/*
-** ===== Fonctions javascripts touchants aux boites (palette, smilies, etc ...)
-*/
-
-/*
-** Affiche la palette de couleur
-** -----
-** id ::		ID pour le textarea
-** box_type ::	color ou bgcolor
-** flag ::		Si true, on ferme forcément la boite
-*/
-function show_color_box(id, box_type, flag)
-{
-	var box_id = id + "_box_" + box_type;
-	var box_type_id = $(id + "_id_" + box_type);
-
-
-	$(box_id).style.left = box_type_id.getLeft() + "px";
-	$(box_id).style.top  = (box_type_id.getTop() + 25) + "px";
-
-	// On ajoute l'ID de la box à la liste
-	if (color_palet_pos[box_id] == undefined)
-	{
-		color_palet_list.push(box_id);
-	}
-
-	if (!flag && !color_palet_pos[box_id])
-	{
-		$(box_id).style.visibility = 'visible';
-		$(box_id).style.display = 'inline';
-		color_palet_pos[box_id] = true;
-	}
-	else
-	{
-		$(box_id).style.visibility = 'hidden';
-		$(box_id).style.display = 'none';
-		color_palet_pos[box_id] = false;
-	}
-}
-
-/*
-** Ferme toutes les box ouvertes (palettes de couleur, smilies, etc ...)
-** -----
-** exept ::		ID qu'on ne souhaite pas fermer
-*/
-function close_fsbcode_box(exept)
-{
-	for (var i = 0; i < color_palet_list.length; i++)
-	{
-		if (color_palet_list[i] != exept && color_palet_list[i] != open_current_box)
-		{
-			$(color_palet_list[i]).style.visibility = 'hidden';
-			$(color_palet_list[i]).style.display = 'none';
-			color_palet_pos[color_palet_list[i]] = false;
-		}
-	}
-	open_current_box = '';
-}
-
-/*
-** Fonction appelée lors du click sur le choix de couleur
-*/
-function fct_fsbcode_color(id, args)
-{
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur le choix de couleur d'arrière plan
-*/
-function fct_fsbcode_bgcolor(id, args)
-{
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur le choix d'un smiley
-*/
-function fct_smiley(id, args)
-{
-	close_fsbcode_box(id + '_box_smiley');
-	open_current_box = id + '_box_smiley';
-	show_color_box(id, "smiley");
-
-	if (window.frames[id + '_box_smiley_name'])
-	{
-		window.frames[id + '_box_smiley_name'].$(id + "_more").style.display = 'none';
-	}
-	return (false);
-}
-
-/*
-** Fonction appelée lors du click sur la boite des fichiers joints
-*/
-function fct_upload(id, args)
-{
-	close_fsbcode_box(id + '_box_attach');
-	open_current_box = id + '_box_attach';
-	show_color_box(id, "attach");
-	return (false);
-}
-
-/*
-** Ferme la palette de couleur
-*/
-function fct_close_box_color(id, args)
-{
-	if (use_wysiwyg[id] && args !== true)
-	{
-		// Mode WYSIWYG
-		editor[id].execCommand('forecolor', false, args);
-		editor_window[id].focus();
-	}
-	return (true);
-}
-
-/*
-** Ferme la palette de couleur
-*/
-function fct_close_box_bgcolor(id, args)
-{
-	if (use_wysiwyg[id] && args !== true)
-	{
-		// Mode WYSIWYG
-		if (Nav_IE)
-		{
-			editor[id].execCommand('backcolor', false, args);
-		}
-		else if (Nav_Moz || Nav_Opera)
-		{
-			editor[id].execCommand('hilitecolor', false, args);
-		}
-		editor_window[id].focus();
-	}
-	return (true);
-}
-
-/*
-** Ferme la boite de smiley
-*/
-function fct_close_box_smiley(id, args)
-{
-	if (use_wysiwyg[id] && args !== true)
-	{
-		insert_wysiwyg_text(id, '<img src="' + args + '" realsrc="' + args + '" />', true);
-		editor_window[id].focus();
-	}
-	close_fsbcode_box('');
-	return (true);
-}
-
-/*
 ** Charge MooRainbow
 */
 function load_rainbow(name)
 {
-	window.addEvent('load', function() {
-		rainbow_box[rainbow_i++] = instantiate_rainbow('textarea_' + name, 'color');
-		rainbow_box[rainbow_i++] = instantiate_rainbow('textarea_' + name, 'bgcolor');
-	});
+	rainbow_box[rainbow_i++] = instantiate_rainbow(name, 'color');
+	rainbow_box[rainbow_i++] = instantiate_rainbow(name, 'bgcolor');
 }
 
 function instantiate_rainbow(id, tag)
 {
-	return (new MooRainbow('map_' + id + '_id_' + tag, {
-			'startColor': [58, 142, 246],
-			'id': id + '_id_' + tag,
-			'textareaId': id,
-			'tag': tag,
-			'onStart': function(color)
+	return (new MooRainbow(id + '_id_' + tag, {
+		'startColor': [58, 142, 246],
+		'id': 'my' + id + '_id_' + tag,
+		'textareaId': id,
+		'tag': tag,
+		'onStart': function(color)
+		{
+			for (var i = 0; i < rainbow_i; i++)
 			{
-				for (var i = 0; i < rainbow_i; i++)
+				if (rainbow_box[i] != this)
 				{
-					if (rainbow_box[i] != this)
-					{
-						rainbow_box[i].hide(rainbow_box[i].layout);
-					}
+					rainbow_box[i].hide(rainbow_box[i].layout);
 				}
-			},
-			'onComplete': function(color)
-			{
-				insert_text('map_' + id, 'fct_close_box_' + tag, '[' + tag + '=' + color.hex + ']', '', '[/' + tag + ']', tag, color.hex);
-			},
-			'onLayout': function()
-			{
-				var colors = [
-					['#000000', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'],
-					['#202020', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080'],
-					['#404040', '#c00000', '#c0c000', '#00c000', '#00c0c0', '#0000c0', '#c000c0'],
-					['#808080', '#ff4040', '#ffff40', '#40ff40', '#40ffff', '#4040ff', '#ff40ff'],
-					['#c0c0c0', '#ff8080', '#ffff80', '#80ff80', '#80ffff', '#8080ff', '#ff80ff'],
-					['#ffffff', '#ffc0c0', '#ffffc0', '#c0ffc0', '#c0ffff', '#c0c0ff', '#ffc0ff']
-				];
-
-				var html = '';
-				html += '<table cellspacing="1" cellpadding="0" style="width: 95px; border-spacing: 1px">';
-				for (var i = 0; i < 7; i++)
-				{
-					html += '<tr>';
-					for (var j = 0; j < 6; j++)
-					{
-						attr = "insert_text('map_" + this.options.textareaId + "', 'fct_close_box_" + this.options.tag + "', '[" + this.options.tag + "=" + colors[j][i] + "]', '', '[/" + this.options.tag + "]', '" + this.options.tag + "', '" + colors[j][i] + "');";
-						attr += 'for (var i = 0; i < rainbow_i; i++){rainbow_box[i].hide(rainbow_box[i].layout);}';
-						html += '<td onclick="' + attr + '" onmouseover="this.style.cursor=\'pointer\';" style="width: 15px; height: 15px; background: ' + colors[j][i] + ';"></td>';
-					}
-					html += '</tr>';
-				}
-				html += '</table>';
-
-				this.layout.innerHTML = this.layout.innerHTML + '<div class="moor-defaultColors">' + html + '</div>';
 			}
-		}));
+		},
+		'onComplete': function(color)
+		{
+			textEditor['' + this.options.textareaId].add(tag + '=' + color.hex);
+		},
+		'onLayout': function()
+		{
+			var colors = [
+				['#000000', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'],
+				['#202020', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080'],
+				['#404040', '#c00000', '#c0c000', '#00c000', '#00c0c0', '#0000c0', '#c000c0'],
+				['#808080', '#ff4040', '#ffff40', '#40ff40', '#40ffff', '#4040ff', '#ff40ff'],
+				['#c0c0c0', '#ff8080', '#ffff80', '#80ff80', '#80ffff', '#8080ff', '#ff80ff'],
+				['#ffffff', '#ffc0c0', '#ffffc0', '#c0ffc0', '#c0ffff', '#c0c0ff', '#ffc0ff']
+			];
+
+			var html = '';
+			html += '<table cellspacing="1" cellpadding="0" style="width: 95px; border-spacing: 1px">';
+			for (var i = 0; i < 7; i++)
+			{
+				html += '<tr>';
+				for (var j = 0; j < 6; j++)
+				{
+					attr = "textEditor['" + this.options.textareaId + "'].add('" + this.options.tag + "=" + colors[j][i] + "');";
+					attr += 'for (var i = 0; i < rainbow_i; i++){rainbow_box[i].hide(rainbow_box[i].layout);}';
+					html += '<td onclick="' + attr + '" onmouseover="this.style.cursor=\'pointer\';" style="width: 15px; height: 15px; background: ' + colors[j][i] + ';"></td>';
+				}
+				html += '</tr>';
+			}
+			html += '</table>';
+
+			this.layout.innerHTML = this.layout.innerHTML + '<div class="moor-defaultColors">' + html + '</div>';
+		}
+	}));
 }
 
-// Fermeture automatique des box en cas de clique
-document.onclick = close_fsbcode_box;
+/*
+** Fermeture des popups ouvertes (couleur de texte, couleur de fond, etc.)
+*/
+function close_box()
+{
+	for (var i = 0; i < rainbow_i; i++)
+	{
+		rainbow_box[i].hide(rainbow_box[i].layout);
+	}
+}
+
+document.onclick = close_box;

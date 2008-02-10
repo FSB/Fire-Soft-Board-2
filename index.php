@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/index.php
 ** | Begin :	09/07/2005
-** | Last :		19/12/2007
+** | Last :		11/01/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -171,6 +171,15 @@ class Fsb_frame extends Fsb_model
 	*/
 	public function frame_footer()
 	{
+		// META description (sauf pour les sujets, car il y en a déjà)
+		if ($this->frame_page != 'topic')
+		{
+			Http::add_meta('meta', array(
+				'name' =>		'Description',
+				'content' =>	htmlspecialchars(Fsb::$cfg->get('forum_name') . ', ' . Fsb::$cfg->get('forum_description')),
+			));
+		}
+
 		// Est connecté ?
 		Fsb::$tpl->set_switch((!Fsb::$session->is_logged()) ? 'is_not_logged' : 'is_logged');
 

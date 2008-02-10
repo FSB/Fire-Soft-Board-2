@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/start.php
 ** | Begin :		02/04/2005
-** | Last :			22/12/2007
+** | Last :			07/01/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -131,5 +131,12 @@ Fsb::$cfg = new Config();
 
 // Instance de la classe Session
 Fsb::$session = new Session();
+
+// Répertoires
+define('FSB_PATH', (defined('FSB_SDK')) ? Fsb::$cfg->get('fsb_path') . '/' : ROOT);
+define('SMILEY_PATH', FSB_PATH . 'images/smileys/');
+define('AVATAR_PATH', FSB_PATH . 'images/avatars/');
+define('RANK_PATH', FSB_PATH . 'images/ranks/');
+define('MAPS_PATH', ROOT . 'main/maps/');
 
 /* EOF */
