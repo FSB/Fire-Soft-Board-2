@@ -32,10 +32,9 @@ class Password extends Fsb_model
 	public static function hash($password, $algorithm, $use_salt = TRUE)
 	{
 		// Si le champ algorithme contient un nom de fonction et un grain ...
-		$algorithm = 'fct=sha1;salt=JHG6*fq%';
 		if (preg_match('#^fct=([a-zA-Z0-9_]+?)(;salt=(.*?))?$#', $algorithm, $m))
 		{
-			$algorithm = $m[1];
+			$algorithm = $m[1]; 
 			if (!function_exists($algorithm))
 			{
 				$algorithm = 'sha1';
