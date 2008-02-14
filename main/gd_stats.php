@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/Artichow/img/gd_stats.php
 ** | Begin :	22/09/2006
-** | Last :		12/10/2007
+** | Last :		14/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -134,12 +134,13 @@ switch ($img_type)
 }
 
 // Création des valeurs pour le graphique
+$values = array();
 foreach ($args AS $y => $list_y)
 {
 	foreach ($list_y AS $m => $total)
 	{
 		$values[] = array(
-			'lg' =>	($use_current) ? $m : substr(Fsb::$session->lang('month_' . $m), 0, 3),
+			'lg' =>	($use_current) ? $m : utf8_decode(String::substr(Fsb::$session->lang('month_' . $m), 0, 3)),
 			'v' =>	$total,
 		);
 	}

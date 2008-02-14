@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/index_adm.php
 ** | Begin :	03/04/2005
-** | Last :		20/01/2008
+** | Last :		14/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -324,7 +324,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'FSB_SUPPORT' =>		'http://www.fire-soft-board.com',
 			'FSB_LANG_SUPPORT' =>	Fsb::$session->lang('fsb_lang_support'),
-			'NEW_VERSION' =>		(fsb_version_compare(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) === -1) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : NULL,
+			'NEW_VERSION' =>		(!is_last_version(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version'))) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : NULL,
 			'SHOW_ALL' =>			$show_all,
 
 			'U_SHOW_ALL' =>			sid('index.' . PHPEXT . '?show_all=true'),
@@ -346,7 +346,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Aucune redirection
 		Fsb::$session->data['u_activate_redirection'] = 2;
 
-		if (fsb_version_compare(Fsb::$cfg->get('fsb_version'), $last_version) === -1)
+		if (!is_last_version(Fsb::$cfg->get('fsb_version'), $last_version))
 		{
 			Display::message(sprintf(Fsb::$session->lang('adm_old_version'), $last_version, Fsb::$cfg->get('fsb_version'), $url, $url, Fsb::$session->lang('adm_version_' . $level)) . '<br /><br />' . sprintf(Fsb::$session->lang('adm_click_view_newer'), $url));
 		}

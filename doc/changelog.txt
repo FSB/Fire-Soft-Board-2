@@ -38,6 +38,9 @@
 - Fix et optimisation de la procédure de netoyage de base de donnée
 - Fix des @import dans l'éditeur CSS
 - Fix de la largeur des images dans l'édition des images d'un thème
+- Fix de l'absence des maxlength dans les MAPS, ce qui empéchait d'écrire
+- Fix de la comparaison des versions du forum
+- Fix d'une erreur sur l'encodage des mois dans les statistiques
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

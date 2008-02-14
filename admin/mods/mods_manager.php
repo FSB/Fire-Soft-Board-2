@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/mods/mods_manager.php
 ** | Begin :	10/08/2005
-** | Last :		13/01/2008
+** | Last :		14/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -101,7 +101,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$parent =		($is_update) ? $module->xml->document->header[0]->isUpdate[0]->getAttribute('parent') : '';
 				$version =		$module->xml->document->header[0]->version[0]->getData();
 
-				if ($parent && fsb_version_compare($install_mod[$parent], $version) >= 0)
+				if ($parent && is_last_version($install_mod[$parent], $version))
 				{
 					continue ;
 				}
@@ -163,7 +163,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'VERSION' =>		$row['mod_version'],
 				'DESCRIPTION' =>	$row['mod_description'],
 				'CHECK_NAME' =>		$row['mod_name'],
-				'NEW_VERSION' =>	(isset($mods_version[$row['mod_name']]) && fsb_version_compare($row['mod_version'], $mods_version[$row['mod_name']]) === -1) ? $mods_version[$row['mod_name']] : FALSE,
+				'NEW_VERSION' =>	(isset($mods_version[$row['mod_name']]) && !is_last_version($row['mod_version'], $mods_version[$row['mod_name']])) ? $mods_version[$row['mod_name']] : FALSE,
 				'CHECKED' =>		($row['mod_status']) ? TRUE : FALSE,
 
 				'U_TEMPLATE' =>		'http://www.fire-soft-board.com/mods.php?mod_name=' . urlencode($row['mod_name']),

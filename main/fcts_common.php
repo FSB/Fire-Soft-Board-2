@@ -241,30 +241,48 @@ function get_forums($where = '', $use_cache = TRUE)
 }
 
 /*
-** Compare deux versions $a et $b et renvoie -1 si $a est antérieure à $b, sinon
-** renvoie 0 si elles sont égales, et 1 si $a supérieur à $b.
+** Retourne TRUE s'il s'agit de la dernière version comparée
 ** -----
-** $a ::		Version 1
-** $b ::		Version 2
+** $current_version ::	Version actuelle de ce script
+** $last_version ::		Dernière version connue pour le script
 */
-function fsb_version_compare($a, $b)
+function is_last_version($current_version, $last_version)
 {
-	$exp_a = explode('.', $a);
-	$exp_b = explode('.', $b);
-
-	$count = min(count($exp_a), count($exp_b));
-	for ($i = 0; $i < $count; $i++)
+	if (!preg_match('#^([0-9]+)\.([0-9]+)\.([0-9]+)(\.(RC([0-9]+)))?([a-z])?$#', $current_version, $m_current))
 	{
-		if ($exp_a[$i] < $exp_b[$i])
+		return (FALSE);
+	}
+
+	if (!preg_match('#^([0-9]+)\.([0-9]+)\.([0-9]+)(\.(RC([0-9]+)))?([a-z])?$#', $last_version, $m_last))
+	{
+		return (FALSE);
+	}
+
+	// Comparaison des versions majeures, mineures et des révisions
+	for ($i = 1; $i < 4; $i++)
+	{
+		if ($m_current[$i] != $m_last[$i])
 		{
-			return (-1);
-		}
-		else if ($exp_a[$i] > $exp_b[$i])
-		{
-			return (1);
+			return (($m_current[$i] < $m_last[$i]) ? FALSE : TRUE);
 		}
 	}
-	return (0);
+
+	// Comparaison du numéro de RC et des révisions mineures
+	$rc_current = (isset($m_current[6])) ? $m_current[6] : '';
+	$rc_last = (isset($m_last[6])) ? $m_last[6] : '';
+	if (($rc_current || $rc_last) && $rc_current != $rc_last)
+	{
+		return ((!$rc_current || ($rc_last && $rc_current >= $rc_last)) ? TRUE : FALSE);
+	}
+
+	$minor_current = (isset($m_current[7])) ? $m_current[7] : '';
+	$minor_last = (isset($m_last[7])) ? $m_last[7] : '';
+	if ($minor_current || $minor_last)
+	{
+		return ((!$minor_current || $minor_last > $minor_current) ? FALSE : TRUE);
+	}
+
+	return (TRUE);
 }
 
 /*

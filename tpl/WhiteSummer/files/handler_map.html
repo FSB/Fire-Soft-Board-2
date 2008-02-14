@@ -10,7 +10,7 @@
 		</th>
 		<td>
 			<if content="$map.TYPE == 'text'">
-				<input type="text" name="{map.NAME}" value="{map.VALUE}" size="{map.SIZE}" maxlength="{map.MAXLENGTH}" />
+				<input type="text" name="{map.NAME}" value="{map.VALUE}" size="{map.SIZE}" <if content="$map.MAXLENGTH > 0">maxlength="{map.MAXLENGTH}"</if> />
 			<elseif content="$map.TYPE == 'textarea'">
 				<include name="handler_fsbcode.html" />
 				<div>
