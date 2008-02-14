@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_password.php
 ** | Begin :	07/09/2005
-** | Last :		22/12/2007
+** | Last :		14/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -29,14 +29,25 @@ class Password extends Fsb_model
 	** $algorithm ::	Algorithme utilisé (md5 | sha1)
 	** $use_salt ::		Si on concatène un grain au mot de passe
 	*/
-	public static function hash($password, $algorithm, $use_salt)
+	public static function hash($password, $algorithm, $use_salt = TRUE)
 	{
-		if ($algorithm != 'md5' && $algorithm != 'sha1')
+		// Si le champ algorithme contient un nom de fonction et un grain ...
+		$algorithm = 'fct=sha1;salt=JHG6*fq%';
+		if (preg_match('#^fct=([a-zA-Z0-9_]+?)(;salt=(.*?))?$#', $algorithm, $m))
 		{
-			$algorithm = 'md5';
-		}
+			$algorithm = $m[1];
+			if (!function_exists($algorithm))
+			{
+				$algorithm = 'sha1';
+			}
 
-		if ($use_salt)
+			if (isset($m[3]))
+			{
+				$password .= $m[3];
+			}
+		}
+		// Sinon le cas classique
+		else if ($use_salt)
 		{
 			$password .= Fsb::$cfg->get('fsb_hash');
 		}
