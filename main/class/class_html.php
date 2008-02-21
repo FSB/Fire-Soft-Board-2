@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_html.php
 ** | Begin :	19/06/2007
-** | Last :		11/01/2008
+** | Last :		21/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -219,7 +219,7 @@ class Html extends Fsb_model
 			$html .= '<option value="?p=userlist&amp;g_id=' . GROUP_SPECIAL_USER . '">' . Fsb::$session->lang('jumpbox_userlist') . '</option>';
 			$html .= '<option value="?p=profile&amp;module=personal">' . Fsb::$session->lang('jumpbox_profile') . '</option>';
 			$html .= '</optgroup>';
-			return (Html::list_forums(get_forums(), '', 'jumpbox', FALSE, '', FALSE, $html));
+			return (Html::list_forums(get_forums(), '', 'jumpbox', FALSE, 'onchange="location.href = (isNaN(this.value)) ? this.value : \'index.php?p=forum&amp;f_id=\' + this.value"', FALSE, $html));
 		}
 	}
 
