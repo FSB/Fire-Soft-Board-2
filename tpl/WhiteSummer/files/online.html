@@ -61,7 +61,7 @@
 							{USERS_BIRTHDAYS}
 							<block name="online_birthday">
 								<if content="$online_birthday.FIRST_ROW"><br /><b>&#187;</b></if>
-								{online_birthday.NICKNAME} ({online_birthday.AGE})<if content="!$online_birthday.LAST_ROW">,</if>
+								{online_birthday.NICKNAME}<if content="$online_birthday.AGE"> ({online_birthday.AGE})</if><if content="!$online_birthday.LAST_ROW">,</if>
 							</block>
 						</p>
 					</switch>

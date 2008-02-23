@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/online.php
 ** | Begin :		20/09/2005
-** | Last :			07/01/2008
+** | Last :			23/02/2008
 ** | User :			Genova
 ** | Project :		Fire-Soft-Board 2 - Copyright FSB group
 ** | License :		GPL v2.0
@@ -223,9 +223,10 @@ if (Fsb::$session->is_authorized('online_box'))
 		while ($row = Fsb::$db->row($result))
 		{
 			$total_birthday++;
+			$year = substr($row['u_birthday'], 6);
 			Fsb::$tpl->set_blocks('online_birthday', array(
 				'NICKNAME' =>	Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
-				'AGE' =>		intval(date('Y', CURRENT_TIME) - substr($row['u_birthday'], 6)),
+				'AGE' =>		($year != '0000') ? intval(date('Y', CURRENT_TIME) - substr($row['u_birthday'], 6)) : NULL,
 			));
 		}
 		Fsb::$db->free($result);
