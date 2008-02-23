@@ -276,6 +276,7 @@ class Page_modo_procedure extends Fsb_model
 			$sql = 'DELETE FROM ' . SQL_PREFIX . 'sub_procedure
 					WHERE procedure_id = ' . $this->id;
 			Fsb::$db->query($sql);
+			Fsb::$db->destroy_cache('procedure_');
 
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=procedure');
 		}
