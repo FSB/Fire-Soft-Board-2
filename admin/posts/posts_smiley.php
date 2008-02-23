@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/posts/posts_smiley.php
 ** | Begin :	15/04/2005
-** | Last :		21/12/2007
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -76,7 +76,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$last = NULL;
 		while ($row = Fsb::$db->row($result))
 		{
-			if ($last === NULL || $row['smiley_cat'] != $last['smiley_cat'])
+			if ($last === NULL || $row['smiley_cat'] != $last)
 			{
 				Fsb::$tpl->set_blocks('smiley_cat', array(
 					'CAT_NAME' =>		htmlspecialchars($row['cat_name']),
@@ -86,6 +86,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					'U_UP' =>			sid('index.' . PHPEXT . '?p=posts_smiley&amp;mode=up_cat&amp;id=' . $row['cat_id']),
 					'U_DOWN' =>			sid('index.' . PHPEXT . '?p=posts_smiley&amp;mode=down_cat&amp;id=' . $row['cat_id']),
 				));
+				$last = $row['smiley_cat'];
 			}
 
 			if ($row['smiley_tag'] !== NULL)
@@ -101,7 +102,6 @@ class Fsb_frame_child extends Fsb_admin_frame
 					'U_DOWN' =>			sid('index.' . PHPEXT . '?p=posts_smiley&amp;mode=down&amp;id=' . $row['smiley_id'] . '#sid' . $row['smiley_id']),
 				));
 			}
-			$last = $row;
 		}
 		Fsb::$db->free($result);
 	}
