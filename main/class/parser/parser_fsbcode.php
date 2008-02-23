@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser_fsbcode.php
 ** | Begin :	16/07/2007
-** | Last :		10/02/2008
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -172,7 +172,7 @@ class Parser_fsbcode extends Fsb_model
 		// Pour l'éditeur WYSIWYG, on parse l'affichage différement
 		if ($this->only_wysiwyg)
 		{
-			return ('<blockquote args="' . htmlspecialchars($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</div>');
+			return ('<blockquote args="' . htmlspecialchars($arg) . '" style="border: 1px dashed #000000; margin: 3px; padding: 3px">' . $content . '</blockquote>');
 		}
 
 		// Sans arguments
@@ -230,7 +230,7 @@ class Parser_fsbcode extends Fsb_model
 		// Pour l'éditeur WYSIWYG, on parse l'affichage différement
 		if ($this->only_wysiwyg)
 		{
-			return ('<code args="' . htmlspecialchars($arg) . '" style="display: block; border: 1px dashed #000000; margin: 3px; padding: 3px">' . $this->block_fsbcode($content) . '</div>');
+			return ('<code args="' . htmlspecialchars($arg) . '" style="display: block; border: 1px dashed #000000; margin: 3px; padding: 3px">' . $this->block_fsbcode($content) . '</code>');
 		}
 
 		// Sans arguments

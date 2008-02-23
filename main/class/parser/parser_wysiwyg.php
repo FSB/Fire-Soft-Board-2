@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/parser/parser_wysiwyg.php
 ** | Begin :	16/07/2007
-** | Last :		21/01/2008
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -251,7 +251,7 @@ class Parser_wysiwyg extends Fsb_model
 							}
 
 							// Adresse email ?
-							if (preg_match('#^mailto:#i', $match[1]))
+							if (preg_match('#^mailto:#i', $url))
 							{
 								$s[] = 'mail=' . substr($url, 7);
 							}
