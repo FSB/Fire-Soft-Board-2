@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_info.php
 ** | Begin :	26/06/2007
-** | Last :		03/12/2007
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -89,14 +89,14 @@ class Fsb_frame_child extends Fsb_frame
 		$fd = opendir(ROOT . 'tpl/');
 		while ($file = readdir($fd))
 		{
-			if ($file != '.' && $file != '..' && is_dir(ROOT . 'tpl/' . $file))
+			if ($file[0] != '.' && is_dir(ROOT . 'tpl/' . $file))
 			{
 				$config_tpl = Config_file::read(ROOT . 'tpl/' . $file . '/config_tpl.cfg');
 				Fsb::$tpl->set_blocks('tpl', array(
 					'NAME' =>		$file,
 					'AUTHOR' =>		$config_tpl['copyright']['author'],
-					'WEB' =>		$this->parse_website($config_tpl['copyright']['web']),
-					'EMAIL' =>		$this->parse_email($config_tpl['copyright']['email']),
+					'WEB' =>		String::parse_website($config_tpl['copyright']['web']),
+					'EMAIL' =>		String::parse_email($config_tpl['copyright']['email']),
 					'LICENSE' =>	$config_tpl['copyright']['license'],
 				));
 			}
@@ -164,7 +164,7 @@ class Fsb_frame_child extends Fsb_frame
 		$fd = opendir(ROOT . 'lang/');
 		while ($file = readdir($fd))
 		{
-			if ($file != '.' && $file != '..' && is_dir(ROOT . 'lang/' . $file))
+			if ($file[0] != '.' && is_dir(ROOT . 'lang/' . $file))
 			{
 				if (file_exists(ROOT . 'lang/' . $file . '/language.txt'))
 				{
@@ -183,38 +183,12 @@ class Fsb_frame_child extends Fsb_frame
 				Fsb::$tpl->set_blocks('lang', array(
 					'NAME' =>		$name,
 					'AUTHOR' =>		$author,
-					'WEBSITE' =>	$this->parse_website($website),
-					'EMAIL' =>		$this->parse_email($email),
+					'WEBSITE' =>	String::parse_website($website),
+					'EMAIL' =>		String::parse_email($email),
 				));
 			}
 		}
 		closedir($fd);
-	}
-
-	/*
-	** Rend les sites webs clickables
-	** -----
-	** $str ::		Chaîne à parser
-	*/
-	public function parse_website($str)
-	{
-		$str = preg_replace('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/)([^ \"\t\n\r<]{3,}))))/i', '<a href="\\1">\\1</a>', $str);
-
-		return ($str);
-	}
-
-	/*
-	** Rend les Emails clickables
-	** -----
-	** $str ::		Chaîne à parser
-	*/
-	public function parse_email($str)
-	{
-		$fsbcode = new Parser_fsbcode();
-
-		$str = preg_replace_callback('/(?<=^|\W)()()([a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4})/i', array($fsbcode, 'generate_mail'), $str);
-
-		return ($str);
 	}
 }
 

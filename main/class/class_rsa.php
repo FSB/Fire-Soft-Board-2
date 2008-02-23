@@ -71,8 +71,8 @@ class Rsa extends Fsb_model
 		$d = $this->math->invmod($e, $this->math->mul($p1, $q1));
 
 		// Génération de la clef publique
-		$this->public_key = &new Rsa_key($n, $e, 'public');
-		$this->private_key = &new Rsa_key($n, $d, 'private');
+		$this->public_key = new Rsa_key($n, $e, 'public');
+		$this->private_key = new Rsa_key($n, $d, 'private');
 	}
 
 	/*

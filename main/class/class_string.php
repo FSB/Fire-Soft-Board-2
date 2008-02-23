@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_string.php
 ** | Begin :	19/06/2007
-** | Last :		07/01/2008
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -365,9 +365,35 @@ class String extends Fsb_model
 	** $nb ::	Nombre à formater
 	** $dec ::	Nombre de décimales
 	*/
-	public function number_format($nb, $dec = 0)
+	public static function number_format($nb, $dec = 0)
 	{
 		return (number_format($nb, $dec, Fsb::$session->lang('nb_format_dec'), Fsb::$session->lang('nb_format_thousands')));
+	}
+
+	/*
+	** Rend les sites webs clickables
+	** -----
+	** $str ::		Chaîne à parser
+	*/
+	public static function parse_website($str)
+	{
+		$str = preg_replace('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/)([^ \"\t\n\r<]{3,}))))/i', '<a href="\\1">\\1</a>', $str);
+
+		return ($str);
+	}
+
+	/*
+	** Rend les Emails clickables
+	** -----
+	** $str ::		Chaîne à parser
+	*/
+	public static function parse_email($str)
+	{
+		$fsbcode = new Parser_fsbcode();
+
+		$str = preg_replace_callback('/(?<=^|\W)()()([a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4})/i', array($fsbcode, 'generate_mail'), $str);
+
+		return ($str);
 	}
 }
 

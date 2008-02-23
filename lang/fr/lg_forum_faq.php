@@ -194,7 +194,7 @@ $GLOBALS['faq_data'] = array (
     'u' => 
     array (
       'question' => 'Comment mettre en souligné mon texte ?',
-      'answer' => 'Il est possible de mettre en italique son texte à l\'aide des balises &#91;u&#93; et &#91;/u&#93;.<br />
+      'answer' => 'Il est possible de souligner son texte à l\'aide des balises &#91;u&#93; et &#91;/u&#93;.<br />
 			Voici un exemple d\'utilisation:
 			[code]Salut je veux [u]mettre ce texte en souligné[/u][/code]
 			qui affichera

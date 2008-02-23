@@ -26,7 +26,7 @@ return (array (
   'mp_auto_answer' => 'Répondeur',
   'mp_auto_answer_activ' => 'Activer le répondeur',
   'mp_auto_answer_message' => 'Message du répondeur',
-  'mp_auto_answer_message_explain' => 'La longueur du message ne doit pas dépasser 255 caractères. Vous pouvez utiliser les <a href="index.php?p=faq&amp;section=fsbcode">FSBcodes</a> dans votre texte)',
+  'mp_auto_answer_message_explain' => 'La longueur du message ne doit pas dépasser 255 caractères. Vous pouvez utiliser les <a href="index.php?p=faq&amp;section=fsbcode">FSBcodes</a> dans votre texte.',
   'mp_auto_answer_need_message' => 'Vous devez entrer un message si vous activez le répondeur',
   'mp_auto_answer_error_message' => 'La longueur du texte de votre répondeur est trop grande, elle fait %d caractères alors que le maximum autorisé est %d',
   'mp_auto_answer_well' => 'Les données du répondeur ont bien été modifiées',

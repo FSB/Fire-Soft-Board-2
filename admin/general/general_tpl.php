@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/admin/general/general_tpl.php
 ** | Begin :	04/07/2005
-** | Last :		24/12/2007
+** | Last :		23/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -170,7 +170,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					Fsb::$tpl->set_blocks('tpl', array(
 						'NAME' =>		$file,
 						'AUTOR' =>		$config_tpl['copyright']['author'],
-						'WEB' =>		$config_tpl['copyright']['web'],
+						'WEB' =>		String::parse_website($config_tpl['copyright']['web']),
 						'LICENSE' =>	$config_tpl['copyright']['license'],
 						'USED_BY' =>	(isset($used_by[$file])) ? $used_by[$file] : 0,
 
