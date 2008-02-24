@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_log.php
 ** | Begin :	14/08/2007
-** | Last :		22/10/2007
+** | Last :		24/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -101,7 +101,7 @@ class Log extends Fsb_model
 		$user_ip = (Fsb::$session) ? Fsb::$session->_get('ip') : @$_SERVER['REMOTE_ADDR'];
 
 		// les arguments addionels seront sérializés dans la base de donnée
-		if (Fsb::$db->_get_id())
+		if (Fsb::$db && Fsb::$db->_get_id())
 		{
 			Fsb::$db->insert('logs', array(
 				'log_type' =>	$type,

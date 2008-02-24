@@ -84,6 +84,33 @@ function set_index_html($path)
 	closedir($fd);
 }
 
+function copy_dir($path, $to, $clean_path)
+{
+	if (!is_dir($to . substr($path, strlen($clean_path))))
+	{
+		//echo 'MKDIR = ' . $to . substr($path, strlen($clean_path)) . '<br />';
+		mkdir($to . substr($path, strlen($clean_path)));
+	}
+
+	$fd = opendir($path);
+	while ($file = readdir($fd))
+	{
+		if ($file != '.' && $file != '..' && $file != '.svn')
+		{
+			if (is_dir($path . $file))
+			{
+				copy_dir($path . $file . '/', $to, $clean_path);
+			}
+			else
+			{
+				//echo 'COPY = ' . $to . substr($path, strlen($clean_path)) . $file . '<br />';
+				copy($path . $file, $to . substr($path, strlen($clean_path)) . $file);
+			}
+		}
+	}
+	closedir($fd);
+}
+
 // Supprimes les fichiers en cache
 delete_like('../cache/sql/', '.php');
 delete_like('../cache/tpl/', '.php');
@@ -92,6 +119,8 @@ delete_like('../cache/diff/', '.php');
 delete_like('../upload/', '.file');
 delete_like('../mods/save/', '.tar.gz');
 delete_like('../mods/save/', '.zip');
+
+copy_dir('../', '../../package_fsb2/fsb2/', '../');
 
 // Supprime les Thumbs.db
 delete_thumbs('../');
