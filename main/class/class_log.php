@@ -32,21 +32,21 @@ class Log extends Fsb_model
 	);
 
 	/*
-	** Ajout d'un log dans la base de donnée
-	** Le nombre d'argument de cette fonction est variable, néanmoins il faut respecter cet ordre :
-	**	- Le premier argument doit être une des constante de log
-	**	- Le second argument doit être le nom du log
-	**	- Les autres arguments sont des paramètres additionels
+	** Ajout d'un log dans la base de donnee
+	** Le nombre d'argument de cette fonction est variable, neanmoins il faut respecter cet ordre :
+	**	- Le premier argument doit etre une des constante de log
+	**	- Le second argument doit etre le nom du log
+	**	- Les autres arguments sont des parametres additionels
 	*/
 	public static function add()
 	{
 		$count = func_num_args();
 		if ($count < 2)
 		{
-			trigger_error('Au moins 2 paramètres doivent être passés à la méthode Log::add()', FSB_ERROR);
+			trigger_error('Au moins 2 parametres doivent etre passes a la methode Log::add()', FSB_ERROR);
 		}
 
-		// On récupère les arguments de la fonction
+		// On recupere les arguments de la fonction
 		$type =	func_get_arg(0);
 		$key =	func_get_arg(1);
 		$argv =	array();
@@ -60,20 +60,20 @@ class Log extends Fsb_model
 
 	/*
 	** Ajout d'un log concernant un membre
-	** Le nombre d'argument de cette fonction est variable, néanmoins il faut respecter cet ordre :
-	**	- Le premier argument doit être l'ID du membre ciblé
-	**	- Le second argument doit être le nom du log
-	**	- Les autres arguments sont des paramètres additionels
+	** Le nombre d'argument de cette fonction est variable, neanmoins il faut respecter cet ordre :
+	**	- Le premier argument doit etre l'ID du membre cible
+	**	- Le second argument doit etre le nom du log
+	**	- Les autres arguments sont des parametres additionels
 	*/
 	public static function user()
 	{
 		$count = func_num_args();
 		if ($count < 2)
 		{
-			trigger_error('Au moins 2 paramètres doivent être passés à la méthode Log::add()', FSB_ERROR);
+			trigger_error('Au moins 2 parametres doivent etre passes a la methode Log::add()', FSB_ERROR);
 		}
 
-		// On récupère les arguments de la fonction
+		// On recupere les arguments de la fonction
 		$user =	func_get_arg(0);
 		$key =	func_get_arg(1);
 		$argv =	array();
@@ -86,13 +86,13 @@ class Log extends Fsb_model
 	}
 
 	/*
-	** Ajout d'un log dans la base de donnée
+	** Ajout d'un log dans la base de donnee
 	** -----
 	** $type ::		Type de log
 	** $key ::		Nom du log
 	** $argv ::		Tableau d'arguments
-	** $line ::		Ligne où se déroule le log
-	** $file ::		Fichier où se déroule le log
+	** $line ::		Ligne ou se deroule le log
+	** $file ::		Fichier ou se deroule le log
 	** $user ::		ID du membre si le log concerne un membre particulier
 	*/
 	public static function add_custom($type, $key, $argv = array(), $line = NULL, $file = NULL, $user = NULL)
@@ -100,7 +100,7 @@ class Log extends Fsb_model
 		$user_id = (Fsb::$session && isset(Fsb::$session->data['u_id'])) ? Fsb::$session->id() : VISITOR_ID;
 		$user_ip = (Fsb::$session) ? Fsb::$session->_get('ip') : @$_SERVER['REMOTE_ADDR'];
 
-		// les arguments addionels seront sérializés dans la base de donnée
+		// les arguments addionels seront serializes dans la base de donnee
 		if (Fsb::$db && Fsb::$db->_get_id())
 		{
 			Fsb::$db->insert('logs', array(
@@ -118,13 +118,13 @@ class Log extends Fsb_model
 	}
 
 	/*
-	** Récupère un certain type de logs
+	** Recupere un certain type de logs
 	** -----
 	** $type ::		Type de log
-	** $limit ::	Nombre de lignes du logs à récupérer
+	** $limit ::	Nombre de lignes du logs a recuperer
 	** $offset ::	A partir de l'enregistrement
-	** $and ::		Condition suplémentaire pour la requête
-	** $get_user ::	Récupère en plus les informations sur le membre loggué
+	** $and ::		Condition suplementaire pour la requete
+	** $get_user ::	Recupere en plus les informations sur le membre loggue
 	*/
 	public static function read($type, $limit = 100, $offset = 0, $and = '', $get_user = FALSE)
 	{

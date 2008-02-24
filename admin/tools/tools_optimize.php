@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Liste des dossiers à chmod
+	// Liste des dossiers a chmod
 	public $chmod = array(
 		'cache_sql' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
 		'cache_tpl' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
@@ -27,7 +27,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'upload' =>		array('path' => 'upload/', 'chmod' => 0777),	
 	);
 
-	// Nombre de messages à indexer par appel de la procédure d'indexation de la recherche
+	// Nombre de messages a indexer par appel de la procedure d'indexation de la recherche
 	public $index_posts = 500;
 
 	// Module
@@ -64,7 +64,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la procédure pour le chmod
+	** Affiche la procedure pour le chmod
 	*/
 	public function show_chmod()
 	{
@@ -110,7 +110,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Procédure de CHMOD du forum
+	** Procedure de CHMOD du forum
 	*/
 	public function chmod_forum()
 	{
@@ -147,7 +147,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if (Fsb::$cfg->get('search_method') == 'fulltext_fsb')
 		{
-			// On vide les tables au début de la procédure
+			// On vide les tables au debut de la procedure
 			if ($current_post == 0)
 			{
 				Fsb::$db->query_truncate('cache_search');
@@ -155,7 +155,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				Fsb::$db->query_truncate('search_word');
 			}
 
-			// Chargement des mots à ne pas indexer, en prenant les mots de chaque langue
+			// Chargement des mots a ne pas indexer, en prenant les mots de chaque langue
 			$stopwords = array();
 			$fd = opendir(ROOT . 'lang/');
 			while ($file = readdir($fd))
@@ -170,7 +170,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$search->stopwords = array_map('trim', $stopwords);
 			unset($stopwords);
 
-			// On récupère les messages et titres
+			// On recupere les messages et titres
 			$sql = 'SELECT p.p_id, p.p_text, t.t_title
 					FROM  ' . SQL_PREFIX . 'posts p
 					LEFT JOIN ' . SQL_PREFIX . 'topics t
@@ -196,7 +196,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$percent = 100;
 			}
 
-			// Pour cette procédure faite en plusieurs appel on active la redirection automatique
+			// Pour cette procedure faite en plusieurs appel on active la redirection automatique
 			Fsb::$session->data['u_activate_redirection'] = 8;
 
 			if (($current_post + $this->index_posts) < Fsb::$cfg->get('total_posts'))
@@ -215,13 +215,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche les procédures programmées du forum
+	** Affiche les procedures programmees du forum
 	*/
 	public function show_process()
 	{
 		Fsb::$tpl->set_switch('optimize_process');
 
-		// Liste des procédures
+		// Liste des procedures
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'process';
 		$result = Fsb::$db->query($sql, 'process_');
@@ -240,7 +240,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Met à jour, execute les procédures
+	** Met a jour, execute les procedures
 	*/
 	public function submit_process()
 	{
@@ -252,7 +252,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			// Execution de la procédure
+			// Execution de la procedure
 			$update_array = array();
 			if (isset($process_launch[$row['process_id']]))
 			{
@@ -262,7 +262,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$update_array['process_last_timestamp'] = CURRENT_TIME;
 			}
 
-			// Mise à jour de la procédure
+			// Mise a jour de la procedure
 			if (isset($process_launch[$row['process_id']]) || $row['process_step_timestamp'] != $process_step[$row['process_id']] * ONE_DAY)
 			{
 				$update_array['process_step_timestamp'] = $process_step[$row['process_id']] * ONE_DAY;

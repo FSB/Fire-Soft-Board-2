@@ -11,7 +11,7 @@
 */
 
 /*
-** Liste les modules à installer, et permet de les installer directement sur le forum via
+** Liste les modules a installer, et permet de les installer directement sur le forum via
 ** la classe Module
 */
 class Fsb_frame_child extends Fsb_admin_frame
@@ -48,6 +48,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$call->functions(array(
 				'mode' => array(
 					'install' =>		'page_install_mod',
+					'uninstall' =>		'page_uninstall_mod',
 					'restore' =>		'restore_backup',
 				),
 				'module' => array(
@@ -66,7 +67,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_mods_install()
 	{
-		// On récupère les MODS déjà installés pour ne pas les afficher dans la liste
+		// On recupere les MODS deja installes pour ne pas les afficher dans la liste
 		$sql = 'SELECT mod_name, mod_version
 				FROM ' . SQL_PREFIX . 'mods
 				WHERE mod_type = ' . Mods::EXTERN;
@@ -86,7 +87,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
 		));
 
-		// On parcourt le dossier ~/mods/ pour lister les MODS à installer
+		// On parcourt le dossier ~/mods/ pour lister les MODS a installer
 		$fd = opendir($dir);
 		while ($file = readdir($fd))
 		{
@@ -101,7 +102,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$parent =		($is_update) ? $module->xml->document->header[0]->isUpdate[0]->getAttribute('parent') : '';
 				$version =		$module->xml->document->header[0]->version[0]->getData();
 
-				if ($parent && is_last_version($install_mod[$parent], $version))
+				if ($parent && isset($install_version[$parent]) && is_last_version($install_mod[$parent], $version))
 				{
 					continue ;
 				}
@@ -122,14 +123,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la liste des modules installés
+	** Affiche la liste des modules installes
 	*/
 	public function page_mods_mods()
 	{
-		// On récupère sur le serveur www.fire-soft-board.com la liste des MODS et leur version pour vérifier les mises à jour
+		// On recupere sur le serveur www.fire-soft-board.com la liste des MODS et leur version pour verifier les mises a jour
 		$xml_data = Http::get_file_on_server(FSB_REQUEST_SERVER, FSB_REQUEST_MODS_VERSION, 10);
 
-		// On parse les données reçue pour mettre en forme le tableau php
+		// On parse les donnees recue pour mettre en forme le tableau php
 		$mods_version = array();
 		if ($xml_data)
 		{
@@ -143,6 +144,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 			}
 		}
+		$mods_version['forum_sorting'] = '1.0.4';
 
 		Fsb::$tpl->set_switch('mods_list');
 		Fsb::$tpl->set_vars(array(
@@ -151,13 +153,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=mods_manager&amp;module=mods'),
 		));
 
-		// On récupère les MODS installés
+		// On recupere les MODS installes
 		$sql = 'SELECT mod_name, mod_real_name, mod_version, mod_description, mod_status
 					FROM ' . SQL_PREFIX . 'mods
 					WHERE mod_type = ' . Mods::EXTERN;
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
+			$uninstall = (file_exists(ROOT . 'mods/' . $row['mod_name'] . '/uninstall.xml')) ? TRUE : FALSE;
+			if ($uninstall)
+			{
+				Fsb::$tpl->set_switch('uninstall_mod');
+			}
+
 			Fsb::$tpl->set_blocks('mod', array(
 				'NAME' =>			$row['mod_real_name'],
 				'VERSION' =>		$row['mod_version'],
@@ -165,6 +173,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'CHECK_NAME' =>		$row['mod_name'],
 				'NEW_VERSION' =>	(isset($mods_version[$row['mod_name']]) && !is_last_version($row['mod_version'], $mods_version[$row['mod_name']])) ? $mods_version[$row['mod_name']] : FALSE,
 				'CHECKED' =>		($row['mod_status']) ? TRUE : FALSE,
+				'UNINSTALL' =>		($uninstall) ? sid('index.' . PHPEXT . '?p=mods_manager&amp;mode=uninstall&amp;mod_path=' . $row['mod_name'] . '&amp;module=install') : '',
 
 				'U_TEMPLATE' =>		'http://www.fire-soft-board.com/mods.php?mod_name=' . urlencode($row['mod_name']),
 			));
@@ -174,7 +183,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page du formulaire d'éxécution de modules
+	** Affiche la page du formulaire d'execution de modules
 	*/
 	public function page_mods_functions()
 	{
@@ -201,13 +210,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la liste des backups du répertoire ~/mods/save/
+	** Affiche la liste des backups du repertoire ~/mods/save/
 	*/
 	public function page_mods_backup()
 	{
 		Fsb::$tpl->set_switch('mods_backup');
 
 		$fd = opendir(ROOT . 'mods/save/');
+		$list = array();
 		while ($file = readdir($fd))
 		{
 			if ($file[0] != '.' && preg_match('#^save_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})_([0-9]{1,2})(\.(tar|tar\.gz|tgz|zip))?$#i', $file, $match))
@@ -221,17 +231,27 @@ class Fsb_frame_child extends Fsb_admin_frame
 					$compress_type = $match[8];
 				}
 
-				Fsb::$tpl->set_blocks('file', array(
-					'FILENAME' =>		$file,
-					'COMPRESS' =>		(Fsb::$session->lang('adm_mods_' . $compress_type)) ? Fsb::$session->lang('adm_mods_' . $compress_type) : $compress_type,
-					'DATE' =>			$match[1] . ' ' . Fsb::$session->lang('month_' . intval($match[2])) . ' 20' . $match[3] . ', ' . $match[4] . ' ' . $match[5],
-
-					'U_FILENAME' =>		($compress_type == 'dir') ? '' : sid(ROOT . 'mods/save/' . $file),
-					'U_RESTORE' =>		sid('index.' . PHPEXT . '?p=mods_manager&amp;module=backup&amp;mode=restore&amp;restore=' . $file),
-				));
+				$list[mktime($match[4], $match[5], $match[6], $match[2], $match[1], '20' . $match[3])] = array(
+					'type' =>	$compress_type,
+					'file' =>	$file,
+					'date' =>	$match[1] . ' ' . Fsb::$session->lang('month_' . intval($match[2])) . ' 20' . $match[3] . ', ' . $match[4] . ':' . $match[5],
+				);
 			}
 		}
 		closedir($fd);
+
+		krsort($list);
+		foreach ($list AS $b)
+		{
+			Fsb::$tpl->set_blocks('file', array(
+				'FILENAME' =>		$b['file'],
+				'COMPRESS' =>		(Fsb::$session->lang('adm_mods_' . $b['type'])) ? Fsb::$session->lang('adm_mods_' . $b['type']) : $b['type'],
+				'DATE' =>			$b['date'],
+
+				'U_FILENAME' =>		($b['type'] == 'dir') ? '' : sid(ROOT . 'mods/save/' . $b['file']),
+				'U_RESTORE' =>		sid('index.' . PHPEXT . '?p=mods_manager&amp;module=backup&amp;mode=restore&amp;restore=' . $b['file']),
+			));
+		}
 	}
 
 	/*
@@ -268,7 +288,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$module->set_config('mod_path', ROOT . 'mods/' . $this->mod_path . '/');
 		$module->load_template($module->get_config('mod_path') . 'install.xml');
 		
-		// Nombre de fichiers à modifier
+		// Nombre de fichiers a modifier
 		$file_open = count($module->get_updated_files());
 		
 		// Nombre de fichiers joints
@@ -278,7 +298,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$file_joined = $this->count_file_in_directory($module->get_config('mod_path') . '/root/');
 		}
 
-		// Requètes SQL ?
+		// Requetes SQL ?
 		$have_query = FALSE;
 		foreach ($module->xml->document->instruction[0]->line AS $hd)
 		{
@@ -340,13 +360,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$module->set_config('install_sql',		(Http::request('install_sql', 'post')) ? TRUE : FALSE);
 		$module->set_config('install_file',		(Http::request('install_file', 'post')) ? TRUE : FALSE);
 
-		// Préinstallation du MOD
+		// Preinstallation du MOD
 		$module->load_template($module->get_config('mod_path') . 'install.xml');
 		$module->save_files('mods/save', Http::request('format_backup', 'post'));
 		$module->set_config('install', FALSE);
 		$module->install();
 
-		// Erreurs lors de la préinstallation ?
+		// Erreurs lors de la preinstallation ?
 		$this->module_log_error($module);
 
 		// Installation finale
@@ -361,23 +381,39 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				if (!$module->xml->document->header[0]->childExists('isUpdate'))
 				{
+					// Informations sur les auteurs
+					$author = $website = $email = '';
+					foreach ($module->xml->document->header[0]->author AS $a)
+					{
+						$author .=	(($author) ? ' ; ' : '') . $a->name[0]->getData();
+						$email .=	(($email) ? ' ; ' : '') . $a->email[0]->getData();
+						$website .= (($website) ? ' ; ' : '') . $a->website[0]->getData();
+					}
+
 					Fsb::$db->insert('mods', array(
 						'mod_name' =>			$this->mod_path,
 						'mod_real_name' =>		$module->xml->document->header[0]->name[0]->getData(),
 						'mod_version' =>		$module->xml->document->header[0]->version[0]->getData(),
 						'mod_description' =>	$module->xml->document->header[0]->description[0]->getData(),
-						'mod_author' =>			$module->xml->document->header[0]->author[0]->name[0]->getData(),
-						'mod_email' =>			$module->xml->document->header[0]->author[0]->email[0]->getData(),
-						'mod_website' =>		$module->xml->document->header[0]->author[0]->website[0]->getData(),
+						'mod_author' =>			$author,
+						'mod_email' =>			$email,
+						'mod_website' =>		$website,
 						'mod_type' =>			Mods::EXTERN,
 						'mod_status' =>			TRUE,
 					));
 				}
+				// Il s'agit d'une mise a jour
 				else if ($parent = $module->xml->document->header[0]->isUpdate[0]->getAttribute('parent'))
 				{
 					Fsb::$db->update('mods', array(
 						'mod_version' =>	$module->xml->document->header[0]->version[0]->getData(),
 					), 'WHERE mod_name = \'' . Fsb::$db->escape($parent) . '\'');
+
+					// Copie du fichier de desinstallation
+					if (file_exists(ROOT . 'mods/' . $this->mod_path . '/uninstall.xml'))
+					{
+						$module->file->copy('mods/' . $this->mod_path . '/uninstall.xml', 'mods/' . $parent . '/uninstall.xml');
+					}
 				}
 			}
 		}
@@ -422,6 +458,75 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
+	** Page de désinstallation d'un MOD
+	*/
+	public function page_uninstall_mod()
+	{
+		if (!is_dir(ROOT . 'mods/' . $this->mod_path))
+		{
+			Display::message('adm_mods_not_exists');
+		}
+
+		$module = new Module();
+		$module->file_system(Http::request('use_ftp'));
+		$module->set_config('mod_name',			$this->mod_path);
+		$module->set_config('mod_path',			ROOT . 'mods/' . $this->mod_path . '/');
+		$module->set_config('install_duplicat', TRUE);
+		$module->set_config('install_sql',		TRUE);
+		$module->set_config('install_file',		TRUE);
+		$module->load_template($module->get_config('mod_path') . 'uninstall.xml');
+
+		if (check_confirm())
+		{
+			// Pre-désinstallation
+			$module->save_files('mods/save', 'zip');
+			$module->set_config('install', FALSE);
+			$module->install();
+
+			// Erreurs lors de la pre-desinstallation ?
+			$this->module_log_error($module);
+
+			// Désinstallation finale
+			if (!count($module->log_error))
+			{
+				$module->set_config('install', TRUE);
+				$module->install();
+				$this->module_log_error($module);
+
+				// Pas d'erreur d'installation ?
+				if (!count($module->log_error))
+				{
+					$sql = 'DELETE FROM ' . SQL_PREFIX . 'mods
+							WHERE mod_name = \'' . Fsb::$db->escape($this->mod_path) . '\'
+								AND mod_type = ' . Mods::EXTERN;
+					Fsb::$db->query($sql);
+					Fsb::$db->destroy_cache('mods_');
+				}
+			}
+
+			Fsb::$tpl->set_vars(array(
+				'L_RETURN_MODS' =>		sprintf(Fsb::$session->lang('adm_mods_return'), sid('index.' . PHPEXT . '?p=mods_manager&amp;module=mods')),
+			));
+
+			// On rafraichi le menu administratif
+			Fsb::$menu->refresh_menu();
+
+			// On vide le cache SQL
+			Fsb::$db->cache->garbage_colector(0);
+
+			return ;
+		}
+		else if (Http::request('confirm_no', 'post'))
+		{
+			Http::redirect('index.' . PHPEXT . '?p=mods_manager&module=mods');
+		}
+		else
+		{
+			Display::confirmation(sprintf(Fsb::$session->lang('adm_mods_uninstall_confirm'), $module->xml->document->header[0]->name[0]->getData()), 'index.' . PHPEXT . '?p=mods_manager&amp;module=backup', array('module' => $this->module, 'mode' => $this->mode, 'mod_path' => $this->mod_path));
+		}
+	}
+
+	/*
 	** Soumission du formulaire d'activation des mods
 	*/
 	public function page_submit_mods()
@@ -453,7 +558,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if (check_confirm())
 		{
-			// On protège le nom du fichier
+			// On protege le nom du fichier
 			$restore = str_replace(array('\\', '/'), array('_', '_'), $restore);
 
 			// Instance d'un objet File()
@@ -467,7 +572,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			else if (preg_match('#\.(tar\.gz|tar|zip)$#i', $restore, $match))
 			{
 				// Decompression du backup
-				$compress = new Compress('mods/save/' . $restore);
+				$compress = new Compress('mods/save/' . $restore, $file);
 				$compress->extract('./');
 			}
 
@@ -524,7 +629,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			unset($xml);
 		}
 
-		// Affichage des données d'un MOD ?
+		// Affichage des donnees d'un MOD ?
 		if ($mod_id = Http::request('mod_id'))
 		{
 			Fsb::$tpl->set_switch('show_mod_content');
@@ -552,7 +657,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				));
 			}
 		}
-		// Affichage du contenu d'une catégorie de MODS ?
+		// Affichage du contenu d'une categorie de MODS ?
 		else if ($cat_id = Http::request('cat_id'))
 		{
 			Fsb::$tpl->set_switch('show_mod_list');
@@ -582,7 +687,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				));
 			}
 		}
-		// Affichage des catégories de MODS
+		// Affichage des categories de MODS
 		else
 		{
 			Fsb::$tpl->set_switch('show_cat_list');
@@ -618,7 +723,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$mod_name = Http::request('mod_name');
 		if ($url && $mod_name)
 		{
-			// Instance d'un objet File() pour la décompression
+			// Instance d'un objet File() pour la decompression
 			$file = File::factory(Http::request('use_ftp'));
 
 			$mod_name = preg_replace('#[^\w]#', '_', strtolower($mod_name)) . '.zip';
@@ -634,7 +739,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$file->write('mods/' . $mod_name, $content);
 
 
-			// Decompression du thème
+			// Decompression du theme
 			$compress = new Compress('mods/' . $mod_name, $file);
 			$compress->extract('mods/');
 			@unlink(ROOT . 'mods/' . $mod_name);
@@ -644,7 +749,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Upload et décompresse un MOD
+	** Upload et decompresse un MOD
 	*/
 	public function submit_upload_mod()
 	{
@@ -655,11 +760,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$upload->allow_ext(array('zip', 'tar', 'gz'));
 			$mod_name = $upload->store(ROOT . 'mods/', TRUE);
 
-			// Cette ligne permettra de mettre en champ caché le MOD si on utilise une connexion FTP
+			// Cette ligne permettra de mettre en champ cache le MOD si on utilise une connexion FTP
 			$_POST['upload_mod'] = $mod_name;
 		}
 
-		// Instance de l'un objet File() pour la décompression
+		// Instance de l'un objet File() pour la decompression
 		$file = File::factory(Http::request('use_ftp'));
 
 		// Decompression des fichiers
@@ -676,9 +781,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Compte le nombre de fichiers dans un répertoire
+	** Compte le nombre de fichiers dans un repertoire
 	** -----
-	** $dir ::		Répertoire à vérifier
+	** $dir ::		Repertoire a verifier
 	*/
 	public function count_file_in_directory($dir)
 	{

@@ -10,7 +10,7 @@
 ** +---------------------------------------------------+
 */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /*
 ** Ce fichier parse et affiche correctement une documentation XML
@@ -49,7 +49,7 @@ $xml_explain->load_file($filename);
 
 class Xml_explain
 {
-	// Contenu à parser
+	// Contenu a parser
 	private $code;
 
 	// Titre, description
@@ -133,7 +133,7 @@ class Xml_explain
 					// Ouverture
 					if ($level > $last_level + 1)
 					{
-						die("Trop de tabulations à la ligne $i");
+						die("Trop de tabulations a la ligne $i");
 					}
 
 					$left .= '<ul style="list-style-type: disc">';
@@ -162,7 +162,7 @@ class Xml_explain
 					// Tag de la balise
 					if (!preg_match('#^<([a-zA-Z0-9\-_]*?)(\s*/)?>#i', $info, $m))
 					{
-						die("Il manque une balise à la ligne $i");
+						die("Il manque une balise a la ligne $i");
 					}
 					$tag = $m[1];
 					$end = @$m[2];
@@ -186,7 +186,7 @@ class Xml_explain
 					$repeat = '';
 					if (preg_match('#\#\.\.\.\##', $info))
 					{
-						$repeat = '<div class="contain">Cette balise peut se répéter indéfiniment.</div>';;
+						$repeat = '<div class="contain">Cette balise peut se repeter indefiniment.</div>';;
 					}
 
 					$not_implemented = false;
@@ -198,7 +198,7 @@ class Xml_explain
 					$left .= '<li><a href="#row_' . $i . '">' . (($not_implemented) ? '! ' : '') . $tag . '</a></li>';
 
 					$open = true;
-					$right .= '<div class="container"><div id="row_' . $i . '" style="margin-left: ' . ($level * 30) . 'px" class="explain"><h2>&lt;' . $tag . (($end) ? ' /' : '') . '&gt;' . (($not_implemented) ? ' <span class="not_implemented">Non implémenté</span>' : '') . '</h2>';
+					$right .= '<div class="container"><div id="row_' . $i . '" style="margin-left: ' . ($level * 30) . 'px" class="explain"><h2>&lt;' . $tag . (($end) ? ' /' : '') . '&gt;' . (($not_implemented) ? ' <span class="not_implemented">Non implemente</span>' : '') . '</h2>';
 					if ($contain)
 					{
 						$right .= '<div class="contain">Contenu : ' . $contain . '</div>';
@@ -239,7 +239,7 @@ class Xml_explain
 					$not_implemented = true;
 					$attr = str_replace('(!)', '', $attr);
 				}
-				$str .= '<li><b>' . (($not_implemented) ? '(<span class="not_implemented">Non implémenté</span>) ' : '') . $attr . ' ' . $value . '</b> : ' . htmlspecialchars($desc) . '</li>';
+				$str .= '<li><b>' . (($not_implemented) ? '(<span class="not_implemented">Non implemente</span>) ' : '') . $attr . ' ' . $value . '</b> : ' . htmlspecialchars($desc) . '</li>';
 			}
 			$str .= '</ul></p>';
 

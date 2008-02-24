@@ -27,7 +27,7 @@ class Fsb_frame extends Fsb_model
 	protected $frame_get_url = TRUE;
 
 	/*
-	** Récupère la page demandée pour la pseudo frame
+	** Recupere la page demandee pour la pseudo frame
 	*/
 	public static function frame_request_page()
 	{
@@ -37,7 +37,7 @@ class Fsb_frame extends Fsb_model
 			$page = 'index';
 		}
 
-		// Si on est sur la page de connexion, on ne peut pas désactiver le forum
+		// Si on est sur la page de connexion, on ne peut pas desactiver le forum
 		if (in_array($page, array('login', 'logout')))
 		{
 			define('CANT_DISABLE_BOARD', TRUE);
@@ -87,14 +87,14 @@ class Fsb_frame extends Fsb_model
 			Fsb::$session->log_root_support($root_support);
 		}
 
-		// Accès à la page de débugage interdite au membre
+		// Acces a la page de debugage interdite au membre
 		if (Fsb::$session->auth() < MODOSUP)
 		{
 			Fsb::$debug->debug_query = FALSE;
 			Fsb::$debug->show_output = TRUE;
 		}
 
-		// On empèche la mise en cache des pages.
+		// On empeche la mise en cache des pages.
 		Http::no_cache();
 
 		// Ajoute les relations vers les pages du forum
@@ -103,13 +103,13 @@ class Fsb_frame extends Fsb_model
 		Http::add_meta('link', array('rel' => 'search',		'href' => sid(ROOT . 'index.' . PHPEXT . '?p=search')));
 		Http::add_meta('link', array('rel' => 'copyright',	'href' => 'http://www.fire-soft-board.com'));
 
-		// On empèche le prefetch des pages (extension Fasterfox pour le navigateur Firefox notament) pour la survie du serveur :=) Sauf pour les flux RSS
+		// On empeche le prefetch des pages (extension Fasterfox pour le navigateur Firefox notament) pour la survie du serveur :=) Sauf pour les flux RSS
 		if (isset($_SERVER['HTTP_X_MOZ']) && $_SERVER['HTTP_X_MOZ'] == 'prefetch' && $this->frame_page != 'rss')
 		{
 			Display::message('cant_prefetch_page');
 		}
 
-		// Si le membre a reçu un nouveau message privé on repasse le flag à FALSE
+		// Si le membre a recu un nouveau message prive on repasse le flag a FALSE
 		if (Fsb::$session->data['u_new_mp'])
 		{
 			Fsb::$db->update('users', array(
@@ -171,7 +171,7 @@ class Fsb_frame extends Fsb_model
 	*/
 	public function frame_footer()
 	{
-		// META description (sauf pour les sujets, car il y en a déjà)
+		// META description (sauf pour les sujets, car il y en a deja)
 		if ($this->frame_page != 'topic')
 		{
 			Http::add_meta('meta', array(
@@ -180,10 +180,10 @@ class Fsb_frame extends Fsb_model
 			));
 		}
 
-		// Est connecté ?
+		// Est connecte ?
 		Fsb::$tpl->set_switch((!Fsb::$session->is_logged()) ? 'is_not_logged' : 'is_logged');
 
-		// Peut accéder au panneau de modération / d'administration ?
+		// Peut acceder au panneau de moderation / d'administration ?
 		if (Fsb::$session->auth() >= MODO)
 		{
 			Fsb::$tpl->set_switch('modo_panel');
@@ -193,13 +193,13 @@ class Fsb_frame extends Fsb_model
 			}
 		}
 
-		// Petit raccourci vers la liste des groupes du membre, s'il est modérateur
+		// Petit raccourci vers la liste des groupes du membre, s'il est moderateur
 		if (Fsb::$session->data['groups_modo'])
 		{
 			Fsb::$tpl->set_switch('show_group_modo');
 		}
 
-		// Génération des liens de navigation
+		// Generation des liens de navigation
 		if (isset($this->nav) && is_array($this->nav) && $this->nav)
 		{
 			foreach ($this->nav AS $ary)
@@ -240,7 +240,7 @@ class Fsb_frame extends Fsb_model
 			}
 		}
 
-		// On récupère les données GET de la page
+		// On recupere les donnees GET de la page
 		$get_url = '&amp;redirect=' . $this->frame_page;
 		foreach ($_GET AS $key => $value)
 		{
@@ -250,13 +250,13 @@ class Fsb_frame extends Fsb_model
 			}
 		}
 
-		// On peut désactiver la récupération automatique des données GET, avec la propriété $frame_get_url = false
+		// On peut desactiver la recuperation automatique des donnees GET, avec la propriete $frame_get_url = false
 		if (!$this->frame_get_url)
 		{
 			$get_url = '';
 		}
 
-		// Affichage du débugage de requètes
+		// Affichage du debugage de requetes
 		if (Fsb::$session->auth() >= ADMIN && Fsb::$debug->can_debug)
 		{
 			Fsb::$tpl->set_switch('show_debug_query');
@@ -273,7 +273,7 @@ class Fsb_frame extends Fsb_model
 			$tag_title .= ' :: ' . Fsb::$session->lang('nav_' . $this->frame_page);
 		}
 
-		// Messages abusifs / à approuver
+		// Messages abusifs / a approuver
 		$modo_have_message = '';
 		if (Fsb::$session->auth() >= MODO)
 		{
@@ -300,7 +300,7 @@ class Fsb_frame extends Fsb_model
 				$modo_have_message = sprintf(Fsb::$session->lang('modo_have_abuse'), Fsb::$session->data['u_total_abuse']);
 			}
 
-			// Calcul des messages non approuvés
+			// Calcul des messages non approuves
 			if (Fsb::$session->data['u_total_unapproved'] == -1)
 			{
 				$sql = 'SELECT COUNT(*) AS total
@@ -320,7 +320,7 @@ class Fsb_frame extends Fsb_model
 			}
 		}
 
-		// Mise à jour heure d'été / hiver ?
+		// Mise a jour heure d'ete / hiver ?
 		$dst = date('I');
 		if (Fsb::$cfg->get('current_utc_dst') != $dst)
 		{
@@ -358,7 +358,7 @@ class Fsb_frame extends Fsb_model
 	}
 }
 
-// On récupère les données de la page prinpale pour la pseudo frame
+// On recupere les donnees de la page prinpale pour la pseudo frame
 $page = Fsb_frame::frame_request_page();
 
 // Inclusion de la page fille, et instance de la classe

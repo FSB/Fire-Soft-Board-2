@@ -11,7 +11,7 @@
 */
 
 /*
-** Méthodes permettants de gérer les groupes du forum (ajout, validation, suppression, etc..)
+** Methodes permettants de gerer les groupes du forum (ajout, validation, suppression, etc..)
 */
 class Group extends Fsb_model
 {
@@ -19,7 +19,7 @@ class Group extends Fsb_model
 	** Ajoute un groupe
 	** -----
 	** $data ::		Tableau d'informations sur le groupe (g_name, g_description, etc..)
-	** $modo_idx ::	Tableau d'ID des modérateurs
+	** $modo_idx ::	Tableau d'ID des moderateurs
 	*/
 	public static function add($data, $modo_idx)
 	{
@@ -34,7 +34,7 @@ class Group extends Fsb_model
 	** -----
 	** $group_id ::	ID du groupe
 	** $data ::		Tableau d'informations sur le groupe (g_name, g_description, etc..)
-	** $modo_idx ::	Tableau d'ID des modérateurs
+	** $modo_idx ::	Tableau d'ID des moderateurs
 	*/
 	public static function edit($group_id, $data, $modo_idx)
 	{
@@ -42,7 +42,7 @@ class Group extends Fsb_model
 		self::update_moderators($group_id, $data['g_type'], $modo_idx, $data['g_rank']);
 		Fsb::$db->destroy_cache('groups_');
 
-		// Mise à jour de la couleur
+		// Mise a jour de la couleur
 		$sql = 'SELECT u_id
 				FROM ' . SQL_PREFIX . 'groups_users
 				WHERE g_id = ' . $group_id;
@@ -61,35 +61,35 @@ class Group extends Fsb_model
 	}
 
 	/*
-	** Mise à jour des modérateurs et des rangs du groupe
+	** Mise a jour des moderateurs et des rangs du groupe
 	** -----
 	** $group_id ::		ID du groupe
 	** $group_type ::	Type du groupe
-	** $modo_idx ::		Tableau d'ID des modérateurs
+	** $modo_idx ::		Tableau d'ID des moderateurs
 	** $group_rank ::	ID du rang du groupe
 	*/
 	public static function update_moderators($group_id, $group_type, $modo_idx, $group_rank)
 	{
-		// Ajout / Suppression de modérateurs dans le grouoe
+		// Ajout / Suppression de moderateurs dans le grouoe
 		if ($group_type != GROUP_SPECIAL && $modo_idx)
 		{
-			// Ajout des modérateurs dans le groupe
+			// Ajout des moderateurs dans le groupe
 			self::add_users($modo_idx, $group_id, GROUP_MODO);
 
-			// On passe en non modérateurs les autres membres du groupe
+			// On passe en non moderateurs les autres membres du groupe
 			Fsb::$db->update('groups_users', array(
 				'gu_status' =>		GROUP_USER,
 			), 'WHERE u_id NOT IN (' . implode(', ', $modo_idx) . ') AND gu_status = ' . GROUP_MODO . ' AND g_id = ' . $group_id);
 		}
 		else if ($group_type != GROUP_SPECIAL)
 		{
-			// Aucun modérateur de groupe
+			// Aucun moderateur de groupe
 			Fsb::$db->update('groups_users', array(
 				'gu_status' =>		GROUP_USER,
 			), 'WHERE gu_status = ' . GROUP_MODO . ' AND g_id = ' . $group_id);
 		}
 
-		// Si un rang a été créé, on assigne le rang aux membres du groupe sans rang
+		// Si un rang a ete cree, on assigne le rang aux membres du groupe sans rang
 		if ($group_rank)
 		{
 			$sql = 'UPDATE ' . SQL_PREFIX . 'users
@@ -122,7 +122,7 @@ class Group extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Suppressions des données du groupe
+		// Suppressions des donnees du groupe
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'groups
 				WHERE g_id = ' . $group_id;
 		Fsb::$db->query($sql);
@@ -136,18 +136,18 @@ class Group extends Fsb_model
 		Fsb::$db->query($sql);
 		Fsb::$db->destroy_cache('groups_');
 
-		// On regarde si les membres changent de status (modérateur ou non)
+		// On regarde si les membres changent de status (moderateur ou non)
 		self::update_auths($idx);
 	}
 
 	/*
-	** Ajoute un ou plusieurs utilisateurs à un groupe
+	** Ajoute un ou plusieurs utilisateurs a un groupe
 	** -----
 	** $idx ::				ID ou tableau d'ID de utilisateurs
 	** $group_id ::			ID du groupe
 	** $state ::			Status du membre dans le groupe (GROUP_MODO | GROUP_USER | GROUP_WAIT)
-	** $update ::			Mise à jour ou non des autorisations des membres
-	** $is_single_groupe ::	TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas à jour le groupe par défaut
+	** $update ::			Mise a jour ou non des autorisations des membres
+	** $is_single_groupe ::	TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
 	*/
 	public static function add_users($idx, $group_id, $state, $update = TRUE, $is_single_groupe = FALSE)
 	{
@@ -172,7 +172,7 @@ class Group extends Fsb_model
 		}
 		Fsb::$db->query_multi_insert();
 
-		// Mise à jour du groupe par défaut de ces utilisateurs, s'ils étaient sans groupe.
+		// Mise a jour du groupe par defaut de ces utilisateurs, s'ils etaient sans groupe.
 		if (!self::is_special_group($group_id) && !$is_single_groupe)
 		{
 			Fsb::$db->update('users', array(
@@ -180,7 +180,7 @@ class Group extends Fsb_model
 			), 'WHERE u_id IN (' . implode(', ', $idx) . ') AND u_default_group_id = ' . GROUP_SPECIAL_USER);
 		}
 
-		// Si les membres ajoutés sont en attentes, inutile de recalculer leurs autorisations
+		// Si les membres ajoutes sont en attentes, inutile de recalculer leurs autorisations
 		if ($update && $state != GROUP_WAIT)
 		{
 			self::update_auths($idx);
@@ -192,8 +192,8 @@ class Group extends Fsb_model
 	** -----
 	** $idx ::			ID ou tableau d'ID de utilisateurs
 	** $group_id ::		ID du groupe
-	** $update ::		Mise à jour ou non des autorisations des membres
-	** $delete_modo ::	Suppression des modérateurs du groupe ?
+	** $update ::		Mise a jour ou non des autorisations des membres
+	** $delete_modo ::	Suppression des moderateurs du groupe ?
 	*/
 	public static function delete_users($idx, $group_id, $update = TRUE, $delete_modo = TRUE)
 	{
@@ -215,10 +215,10 @@ class Group extends Fsb_model
 	}
 
 	/*
-	** Met à jour le niveau d'autorisation des membres, leur groupe par défaut et leur couleur
+	** Met a jour le niveau d'autorisation des membres, leur groupe par defaut et leur couleur
 	** -----
-	** $idx ::	ID ou tableau d'ID d'utilisateurs à mettre à jour. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum à jour.
+	** $idx ::	ID ou tableau d'ID d'utilisateurs a mettre a jour. Si $idx est vide on met
+	**			l'ensemble des utilisateurs du forum a jour.
 	*/
 	public static function update_auths($idx = array())
 	{
@@ -227,7 +227,7 @@ class Group extends Fsb_model
 			$idx = array($idx);
 		}
 
-		// On récupère la liste des groupes, leurs membres et si ce sont des groupes modérateurs
+		// On recupere la liste des groupes, leurs membres et si ce sont des groupes moderateurs
 		$sql = 'SELECT g.g_id, gu.u_id, g.g_name, ga.f_id, ga.ga_moderator
 				FROM ' . SQL_PREFIX . 'groups g
 				INNER JOIN ' . SQL_PREFIX . 'groups_users gu
@@ -264,7 +264,7 @@ class Group extends Fsb_model
 		}
 		$list_users = array_keys($list);
 
-		// On récupère la liste des modérateurs et de leurs groupes spéciaux
+		// On recupere la liste des moderateurs et de leurs groupes speciaux
 		$sql = 'SELECT u_id, u_auth, u_default_group_id
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_auth >= ' . MODO;
@@ -279,12 +279,12 @@ class Group extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Tous les membres concernés repassent en status membre (sauf le fondateur)
+		// Tous les membres concernes repassent en status membre (sauf le fondateur)
 		Fsb::$db->update('users', array(
 			'u_auth' =>		USER,
 		), 'WHERE u_id <> ' . VISITOR_ID . ' AND u_auth < ' . FONDATOR . (($idx) ? ' AND u_id IN (' . implode(',', $idx) . ')' : ''));
 
-		// Mise à jour des administrateurs, modérateurs globaux et modérateurs
+		// Mise a jour des administrateurs, moderateurs globaux et moderateurs
 		foreach (array(ADMIN => GROUP_SPECIAL_ADMIN, MODOSUP => GROUP_SPECIAL_MODOSUP, MODO => GROUP_SPECIAL_MODO) AS $auth_level => $auth_group)
 		{
 			self::delete_users($idx, $auth_group, FALSE);
@@ -294,7 +294,7 @@ class Group extends Fsb_model
 					'u_auth' =>				$auth_level,
 				), 'WHERE u_id IN (' . implode(', ', $newlist[$auth_level]) . ') AND u_auth < ' . $auth_level);
 
-				// Mise à jour des couleurs des membres
+				// Mise a jour des couleurs des membres
 				$list = array();
 				foreach ($modo_groups AS $def_id => $def_data)
 				{
@@ -321,10 +321,10 @@ class Group extends Fsb_model
 	}
 
 	/*
-	** Met à jour le groupe par défaut des membres, s'ils n'appartienent plus à leur ancien groupe par défaut
+	** Met a jour le groupe par defaut des membres, s'ils n'appartienent plus a leur ancien groupe par defaut
 	** -----
 	** $idx ::	ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum à jour.
+	**			l'ensemble des utilisateurs du forum a jour.
 	*/
 	public static function update_default($idx = array())
 	{
@@ -344,10 +344,10 @@ class Group extends Fsb_model
 	}
 
 	/*
-	** Met à jour la couleur des utilisateurs en fonction de leur groupe par défaut
+	** Met a jour la couleur des utilisateurs en fonction de leur groupe par defaut
 	** -----
 	** $idx ::	ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum à jour.
+	**			l'ensemble des utilisateurs du forum a jour.
 	*/
 	public static function update_colors($idx = array())
 	{
@@ -377,7 +377,7 @@ class Group extends Fsb_model
 		}
 		Fsb::$db->query($sql);
 
-		// Mise à jour de la couleur du dernier membre inscrit
+		// Mise a jour de la couleur du dernier membre inscrit
 		if (!$idx || in_array(Fsb::$cfg->get('last_user_id'), $idx))
 		{
 			$sql = 'UPDATE ' . SQL_PREFIX . 'config
@@ -392,7 +392,7 @@ class Group extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si le groupe est un groupe spécial
+	** Retourne TRUE si le groupe est un groupe special
 	** -----
 	** $group_id ::		ID du groupe
 	*/

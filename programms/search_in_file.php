@@ -10,11 +10,11 @@
 ** +---------------------------------------------------+
 */
 
-//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /*
-** Ce fichier permet de rechercher des données dans des fichiers.
-** Très utile quand vous souhaitez retrouver tous les fichiers comportant une certaine ligne
+** Ce fichier permet de rechercher des donnees dans des fichiers.
+** Tres utile quand vous souhaitez retrouver tous les fichiers comportant une certaine ligne
 ** de code par exemple.
 */
 
@@ -36,8 +36,8 @@ function array_map_recursive($callback, $ary)
 
 function clean_gpc()
 {
-	// On supprime toutes les variables crées par la directive register_globals
-	// On stripslashes() toutes les variables GPC pour la compatibilité DBAL
+	// On supprime toutes les variables crees par la directive register_globals
+	// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 	$gpc = array('_GET', '_POST', '_COOKIE');
 	$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
 	$register_globals = (ini_get('register_globals')) ? TRUE : FALSE;
@@ -133,12 +133,12 @@ function search_in_file($word, $dir, $ext, $casse, $regexp, $replace)
 </head>
 <body>
 <form method="post" action="search_in_file.php">
-Texte à chercher : <input type="text" name="word" value="<?php echo htmlspecialchars($word) ?>" size="60" /><br />
+Texte a chercher : <input type="text" name="word" value="<?php echo htmlspecialchars($word) ?>" size="60" /><br />
 Dossier de recherche : <input type="text" name="dir" value="<?php echo $dir ?>" size="60" /><br />
 Extensions : <input type="text" name="ext" value="<?php echo $ext ?>" size="60" /><br />
 Remplacer par : <input type="text" name="replace" value="<?php echo $replace ?>" size="60" /><br />
-Sensible à la casse : <input type="radio" name="casse" value="1" <?php echo (($casse) ? 'checked="checked"' : '') ?>/> Non&nbsp;&nbsp;&nbsp;<input type="radio" name="casse" value="0" <?php echo ((!$casse) ? 'checked="checked"' : '') ?>/> Oui<br />
-Expression régulière : <input type="radio" name="regexp" value="0" <?php echo ((!$regexp) ? 'checked="checked"' : '') ?>/> Non&nbsp;&nbsp;&nbsp;<input type="radio" name="regexp" value="1" <?php echo (($regexp) ? 'checked="checked"' : '') ?>/> Oui<br />
+Sensible a la casse : <input type="radio" name="casse" value="1" <?php echo (($casse) ? 'checked="checked"' : '') ?>/> Non&nbsp;&nbsp;&nbsp;<input type="radio" name="casse" value="0" <?php echo ((!$casse) ? 'checked="checked"' : '') ?>/> Oui<br />
+Expression reguliere : <input type="radio" name="regexp" value="0" <?php echo ((!$regexp) ? 'checked="checked"' : '') ?>/> Non&nbsp;&nbsp;&nbsp;<input type="radio" name="regexp" value="1" <?php echo (($regexp) ? 'checked="checked"' : '') ?>/> Oui<br />
 <input type="submit" name="submit" value="Rechercher" />
 </form>
 <?php

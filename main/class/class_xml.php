@@ -11,17 +11,17 @@
 */
 
 /*
-** Parseur XML, qui va créer un arbre dont les nodes seront des objets Xml_element
+** Parseur XML, qui va creer un arbre dont les nodes seront des objets Xml_element
 */
 class Xml extends Fsb_model
 {
-	// Contenu du code XML à parser
+	// Contenu du code XML a parser
 	private $content;
 
 	// Racine de l'arbre XML
 	public $document;
 
-	// Pile utilisée par le parseur
+	// Pile utilisee par le parseur
 	private $stack = array();
 
 	public $titi = 'Salut';
@@ -37,7 +37,7 @@ class Xml extends Fsb_model
 	/*
 	** Charge le contenu d'un fichier XML
 	** -----
-	** $filename ::		Fichier XML à charger
+	** $filename ::		Fichier XML a charger
 	** $use_cache ::	Utilisation du cache
 	*/
 	public function load_file($filename, $use_cache = TRUE)
@@ -97,11 +97,11 @@ class Xml extends Fsb_model
 	}
 
 	/*
-	** Callback appelé lors de l'ouverture d'un tag
+	** Callback appele lors de l'ouverture d'un tag
 	*/
 	public function open_tag($tag, $attr)
 	{
-		// Déplacement vers la référence de l'élément
+		// Deplacement vers la reference de l'element
 		$ref = &$this->document;
 		foreach ($this->stack AS $i => $item)
 		{
@@ -112,7 +112,7 @@ class Xml extends Fsb_model
 			}
 		}
 
-		// Création du nouvel élément
+		// Creation du nouvel element
 		if (count($this->stack))
 		{
 			$new = $ref->createElement($tag);
@@ -128,12 +128,12 @@ class Xml extends Fsb_model
 			$ref->setTagName($tag);
 		}
 
-		// Ajout du tag à la pile
+		// Ajout du tag a la pile
 		array_push($this->stack, $tag);
 	}
 
 	/*
-	** Callback appelé lors de la fermeture d'un tag
+	** Callback appele lors de la fermeture d'un tag
 	*/
 	public function close_tag($tag)
 	{
@@ -141,7 +141,7 @@ class Xml extends Fsb_model
 	}
 
 	/*
-	** Callback appelé lors de la capture de texte entre les tags
+	** Callback appele lors de la capture de texte entre les tags
 	*/
 	public function value_tag($text)
 	{
@@ -160,7 +160,7 @@ class Xml extends Fsb_model
 }
 
 /*
-** Représente une node de l'arbre XML
+** Represente une node de l'arbre XML
 */
 class Xml_element extends Fsb_model
 {
@@ -178,9 +178,9 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Créé un nouvel élément
+	** Cree un nouvel element
 	** -----
-	** $name ::		Nom du tag du nouvel élément
+	** $name ::		Nom du tag du nouvel element
 	*/
 	public function createElement($name = 'newElement')
 	{
@@ -200,7 +200,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Créé ou met à jour un attribut
+	** Cree ou met a jour un attribut
 	** -----
 	** $name ::		Nom de l'attribut
 	** $value ::	Valeur de l'attribut
@@ -261,8 +261,8 @@ class Xml_element extends Fsb_model
 	/*
 	** Modifie la valeur du tag
 	** -----
-	** $value ::			Chaîne de caractère
-	** $htmlspecialchars ::	Transforme les entités HTML
+	** $value ::			Chaine de caractere
+	** $htmlspecialchars ::	Transforme les entites HTML
 	*/
 	public function setData($value, $htmlspecialchars = TRUE)
 	{
@@ -285,7 +285,7 @@ class Xml_element extends Fsb_model
 	** Ajoute un enfant
 	** -----
 	** $node ::		Objet Xml_element
-	** $pos ::		Position où ajouter la node
+	** $pos ::		Position ou ajouter la node
 	*/
 	public function appendChild($node, $pos = 0)
 	{
@@ -307,10 +307,10 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Ajoute un enfant à partir de XML
+	** Ajoute un enfant a partir de XML
 	** -----
-	** $string ::	Chaîne XML
-	** $pos ::		Position où ajouter la node
+	** $string ::	Chaine XML
+	** $pos ::		Position ou ajouter la node
 	*/
 	public function AppendXmlChild($string, $pos = 0)
 	{
@@ -320,7 +320,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Retourne la liste des enfants organisée de cette façon :
+	** Retourne la liste des enfants organisee de cette facon :
 	**		array(
 	**			'enfant1' => array(Xml_element, Xml_element, ...),
 	**			'enfant2' => array(Xml_element, Xml_element, ...)
@@ -341,7 +341,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Retourne la liste des enfants organisée de cette façon :
+	** Retourne la liste des enfants organisee de cette facon :
 	**		array(Xml_element, Xml_element, Xml_element, Xml_element, ...)
 	*/
 	public function listChildren()
@@ -372,7 +372,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si l'élément a des enfants
+	** Retourne TRUE si l'element a des enfants
 	*/
 	public function hasChildren()
 	{
@@ -417,11 +417,11 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Déplace un enfant en fonction de ses pairs
+	** Deplace un enfant en fonction de ses pairs
 	** -----
 	** $name ::		Nom de l'enfant
 	** $pos ::		Position de l'enfant
-	** $move ::		Entier déterminant de combien de "case" on déplace l'enfant dans l'arbre
+	** $move ::		Entier determinant de combien de "case" on deplace l'enfant dans l'arbre
 	*/
 	public function moveChild($name, $pos, $move = 0)
 	{
@@ -456,7 +456,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Recherche une node à partir de son chemin
+	** Recherche une node a partir de son chemin
 	** -----
 	** $path ::		Chemin vers la node
 	*/
@@ -511,7 +511,7 @@ class Xml_element extends Fsb_model
 	}
 
 	/*
-	** Retourne l'arbre sous format XML avec l'entête
+	** Retourne l'arbre sous format XML avec l'entete
 	** -----
 	** $charset ::		Encodage du fichier
 	*/
@@ -532,27 +532,27 @@ class Xml_element extends Fsb_model
 }
 
 /*
-** Analyseur XML fait maison, afin d'éviter certains problèmes liés à l'encodage des caractères
+** Analyseur XML fait maison, afin d'eviter certains problemes lies a l'encodage des caracteres
 */
 class Xml_regexp_parser extends Fsb_model
 {
-	// En faisant pointer cette propriété sur un objet, les handler seront appelés en tant que méthode de cet objet
+	// En faisant pointer cette propriete sur un objet, les handler seront appeles en tant que methode de cet objet
 	public $obj = NULL;
 
-	// Fonction / méthode appelée lors de l'ouverture d'un tag
+	// Fonction / methode appelee lors de l'ouverture d'un tag
 	public $open_handler = NULL;
 
-	// Fonction / méthode appelée lors de la fermeture d'un tag
+	// Fonction / methode appelee lors de la fermeture d'un tag
 	public $close_handler = NULL;
 
-	// Fonction / méthode appelée lors de la fermeture d'un tag, avec la valeur de celui ci
+	// Fonction / methode appelee lors de la fermeture d'un tag, avec la valeur de celui ci
 	public $value_handler = NULL;
 
 	// Erreur lors du parsing
 	public $errstr = NULL;
 
 	/*
-	** Parse la chaîne de caractère XML
+	** Parse la chaine de caractere XML
 	*/
 	public function parse($str)
 	{
@@ -567,12 +567,12 @@ class Xml_regexp_parser extends Fsb_model
 		$last_offset = 0;
 		$value = '';
 
-		// Parse des différentes balises
+		// Parse des differentes balises
 		preg_match_all('#<(/)?\s*([a-zA-Z0-9_\-]*?)(\s+(.*?))?\s*(/?)>\s*(<\!\[CDATA\[)?#si', $str, $m, PREG_OFFSET_CAPTURE);
 		$count = count($m[0]);
 		for ($i = 0; $i < $count; $i++)
 		{
-			// Longueur de la balise, offset de début et offset de fin de la chaîne
+			// Longueur de la balise, offset de debut et offset de fin de la chaine
 			$length = strlen($m[0][$i][0]);
 			$current_offset = $m[0][$i][1] + $length;
 
@@ -611,7 +611,7 @@ class Xml_regexp_parser extends Fsb_model
 					}
 				}
 
-				// Début de CDATA ?
+				// Debut de CDATA ?
 				if ($m[6][$i] && $m[6][$i][0])
 				{
 					$in_cdata = TRUE;
@@ -636,7 +636,7 @@ class Xml_regexp_parser extends Fsb_model
 					continue ;
 				}
 
-				// Vérification de la fermeture du tag
+				// Verification de la fermeture du tag
 				$check = array_pop($stack);
 				if ($check != $tag)
 				{

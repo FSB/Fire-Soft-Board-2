@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/forum/forum_info.php
 ** | Begin :	26/06/2007
-** | Last :		23/02/2008
+** | Last :		24/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -15,14 +15,14 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
 
 	public function main()
 	{
-		// On récupère le module du panneau à afficher
+		// On recupere le module du panneau a afficher
 		$this->module = Http::request('module');
 
 		// Liste des informations disponibles
@@ -82,7 +82,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Liste des thèmes sur le forum
+	** Liste des themes sur le forum
 	*/
 	public function show_info_tpl()
 	{
@@ -120,15 +120,15 @@ class Fsb_frame_child extends Fsb_frame
 				'NAME' =>			htmlspecialchars($row['mod_real_name']),
 				'DESCRIPTION' =>	nl2br(htmlspecialchars($row['mod_description'])),
 				'AUTHOR' =>			htmlspecialchars($row['mod_author']),
-				'EMAIL' =>			htmlspecialchars($row['mod_email']),
-				'WEBSITE' =>		htmlspecialchars($row['mod_website']),
+				'EMAIL' =>			String::parse_email($row['mod_email']),
+				'WEBSITE' =>		String::parse_website($row['mod_website']),
 			));
 		}
 		Fsb::$db->free($result);
 	}
 
 	/*
-	** Liste des administrateurs / modérateurs
+	** Liste des administrateurs / moderateurs
 	*/
 	public function show_info_admin()
 	{

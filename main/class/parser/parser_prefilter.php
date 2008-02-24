@@ -15,7 +15,7 @@ class Parser_prefilter extends Fsb_model
 	/*
 	** Transformation des URL locales en mettant le nom du sujet / forum
 	** -----
-	** $str ::		Chaîne de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public static function filter_forum_url($str)
 	{

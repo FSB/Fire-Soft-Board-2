@@ -11,12 +11,12 @@
 */
 
 /*
-** Classe permettant de gérer la création de champs personels
+** Classe permettant de gerer la creation de champs personels
 */
 class Profil_fields_admin extends Profil_fields
 {
 	/*
-	** Génère les switch utilisés pour la création de ce champ de profil
+	** Genere les switch utilises pour la creation de ce champ de profil
 	** -----
 	** $type ::		Type du champ de profil
 	*/
@@ -34,10 +34,10 @@ class Profil_fields_admin extends Profil_fields
 	}
 
 	/*
-	** Validation de la création du champ
+	** Validation de la creation du champ
 	** -----
 	** $type ::		Type du champ de profil
-	** $errstr ::	Tableau d'erreurs rencontrées pendant la validation
+	** $errstr ::	Tableau d'erreurs rencontrees pendant la validation
 	*/
 	public static function validate($type, &$errstr)
 	{
@@ -62,7 +62,7 @@ class Profil_fields_admin extends Profil_fields
 		$return['pf_groups'] = array_map('intval', $return['pf_groups']);
 		$return['pf_groups'] = implode(',', $return['pf_groups']);
 
-		// Vérification des erreurs
+		// Verification des erreurs
 		if (!$return['pf_lang'])
 		{
 			$errstr[] = Fsb::$session->lang('adm_pf_need_lang');
@@ -105,7 +105,7 @@ class Profil_fields_admin extends Profil_fields
 	}
 
 	/*
-	** Créé un nouveau champ de profil
+	** Cree un nouveau champ de profil
 	** -----
 	** $field_type ::	Type de champ
 	** $data ::			Informations sur le champ de profil
@@ -128,7 +128,7 @@ class Profil_fields_admin extends Profil_fields
 			break;
 		}
 		
-		// on récupère l'ordre maximale pour placer le nouveau champ
+		// on recupere l'ordre maximale pour placer le nouveau champ
 		$sql = 'SELECT MAX(pf_order) AS max_order
 				FROM ' . SQL_PREFIX . 'profil_fields
 				WHERE pf_type = ' . $field_type . '
@@ -158,7 +158,7 @@ class Profil_fields_admin extends Profil_fields
 	** Ajoute une colone dans une table mysql
 	** -----
 	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Préfixe du nom du champ
+	** $sql_field_name ::	Prefixe du nom du champ
 	** $type ::				Type du champ
 	** $last_id ::			ID pour le nom du champ
 	*/
@@ -192,19 +192,19 @@ class Profil_fields_admin extends Profil_fields
 	** Ajoute une colone dans une table PostgreSQL
 	** -----
 	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Préfixe du nom du champ
+	** $sql_field_name ::	Prefixe du nom du champ
 	** $type ::				Type HTML du champ
 	** $last_id ::			ID pour le nom du champ
 	*/
 	private static function add_column_pgsql($tablename, $sql_field_name, $type, $last_id)
 	{
-		// On construit le début de la requète ALTER
+		// On construit le debut de la requete ALTER
 		$sql_alter = 'ALTER TABLE ' . $tablename;
 		
-		// On récupère le nom du champ à créer, à partir de la dernière ID créé
+		// On recupere le nom du champ a creer, a partir de la derniere ID cree
 		$sql_alter .= ' ADD ' . Fsb::$db->escape($sql_field_name . $last_id);
 		
-		// On créé le type du champ dans la requète
+		// On cree le type du champ dans la requete
 		switch ($type)
 		{
 			case self::TEXT :
@@ -225,7 +225,7 @@ class Profil_fields_admin extends Profil_fields
 			break;
 		}
 
-		// On lance la requète ALTER
+		// On lance la requete ALTER
 		Fsb::$db->query($sql_alter);
 	}
 
@@ -233,7 +233,7 @@ class Profil_fields_admin extends Profil_fields
 	** Ajoute une colone dans une table SQLITE
 	** -----
 	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Préfixe du nom du champ
+	** $sql_field_name ::	Prefixe du nom du champ
 	** $type ::				Type HTML du champ
 	** $last_id ::			ID pour le nom du champ
 	*/
@@ -243,10 +243,10 @@ class Profil_fields_admin extends Profil_fields
 	}
 
 	/*
-	** Met à jour un champ du profil
+	** Met a jour un champ du profil
 	** -----
 	** $field_id ::				ID du champ de profil
-	** $data ::					Informations sur la mise à jour
+	** $data ::					Informations sur la mise a jour
 	*/
 	public static function update($field_id, $data)
 	{
@@ -259,7 +259,7 @@ class Profil_fields_admin extends Profil_fields
 	** Supprime un champ de profil
 	** -----
 	** $field_id ::		ID du champ a supprimer
-	** $field_type ::	Constante définissant la table ciblée (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
+	** $field_type ::	Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
 	*/
 	public static function delete($field_id, $field_type)
 	{
@@ -293,7 +293,7 @@ class Profil_fields_admin extends Profil_fields
 			break;
 			
 			default :
-				trigger_error('Profil_fields->create() :: Mauvais paramètre pour le type de profil : '  . $field_type, FSB_ERROR);
+				trigger_error('Profil_fields->create() :: Mauvais parametre pour le type de profil : '  . $field_type, FSB_ERROR);
 			break;
 		}
 		self::$method(SQL_PREFIX . $tablename, $sql_field_name . $field_id);
@@ -312,7 +312,7 @@ class Profil_fields_admin extends Profil_fields
 	*/
 	private static function drop_column_mysql($tablename, $sql_field_name)
 	{
-		// On construit la requète ALTER
+		// On construit la requete ALTER
 		$sql_alter = "ALTER TABLE $tablename DROP $sql_field_name";
 		Fsb::$db->query($sql_alter);
 	}
@@ -325,7 +325,7 @@ class Profil_fields_admin extends Profil_fields
 	*/
 	private static function drop_column_pgsql($tablename, $sql_field_name)
 	{
-		// On construit la requète ALTER
+		// On construit la requete ALTER
 		$sql_alter = "ALTER TABLE $tablename DROP $sql_field_name";
 		Fsb::$db->query($sql_alter);
 	}
@@ -342,11 +342,11 @@ class Profil_fields_admin extends Profil_fields
 	}
 
 	/*
-	** Déplace un champ de profil
+	** Deplace un champ de profil
 	** -----
 	** $field_id ::	ID du champ
-	** $field_move ::	1 pour déplacer vers le bas, -1 pour déplacer vers le haut
-	** $field_type ::	Constante définissant la table ciblée (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
+	** $field_move ::	1 pour deplacer vers le bas, -1 pour deplacer vers le haut
+	** $field_type ::	Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
 	*/
 	public static function move($field_id, $field_move, $field_type)
 	{		

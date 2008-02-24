@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -30,7 +30,7 @@ class Fsb_frame_child extends Fsb_frame
 	public $topic_id;
 	public $post_id;
 	
-	// Données du sujet courant
+	// Donnees du sujet courant
 	public $topic_data;
 
 	// Page courante
@@ -42,7 +42,7 @@ class Fsb_frame_child extends Fsb_frame
 	// Imprimer le sujet
 	public $print = '';
 
-	// Peut utiliser la réponse rapide
+	// Peut utiliser la reponse rapide
 	public $can_quick_reply = FALSE;
 
 	/*
@@ -67,13 +67,13 @@ class Fsb_frame_child extends Fsb_frame
 			Html::jumpbox(TRUE);
 		}
 
-		// Données du sujet
+		// Donnees du sujet
 		if (!$this->get_topic_data())
 		{
 			return ;
 		}
 
-		// Si le membre est invité on désactive la notification
+		// Si le membre est invite on desactive la notification
 		if (!Fsb::$session->is_logged())
 		{
 			Fsb::$mods->change_status('topic_notification', FALSE);
@@ -85,7 +85,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->change_notification();
 		}
 	
-		// Mise à jour du sujet en lu et du nombre de vu
+		// Mise a jour du sujet en lu et du nombre de vu
 		$this->update_topic();
 
 		// Le sujet comporte un sondage ?
@@ -106,14 +106,14 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Récupère les données du sujet courant
+	** Recupere les donnees du sujet courant
 	*/
 	public function get_topic_data()
 	{
-		// Création de la requète SELECT de récupérations des données du sujet
+		// Creation de la requete SELECT de recuperations des donnees du sujet
 		$select = new Sql_select();
 
-		// Données du sujet, si l'ID du topic est passée en paramètre on a directement accès a ses données
+		// Donnees du sujet, si l'ID du topic est passee en parametre on a directement acces a ses donnees
 		if ($this->topic_id)
 		{
 			$select->join_table('FROM', 'topics t', 't.*');
@@ -126,17 +126,17 @@ class Fsb_frame_child extends Fsb_frame
 			$select->where('p.p_id = ' . intval($this->post_id));
 		}
 
-		// Si la fonction de notification est activée on ajoute une jointure à la requète
+		// Si la fonction de notification est activee on ajoute une jointure a la requete
 		if (Fsb::$mods->is_active('topic_notification'))
 		{
 			$select->join_table('LEFT JOIN', 'topics_notification tn', 'tn.u_id AS can_notify, tn.tn_status', 'ON tn.t_id = t.t_id AND tn.u_id = ' . Fsb::$session->id());
 		}
 
-		// Autres jointures (données du forum, et posteur du premier message)
+		// Autres jointures (donnees du forum, et posteur du premier message)
 		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time, tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 		$select->join_table('LEFT JOIN', 'forums f', 'f.f_password, f.f_tpl, f.f_status, f.f_rules', 'ON t.f_id = f.f_id');
 
-		// Résultat de la requète
+		// Resultat de la requete
 		$result = $select->execute();
 		if (!$this->topic_data = Fsb::$db->row($result))
 		{
@@ -151,13 +151,13 @@ class Fsb_frame_child extends Fsb_frame
 			$this->topic_data['last_unread_id'] = $this->topic_data['t_last_p_id'];
 		}
 
-		// Message non approuvé ?
+		// Message non approuve ?
 		if ($this->topic_data['t_approve'] == IS_NOT_APPROVED)
 		{
 			Display::message('topic_not_approved');
 		}
 
-		// On vérifie si le membre peut accéder à ce sujet (droit de lecture du forum + droit de lecture des sujets)
+		// On verifie si le membre peut acceder a ce sujet (droit de lecture du forum + droit de lecture des sujets)
 		if (!Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_view') || !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_view_topics') || !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_read'))
 		{
 			if (!Fsb::$session->is_logged())
@@ -173,11 +173,11 @@ class Fsb_frame_child extends Fsb_frame
 		// Forum avec mot de passe ?
 		if ($this->topic_data['f_password'] && !Display::forum_password($this->topic_data['f_id'], $this->topic_data['f_password'], ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']))
 		{
-			// L'accès est refusé, on affiche le formulaire du mot de passe et on doit donc quitter la classe
+			// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
 			return (FALSE);
 		}
 
-		// Thème pour le forum ?
+		// Theme pour le forum ?
 		if ($this->topic_data['f_tpl'])
 		{
 			$set_tpl = ROOT . 'tpl/' . $this->topic_data['f_tpl'];
@@ -191,7 +191,7 @@ class Fsb_frame_child extends Fsb_frame
 			'name' =>		Parser::title($this->topic_data['t_title']),
 		)), $this);
 
-		// Peut utiliser la réponse rapide ?
+		// Peut utiliser la reponse rapide ?
 		if (Fsb::$mods->is_active('quick_reply') && Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_answer_' . $GLOBALS['_topic_type'][$this->topic_data['t_type']])
 			&& ($this->topic_data['t_map'] == 'classic' || $this->topic_data['t_map_first_post'] != MAP_ALL_POST) && Fsb::$session->is_logged()
 			&& $this->topic_data['f_status'] != LOCK && $this->topic_data['t_status'] != LOCK)
@@ -203,7 +203,7 @@ class Fsb_frame_child extends Fsb_frame
 		if (!$this->topic_id)
 		{
 			// En passant l'ID du message en argument on doit se synchroniser sur la page du
-			// message en question. Pour ce faire on récupère le nombre de messages avant celui ci
+			// message en question. Pour ce faire on recupere le nombre de messages avant celui ci
 			$sql = 'SELECT COUNT(*) ' . ((Fsb::$mods->is_active('previous_post')) ? '+ 1' : '') . ' AS total_before
 						FROM ' . SQL_PREFIX . 'posts
 						WHERE t_id = ' . $this->topic_data['t_id'] . '
@@ -228,7 +228,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		Fsb::$tpl->set_file('forum/forum_topic.html');
 
-		// En mode impression on change de modèle de template
+		// En mode impression on change de modele de template
 		$extra_format = TRUE;
 		if ($this->print && Fsb::$mods->is_active('print_topic'))
 		{
@@ -246,11 +246,11 @@ class Fsb_frame_child extends Fsb_frame
 
 		$parser = new Parser();
 
-		// Affichage du dernier message de la page précédente ?
+		// Affichage du dernier message de la page precedente ?
 		$show_last_post = ($this->page > 1 && Fsb::$mods->is_active('previous_post')) ? TRUE : FALSE;
 		$offset = ($show_last_post) ? 1 : 0;
 
-		// On commence par récupérer les ID des messages qui seront affichés
+		// On commence par recuperer les ID des messages qui seront affiches
 		$sql = 'SELECT p_id
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE t_id = ' . $this->topic_data['t_id'] . '
@@ -270,11 +270,11 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('no_result');
 		}
 
-		// Si la fonction affichant les champs personels du membre sur le sujet est activée ...
+		// Si la fonction affichant les champs personels du membre sur le sujet est activee ...
 		$sql_fields_personal = $sql_join_personal = '';
 		if (Fsb::$mods->is_active('profile_fields_topic'))
 		{
-			// Champs personalisés
+			// Champs personalises
 			Profil_fields_forum::topic_info($sql_fields_personal);
 			$sql_fields_personal = ($sql_fields_personal) ? ', ' . $sql_fields_personal : '';
 			$sql_join_personal = ' LEFT JOIN ' . SQL_PREFIX . 'users_personal up ON p.u_id = up.u_id ';
@@ -296,7 +296,7 @@ class Fsb_frame_child extends Fsb_frame
 		$iterator = 0;
 		while ($row = Fsb::$db->row($result))
 		{
-			// On récupère les données statiques du posteur
+			// On recupere les donnees statiques du posteur
 			if (isset($cache_post_array[$row['u_id']]))
 			{
 				$post_array = $cache_post_array[$row['u_id']];
@@ -307,13 +307,13 @@ class Fsb_frame_child extends Fsb_frame
 				$cache_post_array[$row['u_id']] = $post_array;
 			}
 
-			// Les invités ont un pseudo propre à chacuns
+			// Les invites ont un pseudo propre a chacuns
 			if ($row['u_id'] == VISITOR_ID)
 			{
 				$post_array['data']['NICKNAME'] = Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']);
 			}
 
-			// Message édité ?
+			// Message edite ?
 			$edit_str = '';
 			if ($row['p_edit_time'] > 0)
 			{
@@ -321,7 +321,7 @@ class Fsb_frame_child extends Fsb_frame
 				$edit_str = sprintf(Fsb::$session->lang('topic_edit_data'), $row['p_edit_total'], $edit_nickname, Fsb::$session->print_date($row['p_edit_time']));
 			}
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],
@@ -404,7 +404,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('topic_pagination');
 		}
 
-		// On regarde si le membre peut créer des messages
+		// On regarde si le membre peut creer des messages
 		$can_create_post = FALSE;
 		foreach ($GLOBALS['_topic_type'] AS $value)
 		{
@@ -426,7 +426,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Relation
 		Http::add_relation($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']);
 
-		// Peut répondre au sujet ?
+		// Peut repondre au sujet ?
 		$can_reply = FALSE;
 		if (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_answer_' . $GLOBALS['_topic_type'][$this->topic_data['t_type']])
 			&& (($this->topic_data['t_status'] != LOCK && $this->topic_data['f_status'] != LOCK) || Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator')))
@@ -438,7 +438,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Redirection vers la page de connexion ?
 		$redirect_login = (!Fsb::$session->is_logged()) ? 'login&amp;redirect=' : '';
 
-		// Données du sujet
+		// Donnees du sujet
 		$parser = new Parser();
 		Fsb::$tpl->set_vars(array(
 			'NOTIFY' =>					$notify,
@@ -473,7 +473,7 @@ class Fsb_frame_child extends Fsb_frame
 			'U_LOW_FORUM' =>			sid(ROOT . 'index.' . PHPEXT . '?p=low&amp;mode=topic&amp;id=' . $this->topic_data['t_id']),
 		));
 
-		// Règles du forums ?
+		// Regles du forums ?
 		if (!empty($this->topic_data['f_rules']))
 		{
 			Fsb::$tpl->set_switch('forum_rules');
@@ -487,19 +487,19 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 
-		// Forum verrouillé ?
+		// Forum verrouille ?
 		if ($this->topic_data['f_status'] == LOCK)
 		{
 			Fsb::$tpl->set_switch('forum_locked');
 		}
 
-		// Sujet verrouillé ?
+		// Sujet verrouille ?
 		if ($this->topic_data['f_status'] == LOCK || $this->topic_data['t_status'] == LOCK)
 		{
 			Fsb::$tpl->set_switch('topic_locked');
 		}
 
-		// Peut modérer le forum ?
+		// Peut moderer le forum ?
 		if (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator'))
 		{
 			Fsb::$tpl->set_switch('modo_topic');
@@ -511,12 +511,12 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('warn_user');
 		}
 
-		// Liste des procédures
+		// Liste des procedures
 		$this->print_procedure();
 	}
 	
 	/*
-	** Récupère les informations statiques du message (données sur le membre, rangs, etc ...)
+	** Recupere les informations statiques du message (donnees sur le membre, rangs, etc ...)
 	*/
 	public function get_post_array(&$row)
 	{
@@ -525,7 +525,7 @@ class Fsb_frame_child extends Fsb_frame
 		$age =	User::get_age($row['u_birthday']);
 		$sexe =	User::get_sexe($row['u_sexe']);
 
-		// Informations passées au parseur de message
+		// Informations passees au parseur de message
 		$parser_info = array(
 			'u_id' =>			$row['u_id'],
 			'p_nickname' =>		$row['p_nickname'],
@@ -562,7 +562,7 @@ class Fsb_frame_child extends Fsb_frame
 			'U_POSTS' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=author&amp;id=' . $row['u_id']),
 		);
 
-		// Données des champs personalisés
+		// Donnees des champs personalises
 		$ary['fields'] = array();
 		foreach ($row AS $key => $value)
 		{
@@ -600,7 +600,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Met à jour la date de visite du sujet, et le nombre de vue
+	** Met a jour la date de visite du sujet, et le nombre de vue
 	*/
 	public function update_topic()
 	{
@@ -617,7 +617,7 @@ class Fsb_frame_child extends Fsb_frame
 				), 'REPLACE');
 			}
 
-			// Remise à jour de la notification du membre
+			// Remise a jour de la notification du membre
 			if (Fsb::$mods->is_active('topic_notification') && Fsb::$session->data['u_activate_auto_notification'] & NOTIFICATION_EMAIL && $this->topic_data['can_notify'] && $this->topic_data['tn_status'] == IS_NOTIFIED)
 			{
 				Fsb::$db->update('topics_notification', array(
@@ -629,7 +629,7 @@ class Fsb_frame_child extends Fsb_frame
 		$update_total_view = TRUE;
 		if (Fsb::$mods->is_active('cookie_view'))
 		{
-			// Page déjà visitée durant la session ?
+			// Page deja visitee durant la session ?
 			$cookie_view = Http::getcookie('cookie_view');
 			if ($cookie_view)
 			{
@@ -648,7 +648,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// +1 visite au sujet si pas déjà visité
+		// +1 visite au sujet si pas deja visite
 		if ($update_total_view)
 		{
 			Fsb::$db->update('topics', array(
@@ -658,7 +658,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche la liste des procédures
+	** Affiche la liste des procedures
 	*/
 	public function print_procedure()
 	{

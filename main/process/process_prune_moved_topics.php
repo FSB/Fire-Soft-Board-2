@@ -11,7 +11,7 @@
 */
 
 /*
-** Supprime les marqueurs des sujets déplacés dont le dernier message remonte a plus de 2 semaines
+** Supprime les marqueurs des sujets deplaces dont le dernier message remonte a plus de 2 semaines
 */
 function prune_moved_topics()
 {

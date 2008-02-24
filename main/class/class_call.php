@@ -11,8 +11,8 @@
 */
 
 /*
-** Permet de gérer les appels aux méthodes des classes des pages en fonction des propriétés de la page.
-** Le but étant de permettre une généricité des appels sur la plupart des pages.
+** Permet de gerer les appels aux methodes des classes des pages en fonction des proprietes de la page.
+** Le but etant de permettre une genericite des appels sur la plupart des pages.
 */
 class Call extends Fsb_model
 {
@@ -22,7 +22,7 @@ class Call extends Fsb_model
 	/*
 	** CONSTRUCTEUR
 	** -----
-	** $obj ::		Objet dont on va modifier les propriété et appeler les méthodes
+	** $obj ::		Objet dont on va modifier les propriete et appeler les methodes
 	*/
 	public function __construct(&$obj)
 	{
@@ -46,9 +46,9 @@ class Call extends Fsb_model
 	}
 
 	/*
-	** Gestion des éléments POST pour executer des méthodes ou changer la valeur de propriétés
+	** Gestion des elements POST pour executer des methodes ou changer la valeur de proprietes
 	** -----
-	** $tree ::		Arbre d'instruction pour les éléments POST
+	** $tree ::		Arbre d'instruction pour les elements POST
 	*/
 	public function post($posts)
 	{
@@ -66,7 +66,7 @@ class Call extends Fsb_model
 				// Valeur de variable
 				else
 				{
-					// Si on précise le nom
+					// Si on precise le nom
 					if (is_array($value))
 					{
 						list($name, $content) = each($value);
@@ -84,7 +84,7 @@ class Call extends Fsb_model
 	}
 
 	/*
-	** Gestion récursives des variables
+	** Gestion recursives des variables
 	** -----
 	** $vars ::		Arbre des variables
 	*/
@@ -95,16 +95,16 @@ class Call extends Fsb_model
 			return ;
 		}
 
-		// Parcourt des propriétés
+		// Parcourt des proprietes
 		foreach ($vars AS $name => $list_values)
 		{
-			// Parcourt des valeurs que peuvent prendre les propriétés
+			// Parcourt des valeurs que peuvent prendre les proprietes
 			foreach ($list_values AS $key => $value)
 			{
-				// Si la propriété de l'objet vaut une de ces valeurs, ou bien qu'on tombe sur la valeur par défaut
+				// Si la propriete de l'objet vaut une de ces valeurs, ou bien qu'on tombe sur la valeur par defaut
 				if ($this->obj->$name == $key || $key == 'default')
 				{
-					// Si cette valeur est elle même un tableau de variables on relance la routine
+					// Si cette valeur est elle meme un tableau de variables on relance la routine
 					if (is_array($value))
 					{
 						$this->functions($value);
@@ -113,7 +113,7 @@ class Call extends Fsb_model
 							return ;
 						}
 					}
-					// Sinon on execute la méthode
+					// Sinon on execute la methode
 					else
 					{
 						$this->obj->$value();

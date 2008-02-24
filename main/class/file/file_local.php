@@ -11,11 +11,11 @@
 */
 
 /*
-** Méthode locale
+** Methode locale
 */
 class File_local extends File
 {
-	// Méthode
+	// Methode
 	public $method = 'local';
 
 	/*
@@ -34,9 +34,9 @@ class File_local extends File
 	}
 
 	/*
-	** Change de répertoire courant
+	** Change de repertoire courant
 	** -----
-	** $path ::		Nouveau répertoire courant
+	** $path ::		Nouveau repertoire courant
 	*/
 	protected function _chdir($path)
 	{
@@ -91,7 +91,7 @@ class File_local extends File
 	/*
 	** Supprime un fichier
 	** -----
-	** $filename ::		Nom du fichier à supprimer
+	** $filename ::		Nom du fichier a supprimer
 	*/
 	protected function _unlink($filename)
 	{
@@ -99,9 +99,9 @@ class File_local extends File
 	}
 
 	/*
-	** Créé un répertoire
+	** Cree un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _mkdir($dir)
 	{
@@ -109,9 +109,9 @@ class File_local extends File
 	}
 
 	/*
-	** Supprime un répertoire
+	** Supprime un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _rmdir($dir)
 	{

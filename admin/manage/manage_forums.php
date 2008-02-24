@@ -11,7 +11,7 @@
 */
 
 /*
-** Page de gestion des catégories / forums
+** Page de gestion des categories / forums
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
@@ -22,7 +22,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	// Liste des forums
 	public $forums = array();
 	
-	// Données envoyées par formulaire lors de la création de forums
+	// Donnees envoyees par formulaire lors de la creation de forums
 	public $data = array();
 	
 	// Erreurs
@@ -69,7 +69,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de la gestion des forums
+	** Affiche la page par defaut de la gestion des forums
 	*/
 	public function page_default_forum()
 	{
@@ -95,9 +95,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la catégorie
+	** Affiche la categorie
 	** -----
-	** $cat ::		Catégorie à afficher
+	** $cat ::		Categorie a afficher
 	*/
 	public function page_put_categories(&$cat)
 	{
@@ -114,10 +114,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche récursivement les forums et ses sous forums,
-	** pour une catégorie donnée.
+	** Affiche recursivement les forums et ses sous forums,
+	** pour une categorie donnee.
 	** -----
-	** $forum ::	Forum à afficher
+	** $forum ::	Forum a afficher
 	*/
 	public function page_put_forums(&$forum)
 	{
@@ -135,7 +135,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			break;
 		}
 
-		// Forum verrouillé ?
+		// Forum verrouille ?
 		if ($forum['f_status'] == LOCK)
 		{
 			$forum_type .= '[' . Fsb::$session->lang('forum_locked') . ']';
@@ -159,7 +159,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer des forums
+	** Affiche la page permettant d'ajouter / editer des forums
 	*/
 	public function page_add_edit_forum()
 	{
@@ -172,7 +172,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 		}
 
-		// On ne peux ajouter de forum que si au moins une catégorie existe
+		// On ne peux ajouter de forum que si au moins une categorie existe
 		if (!$this->forums)
 		{
 			Display::message('adm_f_no_cat');
@@ -186,7 +186,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if (count($this->errstr))
 		{
-			// Données récupérées en cas d'erreur dans l'envoie du formulaire
+			// Donnees recuperees en cas d'erreur dans l'envoie du formulaire
 			Fsb::$tpl->set_switch('error');
 			$this->data['f_prune_time'] = floor($this->data['f_prune_time'] / 3600);
 			$this->data['f_parent'] = Http::request('f_parent');
@@ -194,7 +194,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else if ($this->mode == 'edit_f')
 		{
-			// Données lors de l'édition
+			// Donnees lors de l'edition
 			$sql = 'SELECT *
 					FROM ' . SQL_PREFIX . 'forums
 					WHERE f_id = ' . $this->id;
@@ -205,7 +205,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			// Données par défaut
+			// Donnees par defaut
 			$this->data['f_name'] =				'';
 			$this->data['f_text'] =				'';
 			$this->data['f_parent'] =			Http::request('default_cat');
@@ -232,7 +232,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			list($style_type, $style_content) = $getstyle;
 		}
 
-		// Affichage des permissions par défaut
+		// Affichage des permissions par defaut
 		$list_forum_auth = '';
 		if ($this->mode == 'add_f')
 		{
@@ -240,7 +240,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$list_forum_auth = Html::list_forums($this->forums, $this->data['f_parent'], 'f_default_auth', FALSE, '', FALSE, '<option value="-1">' . Fsb::$session->lang('adm_forum_no_auth') . '</option>');
 		}
 
-		// Liste des temps pour la durée du délestage
+		// Liste des temps pour la duree du delestage
 		$list_prune_time = Html::create_list('f_prune_time_unit', ONE_HOUR, array(
 			ONE_HOUR =>		Fsb::$session->lang('hour'),
 			ONE_DAY =>		Fsb::$session->lang('day'),
@@ -252,7 +252,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Liste des types de sujets
 		$list_prune_type = Html::create_list('f_prune_topic_type[]', $default_topic_type, $list_topic_type, 'multiple="multiple" size="3"');
 
-		// Liste des thèmes
+		// Liste des themes
 		$list_tpl = Html::list_dir('f_tpl', $this->data['f_tpl'], ROOT . 'tpl/', array(), TRUE, '<option value="0">' . Fsb::$session->lang('adm_forum_tpl_none') . '</option>');
 
 		// Liste des MAPS
@@ -299,7 +299,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition de forums
+	** Valide le formulaire d'ajout / edition de forums
 	*/
 	public function query_add_edit_forum()
 	{
@@ -337,7 +337,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($this->mode == 'edit_f')
 		{
-			// Mise à jour du forum
+			// Mise a jour du forum
 			Forum::update($this->id, $parent, $this->data);
 
 			Log::add(Log::ADMIN, 'forum_log_edit', $this->data['f_name']);
@@ -345,10 +345,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			// Création du forum
+			// Creation du forum
 			$last_id = Forum::add($parent, $this->data);
 
-			// Permissions par défaut ?
+			// Permissions par defaut ?
 			if (($default_auth_id = intval(Http::request('f_default_auth', 'post'))) && $default_auth_id != -1)
 			{
 				Forum::set_default_auth($last_id, $default_auth_id);
@@ -361,8 +361,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace un forum avec un autre en prenant en compte le niveau sur lequel il
-	** est. (Le niveau étant ce à quoi il est attaché).
+	** Deplace un forum avec un autre en prenant en compte le niveau sur lequel il
+	** est. (Le niveau etant ce a quoi il est attache).
 	*/
 	public function page_move_forum()
 	{
@@ -374,7 +374,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page de suppression d'un forum / catégorie
+	** Page de suppression d'un forum / categorie
 	*/
 	public function page_delete_forum()
 	{
@@ -405,7 +405,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer des catégories
+	** Affiche la page permettant d'ajouter / editer des categories
 	*/
 	public function page_add_edit_categorie()
 	{
@@ -446,9 +446,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition de forums
+	** Valide le formulaire d'ajout / edition de forums
 	** -----
-	** $errstr ::	Chaîne de caractère contenant les erreurs recensées durant
+	** $errstr ::	Chaine de caractere contenant les erreurs recensees durant
 	**				la validation du formulaire.
 	*/
 	public function query_add_edit_categorie(&$errstr)
@@ -488,7 +488,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace une catégorie avec une autre
+	** Deplace une categorie avec une autre
 	*/
 	public function page_move_cat()
 	{
@@ -500,7 +500,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Supprime tous les forums / catégories cochés
+	** Supprime tous les forums / categories coches
 	*/
 	public function page_delete_all()
 	{
@@ -531,7 +531,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Change le status des forums / catégories sellectionnées
+	** Change le status des forums / categories sellectionnees
 	*/
 	public function page_status_all()
 	{
@@ -543,7 +543,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($action)
 		{
-			// On récupère les ID des forums et des sous forums
+			// On recupere les ID des forums et des sous forums
 			$ary = Sql_interval::get_childs($action);
 
 			if ($ary)
@@ -559,7 +559,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Gestion d'opérations sur les forums
+	** Gestion d'operations sur les forums
 	*/
 	public function page_operation()
 	{
@@ -572,13 +572,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplacement de sujets vers un forum cible
+	** Deplacement de sujets vers un forum cible
 	*/
 	public function operation_move()
 	{
 		$to_id = intval(Http::request('move_target', 'post'));
 
-		// Vérification du forum
+		// Verification du forum
 		$sql = 'SELECT f_id
 				FROM ' . SQL_PREFIX . 'forums
 				WHERE f_id = ' . $to_id . '

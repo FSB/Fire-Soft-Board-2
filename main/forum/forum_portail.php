@@ -11,11 +11,11 @@
 */
 
 /*
-** Génération de la page d'accueil avec ses différents modules
+** Generation de la page d'accueil avec ses differents modules
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -25,7 +25,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// Portail pas activé ?
+		// Portail pas active ?
 		if (!Fsb::$mods->is_active('portail'))
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);

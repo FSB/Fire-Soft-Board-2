@@ -11,14 +11,14 @@
 */
 
 /*
-** Gestionaire de base de donnée
+** Gestionaire de base de donnee
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	// Module du gestionaire sur lequel on se trouve
 	public $module;
 
-	// Table selectionnée
+	// Table selectionnee
 	public $table;
 
 	// Page courante
@@ -85,14 +85,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Formulaire d'execution de requète
+	** Formulaire d'execution de requete
 	*/
 	public function show_sql()
 	{
 		$query =		Http::request('query');
 		$parse_prefix = intval(Http::request('parse_prefix', 'post|get'));
 
-		// Execution de requète
+		// Execution de requete
 		if (isset($query) && !empty($query))
 		{
 			// Log
@@ -121,7 +121,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'EXEC_IN' =>	sprintf(Fsb::$session->lang('adm_sql_exec_ok'), count($queries), substr(Fsb::$debug->get_time() - $begin_time, 0, 8)),
 			));
 			
-			// Destruction du cache SQL à chaque requète
+			// Destruction du cache SQL a chaque requete
 			Fsb::$db->destroy_cache();
 
 			if (count($queries) === 1 && preg_match('#^(select|show)\s#si', $queries[0]) && $result)
@@ -149,13 +149,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche les données de la table
+	** Affiche les donnees de la table
 	*/
 	public function show_data()
 	{
 		if ($this->table)
 		{
-			// Nombre d'entrées dans la base de donnée
+			// Nombre d'entrees dans la base de donnee
 			$sql = 'SELECT COUNT(*) AS total
 					FROM ' . Fsb::$db->escape($this->table);
 			$count = Fsb::$db->get($sql, 'total');
@@ -170,7 +170,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'PAGINATION' =>		Html::pagination($this->page, ceil($count / 30), sid('index.' . PHPEXT . '?p=tools_sql&amp;module=data&amp;table=' . $this->table)),
 			));
 
-			// Requète pour récupérer les données de la table
+			// Requete pour recuperer les donnees de la table
 			$sql = 'SELECT *
 						FROM ' . Fsb::$db->escape($this->table) . '
 						LIMIT ' . (($this->page - 1) * 30) . ', 30';
@@ -204,7 +204,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function show_export()
 	{
-		// Backup lancé
+		// Backup lance
 		if (Http::request('submit_export', 'post'))
 		{
 			$backup_type = intval(Http::request('backup_type', 'post'));
@@ -219,7 +219,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 		}
 
-		// On récupère les tables pour le backup
+		// On recupere les tables pour le backup
 		foreach (Fsb::$db->list_tables() AS $table)
 		{
 			$list_table[$table] = $table;
@@ -241,7 +241,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$action = (array) Http::request('action', 'post');
 			foreach ($action AS $hash)
 			{
-				// Petite sécurité au cas ou ...
+				// Petite securite au cas ou ...
 				$file = str_replace('/', '', $hash);
 
 				// Suppression du hash en cache
@@ -256,13 +256,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Liste des fichiers mis en cache SQL
 		foreach (Fsb::$db->cache->list_keys() AS $hash)
 		{
-			// On récupère la requète en cas de cache FTP
+			// On recupere la requete en cas de cache FTP
 			$query = '';
 			if (Fsb::$db->cache->cache_type == 'FSB FTP cache')
 			{
 				$content = file_get_contents(ROOT . 'cache/sql/' . $hash . '.' . PHPEXT);
 
-				// Parse de la requète
+				// Parse de la requete
 				$query = '';
 				if (preg_match('#^<\?php\s*/\*(.*?)\*/.*?\?>$#si', $content, $match))
 				{
@@ -351,11 +351,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche le résultat d'une requète renvcoyant un résultat dans un tableau HTML
+	** Affiche le resultat d'une requete renvcoyant un resultat dans un tableau HTML
 	** -----
-	** $ary ::			Tableau contenant toutes les lignes de résultat d'une requète
-	** $limit_begin ::	Définit un point de départ pour l'affichage
-	** $limit_end ::	Définit une limite pour l'affichage
+	** $ary ::			Tableau contenant toutes les lignes de resultat d'une requete
+	** $limit_begin ::	Definit un point de depart pour l'affichage
+	** $limit_end ::	Definit une limite pour l'affichage
 	*/
 	public function show_query_array($ary, $limit_begin = NULL, $limit_end = NULL)
 	{

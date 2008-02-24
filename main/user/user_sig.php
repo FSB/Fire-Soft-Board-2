@@ -10,7 +10,7 @@
 ** +---------------------------------------------------+
 */
 
-// On affiche le module si les signatures sont activées
+// On affiche le module si les signatures sont activees
 if (Fsb::$cfg->get('activate_sig'))
 {
 	$show_this_module = TRUE;
@@ -101,7 +101,7 @@ class Page_user_sig extends Fsb_model
 	}
 	
 	/*
-	** Affiche un cadre montrant le résultat réel de la signature
+	** Affiche un cadre montrant le resultat reel de la signature
 	*/
 	public function preview_sig()
 	{
@@ -113,7 +113,7 @@ class Page_user_sig extends Fsb_model
 			$preview_sig = Parser_wysiwyg::encode(htmlspecialchars($preview_sig));
 		}
 
-		// Informations passées au parseur de message
+		// Informations passees au parseur de message
 		$parser_info = array(
 			'u_id' =>			Fsb::$session->id(),
 			'p_nickname' =>		Fsb::$session->data['u_nickname'],
@@ -128,7 +128,7 @@ class Page_user_sig extends Fsb_model
 	}
 
 	/*
-	** Vérifie la signature (nombre de lignes, caractères, etc ...)
+	** Verifie la signature (nombre de lignes, caracteres, etc ...)
 	*/
 	public function check_form()
 	{

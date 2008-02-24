@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////
 
 /*
-** Note : Cette classe est issue du package PHPmailer disponible à cette adresse :
+** Note : Cette classe est issue du package PHPmailer disponible a cette adresse :
 **			http://phpmailer.sourceforge.net/
 */
 

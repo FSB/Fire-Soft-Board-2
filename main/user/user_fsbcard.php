@@ -71,7 +71,7 @@ class Page_user_fsbcard extends Fsb_model
 			$fsbcard->set_sexe('none');
 		}
 
-		// Préférences
+		// Preferences
 		if (Http::request('export_options'))
 		{
 			// Affichage de l'Email
@@ -311,7 +311,7 @@ class Page_user_fsbcard extends Fsb_model
 			$update_array['u_activate_img'] = (($displayImg['posts']) ? 2 : 0) & (($displayImg['sigs']) ? 4 : 0);
 		}
 
-		// Thème
+		// Theme
 		if ($template = $fsbcard->get_template())
 		{
 			if (is_dir(ROOT . 'tpl/' . $template) && (!Fsb::$cfg->get('override_tpl') || Fsb::$cfg->get('default_tpl') == $template))
@@ -329,7 +329,7 @@ class Page_user_fsbcard extends Fsb_model
 			}
 		}
 
-		// Décalage horaire
+		// Decalage horaire
 		list($update_array['u_utc'], $update_array['u_utc_dst']) = $fsbcard->get_date();
 
 		// Date de naissance
@@ -367,18 +367,18 @@ class Page_user_fsbcard extends Fsb_model
 				$update_array['u_avatar_method'] = AVATAR_METHOD_LINK;
 			}
 
-			// Si l'avatar à un contenu
+			// Si l'avatar a un contenu
 			if (strlen(trim($content)) > 0)
 			{
 				if (is_writable(ROOT . 'upload/'))
 				{
-					// Création de l'avatar dans le répertoire upload/
+					// Creation de l'avatar dans le repertoire upload/
 					$avatar_name = md5($u_id);
 					$fd = fopen(ROOT . 'upload/' . $avatar_name, 'w');
 					fwrite($fd, $content);
 					fclose($fd);
 
-					// Vérification du fichier, pour être sur qu'il s'agit d'une image
+					// Verification du fichier, pour etre sur qu'il s'agit d'une image
 					$info = @getimagesize(ROOT . 'upload/' . $avatar_name);
 					if ($info)
 					{
@@ -386,10 +386,10 @@ class Page_user_fsbcard extends Fsb_model
 						$type_info = array(IMAGETYPE_GIF => 'gif', IMAGETYPE_PNG => 'png', IMAGETYPE_JPEG => 'jpg', IMAGETYPE_BMP => 'bmp');
 						if (in_array($type, array_keys($type_info)))
 						{
-							// Vérification de la taille et du poid de l'image
+							// Verification de la taille et du poid de l'image
 							if ($width <= Fsb::$cfg->get('avatar_width') && $height <= Fsb::$cfg->get('avatar_height') && filesize(ROOT . 'upload/' . $avatar_name) <= Fsb::$cfg->get('avatar_weight'))
 							{
-								// Déplacement de l'avatar
+								// Deplacement de l'avatar
 								$avatar_realname = $avatar_name . '.' . $type_info[$type];
 								@copy(ROOT . 'upload/' . $avatar_name, AVATAR_PATH . $avatar_realname);
 

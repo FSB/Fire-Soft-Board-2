@@ -11,10 +11,10 @@
 */
 
 /*
-** Méthode LIKE, basique, basée sur les LIKE dans les requètes
-**	+ Avantage : Facile à mettre en place, ne necessite aucun index fulltext ni aucun ralentissement lors de
-**		l'écriture des messages
-**	+ Inconvénient : Très lent ... Plus on a de messages plus la recherche sera lente, cette méthode est à conseiller sur les
+** Methode LIKE, basique, basee sur les LIKE dans les requetes
+**	+ Avantage : Facile a mettre en place, ne necessite aucun index fulltext ni aucun ralentissement lors de
+**		l'ecriture des messages
+**	+ Inconvenient : Tres lent ... Plus on a de messages plus la recherche sera lente, cette methode est a conseiller sur les
 **		forums pas trop gros, ne supportant pas FULLTEXT MYSQL, et dont on ne souhaite pas allourdir la base avec le FULLTEXT FSB
 */
 class Search_like extends Search
@@ -29,11 +29,11 @@ class Search_like extends Search
 	}
 
 	/*
-	** Procédure de recherche
+	** Procedure de recherche
 	** -----
 	** $keywords_array ::		Tableau des mots clefs
 	** $author_nickname ::		Nom de l'auteur
-	** $forum_idx ::			Tableau des IDX de forums autorisés
+	** $forum_idx ::			Tableau des IDX de forums autorises
 	** $topic ::				ID d'un topic si on cherche uniquement dans celui ci
 	** $date ::					Date (en nombre de secondes) pour la recherche de messages
 	*/
@@ -74,7 +74,7 @@ class Search_like extends Search
 			}
 			$select->where(')');
 
-			// Résultats
+			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
 			{
@@ -117,7 +117,7 @@ class Search_like extends Search
 			}
 			$select->where(')');
 
-			// Résultats
+			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
 			{

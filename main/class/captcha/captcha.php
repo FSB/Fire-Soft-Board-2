@@ -11,11 +11,11 @@
 */
 
 /*
-** Permet la génération de Captcha (images avec un texte déformé, destiné à bloquer les robots)
+** Permet la generation de Captcha (images avec un texte deforme, destine a bloquer les robots)
 */
 abstract class Captcha extends Fsb_model
 {
-	// Tons du texte, de "très sombre" à "très clair"
+	// Tons du texte, de "tres sombre" a "tres clair"
 	const VERY_SINK = 1;
 	const SINK = 2;
 	const CLEAR = 3;
@@ -25,22 +25,22 @@ abstract class Captcha extends Fsb_model
 	public $width = 250;
 	public $height = 60;
 
-	// Minimum et maximum de la longueur du code à créer
+	// Minimum et maximum de la longueur du code a creer
 	public $word_min = 6;
 	public $word_max = 6;
 
-	// Minimum et maximum de la taille du caractère
+	// Minimum et maximum de la taille du caractere
 	public $size_min = 30;
 	public $size_max = 30;
 
 	// Liste des polices
 	public $fonts = array('Alanden_.ttf', 'luggerbu.ttf', 'wavy.ttf', 'scrawl.ttf');
 
-	// Angle maximal d'inclinaison des caractères
+	// Angle maximal d'inclinaison des caracteres
 	public $angle_max = 20;
 
-	// Liste des caractères autorisés (sans la lettre O et le chiffre 0 pour éviter l'éternelle confusion)
-	// On supprime aussi les caractère C et I qui prètent apparament à confusion avec le E et L de certaines polices
+	// Liste des caracteres autorises (sans la lettre O et le chiffre 0 pour eviter l'eternelle confusion)
+	// On supprime aussi les caractere C et I qui pretent apparament a confusion avec le E et L de certaines polices
 	public $caracters = 'ABDEFGHJKLMNPQRSTUVWXYZ12346789';
 
 	// Dossier des polices
@@ -55,19 +55,19 @@ abstract class Captcha extends Fsb_model
 	// Niveau de couleur
 	public $color_level = Captcha::VERY_SINK;
 
-	// Tableau contenant les informations sur les caractères
+	// Tableau contenant les informations sur les caracteres
 	protected $data = array();
 
-	// Chaîne de caractère du captcha
+	// Chaine de caractere du captcha
 	protected $str = '';
 
-	// Chaîne créée ?
+	// Chaine creee ?
 	protected $str_created = FALSE;
 
 	// Explications potentielles
 	protected $explain = '';
 
-	// Méthodes abstraites
+	// Methodes abstraites
 	abstract protected function open_image();
 	abstract protected function write_char($size, $angle, $x, $vertical, $fontcolor, $font, $char);
 	abstract protected function close_image();
@@ -89,7 +89,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Créé la chaîne de caractère
+	** Cree la chaine de caractere
 	*/
 	public function create_str()
 	{
@@ -98,9 +98,9 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Chaîne de caractère du Captcha
+	** Chaine de caractere du Captcha
 	** -----
-	** $str ::	Chaîne de caractère
+	** $str ::	Chaine de caractere
 	*/
 	public function set_str($str)
 	{
@@ -108,7 +108,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Créé une chaîne de caractère aléatoire
+	** Cree une chaine de caractere aleatoire
 	*/
 	protected function random_str()
 	{
@@ -122,9 +122,9 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Calcul les informations sur les caractères
+	** Calcul les informations sur les caracteres
 	** -----
-	** $str ::	Chaîne par défaut
+	** $str ::	Chaine par defaut
 	*/
 	protected function fill_data($str = NULL)
 	{
@@ -141,19 +141,19 @@ abstract class Captcha extends Fsb_model
 				$this->data[$i] = array();
 			}
 
-			// Selection du caractère
+			// Selection du caractere
 			$this->data[$i]['caracter'] = $str[$i];
 
-			// Police du caractère
+			// Police du caractere
 			$this->data[$i]['font'] = $this->font_path . $this->fonts[array_rand($this->fonts, 1)];
 
-			// Angle du caractère
+			// Angle du caractere
 			$this->data[$i]['angle'] = (rand(1, 2) === 1) ? rand(0, $this->angle_max) : rand(360 - $this->angle_max, 360);
 
-			// Taille du caractère
+			// Taille du caractere
 			$this->data[$i]['size'] = rand($this->size_min, $this->size_max);
 
-			// Position verticale du caractère
+			// Position verticale du caractere
 			$this->data[$i]['vertical'] = ($this->height / 2) + rand(10, ($this->height / 5));
 
 			// Couleur
@@ -165,7 +165,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Génération du Captcha
+	** Generation du Captcha
 	*/
 	public function output()
 	{
@@ -179,7 +179,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Détermine la méthode à utiliser
+	** Determine la methode a utiliser
 	*/
 	protected function get_method()
 	{
@@ -208,14 +208,14 @@ abstract class Captcha extends Fsb_model
 		$x = 10;
 		foreach ($this->data AS $caracter)
 		{
-			// Placement du caractère sur l'image
+			// Placement du caractere sur l'image
 			$this->write_char($caracter['size'], $caracter['angle'], $x, $caracter['vertical'], $caracter['fontcolor'], $caracter['font'], $caracter['caracter']);
 			$x += $this->space;
 		}
 	}
 
 	/*
-	** Génère une couleur aléatoire
+	** Genere une couleur aleatoire
 	*/
 	protected function generate_color()
 	{
@@ -234,7 +234,7 @@ abstract class Captcha extends Fsb_model
 			$blue =		rand(0, 255);
 			$color =	$red + $green + $blue;
 
-			// On vérifie si le ton de couleur corespond à l'arrière plan
+			// On verifie si le ton de couleur corespond a l'arriere plan
 			if (($check_color[$this->color_level][1] == '<' && $color < $check_color[$this->color_level][0]) 
 				|| ($check_color[$this->color_level][1] == '>' && $color > $check_color[$this->color_level][0]))
 			{
@@ -247,7 +247,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Génération d'un Captcha classique
+	** Generation d'un Captcha classique
 	*/
 	protected function method_classic()
 	{
@@ -256,11 +256,11 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Affiche une opération arithmétique basique
+	** Affiche une operation arithmetique basique
 	*/
 	protected function method_maths()
 	{	
-		// Génération de l'opération mathématique
+		// Generation de l'operation mathematique
 		if (!$this->str_created)
 		{
 			$result = $this->str;
@@ -296,7 +296,7 @@ abstract class Captcha extends Fsb_model
 		// Longueur de l'image
 		$this->width = (strlen($this->str) < 8) ? 10 + (8 * 40) : 10 + (strlen($this->str) * 40);
 
-		// Modification des paramètres du bruit, pour éviter de rendre l'opération illisible
+		// Modification des parametres du bruit, pour eviter de rendre l'operation illisible
 		$this->total_pixel_min =	500;
 		$this->total_pixel_max =	3000;
 		$this->total_line_min =		0;
@@ -308,7 +308,7 @@ abstract class Captcha extends Fsb_model
 	}
 
 	/*
-	** Génère un Captcha dont on doit trouver les caractères uniquement d'une certaine couleur
+	** Genere un Captcha dont on doit trouver les caracteres uniquement d'une certaine couleur
 	*/
 	protected function method_color($word = NULL, $info = NULL)
 	{
@@ -332,10 +332,10 @@ abstract class Captcha extends Fsb_model
 			while ($j < $rand);
 		}
 
-		// On détermine la taille de l'image en fonction du nombre de lettres
+		// On determine la taille de l'image en fonction du nombre de lettres
 		$this->width = 10 + (strlen($secret_word) * 40);
 
-		// Génération des couleurs pour les caractères
+		// Generation des couleurs pour les caracteres
 		$list_color = array(
 			'blue' =>		array('00', '6C', 'FF'),
 			'cyan' =>		array('14', 'E3', 'C3'),

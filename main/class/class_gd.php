@@ -125,7 +125,7 @@ class Gd extends Fsb_model
  
 	/*
 	** Redimensionement de l'image, avec gestion de la transparence
-	** Un grand merci à Shekral (http://www.fire-soft-board.com/fsb/membre-828.html) pour son aide.
+	** Un grand merci a Shekral (http://www.fire-soft-board.com/fsb/membre-828.html) pour son aide.
 	** -----
 	** $src ::			Ressource GD de l'image source
 	** $new_width ::	Nouvelle largeur de l'image

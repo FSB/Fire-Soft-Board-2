@@ -21,6 +21,7 @@
 		<block name="mod">
 			<if content="$mod.FIRST_ROW">
 				<tr>
+					<switch name="uninstall_mod"><th width="90">{LG_ADM_MODS_UNINSTALL}</th></switch>
 					<th width="200">{LG_ADM_MODS_NAME}</th>
 					<th width="100">{LG_ADM_MODS_VERSION}</th>
 					<th>{LG_ADM_MODS_DESCRIPTION}</th>
@@ -34,12 +35,15 @@
 				</tr>
 			</if>
 			<tr>
+				<switch name="uninstall_mod">
+					<td align="center"><if content="$mod.UNINSTALL"><a href="{mod.UNINSTALL}" class="submit">{LG_ADM_MODS_UNINSTALL}</a></if></td>
+				</switch>
 				<td align="center">
 					<b><a href="{mod.U_TEMPLATE}" title="<switch name="page_install">{LG_ADM_MODS_SEE_INSTALL}<else>{LG_ADM_MODS_DATA}</if>">{mod.NAME}</a></b>
 				</td>
 				<td align="center">
 					<if content="$mod.UPDATE_EXPLAIN"><b title="{mod.UPDATE_EXPLAIN}">[{LG_ADM_MODS_IS_UPDATE}]</b></if>
-					<if content="$mod.NEW_VERSION"><a href="{mod.U_TEMPLATE}" title="{LG_ADM_MODS_NEW_VERSION} ({mod.NEW_VERSION})" class="ko">{mod.VERSION}</a><else><span class="ok">{mod.VERSION}</span></if>
+					<if content="$mod.NEW_VERSION"><a href="{mod.U_TEMPLATE}" title="{LG_ADM_MODS_NEW_VERSION} ({mod.NEW_VERSION})" class="ko">(!) {mod.VERSION}</a><else><span class="ok">{mod.VERSION}</span></if>
 				</td>
 				<td align="center">{mod.DESCRIPTION}</td>
 				<td align="center">
@@ -53,7 +57,7 @@
 		</block>
 		<blockelse name="mod">
 			<tr>
-				<td class="error" colspan="4">{LG_ADM_MODS_NONE}</td>
+				<td class="error" colspan="5">{LG_ADM_MODS_NONE}</td>
 			</tr>
 		</blockelse>
 		</table>
@@ -119,6 +123,11 @@
 
 <switch name="mods_install">
 	<form action="{U_ACTION}" method="post">
+	<fieldset>
+		<legend>{LG_INFORMATION}</legend>
+		<div class="explain">{LG_ADM_MODS_INSTALL_CARE}</div>
+	</fieldset>
+
 	<fieldset>
 		<legend>{LG_ADM_MODS_DATA}</legend>
 		<if content="$UPDATE_EXPLAIN"><div class="explain">{UPDATE_EXPLAIN}</div></if>

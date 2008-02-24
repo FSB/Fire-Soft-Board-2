@@ -43,7 +43,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page par défaut d'affichage des rangs
+	** Page par defaut d'affichage des rangs
 	*/
 	public function page_default_rank()
 	{		
@@ -54,7 +54,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'RANK_PATH' =>				RANK_PATH,
 		));
 		
-		// On récupère et on affiche les rangs
+		// On recupere et on affiche les rangs
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'ranks
 				ORDER BY rank_special DESC, rank_quota';
@@ -76,7 +76,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page permettant d'éditer / ajouter un rang
+	** Page permettant d'editer / ajouter un rang
 	*/
 	public function page_add_edit_rank()
 	{		
@@ -129,7 +129,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition de rangs
+	** Valide le formulaire d'ajout / edition de rangs
 	*/
 	public function page_submit_rank()
 	{
@@ -188,7 +188,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				WHERE rank_id = ' . $this->id;
 		$rank_name = Fsb::$db->get($sql, 'rank_name');
 
-		// Mise à jour de la tables des utilisateurs
+		// Mise a jour de la tables des utilisateurs
 		Fsb::$db->update('users', array(
 			'u_rank_id' =>		0,
 		), 'WHERE u_rank_id = ' . $this->id);

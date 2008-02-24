@@ -11,19 +11,19 @@
 */
 
 /*
-** Permet de manipuler des fichiers sur le serveur via trois méthodes différentes :
+** Permet de manipuler des fichiers sur le serveur via trois methodes differentes :
 **	- Manipulation des fichiers en local (soumis au safe mode)
 **	- Manipulation des fichiers via l'extension FTP (necessite les identifiants de connexion au serveur de fichier)
 **	- Manipulation des fichiers via l'envoie de commandes au socket du server avec fsockopen() (necessite les identifiants de connexion au serveur de fichier)
 **
-** L'algo général des classes est inspiré de la classe transfer() de phpBB3 (http://www.phpbb.com)
+** L'algo general des classes est inspire de la classe transfer() de phpBB3 (http://www.phpbb.com)
 */
 class File extends Fsb_model
 {
-	// Chemin d'accès vers la racine
+	// Chemin d'acces vers la racine
 	public $root_path = './';
 
-	// Chemin local d'accès vers la racine
+	// Chemin local d'acces vers la racine
 	public $local_path = './';
 
 	// Liste des erreurs possibles
@@ -34,7 +34,7 @@ class File extends Fsb_model
 	const FILE_FTP_EXTENSION_DISABLED = 5;
 
 	/*
-	** Retourne une instance de la bonne classe File à utiliser
+	** Retourne une instance de la bonne classe File a utiliser
 	** -----
 	** $use_ftp ::		Si on utilise une connexion FTP (TRUE / FALSE)
 	*/
@@ -106,7 +106,7 @@ class File extends Fsb_model
 	** -----
 	** $file ::		Nom du fichier
 	** $mode ::		Mode du chmod
-	** $debug ::	Débugage du CHMOD ?
+	** $debug ::	Debugage du CHMOD ?
 	*/
 	public function chmod($file, $mode, $debug = TRUE)
 	{
@@ -118,17 +118,17 @@ class File extends Fsb_model
 	}
 
 	/*
-	** Ecrits des données dans un fichier
+	** Ecrits des donnees dans un fichier
 	** -----
 	** $filename ::		Nom du fichier
-	** $content ::		Contenu à écrire
+	** $content ::		Contenu a ecrire
 	*/
 	public function write($filename, $content)
 	{
 		// Nom du fichier
 		$tmp = $this->uniq_name('upload/', 'class_file_');
 
-		// On écrit le fichier
+		// On ecrit le fichier
 		if (!is_writable($this->local_path . 'upload'))
 		{
 			$this->chmod('upload/', 0777, FALSE);
@@ -147,14 +147,14 @@ class File extends Fsb_model
 		$this->mkdir(dirname($filename));
 		$this->copy($tmp, $filename);
 
-		// On supprime le fichier créé une fois le transfert effectué
+		// On supprime le fichier cree une fois le transfert effectue
 		@unlink($this->local_path . $tmp);
 
 		return (TRUE);
 	}
 
 	/*
-	** Copie un fichier vers un répertoire
+	** Copie un fichier vers un repertoire
 	** -----
 	** $src ::		Fichier source
 	** $dst ::		Fichier destination
@@ -199,9 +199,9 @@ class File extends Fsb_model
 	}
 
 	/*
-	** Créé un répertoire et les répertoires de son arborescence
+	** Cree un repertoire et les repertoires de son arborescence
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	public function mkdir($dir)
 	{
@@ -228,9 +228,9 @@ class File extends Fsb_model
 	}
 
 	/*
-	** Supprime un répertoire et les répertoires de son arborescence
+	** Supprime un repertoire et les repertoires de son arborescence
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	public function rmdir($dir)
 	{
@@ -241,10 +241,10 @@ class File extends Fsb_model
 	}
 
 	/*
-	** Créé un nom de fichier temporaire
+	** Cree un nom de fichier temporaire
 	** -----
 	** $dir ::		Nom du dossier
-	** $prefix ::	Préfixe du fichier
+	** $prefix ::	Prefixe du fichier
 	*/
 	protected function uniq_name($dir, $prefix)
 	{
@@ -257,9 +257,9 @@ class File extends Fsb_model
 	}
 
 	/*
-	** Change de répertoire courant
+	** Change de repertoire courant
 	** -----
-	** $path ::		Nouveau répertoire courant
+	** $path ::		Nouveau repertoire courant
 	*/
 	public function chdir($path)
 	{
@@ -280,7 +280,7 @@ class File extends Fsb_model
 	/*
 	** Supprime un fichier
 	** -----
-	** $filename ::		Nom du fichier à supprimer
+	** $filename ::		Nom du fichier a supprimer
 	*/
 	public function unlink($filename)
 	{

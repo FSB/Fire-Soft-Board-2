@@ -11,9 +11,9 @@
 */
 
 /*
-** Optimize la base de donnée
+** Optimize la base de donnee
 ** -----
-** $tables ::		Liste des tables à optimiser
+** $tables ::		Liste des tables a optimiser
 */
 function prune_database($tables = array())
 {

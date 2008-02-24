@@ -11,7 +11,7 @@
 */
 
 /*
-** Classe permettant la génération de fils RSS au format RSS 2.0 ou ATOM
+** Classe permettant la generation de fils RSS au format RSS 2.0 ou ATOM
 */
 abstract class Rss extends Fsb_model
 {
@@ -23,9 +23,9 @@ abstract class Rss extends Fsb_model
 	abstract protected function _close();
 
 	/*
-	** Retourne une instance d'un générateur de fil RSS en fonction du type de spécificiation choisi
+	** Retourne une instance d'un generateur de fil RSS en fonction du type de specificiation choisi
 	** -----
-	** $method ::	Type de spécification (rss2 ou atom)
+	** $method ::	Type de specification (rss2 ou atom)
 	*/
 	public static function factory($method)
 	{
@@ -43,31 +43,31 @@ abstract class Rss extends Fsb_model
 	}
 
 	/*
-	** Création du feed
+	** Creation du feed
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
 	** $language ::		Langue du fil
 	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la dernière génération de ce fil
+	** $updated ::		Timestamp de la derniere generation de ce fil
 	*/
 	public function open($title, $description, $language, $link, $updated)
 	{
 		// Instance d'un objet XML
 		$this->xml = new Xml;
 
-		// Génération du document
+		// Generation du document
 		$this->_open($title, $description, $language, $link, $updated);
 	}
 
 	/*
-	** Ajout d'une entrée au fil
+	** Ajout d'une entree au fil
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
-	** $author ::		Auteur de l'entrée
-	** $link ::			Lien permettant de consulter l'entrée
-	** $updated ::		Timestamp de la dernière génération de cette entrée
+	** $author ::		Auteur de l'entree
+	** $link ::			Lien permettant de consulter l'entree
+	** $updated ::		Timestamp de la derniere generation de cette entree
 	*/
 	public function add_entry($title, $description, $author, $link, $updated)
 	{

@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -29,7 +29,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		$this->id = intval(Http::request('id'));
 
-		// Si pas connecté on le redirige
+		// Si pas connecte on le redirige
 		if (!Fsb::$session->is_logged())
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=email&id=' . $this->id);
@@ -46,11 +46,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Données de l'utilisateur
+	** Donnees de l'utilisateur
 	*/
 	public function check_data()
 	{
-		// On vérifie si l'utilisateur accepte bien les Emails
+		// On verifie si l'utilisateur accepte bien les Emails
 		$sql = 'SELECT u_id, u_nickname, u_email, u_language, u_activate_email
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id = ' . $this->id . '

@@ -12,22 +12,22 @@
 
 /*
 ** Page affichant le panneau de controle de l'utilisateur
-** Chaque module sera pioché dans le répertoire ~/main/user/
+** Chaque module sera pioche dans le repertoire ~/main/user/
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
 
-	// Module sellectioné pour la page
+	// Module sellectione pour la page
 	public $module;
 
 	// Navigation
 	public $nav = array();
 
-	// Liste des modules par défaut du forum, uniquement afin de les placer dans un certain ordre
+	// Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
 	public $list = array('personal', 'activate', 'password', 'avatar', 'sig', 'contact', 'groups', 'upload', 'fsbcard', 'viewprofile');
 
 	/*
@@ -35,13 +35,13 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// Le membre peut accéder à cette page ?
+		// Le membre peut acceder a cette page ?
 		if (!Fsb::$session->is_logged())
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=profile');
 		}
 
-		// On récupère le module du panneau à afficher
+		// On recupere le module du panneau a afficher
 		$this->module = Http::request('module');
 
 		// Ne pas supprimer ou renommer le fichier ~/main/user/user_personal.php
@@ -54,7 +54,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// On envoie un cookie pour qu'a la prochaine ocassion le dernier onglet ou le membre était
+		// On envoie un cookie pour qu'a la prochaine ocassion le dernier onglet ou le membre etait
 		// s'ouvre, sauf pour le module viewprofile
 		if ($this->module != 'viewprofile')
 		{
@@ -108,7 +108,7 @@ class Fsb_frame_child extends Fsb_frame
 			'MENU_HEADER_TITLE' =>	Fsb::$session->lang('user_panel'),
 		));
 
-		// Si le module demandé n'est pas accessible
+		// Si le module demande n'est pas accessible
 		if (!$print)
 		{
 			Http::redirect('index.' . PHPEXT . '?p=profile&module=personal');

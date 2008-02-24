@@ -20,10 +20,10 @@ class Page_portail_last_posts extends Fsb_model
 	*/
 	public function main()
 	{
-		// On récupère les forums que le membre peut lire
+		// On recupere les forums que le membre peut lire
 		$f_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'));
 
-		// On récupère les dernier messages dans les forums que le membre peut lire
+		// On recupere les dernier messages dans les forums que le membre peut lire
 		if ($f_idx)
 		{
 			$f_idx = implode(', ', $f_idx);

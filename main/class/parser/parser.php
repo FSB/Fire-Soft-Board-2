@@ -36,8 +36,8 @@ class Parser extends Fsb_model
 	/*
 	** Parse du texte
 	** -----
-	** $str ::			Chaîne de caractère à parser.
-	** $info ::			Tableau d'informations (variables prédéfinies)
+	** $str ::			Chaine de caractere a parser.
+	** $info ::			Tableau d'informations (variables predefinies)
 	*/
 	public function message($str, $info = array())
 	{
@@ -69,8 +69,8 @@ class Parser extends Fsb_model
 		}
 		else
 		{
-			// Si on ne les parse pas, on se contente de les supprimer du texte. On remplace tout de même
-			// les puces [*] par une virgule pour la cohérence des informations
+			// Si on ne les parse pas, on se contente de les supprimer du texte. On remplace tout de meme
+			// les puces [*] par une virgule pour la coherence des informations
 			$str = preg_replace('#\[/?[a-zA-Z0-9]*?((:|=)([^\]]*?))?\]#i', '', $str);
 			$str = str_replace('[*]', ', ', $str);
 		}
@@ -93,11 +93,11 @@ class Parser extends Fsb_model
 	}
 
 	/*
-	** Parse un message qui dépend d'une MAP XML
+	** Parse un message qui depend d'une MAP XML
 	** -----
-	** $str ::			Chaîne du message
+	** $str ::			Chaine du message
 	** $map_name ::		Nom de la MAP
-	** $info ::			Tableau d'informations (variables prédéfinies)
+	** $info ::			Tableau d'informations (variables predefinies)
 	*/
 	public function mapped_message($str, $map_name, $info = array())
 	{
@@ -109,7 +109,7 @@ class Parser extends Fsb_model
 	/*
 	** Parse un titre de sujet
 	** -----
-	** $str ::		Chaîne à parser
+	** $str ::		Chaine a parser
 	*/
 	public function title($str)
 	{
@@ -142,9 +142,9 @@ class Parser extends Fsb_model
 	}
 
 	/*
-	** Remplace les raccourcis dans smileys par leur équivalent en image.
+	** Remplace les raccourcis dans smileys par leur equivalent en image.
 	** -----
-	** $str ::		Chaîne de caractère à parser.
+	** $str ::		Chaine de caractere a parser.
 	** $set_path :: Chemin absolue ?
 	*/
 	public static function smilies($str, $set_path = FALSE)
@@ -182,9 +182,9 @@ class Parser extends Fsb_model
 	}
 
 	/*
-	** Remplace les mots censurés par leurs équivalents
+	** Remplace les mots censures par leurs equivalents
 	** -----
-	** $str ::		Chaîne de caractère à parser.
+	** $str ::		Chaine de caractere a parser.
 	*/
 	public static function censor($str)
 	{
@@ -223,7 +223,7 @@ class Parser extends Fsb_model
 	/*
 	** Parse les URL et les mails automatiquement.
 	** -----
-	** $str ::		Chaîne de caractère à parser.
+	** $str ::		Chaine de caractere a parser.
 	*/
 	public static function auto_url($str)
 	{
@@ -235,7 +235,7 @@ class Parser extends Fsb_model
 	}
 
 	/*
-	** Filtre appliqué sur chaque champ avant l'envoie d'un message
+	** Filtre applique sur chaque champ avant l'envoie d'un message
 	** -----
 	** $str ::		Contenu du champ
 	*/

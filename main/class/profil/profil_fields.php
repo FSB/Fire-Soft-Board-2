@@ -51,8 +51,8 @@ class Profil_fields extends Fsb_model
 	/*
 	** Formate l'affichage de la valeur
 	** -----
-	** $str ::		Chaîne à formater
-	** $output ::	Chaîne de formatage
+	** $str ::		Chaine a formater
+	** $output ::	Chaine de formatage
 	*/
 	public static function parse_value($str, $output)
 	{

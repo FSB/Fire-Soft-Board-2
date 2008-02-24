@@ -11,17 +11,17 @@
 */
 
 /*
-** Gestion du système de MAPS (affichage de la création de messages à partir d'un modèle XML)
+** Gestion du systeme de MAPS (affichage de la creation de messages a partir d'un modele XML)
 */
 class Map extends Fsb_model
 {
 	private static $cache_xml = array();
 
 	/*
-	** Construit le formulaire de post de messages à partir de la MAP XML
+	** Construit le formulaire de post de messages a partir de la MAP XML
 	** -----
-	** $content ::		Contenu du message, pour l'édition
-	** $post_map ::		MAP utilisée
+	** $content ::		Contenu du message, pour l'edition
+	** $post_map ::		MAP utilisee
 	** $tmp_map ::		MAP de formatage a utiliser sur les champs (par exemple pour les citations [quote=xxx]%s[/quote])
 	** $onupload_str ::	Contenu en cas d'upload
 	*/
@@ -29,7 +29,7 @@ class Map extends Fsb_model
 	{
 		$parser = new Parser();
 
-		// En cas d'édition on charge le XML du message
+		// En cas d'edition on charge le XML du message
 		$show_form_value = FALSE;
 		if ($content)
 		{
@@ -53,7 +53,7 @@ class Map extends Fsb_model
 			'MAP_TITLE' =>		$xml->document->head[0]->title[0]->getData(),
 		));
 
-		// Evènement onUpload ?
+		// Evenement onUpload ?
 		$onupload_set = '';
 		$onupload_append = 'true';
 		if ($xml->document->head[0]->childExists('onUpload'))
@@ -70,13 +70,13 @@ class Map extends Fsb_model
 
 			$name = $line->getAttribute('name');
 
-			// On récupère les options
+			// On recupere les options
 			$option = $line->option[0];
 
-			// Champ par défaut
+			// Champ par defaut
 			$default = ($option->childExists('default')) ? $option->default[0]->getData() : NULL;
 
-			// Valeur par défaut
+			// Valeur par defaut
 			if ($tmp_map)
 			{
 				$value = sprintf($tmp_map, $post_cache['description']);
@@ -126,7 +126,7 @@ class Map extends Fsb_model
 					$block['ONUPLOAD'] = ($onupload_set == $name) ? TRUE : FALSE;
 					$block['ONUPLOAD_APPEND'] = ($onupload_append == 'true') ? TRUE : FALSE;
 
-					// On ajoute des fonctions javascript à charger au démarage de la page
+					// On ajoute des fonctions javascript a charger au demarage de la page
 					Fsb::$tpl->set_blocks('onload', array(
 						'CODE' =>		'textEditor[\'map_textarea_' . $block['NAME']. '\'] = new FSB_editor_interface(\'map_textarea_post_map_' . $name . '\', \'' . (($block['USE_WYSIWYG']) ? 'wysiwyg' : 'text') . '\', ' . intval(Fsb::$mods->is_active('wysiwyg')) . ')',
 					));
@@ -138,7 +138,7 @@ class Map extends Fsb_model
 					// Ajout du onclick lors de la soumission ?
 					if ($block['USE_WYSIWYG'])
 					{
-						// Avec l'éditeur wysiwyg on utilise pas les smileys / fsbcodes / couleurs
+						// Avec l'editeur wysiwyg on utilise pas les smileys / fsbcodes / couleurs
 						unset($block['USE_FSBCODE'], $block['USE_SMILIES'], $block['USE_COLOR']);
 
 						// Transformation des FSBcode en HTML
@@ -166,7 +166,7 @@ class Map extends Fsb_model
 					$block['DIRECTION'] = ($option->childExists('direction')) ? $option->direction[0]->getData() : NULL;
 					Fsb::$tpl->set_blocks('map', $block);
 
-					// En cas d'édition ou d'erreur
+					// En cas d'edition ou d'erreur
 					if ($show_form_value)
 					{
 						$ary_checkbox = explode(($option->childExists('separator')) ? $option->separator[0]->getData() : ',', (isset($post_cache[$name])) ? $post_cache[$name] : '');
@@ -210,7 +210,7 @@ class Map extends Fsb_model
 					$block['SIZE'] = ($option->childExists('size')) ? $option->size[0]->getData() : NULL;
 					Fsb::$tpl->set_blocks('map', $block);
 
-					// En cas d'édition ou d'erreur
+					// En cas d'edition ou d'erreur
 					if ($show_form_value)
 					{
 						$ary_multilist = explode(($option->childExists('separator')) ? $option->separator[0]->getData() : ',', (isset($post_cache[$name])) ? $post_cache[$name] : '');
@@ -243,11 +243,11 @@ class Map extends Fsb_model
 	}
 
 	/*
-	** Construit la chaîne du message en recolant bout à bout sous forme XML
+	** Construit la chaine du message en recolant bout a bout sous forme XML
 	** les morceaux de la MAP
 	** -----
 	** $map ::			MAP du message
-	** $is_wysiwyg ::	Si le contenu est passé par l'éditeur wysiwyg (les balises HTML en trop sont supprimées)
+	** $is_wysiwyg ::	Si le contenu est passe par l'editeur wysiwyg (les balises HTML en trop sont supprimees)
 	*/
 	public static function build_map_content($map, $is_wysiwyg = FALSE)
 	{
@@ -266,23 +266,23 @@ class Map extends Fsb_model
 			{
 				if (preg_match('#^post_map_(.*?)$#i', $key, $match) && $attr_name == $match[1])
 				{
-					// On récupère les options et le type
+					// On recupere les options et le type
 					$option = $line->option[0];
 					$type = $line->type[0]->getData();
 
-					// On remplace les entités HTML de $value pour éviter des problèmes au parseur XML
+					// On remplace les entites HTML de $value pour eviter des problemes au parseur XML
 					if ($type == 'multilist' || $type == 'checkbox')
 					{
 						$value = implode(($option->childExists('separator')) ? $option->separator[0]->getData() : ',', $value);
 					}
 
-					// En cas d'éditeur WYSIWYG on parse le code HTML généré
+					// En cas d'editeur WYSIWYG on parse le code HTML genere
 					if ($type == 'textarea' && ($is_wysiwyg || Http::request($match[0] . '_hidden', 'post')))
 					{
 						$value = Parser_wysiwyg::encode($value);
 					}
 
-					// Filtre appliqué sur le champ
+					// Filtre applique sur le champ
 					$value = $parser->prefilter($value);
 
 					$message_line = $message->document->createElement('line');
@@ -350,9 +350,9 @@ class Map extends Fsb_model
 	}
 
 	/*
-	** Parse un message qui dépend d'une MAP XML
+	** Parse un message qui depend d'une MAP XML
 	** -----
-	** $str ::			Chaîne du message
+	** $str ::			Chaine du message
 	** $map_name ::		Nom de la MAP
 	*/
 	public static function parse_message($str, $map_name)
@@ -395,7 +395,7 @@ class Map extends Fsb_model
 			$new_str .= sprintf($sprintf, $value);
 		}
 
-		// Utilisation du template sur la chaîne générée
+		// Utilisation du template sur la chaine generee
 		$new_str = sprintf((self::$cache_xml[$map_name]['template']) ? self::$cache_xml[$map_name]['template'] : '%s', $new_str);
 
 		return ($new_str);

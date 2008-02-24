@@ -24,14 +24,14 @@ class Gd_stats extends Fsb_model
 	// Hauteur des boites sur l'axe Y
 	public $y_height = 25;
 
-	// Valeurs à afficher sur le graphique
+	// Valeurs a afficher sur le graphique
 	protected $value = array();
 	protected $max;
 
-	// Ressource pour la création de l'image
+	// Ressource pour la creation de l'image
 	protected $img;
 
-	// Couleurs prédéfinis
+	// Couleurs predefinis
 	protected $color = array();
 
 	/*
@@ -49,8 +49,8 @@ class Gd_stats extends Fsb_model
 	/*
 	** Assigne les valeurs
 	** -----
-	** $value ::	Tableau de valeur avec en indice le texte à affiché sur l'axe des abscices, et
-	**				en ordonnée les valeurs
+	** $value ::	Tableau de valeur avec en indice le texte a affiche sur l'axe des abscices, et
+	**				en ordonnee les valeurs
 	*/
 	public function values($value)
 	{
@@ -71,21 +71,21 @@ class Gd_stats extends Fsb_model
 	*/
 	public function output()
 	{
-		// Création de l'image
+		// Creation de l'image
 		$this->img = imagecreatetruecolor($this->width, $this->height);
 		$background = imagecolorallocate($this->img, 255, 255, 255);
 		imagefill($this->img, 0, 0, $background);
 
-		// Couleurs prédéfinies
+		// Couleurs predefinies
 		$this->color = array(
 			'black' =>		imagecolorallocate($this->img, 0, 0, 0),
 			'pre_axis' =>	imagecolorallocate($this->img, 190, 190, 190),
 		);
 
-		// Arrière plan de l'image
+		// Arriere plan de l'image
 		$this->gradedRectangle(0, 0, $this->width, $this->height, array(200, 200, 200), array(245, 245, 245), 5);
 
-		// Affichage des traits fins pour la légende
+		// Affichage des traits fins pour la legende
 		$this->pre_axis();
 
 		// Affichage des boites
@@ -120,12 +120,12 @@ class Gd_stats extends Fsb_model
 			imageline($this->img, $abs_x, $this->height - $this->x_width, $abs_x, $this->height - $this->x_width - 5, $this->color['black']);
 			imageline($this->img, $abs_x + 1, $this->height - $this->x_width, $abs_x + 1, $this->height - $this->x_width - 5, $this->color['black']);
 
-			// Légende
+			// Legende
 			imagestring($this->img, 1, $abs_x - $this->x_width + 2, $this->height - $this->x_width + 2, $v['lg'], $this->color['black']);
 			$iterator++;
 		}
 
-		// Axe des ordonnées
+		// Axe des ordonnees
 		imageline($this->img, $this->x_width + $m, $m, $this->x_width + $m, $this->height - $this->x_width, $this->color['black']);
 		$s = ($this->height - $this->x_width - $m) / 10;
 		$s2 = $this->max / 10;
@@ -135,7 +135,7 @@ class Gd_stats extends Fsb_model
 			imageline($this->img, $this->x_width + $m, $abs_y, $this->x_width + (($i % 3 == 0) ? 5 : 2) + $m, $abs_y, $this->color['black']);
 			imageline($this->img, $this->x_width + $m, $abs_y + 1, $this->x_width + (($i % 3 == 0) ? 5 : 2) + $m, $abs_y + 1, $this->color['black']);
 
-			// Légende
+			// Legende
 			if ($i % 3 == 0)
 			{
 				$value = round($this->max - ($i * $s2), 1);
@@ -149,7 +149,7 @@ class Gd_stats extends Fsb_model
 	}
 
 	/*
-	** Traits fins de la légende à afficher avant les boites
+	** Traits fins de la legende a afficher avant les boites
 	*/
 	private function pre_axis()
 	{
@@ -183,13 +183,13 @@ class Gd_stats extends Fsb_model
 	}
 
 	/*
-	** Affiche un rectangle rempli en faisant un dégradé de couleur de $start à $end
+	** Affiche un rectangle rempli en faisant un degrade de couleur de $start a $end
 	** -----
 	** $x ::			Position X du bord haut gauche du rectangle
 	** $y ::			Position Y du bord haut gauche du rectangle
 	** $width ::		Largeur du rectangle
 	** $height ::		Hauteur du rectangle
-	** $start ::		Tableau RGB contenant la couleur de départ
+	** $start ::		Tableau RGB contenant la couleur de depart
 	** $end ::			Tableau RGB contenant la couleur de fin
 	** $bordercolor ::	Couleur de la bordure
 	*/

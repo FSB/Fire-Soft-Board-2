@@ -52,8 +52,10 @@
 				<tr>
 					<th><b>{mod.NAME}</b></th>
 					<td>
-						<b>{LG_INFO_MOD_AUTHOR} :</b> <if content="$mod.EMAIL"><a href="mailto:{mod.EMAIL}">{mod.AUTHOR}</a><else>{mod.AUTHOR}</if> <if content="$mod.WEBSITE"> - <a href="{mod.WEBSITE}">{mod.WEBSITE}</a></if><br />
-						<b>{LG_INFO_MOD_DESCRIPTION} :</b> {mod.DESCRIPTION}
+						<b>{LG_INFO_MOD_AUTHOR} :</b> {mod.AUTHOR}
+						<if content="$mod.EMAIL"><br />{mod.EMAIL}</if>
+						<if content="$mod.WEBSITE"><br />{mod.WEBSITE}</if>
+						<br /><b>{LG_INFO_MOD_DESCRIPTION} :</b> {mod.DESCRIPTION}
 					</td>
 				</tr>
 			</block>

@@ -18,7 +18,7 @@ abstract class Highlight extends Fsb_model
 	abstract protected function _parse($str);
 
 	/*
-	** Retourne une instance de la classe Highlight suivant le language utilisé
+	** Retourne une instance de la classe Highlight suivant le language utilise
 	*/
 	public static function &factory($language)
 	{
@@ -49,9 +49,9 @@ abstract class Highlight extends Fsb_model
 	}
 
 	/*
-	** Parse la chaîne de caractère
+	** Parse la chaine de caractere
 	** -----
-	** $str ::		Chaîne de caractère contenant du PHP
+	** $str ::		Chaine de caractere contenant du PHP
 	*/
 	public function parse_code($str)
 	{
@@ -62,7 +62,7 @@ abstract class Highlight extends Fsb_model
 	/*
 	** Parse les commentaires
 	** -----
-	** $str ::		Chaine de caractère
+	** $str ::		Chaine de caractere
 	** $i ::		Iteration actuelle
 	** $len ::		Longueur de la chaine
 	** $color ::	Couleur de la syntaxe
@@ -86,12 +86,12 @@ abstract class Highlight extends Fsb_model
 	}
 	
 	/*
-	** Colorie la chaine comprise entre deux caractères identiques (", ', etc ...)
+	** Colorie la chaine comprise entre deux caracteres identiques (", ', etc ...)
 	** -----
-	** $str ::		Chaine de caractère
+	** $str ::		Chaine de caractere
 	** $i ::		Iteration actuelle
 	** $len ::		Longueur de la chaine
-	** $c ::		Caractère unique
+	** $c ::		Caractere unique
 	** $color ::	Couleur de la syntaxe
 	*/
 	protected function _quote_string(&$str, &$i, $len, &$c, $color)
@@ -129,7 +129,7 @@ abstract class Highlight extends Fsb_model
 	}
 
 	/*
-	** Echape des caractères spéciaux pour le forum
+	** Echape des caracteres speciaux pour le forum
 	*/
 	protected function escape_special_char($c)
 	{
@@ -137,10 +137,10 @@ abstract class Highlight extends Fsb_model
 	}
 
 	/*
-	** Supprime les anciens tags de coloration dans la chaîne passée en argument
-	** et renvoie la chaîne encadrée d'un nouveau tag.
+	** Supprime les anciens tags de coloration dans la chaine passee en argument
+	** et renvoie la chaine encadree d'un nouveau tag.
 	** -----
-	** $str ::		Chaîne de caractère à parser.
+	** $str ::		Chaine de caractere a parser.
 	*/
 	protected function up_coloration($match)
 	{
@@ -151,11 +151,11 @@ abstract class Highlight extends Fsb_model
 	}
 
 	/*
-	** Retourne un tableau contenant les données ligne par ligne d'une variable de configuration
+	** Retourne un tableau contenant les donnees ligne par ligne d'une variable de configuration
 	** du colorateur
 	** -----
 	** $file_content ::		Contenu du ficheir de conf
-	** $var_name ::			Nom de la variable à parser
+	** $var_name ::			Nom de la variable a parser
 	*/
 	protected function get_conf($file_content, $var_name)
 	{

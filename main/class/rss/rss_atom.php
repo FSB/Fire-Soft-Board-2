@@ -11,18 +11,18 @@
 */
 
 /*
-** Spécification ATOM
+** Specification ATOM
 */
 class Rss_atom extends Rss
 {
 	/*
-	** Création du feed
+	** Creation du feed
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
 	** $language ::		Langue du fil
 	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la dernière génération de ce fil
+	** $updated ::		Timestamp de la derniere generation de ce fil
 	*/
 	protected function _open($title, $description, $language, $link, $updated)
 	{
@@ -60,17 +60,17 @@ class Rss_atom extends Rss
 	}
 
 	/*
-	** Ajout d'une entrée au fil
+	** Ajout d'une entree au fil
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
-	** $author ::		Auteur de l'entrée
-	** $link ::			Lien permettant de consulter l'entrée
-	** $updated ::		Timestamp de la dernière génération de cette entrée
+	** $author ::		Auteur de l'entree
+	** $link ::			Lien permettant de consulter l'entree
+	** $updated ::		Timestamp de la derniere generation de cette entree
 	*/
 	protected function _add_entry($title, $description, $author, $link, $updated)
 	{
-		// Création de l'entrée
+		// Creation de l'entree
 		$entry = $this->xml->document->createElement('entry');
 
 		// Titre
@@ -111,7 +111,7 @@ class Rss_atom extends Rss
 		$item->setData($link);
 		$entry->appendChild($item);
 
-		// Ajout de l'entrée à l'arbre XML
+		// Ajout de l'entree a l'arbre XML
 		$this->xml->document->appendChild($entry);
 	}
 
@@ -123,7 +123,7 @@ class Rss_atom extends Rss
 	}
 
 	/*
-	** Converti un timestamp en spécification ISO8601
+	** Converti un timestamp en specification ISO8601
 	** -----
 	** $timestamp ::	Timestamp
 	*/

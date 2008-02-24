@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -53,13 +53,13 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function form_contact()
 	{
-		// Liste des méthodes de contact
+		// Liste des methodes de contact
 		$list_method = array(
 			'mp' =>		Fsb::$session->lang('contact_mp'),
 			'email' =>	Fsb::$session->lang('contact_email'),
 		);
 
-		// MP désactivés ?
+		// MP desactives ?
 		if (!Fsb::$cfg->get('mp_activated'))
 		{
 			unset($list_method['mp']);
@@ -113,7 +113,7 @@ class Fsb_frame_child extends Fsb_frame
 		$list_admin =	array_map('intval', $list_admin);
 		$email =		trim(Http::request('email', 'post'));
 
-		// Vérification du captcha
+		// Verification du captcha
 		if ($this->use_captcha && !check_captcha(Http::request('captcha_code', 'post')))
 		{
 			Display::message('contact_bad_captcha');
@@ -139,7 +139,7 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('contact_need_email');
 		}
 
-		// On vérifie que les ID sont bien des ID d'administrateurs
+		// On verifie que les ID sont bien des ID d'administrateurs
 		$sql = 'SELECT u_id, u_language, u_email
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id IN (' . implode(', ', $list_admin) . ')

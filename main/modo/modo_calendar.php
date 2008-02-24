@@ -10,14 +10,14 @@
 ** +---------------------------------------------------+
 */
 
-// On affiche ce module si la fonction est activée, et que l'utilisateur peut valider les évènements
+// On affiche ce module si la fonction est activee, et que l'utilisateur peut valider les evenements
 if (Fsb::$mods->is_active('calendar') && Fsb::$session->is_authorized('approve_event'))
 {
 	$show_this_module = TRUE;
 }
 
 /*
-** Module de modération listant les évènements de calendriers non validés.
+** Module de moderation listant les evenements de calendriers non valides.
 */
 class Page_modo_calendar extends Fsb_model
 {
@@ -42,7 +42,7 @@ class Page_modo_calendar extends Fsb_model
 	}
 
 	/*
-	** Affiche la liste des évènements non validés
+	** Affiche la liste des evenements non valides
 	*/
 	public function list_events()
 	{
@@ -50,7 +50,7 @@ class Page_modo_calendar extends Fsb_model
 
 		$parser = new Parser();
 
-		// Liste des évènements
+		// Liste des evenements
 		$sql = 'SELECT c.c_id, c.c_begin, c.c_end, c.c_title, c.c_content, u.u_auth, u.u_id, u.u_nickname, u.u_color
 				FROM ' . SQL_PREFIX . 'calendar c
 				INNER JOIN ' . SQL_PREFIX . 'users u
@@ -61,7 +61,7 @@ class Page_modo_calendar extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['u_nickname'],
@@ -85,7 +85,7 @@ class Page_modo_calendar extends Fsb_model
 	}
 
 	/*
-	** Approuve un évènement
+	** Approuve un evenement
 	*/
 	public function approve_event()
 	{

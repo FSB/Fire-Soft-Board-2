@@ -11,26 +11,26 @@
 */
 
 /*
-** Page affichant le panneau de controle de modération
-** Chaque module sera pioché dans le répertoire ~/main/modo/
+** Page affichant le panneau de controle de moderation
+** Chaque module sera pioche dans le repertoire ~/main/modo/
 **
-** Chaque module doit contenir une variable globale à la page nommée "show_this_module" avec comme
+** Chaque module doit contenir une variable globale a la page nommee "show_this_module" avec comme
 ** valeur TRUE ou FALSE suivant si l'ont souhaite afficher le module dans le menu
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
 
-	// Module sellectioné pour la page
+	// Module sellectione pour la page
 	public $module;
 
 	// Navigation
 	public $nav = array();
 
-	// Liste des modules par défaut du forum, uniquement afin de les placer dans un certain ordre
+	// Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
 	public $list = array('index', 'abuse', 'approve', 'calendar', 'ip', 'merge', 'move', 'procedure', 'split', 'upload', 'user', 'warn');
 
 	/*
@@ -38,7 +38,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// On récupère le module du panneau à afficher
+		// On recupere le module du panneau a afficher
 		$this->module = Http::request('module');
 
 		if (!$this->module || !file_exists(ROOT . 'main/modo/modo_' . $this->module . '.' . PHPEXT))
@@ -46,7 +46,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->module = 'index';
 		}
 
-		// Le membre a le droit d'accéder à la modération ?
+		// Le membre a le droit d'acceder a la moderation ?
 		if ($this->module != 'delete' && $this->module != 'procedure_exec' && Fsb::$session->auth() < MODO)
 		{
 			Display::message('not_allowed');
@@ -56,15 +56,15 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('show_menu_panel');
 		}
 
-		// Cette liste sera utilisée pour afficher des informations (numéro) à côté du nom de certaines pages, histoire
-		// de faciliter la lecture aux modérateurs. Par exemple : messages abusifs (xx).
+		// Cette liste sera utilisee pour afficher des informations (numero) a cote du nom de certaines pages, histoire
+		// de faciliter la lecture aux moderateurs. Par exemple : messages abusifs (xx).
 		$info_list = array(
 			'abuse' =>		Fsb::$session->data['u_total_abuse'],
 			'approve' =>	Fsb::$session->data['u_total_unapproved'],
 			'calendar' =>	Fsb::$db->get('SELECT COUNT(*) AS total FROM ' . SQL_PREFIX . 'calendar WHERE c_approve = 0 AND c_view <> 0', 'total'),
 		);
 
-		// On liste les modules du panneau de modération
+		// On liste les modules du panneau de moderation
 		$getlist = array();
 		$fd = opendir(ROOT . 'main/modo/');
 		$max = 1000;

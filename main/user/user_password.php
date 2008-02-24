@@ -18,12 +18,12 @@ Fsb::$session->load_lang('lg_forum_register');
 
 /*
 ** Module d'utilisateur permettant au membre de modifier son login et son mot de passe
-** Notez qu'il faut connaître obligatoirement le login et le mot de passe pour avoir le droit de
-** changer un des deux (ou même les deux).
+** Notez qu'il faut connaitre obligatoirement le login et le mot de passe pour avoir le droit de
+** changer un des deux (ou meme les deux).
 */
 class Page_user_password extends Fsb_model
 {
-	// Données du formulaire
+	// Donnees du formulaire
 	public $old_login;
 	public $old_password;
 	public $new_login;
@@ -33,7 +33,7 @@ class Page_user_password extends Fsb_model
 
 	public $pwd_data;
 
-	// Mise à jour de l'adresse Email ?
+	// Mise a jour de l'adresse Email ?
 	public $update_email = FALSE;
 	public $can_update_email = FALSE;
 	
@@ -100,7 +100,7 @@ class Page_user_password extends Fsb_model
 	}
 	
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{
@@ -117,7 +117,7 @@ class Page_user_password extends Fsb_model
 			$this->errstr[] = Fsb::$session->lang('user_password_need_password');
 		}
 		
-		// On vérifie si la clef login / mot de passe est correct
+		// On verifie si la clef login / mot de passe est correct
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'users_password
 				WHERE u_id = ' . Fsb::$session->id();
@@ -128,13 +128,13 @@ class Page_user_password extends Fsb_model
 			$this->errstr[] = Fsb::$session->lang('user_password_bad_login');
 		}
 		
-		// On vérifie si les deux nouveaux mots de passe sont les même
+		// On verifie si les deux nouveaux mots de passe sont les meme
 		if (($this->new_password || $this->new_password_confirm) && $this->new_password !== $this->new_password_confirm)
 		{
 			$this->errstr[] = Fsb::$session->lang('user_password_dif');
 		}
 
-		// Validité de l'adresse Email
+		// Validite de l'adresse Email
 		if ($this->update_email && !User::email_valid($this->new_email))
 		{
 			$this->errstr[] = Fsb::$session->lang('user_email_format');
@@ -154,7 +154,7 @@ class Page_user_password extends Fsb_model
 	}
 	
 	/*
-	** Soumet les données envoyées par le formulaire
+	** Soumet les donnees envoyees par le formulaire
 	*/
 	public function submit_form()
 	{		
@@ -172,7 +172,7 @@ class Page_user_password extends Fsb_model
 			$update_pwd_array['u_password'] = Password::hash($this->new_password, $this->pwd_data['u_algorithm'], $this->pwd_data['u_use_salt']);
 		}
 
-		// Si une nouvelle adresse Email est entrée, et que la configuration necessite une validation, on désactive le compte et on envoie
+		// Si une nouvelle adresse Email est entree, et que la configuration necessite une validation, on desactive le compte et on envoie
 		// un Email avec un nouveau code de validation.
 		$logout = FALSE;
 		if ($this->update_email && $this->can_update_email)
@@ -192,7 +192,7 @@ class Page_user_password extends Fsb_model
 			$result = $mail->Send();
 			$mail->SmtpClose();
 
-			// On ne fait le controle de validation que si l'Email a pu être envoyé
+			// On ne fait le controle de validation que si l'Email a pu etre envoye
 			if ($result)
 			{
 				$update_array['u_activated'] =		FALSE;
@@ -208,7 +208,7 @@ class Page_user_password extends Fsb_model
 			$update_array['u_email'] = $this->new_email;
 		}
 
-		// Mise à jour
+		// Mise a jour
 		if ($update_array)
 		{
 			Fsb::$db->update('users', $update_array, 'WHERE u_id = ' . Fsb::$session->id());
@@ -251,8 +251,8 @@ class Page_user_password extends Fsb_model
 		}
 		else
 		{
-			// Mot de passe faible (ou moyennement faible), on évalue les besoins du mot de passe en fonction
-			// des paramètres calculé par la classe Password() (taille, caractères spéciaux, moyenne).
+			// Mot de passe faible (ou moyennement faible), on evalue les besoins du mot de passe en fonction
+			// des parametres calcule par la classe Password() (taille, caracteres speciaux, moyenne).
 			$result_str = ($result <= 1) ? Fsb::$session->lang('register_test_low') : Fsb::$session->lang('register_test_middle');
 			if ($password->grade_data['len'] < 3)
 			{

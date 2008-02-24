@@ -17,15 +17,15 @@ if (Fsb::$session->is_authorized('warn_user'))
 }
 
 /*
-** Module de modération pour donner / supprimer un avertissement à un membre
+** Module de moderation pour donner / supprimer un avertissement a un membre
 */
 class Page_modo_warn extends Fsb_model
 {
-	// Paramètres de la page
+	// Parametres de la page
 	public $mode;
 	public $id;
 
-	// Pseudonyme et données du membre
+	// Pseudonyme et donnees du membre
 	public $nickname;
 	public $data = array();
 
@@ -74,7 +74,7 @@ class Page_modo_warn extends Fsb_model
 	}
 
 	/*
-	** Vérification du login du membre
+	** Verification du login du membre
 	*/
 	public function check_login()
 	{
@@ -108,7 +108,7 @@ class Page_modo_warn extends Fsb_model
 			Display::message('modo_warn_cant_admin');
 		}
 
-		// On vérifie si on peut ajouter / supprimer un avertissement
+		// On verifie si on peut ajouter / supprimer un avertissement
 		if (!$this->can_warn())
 		{
 			Fsb::$tpl->set_switch('warn_error');
@@ -124,7 +124,7 @@ class Page_modo_warn extends Fsb_model
 			'email' =>	Fsb::$session->lang('modo_warn_message_email'),
 		);
 
-		// Liste des étapes temporelles
+		// Liste des etapes temporelles
 		$list_time = array(
 			0 =>			Fsb::$session->lang('unlimited'),
 			ONE_HOUR =>		Fsb::$session->lang('hour'),
@@ -171,7 +171,7 @@ class Page_modo_warn extends Fsb_model
 	*/
 	public function submit_warn_form()
 	{
-		// On vérifie si on peut ajouter / supprimer un avertissement
+		// On verifie si on peut ajouter / supprimer un avertissement
 		if (!$this->can_warn())
 		{
 			Display::message('modo_warn_error_' . $this->mode);
@@ -186,7 +186,7 @@ class Page_modo_warn extends Fsb_model
 			'read_time' =>	intval(Http::request('disable_read_time', 'post')),
 		));
 
-		// On vérifie si on doit lui envoyer un message (email ou MP)
+		// On verifie si on doit lui envoyer un message (email ou MP)
 		if ($send_message = trim(Http::request('warn_message', 'post')))
 		{
 			$send_subject = trim(Http::request('warn_subject', 'post'));
@@ -218,7 +218,7 @@ class Page_modo_warn extends Fsb_model
 			}
 		}
 
-		// Envoie d'un signal au membre pour mettre à jour ses droits
+		// Envoie d'un signal au membre pour mettre a jour ses droits
 		Sync::signal(Sync::USER, $this->id);
 
 		Log::add(Log::MODO, 'log_warn_' . $this->mode, $this->nickname);

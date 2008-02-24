@@ -14,7 +14,7 @@
 $show_this_module = TRUE;
 
 /*
-** Module de modération pour la division de sujet
+** Module de moderation pour la division de sujet
 */
 class Page_modo_upload extends Fsb_model
 {
@@ -58,11 +58,11 @@ class Page_modo_upload extends Fsb_model
 	}
 
 	/*
-	** Affiche la liste des fichiers uploadés sur le forum
+	** Affiche la liste des fichiers uploades sur le forum
 	*/
 	public function show_uploaded_files()
 	{
-		// On récupère l'ordre et la direction d'affichage des fichiers
+		// On recupere l'ordre et la direction d'affichage des fichiers
 		$direction = strtoupper(Http::request('direction'));
 		if ($direction !== 'ASC' && $direction !== 'DESC')
 		{
@@ -75,7 +75,7 @@ class Page_modo_upload extends Fsb_model
 			$order = 'upload_time';
 		}
 
-		// On compte le nombre de fichiers uploadés
+		// On compte le nombre de fichiers uploades
 		$sql = 'SELECT COUNT(*) AS total
 				FROM ' . SQL_PREFIX . 'upload';
 		$total = Fsb::$db->get($sql, 'total');
@@ -93,7 +93,7 @@ class Page_modo_upload extends Fsb_model
 			'U_ORDER_AUTH' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=upload_auth&amp;direction=' . (($order == 'upload_auth' && $direction == 'ASC') ? 'DESC' : 'ASC')),
 		));
 
-		// Liste des fichiers uploadés
+		// Liste des fichiers uploades
 		$sql = 'SELECT up.upload_id, up.upload_filename, up.upload_realname, up.upload_filesize, up.upload_time, up.upload_auth, u.u_id, u.u_nickname, u.u_color
 				FROM ' . SQL_PREFIX . 'upload up
 				LEFT JOIN ' . SQL_PREFIX . 'users u
@@ -131,7 +131,7 @@ class Page_modo_upload extends Fsb_model
 			Display::message('attached_file_not_exists');
 		}
 
-		// Liste des droits pour le téléchargement
+		// Liste des droits pour le telechargement
 		$list_upload_auth = array(
 			VISITOR =>	Fsb::$session->lang('visitor'),
 			USER =>		Fsb::$session->lang('user'),
@@ -159,7 +159,7 @@ class Page_modo_upload extends Fsb_model
 	}
 
 	/*
-	** Soumission de l'édition d'un fichier
+	** Soumission de l'edition d'un fichier
 	*/
 	public function submit_edit_file()
 	{
@@ -183,11 +183,11 @@ class Page_modo_upload extends Fsb_model
 	}
 
 	/*
-	** Suppression des fichiers uploadés
+	** Suppression des fichiers uploades
 	*/
 	public function delete_uploaded_files()
 	{
-		// Vérification des noms de fichiers
+		// Verification des noms de fichiers
 		$action = Http::request('action', 'post');
 		$action = array_map('intval', $action);
 
@@ -196,7 +196,7 @@ class Page_modo_upload extends Fsb_model
 			return ;
 		}
 
-		// Vérification d'existance des fichiers
+		// Verification d'existance des fichiers
 		$sql = 'SELECT upload_id, upload_filename
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE upload_id IN (' . implode(', ', $action) . ')';

@@ -11,14 +11,14 @@
 */
 
 /*
-** Permet une recherche dans les messages du forum en fonction de divers paramètres.
-** Le fonctionement global de la page : on récupère une liste de message concerné par la recherche via les méthodes
-** search_*() dans la propriété $this->idx, puis on appel la méthode print_result() pour afficher le résultat en
-** fonction des messages récupérés.
+** Permet une recherche dans les messages du forum en fonction de divers parametres.
+** Le fonctionement global de la page : on recupere une liste de message concerne par la recherche via les methodes
+** search_*() dans la propriete $this->idx, puis on appel la methode print_result() pour afficher le resultat en
+** fonction des messages recuperes.
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -29,13 +29,13 @@ class Fsb_frame_child extends Fsb_frame
 	// Argument $id
 	public $id;
 
-	// Données du formulaire pour la recherche
+	// Donnees du formulaire pour la recherche
 	public $keywords, $author, $in, $print, $forums, $topic, $date, $order, $direction;
 
 	// Objet de recherche
 	public $search;
 
-	// ID des messages pour le résultat de la recherche
+	// ID des messages pour le resultat de la recherche
 	public $idx = array();
 
 	// Navigation
@@ -47,7 +47,7 @@ class Fsb_frame_child extends Fsb_frame
 	// Module de menu
 	public $module;
 
-	// Recherche indépendante
+	// Recherche independante
 	public $where = NULL;
 	public $count = NULL;
 
@@ -168,8 +168,8 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Fonction classique de recherche, via le formulaire de recherche.
 	** A chaque soumission du formulaire de recherche un cache pour la recherche est
-	** créé dans la table search_result. Le cache est récupéré quand le mode result est passé
-	** en paramètre.
+	** cree dans la table search_result. Le cache est recupere quand le mode result est passe
+	** en parametre.
 	*/
 	public function search_result()
 	{
@@ -191,10 +191,10 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Aucun cache de recherche trouvé ...
+		// Aucun cache de recherche trouve ...
 		if (!$cache_result)
 		{
-			// Vérification du formulaire
+			// Verification du formulaire
 			if (empty($this->keywords) && empty($this->author))
 			{
 				Display::message('search_keywords_empty');
@@ -215,7 +215,7 @@ class Fsb_frame_child extends Fsb_frame
 			// Suppression des anciens cache
 			$cache->garbage_colector(ONE_DAY);
 
-			// Création du cache de recherche
+			// Creation du cache de recherche
 			$cache->put(Fsb::$session->sid, array('print' => $this->print, 'idx' => $this->idx));
 		}
 	}
@@ -331,7 +331,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Cherche les sujets dans lesquels on a posté
+	** Cherche les sujets dans lesquels on a poste
 	*/
 	public function search_ownposts()
 	{
@@ -353,7 +353,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function search_newposts()
 	{
-		// L'invité ne peut accéder à cette page
+		// L'invite ne peut acceder a cette page
 		if (!Fsb::$session->is_logged())
 		{
 			Display::message('not_allowed');
@@ -364,7 +364,7 @@ class Fsb_frame_child extends Fsb_frame
 			'url' =>		'',
 		);
 
-		// Récupération du module
+		// Recuperation du module
 		$unread_array = array('list', 'forums');
 		$this->module = Http::request('module');
 		if (!$this->module || !in_array($this->module, $unread_array))
@@ -376,7 +376,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		Http::cookie('unread_module', $this->module, CURRENT_TIME + ONE_MONTH);
 
-		// Création de la liste des modules
+		// Creation de la liste des modules
 		foreach ($unread_array AS $m)
 		{
 			Fsb::$tpl->set_blocks('module', array(
@@ -390,7 +390,7 @@ class Fsb_frame_child extends Fsb_frame
 			'MENU_HEADER_TITLE' =>	Fsb::$session->lang('search_title_not_read'),
 		));
 
-		// Génération des messages
+		// Generation des messages
 		$sql = 'SELECT t.t_last_p_id, tr.tr_last_time
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
@@ -430,7 +430,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function search_notification()
 	{
-		// L'invité ne peut accéder à cette page
+		// L'invite ne peut acceder a cette page
 		if (!Fsb::$session->is_logged())
 		{
 			Display::message('not_allowed');
@@ -451,7 +451,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Affichage sous forme de sujet
 		$this->print = 'topic';
 
-		// On peut cocher les sujets pour arréter de les surveiller
+		// On peut cocher les sujets pour arreter de les surveiller
 		Fsb::$tpl->set_switch('can_check');
 		Fsb::$tpl->set_vars(array(
 			'CHECK_LANG' =>		Fsb::$session->lang('search_notification'),
@@ -466,7 +466,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Traite les sujets cochés
+	** Traite les sujets coches
 	*/
 	public function check_topics()
 	{
@@ -507,8 +507,8 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche le résultat de la recherche, en se basant sur la propriété
-	** $this->idx qui a reçu le tableau des messages trouvés pour la recherche
+	** Affiche le resultat de la recherche, en se basant sur la propriete
+	** $this->idx qui a recu le tableau des messages trouves pour la recherche
 	*/
 	public function print_result()
 	{
@@ -521,12 +521,12 @@ class Fsb_frame_child extends Fsb_frame
 		$total = 0;
 		$total_page = 0;
 
-		// Affichage des résultats en messages ou en sujets
+		// Affichage des resultats en messages ou en sujets
 		switch ($this->print)
 		{
 			case 'post' :
 				//
-				// Gestion de l'affichage des résultats de la recherche sous forme de messages
+				// Gestion de l'affichage des resultats de la recherche sous forme de messages
 				//
 				Fsb::$tpl->set_file('forum/forum_search_post.html');
 
@@ -554,7 +554,7 @@ class Fsb_frame_child extends Fsb_frame
 					}
 					$total_page = ceil($total / Fsb::$cfg->get('post_per_page'));
 
-					// Récupération des mots clefs
+					// Recuperation des mots clefs
 					$split_words = array();
 					if ($this->keywords)
 					{
@@ -597,7 +597,7 @@ class Fsb_frame_child extends Fsb_frame
 					$result = Fsb::$db->query($sql);
 					while ($row = Fsb::$db->row($result))
 					{
-						// Informations passées au parseur de message
+						// Informations passees au parseur de message
 						$parser_info = array(
 							'u_id' =>			$row['u_id'],
 							'p_nickname' =>		$row['p_nickname'],
@@ -636,7 +636,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			case 'forum' :
 				//
-				// Gestion de l'affichage des résultats de la recherche sous forme de sujets, regroupés par forums
+				// Gestion de l'affichage des resultats de la recherche sous forme de sujets, regroupes par forums
 				//
 				Fsb::$tpl->set_file('forum/forum_search_forum.html');
 
@@ -751,7 +751,7 @@ class Fsb_frame_child extends Fsb_frame
 			case 'topic' :
 			default :
 				//
-				// Gestion de l'affichage des résultats de la recherche sous forme de sujets
+				// Gestion de l'affichage des resultats de la recherche sous forme de sujets
 				//
 				Fsb::$tpl->set_file('forum/forum_search_topic.html');
 
@@ -867,7 +867,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('pagination');
 		}
 
-		// Suppression des paramètres inutiles order et direction s'ils valent leur valeur par défaut
+		// Suppression des parametres inutiles order et direction s'ils valent leur valeur par defaut
 		$pagination = '';
 		if ($this->order != 't_last_p_time')
 		{
@@ -887,7 +887,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Liste des forums autorisés
+	** Liste des forums autorises
 	*/
 	public function get_auths_forums($forums)
 	{
@@ -912,7 +912,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Génère la liste des forums pour la recherche
+	** Genere la liste des forums pour la recherche
 	*/
 	public function generate_forum_list()
 	{
@@ -938,12 +938,12 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		Fsb::$db->free($result);
 
-		// On génère la liste des forums
+		// On genere la liste des forums
 		$this->generate_forum_list_by_tree($tree->document);
 	}
 
 	/*
-	** Génération récursive de la liste des forums
+	** Generation recursive de la liste des forums
 	*/
 	public function generate_forum_list_by_tree(&$children)
 	{

@@ -13,7 +13,7 @@
 $GLOBALS['use_register_shutdown'] = FALSE;
 
 /*
-** Recalcul des données en cache dans la configuration
+** Recalcul des donnees en cache dans la configuration
 */
 function prune_config()
 {
@@ -39,7 +39,7 @@ function prune_config()
 					FROM ' . SQL_PREFIX . substr($value, 6);
 			$total = Fsb::$db->get($sql, 'total');
 
-			// Pour total_users on supprime 1 pour l'invité
+			// Pour total_users on supprime 1 pour l'invite
 			if ($value == 'total_users')
 			{
 				$total--;

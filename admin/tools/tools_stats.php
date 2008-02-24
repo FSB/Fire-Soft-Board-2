@@ -104,7 +104,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			return ('<fieldset><legend>' . $title . '</legend><div style="overflow: auto; background-color: transparent; border: none; text-align: left;"><table id="tab" width="100%">' . $match[3] . '</table></div></fieldset>');
 		}
 
-		// On récupère le buffer de phpinfo()
+		// On recupere le buffer de phpinfo()
 		ob_start();
 		phpinfo();
 		$buffer = ob_get_contents();
@@ -130,7 +130,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	/*
 	** Renvoie des statistiques (nombre de sujets, moyenne par jour, etc ...)
 	** -----
-	** $key ::		Clé dans la table de configuration
+	** $key ::		Cle dans la table de configuration
 	*/
 	public function get_simple_stats($key)
 	{
@@ -142,10 +142,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Renvoie des statistiques sur les images contenue dans un répertoire : leur nombre
+	** Renvoie des statistiques sur les images contenue dans un repertoire : leur nombre
 	** et la place totale prise.
 	** -----
-	** $dir ::		Répertoire dont on veut les données
+	** $dir ::		Repertoire dont on veut les donnees
 	*/
 	public function get_memory_stats($dir)
 	{
@@ -164,7 +164,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Renvoie le type de base de donnée, sa version, sa taille et son nombre de tables
+	** Renvoie le type de base de donnee, sa version, sa taille et son nombre de tables
 	*/
 	public function get_sql_stats()
 	{		
@@ -188,7 +188,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					}
 				}
 
-				// On récupère la version MySQL
+				// On recupere la version MySQL
 				$sql = 'SELECT VERSION() AS version';
 				$sgbd_version = Fsb::$db->get($sql, 'version');
 
@@ -207,7 +207,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$db_size = 0;
 				$db_total_table = $stat['total'];
 
-				// On récupère la version PostgreSQL
+				// On recupere la version PostgreSQL
 				$sql = 'SELECT VERSION()';
 				$result = Fsb::$db->query($sql);
 				$row = Fsb::$db->row($result, 'row');
@@ -225,7 +225,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$db_size = (file_exists(ROOT . 'main/dbal/sqlite/' . SQL_DB . '.sqlite')) ? filesize(ROOT . 'main/dbal/sqlite/' . SQL_DB . '.sqlite') : '';
 				$db_total_table = $stat['total'];
 
-				// On récupère la version SQLite
+				// On recupere la version SQLite
 				$sgbd_version = sqlite_libversion();
 				$sgbd_type = 'SQLite';
 			break;
@@ -251,7 +251,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function show_stat_image($img_type, $legend)
 	{
-		// Calcul du timestamp dans une année
+		// Calcul du timestamp dans une annee
 		$min_timestamp = (CURRENT_TIME - Fsb::$cfg->get('register_time') > ONE_YEAR) ? CURRENT_TIME - ONE_YEAR : Fsb::$cfg->get('register_time');
 
 		$month_begin = intval(Http::request($img_type . '_month_begin', 'post'));
@@ -287,14 +287,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$list_month[$i] = Fsb::$session->lang('month_' . $i);
 		}
 
-		// Liste des années
+		// Liste des annees
 		$list_year = array();
 		for ($i = date('Y', Fsb::$cfg->get('register_time')); $i <= date('Y', CURRENT_TIME); $i++)
 		{
 			$list_year[$i] = $i;
 		}
 
-		// Date de début et de fin à passer aux images
+		// Date de debut et de fin a passer aux images
 		$begin = mktime(0, 0, 0, $month_begin, 1, $year_begin);
 		$end = mktime(0, 0, 0, $month_end, date('t', mktime(0, 0, 0, $month_end, 1, $year_end)), $year_end);
 

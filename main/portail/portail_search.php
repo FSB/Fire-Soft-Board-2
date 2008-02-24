@@ -45,7 +45,7 @@ class Page_portail_search extends Fsb_model
 	*/
 	public function submit_search()
 	{
-		// On récupère si possible la langue pour le moteur
+		// On recupere si possible la langue pour le moteur
 		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 		{
 			$exp = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);

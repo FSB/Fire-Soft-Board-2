@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet de gérer des fichiers de configuration ayant ce format :
+** Permet de gerer des fichiers de configuration ayant ce format :
 **
 **   [categorie]
 **   clef = valeur
@@ -23,7 +23,7 @@
 class Config_file extends Fsb_model
 {
 	/*
-	** Lit un fichier de configuration d'un thème
+	** Lit un fichier de configuration d'un theme
 	** -----
 	** $filename ::		Nom du fichier
 	** $use_cache ::	Activation ou non de la mise en cache du fichier
@@ -64,7 +64,7 @@ class Config_file extends Fsb_model
 	** Ecrit le contenu d'un tableau dans un fichier de configuration
 	** -----
 	** $filename ::	Fichier cible
-	** $ary ::		Tableau à écrire
+	** $ary ::		Tableau a ecrire
 	*/
 	public static function write($filename, $ary)
 	{

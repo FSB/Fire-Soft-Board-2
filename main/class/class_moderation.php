@@ -11,18 +11,18 @@
 */
 
 /*
-** Classe gérant les actions de modérations sur le forum (suppression de messages, de sujets, etc ..)
+** Classe gerant les actions de moderations sur le forum (suppression de messages, de sujets, etc ..)
 */
 class Moderation extends Fsb_model
 {
 	/*
 	** Supprime un ou plusieurs messages
 	** -----
-	** $where ::		Condition des messages à supprimer
+	** $where ::		Condition des messages a supprimer
 	*/
 	public static function delete_posts($where)
 	{
-		// On récupère les données pour chaque message
+		// On recupere les donnees pour chaque message
 		$sql = 'SELECT p_id, t_id, f_id, u_id, p_approve
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE ' . $where;
@@ -33,8 +33,8 @@ class Moderation extends Fsb_model
 		{
 			$posts[$row['p_id']] = TRUE;
 
-			// Seul les messages approuvés ont des statistiques changeantes, on ne prend donc pas en compte
-			// les messages non approuvés
+			// Seul les messages approuves ont des statistiques changeantes, on ne prend donc pas en compte
+			// les messages non approuves
 			if ($row['p_approve'] == IS_APPROVED)
 			{
 				$forums[] = $row['f_id'];
@@ -54,8 +54,8 @@ class Moderation extends Fsb_model
 			return ;
 		}
 
-		// Maintenant on vérifie les sujets qui sont affectés par cette suppression de message,
-		// si le premier message du sujet est supprimé, alors on supprime le sujet.
+		// Maintenant on verifie les sujets qui sont affectes par cette suppression de message,
+		// si le premier message du sujet est supprime, alors on supprime le sujet.
 		$delete_topics = array();
 		$total_topics = 0;
 		if ($topics)
@@ -92,7 +92,7 @@ class Moderation extends Fsb_model
 
 			if ($get_posts)
 			{
-				// Si des messages suplémentaires ont été supprimés dans les sujets, on récupère leurs données
+				// Si des messages suplementaires ont ete supprimes dans les sujets, on recupere leurs donnees
 				$sql = 'SELECT p_id, f_id, u_id
 						FROM ' . SQL_PREFIX . 'posts
 						WHERE t_id IN (' . implode(', ', $get_posts) . ')
@@ -113,7 +113,7 @@ class Moderation extends Fsb_model
 		// On supprime les messages
 		Moderation::_delete_posts(array_keys($posts));
 
-		// On met à jour le compteur de messages des membres
+		// On met a jour le compteur de messages des membres
 		foreach ($users AS $u_id => $total)
 		{
 			Fsb::$db->update('users', array(
@@ -122,7 +122,7 @@ class Moderation extends Fsb_model
 			), 'WHERE u_id = ' . $u_id);
 		}
 
-		// Maintenant que les messages sont supprimés, on met à jour les forums et les sujets qui ont été concernés
+		// Maintenant que les messages sont supprimes, on met a jour les forums et les sujets qui ont ete concernes
 		// par tout ce mouvement.
 		if ($topics)
 		{
@@ -131,7 +131,7 @@ class Moderation extends Fsb_model
 		Sync::forums($forums);
 		Sync::signal(Sync::APPROVE | Sync::ABUSE);
 
-		// On met à jour les derniers messages des sujets lus
+		// On met a jour les derniers messages des sujets lus
 		if ($topics)
 		{
 			$sql = 'UPDATE ' . SQL_PREFIX . 'topics_read tr
@@ -149,7 +149,7 @@ class Moderation extends Fsb_model
 	/*
 	** Supprime les messages
 	** -----
-	** $posts ::		ID des messages à supprimer
+	** $posts ::		ID des messages a supprimer
 	*/
 	public static function _delete_posts($posts)
 	{
@@ -180,7 +180,7 @@ class Moderation extends Fsb_model
 	*/
 	public static function delete_topics($where)
 	{
-		// On récupère la liste des sujets à supprimer
+		// On recupere la liste des sujets a supprimer
 		$sql = 'SELECT t_id
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE ' . $where;
@@ -221,9 +221,9 @@ class Moderation extends Fsb_model
 	}
 
 	/*
-	** Suppression de messages privés
+	** Suppression de messages prives
 	** -----
-	** $idx ::	ID / tableau d'ID de messages à supprimer
+	** $idx ::	ID / tableau d'ID de messages a supprimer
 	*/
 	public static function delete_mp($idx)
 	{
@@ -251,7 +251,7 @@ class Moderation extends Fsb_model
 	/*
 	** Suppression d'un sondage
 	** -----
-	** $t_id ::	ID du sujet (possibilité de passer plusieurs sujets en paramètre pour la clause IN)
+	** $t_id ::	ID du sujet (possibilite de passer plusieurs sujets en parametre pour la clause IN)
 	*/
 	public static function delete_poll($topics)
 	{
@@ -279,34 +279,34 @@ class Moderation extends Fsb_model
 	** Retourne un tableau contenant l'ID du nouveau sujet et le nom de l'ancien sujet.
 	**		array('new_topic_id', 'old_topic_name')
 	** -----
-	** $topic_id ::		ID du sujet à déplacer
+	** $topic_id ::		ID du sujet a deplacer
 	** $forum_id ::		ID du forum cible
 	** $title ::		Titre du sujet de destination
-	** $action ::		ID des messages sellectionés pour le split
+	** $action ::		ID des messages sellectiones pour le split
 	*/
 	public static function split_topic($topic_id, $forum_id, $title, $action)
 	{
 		$count_action = count($action);
 
-		// Données du forum cible
+		// Donnees du forum cible
 		$sql = 'SELECT f_type
 				FROM ' . SQL_PREFIX . 'forums
 				WHERE f_id = ' . $forum_id;
 		$f_type = Fsb::$db->get($sql, 'f_type');
 
-		// On vérifie le type de forum
+		// On verifie le type de forum
 		if ($f_type != FORUM_TYPE_NORMAL)
 		{
 			Display::message('modo_move_bad_type');
 		}
 
-		// On vérifie les droits d'écriture du forum
+		// On verifie les droits d'ecriture du forum
 		if (!Fsb::$session->is_authorized($forum_id, 'ga_create_' . $GLOBALS['_topic_type'][count($GLOBALS['_topic_type']) - 1]))
 		{
 			Display::message('modo_move_no_write');
 		}
 
-		// Données sur le sujet
+		// Donnees sur le sujet
 		$sql = 'SELECT t.f_id, t.t_total_post, t.t_title, t.t_map, t.t_map_first_post
 				FROM ' . SQL_PREFIX . 'topics t
 				INNER JOIN ' . SQL_PREFIX . 'forums f
@@ -319,14 +319,14 @@ class Moderation extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On vérifie que le nombre de messages selectionnés ne corespond pas
+		// On verifie que le nombre de messages selectionnes ne corespond pas
 		// au total de messages du sujet initial
 		if ($count_action >= $topic_data['t_total_post'])
 		{
 			Display::message('modo_split_cant_all');
 		}
 
-		// Données sur le premier message selectionné
+		// Donnees sur le premier message selectionne
 		$sql = 'SELECT p_id, u_id
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE p_id = ' . $action[0] . '
@@ -334,11 +334,11 @@ class Moderation extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		if (!$first_post = Fsb::$db->row($result))
 		{
-			trigger_error('Impossible de vérifier les données du premier message', FSB_ERROR);
+			trigger_error('Impossible de verifier les donnees du premier message', FSB_ERROR);
 		}
 		Fsb::$db->free($result);
 
-		// Données sur le dernier message selectionné
+		// Donnees sur le dernier message selectionne
 		$sql = 'SELECT p_id, u_id, p_nickname, p_time
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE p_id = ' . $action[$count_action - 1] . '
@@ -346,13 +346,13 @@ class Moderation extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		if (!$last_post = Fsb::$db->row($result))
 		{
-			trigger_error('Impossible de vérifier les données du dernier message', FSB_ERROR);
+			trigger_error('Impossible de verifier les donnees du dernier message', FSB_ERROR);
 		}
 		Fsb::$db->free($result);
 
 		Fsb::$db->transaction('begin');
 
-		// Création du nouveau sujet
+		// Creation du nouveau sujet
 		$new_topic_id = Send::send_topic($forum_id, $first_post['u_id'], $title, $topic_data['t_map'], count($GLOBALS['_topic_type']) - 1, array(
 			't_total_post' =>		$count_action,
 			't_first_p_id' =>		$first_post['p_id'],
@@ -363,13 +363,13 @@ class Moderation extends Fsb_model
 			't_last_p_time' =>		$last_post['p_time'],
 		));
 
-		// Ajout des messages cochés dans le nouveau sujet
+		// Ajout des messages coches dans le nouveau sujet
 		Fsb::$db->update('posts', array(
 			't_id' =>	$new_topic_id,
 			'f_id' =>	$forum_id,
 		), 'WHERE p_id IN (' . implode(', ', $action) . ')');
 
-		// Données sur le nouveau dernier message du dernier sujet
+		// Donnees sur le nouveau dernier message du dernier sujet
 		$sql = 'SELECT p_id, p_time, p_nickname, u_id
 					FROM ' . SQL_PREFIX . 'posts
 					WHERE t_id = ' . $topic_id . '
@@ -378,7 +378,7 @@ class Moderation extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		$new_last_post = Fsb::$db->row($result);
 
-		// Mise à jour de l'ancien sujet
+		// Mise a jour de l'ancien sujet
 		Fsb::$db->update('topics', array(
 			't_total_post' =>		array('(t_total_post - ' . $count_action . ')', 'is_field' => TRUE),
 			't_last_p_id' =>		$new_last_post['p_id'],
@@ -405,7 +405,7 @@ class Moderation extends Fsb_model
 	** -----
 	** $t_id ::		ID du sujet initial
 	** $f_id ::		ID du forum du sujet initial
-	** $idx ::		Tableau d'ID des sujets à fusioner avec le sujet original
+	** $idx ::		Tableau d'ID des sujets a fusioner avec le sujet original
 	*/
 	public static function merge_topics($t_id, $f_id, $idx)
 	{
@@ -429,7 +429,7 @@ class Moderation extends Fsb_model
 
 		Fsb::$db->transaction('begin');
 
-		// On récupère les données des sujets qui vont être fusioné
+		// On recupere les donnees des sujets qui vont etre fusione
 		$sql = 'SELECT t_id, f_id, t_total_post
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id IN (' . implode(', ', $idx) . ')';
@@ -443,7 +443,7 @@ class Moderation extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Mise à jour du sujet des messages
+		// Mise a jour du sujet des messages
 		Fsb::$db->update('posts', array(
 			't_id' =>	$t_id,
 		), 'WHERE t_id IN (' . implode(', ', $idx) . ')');
@@ -470,7 +470,7 @@ class Moderation extends Fsb_model
 				LIMIT 1';
 		$first_post = Fsb::$db->request($sql);
 
-		// Mise à jour du compteur de message du sujet, et du dernier message
+		// Mise a jour du compteur de message du sujet, et du dernier message
 		Fsb::$db->update('topics', array(
 			't_total_post' =>		array('t_total_post + ' . $total_posts, 'is_field' => TRUE),
 			't_last_p_id' =>		$last['p_id'],
@@ -484,18 +484,18 @@ class Moderation extends Fsb_model
 		Moderation::_delete_topics($idx);
 		Fsb::$db->transaction('commit');
 
-		// Resyncronisation des informations après la fusion
+		// Resyncronisation des informations apres la fusion
 		Sync::forums($forums);
 		Sync::topics_read(array($t_id));
 	}
 
 	/*
-	** Déplace un ou plusieurs sujets vers un autre forum
+	** Deplace un ou plusieurs sujets vers un autre forum
 	** -----
 	** $id ::			ID des sujets
 	** $from_f_id ::	ID du forum de provenance
 	** $to_f_id ::		ID du forum de destination
-	** $trace ::		Si les sujets doivent être tracés ou pas
+	** $trace ::		Si les sujets doivent etre traces ou pas
 	*/
 	public static function move_topics($id, $from_f_id, $to_f_id, $trace)
 	{
@@ -521,13 +521,13 @@ class Moderation extends Fsb_model
 		{
 			$list_id = implode(', ', $idx);
 
-			// On déplace le sujet vers son forum de destination
+			// On deplace le sujet vers son forum de destination
 			Fsb::$db->update('topics', array(
 				'f_id' =>		$to_f_id,
 				't_trace' =>	($trace) ? $from_f_id : 0,
 			), 'WHERE t_id IN (' . $list_id . ')');
 
-			// On déplace les messages
+			// On deplace les messages
 			Fsb::$db->update('posts', array(
 				'f_id' =>		$to_f_id,
 			), 'WHERE t_id IN (' . $list_id . ')');
@@ -537,7 +537,7 @@ class Moderation extends Fsb_model
 	}
 
 	/*
-	** Modifie le status du sujet (verrouillé ou non verrouillé)
+	** Modifie le status du sujet (verrouille ou non verrouille)
 	** -----
 	** $id ::		ID du sujet
 	** $status ::	Status du sujet
@@ -558,11 +558,11 @@ class Moderation extends Fsb_model
 	/*
 	** Approuve un message
 	** -----
-	** $p_id ::		ID du message à approuver
+	** $p_id ::		ID du message a approuver
 	*/
 	public static function approve_post($p_id)
 	{
-		// Données du sujet du message
+		// Donnees du sujet du message
 		$sql = 'SELECT t.t_id, t.f_id, t.t_type, t.t_title, t.t_first_p_id, p.u_id
 				FROM ' . SQL_PREFIX . 'posts p
 				LEFT JOIN ' . SQL_PREFIX . 'topics t
@@ -583,28 +583,28 @@ class Moderation extends Fsb_model
 		{
 			Fsb::$cfg->update('total_topics', Fsb::$cfg->get('total_topics') + 1);
 
-			// Mise à jour du nombre d'annonce globale ?
+			// Mise a jour du nombre d'annonce globale ?
 			if ($data['t_type'] == GLOBAL_ANNOUNCE)
 			{
 				Fsb::$cfg->update('total_global_announce', Fsb::$cfg->get('total_global_announce') + 1);
 			}
 		}
 
-		// Mise à jour du nombre total de messages du forum
+		// Mise a jour du nombre total de messages du forum
 		Fsb::$cfg->update('total_posts', Fsb::$cfg->get('total_posts') + 1);
 
-		// Mise à jour du sujet
+		// Mise a jour du sujet
 		Fsb::$db->update('topics', array(
 			't_total_post' =>		array('t_total_post + ' . ((!$is_new_topic) ? '1' : '0'), 'is_field' => TRUE),
 			't_approve' =>			IS_APPROVED,
 		), 'WHERE t_id = ' . $data['t_id']);
 
-		// Mise à jour du message
+		// Mise a jour du message
 		Fsb::$db->update('posts', array(
 			'p_approve' =>			IS_APPROVED,
 		), 'WHERE p_id = ' . $p_id);
 
-		// Mise à jour du membre
+		// Mise a jour du membre
 		Fsb::$db->update('users', array(
 			'u_total_post' =>		array('u_total_post + 1', 'is_field' => TRUE),
 			'u_total_topic' =>		array('u_total_topic + ' . (($is_new_topic) ? '1' : '0'), 'is_field' => TRUE),
@@ -612,7 +612,7 @@ class Moderation extends Fsb_model
 
 		Sync::signal(Sync::APPROVE);
 
-		// Mise à jour du dernier message dans le sujet
+		// Mise a jour du dernier message dans le sujet
 		Sync::topics(array($data['t_id'] => 0));
 		Sync::forums(array($data['f_id']));
 
@@ -629,9 +629,9 @@ class Moderation extends Fsb_model
 	** Banissement d'un pseudonyme / email / IP
 	** -----
 	** $type ::			Type de banissement
-	** $content ::		Element à banir
+	** $content ::		Element a banir
 	** $reason ::		Raison
-	** $total_length ::	Durée du banissement
+	** $total_length ::	Duree du banissement
 	** $cookie ::		Banissement par cookie
 	*/
 	public static function ban($type, $content, $reason, $total_length, $cookie)
@@ -714,19 +714,19 @@ class Moderation extends Fsb_model
 	}
 
 	/*
-	** Donne un avertissement à un membre
+	** Donne un avertissement a un membre
 	** -----
 	** $mode ::			Type d'avertissement (more pour ajouter, less pour supprimer)
 	** $modo_id ::		ID de la personne donnant l'avertissement
-	** $user_id ::		ID du membre ciblé
+	** $user_id ::		ID du membre cible
 	** $reason ::		Raison de l'avertissement
-	** $u_warn_post ::	Restriction d'écriture
+	** $u_warn_post ::	Restriction d'ecriture
 	** $u_warn_read ::	Restriction de lecture
-	** $disable ::		Tableau contenant les donnée à désactiver
+	** $disable ::		Tableau contenant les donnee a desactiver
 	*/
 	public static function warn_user($mode, $modo_id, $user_id, $reason, $u_warn_post, $u_warn_read, $disable)
 	{
-		// On détermine une nouvelle restriction
+		// On determine une nouvelle restriction
 		foreach (array('post', 'read') AS $restriction)
 		{
 			${'user_warn_' . $restriction} = ${'u_warn_' . $restriction};
@@ -756,7 +756,7 @@ class Moderation extends Fsb_model
 			}
 		}
 
-		// Ajout de l'avertissement dans la base de donnée
+		// Ajout de l'avertissement dans la base de donnee
 		Fsb::$db->insert('warn', array(
 			'u_id' =>					$user_id,
 			'modo_id' =>				$modo_id,
@@ -767,7 +767,7 @@ class Moderation extends Fsb_model
 			'warn_restriction_read' =>	$insert_read,
 		));
 
-		// Mise à jour du profil du membre
+		// Mise a jour du profil du membre
 		Fsb::$db->update('users', array(
 			'u_warn_post' =>		$user_warn_post,
 			'u_warn_read' =>		$user_warn_read,

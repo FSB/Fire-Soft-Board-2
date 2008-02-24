@@ -13,7 +13,7 @@
 class Compress_zip extends Fsb_model
 {
 	/*
-	** Retourne un objet zipfile() pour compresser, ou un objet SimpleUnzip() pour décompresser
+	** Retourne un objet zipfile() pour compresser, ou un objet SimpleUnzip() pour decompresser
 	** -----
 	** $action ::		zip | unzip
 	*/

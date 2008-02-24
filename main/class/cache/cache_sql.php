@@ -18,7 +18,7 @@ class Cache_sql extends Cache
 	// Identifiant pour le type de cache actuel
 	private $id = '';
 
-	// Contient les données en cache
+	// Contient les donnees en cache
 	private $data = array();
 
 	// Type de cache
@@ -28,7 +28,7 @@ class Cache_sql extends Cache
 	** Constructeur
 	** -----
 	** $type ::				Identifiant pour le type de cache actuel
-	** $where ::			Clause WHERE pour la requète
+	** $where ::			Clause WHERE pour la requete
 	*/
 	public function __construct($id, $where = '')
 	{
@@ -54,7 +54,7 @@ class Cache_sql extends Cache
 	/*
 	** Retourne TRUE s'il y a un cache pour le hash, sinon FALSE
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function exists($hash)
 	{
@@ -62,9 +62,9 @@ class Cache_sql extends Cache
 	}
 
 	/*
-	** Retourne le tableau de données mises en cache
+	** Retourne le tableau de donnees mises en cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function get($hash)
 	{
@@ -82,12 +82,12 @@ class Cache_sql extends Cache
 	}
 
 	/*
-	** Retourne le tableau de données mises en cache
+	** Retourne le tableau de donnees mises en cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
-	** $array ::		Tableau de données à mettre en cache
+	** $hash ::			Clef pour les donnees cherchees
+	** $array ::		Tableau de donnees a mettre en cache
 	** $comments ::		Commentaire pour le fichier du cache
-	** $timestamp ::	Date de création du cache
+	** $timestamp ::	Date de creation du cache
 	*/
 	public function put($hash, $array, $comments = '', $timestamp = NULL)
 	{
@@ -100,9 +100,9 @@ class Cache_sql extends Cache
 	}
 
 	/*
-	** Renvoie le timestamp de création du cache
+	** Renvoie le timestamp de creation du cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function get_time($hash)
 	{
@@ -112,7 +112,7 @@ class Cache_sql extends Cache
 	/*
 	** Supprime une clef
 	** -----
-	** $hash ::		Clef à supprimer
+	** $hash ::		Clef a supprimer
 	*/
 	public function delete($hash, $delete_sql = TRUE)
 	{
@@ -129,7 +129,7 @@ class Cache_sql extends Cache
 	/*
 	** Destruction du cache
 	** -----
-	** $prefix ::		Si un préfixe est spécifié, on supprime uniquement les hash commençant par ce préfixe
+	** $prefix ::		Si un prefixe est specifie, on supprime uniquement les hash commencant par ce prefixe
 	*/
 	public function destroy($prefix = NULL)
 	{
@@ -148,9 +148,9 @@ class Cache_sql extends Cache
 	}
 
 	/*
-	** Supprime les données du cache exedant un certain temps
+	** Supprime les donnees du cache exedant un certain temps
 	** -----
-	** $time ::		Durée après laquelle les données du cache sont vidées
+	** $time ::		Duree apres laquelle les donnees du cache sont videes
 	*/
 	public function garbage_colector($time)
 	{

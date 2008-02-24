@@ -10,19 +10,19 @@
 ** +---------------------------------------------------+
 */
 
-// On affiche ce module si la fonction est activée
+// On affiche ce module si la fonction est activee
 if (Fsb::$mods->is_active('abuse'))
 {
 	$show_this_module = TRUE;
 }
 
 /*
-** Module d'utilisateur permettant au modérateur de voir les messages étant signalés
-** comme abusif, et de modérer (editer / supprimer) ce message
+** Module d'utilisateur permettant au moderateur de voir les messages etant signales
+** comme abusif, et de moderer (editer / supprimer) ce message
 */
 class Page_modo_abuse extends Fsb_model
 {
-	// ID du message abusif à valider
+	// ID du message abusif a valider
 	public $id;
 
 	// Mode de la page
@@ -37,7 +37,7 @@ class Page_modo_abuse extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// Doit être modérateur
+		// Doit etre moderateur
 		if (Fsb::$session->auth() < MODO || !Fsb::$mods->is_active('abuse'))
 		{
 			Display::message('not_allowed');
@@ -136,14 +136,14 @@ class Page_modo_abuse extends Fsb_model
 
 		$parser = new Parser();
 
-		// Informations sur le message abusif parent, pour simplifier la requête suivant si on est dans un message abusif
-		// de message privé, ou pas.
+		// Informations sur le message abusif parent, pour simplifier la requete suivant si on est dans un message abusif
+		// de message prive, ou pas.
 		$sql = 'SELECT pa_mp_id
 				FROM ' . SQL_PREFIX . 'posts_abuse
 				WHERE pa_id = ' . $this->id;
 		$mp_id = Fsb::$db->get($sql, 'pa_mp_id');
 
-		// On récupère et on affiche les messages abusifs
+		// On recupere et on affiche les messages abusifs
 		if (!$mp_id)
 		{
 			$sql = 'SELECT pa.pa_id, pa.pa_text, pa.pa_time, pa.pa_status, t.t_id, t.f_id, t.t_title AS title, t.t_status, f.f_name, p.p_id, p.p_text AS content, p.p_map AS map, p.p_time AS time, p.u_ip, u.u_auth, u.u_id AS poster_id, u.u_nickname AS poster_nickname, u.u_color AS poster_color, u.u_avatar AS poster_avatar, u.u_avatar_method AS poster_avatar_method, u.u_can_use_avatar AS poster_can_use_avatar, u2.u_id AS poster_comment_id, u2.u_nickname AS poster_comment_nickname, u2.u_color AS poster_comment_color, u2.u_avatar AS poster_comment_avatar, u2.u_avatar_method AS poster_comment_avatar_method, u2.u_can_use_avatar AS poster_comment_can_use_avatar
@@ -191,7 +191,7 @@ class Page_modo_abuse extends Fsb_model
 		{
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['poster_id'],
 				'p_nickname' =>		$row['poster_nickname'],
@@ -232,7 +232,7 @@ class Page_modo_abuse extends Fsb_model
 			{
 				$parser->parse_html = FALSE;
 
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['poster_comment_id'],
 					'p_nickname' =>		$row['poster_comment_nickname'],
@@ -291,11 +291,11 @@ class Page_modo_abuse extends Fsb_model
 	}
 
 	/*
-	** Considère le message abusif comme validé
+	** Considere le message abusif comme valide
 	*/
 	public function validate_abuse()
 	{
-		// Vérification de l'existance du message abusif
+		// Verification de l'existance du message abusif
 		$sql = 'SELECT pa_id
 				FROM ' . SQL_PREFIX . 'posts_abuse
 				WHERE pa_id = ' . $this->id;

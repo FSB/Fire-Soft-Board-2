@@ -11,10 +11,10 @@
 */
 
 /*
-** Méthode FULLTEXT FSB, dont le principe s'inspire fortement de celui de phpBB, qui indexe chaque mot du forum. Cette seconde méthode
-**	est utilisée pour les SGBD autre que MySQL 4, qui ne supportent pas le FULLTEXT MYSQL
+** Methode FULLTEXT FSB, dont le principe s'inspire fortement de celui de phpBB, qui indexe chaque mot du forum. Cette seconde methode
+**	est utilisee pour les SGBD autre que MySQL 4, qui ne supportent pas le FULLTEXT MYSQL
 **	+ Avantage : Rapide, fonctionne sur chaque SGBD
-**	+ Inconvénient : Un peu lourd, place prise dans la base de donnée assez importante
+**	+ Inconvenient : Un peu lourd, place prise dans la base de donnee assez importante
 */
 class Search_fulltext_fsb extends Search
 {
@@ -28,7 +28,7 @@ class Search_fulltext_fsb extends Search
 		$this->min_len = $GLOBALS['_search_min_len'];
 		$this->max_len = $GLOBALS['_search_max_len'];
 
-		// Chargement des mots à ne pas indexer
+		// Chargement des mots a ne pas indexer
 		$this->stopwords = array();
 		if (file_exists(ROOT . 'lang/' . Fsb::$session->data['u_language'] . '/stopword.txt'))
 		{
@@ -37,11 +37,11 @@ class Search_fulltext_fsb extends Search
 	}
 
 	/*
-	** Procédure de recherche
+	** Procedure de recherche
 	** -----
 	** $keywords_array ::		Tableau des mots clefs
 	** $author_nickname ::		Nom de l'auteur
-	** $forum_idx ::			Tableau des IDX de forums autorisés
+	** $forum_idx ::			Tableau des IDX de forums autorises
 	** $topic ::				ID d'un topic si on cherche uniquement dans celui ci
 	** $date ::					Date (en nombre de secondes) pour la recherche de messages
 	*/
@@ -61,7 +61,7 @@ class Search_fulltext_fsb extends Search
 		$return = array();
 		if ($total_keywords = count($keywords_array))
 		{
-			// Récupération des sujets indexés sur les mots clefs
+			// Recuperation des sujets indexes sur les mots clefs
 			$select = new Sql_select();
 			$select->join_table('FROM', 'search_word sw');
 			$select->join_table('INNER JOIN', 'search_match sm', 'COUNT(sw.word_content) AS total', 'ON sw.word_id = sm.word_id');
@@ -86,7 +86,7 @@ class Search_fulltext_fsb extends Search
 			}
 			$select->group_by('p.p_id');
 
-			// Résultats
+			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
 			{
@@ -106,16 +106,16 @@ class Search_fulltext_fsb extends Search
 	** -----
 	** $post_id ::		ID du message
 	** $content ::		Contenu du message
-	** $is_title ::		Définit la valeur du champ is_title dans la table fsb2_search_match
+	** $is_title ::		Definit la valeur du champ is_title dans la table fsb2_search_match
 	*/
 	public function index($post_id, $content, $is_title = FALSE)
 	{
-		// On récupère chaque mot du message
+		// On recupere chaque mot du message
 		$split = preg_split('#[^\w]+#si', $content);
 
 		if ($split)
 		{
-			// On récupère tous les mots de la base de donnée définis dans ce message
+			// On recupere tous les mots de la base de donnee definis dans ce message
 			$words = array();
 			$word_exist = array();
 			foreach ($split AS $key => $word)
@@ -166,7 +166,7 @@ class Search_fulltext_fsb extends Search
 				Fsb::$db->query_multi_insert();
 				unset($flip);
 
-				// On créé une ocurence de chaque mot avec l'id du message dans la table search_match
+				// On cree une ocurence de chaque mot avec l'id du message dans la table search_match
 				$sql = 'INSERT INTO ' . SQL_PREFIX . 'search_match (word_id, p_id, is_title)
 							SELECT word_id, ' . $post_id . ', ' . (int) $is_title . '
 							FROM ' . SQL_PREFIX . 'search_word

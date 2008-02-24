@@ -14,7 +14,7 @@
 $show_this_module = TRUE;
 
 /*
-** Affiche l'index du panneau de modération
+** Affiche l'index du panneau de moderation
 */
 class Page_modo_index extends Fsb_model
 {
@@ -25,7 +25,7 @@ class Page_modo_index extends Fsb_model
 	{
 		Fsb::$tpl->set_file('modo/modo_index.html');
 
-		// On récupère les 5 derniers logs de modération
+		// On recupere les 5 derniers logs de moderation
 		$logs = Log::read(Log::MODO, 5);
 		foreach ($logs['rows'] AS $log)
 		{
@@ -35,7 +35,7 @@ class Page_modo_index extends Fsb_model
 			));
 		}
 
-		// On récupère les 5 derniers avertissements
+		// On recupere les 5 derniers avertissements
 		$sql = 'SELECT u.u_id, u.u_nickname, w.warn_type
 				FROM ' . SQL_PREFIX . 'warn w
 				LEFT JOIN ' . SQL_PREFIX . 'users u

@@ -30,7 +30,7 @@ $GLOBALS['_auth_type'] = array(
 	'ga_moderator',
 );
 
-// Liste des droits réorganisés
+// Liste des droits reorganises
 $GLOBALS['_auth_type_format'] = array(
 	'read' =>		array('ga_nothing', 'ga_view', 'ga_view_topics', 'ga_read'),
 	'write' =>		array('ga_nothing', 'ga_answer_post', 'ga_create_post', 'ga_answer_announce', 'ga_create_announce', 'ga_answer_global_announce', 'ga_create_global_announce'),
@@ -38,14 +38,14 @@ $GLOBALS['_auth_type_format'] = array(
 );
 
 // Liste des types de sujet
-// Ne pas supprimer / déplacer global_announce - sous peine de bugs - qui est de toute façon le type le plus important de sujets
+// Ne pas supprimer / deplacer global_announce - sous peine de bugs - qui est de toute facon le type le plus important de sujets
 $GLOBALS['_topic_type'] = array(
 	'global_announce',
 	'announce',
 	'post',
 );
 
-// Niveaux des droits associés aux clefs de langues
+// Niveaux des droits associes aux clefs de langues
 $GLOBALS['_auth_level'] = array(
 	VISITOR =>	'visitor',
 	USER =>		'user',
@@ -55,7 +55,7 @@ $GLOBALS['_auth_level'] = array(
 	FONDATOR =>	'fondator',
 );
 
-// Liste des boites dans la messagerie privée
+// Liste des boites dans la messagerie privee
 $GLOBALS['_list_box'] = array(
 	'inbox',
 	'outbox',
@@ -124,7 +124,7 @@ $GLOBALS['_utc'] = array(
 $GLOBALS['_search_min_len'] = 3;
 $GLOBALS['_search_max_len'] = 40;
 
-// Caractères UTF8 majuscules et leur équivalent minuscule
+// Caracteres UTF8 majuscules et leur equivalent minuscule
 $GLOBALS['UTF8_UPPER_TO_LOWER'] = array(
 	"\x41" => "\x61", "\x42" => "\x62", "\x43" => "\x63", "\x44" => "\x64",
 	"\x45" => "\x65", "\x46" => "\x66", "\x47" => "\x67", "\x48" => "\x68",

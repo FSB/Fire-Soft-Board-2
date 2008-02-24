@@ -19,7 +19,7 @@ class Upload extends Fsb_model
 	// Nom du champ de formulaire d'upload
 	protected $name;
 
-	// Informations sur le fichier uploadé
+	// Informations sur le fichier uploade
 	protected $tmp_path;
 	public $filesize;
 	public $filename;
@@ -36,7 +36,7 @@ class Upload extends Fsb_model
 	public $height;
 	public $type;
 
-	// Types d'images autorisées
+	// Types d'images autorisees
 	protected $only_img = FALSE;
 	public $is_img = FALSE;
 	public static $img = array(
@@ -54,7 +54,7 @@ class Upload extends Fsb_model
 		IMAGETYPE_PNG,
 	);
 
-	// Extensions autorisées
+	// Extensions autorisees
 	protected $allowed_ext = array();
 
 	/*
@@ -86,7 +86,7 @@ class Upload extends Fsb_model
 	}
 
 	/*
-	** Ajoute une ou plusieurs extensions autorisées
+	** Ajoute une ou plusieurs extensions autorisees
 	** -----
 	** $ext ::		Extension ou tableau d'extensions. TRUE pour tout autoriser
 	*/
@@ -116,16 +116,16 @@ class Upload extends Fsb_model
 		$this->allow_ext(self::$img);
 		$this->only_img = $bool;
 
-		// Récupération des informations sur l'image, et vérification de l'intégrité de l'image avec un getimagesize()
+		// Recuperation des informations sur l'image, et verification de l'integrite de l'image avec un getimagesize()
 		list($this->width, $this->height, $this->type) = @getimagesize($this->tmp_path);
 		if (!in_array($this->type, self::$imgtype))
 		{
-			Display::message('L\'image ' . $this->filename . ' contient des erreurs et ne peut pas être uploadée sur le forum');
+			Display::message('L\'image ' . $this->filename . ' contient des erreurs et ne peut pas etre uploadee sur le forum');
 		}
 	}
 
 	/*
-	** Vérification des dimensions de l'image
+	** Verification des dimensions de l'image
 	** -----
 	** $width ::	Largeur max de l'image
 	** $height ::	Hauteur max de l'image
@@ -164,18 +164,18 @@ class Upload extends Fsb_model
 	** Upload et sauve l'image sur le forum
 	** -----
 	** $path ::		Dossier de destination
-	** $erase ::	Si TRUE, on écrase le fichier de destination s'il a le même nom
+	** $erase ::	Si TRUE, on ecrase le fichier de destination s'il a le meme nom
 	**				Si FALSE, on renomme le fichier
 	*/
 	public function store($path, $erase = FALSE)
 	{
-		// Vérification de l'extension
+		// Verification de l'extension
 		if ($this->allowed_ext !== TRUE && !in_array(strtolower($this->extension), $this->allowed_ext))
 		{
 			Display::message(sprintf(Fsb::$session->lang('bad_extension'), $this->extension, implode(', ', $this->allowed_ext)));
 		}
 
-		// On vérifie si le fichier n'existe pas déjà, si c'est le cas on le renomme
+		// On verifie si le fichier n'existe pas deja, si c'est le cas on le renomme
 		$extension =	($this->rename_extension) ? $this->rename_extension : $this->extension;
 		$basename =		($this->rename_basename) ? $this->rename_basename : $this->basename;
 		if (!$erase)
@@ -197,12 +197,12 @@ class Upload extends Fsb_model
 		}
 		@chmod($path . $this->filename, 0644);
 
-		// S'il s'agit d'une image, on vérifie qu'elle ne contient pas de PHP
+		// S'il s'agit d'une image, on verifie qu'elle ne contient pas de PHP
 		if ($this->only_img)
 		{
 			if (strpos(file_get_contents($path . $this->filename), '<?php'))
 			{
-				Display::message('Tentative de hack, l\'image ne peut être uploadée sur le forum');
+				Display::message('Tentative de hack, l\'image ne peut etre uploadee sur le forum');
 			}
 		}
 
@@ -217,7 +217,7 @@ class Upload extends Fsb_model
 	*/
 	public function attach_file($user_id, $upload_auth)
 	{
-		// On récupère la taille prise par tous les fichiers uploadé du membre, afin de déterminé le quota restant
+		// On recupere la taille prise par tous les fichiers uploade du membre, afin de determine le quota restant
 		$sql = 'SELECT SUM(upload_filesize) AS total_filesize
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE u_id = ' . $user_id;
@@ -226,13 +226,13 @@ class Upload extends Fsb_model
 		Fsb::$db->free($result);
 		$total_filesize = $row['total_filesize'];
 
-		// Quota dépassé ?
+		// Quota depasse ?
 		if (!Fsb::$session->is_authorized('upload_quota_unlimited') && $total_filesize > Fsb::$cfg->get('upload_quota'))
 		{
 			Display::message(sprintf(Fsb::$session->lang('post_upload_quota'), $total_filesize, Fsb::$cfg->get('upload_quota')));
 		}
 
-		// Liste des extensions autorisées
+		// Liste des extensions autorisees
 		$this->allow_ext(explode(',', Fsb::$cfg->get('upload_extensions')));
 
 		// Taille maximale possible pour le fichier
@@ -247,7 +247,7 @@ class Upload extends Fsb_model
 		$this->rename_extension('file');
 		$filename = $this->store(ROOT . 'upload/');
 
-		// On vérifie si le fichier est une image
+		// On verifie si le fichier est une image
 		$img_data = @getimagesize(ROOT . 'upload/' . $filename);
 		if ($img_data && in_array($img_data[2], self::$imgtype))
 		{
@@ -259,7 +259,7 @@ class Upload extends Fsb_model
 			$this->mimetype = 'application/octetstream';
 		}
 
-		// Ajout du fichier uploadé dans la base de donnée
+		// Ajout du fichier uploade dans la base de donnee
 		Fsb::$db->insert('upload', array(
 			'u_id' =>				$user_id,
 			'upload_filename' =>	$filename,

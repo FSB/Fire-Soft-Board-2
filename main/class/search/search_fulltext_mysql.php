@@ -11,10 +11,10 @@
 */
 
 /*
-** Méthode FULLTEXT de MySQL 4
-**	+ Avantage : Rapide, facile à mettre en oeuvre
-**	+ Inconvénient : Compatible uniquement MySQL >= 4, ne prend pas en compte les mots de moins de
-**		4 lettres, ne prend pas en compte les mots contenu dans au moins 50% des résultats
+** Methode FULLTEXT de MySQL 4
+**	+ Avantage : Rapide, facile a mettre en oeuvre
+**	+ Inconvenient : Compatible uniquement MySQL >= 4, ne prend pas en compte les mots de moins de
+**		4 lettres, ne prend pas en compte les mots contenu dans au moins 50% des resultats
 */
 class Search_fulltext_mysql extends Search
 {
@@ -31,11 +31,11 @@ class Search_fulltext_mysql extends Search
 	}
 
 	/*
-	** Procédure de recherche
+	** Procedure de recherche
 	** -----
 	** $keywords_array ::		Tableau des mots clefs
 	** $author_nickname ::		Nom de l'auteur
-	** $forum_idx ::			Tableau des IDX de forums autorisés
+	** $forum_idx ::			Tableau des IDX de forums autorises
 	** $topic ::				ID d'un topic si on cherche uniquement dans celui ci
 	** $date ::					Date (en nombre de secondes) pour la recherche de messages
 	*/
@@ -80,7 +80,7 @@ class Search_fulltext_mysql extends Search
 				$select->where('AND p_time > ' . CURRENT_TIME . ' - ' . $date);
 			}
 
-			// Résultats
+			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
 			{
@@ -114,7 +114,7 @@ class Search_fulltext_mysql extends Search
 			}
 			$select->where('AND MATCH (t.t_title) AGAINST (\'' . implode(' ', $keywords_array) . '\' IN BOOLEAN MODE)');
 
-			// Résultats
+			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
 			{

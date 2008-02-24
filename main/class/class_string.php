@@ -11,18 +11,18 @@
 */
 
 /*
-** Gestion des chaînes de caractère
+** Gestion des chaines de caractere
 */
 class String extends Fsb_model
 {
-	// Correspond aux offset générés par les fonctions preg_*() avec le flag PREG_OFFSET_CAPTURE
+	// Correspond aux offset generes par les fonctions preg_*() avec le flag PREG_OFFSET_CAPTURE
 	const CHAR = 0;
 	const OFFSET = 1;
 
 	/*
 	** Ajoute un espace dans les mots trop long
 	** -----
-	** $str ::		Chaîne à traiter
+	** $str ::		Chaine a traiter
 	** $length ::	Longueur maximale de chaque mot
 	*/
 	public static function truncate($str, $length)
@@ -40,9 +40,9 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Convertit une chaîne UTF8 en minuscule
+	** Convertit une chaine UTF8 en minuscule
 	** -----
-	** $str ::		Chaîne à convertir
+	** $str ::		Chaine a convertir
 	*/
 	public static function strtolower($str)
 	{
@@ -50,9 +50,9 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Convertit une chaîne UTF8 en majuscule
+	** Convertit une chaine UTF8 en majuscule
 	** -----
-	** $str ::		Chaîne à convertir
+	** $str ::		Chaine a convertir
 	*/
 	public static function strtoupper($str)
 	{
@@ -60,11 +60,11 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Substr gérant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
+	** Substr gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
 	** -----
-	** $str ::		Chaîne de caractère
-	** $start ::	Offset de départ pour la tronquature
-	** $length ::	Longueur du texte à tronquer
+	** $str ::		Chaine de caractere
+	** $start ::	Offset de depart pour la tronquature
+	** $length ::	Longueur du texte a tronquer
 	*/
 	public static function substr($str, $start = 0, $length = NULL)
 	{
@@ -93,11 +93,11 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Substr gérant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
+	** Substr gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
 	** -----
-	** $str ::		Chaîne de caractère
-	** $start ::	Offset de départ pour la tronquature
-	** $length ::	Longueur du texte à tronquer
+	** $str ::		Chaine de caractere
+	** $start ::	Offset de depart pour la tronquature
+	** $length ::	Longueur du texte a tronquer
 	*/
 	public static function substr_manual($str, $start, $length = 0)
 	{
@@ -146,9 +146,9 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Strlen gérant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
+	** Strlen gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
 	** -----
-	** $str ::		Chaîne de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public static function strlen($str)
 	{
@@ -166,11 +166,11 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Converti en entités HTML des données qui ont été encodées par escape() en javascript.
-	** Cette fonction est indispensable dans votre traitement AJAX côté PHP, car les fonctions
-	** PHP ne reconnaissent pas les caractères unicode encodées de la forme %uxxxx.
+	** Converti en entites HTML des donnees qui ont ete encodees par escape() en javascript.
+	** Cette fonction est indispensable dans votre traitement AJAX cote PHP, car les fonctions
+	** PHP ne reconnaissent pas les caracteres unicode encodees de la forme %uxxxx.
 	** -----
-	** $str ::		Chaîne de caractère à décoder
+	** $str ::		Chaine de caractere a decoder
 	*/
 	public static function fsb_utf8_decode($str)
 	{
@@ -178,10 +178,10 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Ajoute des zeros manquants en début de chaine, tant que $str est inférieur à $total
+	** Ajoute des zeros manquants en debut de chaine, tant que $str est inferieur a $total
 	** -----
 	** $str ::		Chaine initiale
-	** $total ::	Nombre de caractères totaux que devra comporter la chaine à la fin
+	** $total ::	Nombre de caracteres totaux que devra comporter la chaine a la fin
 	*/
 	public static function add_zero($str, $total)
 	{
@@ -195,7 +195,7 @@ class String extends Fsb_model
 	/*
 	** Inverse d'htmlspecialchars()
 	** -----
-	** $str ::		Chaîne de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public static function unhtmlspecialchars($str)
 	{
@@ -203,11 +203,11 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Encode une chaîne de caractère en caractères héxadécimaux visibles par
-	** le navigateur, afin d'offrir une protection contre la lecture de données dans
+	** Encode une chaine de caractere en caracteres hexadecimaux visibles par
+	** le navigateur, afin d'offrir une protection contre la lecture de donnees dans
 	** la source de la page (anti spam)
 	** ----
-	** $str ::		Chaîne de caractère à encoder
+	** $str ::		Chaine de caractere a encoder
 	*/
 	public static function no_spam($str)
 	{
@@ -223,8 +223,8 @@ class String extends Fsb_model
 	/*
 	** Renvoie TRUE si $word match $pattern
 	** -----
-	** $pattern ::		Chaîne de caractère acceptant * comme caractère spécial
-	** $word ::			Chaîne vérifiant le pattern
+	** $pattern ::		Chaine de caractere acceptant * comme caractere special
+	** $word ::			Chaine verifiant le pattern
 	*/
 	public static function is_matching($pattern, $word)
 	{
@@ -233,10 +233,10 @@ class String extends Fsb_model
 
 
 	/*
-	** Fonction récursive qui vérifie si un caractère est échappé par un \
+	** Fonction recursive qui verifie si un caractere est echappe par un \
 	** -----
-	** $pos ::		Position du caractère dans la chaîne
-	** $str ::		Chaîne de caractère
+	** $pos ::		Position du caractere dans la chaine
+	** $str ::		Chaine de caractere
 	*/
 	public static function is_escaped($pos, &$str)
 	{
@@ -256,11 +256,11 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Découpe une chaîne de caractère en plusieurs sous chaîne dans un tableau, en fonction de délimiteurs.
-	** Les chaînes comprises dans des quote ne sont pas découpées.
+	** Decoupe une chaine de caractere en plusieurs sous chaine dans un tableau, en fonction de delimiteurs.
+	** Les chaines comprises dans des quote ne sont pas decoupees.
 	** -----
-	** $del ::	Délimiteur (ou tableau de délimiteur)
-	** $str ::	Chaîne à découper
+	** $del ::	Delimiteur (ou tableau de delimiteur)
+	** $str ::	Chaine a decouper
 	*/
 	public static function split($del, $str)
 	{
@@ -269,7 +269,7 @@ class String extends Fsb_model
 			$del = array($del);
 		}
 
-		// Découpage de la chaîne en fonction des délimiteurs et des quotes ' et "
+		// Decoupage de la chaine en fonction des delimiteurs et des quotes ' et "
 		$del[] = '\'';
 		$del[] = '"';
 		preg_match_all('/(\\\)*(' . str_replace('/', '\/', implode('|', $del)) . ')/', $str, $m, PREG_OFFSET_CAPTURE);
@@ -281,7 +281,7 @@ class String extends Fsb_model
 		$current_quote = '';
 		for ($i = 0; $i < $count; $i++)
 		{
-			// En cas de quote ou de simple quote, on ne prendra pas en compte les délimiteurs
+			// En cas de quote ou de simple quote, on ne prendra pas en compte les delimiteurs
 			if ($m[2][$i][self::CHAR] == '\'' || $m[2][$i][self::CHAR] == '"')
 			{
 				if (!self::is_escaped(strlen($m[0][$i][self::CHAR]) - 1, $m[0][$i][self::CHAR]))
@@ -304,14 +304,14 @@ class String extends Fsb_model
 				}
 				else
 				{
-					// Les quote echapés par des \ ne sont pas gardés
+					// Les quote echapes par des \ ne sont pas gardes
 					$tmp .= $m[0][$i][self::CHAR];
 				}
 			}
 			else
 			{
-				// On sauve en mémoire la chaîne entre deux délimiteurs. Si on est dans un quote, on garde le tout
-				// sous forme de chaîne unique, sinon on ajoute de nouveaux éléments au tableau
+				// On sauve en memoire la chaine entre deux delimiteurs. Si on est dans un quote, on garde le tout
+				// sous forme de chaine unique, sinon on ajoute de nouveaux elements au tableau
 				$tmp .= substr($str, $last_offset, $m[0][$i][self::OFFSET] - $last_offset);
 				if ($current_quote)
 				{
@@ -336,10 +336,10 @@ class String extends Fsb_model
 	}
 
 	/*
-	** Utilise ou non un pluriel si une valeur est supérieur à 1
+	** Utilise ou non un pluriel si une valeur est superieur a 1
 	** -----
 	** $str ::		Chaine de langue, une version avec un 's' final doit exister
-	** $int ::		Valeur numérique
+	** $int ::		Valeur numerique
 	** $distinct ::	Distingue 1 et 0 en ajoutant ou non un sufixe _none
 	*/
 	public static function plural($str, $int, $distinct = FALSE)
@@ -350,7 +350,7 @@ class String extends Fsb_model
 	/*
 	** Affiche correctement une clef de langue ({LG_KEY} va utiliser une clef de langue "key")
 	** -----
-	** $str ::		Texte à parser
+	** $str ::		Texte a parser
 	*/
 	public static function parse_lang($str)
 	{
@@ -362,8 +362,8 @@ class String extends Fsb_model
 	/*
 	** Formatage des grands nombre suivant la langue
 	** -----
-	** $nb ::	Nombre à formater
-	** $dec ::	Nombre de décimales
+	** $nb ::	Nombre a formater
+	** $dec ::	Nombre de decimales
 	*/
 	public static function number_format($nb, $dec = 0)
 	{
@@ -373,7 +373,7 @@ class String extends Fsb_model
 	/*
 	** Rend les sites webs clickables
 	** -----
-	** $str ::		Chaîne à parser
+	** $str ::		Chaine a parser
 	*/
 	public static function parse_website($str)
 	{
@@ -385,7 +385,7 @@ class String extends Fsb_model
 	/*
 	** Rend les Emails clickables
 	** -----
-	** $str ::		Chaîne à parser
+	** $str ::		Chaine a parser
 	*/
 	public static function parse_email($str)
 	{

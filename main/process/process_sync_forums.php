@@ -11,7 +11,7 @@
 */
 
 /*
-** Met à jour les informations des derniers sujets des forums
+** Met a jour les informations des derniers sujets des forums
 */
 function sync_forums()
 {

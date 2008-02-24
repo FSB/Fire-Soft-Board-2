@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -23,10 +23,10 @@ class Fsb_frame_child extends Fsb_frame
 	// Contient les erreurs
 	public $errstr = array();
 	
-	// Contient les données envoyées par formulaire
+	// Contient les donnees envoyees par formulaire
 	public $data = array();
 	
-	// Données de connexion
+	// Donnees de connexion
 	public $login_data = array();
 
 	// Connexion administration ?
@@ -52,7 +52,7 @@ class Fsb_frame_child extends Fsb_frame
 			'u_hidden' =>		trim(Http::request('u_hidden', 'post')),
 		);
 
-		// Connexion à l'administration ?
+		// Connexion a l'administration ?
 		$this->adm_log = (Http::request('adm_log')) ? TRUE : FALSE;
 
 		// Chiffrage RSA ?
@@ -96,7 +96,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		Fsb::$tpl->set_file('forum/forum_login.html');
 
-		// Si on est déjà connecté, l'identification est inutile
+		// Si on est deja connecte, l'identification est inutile
 		if (Fsb::$session->is_logged() && !$this->adm_log)
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);
@@ -139,7 +139,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{
@@ -163,7 +163,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else
 		{
-			// $result vaut FALSE si tout s'est bien passé, sinon il vaut la chaine de caractère de l'erreur
+			// $result vaut FALSE si tout s'est bien passe, sinon il vaut la chaine de caractere de l'erreur
 			if ($this->adm_log)
 			{
 				$result = Fsb::$session->log_admin($this->data['u_login'], $this->data['u_password']);
@@ -201,7 +201,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Envoie un nouveau mot de passe, à activer par Email
+	** Envoie un nouveau mot de passe, a activer par Email
 	*/
 	public function send_new_password()
 	{
@@ -212,7 +212,7 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('login_forgot_fields');
 		}
 
-		// On vérifie si l'adresse existe bien
+		// On verifie si l'adresse existe bien
 		$sql = 'SELECT u.u_id, u.u_nickname, u.u_language, up.*
 				FROM ' . SQL_PREFIX . 'users u
 				INNER JOIN ' . SQL_PREFIX . 'users_password up
@@ -223,7 +223,7 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('login_forgot_not_exists');
 		}
 
-		// On envoie par Email un nouveau mot de passe à activer
+		// On envoie par Email un nouveau mot de passe a activer
 		$new_password = Password::generate(10);
 
 		$mail = new Notify_mail();
@@ -253,16 +253,16 @@ class Fsb_frame_child extends Fsb_frame
 		$new_password =			trim(Http::request('new_password'));
 		$hash_old_password =	trim(Http::request('hash_old_password'));
 
-		// Désactivation du lien sur la page de connexion
+		// Desactivation du lien sur la page de connexion
 		$this->frame_get_url = FALSE;
 
-		// On vérifie les paramètres
+		// On verifie les parametres
 		if (!$id || !$hash_old_password)
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);
 		}
 
-		// On vérifie que l'ID et l'ancien hash du password existent bien
+		// On verifie que l'ID et l'ancien hash du password existent bien
 		$sql = 'SELECT u_id
 				FROM ' . SQL_PREFIX . 'users_password
 				WHERE u_id = ' . $id . '
@@ -274,7 +274,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		Fsb::$db->free($result);
 
-		// Mise à jour du mot de passe
+		// Mise a jour du mot de passe
 		Fsb::$db->update('users_password', array(
 			'u_password' =>		$new_password,
 		), 'WHERE u_id = ' . $id);
@@ -321,7 +321,7 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Confirmation de l'inscription pour les administrateurs
 	** -----
-	** $id ::		ID du membre à confirmer
+	** $id ::		ID du membre a confirmer
 	*/
 	public function confirm_admin($id)
 	{

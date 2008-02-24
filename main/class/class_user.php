@@ -11,7 +11,7 @@
 */
 
 /*
-** Méthodes permettants de gérer les utilisateurs du forum
+** Methodes permettants de gerer les utilisateurs du forum
 */
 class User extends Fsb_model
 {
@@ -45,7 +45,7 @@ class User extends Fsb_model
 		$insert_ary['u_nickname'] =	$nickname;
 		$insert_ary['u_email'] =	$email;
 
-		// Insertion dans la base de donnée
+		// Insertion dans la base de donnee
 		Fsb::$db->insert('users', $insert_ary);
 		$last_id = Fsb::$db->last_id();
 
@@ -60,14 +60,14 @@ class User extends Fsb_model
 			'u_autologin_key' =>$autologin_key,
 		));
 
-		// Création du groupe unique pour le membre (pour ses droits uniques)
+		// Creation du groupe unique pour le membre (pour ses droits uniques)
 		Fsb::$db->insert('groups', array(
 			'g_type' =>		GROUP_SINGLE,
 		));
 		$u_single_group_id = Fsb::$db->last_id();
 		Group::add_users($last_id, $u_single_group_id, GROUP_USER, TRUE, TRUE);
 
-		// On met à jour la table user pour signaler le groupe unique sur ce membre
+		// On met a jour la table user pour signaler le groupe unique sur ce membre
 		Fsb::$db->update('users', array(
 			'u_single_group_id' =>		$u_single_group_id,
 		), 'WHERE u_id = ' . $last_id);
@@ -75,7 +75,7 @@ class User extends Fsb_model
 		// On ajoute dans le groupe des membres
 		Group::add_users($last_id, GROUP_SPECIAL_USER, GROUP_USER);
 
-		// On met à jour le dernier membre inscrit dans la configuration
+		// On met a jour le dernier membre inscrit dans la configuration
 		Fsb::$cfg->update('last_user_id', $last_id, FALSE);
 		Fsb::$cfg->update('last_user_login', $nickname, FALSE);
 		Fsb::$cfg->update('last_user_color', 'class="user"', FALSE);
@@ -208,8 +208,8 @@ class User extends Fsb_model
 	** -----
 	** $u_id ::			ID du membre
 	** $new_nickname ::	Nouveau pseudonyme
-	** $update_users ::	Flag définissant si la table users doit être mise à jour (simple 
-	**					économie de requète dans certains cas)
+	** $update_users ::	Flag definissant si la table users doit etre mise a jour (simple 
+	**					economie de requete dans certains cas)
 	*/
 	public static function rename($u_id, $new_nickname, $update_users = TRUE)
 	{
@@ -219,7 +219,7 @@ class User extends Fsb_model
 			return ;
 		}
 
-		// Mise à jour des tables où le pseudonyme du membre est présent
+		// Mise a jour des tables ou le pseudonyme du membre est present
 		if ($update_users)
 		{
 			Fsb::$db->update('users', array(
@@ -239,7 +239,7 @@ class User extends Fsb_model
 			'f_last_p_nickname' =>	$new_nickname,
 		), 'WHERE f_last_u_id = ' . $u_id);
 
-		// Mise à jour du cache de configuration ?
+		// Mise a jour du cache de configuration ?
 		if (Fsb::$cfg->get('last_user_id') == $u_id)
 		{
 			Fsb::$cfg->update('last_user_login', $new_nickname);
@@ -247,7 +247,7 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si le login est déjà utilisé dans la base de donnée
+	** Retourne TRUE si le login est deja utilise dans la base de donnee
 	** -----
 	** $login ::		Login de connexion
 	*/
@@ -262,7 +262,7 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si le pseudonyme est déjà utilisé dans la base de donnée
+	** Retourne TRUE si le pseudonyme est deja utilise dans la base de donnee
 	** -----
 	** $nickname ::		Pseudonyme
 	*/
@@ -277,9 +277,9 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si les caractères du pseudonyme sont autorisés.
-	** ATTENTION : Si le pseudonyme n'est pas autorisé, la fonction renvoie le niveau de caractère
-	** non autorisé (middle ou high).
+	** Retourne TRUE si les caracteres du pseudonyme sont autorises.
+	** ATTENTION : Si le pseudonyme n'est pas autorise, la fonction renvoie le niveau de caractere
+	** non autorise (middle ou high).
 	** -----
 	** $nickname ::		Pseudonyme
 	*/
@@ -299,7 +299,7 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si l'Email est déjà utilisé dans la base de donnée
+	** Retourne TRUE si l'Email est deja utilise dans la base de donnee
 	** -----
 	** $email ::		Adresse Email
 	*/
@@ -314,9 +314,9 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si l'Email passé match l'expression régulière, et si le dommaine
+	** Retourne TRUE si l'Email passe match l'expression reguliere, et si le dommaine
 	** de l'Email existe.
-	** Inspiré du commentaire http://fr.php.net/manual/fr/function.checkdnsrr.php#74809
+	** Inspire du commentaire http://fr.php.net/manual/fr/function.checkdnsrr.php#74809
 	** -----
 	** $email ::	Adresse Email
 	*/
@@ -329,7 +329,7 @@ class User extends Fsb_model
 
 		if (preg_match('/^\w[-.\w]*@(\w[-._\w]*\.[a-zA-Z]{2,}.*)$/', $email, $match))
 		{
-			// Les fonctions de vérification de DNS ne tournent pas sous Windows
+			// Les fonctions de verification de DNS ne tournent pas sous Windows
 			if (!$check_server || !Fsb::$cfg->get('check_email_dns'))
 			{
 				return (TRUE);
@@ -358,7 +358,7 @@ class User extends Fsb_model
 				}
 			}
 
-			// En cas d'échec on vérifie l'existance du serveur avec fsockopen()
+			// En cas d'echec on verifie l'existance du serveur avec fsockopen()
 			if (!$check)
 			{
 				$errno = 0;
@@ -375,14 +375,14 @@ class User extends Fsb_model
 	** Retourne le rang d'un membre
 	** -----
 	** $total_post ::	Nombre de messages du membre
-	** $rank_id ::		ID du rang spécial du membre s'il en a un
+	** $rank_id ::		ID du rang special du membre s'il en a un
 	*/
 	public static function get_rank($total_post, $rank_id)
 	{
 		static $ranks = NULL;
 
-		// On récupère les rangs par ordre décroissant (pour pouvoir récupérer le palier du membre)
-		// et on les gardes de façon statique pour éviter la requète aux prochains appels.
+		// On recupere les rangs par ordre decroissant (pour pouvoir recuperer le palier du membre)
+		// et on les gardes de facon statique pour eviter la requete aux prochains appels.
 		if (!$ranks)
 		{
 			$sql = 'SELECT *
@@ -395,7 +395,7 @@ class User extends Fsb_model
 
 		if ($rank_id && isset($ranks[$rank_id]))
 		{
-			// Rang spécial
+			// Rang special
 			$rank = $ranks[$rank_id];
 		}
 		else
@@ -412,7 +412,7 @@ class User extends Fsb_model
 			}
 		}
 
-		// Si aucun rang n'a été trouvé ...
+		// Si aucun rang n'a ete trouve ...
 		if (!$rank)
 		{
 			return (NULL);
@@ -431,7 +431,7 @@ class User extends Fsb_model
 	** Repris d'un commentaire sur cette page : http://fr3.php.net/manual/fr/function.date.php
 	** -----
 	** $birthday ::		Jour de la naissance du membre, sous le format day/month/year (xx/yy/zzzz)
-	** $check_mod ::	Mettre à TRUE si vous voullez que la fonction soit indépendante de la configuration
+	** $check_mod ::	Mettre a TRUE si vous voullez que la fonction soit independante de la configuration
 	**					des fonctions du forum
 	*/
 	public static function get_age($birthday, $check_mod = TRUE)
@@ -479,10 +479,10 @@ class User extends Fsb_model
 	}
 
 	/*
-	** Récupère le sexe du membre sous forme d'image
+	** Recupere le sexe du membre sous forme d'image
 	** -----
 	** $sexe ::			Sexe du membre
-	** $check_mod ::	Mettre à TRUE si vous voullez que la fonction soit indépendante de la configuration
+	** $check_mod ::	Mettre a TRUE si vous voullez que la fonction soit independante de la configuration
 	**					des fonctions du forum
 	*/
 	public static function get_sexe($sexe, $check_mod = TRUE)
@@ -510,7 +510,7 @@ class User extends Fsb_model
 	** l'URL de l'avatar.
 	** -----
 	** $avatar_name ::		Nom de l'avatar
-	** $avatar_method ::	Méthode d'affichage de l'avatar
+	** $avatar_method ::	Methode d'affichage de l'avatar
 	** $can_use ::			Si le membre peut utiliser un avatar
 	*/
 	public static function get_avatar($avatar_name, $avatar_method, $can_use)
@@ -550,7 +550,7 @@ class User extends Fsb_model
 	*/
 	public static function confirm_administrator($user_id, $user_nickname, $user_email, $user_ip)
 	{
-		// Envoie de l'Email à l'utilisateur
+		// Envoie de l'Email a l'utilisateur
 		$mail = new Notify_mail();
 		$mail->AddAddress($user_email);
 		$mail->Subject = sprintf(Fsb::$session->lang('subject_register'), Fsb::$cfg->get('forum_name'));
@@ -573,7 +573,7 @@ class User extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On récupère les informations pour notifier les administrateurs
+		// On recupere les informations pour notifier les administrateurs
 		$sql = 'SELECT u_email, u_language, u_activate_auto_notification
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_auth > ' . $level['auth_level'];
@@ -633,7 +633,7 @@ class User extends Fsb_model
 				'u_confirm_hash' =>	'',
 			), 'WHERE u_id = ' . $user_id . ' AND u_confirm_hash = \'.\' AND u_activated = 0');
 
-			// Envoie de l'Email à l'utilisateur
+			// Envoie de l'Email a l'utilisateur
 			$mail = new Notify_mail();
 			$mail->AddAddress($data['u_email']);
 			$mail->Subject = Fsb::$session->lang('subject_confirm_account');

@@ -12,9 +12,9 @@
 
 /*
 ** Page de gestion des droits des forums, groupes et membres
-** Tous les droits sont gérés à l'aide de groupes, la seule différence entre la gestion
+** Tous les droits sont geres a l'aide de groupes, la seule difference entre la gestion
 ** des droits des forums et des groupes est que l'affichage se fait en fonction d'un des
-** deux paramètres. Les droits des membres se raprochent de droits d'un groupe unique en
+** deux parametres. Les droits des membres se raprochent de droits d'un groupe unique en
 ** fonction de forums.
 */
 class Fsb_frame_child extends Fsb_admin_frame
@@ -48,7 +48,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'default' =>	'forums',
 		));
 
-		// On récupère le type de mode en fonction du cookie
+		// On recupere le type de mode en fonction du cookie
 		if ($this->mode_type === NULL)
 		{
 			$this->mode_type = Http::getcookie('mode_type');
@@ -122,7 +122,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Récupère le groupe unique du membre selectioné
+	** Recupere le groupe unique du membre selectione
 	*/
 	public function get_auths_users_group()
 	{
@@ -156,7 +156,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de la gestion des autorisations des forums
+	** Affiche la page par defaut de la gestion des autorisations des forums
 	*/
 	public function page_default_forums_auths()
 	{
@@ -171,7 +171,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de la gestion des autorisations des groupes
+	** Affiche la page par defaut de la gestion des autorisations des groupes
 	*/
 	public function page_default_groups_auths()
 	{
@@ -186,7 +186,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de gestion des autorisations du membre
+	** Affiche la page par defaut de gestion des autorisations du membre
 	*/
 	public function page_default_users_auths()
 	{
@@ -204,7 +204,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_view_forums_auths()
 	{
-		// ID du forum à charger (peut etre issu d'un model)
+		// ID du forum a charger (peut etre issu d'un model)
 		$sql_id = ($this->auth_model) ? $this->auth_model : $this->this_id;
 
 		$sql = 'SELECT g.g_name, g.g_id AS real_this_id, g.g_color, g.g_type, ga.*
@@ -241,7 +241,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_view_groups_auths()
 	{
-		// ID du groupe à charger (peut etre issu d'un model)
+		// ID du groupe a charger (peut etre issu d'un model)
 		$sql_id = ($this->auth_model) ? $this->auth_model : $this->this_id;
 
 		$sql = 'SELECT f.f_id AS real_this_id, f.f_level, f.f_name, ga.*
@@ -275,7 +275,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_view_users_auths()
 	{
-		// Requète de selection des droits
+		// Requete de selection des droits
 		$sql = 'SELECT f.f_id AS real_this_id, f.f_level, f.f_name, ga.*
 				FROM ' . SQL_PREFIX . 'forums f
 				LEFT JOIN ' . SQL_PREFIX . 'groups_auth ga
@@ -297,7 +297,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affichage du formulaire avec les listes déroulantes (les trois types)
+	** Affichage du formulaire avec les listes deroulantes (les trois types)
 	*/
 	public function page_view_auths($result, $type, $list_mode_ary)
 	{
@@ -315,7 +315,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			case MODE_TYPE_ADVANCED :
 				//
-				// Affichage de la page pour le mode avancé
+				// Affichage de la page pour le mode avance
 				//
 
 				Fsb::$tpl->set_switch('auths_advanced');
@@ -485,7 +485,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			case MODE_TYPE_EASY :
 				//
-				// Affichage de la page pour l'interface très simplifiée
+				// Affichage de la page pour l'interface tres simplifiee
 				//
 				Fsb::$tpl->set_switch('auths_easy');
 				
@@ -568,7 +568,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			ADMIN =>	GROUP_SPECIAL_ADMIN,
 		);
 
-		// Vérification de l'ID
+		// Verification de l'ID
 		switch ($this->module)
 		{
 			case 'forums' :
@@ -595,15 +595,15 @@ class Fsb_frame_child extends Fsb_admin_frame
 			break;
 		}
 
-		// Si on est sur un module 'users' et que la variable vaut TRUE, on changera peut etre à la
-		// fin son status en tant que "modérateur"
+		// Si on est sur un module 'users' et que la variable vaut TRUE, on changera peut etre a la
+		// fin son status en tant que "moderateur"
 		$user_moderator = FALSE;
 
 		switch ($this->mode_type)
 		{
 			case MODE_TYPE_ADVANCED :
 				//
-				// Soumission des droits pour l'interface avancée
+				// Soumission des droits pour l'interface avancee
 				//
 				$save_id = 0;
 				$insert_array = array();
@@ -650,7 +650,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 							$save_id = $current_id;
 						}
 
-						// On regarde si le groupe / membre peut être considéré comme modérateur
+						// On regarde si le groupe / membre peut etre considere comme moderateur
 						if (($this->module == 'users' || $this->module == 'groups') && $match[1] == 'ga_moderator' && $value == 1)
 						{
 							$user_moderator = TRUE;
@@ -675,7 +675,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				// Soumission des droits pour l'interface normale
 				//
 
-				// On récupère les droits sous forme de tableau formaté
+				// On recupere les droits sous forme de tableau formate
 				$final_auth = array();
 				foreach ($_POST AS $key => $value)
 				{
@@ -689,7 +689,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					}
 				}
 
-				// On parcourt le tableau formaté pour construire les requètes pour les droits
+				// On parcourt le tableau formate pour construire les requetes pour les droits
 				foreach ($final_auth AS $current_id => $auth_selected)
 				{
 					$query_ary = array();
@@ -701,15 +701,15 @@ class Fsb_frame_child extends Fsb_admin_frame
 						{
 							if ($auth != 'ga_nothing')
 							{
-								// Des qu'on a une valeur à 1 on ne peut que faire une requète REPLACE, sinon si on
-								// a uniquement des 0 on lance une requète DELETE à la fin
+								// Des qu'on a une valeur a 1 on ne peut que faire une requete REPLACE, sinon si on
+								// a uniquement des 0 on lance une requete DELETE a la fin
 								if ($is_selected == 1)
 								{
 									$delete = FALSE;
 								}
 								$query_ary[$auth] = $is_selected;
 
-								// On regarde si le groupe / membre peut être considéré comme modérateur
+								// On regarde si le groupe / membre peut etre considere comme moderateur
 								if (($this->module == 'users' || $this->module == 'groups') && $auth == 'ga_moderator' && $is_selected)
 								{
 									$user_moderator = TRUE;
@@ -723,7 +723,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						}
 					}
 
-					// Lancemement de la requète
+					// Lancemement de la requete
 					if ($delete)
 					{
 						switch ($this->module)
@@ -765,7 +765,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			case MODE_TYPE_EASY :
 				//
-				// Soumission des droits pour l'interface très simplifiée
+				// Soumission des droits pour l'interface tres simplifiee
 				//
 				$auth_ary = array();
 				foreach ($_POST AS $key => $value)
@@ -796,8 +796,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 					
 					if ($delete_line)
 					{
-						// Théoriquement cette requète ne sera jamais éxécutée, elle est là
-						// pour le cas où la théorie se fait dépassée :=)
+						// Theoriquement cette requete ne sera jamais executee, elle est la
+						// pour le cas ou la theorie se fait depassee :=)
 						$sql = 'DELETE FROM ' . SQL_PREFIX . "groups_auth
 								WHERE g_id = $g_id
 									AND f_id = $this->id";
@@ -815,7 +815,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			break;
 		}
 
-		// Mise à jour des groupes de modération
+		// Mise a jour des groupes de moderation
 		Group::update_auths();
 
 		// On met a jour les sessions des membres
@@ -862,7 +862,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page affichant les autres droits (non liés aux forums)
+	** Page affichant les autres droits (non lies aux forums)
 	*/
 	public function show_others_auths()
 	{
@@ -912,7 +912,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function submit_others_auths()
 	{
-		// On récupère les droits
+		// On recupere les droits
 		$sql = 'SELECT auth_name, auth_level
 				FROM ' . SQL_PREFIX . 'auths';
 		$result = Fsb::$db->query($sql, 'auths_');
@@ -935,11 +935,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de vérification des droits
+	** Affiche la page par defaut de verification des droits
 	*/
 	public function show_check_auths()
 	{
-		// Si un groupe a été selectionné
+		// Si un groupe a ete selectionne
 		$user_id = NULL;
 		$nickname = Http::request('check_nickname', 'post');
 		$group_id = intval(Http::request('g_id', 'post'));
@@ -958,7 +958,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			$title = sprintf(Fsb::$session->lang('adm_auths_check_groups_title'), htmlspecialchars($g_name));
 		}
-		// Si un membre a été selectionné
+		// Si un membre a ete selectionne
 		else if (Http::request('submit_check_user', 'post'))
 		{
 			// Si le membre existse
@@ -983,7 +983,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_auths&amp;module=check'),
 		));
 
-		// On lance la vérification des droits pour un groupe
+		// On lance la verification des droits pour un groupe
 		$auth = array();
 		if (Http::request('submit_check_groups', 'post'))
 		{
@@ -1000,7 +1000,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$auth[$id] = $row;
 			}
 		}
-		// On lance la vérification des droits d'un membre
+		// On lance la verification des droits d'un membre
 		else if (Http::request('submit_check_user', 'post'))
 		{
 			// Groupe auquel appartient le membre

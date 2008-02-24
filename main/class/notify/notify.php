@@ -11,13 +11,13 @@
 */
 
 /*
-** Gestion d'envoie de messages de notification avec gestion d'une liste d'envoie en différé. La méthode put() ajoute des messages à cette liste, l'envoie
-** de message se faisant via la méthode send_enqueue(). La méthode simple send() envoie instantanément le message.
-** Les protocoles supportés sont les protocoles mail/smtp, jabber et MSN.
+** Gestion d'envoie de messages de notification avec gestion d'une liste d'envoie en differe. La methode put() ajoute des messages a cette liste, l'envoie
+** de message se faisant via la methode send_enqueue(). La methode simple send() envoie instantanement le message.
+** Les protocoles supportes sont les protocoles mail/smtp, jabber et MSN.
 */
 class Notify extends Fsb_model
 {
-	// Nombre maximum d'essaie de renvoie d'une notification si elle échoue
+	// Nombre maximum d'essaie de renvoie d'une notification si elle echoue
 	const MAX_TRY = 3;
 
 	private $method =	NOTIFY_MAIL;
@@ -30,7 +30,7 @@ class Notify extends Fsb_model
 	/*
 	** Constructeur
 	** -----
-	** $method ::		Choix de la méthode de notification
+	** $method ::		Choix de la methode de notification
 	*/
 	public function __construct($method = NOTIFY_MAIL)
 	{
@@ -75,7 +75,7 @@ class Notify extends Fsb_model
 			trigger_error('Le template ' . $template . ' n\'existe pas', FSB_ERROR);
 		}
 		
-		// Récupération du contenu du template
+		// Recuperation du contenu du template
 		$this->body = file_get_contents($template);
 	}
 	
@@ -130,7 +130,7 @@ class Notify extends Fsb_model
 	/*
 	** Envoie du message
 	** -----
-	** $parse_body ::	TRUE si on doit parser le texte à partir des variables de templates
+	** $parse_body ::	TRUE si on doit parser le texte a partir des variables de templates
 	*/
 	public function send($parse_body = TRUE)
 	{
@@ -210,7 +210,7 @@ class Notify extends Fsb_model
 	}
 	
 	/*
-	** Ajout du message à la liste des messages en attentes
+	** Ajout du message a la liste des messages en attentes
 	*/
 	public function put()
 	{
@@ -227,7 +227,7 @@ class Notify extends Fsb_model
 	}
 	
 	/*
-	** Remise à zéro des informations
+	** Remise a zero des informations
 	*/
 	public function reset()
 	{
@@ -249,7 +249,7 @@ class Notify extends Fsb_model
 		$result = Fsb::$db->query($sql, 'notify_');
 		if ($row = Fsb::$db->row($result))
 		{
-			// Suppression des éléments directement, afin d'éviter un double envoie
+			// Suppression des elements directement, afin d'eviter un double envoie
 			$sql = 'DELETE FROM ' . SQL_PREFIX . 'notify';
 			Fsb::$db->query($sql);
 			Fsb::$db->destroy_cache('notify_');
@@ -264,7 +264,7 @@ class Notify extends Fsb_model
 				$return = $this->send(FALSE);
 				$this->reset();
 
-				// En cas d'échec du message on le réinsère dans la base de donnée
+				// En cas d'echec du message on le reinsere dans la base de donnee
 				if (!$return && $row['notify_try'] < Notify::MAX_TRY)
 				{
 					$row['notify_try']++;

@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet de gérer l'accès aux pages de l'administration, ainsi que 
+** Permet de gerer l'acces aux pages de l'administration, ainsi que 
 ** leur positionement
 */
 class Fsb_frame_child extends Fsb_admin_frame
@@ -92,7 +92,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace une catégorie dans le menu
+	** Deplace une categorie dans le menu
 	*/
 	public function page_menu_move_cat()
 	{
@@ -102,7 +102,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace un lien dans le menu
+	** Deplace un lien dans le menu
 	*/
 	public function page_menu_move_link()
 	{
@@ -112,7 +112,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Sauvegarde les modifications des données du menu
+	** Sauvegarde les modifications des donnees du menu
 	*/
 	public function page_menu_submit()
 	{

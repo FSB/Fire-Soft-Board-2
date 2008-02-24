@@ -58,7 +58,7 @@ class Page_user_upload extends Fsb_model
 	*/
 	public function show_files()
 	{
-		// On récupère l'ordre et la direction d'affichage des fichiers
+		// On recupere l'ordre et la direction d'affichage des fichiers
 		$direction = strtoupper(Http::request('direction'));
 		if ($direction !== 'ASC' && $direction !== 'DESC')
 		{
@@ -71,7 +71,7 @@ class Page_user_upload extends Fsb_model
 			$order = 'upload_time';
 		}
 
-		// On récupère le quota du membre
+		// On recupere le quota du membre
 		$sql = 'SELECT SUM(upload_filesize) AS total_filesize
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE u_id = ' . Fsb::$session->id();
@@ -90,7 +90,7 @@ class Page_user_upload extends Fsb_model
 			'U_ORDER_TOTAL' =>		$this->check_order('upload_total', $order, $direction),
 		));
 
-		// On affiche les fichiers uploadés
+		// On affiche les fichiers uploades
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE u_id = ' . Fsb::$session->id() . '
@@ -129,7 +129,7 @@ class Page_user_upload extends Fsb_model
 			Display::message('attached_file_not_exists');
 		}
 
-		// Liste des droits pour le téléchargement
+		// Liste des droits pour le telechargement
 		$list_upload_auth = array(
 			VISITOR =>	Fsb::$session->lang('visitor'),
 			USER =>		Fsb::$session->lang('user'),
@@ -155,7 +155,7 @@ class Page_user_upload extends Fsb_model
 	}
 
 	/*
-	** Soumission de l'édition d'un fichier
+	** Soumission de l'edition d'un fichier
 	*/
 	public function submit_edit_file()
 	{
@@ -185,7 +185,7 @@ class Page_user_upload extends Fsb_model
 	{
 		$id = intval(Http::request('id'));
 
-		// On vérifie si le fichier existe
+		// On verifie si le fichier existe
 		$sql = 'SELECT upload_filename
 				FROM ' . SQL_PREFIX . 'upload
 				WHERE upload_id = ' . $id . '
@@ -221,9 +221,9 @@ class Page_user_upload extends Fsb_model
 	}
 
 	/*
-	** Retourne l'URL correcte pour trier selon un critère
+	** Retourne l'URL correcte pour trier selon un critere
 	** -----
-	** $name ::			Critère de tri
+	** $name ::			Critere de tri
 	** $order ::		Ordre actuel
 	** $direction ::	Direction actuelle
 	*/

@@ -22,12 +22,12 @@ class Dbal_sqlite extends Dbal
 {
 	/*
 	** Constructeur de la classe Sql
-	** Etablit la connexion à la base de donnée
+	** Etablit la connexion a la base de donnee
 	** -----
 	** $server ::		Adresse du serveur MySQL
-	** $login ::		Login d'accès MySQL
-	** $pass ::			Mot de passe associé au login
-	** $db ::			Nom de la base de donnée à selectionner
+	** $login ::		Login d'acces MySQL
+	** $pass ::			Mot de passe associe au login
+	** $db ::			Nom de la base de donnee a selectionner
 	** $port ::			Port de connexion
 	** $use_cache ::	Utilisation du cache SQL ?
 	*/
@@ -41,7 +41,7 @@ class Dbal_sqlite extends Dbal
 			return ;
 		}
 
-		// Cette requète évite aux alias de se retrouver dans le nom des champs.
+		// Cette requete evite aux alias de se retrouver dans le nom des champs.
 		$this->simple_query('PRAGMA short_column_names = 1');
 
 		// Ce que peut faire SQLite
@@ -53,11 +53,11 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Execute la requète SQL et renvoie le résultat
+	** Execute la requete SQL et renvoie le resultat
 	** -----
-	** $sql ::		Requète à éxécuter
-	** $buffer ::	Si TRUE, le résultat est bufferisé. Utiliser FALSE pour les
-	**				requètes ne renvoyant pas explicitement de résultat (UPDATE, DELETE,
+	** $sql ::		Requete a executer
+	** $buffer ::	Si TRUE, le resultat est bufferise. Utiliser FALSE pour les
+	**				requetes ne renvoyant pas explicitement de resultat (UPDATE, DELETE,
 	**				INSERT, etc ...)
 	*/
 	public function _query($sql, $buffer = TRUE)
@@ -71,9 +71,9 @@ class Dbal_sqlite extends Dbal
 	}
 	
 	/*
-	** Simple requète n'affichant pas directement l'erreur
+	** Simple requete n'affichant pas directement l'erreur
 	** -----
-	** $sql ::		Requète à éxécuter
+	** $sql ::		Requete a executer
 	*/
 	public function simple_query($sql)
 	{
@@ -102,7 +102,7 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Retourne la dernière ID après un INSERT en cas d'incrementation automatique
+	** Retourne la derniere ID apres un INSERT en cas d'incrementation automatique
 	*/
 	public function last_id()
 	{
@@ -118,9 +118,9 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Protège un champ de la requète
+	** Protege un champ de la requete
 	** -----
-	** $str :: Chaîne à protéger
+	** $str :: Chaine a proteger
 	*/
 	public function escape($str)
 	{
@@ -128,9 +128,9 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Renvoie le nombre de lignes affectées par une requète
+	** Renvoie le nombre de lignes affectees par une requete
 	** -----
-	** $result ::		Résultat d'une requète
+	** $result ::		Resultat d'une requete
 	*/
 	public function affected_rows($result)
 	{
@@ -138,11 +138,11 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Récupère le type d'une colone
+	** Recupere le type d'une colone
 	** -----
-	** $result ::	Résultat de la requète
-	** $field ::	Champ à vérifier
-	** $table ::	Nom de la table concernée
+	** $result ::	Resultat de la requete
+	** $field ::	Champ a verifier
+	** $table ::	Nom de la table concernee
 	*/
 	public function field_type($result, $field, $table = NULL)
 	{
@@ -174,9 +174,9 @@ class Dbal_sqlite extends Dbal
 	** On retourne dans tous les cas 'string', car les types n'ont pas reellement d'importance
 	** avec SQLite
 	** -----
-	** $result ::	Résultat de la requète
-	** $field ::	Champ à vérifier
-	** $table ::	Nom de la table concernée
+	** $result ::	Resultat de la requete
+	** $field ::	Champ a verifier
+	** $table ::	Nom de la table concernee
 	*/
 	public function get_field_type($result, $field, $table = NULL)
 	{
@@ -186,7 +186,7 @@ class Dbal_sqlite extends Dbal
 	/*
 	** Renvoie un tableau contenant la liste des tables
 	** -----
-	** $limit ::	Si TRUE, ne récupère que les tables ayant le même préfixe que le forum
+	** $limit ::	Si TRUE, ne recupere que les tables ayant le meme prefixe que le forum
 	*/
 	public function list_tables($limit = TRUE)
 	{
@@ -224,7 +224,7 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Renvoie la dernière erreur
+	** Renvoie la derniere erreur
 	*/
 	public function sql_error()
 	{
@@ -275,11 +275,11 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** Supprime des éléments de plusieurs tables
+	** Supprime des elements de plusieurs tables
 	** (SQLITE ne supporte pas les multi suppressions)
 	** -----
-	** $default_table ::		Table par défaut dont on va récupérer les champs
-	** $default_where ::		Clause WHERE pour la récupération des champs
+	** $default_table ::		Table par defaut dont on va recuperer les champs
+	** $default_where ::		Clause WHERE pour la recuperation des champs
 	** $delete_join ::			Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
 	*/
 	public function delete_tables($default_table, $default_where, $delete_join)
@@ -318,18 +318,18 @@ class Dbal_sqlite extends Dbal
 	}
 
 	/*
-	** SQLite ne supportant pas l'opérateur ALTER dans certaines de ses versions, cette méthode va simuler
+	** SQLite ne supportant pas l'operateur ALTER dans certaines de ses versions, cette methode va simuler
 	** le comportement d'un ALTER en permettant d'ajouter / supprimer un champ, ou de renommer la table.
 	** -----
 	** $tablename ::	Nom de la table
-	** $action ::		Action à effectuer : ADD, DROP ou RENAME
-	** $arg ::			Argument passé à l'action.
+	** $action ::		Action a effectuer : ADD, DROP ou RENAME
+	** $arg ::			Argument passe a l'action.
 	**						Lors d'un ajout ou d'une suppression, on passe le nom du champ.
 	**						Lors du renomage de la table, on passe le nom de la nouvelle table.
 	*/
 	public function alter($tablename, $action, $arg)
 	{
-		// On récupère les champs de la table originale
+		// On recupere les champs de la table originale
 		$cols = array_keys(sqlite_fetch_column_types($tablename, $this->id, SQLITE_ASSOC));
 
 		switch ($action)
@@ -358,7 +358,7 @@ class Dbal_sqlite extends Dbal
 			break;
 		}
 
-		// On créé une nouvelle table, basée sur l'ancienne
+		// On cree une nouvelle table, basee sur l'ancienne
 		$sql = 'CREATE ' . (($is_temporary) ? 'TEMPORARY' : '') . ' TABLE ' . $name . ' AS SELECT ' . $fields . ' FROM ' . $tablename;
 		$this->query($sql);
 
@@ -371,7 +371,7 @@ class Dbal_sqlite extends Dbal
 			return ;
 		}
 
-		// Recréation de la table d'origine à partir de la nouvelle table
+		// Recreation de la table d'origine a partir de la nouvelle table
 		$sql = 'CREATE TABLE ' . $tablename . ' AS SELECT * FROM ' . $name;
 		$this->query($sql);
 

@@ -12,7 +12,7 @@
 
 /*
 ** Gestion de FSBcard pour exporter son profil
-** Pour les spécifications consulter le schéma ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
+** Pour les specifications consulter le schema ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
 */
 class Fsbcard extends Fsb_model
 {
@@ -22,7 +22,7 @@ class Fsbcard extends Fsb_model
 	// Version des FSBcards
 	public $version = '1.0';
 
-	// Générateur
+	// Generateur
 	public $generator = 'fsb2';
 
 	// Liste des sexes disponibles
@@ -31,7 +31,7 @@ class Fsbcard extends Fsb_model
 	// Liste des hashs disponibles
 	private $hash = array('none', 'md5', 'sha1');
 
-	// Liste des méthodes d'avatar disponibles
+	// Liste des methodes d'avatar disponibles
 	private $avatar = array('link', 'content');
 
 	// Options disponibles
@@ -53,7 +53,7 @@ class Fsbcard extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// Instance d'un objet XML et création de la FSBcard
+		// Instance d'un objet XML et creation de la FSBcard
 		$this->xml = new Xml();
 		$this->xml->document->setTagName('fsbcard');
 		$this->xml->document->setAttribute('version', $this->version);
@@ -96,7 +96,7 @@ class Fsbcard extends Fsb_model
 	{
 		$this->xml->load_content($content);
 
-		// Vérification des informations de la FSBcard
+		// Verification des informations de la FSBcard
 		if ($this->xml->document->getTagName() != 'fsbcard')
 		{
 			trigger_error('FSBcard : format incorect du fichier XML', FSB_ERROR);
@@ -130,7 +130,7 @@ class Fsbcard extends Fsb_model
 	}
 
 	/*
-	** Thème du membre
+	** Theme du membre
 	*/
 	public function set_template($string)
 	{
@@ -140,7 +140,7 @@ class Fsbcard extends Fsb_model
 	}
 
 	/*
-	** Thème du membre
+	** Theme du membre
 	*/
 	public function get_template()
 	{

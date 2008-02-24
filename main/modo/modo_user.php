@@ -10,26 +10,26 @@
 ** +---------------------------------------------------+
 */
 
-// On affiche ce module si le membre a le droit d'éditer des utilisateurs
+// On affiche ce module si le membre a le droit d'editer des utilisateurs
 if (Fsb::$session->is_authorized('auth_edit_user'))
 {
 	$show_this_module = TRUE;
 }
 
 /*
-** Module de modération pour le profil d'un membre
+** Module de moderation pour le profil d'un membre
 */
 class Page_modo_user extends Fsb_model
 {
-	// ID du membre à modérer
+	// ID du membre a moderer
 	public $id;
 	public $nickname;
 
-	// Données du membre
+	// Donnees du membre
 	public $data = array();
 	public $userdata = array();
 
-	// Peut faire de la grosse modération ?
+	// Peut faire de la grosse moderation ?
 	public $edit_extra = FALSE;
 
 	/*
@@ -37,7 +37,7 @@ class Page_modo_user extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// L'utilisateur peut faire de la modération avancée sur le membre ?
+		// L'utilisateur peut faire de la moderation avancee sur le membre ?
 		$this->edit_extra = Fsb::$session->is_authorized('auth_extra_edit_user');
 
 		$this->get_user_data();
@@ -88,11 +88,11 @@ class Page_modo_user extends Fsb_model
 	}
 
 	/*
-	** Affiche les données du profil du membre à modérer
+	** Affiche les donnees du profil du membre a moderer
 	*/
 	public function show_profile()
 	{
-		// On affiche uniquement ce que le modérateur peut modérer
+		// On affiche uniquement ce que le moderateur peut moderer
 		if (!Fsb::$session->is_authorized('auth_edit_user'))
 		{
 			Display::message('not_allowed');
@@ -116,7 +116,7 @@ class Page_modo_user extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Liste des groupes par défaut
+		// Liste des groupes par defaut
 		$sql = 'SELECT g.g_id, g.g_name
 				FROM ' . SQL_PREFIX . 'groups_users gu
 				INNER JOIN ' . SQL_PREFIX . 'groups g
@@ -159,7 +159,7 @@ class Page_modo_user extends Fsb_model
 			'LIST_DEFAULT' =>		Html::create_list('u_default_group_id', $this->userdata['u_default_group_id'], $list_groups),
 		));
 
-		// Si le compte n'est ni activé, ni confirmé par Email, on peut lui renvoyer un Email
+		// Si le compte n'est ni active, ni confirme par Email, on peut lui renvoyer un Email
 		if (!$this->userdata['u_activated'] && $this->userdata['u_confirm_hash'] && $this->userdata['u_confirm_hash'] != '.')
 		{
 			Fsb::$tpl->set_switch('can_send_act_email');
@@ -197,7 +197,7 @@ class Page_modo_user extends Fsb_model
 
 		Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $errstr, $this->id);
 
-		// On récupère les données du formulaire
+		// On recupere les donnees du formulaire
 		foreach ($_POST AS $key => $value)
 		{
 			if (is_string($value))
@@ -209,7 +209,7 @@ class Page_modo_user extends Fsb_model
 		$update_array = array();
 		$update_pwd_array = array();
 
-		// Nouveau pseudo ? On vérifie si il n'est pas déjà pris
+		// Nouveau pseudo ? On verifie si il n'est pas deja pris
 		if (isset($this->data['new_nickname']) && $this->data['new_nickname'] && $this->edit_extra)
 		{
 			if (strtolower($this->data['new_nickname']) != strtolower($this->userdata['u_nickname']) && User::nickname_exists($this->data['new_nickname']))
@@ -224,7 +224,7 @@ class Page_modo_user extends Fsb_model
 
 		if ($this->edit_extra)
 		{
-			// On vérifie si le login n'est pas déjà pris
+			// On verifie si le login n'est pas deja pris
 			if (strtolower($this->userdata['u_login']) != strtolower($this->data['new_login']) && User::login_exists($this->data['new_login']))
 			{
 				Display::message('modo_user_login_exists');
@@ -240,7 +240,7 @@ class Page_modo_user extends Fsb_model
 				$update_array['u_email'] = $this->data['u_email'];
 			}
 
-			// Mise à jour de l'avatar
+			// Mise a jour de l'avatar
 			if ($this->data['u_avatar'])
 			{
 				if ($this->data['u_avatar'] != $this->userdata['u_avatar'])
@@ -255,7 +255,7 @@ class Page_modo_user extends Fsb_model
 				$update_array['u_avatar_method'] = 0;
 			}
 
-			// Mise à jour du groupe par défaut
+			// Mise a jour du groupe par defaut
 			$sql = 'SELECT g.g_color
 					FROM ' . SQL_PREFIX . 'groups_users gu
 					INNER JOIN ' . SQL_PREFIX . 'groups g
@@ -273,7 +273,7 @@ class Page_modo_user extends Fsb_model
 			{
 				$update_array['u_activated'] = intval(Http::request('u_activated', 'post'));
 
-				// En cas de désactivation on supprime la session du membre
+				// En cas de desactivation on supprime la session du membre
 				if (!$update_array['u_activated'])
 				{
 					$sql = 'DELETE FROM ' . SQL_PREFIX . 'sessions
@@ -282,10 +282,10 @@ class Page_modo_user extends Fsb_model
 				}
 			}
 
-			// Vérification du bannissement
+			// Verification du bannissement
 			$this->check_ban_user();
 
-			// Mise à jour du rang du groupe unique du membre
+			// Mise a jour du rang du groupe unique du membre
 			Fsb::$db->update('groups', array(
 				'g_rank' =>		$update_array['u_rank_id'],
 			), 'WHERE g_id = ' . $this->userdata['u_single_group_id'] . ' AND g_type = ' . GROUP_SINGLE);
@@ -300,7 +300,7 @@ class Page_modo_user extends Fsb_model
 			$update_pwd_array['u_password'] = Password::hash($this->data['new_password'], $this->userdata['u_algorithm'], $this->userdata['u_use_salt']);
 		}
 
-		// Mise à jour des données du membre
+		// Mise a jour des donnees du membre
 		Fsb::$db->update('users', $update_array, 'WHERE u_id = ' . $this->id);
 
 		if ($update_pwd_array)
@@ -321,7 +321,7 @@ class Page_modo_user extends Fsb_model
 		$delete_type = Http::request('delete_type', 'post');
 		if (check_confirm())
 		{
-			// On vérifie que le membre ne soit pas un administrateur
+			// On verifie que le membre ne soit pas un administrateur
 			$sql = 'SELECT u_auth
 					FROM ' . SQL_PREFIX . 'users
 					WHERE u_id = ' . $this->id;
@@ -331,7 +331,7 @@ class Page_modo_user extends Fsb_model
 				Display::message('modo_user_delete_admin');
 			}
 
-			// Vérification du bannissement
+			// Verification du bannissement
 			$this->check_ban_user();
 
 			// Suppression du membre

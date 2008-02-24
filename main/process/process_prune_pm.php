@@ -11,7 +11,7 @@
 */
 
 /*
-** Supprime les messages privés trop "vieux" (plus de 6 mois)
+** Supprime les messages prives trop "vieux" (plus de 6 mois)
 */
 function prune_pm()
 {

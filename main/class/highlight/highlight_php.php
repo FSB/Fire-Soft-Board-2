@@ -57,7 +57,7 @@ class Highlight_php extends Highlight
 	}
 
 	/*
-	** Parse une chaîne de caractère PHP
+	** Parse une chaine de caractere PHP
 	*/
 	protected function _parse($str)
 	{

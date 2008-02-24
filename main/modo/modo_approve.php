@@ -14,7 +14,7 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur permettant au modérateur de voir les messages non approuvés des forums qu'il modère.
+** Module d'utilisateur permettant au moderateur de voir les messages non approuves des forums qu'il modere.
 */
 class Page_modo_approve extends Fsb_model
 {
@@ -44,14 +44,14 @@ class Page_modo_approve extends Fsb_model
 	}
 
 	/*
-	** Liste les messages non approuvés
+	** Liste les messages non approuves
 	*/
 	public function show_unapproved_topics()
 	{
 		Fsb::$tpl->set_file('modo/modo_approve.html');
 		Fsb::$tpl->set_switch('list_unapproved');
 
-		// Liste des sujets contenant des messages non validés
+		// Liste des sujets contenant des messages non valides
 		$sql = 'SELECT t.t_id, t.t_title, t.t_approve, t.t_time, f.f_id, f.f_name, f.f_color, u.u_id, u.u_nickname, u.u_color, COUNT(p.p_id) AS total_unapproved
 				FROM ' . SQL_PREFIX . 'topics t
 				INNER JOIN ' . SQL_PREFIX . 'posts p
@@ -81,7 +81,7 @@ class Page_modo_approve extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	// Affiche les messages non approuvés d'un sujet
+	// Affiche les messages non approuves d'un sujet
 	public function show_unapproved_posts()
 	{
 		Fsb::$tpl->set_file('modo/modo_approve.html');
@@ -110,7 +110,7 @@ class Page_modo_approve extends Fsb_model
 
 			do
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -142,7 +142,7 @@ class Page_modo_approve extends Fsb_model
 	// Approuve le message
 	public function approve_post()
 	{
-		// On vérifie que le message soit dans un des forums qu'on modère
+		// On verifie que le message soit dans un des forums qu'on modere
 		$sql = 'SELECT p_id
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE p_id = ' . $this->id . '

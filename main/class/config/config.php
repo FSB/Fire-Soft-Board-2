@@ -25,7 +25,7 @@ class Config extends Fsb_model
 	** Chargement de la configuration du forum
 	** -----
 	** $table ::		Table de la configuration
-	** $default ::		En renseignant ce champ, on entre un tableau de configuration à la main (le forum 
+	** $default ::		En renseignant ce champ, on entre un tableau de configuration a la main (le forum 
 	**					n'ira donc pas lire la table)
 	*/
 	public function __construct($table = 'config', $default = array())
@@ -50,7 +50,7 @@ class Config extends Fsb_model
 	}
 
 	/*
-	** Vérifie l'existance d'une clef de configuration
+	** Verifie l'existance d'une clef de configuration
 	** -----
 	** $key ::		Clef de configuration
 	*/
@@ -60,7 +60,7 @@ class Config extends Fsb_model
 	}
 
 	/*
-	** Récupère une valeur de la configuration
+	** Recupere une valeur de la configuration
 	** -----
 	** $key ::		Clef de configuration
 	*/
@@ -70,7 +70,7 @@ class Config extends Fsb_model
 	}
 
 	/*
-	** Modifie la valeur d'une clef (pas dans la base de donnée)
+	** Modifie la valeur d'une clef (pas dans la base de donnee)
 	** -----
 	** $key ::		Clef de configuration
 	** $value ::	Nouvelle valeur
@@ -81,11 +81,11 @@ class Config extends Fsb_model
 	}
 
 	/*
-	** Modifie une valeur de la configuration dans la base de donnée
+	** Modifie une valeur de la configuration dans la base de donnee
 	** -----
 	** $key ::		Clef de configuration
 	** $value ::	Nouvelle valeur
-	** $cache ::	Mise à jour du cache ?
+	** $cache ::	Mise a jour du cache ?
 	*/
 	public function update($key, $value, $cache = TRUE)
 	{

@@ -11,25 +11,25 @@
 */
 
 /*
-** Classe permettant de réaliser des backups de diverses données (mysql, pgsql, etc ...).
+** Classe permettant de realiser des backups de diverses donnees (mysql, pgsql, etc ...).
 **
 ** ----
 **
-** La méthode de dump de la base de donnée MySQL a été inspirée par cette source :
+** La methode de dump de la base de donnee MySQL a ete inspiree par cette source :
 **		http://www.developpez.net/forums/viewtopic.php?p=1405354#1405354
 **
-** Les méthodes de dump PostgreSQL ont été réalisées à partir de celles de phpBB3
+** Les methodes de dump PostgreSQL ont ete realisees a partir de celles de phpBB3
 ** (http://www.phpbb.com) et de phpPgAdmin (http://phppgadmin.sourceforge.net/).
 */
 abstract class Backup extends Fsb_model
 {
-	// DBMS utilisée
+	// DBMS utilisee
 	private $dbal = '';
 
 	// Multi insertion ?
 	public $multi_insert = FALSE;
 
-	// Méthode pour le dump
+	// Methode pour le dump
 	protected $dump_method;
 
 	const OUTPUT = 1;
@@ -46,8 +46,8 @@ abstract class Backup extends Fsb_model
 	abstract public function close();
 
 	/*
-	** Retourne une instance de la classe Backup, étendue par la classe gérant le buffer de sortie, et contenant
-	** une propriété pointant sur la méthode avec laquelle on souhaite faire un backup.
+	** Retourne une instance de la classe Backup, etendue par la classe gerant le buffer de sortie, et contenant
+	** une propriete pointant sur la methode avec laquelle on souhaite faire un backup.
 	*/
 	public static function &factory($sgbd, $output)
 	{
@@ -74,7 +74,7 @@ abstract class Backup extends Fsb_model
 
 		if (!method_exists($obj, 'dump_' . $sgbd))
 		{
-			trigger_error('Base de donnée incorecte dans la classe Backup() : ' . $sgbd, FSB_ERROR);
+			trigger_error('Base de donnee incorecte dans la classe Backup() : ' . $sgbd, FSB_ERROR);
 		}
 		$obj->dump_method = $sgbd;
 
@@ -95,21 +95,21 @@ abstract class Backup extends Fsb_model
 	}
 
 	/*
-	** Créé un header pour les backups
+	** Cree un header pour les backups
 	** -----
-	** $data_type ::	Type de données à sauver (mysql, etc ..)
+	** $data_type ::	Type de donnees a sauver (mysql, etc ..)
 	*/
 	private function create_header()
 	{
-		$header = sprintf("#\n# FSB version %s :: `%s` dump\n# Créé le %s\n#\n\n", Fsb::$cfg->get('fsb_version'), $this->dump_method, date("d/m/y H:i", CURRENT_TIME));
+		$header = sprintf("#\n# FSB version %s :: `%s` dump\n# Cree le %s\n#\n\n", Fsb::$cfg->get('fsb_version'), $this->dump_method, date("d/m/y H:i", CURRENT_TIME));
 
 		return ($header);
 	}
 
 	/*
-	** Génère un nom pour le backup
+	** Genere un nom pour le backup
 	** -----
-	** $data_type ::	Type de données à sauver (mysql, etc ..)
+	** $data_type ::	Type de donnees a sauver (mysql, etc ..)
 	*/
 	private function generate_filename()
 	{
@@ -119,9 +119,9 @@ abstract class Backup extends Fsb_model
 	/*
 	** Effectue un dump des tables MySQL du forum
 	** -----
-	** $type ::			Le type de données qu'on veut sauvegarder (structure, contenu ou les deux)
+	** $type ::			Le type de donnees qu'on veut sauvegarder (structure, contenu ou les deux)
 	** $save_table ::	Les tables a sauvegarder
-	** $comment ::		Ajoute un commentaire en début de table
+	** $comment ::		Ajoute un commentaire en debut de table
 	*/
 	public function dump_mysql($type, $save_table, $comment = TRUE)
 	{
@@ -161,7 +161,7 @@ abstract class Backup extends Fsb_model
 		}
 		else
 		{
-			trigger_error('La variable $save_table doit être un tableau dans la classe backup() : ' . $save_table, FSB_ERROR);
+			trigger_error('La variable $save_table doit etre un tableau dans la classe backup() : ' . $save_table, FSB_ERROR);
 		}
 		return ($content);
 	}
@@ -171,7 +171,7 @@ abstract class Backup extends Fsb_model
 	** -----
 	** $type ::			Type de backup
 	** $save_table ::	Tables pour le backup
-	** $comment ::		Ajoute un commentaire en début de table
+	** $comment ::		Ajoute un commentaire en debut de table
 	*/
 	public function dump_pgsql($type, $save_table, $comment = TRUE)
 	{
@@ -202,17 +202,17 @@ abstract class Backup extends Fsb_model
 	}
 
 	/*
-	** Créer le shéma CREATE d'une table PostgreSQL.
+	** Creer le shema CREATE d'une table PostgreSQL.
 	** -----
-	** $table ::	Nom de la table pour la création du shéma
-	** $crlf ::		Caractère de retour à la ligne
-	** $drop ::		TRUE pour insérer des ennoncés DROP vaant la création des tables
+	** $table ::	Nom de la table pour la creation du shema
+	** $crlf ::		Caractere de retour a la ligne
+	** $drop ::		TRUE pour inserer des ennonces DROP vaant la creation des tables
 	*/
 	private function pgsql_get_create_table($table, $crlf, $drop)
 	{
 		$schema_create = '';
 
-		// Récupère les champs de la table et leur type
+		// Recupere les champs de la table et leur type
 		$field_query = "SELECT a.attnum, a.attname AS field, t.typname as type, a.attlen AS length, a.atttypmod as lengthvar, a.attnotnull as notnull
 			FROM pg_class c, pg_attribute a, pg_type t
 			WHERE c.relname = '$table'
@@ -230,7 +230,7 @@ abstract class Backup extends Fsb_model
 		$schema_create .= "CREATE TABLE $table($crlf";
 		while ($row = Fsb::$db->row($result))
 		{
-			// On récupère la valeur par défaut
+			// On recupere la valeur par defaut
 			$sql_get_default = "SELECT d.adsrc AS rowdefault
 				FROM pg_attrdef d, pg_class c
 				WHERE (c.relname = '$table')
@@ -351,7 +351,7 @@ abstract class Backup extends Fsb_model
 	}
 
 	/*
-	** Permet de récupérer les séquences Postgresql
+	** Permet de recuperer les sequences Postgresql
 	*/
 	private function pgsql_get_sequence()
 	{
@@ -403,7 +403,7 @@ abstract class Backup extends Fsb_model
 	** -----
 	** $type ::			Type de backup
 	** $save_table ::	Tables pour le backup
-	** $comment ::		Ajoute un commentaire en début de table
+	** $comment ::		Ajoute un commentaire en debut de table
 	*/
 	public function dump_sqlite($type, $save_table, $comment = TRUE)
 	{
@@ -440,17 +440,17 @@ abstract class Backup extends Fsb_model
 	}
 
 	/*
-	** Créé les requètes d'insertion, commun pour chaque des bases de donnée.
+	** Cree les requetes d'insertion, commun pour chaque des bases de donnee.
 	** -----
 	** $tablename ::	Nom de la table
 	** $dbms_name ::	Nom de la SGBD
-	** $comment ::		Ajoute un commentaire en début de table
-	** $multi_insert ::	Gérer les requètes sous forme de multi insertion
-	** $exept ::		Contient la liste des champs à ne pas prendre en compte
+	** $comment ::		Ajoute un commentaire en debut de table
+	** $multi_insert ::	Gerer les requetes sous forme de multi insertion
+	** $exept ::		Contient la liste des champs a ne pas prendre en compte
 	*/
 	public function dump_database($tablename, $sgbd_name, $comment = TRUE, $multi_insert = FALSE, $exept = array())
 	{
-		// Si la SGBD ne supporte pas les multi insertions on force le paramètre à FALSE
+		// Si la SGBD ne supporte pas les multi insertions on force le parametre a FALSE
 		if (!Fsb::$db->can_use_multi_insert)
 		{
 			$multi_insert = FALSE;
@@ -464,7 +464,7 @@ abstract class Backup extends Fsb_model
 			$this->write("\n#\n# Contenu de la table $sgbd_name `$tablename`\n#\n");
 		}
 
-		// Données de la table
+		// Donnees de la table
 		$sql = "SELECT *
 				FROM $tablename";
 		$result = Fsb::$db->query($sql);
@@ -483,11 +483,11 @@ abstract class Backup extends Fsb_model
 
 				if (!$get_fields)
 				{
-					// On récupère les champs si cela n'a pas déjà été fait
+					// On recupere les champs si cela n'a pas deja ete fait
 					$fields_type[$field] = Fsb::$db->get_field_type($result, $field, $tablename);
 				}
 
-				// On récupère les valeurs de la ligne courante
+				// On recupere les valeurs de la ligne courante
 				$values .= (($values) ? ', ' : '') . (($fields_type[$field] == 'string') ? '\'' . Fsb::$db->escape($value) . '\'' : $value);
 			}
 

@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////
 
 /*
-** Note : Cette classe est issue du package PHPmailer disponible à cette adresse :
+** Note : Cette classe est issue du package PHPmailer disponible a cette adresse :
 **			http://phpmailer.sourceforge.net/
 */
 
@@ -216,7 +216,7 @@ class Notify_mail
      */
 	public function __construct($to = NULL)
 	{
-		// Mail en text/html par défaut
+		// Mail en text/html par defaut
 		$this->IsHTML(TRUE);
 
 		// Encodage du mail
@@ -232,7 +232,7 @@ class Notify_mail
 			$this->IsMail();
 		}
 
-		// Adresse du forum comme étant l'adresse de provenance
+		// Adresse du forum comme etant l'adresse de provenance
 		if ($to == NULL)
 		{
 			$to = Fsb::$cfg->get('forum_mail');

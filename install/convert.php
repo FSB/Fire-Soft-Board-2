@@ -16,18 +16,18 @@
 
 if (!defined('ROOT'))
 {
-	die(utf8_decode('This file must be included.<hr />Ce fichier doit être inclus'));
+	die(utf8_decode('This file must be included.<hr />Ce fichier doit etre inclus'));
 }
 
 class Convert
 {
-	// Liste des conversions implémentées
+	// Liste des conversions implementees
 	protected $implement = array();
 
 	// Page actuelle de conversion
 	protected $page = 'index';
 
-	// Offset de départ pour la conversion
+	// Offset de depart pour la conversion
 	protected $offset = 0;
 
 	// URL du script
@@ -36,7 +36,7 @@ class Convert
 	// Configuration du convertisseur
 	protected $config;
 
-	// Export dans un fichier, ou injection dans la base de donnée ?
+	// Export dans un fichier, ou injection dans la base de donnee ?
 	const OUTPUT_FILE = 0;
 	const OUTPUT_DB = 1;
 	const OUTPUT_PRINT = 2;
@@ -71,19 +71,19 @@ class Convert
 			}
 		}
 
-		// Gestion de la connexion à la base de donnée ?
+		// Gestion de la connexion a la base de donnee ?
 		$this->database_connexion();
 
-		// Si la méthode forum_information() existe on l'appel maintenant
+		// Si la methode forum_information() existe on l'appel maintenant
 		if (method_exists($this, 'forum_information'))
 		{
 			$this->forum_information();
 		}
 
-		// Liste des conversions implementées
+		// Liste des conversions implementees
 		$this->get_implement();
 
-		// Vérification de la page
+		// Verification de la page
 		if (!in_array($this->page, $this->implement))
 		{
 			$this->page = 'index';
@@ -95,7 +95,7 @@ class Convert
 	}
 
 	/*
-	** Récupère la configuration du convertisseur (stoquée dans la table fsb2_cache de FSB2)
+	** Recupere la configuration du convertisseur (stoquee dans la table fsb2_cache de FSB2)
 	*/
 	private function get_config()
 	{
@@ -104,7 +104,7 @@ class Convert
 		$this->config = $cache->get('config');
 		Fsb::$db->close();
 
-		// Config par défaut
+		// Config par defaut
 		if (!isset($this->config['output']))
 		{
 			$this->config['output'] = self::OUTPUT_FILE;
@@ -127,7 +127,7 @@ class Convert
 	}
 
 	/*
-	** Récupère une clef de configuration
+	** Recupere une clef de configuration
 	*/
 	protected function config($key)
 	{
@@ -135,7 +135,7 @@ class Convert
 	}
 
 	/*
-	** Liste des conversions que le script implémente
+	** Liste des conversions que le script implemente
 	*/
 	private function get_implement()
 	{
@@ -158,7 +158,7 @@ class Convert
 	}
 
 	/*
-	** Gestion de la connexion à la base de donnée
+	** Gestion de la connexion a la base de donnee
 	*/
 	private function database_connexion()
 	{
@@ -170,7 +170,7 @@ class Convert
 	}
 
 	/*
-	** Génération du haut de la page
+	** Generation du haut de la page
 	*/
 	private function page_header()
 	{
@@ -198,7 +198,7 @@ class Convert
 	}
 
 	/*
-	** Génération du pied de la page
+	** Generation du pied de la page
 	*/
 	private function page_footer()
 	{
@@ -265,7 +265,7 @@ class Convert
 	}
 
 	/*
-	** Gestion de la sortie des requêtes
+	** Gestion de la sortie des requetes
 	*/
 	protected function output(&$ary)
 	{
@@ -417,7 +417,7 @@ class Convert
 			$queries[] = 'DELETE FROM ' . SQL_PREFIX . 'groups_users WHERE g_id <> ' . GROUP_SPECIAL_VISITOR;
 		}
 
-		// Informations par défaut
+		// Informations par defaut
 		$def = array(
 			'u_language' =>				'fr',
 			'u_tpl' =>					'WhiteSummer',
@@ -431,25 +431,25 @@ class Convert
 			'u_activate_img' =>			6,
 		);
 
-		// Création des requêtes
+		// Creation des requetes
 		foreach ($this->convert_users($this->offset, $step, $state) AS $data)
 		{
 			// ID unique du groupe du membre
 			$group_id = $data['u_id'] + 10;
 			$data['u_single_group_id'] = $group_id;
 
-			// Dernière lecture des messages
+			// Derniere lecture des messages
 			if (!isset($data['u_last_read']))
 			{
 				$data['u_last_read'] = $data['u_last_visit'];
 				$data['u_last_read_flag'] = 1;
 			}
 
-			// Création du groupe unique
+			// Creation du groupe unique
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'groups (g_id, g_type) VALUES (' . $group_id . ', ' . GROUP_SINGLE . ')';
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'groups_users (g_id, u_id, gu_status) VALUES (' . $group_id . ', ' . $data['u_id'] . ', ' . GROUP_USER . ')';
 
-			// Insertion dans les groupes spéciaux
+			// Insertion dans les groupes speciaux
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'groups_users VALUES (' . GROUP_SPECIAL_USER . ', ' . $data['u_id'] . ', ' . GROUP_USER . ')';
 			$group_special_id = NULL;
 			switch ($data['u_auth'])
@@ -570,7 +570,7 @@ class Convert
 			}
 		}
 
-		// Requêtes manuelles
+		// Requetes manuelles
 		foreach ($auths_list['sql'] AS $query)
 		{
 			$queries[] = $query;
@@ -666,7 +666,7 @@ class Convert
 	}
 
 	/*
-	** Liste des messages privés
+	** Liste des messages prives
 	*/
 	private function page_mp()
 	{
@@ -751,7 +751,7 @@ class Convert
 			$queries[] = 'UPDATE ' . SQL_PREFIX . 'topics SET t_poll = 1 WHERE t_id = ' . $poll['t_id'];
 		}
 
-		// Requêtes manuelles
+		// Requetes manuelles
 		foreach ($polls['sql'] AS $query)
 		{
 			$queries[] = $query;
@@ -776,7 +776,7 @@ class Convert
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'ban (' . implode(', ', array_keys($ban)) . ') VALUES (\'' . implode('\', \'', $ban) . '\')';
 		}
 
-		// Requêtes manuelles
+		// Requetes manuelles
 		foreach ($bans['sql'] AS $query)
 		{
 			$queries[] = $query;
@@ -801,7 +801,7 @@ class Convert
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'ranks (' . implode(', ', array_keys($rank)) . ') VALUES (\'' . implode('\', \'', $rank) . '\')';
 		}
 
-		// Requêtes manuelles
+		// Requetes manuelles
 		foreach ($ranks['sql'] AS $query)
 		{
 			$queries[] = $query;
@@ -847,7 +847,7 @@ class Convert
 }
 
 /*
-** Classe permettant la création et la manipulation des forums sous forme d'arbre, afin de faciliter leur import dans FSB2
+** Classe permettant la creation et la manipulation des forums sous forme d'arbre, afin de faciliter leur import dans FSB2
 */
 class Convert_tree_forums extends Tree
 {
@@ -857,7 +857,7 @@ class Convert_tree_forums extends Tree
 	}
 
 	/*
-	** Surcharge de la méthode Tree::add_item() pour ajouter le niveau du sous forum
+	** Surcharge de la methode Tree::add_item() pour ajouter le niveau du sous forum
 	*/
 	public function add_item($id, $parent, $data)
 	{
@@ -915,7 +915,7 @@ class Convert_tree_forums extends Tree
 	}
 
 	/*
-	** Affichage des forums pour débugage
+	** Affichage des forums pour debugage
 	*/
 	public function debug($node = NULL)
 	{

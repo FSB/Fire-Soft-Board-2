@@ -25,7 +25,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	// Modules
 	public $module;
 
-	// Données du formulaire
+	// Donnees du formulaire
 	public $data = array();
 
 	/*
@@ -68,7 +68,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de gestion des groupes
+	** Affiche la page par defaut de gestion des groupes
 	*/
 	public function page_default_groups()
 	{
@@ -109,7 +109,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer des groupes
+	** Affiche la page permettant d'ajouter / editer des groupes
 	*/
 	public function page_add_edit_groups()
 	{
@@ -132,7 +132,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 			$this->data = $data;
 
-			// On récupère la liste des modérateurs
+			// On recupere la liste des moderateurs
 			$modo = array();
 			do
 			{
@@ -207,7 +207,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition de groupes
+	** Valide le formulaire d'ajout / edition de groupes
 	*/
 	public function query_add_edit_groups()
 	{
@@ -225,7 +225,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->errstr[] = Fsb::$session->lang('fields_empty');
 		}
 
-		// Vérification du type de groupe (pour éviter les failles de sécurité sur l'édition de groupes spéciaux)
+		// Verification du type de groupe (pour eviter les failles de securite sur l'edition de groupes speciaux)
 		if ($this->mode == 'edit')
 		{
 			$sql = 'SELECT g_type, g_color
@@ -247,7 +247,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$modo_idx = array();
 		if ($this->data['g_type'] != GROUP_SPECIAL)
 		{
-			// Vérification des logins de modérateurs
+			// Verification des logins de moderateurs
 			// Suppression de doubles logins
 			$ary_modo = array_flip(array_flip(explode("\n", $this->data['g_modo'])));
 			$ary_modo = array_map('trim', $ary_modo);
@@ -262,7 +262,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 			$search_modo = substr($search_modo, 0, -2);
 
-			// Vérification des logins
+			// Verification des logins
 			if ($search_modo)
 			{
 				$sql = 'SELECT u_id, u_nickname
@@ -292,7 +292,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Plus besoin de la clef g_modo
 		unset($this->data['g_modo']);
 
-		// Ajout / Edition du groupe dans la base de donnée
+		// Ajout / Edition du groupe dans la base de donnee
 		if ($this->mode == 'edit')
 		{
 			Group::edit($this->id, $this->data, $modo_idx);
@@ -341,7 +341,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page listant les groupes du forum avec leur caractéristiques
+	** Affiche la page listant les groupes du forum avec leur caracteristiques
 	*/
 	public function page_default_groups_users()
 	{

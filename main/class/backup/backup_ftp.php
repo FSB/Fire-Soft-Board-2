@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet d'afficher le backup à l'écran
+** Permet d'afficher le backup a l'ecran
 */
 class Backup_ftp extends Backup
 {
@@ -25,7 +25,7 @@ class Backup_ftp extends Backup
 		$dir = ROOT . 'cache/sql_backup/';
 		if (!is_writable($dir) && !@chmod($dir, 0777))
 		{
-			trigger_error('Le dossier ' . $dir . ' doit être chmodé en 777', FSB_ERROR);
+			trigger_error('Le dossier ' . $dir . ' doit etre chmode en 777', FSB_ERROR);
 		}
 
 		$this->fd = fopen($dir . $filename, 'w');

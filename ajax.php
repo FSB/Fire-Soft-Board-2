@@ -12,8 +12,8 @@
 
 /*
 ** Gestions des diverses taches AJAX.
-** Si vous décidez d'utiliser AJAX dans un de vos mods, pointez vos requètes HTTP vers
-** cette page. Cette page est située à la racine du forum pour éviter les conflits avec la
+** Si vous decidez d'utiliser AJAX dans un de vos mods, pointez vos requetes HTTP vers
+** cette page. Cette page est situee a la racine du forum pour eviter les conflits avec la
 ** constante ROOT.
 */
 
@@ -30,7 +30,7 @@ Http::no_cache();
 
 Fsb::$session->start('', FALSE);
 
-// Création des évènements AJAX
+// Creation des evenements AJAX
 $ajax = new Ajax();
 $ajax->add_event(Ajax::TXT, 'check_email',		'ajax_check_email',		trim(Http::request('email', 'post')));
 $ajax->add_event(Ajax::TXT, 'check_login',		'ajax_check_login',		trim(Http::request('login', 'post')));
@@ -48,13 +48,13 @@ $ajax->add_event(Ajax::TXT, 'editor_wysiwyg',		'ajax_editor_wysiwyg');
 $ajax->trigger(Http::request('mode'));
 
 /*
-** Vérification de l'email
+** Verification de l'email
 */
 function ajax_check_email($email)
 {
 	if ($email)
 	{
-		// Pas de vérification DNS en AJAX, sinon la réponse est trop lente
+		// Pas de verification DNS en AJAX, sinon la reponse est trop lente
 		if (!User::email_valid($email, FALSE))
 		{
 			return ('invalid');
@@ -72,7 +72,7 @@ function ajax_check_email($email)
 }
 
 /*
-** Vérification du login
+** Verification du login
 */
 function ajax_check_login($login)
 {
@@ -91,7 +91,7 @@ function ajax_check_login($login)
 }
 
 /*
-** Vérification du pseudonyme
+** Verification du pseudonyme
 */
 function ajax_check_nickname($nickname)
 {
@@ -122,7 +122,7 @@ function ajax_check_nickname($nickname)
 }
 
 /*
-** Vérification du mot de passe
+** Verification du mot de passe
 */
 function ajax_check_password($password)
 {
@@ -183,7 +183,7 @@ function ajax_edit_post($id)
 }
 
 /*
-** Soumission du formulaire d'édition rapide
+** Soumission du formulaire d'edition rapide
 */
 function ajax_submit_post($id)
 {
@@ -223,7 +223,7 @@ function ajax_submit_post($id)
 		't_id' =>			$data['t_id'],
 	));
 
-	// Log de l'édition du message
+	// Log de l'edition du message
 	if (Fsb::$session->id() != $data['u_id'])
 	{
 		Log::add(Log::MODO, 'log_edit', $data['p_nickname']);
@@ -233,7 +233,7 @@ function ajax_submit_post($id)
 	$parser = new Parser();
 	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-	// Informations passées au parseur de message
+	// Informations passees au parseur de message
 	$parser_info = array(
 		'u_id' =>			$data['u_id'],
 		'p_nickname' =>		$data['p_nickname'],
@@ -258,7 +258,7 @@ function ajax_submit_post($id)
 }
 
 /*
-** Affichage basique du message après édition rapide
+** Affichage basique du message apres edition rapide
 */
 function ajax_show_post($id)
 {
@@ -283,7 +283,7 @@ function ajax_show_post($id)
 	$parser = new Parser();
 	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-	// Informations passées au parseur de message
+	// Informations passees au parseur de message
 	$parser_info = array(
 		'u_id' =>			$data['u_id'],
 		'p_nickname' =>		$data['p_nickname'],
@@ -316,7 +316,7 @@ function ajax_quote_post($id)
 		return (NULL);
 	}
 
-	// Récupération des données de la MAP et du message
+	// Recuperation des donnees de la MAP et du message
 	$xml = new Xml();
 	$xml->load_content($data['p_text']);
 	$post_data = array();
@@ -347,7 +347,7 @@ function ajax_quote_post($id)
 		$content = parser_wysiwyg::decode($content);
 	}
 
-	// Génération de l'affichage
+	// Generation de l'affichage
 	$xml = new Xml();
 	$xml->document->setTagName('content');
 	$xml->document->setData($content, FALSE);
@@ -356,7 +356,7 @@ function ajax_quote_post($id)
 }
 
 /*
-** Citation de message privé
+** Citation de message prive
 */
 function ajax_quote_mp($id)
 {
@@ -374,7 +374,7 @@ function ajax_quote_mp($id)
 	}
 	Fsb::$db->free($result);
 
-	// Récupération des données de la MAP et du message
+	// Recuperation des donnees de la MAP et du message
 	$xml = new Xml();
 	$xml->load_content($data['mp_content']);
 	$content = $xml->document->line[0]->getData();
@@ -386,7 +386,7 @@ function ajax_quote_mp($id)
 		$content = parser_wysiwyg::decode($content);
 	}
 
-	// Génération de l'affichage
+	// Generation de l'affichage
 	$xml = new Xml();
 	$xml->document->setTagName('content');
 	$xml->document->setData($content);
@@ -423,7 +423,7 @@ function ajax_search_user($nickname)
 }
 
 /*
-** Transforme du texte issu de l'éditeur de texte en texte pour l'éditeur WYSIWYG
+** Transforme du texte issu de l'editeur de texte en texte pour l'editeur WYSIWYG
 */
 function ajax_editor_text()
 {
@@ -439,7 +439,7 @@ function ajax_editor_text()
 }
 
 /*
-** Transforme du texte issu de l'éditeur WYSIWYG en texte normal
+** Transforme du texte issu de l'editeur WYSIWYG en texte normal
 */
 function ajax_editor_wysiwyg()
 {

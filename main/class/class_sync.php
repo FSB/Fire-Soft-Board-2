@@ -22,7 +22,7 @@ class Sync extends Fsb_model
 	const APPROVE = 16;
 
 	/*
-	** Met à jour les informations sur le dernier message des forums
+	** Met a jour les informations sur le dernier message des forums
 	** -----
 	** $forums ::	Tableau d'ID de forums dont on veut recalculer ces informations
 	**				Si le tableau est vide, on le calcul pour l'ensemble des forums.
@@ -31,9 +31,9 @@ class Sync extends Fsb_model
 	{
 		$tree = new Tree_forum();
 
-		// On met à jour les forums en recalculant le nombre de messages / sujets ainsi
-		// que l'ID de leur dernier message. La tache est plutôt ardue à cause du système de sous
-		// forums, ainsi le forum parent pourra avoir comme dernière ID celle d'un de ses
+		// On met a jour les forums en recalculant le nombre de messages / sujets ainsi
+		// que l'ID de leur dernier message. La tache est plutot ardue a cause du systeme de sous
+		// forums, ainsi le forum parent pourra avoir comme derniere ID celle d'un de ses
 		// fils (quelque soit le niveau de profondeur du sous fils).
 		$sql = 'SELECT f2.f_id, t.t_id, t.t_title, t.t_last_p_nickname, t.t_last_p_id, t.t_last_p_time, t.t_last_u_id
 				FROM ' . SQL_PREFIX . 'forums f
@@ -64,21 +64,21 @@ class Sync extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Mise à jour des informations
+		// Mise a jour des informations
 		$tree->parse();
 
 		Fsb::$db->destroy_cache('forums_');
 	}
 
 	/*
-	** Met à jour les informations sur le dernier message dans les sujets, et sur le total de messages du sujet
+	** Met a jour les informations sur le dernier message dans les sujets, et sur le total de messages du sujet
 	** -----
 	** $topics ::		Tableau prenant en clef les ID de sujets, et en valeurs le nombres 
-	**					de messages à décrémenter du total.
+	**					de messages a decrementer du total.
 	*/
 	public static function topics($topics = array())
 	{
-		// On met à jour le dernier posteur du sujet, et on décrémente le nombre total de message du sujet si besoin
+		// On met a jour le dernier posteur du sujet, et on decremente le nombre total de message du sujet si besoin
 		$sql = 'SELECT t.t_id, p.p_id, p.p_time, p.u_id, p.p_nickname
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'posts p
@@ -103,10 +103,10 @@ class Sync extends Fsb_model
 	}
 
 	/*
-	** Met à jour les informations sur les derniers messages lus
+	** Met a jour les informations sur les derniers messages lus
 	** -----
-	** $topics ::		Liste des sujets qu'on veut mettre à jour.
-	**					Si le tableau est vide, on met à jour tous les sujets.
+	** $topics ::		Liste des sujets qu'on veut mettre a jour.
+	**					Si le tableau est vide, on met a jour tous les sujets.
 	*/
 	public static function topics_read($topics = array())
 	{
@@ -121,7 +121,7 @@ class Sync extends Fsb_model
 	}
 
 	/*
-	** Met à jour le total de messages sur le forum
+	** Met a jour le total de messages sur le forum
 	*/
 	public static function total_posts()
 	{
@@ -133,7 +133,7 @@ class Sync extends Fsb_model
 	}
 
 	/*
-	** Met à jour le total de sujets sur le forum
+	** Met a jour le total de sujets sur le forum
 	*/
 	public static function total_topics()
 	{
@@ -145,20 +145,20 @@ class Sync extends Fsb_model
 	}
 
 	/*
-	** Met à jour un champ signal pour mettre à jour le cache
+	** Met a jour un champ signal pour mettre a jour le cache
 	** -----
 	** $signal_id ::		Contante du signal. Il est possible d'envoyers plusieurs signaux en utilisant le "OR" binaire.
-	** $arg ::				Un argument potentiel à la fonction (ID de membre, etc ...)
+	** $arg ::				Un argument potentiel a la fonction (ID de membre, etc ...)
 	*/
 	function signal($signal_id, $arg = NULL)
 	{
-		// Mise à jour de la session
+		// Mise a jour de la session
 		if ($signal_id & self::SESSION)
 		{
 			Fsb::$cfg->update('signal_session', CURRENT_TIME);
 		}
 
-		// Mise à jour de la session d'un utilisateur particulier
+		// Mise a jour de la session d'un utilisateur particulier
 		if ($signal_id & self::USER)
 		{
 			Fsb::$db->update('sessions', array(
@@ -166,14 +166,14 @@ class Sync extends Fsb_model
 			), 'WHERE s_id = ' . (($arg) ? $arg : Fsb::$session->id()));
 		}
 
-		// Mise à jour des messages abusifs pour les modérateurs
+		// Mise a jour des messages abusifs pour les moderateurs
 		$update_modo = array();
 		if ($signal_id & self::ABUSE)
 		{
 			$update_modo['u_total_abuse'] = -1;
 		}
 
-		// Mise à jour des messages approuvés pour les modérateurs
+		// Mise a jour des messages approuves pour les moderateurs
 		if ($signal_id & self::APPROVE)
 		{
 			$update_modo['u_total_unapproved'] = -1;

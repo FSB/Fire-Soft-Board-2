@@ -11,16 +11,16 @@
 */
 
 /*
-** Génère des flux RSS pour les messages ou pour les forums
+** Genere des flux RSS pour les messages ou pour les forums
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = FALSE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
 
-	// Paramètres pour la page
+	// Parametres pour la page
 	public $mode;
 	public $id;
 	public $type;
@@ -33,7 +33,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// Accès au flux RSS ?
+		// Acces au flux RSS ?
 		if (!Fsb::$mods->is_active('rss'))
 		{
 			Display::message('not_allowed');
@@ -76,7 +76,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche un flux RSS du sujet, chaque message étant un item différent
+	** Affiche un flux RSS du sujet, chaque message etant un item different
 	*/
 	public function rss_topic()
 	{
@@ -115,7 +115,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			do
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -138,7 +138,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche un flux RSS des sujets du forum, chaque sujet étant un item différent
+	** Affiche un flux RSS des sujets du forum, chaque sujet etant un item different
 	*/
 	public function rss_forum()
 	{
@@ -174,7 +174,7 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			do
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -229,7 +229,7 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			do
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -301,7 +301,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Supprimes les RSS mis en cache dont le temps est expiré
+	** Supprimes les RSS mis en cache dont le temps est expire
 	*/
 	public function check_caching($sql, $prefix)
 	{

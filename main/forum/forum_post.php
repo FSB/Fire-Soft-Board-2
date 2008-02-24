@@ -11,12 +11,12 @@
 */
 
 /*
-** Affiche le formulaire permettant de créer des sujets, répondre à des messages, envoyer
-** des messages privés etc ...
+** Affiche le formulaire permettant de creer des sujets, repondre a des messages, envoyer
+** des messages prives etc ...
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -27,29 +27,29 @@ class Fsb_frame_child extends Fsb_frame
 	//  Mode de la page
 	public $mode;
 
-	// ID passée à la page (message privé, message, sujet, forum)
+	// ID passee a la page (message prive, message, sujet, forum)
 	public $id;
 
-	// ID de membre passée à la page (message privé)
+	// ID de membre passee a la page (message prive)
 	public $u_id;
 	public $mp_parent = 0;
 
-	// Définit si on quote le message
+	// Definit si on quote le message
 	public $quote;
 
-	// Données du formulaire envoyées à la page
+	// Donnees du formulaire envoyees a la page
 	public $post_login_to, $nickname, $title, $content, $description, $to_id = array(), $type, $poll_name, $poll_values, $poll_max_vote, $upload_comment;
 
 	// Erreurs
 	public $errstr = array();
 
-	// Données du MP en cas de réponse
+	// Donnees du MP en cas de reponse
 	public $mp_data = array();
 
-	// Données du forum / sujet / message
+	// Donnees du forum / sujet / message
 	public $data;
 
-	// Schéma du sujet
+	// Schema du sujet
 	public $post_map;
 
 	// En mode preview
@@ -58,10 +58,10 @@ class Fsb_frame_child extends Fsb_frame
 	// Utilisation du code de confirmation visuelle
 	public $use_captcha = FALSE;
 
-	// TRUE et le message devra etre approuvé
+	// TRUE et le message devra etre approuve
 	public $approve = IS_APPROVED;
 
-	// Texte uploadé
+	// Texte uploade
 	public $onupload = '';
 
 	// <title>
@@ -103,13 +103,13 @@ class Fsb_frame_child extends Fsb_frame
 			return ;
 		}
 
-		// MAP par défaut
+		// MAP par defaut
 		if (!$this->post_map || !file_exists(MAPS_PATH . $this->post_map . '.xml'))
 		{
 			$this->post_map = 'classic';
 		}
 
-		// Données du sujet
+		// Donnees du sujet
 		if (!$this->get_data())
 		{
 			return ;
@@ -140,7 +140,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Récupère des données sur le forum / sujet / message actuel
+	** Recupere des donnees sur le forum / sujet / message actuel
 	*/
 	public function get_data()
 	{
@@ -150,7 +150,7 @@ class Fsb_frame_child extends Fsb_frame
 			case 'edit_mp' :
 				$this->post_map = 'classic';
 
-				// Le membre a le droit d'accéder à cette page ?
+				// Le membre a le droit d'acceder a cette page ?
 				if (!Fsb::$session->is_logged())
 				{
 					Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=post&mode=mp&u_id=' . $this->u_id);
@@ -158,7 +158,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'reply' :
-				// On récupère les données du topic, ainsi que l'ID du forum
+				// On recupere les donnees du topic, ainsi que l'ID du forum
 				$sql = 'SELECT t.t_title, t.t_id, t.t_map, t.t_type, t.t_first_p_id, t.t_map_first_post, t.t_status, f.f_id, f.f_password, f.f_tpl, f.f_status, f.f_rules, f.f_approve
 						FROM ' . SQL_PREFIX . 'topics t
 						LEFT JOIN ' . SQL_PREFIX . 'forums f
@@ -178,7 +178,7 @@ class Fsb_frame_child extends Fsb_frame
 					$this->post_map = ($this->data['t_map_first_post'] == MAP_ALL_POST) ? $this->data['t_map'] : 'classic';
 				}
 
-				// Peut répondre à ce type de sujet ?
+				// Peut repondre a ce type de sujet ?
 				if (!Fsb::$session->is_authorized($this->data['f_id'], 'ga_answer_' . $GLOBALS['_topic_type'][$this->data['t_type']]))
 				{
 					if (!Fsb::$session->is_logged())
@@ -194,11 +194,11 @@ class Fsb_frame_child extends Fsb_frame
 				// Forum avec mot de passe ?
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=reply&amp;id=' . $this->id))
 				{
-					// L'accès est refusé, on affiche le formulaire du mot de passe et on doit donc quitter la classe
+					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
 					return (FALSE);
 				}
 
-				// On vérifie si le message devra être approuvé
+				// On verifie si le message devra etre approuve
 				if (($this->data['f_approve'] == IS_NOT_APPROVED || Fsb::$session->data['u_approve'] == IS_NOT_APPROVED) && Fsb::$session->auth() < MODOSUP && !Fsb::$session->is_authorized($this->data['f_id'], 'ga_moderator'))
 				{
 						$this->approve = IS_NOT_APPROVED;
@@ -247,7 +247,7 @@ class Fsb_frame_child extends Fsb_frame
 					Display::message('post_not_exists');
 				}
 
-				// Peut éditer le message ?
+				// Peut editer le message ?
 				if (!(Fsb::$session->is_authorized($this->data['f_id'], 'ga_edit') && Fsb::$session->id() == $this->data['u_id'] && $this->data['t_status'] == UNLOCK && $this->data['f_status'] == UNLOCK || Fsb::$session->is_authorized($this->data['f_id'], 'ga_moderator')))
 				{
 					Display::message('not_allowed');
@@ -256,7 +256,7 @@ class Fsb_frame_child extends Fsb_frame
 				// Forum avec mot de passe ?
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit&amp;id=' . $this->id))
 				{
-					// L'accès est refusé, on affiche le formulaire du mot de passe et on doit donc quitter la classe
+					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
 					return (FALSE);
 				}
 
@@ -265,7 +265,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'topic' :
-				// Données du forum
+				// Donnees du forum
 				$sql = 'SELECT f_id, f_map_default, f_password, f_tpl, f_map_first_post, f_status, f_rules, f_approve
 						FROM ' . SQL_PREFIX . 'forums
 						WHERE f_id = ' . $this->id;
@@ -273,19 +273,19 @@ class Fsb_frame_child extends Fsb_frame
 				$this->data = Fsb::$db->row($result);
 				Fsb::$db->free($result);
 
-				// Map par défaut ?
+				// Map par defaut ?
 				if ($this->data['f_map_default'])
 				{
 					$this->post_map = $this->data['f_map_default'];
 				}
 
-				// On vérifie si le message devra être approuvé
+				// On verifie si le message devra etre approuve
 				if (($this->data['f_approve'] == IS_NOT_APPROVED || Fsb::$session->data['u_approve'] == IS_NOT_APPROVED) && Fsb::$session->auth() < MODOSUP && !Fsb::$session->is_authorized($this->data['f_id'], 'ga_moderator'))
 				{
 						$this->approve = IS_NOT_APPROVED;
 				}
 
-				// On vérifie si l'utilisateur peut poster au minimum un type de sujet (sinon erreur)
+				// On verifie si l'utilisateur peut poster au minimum un type de sujet (sinon erreur)
 				$can_post = FALSE;
 				foreach ($GLOBALS['_topic_type'] AS $value)
 				{
@@ -304,7 +304,7 @@ class Fsb_frame_child extends Fsb_frame
 				// Forum avec mot de passe ?
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=topic&amp;id=' . $this->id))
 				{
-					// L'accès est refusé, on affiche le formulaire du mot de passe et on doit donc quitter la classe
+					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
 					return (FALSE);
 				}
 			break;
@@ -339,7 +339,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 		}
 
-		// Thème pour le forum ?
+		// Theme pour le forum ?
 		if (isset($this->data['f_tpl']) && $this->data['f_tpl'])
 		{
 			$set_tpl = ROOT . 'tpl/' . $this->data['f_tpl'];
@@ -347,7 +347,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_template($set_tpl . '/files/', $set_tpl . '/cache/');
 		}
 
-		// Peut accéder en lecture à ce forum ?
+		// Peut acceder en lecture a ce forum ?
 		if (isset($this->data['f_id']) && (!Fsb::$session->is_authorized($this->data['f_id'], 'ga_view') || !Fsb::$session->is_authorized($this->data['f_id'], 'ga_view_topics') || !Fsb::$session->is_authorized($this->data['f_id'], 'ga_read')))
 		{
 			if (!Fsb::$session->is_logged())
@@ -360,7 +360,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Forum verrouillé ?
+		// Forum verrouille ?
 		if (isset($this->data['f_id']) && !Fsb::$session->is_authorized($this->data['f_id'], 'ga_moderator') && ($this->data['f_status'] == LOCK || (isset($this->data['t_status']) && $this->data['t_status'] == LOCK)))
 		{
 			Display::message('forum_cant_post_is_locked');
@@ -389,7 +389,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		switch ($this->mode)
 		{
-			// Envoie de message privé
+			// Envoie de message prive
 			case 'mp' :
 			case 'edit_mp' :
 				$page_name = Fsb::$session->lang('post_page_' . $this->mode);
@@ -409,7 +409,7 @@ class Fsb_frame_child extends Fsb_frame
 				}
 			break;
 
-			// Création d'un nouveau sujet
+			// Creation d'un nouveau sujet
 			case 'topic' :
 				$page_name = Fsb::$session->lang('post_page_topic');
 
@@ -428,7 +428,7 @@ class Fsb_frame_child extends Fsb_frame
 					Fsb::$tpl->set_switch('use_captcha');
 				}
 
-				// On active la gestion des shémas de sujets
+				// On active la gestion des shemas de sujets
 				if (Fsb::$mods->is_active('post_map') && $this->data['f_map_default'] == '0')
 				{
 					Fsb::$tpl->set_switch('can_change_map');
@@ -440,14 +440,14 @@ class Fsb_frame_child extends Fsb_frame
 				}
 			break;
 
-			// Réponse à un sujet existant
+			// Reponse a un sujet existant
 			case 'reply' :
 				if (!Fsb::$session->is_logged())
 				{
 					Fsb::$tpl->set_switch('post_login');
 				}
 
-				// On active la gestion des shémas de sujets
+				// On active la gestion des shemas de sujets
 				if (Fsb::$mods->is_active('post_map') && $this->data['t_map_first_post'] == MAP_FREE)
 				{
 					Fsb::$tpl->set_switch('can_change_map');
@@ -484,8 +484,8 @@ class Fsb_frame_child extends Fsb_frame
 					$this->title = $this->data['t_title'];
 					$this->description = htmlspecialchars($this->data['t_description']);
 
-					// On vérifie si le sondage a déjà recu des réponses, si ce n'est pas le cas
-					// on permet son édition
+					// On verifie si le sondage a deja recu des reponses, si ce n'est pas le cas
+					// on permet son edition
 					if ($this->data['t_poll'] && !$this->data['poll_total_vote'])
 					{
 						Fsb::$tpl->set_switch('post_poll');
@@ -515,7 +515,7 @@ class Fsb_frame_child extends Fsb_frame
 			case 'calendar_edit' :
 				$page_name = Fsb::$session->lang('post_nav_calendar_add');
 
-				// Titre pour l'évênement
+				// Titre pour l'evenement
 				Fsb::$tpl->set_switch('post_title');
 
 				// Captcha ?
@@ -524,7 +524,7 @@ class Fsb_frame_child extends Fsb_frame
 					Fsb::$tpl->set_switch('use_captcha');
 				}
 
-				// Création des listes
+				// Creation des listes
 				$list_day = array();
 				for ($i = 1; $i <= 31; $i++)
 				{
@@ -555,7 +555,7 @@ class Fsb_frame_child extends Fsb_frame
 					$list_min[$i] = String::add_zero($i, 2);
 				}
 
-				// Valeurs par défaut
+				// Valeurs par defaut
 				if ($this->errstr)
 				{
 					list($current_begin_day, $current_begin_month, $current_begin_year, $current_begin_hour, $current_begin_min) = explode(' ', date('d n Y H i', $this->calendar['timestamp_begin']));
@@ -602,7 +602,7 @@ class Fsb_frame_child extends Fsb_frame
 					$current_group =			'';
 				}
 
-				// Données pour l'ajout d'évênements
+				// Donnees pour l'ajout d'evenements
 				Fsb::$tpl->set_switch('post_calendar');
 				Fsb::$tpl->set_switch('calendar_print');
 
@@ -632,13 +632,13 @@ class Fsb_frame_child extends Fsb_frame
 		// Liste des types de sujets
 		$this->generate_post_type();
 
-		// Message qui devra être approuvé ?
+		// Message qui devra etre approuve ?
 		if ($this->approve == IS_NOT_APPROVED)
 		{
 			Fsb::$tpl->set_switch('need_approve');
 		}
 
-		// Prévisualisation
+		// Previsualisation
 		if ($this->preview)
 		{
 			$this->content = Map::build_map_content($this->post_map);
@@ -647,7 +647,7 @@ class Fsb_frame_child extends Fsb_frame
 			$parser = new Parser();
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			Fsb::$session->id(),
 				'p_nickname' =>		Fsb::$session->data['u_nickname'],
@@ -683,8 +683,8 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$nav_ary = array();
 
-			// En cas de réponse à un sujet on ajoute le titre du sujet dans la barre de navigation, mais on le tronque pour éviter les
-			// longueurs execessives. Idem pour l'édition
+			// En cas de reponse a un sujet on ajoute le titre du sujet dans la barre de navigation, mais on le tronque pour eviter les
+			// longueurs execessives. Idem pour l'edition
 			if ($this->mode == 'reply' || $this->mode == 'edit')
 			{
 				$nav_ary[] = array(
@@ -708,7 +708,7 @@ class Fsb_frame_child extends Fsb_frame
 			);
 		}
 
-		// Liste des droits pour le téléchargement
+		// Liste des droits pour le telechargement
 		$list_upload_auth = array(
 			VISITOR =>	Fsb::$session->lang('visitor'),
 			USER =>		Fsb::$session->lang('user'),
@@ -731,7 +731,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('can_upload');
 		}
 
-		// Règles du forums ?
+		// Regles du forums ?
 		$forum_rules = '';
 		if (isset($this->data['f_rules']) && !empty($this->data['f_rules']))
 		{
@@ -740,7 +740,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('forum_rules');
 		}
 
-		// Affichage de la fenêtre de création de sondages
+		// Affichage de la fenetre de creation de sondages
 		Poll::display_form($this->post_map, $this->poll_name, $this->poll_values, $this->poll_max_vote);
 
 		Fsb::$tpl->set_vars(array(
@@ -784,7 +784,7 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],
@@ -807,11 +807,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Revue des précédentes réponses du sujet
+	** Revue des precedentes reponses du sujet
 	** -----
-	** $mp_id ::		ID du message privé auquel on répond
+	** $mp_id ::		ID du message prive auquel on repond
 	** $mp_parent ::	Parent des messages
-	** $mp_time ::		Date du message auquel on répond
+	** $mp_time ::		Date du message auquel on repond
 	*/
 	public function mp_review($mp_id, $mp_parent, $mp_time)
 	{
@@ -842,7 +842,7 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['u_nickname'],
@@ -862,7 +862,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Génère la liste des types de sujets
+	** Genere la liste des types de sujets
 	*/
 	public function generate_post_type()
 	{
@@ -884,30 +884,30 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Vérification des données du formulaire
+	** Verification des donnees du formulaire
 	*/
 	public function check_form()
 	{
-		// On récupère sous forme XML le message
+		// On recupere sous forme XML le message
 		$this->content = Map::build_map_content($this->post_map);
 
-		// Contenu de la page vide, ou inférieur au nombre de caractères par message
+		// Contenu de la page vide, ou inferieur au nombre de caracteres par message
 		$classic_content = trim(Http::request('post_map_description', 'post'));
 		if ($this->post_map == 'classic' && strlen($classic_content) < Fsb::$cfg->get('post_min_length'))
 		{
 			$this->errstr[] = sprintf(Fsb::$session->lang('post_need_content'), Fsb::$cfg->get('post_min_length'));
 		}
 
-		// Trop de caractères : le message ne pourra être inséré dans la base de donnée. On limite donc à 65535
+		// Trop de caracteres : le message ne pourra etre insere dans la base de donnee. On limite donc a 65535
 		if (strlen($this->content) >= 65535)
 		{
 			$this->errstr[] = Fsb::$session->lang('post_message_too_big');
 		}
 
-		// Message privé
+		// Message prive
 		if ($this->mode == 'mp')
 		{
-			// On vérifie la liste des pseudonymes
+			// On verifie la liste des pseudonymes
 			$split = explode("\n", trim($this->post_login_to));
 			$to_nickname = array();
 			foreach ($split AS $p)
@@ -1054,14 +1054,14 @@ class Fsb_frame_child extends Fsb_frame
 			$this->title = String::substr($this->title, 0, $this->max_title_length);
 		}
 
-		// On vérifie le code de confirmation visuelle
+		// On verifie le code de confirmation visuelle
 		if ($this->use_captcha && !check_captcha(Http::request('captcha_code', 'post')))
 		{
 			$this->errstr[] = Fsb::$session->lang('post_bad_captcha');
 		}
 
-		// On vérifie qu'il y ait au moins deux réponses pour le sondage, et que chaque réponse
-		// n'exède pas 70 caractères (sinon on la tronque)
+		// On verifie qu'il y ait au moins deux reponses pour le sondage, et que chaque reponse
+		// n'exede pas 70 caracteres (sinon on la tronque)
 		$exp = explode("\n", $this->poll_values);
 		$this->poll_values = array();
 		foreach ($exp AS $v)
@@ -1078,18 +1078,18 @@ class Fsb_frame_child extends Fsb_frame
 			$this->errstr[] = Fsb::$session->lang('post_poll_more_answer');
 		}
 		
-		// Si le membre est connecté son pseudonyme pour le message sera son vrai pseudonyme
+		// Si le membre est connecte son pseudonyme pour le message sera son vrai pseudonyme
 		if (Fsb::$session->is_logged())
 		{
 			$this->nickname = Fsb::$session->data['u_nickname'];
 		}
-		// S'il a oublié d'entrer un pseudonyme
+		// S'il a oublie d'entrer un pseudonyme
 		else if (!Fsb::$session->is_logged() && empty($this->nickname))
 		{
 			$this->nickname = Fsb::$session->lang('visitor');
 		}
 
-		// Vérification du flood
+		// Verification du flood
 		if (($this->mode == 'topic' || $this->mode == 'reply') && Fsb::$session->is_logged() && Fsb::$session->auth() < MODOSUP && Fsb::$session->data['u_flood_post'] > CURRENT_TIME - Fsb::$cfg->get('flood_post'))
 		{
 			$this->errstr[] = sprintf(Fsb::$session->lang('post_flood'), Fsb::$cfg->get('flood_post') - (CURRENT_TIME - Fsb::$session->data['u_flood_post']));
@@ -1097,21 +1097,21 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Envoie les données
+	** Envoie les donnees
 	*/
 	public function send_data()
 	{
 		switch ($this->mode)
 		{
 			case 'mp' :
-				// On envoie le message privé
+				// On envoie le message prive
 				Send::send_mp(Fsb::$session->id(), $this->to_id, $this->title, $this->content, $this->mp_parent, TRUE);
 
 				Display::message('post_mp_well', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox', 'forum_mp');
 			break;
 
 			case 'edit_mp' :
-				// On edite le message privé
+				// On edite le message prive
 				Send::edit_mp($this->id, $this->title, $this->content);
 				Send::edit_mp($this->id - 1, $this->title, $this->content);
 
@@ -1136,7 +1136,7 @@ class Fsb_frame_child extends Fsb_frame
 					't_title' => $this->title,
 				), TRUE);
 
-				// Création du sondage
+				// Creation du sondage
 				if ($poll_exists)
 				{
 					Poll::send($this->poll_name, $this->poll_values, $topic_id, $this->poll_max_vote);
@@ -1149,7 +1149,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'reply' :
-				// On poste une réponse dans le sujet
+				// On poste une reponse dans le sujet
 				$post_id = Send::send_post(Fsb::$session->id(), $this->id, $this->data['f_id'], $this->content, $this->nickname, $this->approve, $this->post_map, array(
 					't_title' => $this->data['t_title'],
 				), FALSE);
@@ -1162,7 +1162,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'edit' :
-				// On met à jour le message
+				// On met a jour le message
 				if ($this->data['p_id'] == $this->data['t_first_p_id'])
 				{
 					Send::edit_post($this->id, $this->content, Fsb::$session->id(), array(
@@ -1186,7 +1186,7 @@ class Fsb_frame_child extends Fsb_frame
 					Poll::edit($this->data['t_id'], $this->poll_name, $this->poll_values, $this->poll_max_vote);
 				}
 
-				// Log de l'édition du message
+				// Log de l'edition du message
 				if (Fsb::$session->id() != $this->data['u_id'])
 				{
 					Log::add(Log::MODO, 'log_edit', $this->data['p_nickname']);
@@ -1212,14 +1212,14 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Récupère les données du message privé en cas de citation / réponse
+	** Recupere les donnees du message prive en cas de citation / reponse
 	*/
 	public function get_mp_data()
 	{
 		switch ($this->mode)
 		{
 			case 'edit_mp' :
-				// Edition du message privé
+				// Edition du message prive
 				$mp_box = 'outbox';
 
 				$sql = 'SELECT mp_title, mp_content
@@ -1240,7 +1240,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'mp' :
-				// On récupère les données du message privé en cas de réponse
+				// On recupere les donnees du message prive en cas de reponse
 				$mp_box = 'inbox';
 				if ($this->id)
 				{
@@ -1255,7 +1255,7 @@ class Fsb_frame_child extends Fsb_frame
 					$this->mp_data = Fsb::$db->row($result);
 					Fsb::$db->free($result);
 
-					// Si le MP n'a pas été trouvé on ignore la réponse
+					// Si le MP n'a pas ete trouve on ignore la reponse
 					if (!$this->mp_data)
 					{
 						$this->id = NULL;
@@ -1309,7 +1309,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		$id = $upload->attach_file(Fsb::$session->id(), $upload_auth);
 
-		// Code à attacher. S'il s'agit d'une image on l'affiche
+		// Code a attacher. S'il s'agit d'une image on l'affiche
 		if ($upload->is_img)
 		{
 			$attach_code = '[attach=' . $id . '] [img:alt=' . $upload->filename . ',title=' . $upload->filename . ']' . Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=download&nocount&id=' . $id . "[/img]\n" . htmlspecialchars($this->upload_comment) . '[/attach]';
@@ -1329,7 +1329,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Mise à jour du membre, suivant s'il souhaite ou non utiliser un éditeur WYSIWYG
+	** Mise a jour du membre, suivant s'il souhaite ou non utiliser un editeur WYSIWYG
 	*/
 	public function update_wysiwyg()
 	{
@@ -1360,7 +1360,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche la liste des fichiers uploadés
+	** Affiche la liste des fichiers uploades
 	*/
 	public function show_upload()
 	{
@@ -1389,7 +1389,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Génère une liste des MAPS
+	** Genere une liste des MAPS
 	*/
 	public function list_maps()
 	{

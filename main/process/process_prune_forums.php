@@ -13,7 +13,7 @@
 $GLOBALS['use_register_shutdown'] = FALSE;
 
 /*
-** Effectue un délestage sur les forums concernés
+** Effectue un delestage sur les forums concernes
 */
 function prune_forums()
 {

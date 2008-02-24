@@ -11,24 +11,24 @@
 */
 
 /*
-** Classe permettant l'insertion de messages, sujets, messages privés dans la base
-** de donnée du forum
+** Classe permettant l'insertion de messages, sujets, messages prives dans la base
+** de donnee du forum
 */
 class Send extends Fsb_model
 {
 	//
-	// Méthodes liées à l'envoie de messages privés
+	// Methodes liees a l'envoie de messages prives
 	//
 
 	/*
-	** Envoie un message privé
+	** Envoie un message prive
 	** -----
-	** $from_id ::			ID de l'expéditeur
-	** $to_id ::			ID du recepteur (possibilité de passer un tableau d'ID)
-	** $title ::			Titre du message privé
-	** $content ::			Contenu du message privé
-	** $parent ::			ID du parent de ce MP s'il s'agit d'une réponse
-	** $is_xml ::			Si le message est déjà au format XML
+	** $from_id ::			ID de l'expediteur
+	** $to_id ::			ID du recepteur (possibilite de passer un tableau d'ID)
+	** $title ::			Titre du message prive
+	** $content ::			Contenu du message prive
+	** $parent ::			ID du parent de ce MP s'il s'agit d'une reponse
+	** $is_xml ::			Si le message est deja au format XML
 	*/
 	public static function send_mp($from_id, $to_id, $title, $content, $parent = 0, $is_xml = FALSE)
 	{
@@ -57,7 +57,7 @@ class Send extends Fsb_model
 		}
 		$list_id = implode(', ', $to_id);
 		
-		// On regarde si le recepteur a blacklisté l'expéditeur
+		// On regarde si le recepteur a blackliste l'expediteur
 		$is_blacklist = array();
 		$sql = 'SELECT blacklist_to_id
 				FROM ' . SQL_PREFIX .'mp_blacklist
@@ -70,8 +70,8 @@ class Send extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On récupère les données des recepteurs, pour savoir qui va recevoir un Email de notification,
-		// et qui va envoyer un joli message de répondeur.
+		// On recupere les donnees des recepteurs, pour savoir qui va recevoir un Email de notification,
+		// et qui va envoyer un joli message de repondeur.
 		$sql = 'SELECT u_id, u_nickname, u_email, u_language, u_total_mp, u_activate_mp_notification, u_mp_auto_answer_activ, u_mp_auto_answer_message
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id IN (' . $list_id . ')
@@ -94,7 +94,7 @@ class Send extends Fsb_model
 
 			if ($row['u_mp_auto_answer_activ'] && Fsb::$cfg->get('mp_auto_activated') && $from_id <> VISITOR_ID)
 			{
-				// Génération XML du message du répondeur
+				// Generation XML du message du repondeur
 				$message = new Xml();
 				$message->document->setTagName('root');
 				$message_line = $message->document->createElement('line');
@@ -124,10 +124,10 @@ class Send extends Fsb_model
 		// Transaction SQL
 		Fsb::$db->transaction('begin');
 		
-		// On effectue deux insertions du message privé dans la base de donnée, la première pour la personne
-		// qui va le recevoir, la seconde pour la boite d'envoie de l'expéditeur.
-		// Si le recepteur a blacklisté l'expéditeur, on ne poste pas de message pour le recepteur, mais on poste celui
-		// pour la boite de reception de l'expéditeur.
+		// On effectue deux insertions du message prive dans la base de donnee, la premiere pour la personne
+		// qui va le recevoir, la seconde pour la boite d'envoie de l'expediteur.
+		// Si le recepteur a blackliste l'expediteur, on ne poste pas de message pour le recepteur, mais on poste celui
+		// pour la boite de reception de l'expediteur.
 		foreach ($to_id AS $id)
 		{
 			foreach (array(MP_INBOX, MP_OUTBOX) AS $mp_type)
@@ -150,16 +150,16 @@ class Send extends Fsb_model
 			}
 		}
 
-		// Allez hop on insère la floppée de messages dans la base de donnée
+		// Allez hop on insere la floppee de messages dans la base de donnee
 		Fsb::$db->query_multi_insert();
 
-		// On ajoute un message privé au nombre de messages du membre, sauf si blacklisté
+		// On ajoute un message prive au nombre de messages du membre, sauf si blackliste
 		Fsb::$db->update('users', array(
 			'u_total_mp' =>		array('u_total_mp + 1', 'is_field' => TRUE),
 			'u_new_mp' =>		TRUE,
 		), 'WHERE u_id IN (' . $list_id . ')' . (($is_blacklist) ? ' AND u_id NOT IN (' . implode(', ', array_keys($is_blacklist)) . ')' : ''));
 
-		// Si des messages de répondeurs ont été envoyés, on le signale a l'expéditeur
+		// Si des messages de repondeurs ont ete envoyes, on le signale a l'expediteur
 		if ($total_auto_answer)
 		{
 			Fsb::$db->update('users', array(
@@ -171,7 +171,7 @@ class Send extends Fsb_model
 		// Fin de transaction SQL
 		Fsb::$db->transaction('commit');
 
-		// On regarde qui doit être notifié par Email, et on leur envoie l'Email
+		// On regarde qui doit etre notifie par Email, et on leur envoie l'Email
 		if ($notify_list)
 		{
 			$sql = 'SELECT u_nickname
@@ -203,7 +203,7 @@ class Send extends Fsb_model
 	}
 
 	/*
-	** Edite un message privé
+	** Edite un message prive
 	** -----
 	** $id ::		ID du message
 	** $title ::	Titre du mesage
@@ -218,18 +218,18 @@ class Send extends Fsb_model
 	}
 
 	//
-	// Méthodes liées à l'envoie de messages / sujets sur le forum
+	// Methodes liees a l'envoie de messages / sujets sur le forum
 	//
 	
 	/*
-	** Créer un nouveau sujet, retourne l'ID de celui ci
+	** Creer un nouveau sujet, retourne l'ID de celui ci
 	** -----
-	** $forum_id ::		ID du forum où est posté le sujet
+	** $forum_id ::		ID du forum ou est poste le sujet
 	** $user_id ::		ID du posteur du topic
 	** $title ::		Titre du sujet
 	** $map_name ::		Nom de la MAP pour le sujet
 	** $type ::			Type du sujet
-	** $args ::			Tableau d'argument suplémentaire
+	** $args ::			Tableau d'argument suplementaire
 	*/
 	public static function send_topic($forum_id, $user_id, $title, $map_name, $type, $args = array())
 	{
@@ -248,21 +248,21 @@ class Send extends Fsb_model
 	}
 	
 	/*
-	** Poste un message et retourne l'ID du message créé
+	** Poste un message et retourne l'ID du message cree
 	** -----
 	** $user_id ::			ID du posteur du message
 	** $topic_id ::			ID du sujet
 	** $forum_id ::			ID du forum
 	** $content ::			Message
 	** $nickname ::			Pseudonyme du posteur
-	** $approve ::			TRUE si le message doit être approuvé
+	** $approve ::			TRUE si le message doit etre approuve
 	** $post_map ::			MAP du message
-	** $ary_content ::		Données suplémentaires
-	** $is_first_post ::	Défini s'il s'agit du premier message du sujet ou non
+	** $ary_content ::		Donnees suplementaires
+	** $is_first_post ::	Defini s'il s'agit du premier message du sujet ou non
 	*/
 	public static function send_post($user_id, $topic_id, $forum_id, $content, $nickname, $approve, $post_map, $ary_content, $is_first_post = FALSE)
 	{
-		// Données du forum
+		// Donnees du forum
 		$sql = 'SELECT f_left, f_right
 			FROM ' . SQL_PREFIX . 'forums
 			WHERE f_id = ' . $forum_id;
@@ -272,7 +272,7 @@ class Send extends Fsb_model
 
 		Fsb::$db->transaction('begin');
 
-		// On insère le message dans la base de donnée
+		// On insere le message dans la base de donnee
 		Fsb::$db->insert('posts', array(
 			'f_id' =>		(int) $forum_id,
 			't_id' =>		(int) $topic_id,
@@ -288,7 +288,7 @@ class Send extends Fsb_model
 
 		if ($approve == IS_APPROVED)
 		{
-			// On met à jour le sujet du message
+			// On met a jour le sujet du message
 			$update_array = array(
 				't_last_p_id' =>		(int) $post_id,
 				't_last_p_time' =>		CURRENT_TIME,
@@ -297,7 +297,7 @@ class Send extends Fsb_model
 				't_total_post' =>		array('(t_total_post + 1)', 'is_field' => TRUE),
 			);
 
-			// Mise à jour des données du forum
+			// Mise a jour des donnees du forum
 			$forum_update_array = array(
 				'f_total_post' =>		array('(f_total_post + 1)', 'is_field' => TRUE),
 				'f_last_p_id' =>		(int) $post_id,
@@ -308,29 +308,29 @@ class Send extends Fsb_model
 				'f_last_p_time' =>		CURRENT_TIME,
 			);
 
-			// mise à jour des données du membre
+			// mise a jour des donnees du membre
 			$user_update_array = array(
 				'u_total_post' =>	array('(u_total_post + 1)', 'is_field' => TRUE),
 			);
 		
-			// S'il s'agit du premier message on lie le topic à celui ci, et on ajoute + 1 au total de sujets sur le forum
+			// S'il s'agit du premier message on lie le topic a celui ci, et on ajoute + 1 au total de sujets sur le forum
 			if ($is_first_post)
 			{
 				$update_array['t_first_p_id'] = $post_id;
 				$forum_update_array['f_total_topic'] = array('(f_total_topic + 1)', 'is_field' => TRUE);
 				$user_update_array['u_total_topic'] = array('(u_total_topic + 1)', 'is_field' => TRUE);
 
-				// Mise à jour du nombre total de sujets
+				// Mise a jour du nombre total de sujets
 				Fsb::$cfg->update('total_topics', Fsb::$cfg->get('total_topics') + 1);
 
-				// Mise à jour du nombre d'annonce globale ?
+				// Mise a jour du nombre d'annonce globale ?
 				if (isset($ary_content['t_type']) && $ary_content['t_type'] == GLOBAL_ANNOUNCE)
 				{
 					Fsb::$cfg->update('total_global_announce', Fsb::$cfg->get('total_global_announce') + 1);
 				}
 			}
 
-			// Si le membre est connecté, on à jour sa limite de flood
+			// Si le membre est connecte, on a jour sa limite de flood
 			if ($user_id <> VISITOR_ID)
 			{
 				$user_update_array['u_flood_post'] = CURRENT_TIME;
@@ -393,11 +393,11 @@ class Send extends Fsb_model
 	}
 
 	/*
-	** Met à jour le contenu d'un message
+	** Met a jour le contenu d'un message
 	** -----
 	** $post_id ::		ID du message
 	** $content ::		Contenu du message
-	** $user_id ::		ID du membre ayant mis à jour le message
+	** $user_id ::		ID du membre ayant mis a jour le message
 	** $args ::			Arguments aditionels
 	*/
 	public static function edit_post($post_id, $content, $user_id, $args = array())
@@ -434,7 +434,7 @@ class Send extends Fsb_model
 
 	/*
 	** Envoie une notification aux membres surveillant le sujet.
-	** L'algorithme de cette fonction est inspiré de celui du forum phpBB 2.0.x
+	** L'algorithme de cette fonction est inspire de celui du forum phpBB 2.0.x
 	** -----
 	** $t_id ::			ID du sujet
 	** $p_id ::			ID du message
@@ -446,7 +446,7 @@ class Send extends Fsb_model
 		$sql_notification = array();
 		$notify_list =		array();
 
-		// On récupère la liste des membres à notifier, classés par langue
+		// On recupere la liste des membres a notifier, classes par langue
 		$sql = 'SELECT u.u_id, u.u_email, u.u_language
 				FROM ' . SQL_PREFIX . 'topics_notification tn
 				INNER JOIN ' . SQL_PREFIX . 'users u
@@ -467,10 +467,10 @@ class Send extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On envoie autant de notifications qu'il y a de langues différentes au sein des membres à notifier.
-		// Pour chaque langue on envoie le mail en copie caché afin de tout envoyer en une fois, donc sur
-		// un forum avec une unique langue d'installée (car c'est la plupart du temps le cas), un seul mail
-		// sera envoyé.
+		// On envoie autant de notifications qu'il y a de langues differentes au sein des membres a notifier.
+		// Pour chaque langue on envoie le mail en copie cache afin de tout envoyer en une fois, donc sur
+		// un forum avec une unique langue d'installee (car c'est la plupart du temps le cas), un seul mail
+		// sera envoye.
 		foreach ($notify_list AS $mail_lang => $mail_list)
 		{
 			$notify = new Notify(NOTIFY_MAIL);
@@ -495,7 +495,7 @@ class Send extends Fsb_model
 			unset($notify);
 		}
 
-		// On met à jour les membres qui viennent d'être notifiés
+		// On met a jour les membres qui viennent d'etre notifies
 		if ($sql_notification)
 		{
 			Fsb::$db->update('topics_notification', array(
@@ -505,15 +505,15 @@ class Send extends Fsb_model
 	}
 
 	//
-	// Méthodes liées à l'envoie d'évènement pour le calendrier
+	// Methodes liees a l'envoie d'evenement pour le calendrier
 	//
 
 	/*
-	** Ajoute un évênement dans le calendrier
+	** Ajoute un evenement dans le calendrier
 	** -----
 	** $title ::			Titre
 	** $content ::			Message
-	** $timestamp_begin ::	Timestamp unix de départ
+	** $timestamp_begin ::	Timestamp unix de depart
 	** $timestamp_end ::	Timestamp unix de fin
 	** $print ::			Afficher pour tous ou bien juste pour le membre
 	*/
@@ -534,12 +534,12 @@ class Send extends Fsb_model
 	}
 
 	/*
-	** Edit un évênement dans le calendrier
+	** Edit un evenement dans le calendrier
 	** -----
-	** $id ::				ID de l'évênement
+	** $id ::				ID de l'evenement
 	** $title ::			Titre
 	** $content ::			Message
-	** $timestamp_begin ::	Timestamp unix de départ
+	** $timestamp_begin ::	Timestamp unix de depart
 	** $timestamp_end ::	Timestamp unix de fin
 	** $print ::			Afficher pour tous ou bien juste pour le membre
 	*/

@@ -11,8 +11,8 @@
 */
 
 /*
-** Implémentation de l'algorithme de chiffrage RSA
-** Inspiré du package PEAR Crypt_RSA http://pear.php.net/package/Crypt_RSA et 
+** Implementation de l'algorithme de chiffrage RSA
+** Inspire du package PEAR Crypt_RSA http://pear.php.net/package/Crypt_RSA et 
 ** du tutorial http://cryptez.ifrance.com/histo3.htm
 */
 class Rsa extends Fsb_model
@@ -20,7 +20,7 @@ class Rsa extends Fsb_model
 	// Objet Rsa_bcmath
 	private $math;
 
-	// Clés publiques et privées
+	// Cles publiques et privees
 	public $public_key = NULL;
 	public $private_key = NULL;
 
@@ -33,7 +33,7 @@ class Rsa extends Fsb_model
 	}
 
 	/*
-	** Détermine si on peut utiliser le cryptage RSA (si la librairie bcmath est activée)
+	** Determine si on peut utiliser le cryptage RSA (si la librairie bcmath est activee)
 	** A appeler en statique.
 	*/
 	public static function can_use()
@@ -42,16 +42,16 @@ class Rsa extends Fsb_model
 	}
 
 	/*
-	** Génération des clefs privées et publiques
+	** Generation des clefs privees et publiques
 	** -----
 	** $keysize ::	Taille des clefs
 	*/
 	public function generate_keys($keysize = 20)
 	{
-		// Génération d'un nombre arbitraire E (valeur 65537)
+		// Generation d'un nombre arbitraire E (valeur 65537)
 		$e = $this->math->bin2int("\x01\x00\x01");
 
-		// Génération de deux nombre premiers P et Q avec cette condition : PGCD(E, P - 1) = 1 et PGCD(E, Q - 1) = 1
+		// Generation de deux nombre premiers P et Q avec cette condition : PGCD(E, P - 1) = 1 et PGCD(E, Q - 1) = 1
 		foreach (array('p', 'q') AS $varname)
 		{
 			do
@@ -70,13 +70,13 @@ class Rsa extends Fsb_model
 		$q1 = $this->math->dec($q);
 		$d = $this->math->invmod($e, $this->math->mul($p1, $q1));
 
-		// Génération de la clef publique
+		// Generation de la clef publique
 		$this->public_key = new Rsa_key($n, $e, 'public');
 		$this->private_key = new Rsa_key($n, $d, 'private');
 	}
 
 	/*
-	** Regénère les clefs pour les stocket dans la base de donnée du forum
+	** Regenere les clefs pour les stocket dans la base de donnee du forum
 	*/
 	public function regenerate_keys()
 	{
@@ -86,11 +86,11 @@ class Rsa extends Fsb_model
 	}
 
 	/*
-	** Crypte une chaîne de caractère
-	** La version Javascript de cette fonction (disponible dans ~/main/javascript/rsa.js) est utilisée
-	** pour coder les informations, côté client.
+	** Crypte une chaine de caractere
+	** La version Javascript de cette fonction (disponible dans ~/main/javascript/rsa.js) est utilisee
+	** pour coder les informations, cote client.
 	** -----
-	** $str ::	Chaîne à crypter
+	** $str ::	Chaine a crypter
 	*/
     public function encrypt($str)
     {
@@ -99,13 +99,13 @@ class Rsa extends Fsb_model
             return ($str);
         }
 
-		// Pour le décryptage de la clef
+		// Pour le decryptage de la clef
         $str .= "\x01";
 
 		// Conversion en int
         $str = $this->math->bin2int($str);
         
-		// Découpage de la chaîne de caractères
+		// Decoupage de la chaine de caracteres
         $length = $this->math->bitLen($str);
         $chunk_length = $this->math->bitLen($this->public_key->_get('mod')) - 1;
         $block_length = (int) ceil($chunk_length / 8);
@@ -121,9 +121,9 @@ class Rsa extends Fsb_model
     }
 
 	/*
-	** Décrypte une chaîne de caractère
+	** Decrypte une chaine de caractere
 	** -----
-	** $str ::		Chaîne à décrypter
+	** $str ::		Chaine a decrypter
 	*/
     public function decrypt($str)
     {
@@ -133,7 +133,7 @@ class Rsa extends Fsb_model
             return ($str);
         }
 
-		// Décryptage du résultat
+		// Decryptage du resultat
         $data_length = strlen($str);
         $chunk_length = $this->math->bitLen($this->private_key->_get('mod')) - 1;
         $block_length = (int) ceil($chunk_length / 8);
@@ -180,7 +180,7 @@ class Rsa_key extends Fsb_model
 	}
 
 	/*
-	** Conversion objet -> chaîne de caractère
+	** Conversion objet -> chaine de caractere
 	*/
 	public function to_string()
 	{
@@ -192,9 +192,9 @@ class Rsa_key extends Fsb_model
 	}
 
 	/*
-	** Conversion chaîne de caractère -> objet
+	** Conversion chaine de caractere -> objet
 	** -----
-	** $string ::	Chaîne de caractère à convertir
+	** $string ::	Chaine de caractere a convertir
 	*/
 	public static function &from_string($string)
 	{
@@ -210,9 +210,9 @@ class Rsa_key extends Fsb_model
 	}
 
 	/*
-	** Vérifie la validité d'une clef
+	** Verifie la validite d'une clef
 	** -----
-	** $key ::	Clef à vérifier
+	** $key ::	Clef a verifier
 	*/
 	public function is_valid($key)
 	{

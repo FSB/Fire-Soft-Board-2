@@ -14,7 +14,7 @@
 $show_this_module = FALSE;
 
 /*
-** Module executant les procédures de modération
+** Module executant les procedures de moderation
 */
 class Page_modo_procedure_exec extends Fsb_model
 {
@@ -26,7 +26,7 @@ class Page_modo_procedure_exec extends Fsb_model
 		$topic_id =		intval(Http::request('id'));
 		$proc_id =		intval(Http::request('procedure', 'post'));
 
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $proc_id;
@@ -39,7 +39,7 @@ class Page_modo_procedure_exec extends Fsb_model
 			Display::message('not_allowed');
 		}
 
-		// Données du sujet
+		// Donnees du sujet
 		$sql = 'SELECT t.t_title, t.t_first_p_id, t.t_last_p_id, t.f_id, t.u_id AS owner_id, p.u_id AS last_poster
 				FROM ' . SQL_PREFIX . 'topics t
 				INNER JOIN ' . SQL_PREFIX . 'posts p
@@ -85,10 +85,10 @@ class Page_modo_procedure_exec extends Fsb_model
 		// Titre du sujet
 		$procedure->set_var('this.topic_title', Parser::title($t['t_title']));
 
-		// Utilisateur executant la procédure
+		// Utilisateur executant la procedure
 		$procedure->set_var('this.user', Fsb::$session->data);
 
-		// Informations sur le membre qui a démarré le sujet, celui qui a terminé le sujet
+		// Informations sur le membre qui a demarre le sujet, celui qui a termine le sujet
 		$userdata = array('owner' => $t['owner_id'], 'last' => $t['last_poster']);
 		foreach ($userdata AS $varname => $id)
 		{
@@ -100,7 +100,7 @@ class Page_modo_procedure_exec extends Fsb_model
 			Fsb::$db->free($result);
 		}
 
-		// Nom de la procédure
+		// Nom de la procedure
 		$procedure->name = $data['procedure_name'];
 		$procedure->set_var('this.procedure_name', $data['procedure_name']);
 

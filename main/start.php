@@ -20,7 +20,7 @@ if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
 }
 
 /*
-** Méthode magique permettant le chargement dynamique de classes
+** Methode magique permettant le chargement dynamique de classes
 */
 function __autoload($classname)
 {
@@ -29,7 +29,7 @@ function __autoload($classname)
 }
 
 /*
-** Permet d'accéder partout aux variables globales necessaires au fonctionement du forum
+** Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
 */
 class Fsb extends Fsb_model
 {
@@ -44,7 +44,7 @@ class Fsb extends Fsb_model
 }
 
 /*
-** Inclus un fichier dans le dossier main/ de façon intéligente
+** Inclus un fichier dans le dossier main/ de facon inteligente
 ** -----
 ** $file ::		Nom du fichier
 */
@@ -78,7 +78,7 @@ function fsb_import($filename)
 // Instance de la classe Debug
 Fsb::$debug = new Debug();
 
-// Inclusion des fonctions / classes communes à toutes les pages
+// Inclusion des fonctions / classes communes a toutes les pages
 include_once(ROOT . 'config/config.' . PHPEXT);
 fsb_import('csts');
 fsb_import('globals');
@@ -87,7 +87,7 @@ fsb_import('fcts_common');
 // Gestionaire d'erreur
 set_error_handler(array('Display', 'error_handler'));
 
-// Forum installé ?
+// Forum installe ?
 if (!defined('FSB_INSTALL'))
 {
 	Http::header('Location', ROOT . 'install/index.' . PHPEXT);
@@ -103,27 +103,27 @@ else if (file_exists(ROOT . 'install/install.' . PHPEXT))
 
 	if (!@unlink(ROOT . 'install/install.' . PHPEXT))
 	{
-		trigger_error('Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de sécurité.', FSB_ERROR);
+		trigger_error('Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de securite.', FSB_ERROR);
 	}
 }
 
 // Netoyage des variables GET, POST et COOKIE
 Http::clean_gpc();
 
-// On définit un fuseau horaire par défaut (sinon PHP5.1 est pas content)
+// On definit un fuseau horaire par defaut (sinon PHP5.1 est pas content)
 if (version_compare(phpversion(), '5.1.0', '>='))
 {
 	date_default_timezone_set(date_default_timezone_get());
 }
 
-// On récupère les variables pour le débug
+// On recupere les variables pour le debug
 Fsb::$debug->request_vars();
 
 // Instance de la classe Sql
 Fsb::$db = Dbal::factory();
 if (Fsb::$db->_get_id() === NULL)
 {
-	trigger_error('Impossible de se connecter à la base de donnée : ' . Fsb::$db->sql_error(), FSB_ERROR);
+	trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error(), FSB_ERROR);
 }
 
 // On charge la configuration du forum
@@ -132,7 +132,7 @@ Fsb::$cfg = new Config();
 // Instance de la classe Session
 Fsb::$session = new Session();
 
-// Répertoires
+// Repertoires
 define('FSB_PATH', (defined('FSB_SDK')) ? Fsb::$cfg->get('fsb_path') . '/' : ROOT);
 define('SMILEY_PATH', FSB_PATH . 'images/smileys/');
 define('AVATAR_PATH', FSB_PATH . 'images/avatars/');

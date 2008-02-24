@@ -14,7 +14,7 @@
 $show_this_module = FALSE;
 
 /*
-** Module de modération pour le verrouillage / déverrouillage d'un sujet
+** Module de moderation pour le verrouillage / deverrouillage d'un sujet
 */
 class Page_modo_lock extends Fsb_model
 {
@@ -26,7 +26,7 @@ class Page_modo_lock extends Fsb_model
 		$id =	intval(Http::request('id'));
 		$mode = Http::request('mode');
 
-		// On vérifie si le sujet exists
+		// On verifie si le sujet exists
 		$sql = 'SELECT t_title, f_id
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . intval($id);
@@ -37,13 +37,13 @@ class Page_modo_lock extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On vérifie s'il a le droit de verrouiller le sujet
+		// On verifie s'il a le droit de verrouiller le sujet
 		if (!Fsb::$session->is_authorized($topic_data['f_id'], 'ga_moderator'))
 		{
 			Display::message('not_allowed');
 		}
 
-		// Mise à jour du status du sujet
+		// Mise a jour du status du sujet
 		Moderation::lock_topic($id, ($mode == 'lock') ? LOCK : UNLOCK);
 
 		// Log

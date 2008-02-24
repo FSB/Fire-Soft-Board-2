@@ -11,11 +11,11 @@
 */
 
 /*
-** Affiche le formulaire permettant de signaler aux modérateurs un message abusif
+** Affiche le formulaire permettant de signaler aux moderateurs un message abusif
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -48,7 +48,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Vérifie si le message existe
+	** Verifie si le message existe
 	*/
 	public function check_post()
 	{
@@ -94,7 +94,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Enregistre dans la base de donnée le signalement de message abusif
+	** Enregistre dans la base de donnee le signalement de message abusif
 	*/
 	public function submit_form()
 	{

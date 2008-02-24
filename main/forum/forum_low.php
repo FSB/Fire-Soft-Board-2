@@ -11,11 +11,11 @@
 */
 
 /*
-** Version bas débit du forum
+** Version bas debit du forum
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -64,10 +64,10 @@ class Fsb_frame_child extends Fsb_frame
 			'U_HIGH_VERSION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=index'),
 		));
 
-		// Liste des forums autorisés
+		// Liste des forums autorises
 		$forums = Forum::get_authorized(array('ga_view'));
 
-		// Affichage d'une catégorie
+		// Affichage d'une categorie
 		$sql_cat = '';
 		if ($this->id)
 		{
@@ -137,7 +137,7 @@ class Fsb_frame_child extends Fsb_frame
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=low');
 		}
 
-		// Vérification des droits d'accès
+		// Verification des droits d'acces
 		if (!Fsb::$session->is_authorized($this->id, 'ga_view') || !Fsb::$session->is_authorized($this->id, 'ga_view_topics'))
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=low');
@@ -251,7 +251,7 @@ class Fsb_frame_child extends Fsb_frame
 				WHERE t_id = ' . $this->id;
 		$data = Fsb::$db->request($sql);
 
-		// Vérification des droits d'accès
+		// Verification des droits d'acces
 		if (!$data || !Fsb::$session->is_authorized($data['f_id'], 'ga_view') || !Fsb::$session->is_authorized($data['f_id'], 'ga_view_topics') || !Fsb::$session->is_authorized($data['f_id'], 'ga_read'))
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=low');
@@ -278,7 +278,7 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 
-		// On commence par récupérer les ID des messages qui seront affichés
+		// On commence par recuperer les ID des messages qui seront affiches
 		$sql = 'SELECT p_id
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE t_id = ' . $data['t_id'] . '
@@ -310,7 +310,7 @@ class Fsb_frame_child extends Fsb_frame
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],

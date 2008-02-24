@@ -11,7 +11,7 @@
 */
 
 /*
-** Classe développée dans le but d'aider à débuguer le forum
+** Classe developpee dans le but d'aider a debuguer le forum
 */
 class Debug extends Fsb_model
 {
@@ -21,20 +21,20 @@ class Debug extends Fsb_model
 	private $method = 'get';
 	private $post_ary = array();
 
-	// Définit si on affiche le résultat des templates
+	// Definit si on affiche le resultat des templates
 	public $show_output = TRUE;
 
-	// Cache des URL de débugage
+	// Cache des URL de debugage
 	private $url_begin = '';
 	private $url_end = '';
 
-	// Contient les différents temps pour les étapes
+	// Contient les differents temps pour les etapes
 	private $data = array();
 
 	// Temps final
 	public $end = 0;
 
-	// Temps de départ
+	// Temps de depart
 	public $start = 0;
 	
 	/*
@@ -42,7 +42,7 @@ class Debug extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// Benchmark de départ
+		// Benchmark de depart
 		$this->start = $this->get_time();
 
 		$this->can_debug = (!(error_reporting() ^ E_ALL)) ? TRUE : FALSE;
@@ -60,7 +60,7 @@ class Debug extends Fsb_model
 	}
 	
 	/*
-	** Initialise la page en récupérant la méthode d'accès, ainsi que le tableau $_POST si la méthode est post
+	** Initialise la page en recuperant la methode d'acces, ainsi que le tableau $_POST si la methode est post
 	*/
 	public function request_vars()
 	{
@@ -80,7 +80,7 @@ class Debug extends Fsb_model
 	}
 	
 	/*
-	** Créé une URL pour accéder à la page de débugage
+	** Cree une URL pour acceder a la page de debugage
 	*/
 	public function debug_url($mode)
 	{
@@ -105,7 +105,7 @@ class Debug extends Fsb_model
 	}
 
 	/*
-	** Créé un marqueur qui retient le temps écoulé.
+	** Cree un marqueur qui retient le temps ecoule.
 	** -----
 	** $name :: Nom du marqueur.
 	*/
@@ -129,7 +129,7 @@ class Debug extends Fsb_model
 					<td style="background-color: #cccccc; font-weight: bold; text-align: center;" colspan="4">Benchmark</td>
 				</tr>
 				<tr>
-					<td style="background-color: #dddddd; width: 400px; text-align: center;" colspan="2">Temps d\'éxécution total :</td>
+					<td style="background-color: #dddddd; width: 400px; text-align: center;" colspan="2">Temps d\'execution total :</td>
 					<td style="background-color: #eeeeee; text-align: center;" colspan="2">' . ($total) . '</td>
 				</tr>
 				<tr>
@@ -138,11 +138,11 @@ class Debug extends Fsb_model
 				<tr>
 					<td style="background-color: #dddddd; width: 200px; text-align: center; font-weight: bold;">Nom du marqueur</td>
 					<td style="background-color: #eeeeee; width: 200px; text-align: center; font-weight: bold;">Temps du marqueur</td>
-					<td style="background-color: #eeeeee; width: 200px; text-align: center; font-weight: bold;">Temps passé</td>
-					<td style="background-color: #dddddd; width: 200px; text-align: center; font-weight: bold;">Pourcentage d\'éxécution</td>
+					<td style="background-color: #eeeeee; width: 200px; text-align: center; font-weight: bold;">Temps passe</td>
+					<td style="background-color: #dddddd; width: 200px; text-align: center; font-weight: bold;">Pourcentage d\'execution</td>
 				</tr>
 				<tr>
-					<td style="background-color: #dddddd; width: 200px; text-align: center;">Temps de départ :</td>
+					<td style="background-color: #dddddd; width: 200px; text-align: center;">Temps de depart :</td>
 					<td style="background-color: #eeeeee; width: 200px; text-align: center;">' . ($this->start) . '</td>
 					<td style="background-color: #eeeeee; width: 200px; text-align: center;">' . (0) . '</td>
 					<td style="background-color: #dddddd; width: 200px; text-align: center;">0%</td>
@@ -163,7 +163,7 @@ class Debug extends Fsb_model
 		}
 		echo '
 				<tr>
-					<td style="background-color: #dddddd; width: 200px; text-align: center;">Temps d\'arrivé :</td>
+					<td style="background-color: #dddddd; width: 200px; text-align: center;">Temps d\'arrive :</td>
 					<td style="background-color: #eeeeee; width: 200px; text-align: center;">' . ($this->end) . '</td>
 					<td style="background-color: #eeeeee; width: 200px; text-align: center;">' . ($total) . '</td>
 					<td style="background-color: #dddddd; width: 200px; text-align: center;">100%</td>
@@ -182,7 +182,7 @@ class Debug extends Fsb_model
 	}
 
 	/*
-	** Retourne la mémoire utilisée par le script
+	** Retourne la memoire utilisee par le script
 	*/
 	public function memory()
 	{

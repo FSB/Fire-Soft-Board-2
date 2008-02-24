@@ -26,11 +26,11 @@ class Fsb_admin_frame extends Fsb_model
 	// Autorisation pour voir la page
 	public $auth = FONDATOR;
 
-	// Catégorie de la page
+	// Categorie de la page
 	public $cat = NULL;
 
 	/*
-	** Récupère la page de la pseudo frame
+	** Recupere la page de la pseudo frame
 	*/
 	public static function frame_request_page()
 	{
@@ -91,7 +91,7 @@ class Fsb_admin_frame extends Fsb_model
 	}
 
 	/*
-	** Créé le header (entête) de l'administration
+	** Cree le header (entete) de l'administration
 	*/
 	public function frame_header()
 	{
@@ -111,7 +111,7 @@ class Fsb_admin_frame extends Fsb_model
 			Fsb::$tpl->set_file($this->cat . '/adm_' . $this->page . '.html');
 		}
 
-		// On vérifie si le membre peut accéder à cette page de l'administration
+		// On verifie si le membre peut acceder a cette page de l'administration
 		if (Fsb::$session->auth() < $this->auth || Fsb::$session->auth() < MODOSUP)
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);
@@ -121,7 +121,7 @@ class Fsb_admin_frame extends Fsb_model
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&adm_log=true');
 		}
 
-		// On empèche la mise en cache des pages.
+		// On empeche la mise en cache des pages.
 		Http::no_cache();
 		
 		Fsb::$menu->exept = array('adm_tpl');
@@ -148,7 +148,7 @@ class Fsb_admin_frame extends Fsb_model
 	}
 
 	/*
-	** Créé le footer (pied de page) de l'administration
+	** Cree le footer (pied de page) de l'administration
 	*/
 	public function frame_footer()
 	{
@@ -167,7 +167,7 @@ class Fsb_admin_frame extends Fsb_model
 			}
 		}
 
-		// Affichage du débugage de requètes
+		// Affichage du debugage de requetes
 		if (Fsb::$session->auth() >= ADMIN && Fsb::$debug->can_debug)
 		{
 			Fsb::$tpl->set_switch('show_debug_query');

@@ -46,6 +46,8 @@
 - Fix de l'affichage des catégories de smilies vides dans l'administration
 - Fix du rafraichissement du cache après suppression d'une procédure de modération
 - Fix des anniversaires lorsque l'année n'est pas renseignée dans le profil
+- Fix des CHMOD après installation des modules (remise en place des CHMOD initiaux)
+- Fix des auteurs multiples pour les modules
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

@@ -12,9 +12,9 @@
 
 /*
 ** Couche d'abstraction pour la recherche
-** FSB supporte trois méthodes de recherche : fulltext_mysql, fulltext_fsb, like
-** Dans tous les cas, en cas de recherche classique, quelque soit la méthode, le résultat est mis en cache pour être appelé instantanément
-** en cas de changement de page sur une recherche avec plusieurs pages de résultats.
+** FSB supporte trois methodes de recherche : fulltext_mysql, fulltext_fsb, like
+** Dans tous les cas, en cas de recherche classique, quelque soit la methode, le resultat est mis en cache pour etre appele instantanement
+** en cas de changement de page sur une recherche avec plusieurs pages de resultats.
 */
 abstract class Search extends Fsb_model
 {
@@ -32,9 +32,9 @@ abstract class Search extends Fsb_model
 	abstract public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date);
 
 	/*
-	** Retourne le type de recherche utilisée.
+	** Retourne le type de recherche utilisee.
 	** A appeler en statique pour avoir facilement le nom de la
-	** couche à instancier.
+	** couche a instancier.
 	*/
 	public static function factory()
 	{
@@ -62,7 +62,7 @@ abstract class Search extends Fsb_model
 	}
 
 	/*
-	** Lance la procédure de recherche
+	** Lance la procedure de recherche
 	** -----
 	** $keywords ::			Mots clefs
 	** $author_nickname ::	Pseudonyme

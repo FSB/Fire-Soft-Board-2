@@ -14,17 +14,17 @@
 $show_this_module = TRUE;
 
 /*
-** Module de modération pour la fusion de sujets
+** Module de moderation pour la fusion de sujets
 */
 class Page_modo_merge extends Fsb_model
 {
-	// ID du sujet à fusioner
+	// ID du sujet a fusioner
 	public $id;
 
 	// ID du forum du sujet
 	public $forum_id;
 
-	// Maximum de sujets à afficher pour le filtre de fusion
+	// Maximum de sujets a afficher pour le filtre de fusion
 	public $merge_limit = 200;
 
 	/*
@@ -44,7 +44,7 @@ class Page_modo_merge extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le sujet existe et si on peut le modifier
+	** Verifie si le sujet existe et si on peut le modifier
 	*/
 	public function check_topic_data()
 	{
@@ -53,7 +53,7 @@ class Page_modo_merge extends Fsb_model
 			return ;
 		}
 
-		// Données du sujet sellectionné
+		// Donnees du sujet sellectionne
 		$sql = 'SELECT f_id, t_title
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . $this->id;
@@ -65,7 +65,7 @@ class Page_modo_merge extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Droit de modération ?
+		// Droit de moderation ?
 		if (!Fsb::$session->is_authorized($this->data['f_id'], 'ga_moderator'))
 		{
 			Display::message('not_allowed');
@@ -84,7 +84,7 @@ class Page_modo_merge extends Fsb_model
 	}
 
 	/*
-	** Affiche le formulaire pour entrer les ID des sujets à fusioner
+	** Affiche le formulaire pour entrer les ID des sujets a fusioner
 	*/
 	public function form_merge_topics()
 	{
@@ -98,7 +98,7 @@ class Page_modo_merge extends Fsb_model
 		$forums =	(array) Http::request('find_forums');
 		$forums =	array_map('intval', $forums);
 
-		// Liste des sujets trouvés
+		// Liste des sujets trouves
 		$sql = 'SELECT t.t_id, t.t_title, t.t_description, f.f_name
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'forums f
@@ -140,13 +140,13 @@ class Page_modo_merge extends Fsb_model
 			return ;
 		}
 
-		// ID des sujets à fusioner avec le sujet initial
+		// ID des sujets a fusioner avec le sujet initial
 		$idx = trim(Http::request('merge_idx', 'post'));
 		$idx = explode("\n", $idx);
 		$idx = array_map('intval', $idx);
 		if ($idx)
 		{
-			// On filtre les sujets autorisés
+			// On filtre les sujets autorises
 			$sql = 'SELECT t_id, f_id
 					FROM ' . SQL_PREFIX . 'topics
 					WHERE t_id IN (' . implode(', ', $idx) . ')';

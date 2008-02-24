@@ -11,20 +11,20 @@
 */
 
 /*
-** Spécification RSS 2.0
+** Specification RSS 2.0
 */
 class Rss_rss2 extends Rss
 {
 	private $document;
 
 	/*
-	** Création du feed
+	** Creation du feed
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
 	** $language ::		Langue du fil
 	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la dernière génération de ce fil
+	** $updated ::		Timestamp de la derniere generation de ce fil
 	*/
 	protected function _open($title, $description, $language, $link, $updated)
 	{
@@ -59,17 +59,17 @@ class Rss_rss2 extends Rss
 	}
 
 	/*
-	** Ajout d'une entrée au fil
+	** Ajout d'une entree au fil
 	** -----
 	** $title ::		Titre du fil
 	** $description ::	Description du fil
-	** $author ::		Auteur de l'entrée
-	** $link ::			Lien permettant de consulter l'entrée
-	** $updated ::		Timestamp de la dernière génération de cette entrée
+	** $author ::		Auteur de l'entree
+	** $link ::			Lien permettant de consulter l'entree
+	** $updated ::		Timestamp de la derniere generation de cette entree
 	*/
 	protected function _add_entry($title, $description, $author, $link, $updated)
 	{
-		// Création de l'entrée
+		// Creation de l'entree
 		$entry = $this->document->createElement('item');
 
 		// Titre
@@ -103,7 +103,7 @@ class Rss_rss2 extends Rss
 		$item->setAttribute('isPermaLink', 'false');
 		$entry->appendChild($item);
 
-		// Ajout de l'entrée à l'arbre XML
+		// Ajout de l'entree a l'arbre XML
 		$this->document->appendChild($entry);
 	}
 
@@ -116,7 +116,7 @@ class Rss_rss2 extends Rss
 	}
 
 	/*
-	** Converti un timestamp en spécification RFC822
+	** Converti un timestamp en specification RFC822
 	** -----
 	** $timestamp ::	Timestamp
 	*/

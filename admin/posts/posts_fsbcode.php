@@ -54,7 +54,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ADD' =>				sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=add')
 		));
 
-		// On récupère les FSBcodes
+		// On recupere les FSBcodes
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'fsbcode
 				ORDER BY fsbcode_order';
@@ -76,7 +76,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer des FSBcode
+	** Affiche la page permettant d'ajouter / editer des FSBcode
 	*/
 	public function page_add_edit_fsbcode()
 	{
@@ -130,7 +130,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition des mots à censurer
+	** Valide le formulaire d'ajout / edition des mots a censurer
 	*/
 	public function query_add_edit_fsbcode()
 	{
@@ -199,7 +199,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					WHERE fsbcode_id = ' . $this->id;
 			if ($data = Fsb::$db->request($sql))
 			{
-				// Mise à jour de l'ordre
+				// Mise a jour de l'ordre
 				Fsb::$db->update('fsbcode', array(
 					'fsbcode_order' =>	array('(fsbcode_order - 1)', 'is_field' => TRUE),
 				), 'WHERE fsbcode_order > ' . $data['fsbcode_order']);
@@ -241,7 +241,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace un FSBcode avec un autre
+	** Deplace un FSBcode avec un autre
 	*/
 	public function page_move_fsbcode()
 	{
@@ -255,7 +255,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($d)
 		{
-			// ID du FSBcode à switcher
+			// ID du FSBcode a switcher
 			$sql = 'SELECT fsbcode_id
 					FROM ' . SQL_PREFIX . 'fsbcode
 					WHERE fsbcode_order = ' . ($d['fsbcode_order'] + $move);
@@ -263,7 +263,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			if ($swap_fsbcode_id)
 			{
-				// Mise à jour de la position des deux FSBcodes
+				// Mise a jour de la position des deux FSBcodes
 				Fsb::$db->update('fsbcode', array(
 					'fsbcode_order' =>	($d['fsbcode_order'] + $move),
 				), 'WHERE fsbcode_id = ' . intval($this->id));

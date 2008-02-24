@@ -11,11 +11,11 @@
 */
 
 /*
-** Affiche la liste des catégories et des forums
+** Affiche la liste des categories et des forums
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = TRUE;
@@ -26,7 +26,7 @@ class Fsb_frame_child extends Fsb_frame
 	// <title>
 	public $tag_title = '';
 
-	// Catégorie affiché
+	// Categorie affiche
 	public $cat;
 	
 	/*
@@ -67,7 +67,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Affiche les catégories et les forums
+	** Affiche les categories et les forums
 	*/
 	public function show_forums()
 	{
@@ -80,7 +80,7 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 
-		// Dernière visite sur l'index ?
+		// Derniere visite sur l'index ?
 		if (Fsb::$mods->is_active('update_last_visit') && Fsb::$mods->is_active('last_visit_index') && Fsb::$session->id() <> VISITOR_ID && $last_visit = Http::getcookie('last_visit'))
 		{
 			Fsb::$tpl->set_vars(array(
@@ -106,8 +106,8 @@ class Fsb_frame_child extends Fsb_frame
 		// Sujets lus
 		$forum_topic_read = (!Fsb::$session->is_logged()) ? array() : Forum::get_topics_read(1);
 
-		// On récupère les forums, avec une jointure sur les messages lus pour voir si
-		// le dernier message a été lu ou non
+		// On recupere les forums, avec une jointure sur les messages lus pour voir si
+		// le dernier message a ete lu ou non
 		$result = Forum::query(($this->cat == NULL) ? '' : 'WHERE f.f_cat_id = ' . $this->cat);
 
 		$can_display_subforum = FALSE;
@@ -121,7 +121,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 			else if (Fsb::$session->is_authorized($forum['f_id'], 'ga_view') && (Fsb::$cfg->get('display_subforums') || $forum['f_parent'] == $parent_id))
 			{
-				// On affiche la catégorie
+				// On affiche la categorie
 				if ($last_cat)
 				{
 					Fsb::$tpl->set_blocks('cat', array(

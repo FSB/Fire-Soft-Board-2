@@ -60,7 +60,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Liste les données recensées dans le log
+	** Liste les donnees recensees dans le log
 	*/
 	public function page_default_logs()
 	{

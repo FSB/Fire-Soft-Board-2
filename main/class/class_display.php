@@ -16,14 +16,14 @@
 class Display extends Fsb_model
 {
 	/*
-	** Handler lié à trigger_error(). Deux constantes liées au forum ont été crées :
+	** Handler lie a trigger_error(). Deux constantes liees au forum ont ete crees :
 	**	FSB_ERROR pour les messages d'erreur critique
 	**	FSB_MESSAGE pour les messages d'information
 	** -----
 	** $errno ::	Code de l'erreur
 	** $errstr ::	Nom de l'erreur
-	** $errfile ::	Fichier où l'erreur se situe
-	** $errline ::	Ligne où l'erreur se situe
+	** $errfile ::	Fichier ou l'erreur se situe
+	** $errline ::	Ligne ou l'erreur se situe
 	*/
 	public static function error_handler($errno, $errstr, $errfile, $errline)
 	{
@@ -46,12 +46,12 @@ class Display extends Fsb_model
 				// Affichage de l'erreur fatale
 				echo "<html><head><title>FSB2 :: Erreur</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>
 				<style>pre { border: 1px #000000 dashed; background-color: #EEEEEE; padding: 10px; }</style>
-				Une erreur a été rencontrée durant l'éxécution du script.";
+				Une erreur a ete rencontree durant l'execution du script.";
 
-				// Débugage possible ?
+				// Debugage possible ?
 				if (Fsb::$debug->can_debug)
 				{
-					// Affichage plus précis de certaines erreurs
+					// Affichage plus precis de certaines erreurs
 					if (preg_match('#^error_sql #i', $errstr) || preg_match('#^Call to undefined method #i', $errstr))
 					{
 						$sql_backtrace = debug_backtrace();
@@ -68,13 +68,13 @@ class Display extends Fsb_model
 						unset($sql_backtrace);
 					}
 
-					echo " L'erreur rencontrée est :<pre>" . $errstr . "</pre>
-					à la ligne <i><b>$errline</b></i> du fichier <i><b>$errfile</b></i>";
+					echo " L'erreur rencontree est :<pre>" . $errstr . "</pre>
+					a la ligne <i><b>$errline</b></i> du fichier <i><b>$errfile</b></i>";
 
 					$fsb_path = (Fsb::$cfg) ? Fsb::$cfg->get('fsb_path') : './';
 					if (file_exists(ROOT . fsb_basename($errfile, $fsb_path)))
 					{
-						echo "<br /><br />Voici la zone où se situe l'erreur dans le script :";
+						echo "<br /><br />Voici la zone ou se situe l'erreur dans le script :";
 						$content = file(ROOT . fsb_basename($errfile, Fsb::$cfg->get('fsb_path')));
 						$count_content = count($content);
 						$begin = ($errline < 7) ? 0 : $errline - 7;
@@ -86,13 +86,13 @@ class Display extends Fsb_model
 						echo '</pre>';
 					}
 
-					// Débugage avancé via un trace des fonctions / méthodes appelées
-					echo '<br />Trace des fonctions / méthodes appelées :<br /><pre>';
+					// Debugage avance via un trace des fonctions / methodes appelees
+					echo '<br />Trace des fonctions / methodes appelees :<br /><pre>';
 					$back = debug_backtrace();
 					$count_back = count($back);
 					for ($i = ($count_back - 1); $i > 0; $i--)
 					{
-						echo  ((isset($back[$i]['class'])) ? "<b>Méthode :</b>\t" . $back[$i]['class'] . $back[$i]['type'] : "<b>Fonction :</b>\t") . $back[$i]['function'] . "()\n";
+						echo  ((isset($back[$i]['class'])) ? "<b>Methode :</b>\t" . $back[$i]['class'] . $back[$i]['type'] : "<b>Fonction :</b>\t") . $back[$i]['function'] . "()\n";
 						echo (isset($back[$i]['file'])) ? "<b>Fichier :</b>\t" . fsb_basename($back[$i]['file'], $fsb_path) . "\n" : '';
 						echo (isset($back[$i]['line'])) ? "<b>Ligne :</b>\t\t" . $back[$i]['line'] : '';
 						if ($i > 1)
@@ -104,7 +104,7 @@ class Display extends Fsb_model
 				}
 				else
 				{
-					echo "<br /><br /><b>Le mode DEBUG est désactivé, veuillez contacter l'administrateur du forum.<br />
+					echo "<br /><br /><b>Le mode DEBUG est desactive, veuillez contacter l'administrateur du forum.<br />
 					DEBUG mode is disactivated, please contact the forum's administrator.</b>";
 				}
 				echo '</body></html>';
@@ -145,14 +145,14 @@ class Display extends Fsb_model
 
 	/*
 	** Affiche un simple message d'information, suivit d'un message de redirection
-	** Cette fonction prend en compte la configuration de redirection du membre, c'est à
-	** dire que dans son profil le membre peut définir s'il souhaite être redirigé après 
+	** Cette fonction prend en compte la configuration de redirection du membre, c'est a
+	** dire que dans son profil le membre peut definir s'il souhaite etre redirige apres 
 	** les messages d'informations
 	** -----
-	** $1 ::		Message à afficher
+	** $1 ::		Message a afficher
 	** $2 ::		URL de redirection
 	** $3 ::		Nom de la page de la frame
-	** $... ::		La suite des arguments doit etre une répétition $2, $3. Par exemple :
+	** $... ::		La suite des arguments doit etre une repetition $2, $3. Par exemple :
 	**					Display::message('message', 'url', 'frame', 'url', 'frame', 'url', 'frame');
 	*/
 	public static function message()
@@ -164,7 +164,7 @@ class Display extends Fsb_model
 			$url = func_get_arg(1);
 			$str_add = '';
 
-			// Redirection après le message d'erreur ?
+			// Redirection apres le message d'erreur ?
 			if (Fsb::$session->data['u_activate_redirection'] & 4)
 			{
 				Http::redirect(str_replace('&amp;', '&', $url), 0);
@@ -210,13 +210,13 @@ class Display extends Fsb_model
 		));
 
 		// On ajoute dans le champs hidden une variable fsb_check_sid, qui contiendra la SID du membre
-		// appelant cette page de confirmation. La réussite de la confirmation doit ensuite se faire
-		// avec la fonction check_confirm(), qui vérifiera si la SID est bonne. Le but étant de protéger
-		// la confirmation en évitant a des scripts malicieux de forcer l'administrateur a confirmer
+		// appelant cette page de confirmation. La reussite de la confirmation doit ensuite se faire
+		// avec la fonction check_confirm(), qui verifiera si la SID est bonne. Le but etant de proteger
+		// la confirmation en evitant a des scripts malicieux de forcer l'administrateur a confirmer
 		// des actions automatiquements.
 		$hidden['fsb_check_sid'] = Fsb::$session->sid;
 
-		// On créé le code HTML des champs hidden	
+		// On cree le code HTML des champs hidden	
 		foreach ($hidden AS $name => $value)
 		{
 			if (is_array($value))
@@ -250,7 +250,7 @@ class Display extends Fsb_model
 	*/
 	public static function check_ftp()
 	{
-		// Si on a entré les identifiants dans la configuration
+		// Si on a entre les identifiants dans la configuration
 		if (Fsb::$cfg->get('ftp_default'))
 		{
 			return (array(
@@ -262,7 +262,7 @@ class Display extends Fsb_model
 			));
 		}
 
-		// Si les identifiants ont été envoyés on les retourne
+		// Si les identifiants ont ete envoyes on les retourne
 		if (Http::request('ftp_submit', 'post'))
 		{
 			$password = trim(Http::request('ftp_password', 'post'));
@@ -273,8 +273,8 @@ class Display extends Fsb_model
 				'port' =>		intval(Http::request('ftp_port', 'post')),
 			);
 
-			// Si la case ftp_remind a été cochée on garde l'hote, le login et le port en mémoire. Pour des raisons de
-			// sécurité on ne gardera pas le mot de passe en mémoire
+			// Si la case ftp_remind a ete cochee on garde l'hote, le login et le port en memoire. Pour des raisons de
+			// securite on ne gardera pas le mot de passe en memoire
 			if (Http::request('ftp_remind', 'post'))
 			{
 				Http::cookie('ftp', serialize($data), CURRENT_TIME + ONE_YEAR);
@@ -318,11 +318,11 @@ class Display extends Fsb_model
 		$ftp_path = dirname($_SERVER['SCRIPT_NAME']);
 		if (defined('IN_ADM'))
 		{
-			// Dans l'administration on supprime le répertoire admin/
+			// Dans l'administration on supprime le repertoire admin/
 			$ftp_path = dirname($ftp_path);
 		}
 
-		// Valeur gardées en mémoires dans un cookie ?
+		// Valeur gardees en memoires dans un cookie ?
 		if ($cookie = Http::getcookie('ftp'))
 		{
 			$cookie = unserialize($cookie);
@@ -351,9 +351,9 @@ class Display extends Fsb_model
 	}
 
 	/*
-	** Génère l'affichage des FSBcodes
+	** Genere l'affichage des FSBcodes
 	** -----
-	** $in_sig ::		TRUE si on est dans l'édition de signature
+	** $in_sig ::		TRUE si on est dans l'edition de signature
 	** $where ::		Clause WHERE alternative
 	*/
 	public static function fsbcode($in_sig = FALSE, $where = NULL)
@@ -373,14 +373,14 @@ class Display extends Fsb_model
 			$list = trim($row['fsbcode_list']);
 			$code = $row['fsbcode_tag'];
 
-			// Si on empèche les colorateurs de syntaxe d'être utilisés, la liste CODE n'a plus
+			// Si on empeche les colorateurs de syntaxe d'etre utilises, la liste CODE n'a plus
 			// aucune sens donc on le converti en fsbcode normal
 			if ($code == 'code' && !Fsb::$mods->is_active('highlight_code'))
 			{
 				$list = '';
 			}
 
-			// Upload activée ?
+			// Upload activee ?
 			if ($code == 'attach' && (!Fsb::$session->is_authorized('upload_file') || !Fsb::$mods->is_active('upload')))
 			{
 				continue ;
@@ -433,7 +433,7 @@ class Display extends Fsb_model
 	}
 
 	/*
-	** Génère l'affichage des smilies
+	** Genere l'affichage des smilies
 	*/
 	public static function smilies()
 	{
@@ -472,7 +472,7 @@ class Display extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le membre a accès au forum protégé par un mot de passe
+	** Verifie si le membre a acces au forum protege par un mot de passe
 	** Si ce n'est pas le cas on affiche le formulaire du mot de passe
 	** -----
 	** $f_id ::		ID du forum
@@ -483,13 +483,13 @@ class Display extends Fsb_model
 	{
 		if (!Fsb::$session->data['s_forum_access'] || !in_array($f_id, (array)explode(',', Fsb::$session->data['s_forum_access'])))
 		{
-			// Vérification du mot de passe entré
+			// Verification du mot de passe entre
 			if (Http::request('submit_forum_password', 'post'))
 			{
 				$submited_password = trim(Http::request('forum_password', 'post'));
 				if ($submited_password && (string)$submited_password === (string)$password)
 				{
-					// Mot de passe corect, mise à jour de la session
+					// Mot de passe corect, mise a jour de la session
 					Fsb::$db->update('sessions', array(
 						's_forum_access' =>		Fsb::$session->data['s_forum_access'] . ((Fsb::$session->data['s_forum_access']) ? ',' : '') . $f_id,
 					), 'WHERE s_sid = \'' . Fsb::$db->escape(Fsb::$session->sid) . '\'');
@@ -511,18 +511,18 @@ class Display extends Fsb_model
 		}
 		else
 		{
-			// Accès autorisé
+			// Acces autorise
 			return (TRUE);
 		}
 	}
 
 	/*
-	** Ajoute un système d'onglet sur une page
+	** Ajoute un systeme d'onglet sur une page
 	** -----
 	** $module_list ::		Liste des onglets
-	** $current_module ::	Onglet selectionné
+	** $current_module ::	Onglet selectionne
 	** $url ::				URL du lien
-	** $prefix_lang ::		Préfixe pour la clef de langue
+	** $prefix_lang ::		Prefixe pour la clef de langue
 	*/
 	public static function header_module($module_list, $current_module, $url, $prefix_lang = '')
 	{
@@ -540,7 +540,7 @@ class Display extends Fsb_model
 	}
 
 	/*
-	** Header pour la messagerie privée
+	** Header pour la messagerie privee
 	** -----
 	** $box ::	Boite courante
 	*/

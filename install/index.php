@@ -18,7 +18,7 @@ define('DEBUG', TRUE);
 
 if (version_compare(phpversion(), '5.0.0', '<'))
 {
-	die(utf8_decode('Your PHP\'s version isn\'t compatible with FSB2, only PHP5 and more are supported.<hr />Votre version de PHP est incompatible avec FSB2, seuls PHP5 et plus sont supportés.'));
+	die(utf8_decode('Your PHP\'s version isn\'t compatible with FSB2, only PHP5 and more are supported.<hr />Votre version de PHP est incompatible avec FSB2, seuls PHP5 et plus sont supportes.'));
 }
 
 if (!file_exists(ROOT . 'install/install.' . PHPEXT))

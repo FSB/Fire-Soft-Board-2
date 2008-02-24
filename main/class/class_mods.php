@@ -11,7 +11,7 @@
 */
 
 /*
-** Gestion des modules installés sur le forum
+** Gestion des modules installes sur le forum
 */
 class Mods extends Fsb_model
 {
@@ -20,7 +20,7 @@ class Mods extends Fsb_model
 	// MOD fourni de base avec le forum
 	const INTERN = 0;
 
-	// MOD installé
+	// MOD installe
 	const EXTERN = 1;
 
 	/*
@@ -43,7 +43,7 @@ class Mods extends Fsb_model
 		$result = Fsb::$db->query($sql, 'mods_');
 		while ($row = Fsb::$db->row($result))
 		{
-			// Création du switch de template
+			// Creation du switch de template
 			if ($row['mod_status'] && $tpl_exists)
 			{
 				Fsb::$tpl->set_switch('ac_mods_' . $row['mod_name']);
@@ -60,7 +60,7 @@ class Mods extends Fsb_model
 	}
 
 	/*
-	** Vérifie si un MOD existe
+	** Verifie si un MOD existe
 	** -----
 	** $modname ::	Nom du MOD
 	*/
@@ -70,7 +70,7 @@ class Mods extends Fsb_model
 	}
 
 	/*
-	** Vérifie si un MOD est activé
+	** Verifie si un MOD est active
 	** -----
 	** $modname ::	Nom du MOD
 	*/
@@ -83,7 +83,7 @@ class Mods extends Fsb_model
 	** Change le status d'un MOD
 	** -----
 	** $modname ::	Nom du MOD
-	** $bool ::		TRUE pour activé, FALSE pour désactivé
+	** $bool ::		TRUE pour active, FALSE pour desactive
 	*/
 	public function change_status($modname, $bool)
 	{

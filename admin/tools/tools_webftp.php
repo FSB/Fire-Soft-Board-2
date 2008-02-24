@@ -11,13 +11,13 @@
 */
 
 /*
-** Page générant un webftp.
-** Il est possible d'accéder directement aux fichiers du forum afin de les supprimer / editer, ou bien d'en uploader
+** Page generant un webftp.
+** Il est possible d'acceder directement aux fichiers du forum afin de les supprimer / editer, ou bien d'en uploader
 ** de nouveaux. On peut trier les fichiers, changer les droits, etc ...
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Fichiers récupérés dans un tableau
+	// Fichiers recuperes dans un tableau
 	public $data = array();
 	
 	// Arguments de la page
@@ -27,7 +27,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $order;
 	public $order_direction;
 	
-	// Les fichiers éditables
+	// Les fichiers editables
 	public $edit_file = array('php', 'php3', 'php4', 'php5', 'htm', 'html', 'tpl', 'txt', 'css', 'js', 'xml', 'rss', 'htaccess');
 	
 	/*
@@ -35,7 +35,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function main()
 	{
-		// On récupère les arguments de la page
+		// On recupere les arguments de la page
 		$this->dir = htmlspecialchars(Http::request('dir'));
 		if ($this->dir == NULL)
 		{
@@ -87,7 +87,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Affiche les fichiers du répertoire courant
+	** Affiche les fichiers du repertoire courant
 	*/
 	public function webftp_list_file()
 	{		
@@ -104,7 +104,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_WEBFTP_DATE' =>		sid('index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . $this->dir . '&amp;order=date&amp;order_direction=' . (($this->order == 'date') ? (($this->order_direction == 'asc') ? 'desc' : 'asc') : 'asc')),
 		));
 
-		// On récupère les fichiers du répertoire dans un tableau avec leurs données (date, permissiones, extension, etc ...)
+		// On recupere les fichiers du repertoire dans un tableau avec leurs donnees (date, permissiones, extension, etc ...)
 		$fd = opendir(ROOT . $this->dir);
 		while ($file = readdir($fd))
 		{
@@ -126,10 +126,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 		}
 
-		// On trie les données si besoin
+		// On trie les donnees si besoin
 		usort($this->data, array($this, 'order_file'));
 
-		// Retour vers dossier précédent, et retour vers la racine du forum
+		// Retour vers dossier precedent, et retour vers la racine du forum
 		foreach (array('root' => '~/', 'back' => '../') AS $key => $value)
 		{
 			Fsb::$tpl->set_blocks('file', array(
@@ -199,12 +199,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		elseif (($perms & 0x8000) == 0x8000)
 		{
-			// Régulier
+			// Regulier
 			$info = '-';
 		}
 		elseif (($perms & 0x6000) == 0x6000)
 		{
-			// Block spécial
+			// Block special
 			$info = 'b';
 		}
 		elseif (($perms & 0x4000) == 0x4000)
@@ -214,7 +214,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		elseif (($perms & 0x2000) == 0x2000)
 		{
-			// Caractère spécial
+			// Caractere special
 			$info = 'c';
 		}
 		elseif (($perms & 0x1000) == 0x1000)
@@ -228,7 +228,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$info = 'u';
 		}
 		
-		// Propriétaire
+		// Proprietaire
 		$info .= (($perms & 0x0100) ? 'r' : '-');
 		$info .= (($perms & 0x0080) ? 'w' : '-');
 		$info .= (($perms & 0x0040) ?
@@ -326,7 +326,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Page d'édition d'un fichier
+	** Page d'edition d'un fichier
 	*/
 	public function edit_file()
 	{
@@ -348,7 +348,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Sauvegarde les modifications dans le fichier lors de l'édition
+	** Sauvegarde les modifications dans le fichier lors de l'edition
 	*/
 	public function submit_edit_file()
 	{
@@ -385,7 +385,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Supprimer récursivement un dossier si besoin
+	** Supprimer recursivement un dossier si besoin
 	*/
 	public function delete_file($file)
 	{
@@ -458,7 +458,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Charge le contenu d'un fichier pour l'afficher d'éditeur Codepress
+	** Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
 	*/
 	public function page_codepress()
 	{

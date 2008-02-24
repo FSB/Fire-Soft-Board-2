@@ -12,10 +12,10 @@
 
 class Password extends Fsb_model
 {
-	// Contient les données graduées du mot de passe
+	// Contient les donnees graduees du mot de passe
 	public $grade_data = array();
 
-	// Pour la génération de mot de passes
+	// Pour la generation de mot de passes
 	const LOWCASE = 1;
 	const UPPCASE = 2;
 	const NUMERIC = 4;
@@ -23,11 +23,11 @@ class Password extends Fsb_model
 	const ALL = 255;
 
 	/*
-	** Hash un mot de passe à partir des paramètres passés
+	** Hash un mot de passe a partir des parametres passes
 	** -----
 	** $password ::		Mot de passe
-	** $algorithm ::	Algorithme utilisé (md5 | sha1)
-	** $use_salt ::		Si on concatène un grain au mot de passe
+	** $algorithm ::	Algorithme utilise (md5 | sha1)
+	** $use_salt ::		Si on concatene un grain au mot de passe
 	*/
 	public static function hash($password, $algorithm, $use_salt = TRUE)
 	{
@@ -60,10 +60,10 @@ class Password extends Fsb_model
 	}
 
 	/*
-	** Génération d'un mot de passe aléatoire
+	** Generation d'un mot de passe aleatoire
 	** -----
 	** $length ::	Longueur du mot de passe
-	** $type ::		Types de caractères utilisés
+	** $type ::		Types de caracteres utilises
 	*/
 	public static function generate($length = 8, $type = self::ALL)
 	{
@@ -95,15 +95,15 @@ class Password extends Fsb_model
 	
 	/*
 	** Test la robustesse d'un mot de passe, renvoie 1, 2, 3 ou 4 en fonction de cette robustesse.
-	** 1 étant un mot de passe faible et 3 / 4 un mot de passe robuste.
+	** 1 etant un mot de passe faible et 3 / 4 un mot de passe robuste.
 	** -----
-	** $password_str ::		Mot de passe à graduer
+	** $password_str ::		Mot de passe a graduer
 	*/
 	public function grade($password_str)
 	{
 		$this->grade_data = array('len' => 1, 'char_type' => 1, 'average' => 0);
 
-		// Première graduation, la longueur du mot de passe
+		// Premiere graduation, la longueur du mot de passe
 		$len = strlen($password_str);
 		$len_step = array(6, 8, 11, 15);
 		$this->grade_data['len'] = 0;
@@ -115,7 +115,7 @@ class Password extends Fsb_model
 			}
 		}
 
-		// Seconde graduation, on vérifie le type de caractère du mot de passe, lettres, chiffres, caractères spéciaux
+		// Seconde graduation, on verifie le type de caractere du mot de passe, lettres, chiffres, caracteres speciaux
 		$char_type = array('alpha_min' => 0, 'alpha_maj' => 0, 'number' => 0, 'other' => 0);
 		for ($i = 0; $i < $len; $i++)
 		{
@@ -147,7 +147,7 @@ class Password extends Fsb_model
 		}
 		$this->grade_data['char_type'] = $number_type;
 		
-		// Troisième graduation, on vérifie le pourcentage de ce type de caractère dans le mot
+		// Troisieme graduation, on verifie le pourcentage de ce type de caractere dans le mot
 		$average = ceil($len / 4 / 1.5);
 		foreach ($char_type AS $type)
 		{
@@ -160,9 +160,9 @@ class Password extends Fsb_model
 	}
 	
 	/*
-	** Vérifie si le caractère est une lettre minuscule
+	** Verifie si le caractere est une lettre minuscule
 	** -----
-	** $char ::	Caractère
+	** $char ::	Caractere
 	*/
 	private function is_alpha_min($char)
 	{
@@ -174,9 +174,9 @@ class Password extends Fsb_model
 	}
 	
 	/*
-	** Vérifie si le caractère est une lettre majuscule
+	** Verifie si le caractere est une lettre majuscule
 	** -----
-	** $char ::	Caractère
+	** $char ::	Caractere
 	*/
 	private function is_alpha_maj($char)
 	{
@@ -188,9 +188,9 @@ class Password extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le caractère est un nombre
+	** Verifie si le caractere est un nombre
 	** -----
-	** $char ::	Caractère
+	** $char ::	Caractere
 	*/
 	private function is_number($char)
 	{

@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -26,13 +26,13 @@ class Fsb_frame_child extends Fsb_frame
 	// <title>
 	public $tag_title = '';
 
-	// Modération du forum ?
+	// Moderation du forum ?
 	public $moderation = FALSE;
 
 	// ID du forum
 	public $id;
 	
-	// Données sur le forum
+	// Donnees sur le forum
 	public $forum_data;
 
 	// Page actuelle
@@ -73,20 +73,20 @@ class Fsb_frame_child extends Fsb_frame
 			$this->dir = 'desc';
 		}
 
-		// Données du forum
+		// Donnees du forum
 		if (!$this->get_forum_data())
 		{
 			return ;
 		}
 
-		// Qui a posté ?
+		// Qui a poste ?
 		if (Http::request('who_posted'))
 		{
 			$this->who_posted();
 			return ;
 		}
 
-		// Modération
+		// Moderation
 		if ((Http::request('moderation_delete', 'post') || Http::request('moderation_move', 'post') || Http::request('moderation_lock', 'post') || Http::request('moderation_unlock', 'post'))
 			&& Fsb::$session->is_authorized($this->id, 'ga_moderator') && Fsb::$session->is_authorized('mass_moderation'))
 		{
@@ -133,11 +133,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Données du forum, vérification du type, du mot de passe, etc ...
+	** Donnees du forum, verification du type, du mot de passe, etc ...
 	*/
 	public function get_forum_data()
 	{
-		// On récupère les données du forum
+		// On recupere les donnees du forum
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'forums
 				WHERE f_id = ' . $this->id;
@@ -145,13 +145,13 @@ class Fsb_frame_child extends Fsb_frame
 		$this->forum_data = Fsb::$db->row($result);
 		Fsb::$db->free($result);
 
-		// Si c'est une catégorie on redirige vers l'index
+		// Si c'est une categorie on redirige vers l'index
 		if (!$this->forum_data['f_level'])
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=index&cat=' . $this->id);
 		}
 
-		// Droit d'accéder au forum ?
+		// Droit d'acceder au forum ?
 		if (!Fsb::$session->is_authorized($this->id, 'ga_view') || !Fsb::$session->is_authorized($this->id, 'ga_view_topics'))
 		{
 			if (!Fsb::$session->is_logged())
@@ -170,17 +170,17 @@ class Fsb_frame_child extends Fsb_frame
 		// Forum avec mot de passe ?
 		if ($this->forum_data['f_password'] && !Display::forum_password($this->id, $this->forum_data['f_password'], ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id))
 		{
-			// L'accès est refusé, on affiche le formulaire du mot de passe et on doit donc quitter la classe
+			// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
 			return (FALSE);
 		}
 
-		// Modération du forum ?
+		// Moderation du forum ?
 		if (Http::request('moderation') && Fsb::$session->is_authorized($this->id, 'ga_moderator'))
 		{
 			$this->moderation = TRUE;
 		}
 
-		// Si ce n'est pas une sous catégorie, on affiche les sujets
+		// Si ce n'est pas une sous categorie, on affiche les sujets
 		switch ($this->forum_data['f_type'])
 		{
 			case FORUM_TYPE_NORMAL :
@@ -192,7 +192,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case FORUM_TYPE_INDIRECT_URL :
-				// Redirection vers le bon lien après incrémentation du nombre de vu
+				// Redirection vers le bon lien apres incrementation du nombre de vu
 				Fsb::$db->update('forums', array(
 					'f_location_view' =>	array('(f_location_view + 1)', 'is_field' => TRUE),
 				), 'WHERE f_id = ' . $this->id);
@@ -200,12 +200,12 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case FORUM_TYPE_DIRECT_URL :
-				// En théorie le membre n'est pas censé passer par là, mais si jamais c'est le cas on le redirige vers le site en question
+				// En theorie le membre n'est pas cense passer par la, mais si jamais c'est le cas on le redirige vers le site en question
 				Http::redirect($this->forum_data['f_location']);
 			break;
 		}
 
-		// Thème pour le forum ?
+		// Theme pour le forum ?
 		if ($this->forum_data['f_tpl'])
 		{
 			$set_tpl = ROOT . 'tpl/' . $this->forum_data['f_tpl'];
@@ -273,7 +273,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function show_topics()
 	{
-		// Variable pour garder en mémoire les types de sujets déjà affichés
+		// Variable pour garder en memoire les types de sujets deja affiches
 		$cache_topic_type = array();
 
 		// Total de sujets dans ce forum
@@ -283,12 +283,12 @@ class Fsb_frame_child extends Fsb_frame
 					AND t_approve = 0';
 		$total = Fsb::$db->get($sql, 'total');
 
-		// Le membre peut modérer ce forum ?
+		// Le membre peut moderer ce forum ?
 		if (Fsb::$session->is_authorized($this->id, 'ga_moderator') && Fsb::$session->is_authorized('mass_moderation'))
 		{
 			Fsb::$tpl->set_switch('can_moderate_forum');
 
-			// Le forum est en cours de modération ?
+			// Le forum est en cours de moderation ?
 			if ($this->moderation)
 			{
 				Fsb::$tpl->set_switch('moderation');
@@ -301,7 +301,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('forum_pagination');
 		}
 
-		// On regarde si le membre peut créer des messages
+		// On regarde si le membre peut creer des messages
 		$can_create_post = FALSE;
 		foreach ($GLOBALS['_topic_type'] AS $value)
 		{
@@ -312,7 +312,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Règles du forums ?
+		// Regles du forums ?
 		if (!empty($this->forum_data['f_rules']))
 		{
 			Fsb::$tpl->set_switch('forum_rules');
@@ -326,7 +326,7 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 
-		// Forum vérouillé ?
+		// Forum verouille ?
 		if ($this->forum_data['f_status'] == LOCK)
 		{
 			Fsb::$tpl->set_switch('forum_locked');
@@ -343,7 +343,7 @@ class Fsb_frame_child extends Fsb_frame
 			$sql_announce = ' OR t.t_type = ' . GLOBAL_ANNOUNCE;
 		}
 
-		// Requète récupérant les sujets de ce forum, paginé page par page
+		// Requete recuperant les sujets de ce forum, pagine page par page
 		$sql = 'SELECT t.*, uf.u_id AS f_u_id, uf.u_nickname AS f_u_nickname, uf.u_color AS f_u_color, u.u_nickname, u.u_color, tr.tr_last_time, tr.p_id AS last_unread_id
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'users u
@@ -424,7 +424,7 @@ class Fsb_frame_child extends Fsb_frame
 			'desc' =>	Fsb::$session->lang('forum_order_desc'),
 		));
 
-		// Si on change l'ordre par défaut, on ajoute les paramètres à la pagination
+		// Si on change l'ordre par defaut, on ajoute les parametres a la pagination
 		$purl = ($this->moderation) ? '&amp;moderation=true' : '';
 		if ($this->order != 't_last_p_time' || $this->dir != 'desc')
 		{
@@ -466,7 +466,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Modération de masse du forum
+	** Moderation de masse du forum
 	*/
 	public function mass_moderation()
 	{
@@ -497,7 +497,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Qui a posté dans le sujet ?
+	** Qui a poste dans le sujet ?
 	*/
 	public function who_posted()
 	{

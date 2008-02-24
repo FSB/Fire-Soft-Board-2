@@ -11,7 +11,7 @@
 */
 
 /*
-** Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est à jour, les derniers logs,
+** Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est a jour, les derniers logs,
 ** les comptes en attente d'activation.
 */
 class Fsb_frame_child extends Fsb_admin_frame
@@ -36,7 +36,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page par défaut sur l'administration du forum
+	** Page par defaut sur l'administration du forum
 	*/
 	public function page_default_administration()
 	{
@@ -242,7 +242,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		Fsb::$db->free($result);
 
-		// On récupère une liste des forums pour connaitre la position du membre sur le forum
+		// On recupere une liste des forums pour connaitre la position du membre sur le forum
 		$forums = array();
 		if ($f_idx)
 		{
@@ -255,7 +255,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$forums = Fsb::$db->rows($result, 'assoc', 'f_id');
 		}
 
-		// On récupère une liste des sujets pour connaitre la position du membre sur le forum
+		// On recupere une liste des sujets pour connaitre la position du membre sur le forum
 		$topics = array();
 		if ($t_idx)
 		{
@@ -270,7 +270,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$topics = Fsb::$db->rows($result, 'assoc', 't_id');
 		}
 
-		// On récupère une liste des messages pour connaitre la position du membre sur le forum
+		// On recupere une liste des messages pour connaitre la position du membre sur le forum
 		$posts = array();
 		if ($p_idx)
 		{
@@ -298,7 +298,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 				foreach ($list AS $u)
 				{
-					// On définit si on cherche la liste des forums dans $forums ou $topics
+					// On definit si on cherche la liste des forums dans $forums ou $topics
 					$m = $u['method'];
 					$data_exists = ($u['id'] && isset(${$m}[$u['id']])) ? TRUE : FALSE;
 					$topic_exists = ($data_exists && isset(${$m}[$u['id']]['t_title'])) ? TRUE : FALSE;
@@ -333,7 +333,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page de vérification de la version
+	** Page de verification de la version
 	*/
 	public function page_check_version()
 	{

@@ -15,20 +15,20 @@
 */
 class Captcha_gd extends Captcha
 {
-	// Liste des méthodes
+	// Liste des methodes
 	public $methods = array(
 		'a' =>		'method_classic',
 		'b' =>		'method_color',
 		'c' =>		'method_maths',
 	);
 
-	// Hauteur suplémentaire, non prise en compte pour l'affichage des lettres
+	// Hauteur suplementaire, non prise en compte pour l'affichage des lettres
 	private $extra_height = 40;
 
 	// Couleur du fond de l'image
 	private $background_color = 0xFFFFFF;
 
-	// Espace entre chaque caractère
+	// Espace entre chaque caractere
 	protected $space = 40;
 
 	// Handler de l'image
@@ -43,7 +43,7 @@ class Captcha_gd extends Captcha
 	}
 
 	/*
-	** Création de l'image
+	** Creation de l'image
 	*/
 	protected function open_image()
 	{
@@ -64,9 +64,9 @@ class Captcha_gd extends Captcha
 	}
 
 	/*
-	** Alloue une couleur à partir d'un code hexadécimal
+	** Alloue une couleur a partir d'un code hexadecimal
 	** -----
-	** $hexa ::		Couleur en hexadécimal
+	** $hexa ::		Couleur en hexadecimal
 	** $callback ::	Callback de couleur
 	*/
 	private function color($hexa, $callback = 'imagecolorallocate')
@@ -78,7 +78,7 @@ class Captcha_gd extends Captcha
 	}
 
 	/*
-	** Ecrit un caractère sur l'image
+	** Ecrit un caractere sur l'image
 	*/
 	protected function write_char($size, $angle, $x, $vertical, $fontcolor, $font, $char)
 	{
@@ -101,7 +101,7 @@ class Captcha_gd extends Captcha
 	}
 
 	/*
-	** Ajouts de bruits sur l'image (lignes, points aléatoires)
+	** Ajouts de bruits sur l'image (lignes, points aleatoires)
 	*/
 	protected function add_noise()
 	{
@@ -128,7 +128,7 @@ class Captcha_gd extends Captcha
 	/*
 	** Affiche du texte au pied de l'image
 	** -----
-	** $text ::		Texte à afficher
+	** $text ::		Texte a afficher
 	*/
 	private function add_footer($text)
 	{

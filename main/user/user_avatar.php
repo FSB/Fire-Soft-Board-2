@@ -14,7 +14,7 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur permettant d'avoir un avatar de différentes façons :
+** Module d'utilisateur permettant d'avoir un avatar de differentes facons :
 **	- Par upload depuis le PC
 **	- Par upload depuis une image distante (necessite la librairie GD)
 **	- Par lien depuis une URL distante
@@ -22,7 +22,7 @@ $show_this_module = TRUE;
 */
 class Page_user_avatar extends Fsb_model
 {
-	// Définit si l'utilisateur peut utiliser ou non un avatar
+	// Definit si l'utilisateur peut utiliser ou non un avatar
 	public $can_use_avatar = FALSE;
 	public $can_upload_avatar = FALSE;
 	public $can_use_gallery = FALSE;
@@ -31,7 +31,7 @@ class Page_user_avatar extends Fsb_model
 	// Doit redimensionner ?
 	public $need_resize = FALSE;
 
-	// Gallerie d'avatar sellectionnée
+	// Gallerie d'avatar sellectionnee
 	public $gallery = '';
 	public $avatar_per_line = 3;
 
@@ -48,7 +48,7 @@ class Page_user_avatar extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// On vérifie si le membre peut utiliser un avatar
+		// On verifie si le membre peut utiliser un avatar
 		$this->can_use_avatar =			(Fsb::$session->data['u_can_use_avatar'] && Fsb::$cfg->get('avatar_can_use')) ? TRUE : FALSE;
 		$this->can_upload_avatar =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_upload')) ? TRUE : FALSE;
 		$this->can_use_gallery =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_use_gallery')) ? TRUE : FALSE;
@@ -140,12 +140,12 @@ class Page_user_avatar extends Fsb_model
 	/*
 	** Affiche la gallerie d'avatar
 	** -----
-	** $name ::		Nom de la gallerie à afficher
+	** $name ::		Nom de la gallerie a afficher
 	*/
 	public function show_gallery($name)
 	{
-		// Si deux membres ne peuvent pas avoir le même avatar dans la gallerie, alors
-		// on récupère les avatars indisponibles
+		// Si deux membres ne peuvent pas avoir le meme avatar dans la gallerie, alors
+		// on recupere les avatars indisponibles
 		$block_avatar = array();
 		if (!$this->can_have_same_avatar)
 		{
@@ -182,7 +182,7 @@ class Page_user_avatar extends Fsb_model
 	}
 
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{
@@ -198,8 +198,8 @@ class Page_user_avatar extends Fsb_model
 			return ;
 		}
 
-		// On vérifie si le membre peut utiliser la gallerie, et si l'avatar n'a pas déjà
-		// été selelctionné
+		// On verifie si le membre peut utiliser la gallerie, et si l'avatar n'a pas deja
+		// ete selelctionne
 		if (Http::request('avatar_from_gallery', 'post'))
 		{
 			if (!$this->can_use_gallery)
@@ -279,7 +279,7 @@ class Page_user_avatar extends Fsb_model
 	}
 	
 	/*
-	** Traite et soumet les données envoyées par le formulaire
+	** Traite et soumet les donnees envoyees par le formulaire
 	*/
 	public function submit_form()
 	{
@@ -355,7 +355,7 @@ class Page_user_avatar extends Fsb_model
 			}
 		}
 
-		// On met à jour le profil du membre
+		// On met a jour le profil du membre
 		Fsb::$db->update('users', array(
 			'u_avatar' =>			$avatar_name,
 			'u_avatar_method' =>	$method
@@ -374,7 +374,7 @@ class Page_user_avatar extends Fsb_model
 		{
 			$this->delete_matches_file(AVATAR_PATH, md5(Fsb::$session->id()));
 		}
-		// On met à jour le profil du membre
+		// On met a jour le profil du membre
 		Fsb::$db->update('users', array(
 			'u_avatar' =>			'',
 			'u_avatar_method' =>		'',
@@ -389,7 +389,7 @@ class Page_user_avatar extends Fsb_model
 	** dans le dossier $dir.
 	** -----
 	** $match ::		Nom de fichier
-	** $dir ::			Répetoire à traiter
+	** $dir ::			Repetoire a traiter
 	*/
 	public function delete_matches_file($dir, $match)
 	{

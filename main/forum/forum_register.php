@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -23,10 +23,10 @@ class Fsb_frame_child extends Fsb_frame
 	// Module de la page
 	public $module;
 
-	// Contient les données passées en formulaire
+	// Contient les donnees passees en formulaire
 	public $data = array();
 	
-	// Contient les champs des données à traiter
+	// Contient les champs des donnees a traiter
 	public $post_data = array();
 
 	// Contient les informations personelles
@@ -56,25 +56,25 @@ class Fsb_frame_child extends Fsb_frame
 		// Chiffrage RSA ?
 		$this->use_rsa = (Fsb::$mods->is_active('rsa') && Rsa::can_use()) ? TRUE : FALSE;
 
-		// On vérifie si l'extension GD2 est utilisable pour la confirmation visuelle
+		// On verifie si l'extension GD2 est utilisable pour la confirmation visuelle
 		if (Fsb::$mods->is_active('visual_confirmation'))
 		{
 			$this->use_visual_confirmation = TRUE;
 		}
 
-		// Les membres connectés ne sont pas admis sur cette page
+		// Les membres connectes ne sont pas admis sur cette page
 		if (Fsb::$session->is_logged())
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);
 		}
 
-		// Inscriptions désactivées
+		// Inscriptions desactivees
 		if (Fsb::$cfg->get('register_type') == 'disabled')
 		{
 			Display::message('register_are_disabled');
 		}
 
-		// Interdiction d'accéder à la page à cause d'un nombre trop grand d'essai ?
+		// Interdiction d'acceder a la page a cause d'un nombre trop grand d'essai ?
 		if (Fsb::$session->data['s_visual_try'] > 5)
 		{
 			Display::message('register_too_much_try');
@@ -120,11 +120,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Vérifie le module d'enregistrement chargé
+	** Verifie le module d'enregistrement charge
 	*/
 	public function check_register_module()
 	{
-		// Récupération du module
+		// Recuperation du module
 		$register_array = array('new', 'fsbcard');
 		$this->module = Http::request('module');
 		if (!$this->module || !in_array($this->module, $register_array ))
@@ -148,8 +148,8 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Ajoute dans le tableau $this->data les variables passées en formulaires, traitées et
-	** sécurisées.
+	** Ajoute dans le tableau $this->data les variables passees en formulaires, traitees et
+	** securisees.
 	*/
 	public function post_data()
 	{
@@ -242,13 +242,13 @@ class Fsb_frame_child extends Fsb_frame
 			'EMAIL' =>				$this->data['u_email'],
 			'CODE_CONFIRMATION' =>	($this->img_mode == 'keep') ? $this->data['u_visual_code'] : '',
 			
-			// Merci à Fladnag (http://www.developpez.net/forums/profile.php?mode=viewprofile&u=33459) pour son aide sur
+			// Merci a Fladnag (http://www.developpez.net/forums/profile.php?mode=viewprofile&u=33459) pour son aide sur
 			// le cache des images.
 			'CONFIRMATION_IMG' =>	sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=' . $this->img_mode . '&amp;frame=true&amp;uniqid=' . $uniqid),
 			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame=true&amp;uniqid=' . $uniqid),
 		));
 
-		// Champs personals créés par l'administrateur
+		// Champs personals crees par l'administrateur
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), TRUE);
 
 		Fsb::$tpl->set_switch('form');
@@ -269,8 +269,8 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else
 		{
-			// Mot de passe faible (ou moyennement faible), on évalue les besoins du mot de passe en fonction
-			// des paramètres calculé par la classe Password() (taille, caractères spéciaux, moyenne).
+			// Mot de passe faible (ou moyennement faible), on evalue les besoins du mot de passe en fonction
+			// des parametres calcule par la classe Password() (taille, caracteres speciaux, moyenne).
 			$result_str = ($result <= 1) ? Fsb::$session->lang('register_test_low') : Fsb::$session->lang('register_test_middle');
 			if ($password->grade_data['len'] < 3)
 			{
@@ -295,7 +295,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Génère un mot de passe aléatoirement
+	** Genere un mot de passe aleatoirement
 	*/
 	public function generate_password()
 	{
@@ -308,13 +308,13 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{		
 		$this->errstr = array();
 
-		// Règles du forum acceptées ?
+		// Regles du forum acceptees ?
 		if (!$this->data['accept_rules'])
 		{
 			$this->errstr[] = Fsb::$session->lang('register_need_accept');
@@ -331,7 +331,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$this->data['u_nickname'] = $this->data['u_login'];
 		}
-		// Vérification de la taille du pseudonyme
+		// Verification de la taille du pseudonyme
 		else if (String::strlen($this->data['u_nickname']) < 3)
 		{
 			$this->errstr[] = Fsb::$session->lang('register_short_nickname');
@@ -347,7 +347,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 		}
 
-		// Necessite l'entrée des deux mots de passe
+		// Necessite l'entree des deux mots de passe
 		if (!$this->data['u_password'] || !$this->data['u_password_confirm'])
 		{
 			$this->errstr[] = Fsb::$session->lang('register_need_password');
@@ -359,43 +359,43 @@ class Fsb_frame_child extends Fsb_frame
 			$this->errstr[] = Fsb::$session->lang('register_password_dif');
 		}
 
-		// Mot de passe différent du login ?
+		// Mot de passe different du login ?
 		if ($this->data['u_password'] && strtolower($this->data['u_password']) == strtolower($this->data['u_nickname']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_password_diff_nickname');
 		}
 
-		// Validité de l'adresse Email
+		// Validite de l'adresse Email
 		if (!User::email_valid($this->data['u_email']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_email_format');
 		}
 
-		// Vérification de l'existance du login
+		// Verification de l'existance du login
 		if (User::login_exists($this->data['u_login']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_login_exists');
 		}
 
-		// Vérification de l'existance du pseudonyme
+		// Verification de l'existance du pseudonyme
 		if ($this->data['u_nickname'] && User::nickname_exists($this->data['u_nickname']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_nickname_exists');
 		}
 
-		// Vérification de l'existance de l'email
+		// Verification de l'existance de l'email
 		if ($this->data['u_email'] && User::email_exists($this->data['u_email']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_email_exists');
 		}
 		
-		// On vérifie si le login ou l'adresse E-mail ont été bannis
+		// On verifie si le login ou l'adresse E-mail ont ete bannis
 		if ($ban_type = Fsb::$session->is_ban(-1, $this->data['u_nickname'], Fsb::$session->ip, $this->data['u_email']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_ban_' . $ban_type['type']);
 		}
 		
-		// On vérifie le code de confirmation visuelle
+		// On verifie le code de confirmation visuelle
 		if ($this->use_visual_confirmation && !check_captcha($this->data['u_visual_code']))
 		{
 			$this->img_mode = 'generate';
@@ -410,7 +410,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Ajoute l'utilisateur fraichement inscrit dans la base de donnée, et tout le tralala qui va
+	** Ajoute l'utilisateur fraichement inscrit dans la base de donnee, et tout le tralala qui va
 	** avec :=)
 	*/
 	public function submit_user()
@@ -428,7 +428,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		Fsb::$db->transaction('begin');
 
-		// On créé la requète pour l'enregistrement du membre
+		// On cree la requete pour l'enregistrement du membre
 		$insert_ary = array();
 		foreach ($this->post_data AS $value)
 		{
@@ -438,7 +438,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Création du membre
+		// Creation du membre
 		$last_id = User::add($insert_ary['u_login'], $insert_ary['u_nickname'], $insert_ary['u_password'], $insert_ary['u_email'], $insert_ary);
 
 		// Insertion dans le profil personel
@@ -493,7 +493,7 @@ class Fsb_frame_child extends Fsb_frame
 				$result = $mail->Send();
 				$mail->SmtpClose();
 
-				// On ne fait le controle de validation que si l'Email a pu être envoyé
+				// On ne fait le controle de validation que si l'Email a pu etre envoye
 				if ($result)
 				{
 					Fsb::$db->update('users', array(
@@ -553,24 +553,24 @@ class Fsb_frame_child extends Fsb_frame
 			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame=true&amp;uniqid=' . $uniqid),
 		));
 
-		// Champs personals créés par l'administrateur
+		// Champs personals crees par l'administrateur
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), TRUE);
 	}
 
 	/*
-	** Vérifie les données envoyées par le formulaire d'import de FSBcard
+	** Verifie les donnees envoyees par le formulaire d'import de FSBcard
 	*/
 	public function check_fsbcard_form()
 	{		
 		$this->errstr = array();
 
-		// Règles du forum acceptées ?
+		// Regles du forum acceptees ?
 		if (!$this->data['accept_rules'])
 		{
 			$this->errstr[] = Fsb::$session->lang('register_need_accept');
 		}
 
-		// On vérifie le code de confirmation visuelle
+		// On verifie le code de confirmation visuelle
 		if ($this->use_visual_confirmation && !check_captcha($this->data['u_visual_code']))
 		{
 			$this->img_mode = 'generate';
@@ -581,7 +581,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->img_mode = 'keep';
 		}
 
-		// On vérifie si une FSBcard a été uploadée
+		// On verifie si une FSBcard a ete uploadee
 		if (empty($_FILES['upload_fsbcard']['name']))
 		{
 			$this->errstr[] = Fsb::$session->lang('register_need_fsbcard');
@@ -602,17 +602,17 @@ class Fsb_frame_child extends Fsb_frame
 		$content = file_get_contents($card_path);
 		unlink($card_path);
 
-		// Lecture de la FSBcard de façon à renseigner les champs par défaut
+		// Lecture de la FSBcard de facon a renseigner les champs par defaut
 		if (!$this->read_fsbcard($content))
 		{
 			return ;
 		}
 
-		// Création de l'utilisateur
+		// Creation de l'utilisateur
 		$last_id = $this->create_user();
 		$message = $this->send_mail($last_id);
 
-		// Ajout des préférences du membre, stoquées dans la FSBcard
+		// Ajout des preferences du membre, stoquees dans la FSBcard
 		fsb_import('user_fsbcard');
 		$update_array = Page_user_fsbcard::import_fsbcard($last_id, $content);
 		Fsb::$db->update('users', $update_array, 'WHERE u_id = ' . $last_id);
@@ -639,14 +639,14 @@ class Fsb_frame_child extends Fsb_frame
 			$this->data['u_email'] =					$fsbcard->get_email();
 			list($this->data['u_password'], $hash) =	$fsbcard->get_password();
 
-			// Vérification de l'intégrité de la FSBcard
+			// Verification de l'integrite de la FSBcard
 			if ($this->data['u_login'] === NULL || $this->data['u_nickname'] === NULL || $this->data['u_password'] === NULL || $this->data['u_email'] === NULL)
 			{
 				$this->errstr[] = Fsb::$session->lang('register_fsbcard_invalid');
 				return (FALSE);
 			}
 
-			// Vérification de la taille du pseudonyme
+			// Verification de la taille du pseudonyme
 			if (strlen($this->data['u_nickname']) < 3)
 			{
 				$this->errstr[] = Fsb::$session->lang('register_short_nickname');
@@ -662,37 +662,37 @@ class Fsb_frame_child extends Fsb_frame
 				$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 			}
 
-			// Mot de passe différent du login ?
+			// Mot de passe different du login ?
 			if (strtolower($this->data['u_password']) == strtolower($this->data['u_nickname']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_password_diff_nickname');
 			}
 
-			// Validité de l'adresse Email
+			// Validite de l'adresse Email
 			if (!User::email_valid($this->data['u_email']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_email_format');
 			}
 
-			// Vérification de l'existance du login
+			// Verification de l'existance du login
 			if (User::login_exists($this->data['u_login']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_login_exists');
 			}
 
-			// Vérification de l'existance du pseudonyme
+			// Verification de l'existance du pseudonyme
 			if ($this->data['u_nickname'] && User::nickname_exists($this->data['u_nickname']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_nickname_exists');
 			}
 
-			// Vérification de l'existance de l'email
+			// Verification de l'existance de l'email
 			if ($this->data['u_email'] && User::email_exists($this->data['u_email']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_email_exists');
 			}
 			
-			// On vérifie si le login ou l'adresse E-mail ont été bannis
+			// On verifie si le login ou l'adresse E-mail ont ete bannis
 			if ($ban_type = Fsb::$session->is_ban(-1, $this->data['u_nickname'], Fsb::$session->ip, $this->data['u_email']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_ban_' . $ban_type['type']);

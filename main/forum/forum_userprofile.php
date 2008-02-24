@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -23,7 +23,7 @@ class Fsb_frame_child extends Fsb_frame
 	// Module courant
 	public $module;
 
-	// Données personnelles du membre
+	// Donnees personnelles du membre
 	public $data = array();
 	
 	// ID du membre
@@ -69,13 +69,13 @@ class Fsb_frame_child extends Fsb_frame
 		// Liste des modules disponibles
 		$module_list = array('view' => 'userprofile&amp;id=' . $this->id);
 
-		// Droit d'accès aux logs du membre ?
+		// Droit d'acces aux logs du membre ?
 		if ($this->id == Fsb::$session->id() || Fsb::$session->is_authorized('auth_edit_user'))
 		{
 			$module_list['logs'] = 'userprofile&amp;module=logs&amp;id=' . $this->id;
 		}
 
-		// Raccourci vers l'édition du membre ?
+		// Raccourci vers l'edition du membre ?
 		if (Fsb::$session->is_authorized('auth_edit_user'))
 		{
 			$module_list['edit'] = 'modo&amp;module=user&amp;id=' . $this->id;
@@ -92,7 +92,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->module = 'view';
 		}
 
-		// Affichage de la liste des modules (sauf si seul le module par défaut est visible)
+		// Affichage de la liste des modules (sauf si seul le module par defaut est visible)
 		if (count($module_list) > 1)
 		{
 			Fsb::$tpl->set_switch('use_module');
@@ -110,7 +110,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Appel dynamique de la méthode liée au module de la page
+		// Appel dynamique de la methode liee au module de la page
 		$this->{'userprofile_' . $this->module}();
 	}
 
@@ -119,7 +119,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function userprofile_view()
 	{
-		// Droit d'accès ?
+		// Droit d'acces ?
 		if (!Fsb::$session->is_authorized('can_see_profile'))
 		{
 			Display::message('not_allowed');
@@ -129,13 +129,13 @@ class Fsb_frame_child extends Fsb_frame
 
 		$this->get_user_data();
 		
-		// E-mail activés ?
+		// E-mail actives ?
 		if (!($this->data['u_activate_email'] & 8))
 		{
 			Fsb::$tpl->set_switch('can_email');
 		}
 
-		// On regarde si on a le droit d'éditer ce membre
+		// On regarde si on a le droit d'editer ce membre
 		if (Fsb::$session->is_authorized('auth_edit_user'))
 		{
 			Fsb::$tpl->set_switch('can_edit_user');
@@ -147,7 +147,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('show_comments');
 		}
 
-		// Peut voir la dernière visite ?
+		// Peut voir la derniere visite ?
 		if (!$this->data['u_activate_hidden'] || Fsb::$session->auth() >= MODO || Fsb::$session->id() == $this->id)
 		{
 			Fsb::$tpl->set_switch('show_last_visit');
@@ -161,7 +161,7 @@ class Fsb_frame_child extends Fsb_frame
 			'href' =>		sid(ROOT . 'index.' . PHPEXT . '?p=rss&amp;mode=user&amp;id=' . $this->id),
 		));
 
-		// Informations passées au parseur de message
+		// Informations passees au parseur de message
 		$parser_info = array(
 			'u_id' =>			$this->data['u_id'],
 			'p_nickname' =>		$this->data['u_nickname'],
@@ -214,7 +214,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Récupération des informations personelles du membre (contact, groupes, etc ...)
+	** Recuperation des informations personelles du membre (contact, groupes, etc ...)
 	*/
 	public function get_user_data()
 	{
@@ -304,7 +304,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Liste des groupes que le visiteur modère
+	** Liste des groupes que le visiteur modere
 	*/
 	public function show_groups_modo()
 	{
@@ -363,7 +363,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Redirige vers l'édition du profile du membre
+	** Redirige vers l'edition du profile du membre
 	*/
 	public function userprofile_edit()
 	{

@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet d'afficher le backup à l'écran
+** Permet d'afficher le backup a l'ecran
 */
 class Backup_get extends Backup
 {

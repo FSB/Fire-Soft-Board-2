@@ -16,11 +16,11 @@
 class Poll extends Fsb_model
 {
 	/*
-	** Affiche le formulaire de création de sondages
+	** Affiche le formulaire de creation de sondages
 	** -----
 	** $map_name ::			Nom de la MAP
 	** $poll_name ::		Question du sondage
-	** $poll_values ::		Réponses du sondage
+	** $poll_values ::		Reponses du sondage
 	** $poll_max_vote ::	Nombre de votes possibles
 	*/
 	public static function display_form($map_name, $poll_name = '', $poll_values = array(), $poll_max_vote = 1)
@@ -54,7 +54,7 @@ class Poll extends Fsb_model
 	** Affiche le sondage
 	** -----
 	** $t_id ::		ID du sujet du sondage
-	** $data ::		Informations additionelles pour éviter une requête trop lourde (necessite
+	** $data ::		Informations additionelles pour eviter une requete trop lourde (necessite
 	**				les informations sur t_status et f_status)
 	*/
 	public static function show($t_id, $data = array())
@@ -68,7 +68,7 @@ class Poll extends Fsb_model
 			$sql_join = 'LEFT JOIN ' . SQL_PREFIX . 'topics t ON t.t_id = p.t_id LEFT JOIN ' . SQL_PREFIX . 'forums f ON f.f_id = t.f_id';
 		}
 
-		// Données du sondage, liste des options
+		// Donnees du sondage, liste des options
 		$sql = 'SELECT p.poll_name, p.poll_total_vote, p.poll_max_vote, po.poll_opt_id, po.poll_opt_name, po.poll_opt_total, pr.poll_result_u_id' . $sql_fields . '
 				FROM ' . SQL_PREFIX . 'poll p
 				LEFT JOIN ' . SQL_PREFIX . 'poll_options po
@@ -120,7 +120,7 @@ class Poll extends Fsb_model
 	}
 
 	/*
-	** Soumission d'un vote à un sondage
+	** Soumission d'un vote a un sondage
 	** -----
 	** $t_id ::		ID du sujet
 	*/
@@ -131,7 +131,7 @@ class Poll extends Fsb_model
 			Display::message('not_allowed');
 		}
 
-		// Données du sondage
+		// Donnees du sondage
 		$sql = 'SELECT p.poll_max_vote, pr.poll_result_u_id
 				FROM ' . SQL_PREFIX . 'poll p
 				LEFT JOIN ' . SQL_PREFIX . 'poll_result pr
@@ -141,7 +141,7 @@ class Poll extends Fsb_model
 				WHERE p.t_id = ' . $t_id;
 		$row = Fsb::$db->request($sql);
 
-		// On vérifie tout de même si le membre n'a pas déjà voté et que le sondage existe
+		// On verifie tout de meme si le membre n'a pas deja vote et que le sondage existe
 		if (!$row)
 		{
 			Display::message('topic_poll_not_exists');
@@ -151,7 +151,7 @@ class Poll extends Fsb_model
 			Display::message('topic_has_submit_poll');
 		}
 
-		// On récupère les votes
+		// On recupere les votes
 		$poll_result = Http::request('poll_result', 'post');
 		if (!is_array($poll_result))
 		{
@@ -159,19 +159,19 @@ class Poll extends Fsb_model
 		}
 		$poll_result = array_map('intval', $poll_result);
 
-		// On vérifie qu'il y ai au moins un vote :p
+		// On verifie qu'il y ai au moins un vote :p
 		if (!$poll_result)
 		{
 			Display::message('topic_poll_need_vote');
 		}
 
-		// On vérifie qu'il n'y ait pas trop de votes
+		// On verifie qu'il n'y ait pas trop de votes
 		if (count($poll_result) > $row['poll_max_vote'])
 		{
 			Display::message(sprintf(Fsb::$session->lang('topic_poll_too_much_vote'), $row['poll_max_vote']));
 		}
 
-		// On met à jour le nombre de vote par option et on signale que le membre a voté
+		// On met a jour le nombre de vote par option et on signale que le membre a vote
 		Fsb::$db->insert('poll_result', array(
 			'poll_result_u_id' =>	Fsb::$session->id(),
 			't_id' =>				$t_id,
@@ -201,7 +201,7 @@ class Poll extends Fsb_model
 	*/
 	public static function send($poll_name, $poll_values, $topic_id, $max_vote)
 	{
-		// Création du sondage
+		// Creation du sondage
 		Fsb::$db->insert('poll', array(
 			't_id' =>				$topic_id,
 			'poll_name' =>			$poll_name,
@@ -209,7 +209,7 @@ class Poll extends Fsb_model
 			'poll_max_vote' =>		$max_vote,
 		));
 
-		// Ajout des différentes options
+		// Ajout des differentes options
 		foreach ($poll_values AS $value)
 		{
 			Fsb::$db->insert('poll_options', array(
@@ -230,7 +230,7 @@ class Poll extends Fsb_model
 	*/
 	public static function edit($t_id, $poll_name, $poll_values, $max_vote)
 	{
-		// Mise à jour du sondage
+		// Mise a jour du sondage
 		Fsb::$db->update('poll', array(
 			'poll_name' =>			$poll_name,
 			'poll_max_vote' =>		$max_vote,

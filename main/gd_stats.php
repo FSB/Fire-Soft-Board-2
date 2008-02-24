@@ -11,7 +11,7 @@
 */
 
 /*
-** Affiche la progression du nombre de messages par période
+** Affiche la progression du nombre de messages par periode
 ** Utilisation du framework Artichow (www.artichow.org)
 */
 
@@ -22,7 +22,7 @@ include(ROOT . 'main/start.php');
 
 Fsb::$session->start('', FALSE);
 
-// On récupère les variables dans l'URL
+// On recupere les variables dans l'URL
 $img_type =		Http::request('img');
 $begin_time =	intval(Http::request('begin'));
 $end_time = 	intval(Http::request('end'));
@@ -39,7 +39,7 @@ switch ($img_type)
 	case 'posts' :
 		$state = ($use_current) ? ONE_DAY : ONE_MONTH;
 
-		// On récupère le nombre de messages par jour
+		// On recupere le nombre de messages par jour
 		$sql = 'SELECT p_time, COUNT(p_id) AS total_post
 				FROM ' . SQL_PREFIX . 'posts
 				WHERE p_time >= ' . $begin_time . '
@@ -69,7 +69,7 @@ switch ($img_type)
 	case 'topics' :
 		$state = ($use_current) ? ONE_DAY : ONE_MONTH;
 
-		// On récupère le nombre de messages par jour
+		// On recupere le nombre de messages par jour
 		$sql = 'SELECT p.p_time, COUNT(p.p_id) AS total_topic
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'posts p
@@ -101,7 +101,7 @@ switch ($img_type)
 	case 'users' :
 		$state = ($use_current) ? ONE_DAY : ONE_MONTH;
 
-		// On récupère le nombre de messages par jour
+		// On recupere le nombre de messages par jour
 		$sql = 'SELECT u_joined, COUNT(u_id) AS total_user
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_joined >= ' . $begin_time . '
@@ -133,7 +133,7 @@ switch ($img_type)
 	break;
 }
 
-// Création des valeurs pour le graphique
+// Creation des valeurs pour le graphique
 $values = array();
 foreach ($args AS $y => $list_y)
 {

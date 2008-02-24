@@ -11,7 +11,7 @@
 */
 
 /*
-** Gestion de l'encodage / décodage des informations pour le WYSIWYG
+** Gestion de l'encodage / decodage des informations pour le WYSIWYG
 */
 class Parser_wysiwyg extends Fsb_model
 {
@@ -23,7 +23,7 @@ class Parser_wysiwyg extends Fsb_model
 	/*
 	** Parse des FSBcode uniquement affichables sur le WYSIWYG
 	** -----
-	** $str ::		Chaine de caractères à parser
+	** $str ::		Chaine de caracteres a parser
 	*/
 	public static function decode($str)
 	{
@@ -39,9 +39,9 @@ class Parser_wysiwyg extends Fsb_model
 	}
 
 	/*
-	** Parse une chaîne de caractère HTML pour la transformer en FSBcode
+	** Parse une chaine de caractere HTML pour la transformer en FSBcode
 	** -----
-	** $str ::		Chaîne à parser
+	** $str ::		Chaine a parser
 	*/
 	public static function encode($str)
 	{
@@ -53,10 +53,10 @@ class Parser_wysiwyg extends Fsb_model
 		// On remplace les &nbsp; par des espaces
 		$str = str_replace('&nbsp;', ' ', $str);
 
-		// Représente la pile dans laquelle sera mis le texte à reconstruire
+		// Represente la pile dans laquelle sera mis le texte a reconstruire
 		$stack = array();
 
-		// On récupère l'ensemble des balises HTML de la chaîne
+		// On recupere l'ensemble des balises HTML de la chaine
 		preg_match_all('#<(/)?([a-zA-Z_][a-zA-Z0-9_]*?)( .*?)?>#s', $str, $tokens, PREG_OFFSET_CAPTURE);
 		$count_tokens = count($tokens[0]);
 		for ($i = 0, $offset = 0, $id = 1; $i < $count_tokens; $i++)
@@ -66,7 +66,7 @@ class Parser_wysiwyg extends Fsb_model
 			$length =	strlen($tokens[0][$i][0]);
 			$text =		substr($str, $offset, $tokens[0][$i][1] - $offset);
 
-			// Ajout du texte à la pile de données			
+			// Ajout du texte a la pile de donnees			
 			if ($text)
 			{
 				$stack[] = array(
@@ -77,14 +77,14 @@ class Parser_wysiwyg extends Fsb_model
 
 			switch ($state)
 			{
-				// Parse des tags fermés
+				// Parse des tags fermes
 				case self::TAG_CLOSE :
-					// On parcourt la pile à la recherche de la première balise ouverte du même type qu'on trouve (et non fermée)
+					// On parcourt la pile a la recherche de la premiere balise ouverte du meme type qu'on trouve (et non fermee)
 					$count_stack = count($stack);
 					for ($j = $count_stack - 1, $find_id = 0; $j >= 0; $j--)
 					{
-						// On ajoute la fermeture du tag à la pile si : on tombe sur le premier tag ouvert ayant le même nom que le tag qu'on ferme
-						// actuellement ou si on tombe sur un tag ouvert avec une ID similaire à celle du tag qu'on ferme
+						// On ajoute la fermeture du tag a la pile si : on tombe sur le premier tag ouvert ayant le meme nom que le tag qu'on ferme
+						// actuellement ou si on tombe sur un tag ouvert avec une ID similaire a celle du tag qu'on ferme
 						if ($stack[$j]['type'] == self::TAG_OPEN && $stack[$j]['tag'] == $name && ($find_id == 0 || $find_id == $stack[$j]['id']) && isset($stack[$j]['close']))
 						{
 							$find_id = $stack[$j]['id'];
@@ -93,11 +93,11 @@ class Parser_wysiwyg extends Fsb_model
 								'content' =>	$stack[$j]['close'],
 							);
 
-							// On supprime l'indice 'close' pour montrer que ces tags ont été fermés (on pourra ainsi les afficher)
+							// On supprime l'indice 'close' pour montrer que ces tags ont ete fermes (on pourra ainsi les afficher)
 							unset($stack[$j]['close']);
 						}
 
-						// Petite optimisation pour ne pas parcourir le reste de la pile inutilement, puisqu'on a récupéré ce dont on avait besoin
+						// Petite optimisation pour ne pas parcourir le reste de la pile inutilement, puisqu'on a recupere ce dont on avait besoin
 						if ($find_id != 0 && (!isset($stack[$j]['id']) || $find_id != $stack[$j]['id']))
 						{
 							break;
@@ -107,7 +107,7 @@ class Parser_wysiwyg extends Fsb_model
 
 				// Parse des tags ouverts
 				case self::TAG_OPEN :
-					// Récupération des attributs dans un tableau
+					// Recuperation des attributs dans un tableau
 					$attr = array();
 					if (is_array($tokens[3][$i]))
 					{
@@ -119,7 +119,7 @@ class Parser_wysiwyg extends Fsb_model
 						}
 					}
 
-					// Ici on empile les balises qui seront ajouté à $stack
+					// Ici on empile les balises qui seront ajoute a $stack
 					$s = array();
 
 					// Transformation des tags en style
@@ -137,12 +137,12 @@ class Parser_wysiwyg extends Fsb_model
 							$s[] = 'i';
 						break;
 
-						// Souligné
+						// Souligne
 						case 'u' :
 							$s[] = 'u';
 						break;
 
-						// Barré
+						// Barre
 						case 'strike' :
 							$s[] = 'strike';
 						break;
@@ -162,7 +162,7 @@ class Parser_wysiwyg extends Fsb_model
 							$s[] = 'list';
 						break;
 
-						// Liste ordonnée
+						// Liste ordonnee
 						case 'ol' :
 							if (isset($attr['style']) && preg_match('#list-style-type: disc;#i', $attr['style']))
 							{
@@ -194,7 +194,7 @@ class Parser_wysiwyg extends Fsb_model
 							$url = $attr['src'];
 							$args = ':';
 
-							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
+							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'ou
 							// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
 							if (isset($attr['realsrc']))
 							{
@@ -243,7 +243,7 @@ class Parser_wysiwyg extends Fsb_model
 							}
 							$url = $attr['href'];
 
-							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'où
+							// Apparament Firefox aime bien faire des choses qu'on ne lui demande pas de faire, d'ou
 							// ce code pour fixer les bons chemins vers les URL locales http://localhost/fsb2/tpl/WhiteSummer/img/logo.gif
 							if (isset($attr['realsrc']))
 							{
@@ -387,7 +387,7 @@ class Parser_wysiwyg extends Fsb_model
 						$s[] = 'font=' . $attr['face'];
 					}
 
-					// Ajout de $s à $stack
+					// Ajout de $s a $stack
 					foreach ($s AS $v)
 					{
 						$close = $v;
@@ -419,11 +419,11 @@ class Parser_wysiwyg extends Fsb_model
 				break;
 			}
 
-			// On déplace l'offset de lecture du texte à la fin de la balise
+			// On deplace l'offset de lecture du texte a la fin de la balise
 			$offset = $tokens[0][$i][1] + $length;
 		}
 
-		// Ajout de la dernière partie du message
+		// Ajout de la derniere partie du message
 		$stack[] = array(
 			'type' =>		self::TEXT,
 			'content' =>	substr($str, $offset),
@@ -433,7 +433,7 @@ class Parser_wysiwyg extends Fsb_model
 		$return = '';
 		foreach ($stack AS $line)
 		{
-			// Les tags ouverts et non fermés ne sont pas mis dans le texte
+			// Les tags ouverts et non fermes ne sont pas mis dans le texte
 			if ($line['type'] == self::TAG_OPEN && isset($line['close']))
 			{
 				continue;

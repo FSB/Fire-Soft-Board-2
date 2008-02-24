@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -25,7 +25,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// On vérifie si la SID a été passée par l'URL, pour des raisons de sécurité
+		// On verifie si la SID a ete passee par l'URL, pour des raisons de securite
 		if (Fsb::$session->sid !== Http::request('sid', 'get'))
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);

@@ -15,13 +15,13 @@ class Css extends Fsb_model
 	public $data = array();
 	private $basename = NULL, $dirname = NULL;
 
-	// Les import seront sauvés dans cette propriété
+	// Les import seront sauves dans cette propriete
 	private $import = array();
 
 	/*
 	** Charge un fichier CSS
 	** -----
-	** $filename ::	Nom du fichier à charger
+	** $filename ::	Nom du fichier a charger
 	*/
 	public function load_file($filename)
 	{
@@ -36,22 +36,22 @@ class Css extends Fsb_model
 	/*
 	** Charge du code CSS
 	** -----
-	** $content ::	Contenu CSS à charger
+	** $content ::	Contenu CSS a charger
 	** $filename ::	Chemin du fichier, qui servira d'identifiant
-	** $parent ::	Parent si le fichier actuel est importé
+	** $parent ::	Parent si le fichier actuel est importe
 	*/
 	public function load_content($content, $filename, $parent = NULL)
 	{
 		// Suppression des commentaires inutiles
 		$content = preg_replace("#/\*.*?\*/(\r\n|\n)(\r\n|\n)#si", '', $content);
 
-		// Préparation du stockage des informations
+		// Preparation du stockage des informations
 		$path = dirname($filename) . '/';
 		$basename = basename($filename);
 		$this->data[$basename] = array();
 		$p = &$this->data[$basename];
 
-		// Gestion des fichiers importés
+		// Gestion des fichiers importes
 		if ($parent !== NULL)
 		{
 			if (!isset($this->import[$parent]))
@@ -79,7 +79,7 @@ class Css extends Fsb_model
 			);
 		}
 
-		// On charge récursivement les @import
+		// On charge recursivement les @import
 		preg_match_all('#@import\s+(url\([^)]*?\)|.*?);#', $content, $m);
 		$count = count($m[0]);
 		for ($i = 0; $i < $count; $i++)
@@ -103,16 +103,16 @@ class Css extends Fsb_model
 	}
 
 	/*
-	** Parse des propriétés
+	** Parse des proprietes
 	** -----
-	** $str ::	Chaîne de caractère (propriétés)
+	** $str ::	Chaine de caractere (proprietes)
 	*/
 	public function parse_properties($str)
 	{
-		// Suppression des commentaires dans les propriétés
+		// Suppression des commentaires dans les proprietes
 		$list_properties = preg_replace("#/\*.*?\*/#si", '', trim($str));
 
-		// Parse des propriétés
+		// Parse des proprietes
 		$properties = array();
 		foreach (explode(';', $list_properties) AS $property)
 		{
@@ -128,10 +128,10 @@ class Css extends Fsb_model
 	}
 
 	/*
-	** Regénère les fichiers CSS
+	** Regenere les fichiers CSS
 	** -----
-	** $path ::		Chemin où regénérer les fichiers
-	** $file ::		Nom du fichier à regénérer, si aucun fichier précisé on les regenère tous
+	** $path ::		Chemin ou regenerer les fichiers
+	** $file ::		Nom du fichier a regenerer, si aucun fichier precise on les regenere tous
 	*/
 	public function write($path, $file = NULL)
 	{
@@ -167,8 +167,8 @@ class Css extends Fsb_model
 			$header .= "** | Project :	Fire-Soft-Board 2 - Copyright FSB group\n";
 			$header .= "** | License :	GPL v2.0\n";
 			$header .= "** |\n";
-			$header .= "** | Vous pouvez modifier, réutiliser et redistribuer\n";
-			$header .= "** | ce fichier à condition de laisser cet entète.\n";
+			$header .= "** | Vous pouvez modifier, reutiliser et redistribuer\n";
+			$header .= "** | ce fichier a condition de laisser cet entete.\n";
 			$header .= "** +---------------------------------------------------+\n";
 			$header .= "*/\n\n";
 
@@ -187,10 +187,10 @@ class Css extends Fsb_model
 	}
 
 	/*
-	** Retourne les propriétés d'une classe sous forme de chaîne
+	** Retourne les proprietes d'une classe sous forme de chaine
 	** -----
-	** $data ::		Données de la classe
-	** $prefix ::	Chaîne à afficher avant les propriétés
+	** $data ::		Donnees de la classe
+	** $prefix ::	Chaine a afficher avant les proprietes
 	*/
 	public function get_properties($data, $prefix = '')
 	{
@@ -203,10 +203,10 @@ class Css extends Fsb_model
 	}
 
 	/*
-	** Retourne la valeur d'une propriété
+	** Retourne la valeur d'une propriete
 	** -----
-	** $data ::		Données de la classe
-	** $key ::		Nom de la propriété
+	** $data ::		Donnees de la classe
+	** $key ::		Nom de la propriete
 	*/
 	public function get_property($data, $key)
 	{
@@ -214,11 +214,11 @@ class Css extends Fsb_model
 	}
 
 	/*
-	** Assigne une propriété à la classe
+	** Assigne une propriete a la classe
 	** -----
-	** $data ::		Données de la classe
-	** $key ::		Nom de la propriété
-	** $value ::	Valeur de la propriété
+	** $data ::		Donnees de la classe
+	** $key ::		Nom de la propriete
+	** $value ::	Valeur de la propriete
 	*/
 	public function set_property(&$data, $key, $value)
 	{

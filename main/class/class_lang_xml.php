@@ -12,7 +12,7 @@
 
 /*
 ** Permet d'importer / exporter des langues en XML.
-** Necessite la classe Xml() pour la gestion des données en XML.
+** Necessite la classe Xml() pour la gestion des donnees en XML.
 */
 
 class Lang_xml extends Fsb_model
@@ -29,14 +29,14 @@ class Lang_xml extends Fsb_model
 	{
 		if (!is_dir($path))
 		{
-			trigger_error('Le répertoire ' . $path . ' n\'existe pas', FSB_ERROR);
+			trigger_error('Le repertoire ' . $path . ' n\'existe pas', FSB_ERROR);
 		}
 
-		// On inclu le fichier lg_common.php pour récupérer le charset
+		// On inclu le fichier lg_common.php pour recuperer le charset
 		$lang = include($path . 'lg_common.' . PHPEXT);
 		$charset = $lang['charset'];
 
-		// On récupère les données de la langue entrées via le panneau d'administration
+		// On recupere les donnees de la langue entrees via le panneau d'administration
 		$sql = 'SELECT lang_key, lang_value
 				FROM ' . SQL_PREFIX . 'langs
 				WHERE lang_name = \'' . Fsb::$db->escape(basename($path)) . '\'';
@@ -57,7 +57,7 @@ class Lang_xml extends Fsb_model
 		// Instance de la classe XML
 		$this->xml = new Xml;
 
-		// Création d'un nouveau document
+		// Creation d'un nouveau document
 		$this->xml->document->setTagName('language');
 
 		// Ajout du nom du language
@@ -78,7 +78,7 @@ class Lang_xml extends Fsb_model
 	*/
 	private function export_dir($path, $current_dir = '')
 	{
-		// Type de fichier du répertoire courant
+		// Type de fichier du repertoire courant
 		$type = ($current_dir == 'mail/') ? 'txt' : 'php';
 
 		// Parcourt du dossier de langue
@@ -89,21 +89,21 @@ class Lang_xml extends Fsb_model
 			{
 				if (is_dir($path . $file))
 				{
-					// En cas de dossier on relance récursivement la fonction
+					// En cas de dossier on relance recursivement la fonction
 					$this->export_dir($path . $file . '/', $file . '/');
 				}
 				else
 				{
-					// Sinon on va gérer le contenu du fichier
+					// Sinon on va gerer le contenu du fichier
 					$filename = get_file_data($file, 'filename');
 					$extension = get_file_data($file, 'extension');
 
-					// Création d'un nouvel élément <file>
+					// Creation d'un nouvel element <file>
 					$f = $this->xml->document->createElement('file');
 					$f->setAttribute('name', $current_dir . $filename);
 					$f->setAttribute('type', $type);
 
-					// Suivant le type de fichier on gère différement les contenus
+					// Suivant le type de fichier on gere differement les contenus
 					switch ($extension)
 					{
 						case 'txt' :
@@ -124,7 +124,7 @@ class Lang_xml extends Fsb_model
 	/*
 	** Exporte le contenu d'un fichier PHP
 	** -----
-	** $f ::		Objet XML_document représentant le fichier en cours
+	** $f ::		Objet XML_document representant le fichier en cours
 	** $path ::		Chemin du fichier
 	** $filename ::	Nom du fichier
 	*/
@@ -139,7 +139,7 @@ class Lang_xml extends Fsb_model
 			$f->appendChild($lang);
 		}
 
-		// Pour la FAQ on utilise un traitement spécial pour le tableau de données
+		// Pour la FAQ on utilise un traitement special pour le tableau de donnees
 		if ($filename == 'lg_forum_faq')
 		{
 			foreach ($GLOBALS['faq_data'] AS $section => $data)
@@ -159,7 +159,7 @@ class Lang_xml extends Fsb_model
 					$value->setData((isset($this->custom['faq'][$section][$faq_name]['question'])) ? $this->custom['faq'][$section][$faq_name]['question'] : $faq_data['question']);
 					$faq->appendChild($value);
 
-					// Ajout d'un enfant <value> pour la réponse
+					// Ajout d'un enfant <value> pour la reponse
 					$value = $faq->createElement('value');
 					$value->setAttribute('key', 'answer');
 					$value->setData((isset($this->custom['faq'][$section][$faq_name]['answer'])) ? $this->custom['faq'][$section][$faq_name]['answer'] : $faq_data['answer']);
@@ -175,7 +175,7 @@ class Lang_xml extends Fsb_model
 	/*
 	** Exporte le contenu d'un fichier TXT
 	** -----
-	** $f ::		Objet XML_document représentant le fichier en cours
+	** $f ::		Objet XML_document representant le fichier en cours
 	** $path ::		Chemin du fichier
 	*/
 	private function export_txt_file(&$f, $path)
@@ -200,7 +200,7 @@ class Lang_xml extends Fsb_model
 		$file_builder = File::factory(FALSE);
 		$file_builder->connexion('', '', '', '', ROOT);
 
-		// On récupère le charset
+		// On recupere le charset
 		$fd = fopen(ROOT . $path, 'r');
 		$content = fread($fd, 64);
 		preg_match('#encoding="(.*?)"#i', $content, $match);
@@ -211,21 +211,21 @@ class Lang_xml extends Fsb_model
 		$xml = new Xml();
 		$xml->load_file(ROOT . $path, FALSE);
 
-		// On récupère le nom de la langue
+		// On recupere le nom de la langue
 		$language = $xml->document->name[0]->getData();
 
-		// Répertoire de la langue
+		// Repertoire de la langue
 		$root = 'lang/' . $language . '/';
 		$file_builder->mkdir($root);
 
-		// On génère les fichiers langue
+		// On genere les fichiers langue
 		foreach ($xml->document->items[0]->file AS $file)
 		{
-			// On récupère le nom et le type de fichier
+			// On recupere le nom et le type de fichier
 			$filename = $file->getAttribute('name');
 			$type = $file->getAttribute('type');
 
-			// On créé le répertoire
+			// On cree le repertoire
 			$dirname = (dirname($filename) != '.') ? dirname($filename) : '';
 			$file_builder->mkdir($root . $dirname);
 
@@ -241,7 +241,7 @@ class Lang_xml extends Fsb_model
 						{
 							$key = $lang->getAttribute('key');
 
-							// On gère les clefs spéciales _fsb_lang_faq et _fsb_stopword
+							// On gere les clefs speciales _fsb_lang_faq et _fsb_stopword
 							switch ($key)
 							{
 								case '_fsb_faq_data' :
@@ -249,7 +249,7 @@ class Lang_xml extends Fsb_model
 									$section = $lang->getAttribute('section');
 									$faq_data[$section] = array();
 
-									// On récupère le contenu de la FAQ
+									// On recupere le contenu de la FAQ
 									foreach ($lang->faq AS $faq)
 									{
 										$faq_key = $faq->getAttribute('key');
@@ -280,7 +280,7 @@ class Lang_xml extends Fsb_model
 						}
 					}
 
-					// On génère le fichier langue
+					// On genere le fichier langue
 					$content = "<?php\n";
 					$content .= "/*\n";
 					$content .= "** +---------------------------------------------------+\n";
@@ -288,7 +288,7 @@ class Lang_xml extends Fsb_model
 					$content .= "** | Project :	Fire-Soft-Board 2 - Copyright FSB group\n";
 					$content .= "** | License :	GPL v2.0\n";
 					$content .= "** |\n";
-					$content .= "** | Ce fichier est un fichier langue généré automatiquement\n";
+					$content .= "** | Ce fichier est un fichier langue genere automatiquement\n";
 					$content .= "** +---------------------------------------------------+\n";
 					$content .= "*/\n\n";
 
@@ -313,7 +313,7 @@ class Lang_xml extends Fsb_model
 			}
 		}
 
-		// On libère la mémoire
+		// On libere la memoire
 		unset($xml);
 	}
 }

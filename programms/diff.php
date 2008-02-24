@@ -10,14 +10,14 @@
 ** +---------------------------------------------------+
 */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /*
 ** Ce fichier permet de comparer deux fichiers
 */
 
-// On supprime toutes les variables crées par la directive register_globals
-// On stripslashes() toutes les variables GPC pour la compatibilité DBAL
+// On supprime toutes les variables crees par la directive register_globals
+// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 $gpc = array('_GET', '_POST', '_COOKIE');
 $magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
 $register_globals = (ini_get('register_globals')) ? TRUE : FALSE;

@@ -14,8 +14,8 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur permettant de mettre au membre ses données pour le contacter
-** Les champs de contacts sont créés dynamiquement dans l'administration à l'aide des tables
+** Module d'utilisateur permettant de mettre au membre ses donnees pour le contacter
+** Les champs de contacts sont crees dynamiquement dans l'administration a l'aide des tables
 ** `fsb2_profil_fields` et `fsb2_users_contact`
 ** Cette page permet aussi d'entrer les adresses de notifications
 */
@@ -24,10 +24,10 @@ class Page_user_contact extends Fsb_model
 	// Variable d'erreurs
 	public $errstr = array();
 	
-	// Données de contact du membre
+	// Donnees de contact du membre
 	public $user_contact = array();
 
-	// Données récupérées dans le formulaire
+	// Donnees recuperees dans le formulaire
 	public $post_data = array();
 
 	/*
@@ -47,8 +47,8 @@ class Page_user_contact extends Fsb_model
 	}
 
 	/*
-	** Génère la page de formulaire permettant au membre de remplir ses
-	** données de contact
+	** Genere la page de formulaire permettant au membre de remplir ses
+	** donnees de contact
 	*/
 	public function contact_form()
 	{
@@ -62,12 +62,12 @@ class Page_user_contact extends Fsb_model
 			'ERRSTR' =>			Html::make_errstr($this->errstr),
 		));
 		
-		// Champs contacts créés par l'administrateur
+		// Champs contacts crees par l'administrateur
 		Profil_fields_forum::form(PROFIL_FIELDS_CONTACT, 'contact', Fsb::$session->id());
 	}
 
 	/*
-	** Vérifie la validité des données du formulaire en fonction des expressions régulières définies
+	** Verifie la validite des donnees du formulaire en fonction des expressions regulieres definies
 	** pour les champs de contact
 	*/
 	public function check_form()

@@ -28,7 +28,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function main()
 	{
-		// On récupère le language
+		// On recupere le language
 		$this->language = Http::request('language');
 		if ($this->language == NULL || !is_dir(ROOT . 'lang/' . $this->language))
 		{
@@ -40,7 +40,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->language = substr($this->language, 0, -1);
 		}
 
-		// Interval définissant le nombre de variables à afficher par page
+		// Interval definissant le nombre de variables a afficher par page
 		$this->interval = intval(Http::request('interval'));
 		if ($this->interval <= 0)
 		{
@@ -54,7 +54,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->page = 1;
 		}
 
-		// Données de la recherche
+		// Donnees de la recherche
 		$this->search =			Http::request('search');
 		$this->search_type =	Http::request('search_type');
 		if ($this->search_type != 'key' && $this->search_type != 'value')
@@ -91,7 +91,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page de défaut de gestion des langues
+	** Page de defaut de gestion des langues
 	*/
 	public function page_default_lang()
 	{
@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Retourne les clefs de langues de la base de donnée
+	** Retourne les clefs de langues de la base de donnee
 	*/
 	public function get_cache_lang()
 	{
@@ -178,7 +178,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Filtre le tableau de recherche avec le mot recherché
+	** Filtre le tableau de recherche avec le mot recherche
 	*/
 	public function page_search_word(&$lang)
 	{
@@ -192,7 +192,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Récupère les variables de langue de la langue donnée
+	** Recupere les variables de langue de la langue donnee
 	*/
 	public function page_load_lang()
 	{
@@ -248,7 +248,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		Fsb::$db->query_multi_insert();
 
-		// Suppression de la base de donnée des clefs de langues identiques à leur valeur dans le fichier de langue
+		// Suppression de la base de donnee des clefs de langues identiques a leur valeur dans le fichier de langue
 		if ($delete_keys)
 		{
 			$delete_keys = array_map(array(Fsb::$db, 'escape'), $delete_keys);
@@ -288,7 +288,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Rétabli les variables de langue par défaut en vidant le cache
+	** Retabli les variables de langue par defaut en vidant le cache
 	*/
 	public function page_refresh_lang()
 	{
@@ -313,7 +313,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Upload une archive de langue et tente de la décompresser
+	** Upload une archive de langue et tente de la decompresser
 	*/
 	public function page_install_lang()
 	{
@@ -324,7 +324,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$upload->allow_ext(array('zip', 'tar', 'gz', 'xml'));
 			$lang_name = $upload->store(ROOT . 'lang/');
 
-			// Cette ligne permettra de mettre en champ caché la langue si on utilise une connexion FTP
+			// Cette ligne permettra de mettre en champ cache la langue si on utilise une connexion FTP
 			$_POST['upload_lang'] = $lang_name;
 		}
 
@@ -334,10 +334,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$lang_xml = new Lang_xml();
 			$lang_xml->import('lang/' . $lang_name);
 		}
-		// Import d'une langue compressée
+		// Import d'une langue compressee
 		else
 		{
-			// Instance de l'un objet File() pour la décompression
+			// Instance de l'un objet File() pour la decompression
 			$file = File::factory(Http::request('use_ftp'));
 
 			// Decompression des fichiers
@@ -350,7 +350,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Exporte une langue et lance le téléchargement
+	** Exporte une langue et lance le telechargement
 	*/
 	public function page_export_lang()
 	{
@@ -361,7 +361,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			case 'zip' :
 			case 'tar' :
 			case 'tar.gz' :
-				// On récupère le fichier compressé
+				// On recupere le fichier compresse
 				$compress = new Compress('.' . $ext);
 				$compress->add_file('lang/' . $this->language . '/', 'lang/');
 				$content = $compress->write(TRUE);
@@ -369,14 +369,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			case 'xml' :
 			default :
-				// On récupère une exportation XML de la langue
+				// On recupere une exportation XML de la langue
 				$lang_xml = new Lang_xml();
 				$content = $lang_xml->export(ROOT . 'lang/' . $this->language . '/');
 				$filename = $this->language . '.xml';
 			break;
 		}
 
-		// On lance le téléchargement sur le navigateur
+		// On lance le telechargement sur le navigateur
 		Http::download('fsb_lang_' . $this->language . '.' . $ext, $content);
 	}
 
@@ -401,7 +401,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$ext = get_file_data($file, 'extension');
 				if ($ext == 'txt')
 				{
-					// On regarde si une modification du fichier a été faite
+					// On regarde si une modification du fichier a ete faite
 					$filename = get_file_data($file, 'filename');
 					$content = (file_exists($path . $filename . '.updated')) ? file_get_contents($path . $filename . '.updated') : file_get_contents($path . $file);
 
@@ -427,7 +427,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Objet File pour la modification des fichiers
 		$file = File::factory(Http::request('use_ftp'));
 
-		// Liste des Emails supprimés
+		// Liste des Emails supprimes
 		$mail_path = ROOT . 'lang/' . $this->language . '/mail/';
 		foreach ($email_default AS $f => $v)
 		{
@@ -462,7 +462,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Uniformise les retours à la ligne
+	** Uniformise les retours a la ligne
 	*/
 	public function ln($str)
 	{
@@ -504,7 +504,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		Fsb::$db->free($result);
 
-		// Affichage des données de la FAQ
+		// Affichage des donnees de la FAQ
 		foreach ($GLOBALS['faq_data'] AS $section_name => $section)
 		{
 			Fsb::$tpl->set_blocks('section', array(
@@ -512,7 +512,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'TITLE' =>		Fsb::$session->lang('faq_section_' . $section_name),
 			));
 
-			// Affichage des questions / réponses
+			// Affichage des questions / reponses
 			foreach ($section AS $name => $item)
 			{
 				Fsb::$tpl->set_blocks('section.item', array(

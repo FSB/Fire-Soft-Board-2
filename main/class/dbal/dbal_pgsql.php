@@ -23,9 +23,9 @@ class Dbal_pgsql extends Dbal
 	** Etablit une connexion
 	** -----
 	** $server ::		Adresse du serveur MySQL
-	** $login ::		Login d'accès MySQL
-	** $pass ::			Mot de passe associé au login
-	** $db ::			Nom de la base de donnée à selectionner
+	** $login ::		Login d'acces MySQL
+	** $pass ::			Mot de passe associe au login
+	** $db ::			Nom de la base de donnee a selectionner
 	** $port ::			Port de connexion
 	** $use_cache ::	Utilisation du cache SQL ?
 	*/
@@ -57,23 +57,23 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Execute la requète SQL et renvoie le résultat
+	** Execute la requete SQL et renvoie le resultat
 	** -----
-	** $sql ::		Requète à éxécuter
-	** $buffer ::	Si TRUE, le résultat est bufferisé. Utiliser FALSE pour les
-	**				requètes ne renvoyant pas explicitement de résultat (UPDATE, DELETE,
+	** $sql ::		Requete a executer
+	** $buffer ::	Si TRUE, le resultat est bufferise. Utiliser FALSE pour les
+	**				requetes ne renvoyant pas explicitement de resultat (UPDATE, DELETE,
 	**				INSERT, etc ...)
 	*/
 	public function _query($sql, $buffer = TRUE)
 	{
-		// Gestion des limites de requètes
+		// Gestion des limites de requetes
 		preg_match('/^(.*?)\sLIMIT ([0-9]+)(,\s?([0-9]+))?\s*$/si', $sql, $match);
 		if (isset($match[2]))
 		{
 			$sql = $match[1] . ' LIMIT ' . ((isset($match[4])) ? $match[4] : $match[2]). ((!empty($match[3])) ? ' OFFSET ' . $match[2] : '');
 		}
 
-		// Exécution de la requète
+		// Execution de la requete
 		$this->last_query = $sql;
 		if (!($result = @pg_query($this->id, $sql)) && pg_last_error())
 		{
@@ -83,9 +83,9 @@ class Dbal_pgsql extends Dbal
 	}
 	
 	/*
-	** Simple requète n'affichant pas directement l'erreur
+	** Simple requete n'affichant pas directement l'erreur
 	** -----
-	** $sql ::		Requète à éxécuter
+	** $sql ::		Requete a executer
 	*/
 	public function simple_query($sql)
 	{
@@ -127,8 +127,8 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Retourne la dernière ID après un INSERT en cas d'incrementation automatique.
-	** Pour postgresql nous allons piocher ce numéro directement dans la séquence.
+	** Retourne la derniere ID apres un INSERT en cas d'incrementation automatique.
+	** Pour postgresql nous allons piocher ce numero directement dans la sequence.
 	*/
 	public function last_id()
 	{
@@ -153,9 +153,9 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Protège un champ de la requète
+	** Protege un champ de la requete
 	** -----
-	** $str :: Chaîne à protéger
+	** $str :: Chaine a proteger
 	*/
 	public function escape($str)
 	{
@@ -163,9 +163,9 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Renvoie le nombre de lignes affectées par une requète
+	** Renvoie le nombre de lignes affectees par une requete
 	** -----
-	** $result ::		Résultat d'une requète
+	** $result ::		Resultat d'une requete
 	*/
 	public function affected_rows($result)
 	{
@@ -175,9 +175,9 @@ class Dbal_pgsql extends Dbal
 	/*
 	** Renvoie le type d'un champ
 	** -----
-	** $result ::	Résultat de la requète
-	** $field ::	Champ à vérifier
-	** $table ::	Nom de la table concernée
+	** $result ::	Resultat de la requete
+	** $field ::	Champ a verifier
+	** $table ::	Nom de la table concernee
 	*/
 	public function field_type($result, $field, $table = NULL)
 	{
@@ -186,11 +186,11 @@ class Dbal_pgsql extends Dbal
 
 	/*
 	** Renvoie simplement 'string' ou bien 'int' suivant si le champ est un entier
-	** ou une chaîne de caractères.
+	** ou une chaine de caracteres.
 	** -----
-	** $result ::	Résultat de la requète
-	** $field ::	Champ à vérifier
-	** $table ::	Nom de la table concernée
+	** $result ::	Resultat de la requete
+	** $field ::	Champ a verifier
+	** $table ::	Nom de la table concernee
 	*/
 	public function get_field_type($result, $field, $table = NULL)
 	{
@@ -217,7 +217,7 @@ class Dbal_pgsql extends Dbal
 	/*
 	** Renvoie un tableau contenant la liste des tables
 	** -----
-	** $limit ::	Si TRUE, ne récupère que les tables ayant le même préfixe que le forum
+	** $limit ::	Si TRUE, ne recupere que les tables ayant le meme prefixe que le forum
 	*/
 	public function list_tables($limit = TRUE)
 	{
@@ -253,7 +253,7 @@ class Dbal_pgsql extends Dbal
 	}
 	
 	/*
-	** Renvoie la dernière erreur MySQL
+	** Renvoie la derniere erreur MySQL
 	*/
 	public function sql_error()
 	{
@@ -261,7 +261,7 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Ferme la connexion à la base de donnée
+	** Ferme la connexion a la base de donnee
 	*/
 	public function _close()
 	{
@@ -304,11 +304,11 @@ class Dbal_pgsql extends Dbal
 	}
 
 	/*
-	** Supprime des éléments de plusieurs tables
+	** Supprime des elements de plusieurs tables
 	** (PostgreSQL ne supporte pas les multi suppressions)
 	** -----
-	** $default_table ::		Table par défaut dont on va récupérer les champs
-	** $default_where ::		Clause WHERE pour la récupération des champs
+	** $default_table ::		Table par defaut dont on va recuperer les champs
+	** $default_where ::		Clause WHERE pour la recuperation des champs
 	** $delete_join ::			Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
 	*/
 	public function delete_tables($default_table, $default_where, $delete_join)

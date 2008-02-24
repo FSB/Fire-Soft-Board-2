@@ -10,8 +10,8 @@
 ** +---------------------------------------------------+
 */
 
-// Données en fonction du système d'exploitation : les retours à la ligne et les caractères
-// de séparation de dossier dans les urls
+// Donnees en fonction du systeme d'exploitation : les retours a la ligne et les caracteres
+// de separation de dossier dans les urls
 define('OS_SERVER', (preg_match('/^WIN/', PHP_OS)) ? 'windows' : 'unix');
 define('EOF', (OS_SERVER == 'windows') ? "\r\n" : "\n");
 define('OS_SLASH', (OS_SERVER == 'windows') ? "\\" : "/");
@@ -25,10 +25,10 @@ define('PHP_EXTENSION_MBSTRING', (extension_loaded('mbstring')) ? TRUE : FALSE);
 define('FSB_ERROR', E_USER_ERROR);
 define('FSB_MESSAGE', E_USER_NOTICE);
 
-// ID du membre spécial, visiteur
+// ID du membre special, visiteur
 define('VISITOR_ID', 1);
 
-// Durée à partir duquel un visiteur n'apparait plus dans la liste des membres actuellement en ligne
+// Duree a partir duquel un visiteur n'apparait plus dans la liste des membres actuellement en ligne
 define('ONLINE_LENGTH', 300);
 
 // Niveaux d'autorisation
@@ -39,11 +39,11 @@ define('MODOSUP', 3);
 define('ADMIN', 4);
 define('FONDATOR', 5);
 
-// Vérouillé / Déverouillé
+// Verouille / Deverouille
 define('LOCK', 1);
 define('UNLOCK', 0);
 
-// Temps au démarage de la page
+// Temps au demarage de la page
 define('CURRENT_TIME', time());
 define('ONE_HOUR', 3600);
 define('ONE_DAY', (24 * ONE_HOUR));
@@ -64,17 +64,17 @@ define('GROUP_MODO', 1);
 define('GROUP_USER', 2);
 define('GROUP_WAIT', 3);
 
-// Groupe caché
+// Groupe cache
 define('GROUP_HIDDEN', 1);
 
-// IDX des groupes spéciaux
+// IDX des groupes speciaux
 define('GROUP_SPECIAL_ADMIN', 5);
 define('GROUP_SPECIAL_MODOSUP', 4);
 define('GROUP_SPECIAL_MODO', 3);
 define('GROUP_SPECIAL_USER', 2);
 define('GROUP_SPECIAL_VISITOR', 1);
 
-// Type de lecture / écriture du cache
+// Type de lecture / ecriture du cache
 define('CACHE_TYPE_FILE', 1);
 define('CACHE_TYPE_SQL', 2);
 
@@ -82,7 +82,7 @@ define('CACHE_TYPE_SQL', 2);
 define('READ', 1);
 define('NOTREAD', 0);
 
-// Modes pour l'édition des droits
+// Modes pour l'edition des droits
 define('MODE_TYPE_EASY', 1);
 define('MODE_TYPE_SIMPLE', 2);
 define('MODE_TYPE_ADVANCED', 3);
@@ -92,7 +92,7 @@ define('SEXE_NONE', 0);
 define('SEXE_MALE', 1);
 define('SEXE_FEMALE', 2);
 
-// Méthodes pour les avatars
+// Methodes pour les avatars
 define('AVATAR_METHOD_UPLOAD', 1);
 define('AVATAR_METHOD_LINK', 2);
 define('AVATAR_METHOD_GALLERY', 3);
@@ -101,7 +101,7 @@ define('AVATAR_METHOD_GALLERY', 3);
 define('PROFIL_FIELDS_CONTACT', 1);
 define('PROFIL_FIELDS_PERSONAL', 2);
 
-// Types de messages privés
+// Types de messages prives
 define('MP_INBOX', 0);
 define('MP_OUTBOX', 1);
 define('MP_SAVE_INBOX', 2);
@@ -148,7 +148,7 @@ define('PAGINATION_ALL', PAGINATION_PREV|PAGINATION_NEXT|PAGINATION_FIRST|PAGINA
 define('WARN_MORE', 1);
 define('WARN_LESS', 0);
 
-// Messages approuvés
+// Messages approuves
 define('IS_APPROVED', 0);
 define('IS_NOT_APPROVED', 1);
 
@@ -161,7 +161,7 @@ define('NOTIFY_MSN', 4);
 define('USERLIST_ADVANCED', 1);
 define('USERLIST_SIMPLE', 2);
 
-// Informations sur le serveur FSB à utiliser pour les informations
+// Informations sur le serveur FSB a utiliser pour les informations
 define('FSB_REQUEST_SERVER', 'http://www.fire-soft-board.com');
 define('FSB_REQUEST_VERSION', '/stream/fsb2version.php');
 define('FSB_REQUEST_MODS_VERSION', '/stream/mods_version.php');

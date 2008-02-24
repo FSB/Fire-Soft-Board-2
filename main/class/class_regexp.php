@@ -12,17 +12,17 @@
 */
 
 /*
-** Gestion des expressions régulières principales du forum
+** Gestion des expressions regulieres principales du forum
 */
 class Regexp extends Fsb_model
 {
 	/*
-	** Retourne une expression régulière à partir d'une variable prédéfinie.
-	** Par exemple EMAIL retournera l'expression régulière pour un Email.
+	** Retourne une expression reguliere a partir d'une variable predefinie.
+	** Par exemple EMAIL retournera l'expression reguliere pour un Email.
 	** -----
-	** $varname ::		Nom de la variable prédéfinie
-	** $limit ::		Définit si on retourne l'expression avec les délimiteurs ^ ... $
-	** $options ::		Si des options sont passées, on ajoute les délimiteurs ` à la regexp,
+	** $varname ::		Nom de la variable predefinie
+	** $limit ::		Definit si on retourne l'expression avec les delimiteurs ^ ... $
+	** $options ::		Si des options sont passees, on ajoute les delimiteurs ` a la regexp,
 	**					ainsi que les options.
 	*/
 	public static function pattern($varname, $limit = FALSE, $options = NULL)

@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet de télécharger le backup
+** Permet de telecharger le backup
 */
 class Backup_download extends Backup
 {

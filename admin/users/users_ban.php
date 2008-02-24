@@ -51,17 +51,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page par défaut pour le bannissement
+	** Page par defaut pour le bannissement
 	*/
 	public function page_ban_default()
 	{
-		// suppression des bans expirés
+		// suppression des bans expires
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'ban
 				WHERE ban_length < \'' . CURRENT_TIME . '\'
 					AND ban_length <> 0';
 		Fsb::$db->query($sql);
 
-		// Génération des listes et de la page
+		// Generation des listes et de la page
 		$list_ban_type = Html::create_list('ban_type', 'login', array(
 			'login' =>		Fsb::$session->lang('adm_ban_login'),
 			'ip' =>			Fsb::$session->lang('adm_ban_ip'),
@@ -93,7 +93,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche ligne par les ligne tout ce qui a été banni
+	** Affiche ligne par les ligne tout ce qui a ete banni
 	*/
 	public function page_show_banish()
 	{
@@ -117,7 +117,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Banni un login, une IP ou une adresse email. Délogue tous les membres
+	** Banni un login, une IP ou une adresse email. Delogue tous les membres
 	** qui corresponedent au bannissement.
 	*/
 	public function page_add_ban()

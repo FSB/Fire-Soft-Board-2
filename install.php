@@ -11,16 +11,16 @@
 */
 
 /*
-** Procédure d'installation du forum
+** Procedure d'installation du forum
 */
 
 if (!defined('ROOT'))
 {
-	die(utf8_decode('This file must be included.<hr />Ce fichier doit être inclus'));
+	die(utf8_decode('This file must be included.<hr />Ce fichier doit etre inclus'));
 }
 
 /*
-** Méthode magique permettant le chargement dynamique de classes
+** Methode magique permettant le chargement dynamique de classes
 */
 function __autoload($classname)
 {
@@ -29,7 +29,7 @@ function __autoload($classname)
 }
 
 /*
-** Permet d'accéder partout aux variables globales necessaires au fonctionement du forum
+** Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
 */
 class Fsb extends Fsb_model
 {
@@ -43,7 +43,7 @@ class Fsb extends Fsb_model
 }
 
 /*
-** Inclus un fichier dans le dossier main/ de façon intéligente
+** Inclus un fichier dans le dossier main/ de facon inteligente
 ** -----
 ** $file ::		Nom du fichier
 */
@@ -77,7 +77,7 @@ function fsb_import($filename)
 // Instance de la classe Debug
 Fsb::$debug = new Debug();
 
-// Inclusion des fonctions / classes communes à toutes les pages
+// Inclusion des fonctions / classes communes a toutes les pages
 fsb_import('csts');
 fsb_import('globals');
 fsb_import('fcts_common');
@@ -132,7 +132,7 @@ if ($convert = Http::request('convert'))
 	exit;
 }
 
-// Liste des DBMS supportées par FSB
+// Liste des DBMS supportees par FSB
 $dbms = array(
 	'mysql' =>		'MySQL 4.1+',
 	'mysqli' =>		'MySQLi 4.1+',
@@ -140,7 +140,7 @@ $dbms = array(
 	'pgsql' =>		'PostgreSQL 8',
 );
 
-// Fichiers à chmoder
+// Fichiers a chmoder
 $chmod_files = array(
 	'config' =>		array('path' => 'config/config.' . PHPEXT, 'chmod' => 0666),
 	'cache_sql' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
@@ -297,14 +297,14 @@ function install_admin($quick = false)
 	}
 	else
 	{
-		// Données pour l'inscription
+		// Donnees pour l'inscription
 		$user_data = array('login', 'nickname', 'password', 'password_confirm', 'email');
 		foreach ($user_data AS $user_var)
 		{
 			$$user_var = trim(Http::request($user_var, 'post'));
 		}
 
-		// Nickname par défaut ?
+		// Nickname par defaut ?
 		if (!$nickname)
 		{
 			$nickname = $login;
@@ -317,7 +317,7 @@ function install_admin($quick = false)
 		}
 	}
 
-	// Création d'un grain pour les mots de passe
+	// Creation d'un grain pour les mots de passe
 	Fsb::$cfg = new Config('config', array('fsb_hash' => substr(md5(rand(0, CURRENT_TIME) . rand(0, CURRENT_TIME)), 0, 10)));
 
 	Fsb::$db->update('users', array(
@@ -367,7 +367,7 @@ function install_admin($quick = false)
 	Log::add(Log::ADMIN, 'install_fsb');
 }
 
-// Installation de la base de donnée
+// Installation de la base de donnee
 function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port)
 {
 	global $config_code;
@@ -375,7 +375,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	// On commence une transaction
 	Fsb::$db->transaction('begin');
 
-	// Exécution des requètes d'installations pour la base de donnée
+	// Execution des requetes d'installations pour la base de donnee
 	@set_time_limit(0);
 	$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_shemas.sql'));
 	foreach ($queries AS $query)
@@ -394,7 +394,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	}
 	unset($queries);
 
-	// Requêtes après les requêtes de données ?
+	// Requetes apres les requetes de donnees ?
 	if (file_exists('db_shemas/' . $sql_dbms . '_end.sql'))
 	{
 		$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_end.sql'));
@@ -440,7 +440,7 @@ if (Http::request('quick_install', 'post'))
 {
 	if (defined('FSB_INSTALL'))
 	{
-		trigger_error('Forum déjà installé', FSB_ERROR);
+		trigger_error('Forum deja installe', FSB_ERROR);
 	}
 
 	$sql_dbms =			'mysql';
@@ -453,7 +453,7 @@ if (Http::request('quick_install', 'post'))
 
 	mysql_connect($sql_server, $sql_login, $sql_password);
 	$sql = 'CREATE DATABASE ' . $sql_dbname;
-	mysql_query($sql) OR die(mysql_error() . '<hr />Impossible de créer la base de donnée ' . $sql_dbname);
+	mysql_query($sql) OR die(mysql_error() . '<hr />Impossible de creer la base de donnee ' . $sql_dbname);
 	mysql_close();
 
 	define('SQL_DBAL', $sql_dbms);
@@ -478,7 +478,7 @@ else if (Http::request('go_to_step_config', 'post') && defined('FSB_INSTALL'))
 	Fsb::$db = Dbal::factory();
 	if (!Fsb::$db->_get_id())
 	{
-		trigger_error('Impossible de se connecter à la base de donnée : ' . Fsb::$db->sql_error(), FSB_ERROR);
+		trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error(), FSB_ERROR);
 	}
 
 	install_config();
@@ -490,7 +490,7 @@ else if (Http::request('go_to_step_end', 'post') && defined('FSB_INSTALL'))
 	Fsb::$db = Dbal::factory();
 	if (!Fsb::$db->_get_id())
 	{
-		trigger_error('Impossible de se connecter à la base de donnée : ' . Fsb::$db->sql_error(), FSB_ERROR);
+		trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error(), FSB_ERROR);
 	}
 
 	install_admin();
@@ -500,7 +500,7 @@ else if (Http::request('go_to_step_end', 'post') && defined('FSB_INSTALL'))
 else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 {
 	/*
-	** Connexion à la base de donnée
+	** Connexion a la base de donnee
 	*/
 	$sql_dbms =			trim(Http::request('sql_dbms', 'post'));
 	$sql_server =		trim(Http::request('sql_server', 'post'));
@@ -510,7 +510,7 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	$sql_prefix =		trim(Http::request('sql_prefix', 'post'));
 	$sql_port =			intval(Http::request('sql_port', 'post'));
 
-	// Si on utilise SQLite on met la base de donnée dans ~/main/dbal/sqlite/
+	// Si on utilise SQLite on met la base de donnee dans ~/main/dbal/sqlite/
 	if ($sql_dbms == 'sqlite')
 	{
 		$sql_dbname = md5(uniqid(rand(), TRUE)) . '.sqlite';
@@ -597,11 +597,11 @@ switch ($current_step)
 	break;
 
 	case 'admin' :
-		// Troisième étape, création du compte administrateur
+		// Troisieme etape, creation du compte administrateur
 		Fsb::$tpl->set_switch('step_admin');
 		if ($write_config)
 		{
-			// Si le fichier config a été écrit on gère la création du compte admin
+			// Si le fichier config a ete ecrit on gere la creation du compte admin
 			Fsb::$tpl->set_vars(array(
 				'LOGIN' =>				(isset($adm_login)) ? $adm_login : '',
 				'EMAIL' =>				(isset($adm_email)) ? $adm_email : '',
@@ -609,7 +609,7 @@ switch ($current_step)
 		}
 		else
 		{
-			// Si le fichier config n'a pu être écrit ...
+			// Si le fichier config n'a pu etre ecrit ...
 			Fsb::$tpl->set_switch('config_mode');
 			Fsb::$tpl->set_vars(array(
 				'CONFIG_CODE' =>		htmlspecialchars($config_code),
@@ -618,10 +618,10 @@ switch ($current_step)
 	break;
 
 	case 'db' :
-		// Seconde étape, la base de donnée
+		// Seconde etape, la base de donnee
 		Fsb::$tpl->set_switch('step_db');
 
-		// Création de la liste des bases de données
+		// Creation de la liste des bases de donnees
 		$list_db = '<select name="sql_dbms" id="sql_dbms_id" onchange="db_change(this.value);">';
 		foreach ($dbms AS $extension => $db_name)
 		{
@@ -679,7 +679,7 @@ switch ($current_step)
 			}
 		}
 
-		// Un bon informaticien est un informaticien fénéant ...
+		// Un bon informaticien est un informaticien feneant ...
 		foreach (array('host', 'login', 'password', 'port', 'path') AS $v)
 		{
 			Fsb::$tpl->set_vars(array(
@@ -689,7 +689,7 @@ switch ($current_step)
 	break;
 
 	default :
-		// Première page de l'installation
+		// Premiere page de l'installation
 		Fsb::$tpl->set_switch('step_home');
 
 		if (IS_LOCALHOST)

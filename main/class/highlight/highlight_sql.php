@@ -36,7 +36,7 @@ class Highlight_sql extends Highlight
 	}
 
 	/*
-	** Parse une chaîne de caractère SQL
+	** Parse une chaine de caractere SQL
 	*/
 	protected function _parse($str)
 	{

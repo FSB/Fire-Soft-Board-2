@@ -11,23 +11,23 @@
 */
 
 /*
-** Couche d'abstraction pour base de donnée.
+** Couche d'abstraction pour base de donnee.
 */
 abstract class Dbal extends Fsb_model
 {
 	// ID de ressource de la connexion
 	protected $id = NULL;
 	
-	// Nombres de requètes
+	// Nombres de requetes
 	public $count = 0;
 	
-	// Chaîne de caractère contenant les informations de débugage des requètes
+	// Chaine de caractere contenant les informations de debugage des requetes
 	private $debug_str = '';
 
-	// Peut utiliser les requètes explain
+	// Peut utiliser les requetes explain
 	public $can_use_explain = FALSE;
 
-	// Peut utiliser les requètes REPLACE
+	// Peut utiliser les requetes REPLACE
 	public $can_use_replace = FALSE;
 
 	// Peut utiliser les multi-insertions
@@ -36,23 +36,23 @@ abstract class Dbal extends Fsb_model
 	// Peut utiliser des requetes TRUNCATE
 	public $can_use_truncate = FALSE;
 
-	// Tableau contenant les requètes mises en cache
+	// Tableau contenant les requetes mises en cache
 	private $cache_query;
 
-	// Dernier résultat de requète
+	// Dernier resultat de requete
 	private $result_query = 0;
 
-	// Itérateur pour les requètes en cache
+	// Iterateur pour les requetes en cache
 	private $iterator_query = array();
 
 	// Tableau de multi insertion
 	protected $multi_insert = array();
 
-	// Tableau de mise ne cache pour pouvoir accéder à l'offset d'un champ
-	// à partir de son nom en chaîne de caractère
+	// Tableau de mise ne cache pour pouvoir acceder a l'offset d'un champ
+	// a partir de son nom en chaine de caractere
 	private $cache_field_type = array();
 
-	// Définit si on est dans une transaction
+	// Definit si on est dans une transaction
 	protected $in_transaction = FALSE;
 
 	// Objet cache
@@ -88,7 +88,7 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Retourne une instance de la classe Sql sur le bon type de base de donnée
+	** Retourne une instance de la classe Sql sur le bon type de base de donnee
 	*/
 	public static function factory($sql_server = NULL, $sql_login = NULL, $sql_pass = NULL, $sql_db = NULL, $sql_port = NULL, $use_cache = TRUE)
 	{
@@ -103,10 +103,10 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Execute une requète SQL
+	** Execute une requete SQL
 	** -----
-	** $sql ::			Requète SQL
-	** $cache_prefix ::	Chaine de caractère utilisée pour identifier une série de requètes à mettre en cache
+	** $sql ::			Requete SQL
+	** $cache_prefix ::	Chaine de caractere utilisee pour identifier une serie de requetes a mettre en cache
 	*/
 	public function query($sql, $cache_prefix = NULL)
 	{
@@ -120,7 +120,7 @@ abstract class Dbal extends Fsb_model
 			$this->cache = Cache::factory('sql');
 		}
 
-		// On calcul un hash MD5 de la requète
+		// On calcul un hash MD5 de la requete
 		$hash_query = md5($sql);
 
 		// DEBUG
@@ -131,7 +131,7 @@ abstract class Dbal extends Fsb_model
 			$this->debug_query($sql, $result_explain, $start_query);
 		}
 
-		// On regarde si un cache de la requète existe
+		// On regarde si un cache de la requete existe
 		if ($cache_prefix && $this->cache->exists($cache_prefix . $hash_query))
 		{
 			$this->result_query++;
@@ -151,11 +151,11 @@ abstract class Dbal extends Fsb_model
 			$this->count++;
 			if ($cache_prefix)
 			{
-				// On met la requète en cache
+				// On met la requete en cache
 				$data = $this->rows($result, 'array');
 				$this->cache->put($cache_prefix . $hash_query, $data, $sql);
 
-				// On récupère tout de même le résultat de la requète
+				// On recupere tout de meme le resultat de la requete
 				$this->result_query++;
 				$this->cache_query[$this->result_query] = $data;
 				$this->iterator_query[$this->result_query] = 0;
@@ -173,13 +173,13 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Construit une requète INSERT / REPLACE à partir d'un tableau.
+	** Construit une requete INSERT / REPLACE a partir d'un tableau.
 	** -----
 	** $table ::		Nom de la table
-	** $ary ::			Tableau contenant en clef les champs de la requète et en
-	**						valeur les valeurs pour la requète
+	** $ary ::			Tableau contenant en clef les champs de la requete et en
+	**						valeur les valeurs pour la requete
 	** $insert ::		INSERT ou REPLACE
-	** $multi_insert ::	TRUE pour une insertion multiple, à utiliser avec la méthode finale
+	** $multi_insert ::	TRUE pour une insertion multiple, a utiliser avec la methode finale
 	**						Dbal::query_multi_insert()
 	*/
 	public function insert($table, $ary, $insert = 'INSERT', $multi_insert = FALSE)
@@ -254,12 +254,12 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Construit une requète UPDATE à partir d'un tableau
+	** Construit une requete UPDATE a partir d'un tableau
 	** -----
 	** $table ::	Nom de la table
-	** $ary ::		Tableau contenant en clef les champs de la requète et en
-	**				valeur les valeurs pour la requète
-	** $where ::	Clause where de la requète
+	** $ary ::		Tableau contenant en clef les champs de la requete et en
+	**				valeur les valeurs pour la requete
+	** $where ::	Clause where de la requete
 	*/
 	public function update($table, $ary, $where = '')
 	{
@@ -305,14 +305,14 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Retourne une ligne du résultat et déplace le pointeur
+	** Retourne une ligne du resultat et deplace le pointeur
 	** vers la ligne suivante.
 	** -----
-	** $result ::		Résultat d'une requète
-	** $function ::		Fonction à appeler par défaut il s'agira de "assoc" qui
+	** $result ::		Resultat d'une requete
+	** $function ::		Fonction a appeler par defaut il s'agira de "assoc" qui
 	**					appellera mysql_fetch_assoc(). Il existe aussi "row" et
 	**					"array" qui retournent respectivement un tableau sous forme d'indice
-	**					et un mélange de "assoc" et "row".
+	**					et un melange de "assoc" et "row".
 	*/
 	public function row($result, $function = 'assoc')
 	{
@@ -331,12 +331,12 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Renvoie un tableau contenant chaque ligne du résultat
+	** Renvoie un tableau contenant chaque ligne du resultat
 	** -----
-	** $result ::		Résultat d'une requète
-	** $function ::		Voir la méthode row()
-	** $field_name ::	Si le nom d'un champ est passé en paramètre, le tableau sera associé aux valeurs de ce champ. Ce champ
-	**					doit être unique.
+	** $result ::		Resultat d'une requete
+	** $function ::		Voir la methode row()
+	** $field_name ::	Si le nom d'un champ est passe en parametre, le tableau sera associe aux valeurs de ce champ. Ce champ
+	**					doit etre unique.
 	*/
 	public function rows($result, $function = 'assoc', $field_name = NULL)
 	{
@@ -359,9 +359,9 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Libère le résultat d'une requète
+	** Libere le resultat d'une requete
 	** -----
-	** $result ::		Résultat d'une requète
+	** $result ::		Resultat d'une requete
 	*/
 	public function free($result)
 	{
@@ -374,7 +374,7 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Retourne un ou plusieurs champs d'une requète, par exemple :
+	** Retourne un ou plusieurs champs d'une requete, par exemple :
 	**	$sql = 'SELECT field FROM table WHERE field = xxx';
 	**	$field = Fsb::$db->get($sql, 'field');
 	**
@@ -409,9 +409,9 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Retourne le résultat d'une requête
+	** Retourne le resultat d'une requete
 	** -----
-	** $query ::	Requête SQL
+	** $query ::	Requete SQL
 	*/
 	public function request($query)
 	{
@@ -423,9 +423,9 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Détruit les requètes mises en cache
+	** Detruit les requetes mises en cache
 	** -----
-	** $prefix ::	Préfixe des requètesà détruire
+	** $prefix ::	Prefixe des requetesa detruire
 	*/
 	public function destroy_cache($prefix = NULL)
 	{
@@ -436,9 +436,9 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Renvoie le nombre de ligne retournée par une requète SELECT
+	** Renvoie le nombre de ligne retournee par une requete SELECT
 	** -----
-	** $result ::		Résultat d'une requète
+	** $result ::		Resultat d'une requete
 	*/
 	public function count($result)
 	{
@@ -446,7 +446,7 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Ferme la connexion à la base de donnée
+	** Ferme la connexion a la base de donnee
 	*/
 	public function close()
 	{		
@@ -461,19 +461,19 @@ abstract class Dbal extends Fsb_model
 	}
 
 	/*
-	** Permet d'afficher le débugage d'une requète
+	** Permet d'afficher le debugage d'une requete
 	** -----
-	** $sql ::					Requète SQL
-	** $result_explain ::		Résultat de la requète EXPLAIN
-	** $start_time ::			Temps de début de la requète
-	** $result ::				Résultat de la requète
+	** $sql ::					Requete SQL
+	** $result_explain ::		Resultat de la requete EXPLAIN
+	** $start_time ::			Temps de debut de la requete
+	** $result ::				Resultat de la requete
 	*/
 	private function debug_query($sql, &$result_explain, &$start_query, $result = 0)
 	{
 		if (!$result)
 		{
 			/*
-			** EXPLAIN semble n'être supporté que par MySQL actuellement
+			** EXPLAIN semble n'etre supporte que par MySQL actuellement
 			*/
 			if ($this->can_use_explain)
 			{
@@ -502,7 +502,7 @@ abstract class Dbal extends Fsb_model
 		{
 			$is_cache = (is_int($result) && isset($this->cache_query[$result])) ? TRUE : FALSE;
 			$total_time = substr(Fsb::$debug->get_time() - $start_query, 0, 10);
-			$this->debug_str .= '<table cellspacing="0" cellpadding="3" style="width: 100%; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000;"><tr><th style="background-color: #EEEEEE; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">Requète numéro ' . ($this->count) . '</th></tr><tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">' . htmlspecialchars($sql) . '</td></tr>';
+			$this->debug_str .= '<table cellspacing="0" cellpadding="3" style="width: 100%; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000;"><tr><th style="background-color: #EEEEEE; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">Requete numero ' . ($this->count) . '</th></tr><tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">' . htmlspecialchars($sql) . '</td></tr>';
 			if ($result_explain && $this->can_use_explain)
 			{
 				$print_fields = FALSE;
@@ -528,14 +528,14 @@ abstract class Dbal extends Fsb_model
 				}
 				$this->debug_str .= '</table></td></tr>';
 			}
-			$this->debug_str .= '<tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: ' . (($result_explain && $this->can_use_explain) ? '1' : '0') . 'px 0px 0px 0px">Lignes affectées : ' . ((preg_match('/^SELECT/i', $sql)) ? $this->count($result) : $this->affected_rows($result_explain)) . (($is_cache) ? ' | Requète en cache' : ' | Requète éxécutée en ' . $total_time . ' Secondes') . '</td></tr></table><br />';
+			$this->debug_str .= '<tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: ' . (($result_explain && $this->can_use_explain) ? '1' : '0') . 'px 0px 0px 0px">Lignes affectees : ' . ((preg_match('/^SELECT/i', $sql)) ? $this->count($result) : $this->affected_rows($result_explain)) . (($is_cache) ? ' | Requete en cache' : ' | Requete executee en ' . $total_time . ' Secondes') . '</td></tr></table><br />';
 		}
 	}
 }
 
 /*
-** Créations de requètes SQL SELECT dynamiques.
-** A n'utiliser que sur des requètes dynamiques / difficiles de lectures.
+** Creations de requetes SQL SELECT dynamiques.
+** A n'utiliser que sur des requetes dynamiques / difficiles de lectures.
 */
 class Sql_select extends Fsb_model
 {
@@ -550,7 +550,7 @@ class Sql_select extends Fsb_model
 	/*
 	** Constructeur
 	** -----
-	** $select_state ::		Clause de selection de la requète (SELECT DISTINCT par exemple)
+	** $select_state ::		Clause de selection de la requete (SELECT DISTINCT par exemple)
 	*/
 	public function __construct($select_state = 'SELECT')
 	{
@@ -558,11 +558,11 @@ class Sql_select extends Fsb_model
 	}
 
 	/*
-	** Ajoute une table à la requète
+	** Ajoute une table a la requete
 	** -----
-	** $join_state ::		Liaison de la table dans la requète (FROM, LEFT JOIN, INNER JOIN, etc...)
+	** $join_state ::		Liaison de la table dans la requete (FROM, LEFT JOIN, INNER JOIN, etc...)
 	** $tablename ::		Nom de la table
-	** $fields ::			Champs à selectionner
+	** $fields ::			Champs a selectionner
 	** $on ::				Jointure de la table
 	*/
 	public function join_table($join_state, $tablename, $fields = '', $on = '')
@@ -574,7 +574,7 @@ class Sql_select extends Fsb_model
 	/*
 	** Rempli la clause WHERE
 	** -----
-	** $str ::		Chaine de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public function where($str)
 	{
@@ -584,7 +584,7 @@ class Sql_select extends Fsb_model
 	/*
 	** Rempli la clause GROUP BY
 	** -----
-	** $str ::		Chaine de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public function group_by($str)
 	{
@@ -594,7 +594,7 @@ class Sql_select extends Fsb_model
 	/*
 	** Rempli la clause ORDER BY
 	** -----
-	** $str ::		Chaine de caractère
+	** $str ::		Chaine de caractere
 	*/
 	public function order_by($str)
 	{
@@ -613,10 +613,10 @@ class Sql_select extends Fsb_model
 	}
 
 	/*
-	** Execute la requète
+	** Execute la requete
 	** -----
 	** $get ::			Utilisation de Sql_dbal::get() 
-	** $cache_query ::	Prefixe de la requète si on souhaite la mettre en cache
+	** $cache_query ::	Prefixe de la requete si on souhaite la mettre en cache
 	*/
 	public function execute($get = '', $cache_query = '')
 	{

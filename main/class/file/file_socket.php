@@ -11,14 +11,14 @@
 */
 
 /*
-** Méthode socket
+** Methode socket
 */
 class File_socket extends File
 {
 	// Socket de connexion
 	private $sock;
 
-	// Méthode
+	// Methode
 	public $method = 'socket';
 
 	/*
@@ -62,7 +62,7 @@ class File_socket extends File
 		$this->root_path = './';
 		$this->local_path = ROOT;
 
-		// On se déplace à la racine du forum
+		// On se deplace a la racine du forum
 		if (!$this->_chdir($path))
 		{
 			return (File::FILE_CANT_CHDIR);
@@ -71,9 +71,9 @@ class File_socket extends File
 	}
 
 	/*
-	** Change de répertoire courant
+	** Change de repertoire courant
 	** -----
-	** $path ::		Nouveau répertoire courant
+	** $path ::		Nouveau repertoire courant
 	*/
 	protected function _chdir($path)
 	{
@@ -115,7 +115,7 @@ class File_socket extends File
 		$socket = $this->_open_connexion();
 		$this->_send("STOR $dst", FALSE);
 
-		// On envoie le fichier sur le réseau
+		// On envoie le fichier sur le reseau
 		if ($socket)
 		{
 			$fd = fopen($this->local_path . $src, 'rb');
@@ -137,7 +137,7 @@ class File_socket extends File
 	/*
 	** Supprime un fichier
 	** -----
-	** $filename ::		Nom du fichier à supprimer
+	** $filename ::		Nom du fichier a supprimer
 	*/
 	protected function _unlink($filename)
 	{
@@ -145,9 +145,9 @@ class File_socket extends File
 	}
 
 	/*
-	** Créé un répertoire
+	** Cree un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _mkdir($dir)
 	{
@@ -155,9 +155,9 @@ class File_socket extends File
 	}
 
 	/*
-	** Supprime un répertoire
+	** Supprime un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _rmdir($dir)
 	{
@@ -165,7 +165,7 @@ class File_socket extends File
 	}
 
 	/*
-	** Lit la réponse du serveur sur la socket
+	** Lit la reponse du serveur sur la socket
 	*/
 	protected function _read()
 	{
@@ -197,7 +197,7 @@ class File_socket extends File
 	}
 
 	/*
-	** Ouvre une connexion pour l'envoie de données sur le socket, renvoie le socket de connexion
+	** Ouvre une connexion pour l'envoie de donnees sur le socket, renvoie le socket de connexion
 	*/
 	protected function _open_connexion()
 	{
@@ -207,13 +207,13 @@ class File_socket extends File
 			return (File::FILE_CANT_CONNECT_SERVER);
 		}
 
-		// On lit la réponse (qui doit contenir une IP et un port)
+		// On lit la reponse (qui doit contenir une IP et un port)
 		if (!preg_match('#[0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]{1,3},[0-9]+,[0-9]+#', $read, $match))
 		{
 			return (File::FILE_CANT_CONNECT_SERVER);
 		}
 
-		// On récupère l'IP et le port du serveur
+		// On recupere l'IP et le port du serveur
 		$split = explode(',', $match[0]);
 		$ip = $split[0] . '.' . $split[1] . '.' . $split[2] . '.' . $split[3];
 		$port = $split[4] * 256 + $split[5];
@@ -229,7 +229,7 @@ class File_socket extends File
 	}
 
 	/*
-	** Ferme la connexion ouverte par la méthode Socket_file::_open_connexion()
+	** Ferme la connexion ouverte par la methode Socket_file::_open_connexion()
 	** -----
 	** $socket ::	File descriptor
 	*/

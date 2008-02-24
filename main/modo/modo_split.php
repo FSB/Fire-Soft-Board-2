@@ -14,11 +14,11 @@
 $show_this_module = TRUE;
 
 /*
-** Module de modération pour la division de sujet
+** Module de moderation pour la division de sujet
 */
 class Page_modo_split extends Fsb_model
 {
-	// ID du sujet à diviser
+	// ID du sujet a diviser
 	public $id;
 
 	/*
@@ -75,7 +75,7 @@ class Page_modo_split extends Fsb_model
 				Display::message('not_allowed');
 			}
 
-			// Données du sujet
+			// Donnees du sujet
 			Fsb::$tpl->set_switch('show_topic');
 			Fsb::$tpl->set_vars(array(
 				'TOPIC_NAME' =>		Parser::title($row['t_title']),
@@ -85,7 +85,7 @@ class Page_modo_split extends Fsb_model
 			// Messages
 			do
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -110,11 +110,11 @@ class Page_modo_split extends Fsb_model
 	}
 
 	/*
-	** Divise le sujet en reportant les messages selectionnés dans un nouveau sujet
+	** Divise le sujet en reportant les messages selectionnes dans un nouveau sujet
 	*/
 	public function split_topic()
 	{
-		// Messages selectionés
+		// Messages selectiones
 		$action = (array) Http::request('action', 'post');
 		if (!$action)
 		{

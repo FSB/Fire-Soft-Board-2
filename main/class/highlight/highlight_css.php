@@ -27,7 +27,7 @@ class Highlight_css extends Highlight
 	}
 
 	/*
-	** Parse une chaîne de caractère CSS
+	** Parse une chaine de caractere CSS
 	*/
 	protected function _parse($str)
 	{

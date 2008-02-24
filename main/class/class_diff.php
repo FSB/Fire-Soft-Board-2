@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet de comparer deux chaines de caractères lignes par ligne, afin de trouver les différences.
+** Permet de comparer deux chaines de caracteres lignes par ligne, afin de trouver les differences.
 */
 class Diff extends Fsb_model
 {
@@ -21,10 +21,10 @@ class Diff extends Fsb_model
 	// Longueur des deux chaines
 	private $count1, $count2;
 
-	// Lignes stoquées avec leurs informations
+	// Lignes stoquees avec leurs informations
 	private $stack = array();
 
-	// Liste des différences entre les deux fichiers
+	// Liste des differences entre les deux fichiers
 	public $entries = array();
 
 	const EQUAL = '=';
@@ -33,10 +33,10 @@ class Diff extends Fsb_model
 	const CHANGE = '~';
 
 	/*
-	** Charge à partir de chaines de caractères
+	** Charge a partir de chaines de caracteres
 	** -----
-	** $str1 ::		Code à gauche
-	** $str2 ::		Code à droite
+	** $str1 ::		Code a gauche
+	** $str2 ::		Code a droite
 	*/
 	public function load_content($str1, $str2)
 	{
@@ -49,17 +49,17 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Charge à partir de noms de fichiers.
-	** Pour cette méthode un cache implémenté, il est fortement recommandé de l'utiliser, les gains de performances
-	** sont assez énormes sur les gros fichiers.
+	** Charge a partir de noms de fichiers.
+	** Pour cette methode un cache implemente, il est fortement recommande de l'utiliser, les gains de performances
+	** sont assez enormes sur les gros fichiers.
 	** -----
-	** $src ::			Fichier à gauche
-	** $dst ::			Fichier à droite
+	** $src ::			Fichier a gauche
+	** $dst ::			Fichier a droite
 	** $use_cache ::	Si on met les fichiers en cache
 	*/
 	public function load_file($src, $dst, $use_cache = FALSE)
 	{
-		// Date de dernière modification des fichiers, utile pour savoir si on compte faire une remise en cache
+		// Date de derniere modification des fichiers, utile pour savoir si on compte faire une remise en cache
 		$filemtime1 = filemtime($src);
 		$filemtime2 = filemtime($dst);
 
@@ -99,11 +99,11 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Parse les deux textes, afin de récupérer les différences
+	** Parse les deux textes, afin de recuperer les differences
 	*/
 	public function parse()
 	{
-		// Création d'une matrice schématisant les différences des fichiers
+		// Creation d'une matrice schematisant les differences des fichiers
  		$matrix = array();
 		$last_row = array();
 		for ($i = -1; $i < $this->count2; $i++)
@@ -191,7 +191,7 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Compresse une ligne de tableau pour éviter d'allouer trop de mémoires dans la matrice
+	** Compresse une ligne de tableau pour eviter d'allouer trop de memoires dans la matrice
 	** -----
 	** $row ::		Ligne de matrice
 	*/
@@ -201,7 +201,7 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Décompresse une ligne compressée de la matrice
+	** Decompresse une ligne compressee de la matrice
 	** -----
 	** $row ::		Ligne de matrice
 	*/
@@ -218,9 +218,9 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Ajoute une entrée si la ligne reste inchangée
+	** Ajoute une entree si la ligne reste inchangee
 	** -----
-	** $code ::		Code inchangé
+	** $code ::		Code inchange
 	*/
 	private function match(&$code)
 	{
@@ -238,7 +238,7 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Ajoute une entrée en cas de modifications entre les deux codes
+	** Ajoute une entree en cas de modifications entre les deux codes
 	** -----
 	** $src ::		Code du fichier original
 	** $dst ::		Code du second fichier
@@ -248,7 +248,7 @@ class Diff extends Fsb_model
 		$s1 = count($src);
 		$s2 = count($dst);
 
-		// Ligne supprimée
+		// Ligne supprimee
 		if ($s1 > 0 && $s2 == 0)
 		{
 			array_unshift($this->entries, array(
@@ -257,7 +257,7 @@ class Diff extends Fsb_model
 				'state' =>	Diff::DROP,
 			));
 		}
-		// Ligne ajoutée
+		// Ligne ajoutee
 		else if ($s2 > 0 && $s1 == 0)
 		{
 			array_unshift($this->entries, array(
@@ -266,7 +266,7 @@ class Diff extends Fsb_model
 				'state' =>	Diff::ADD,
 			));
 		}
-		// Ligne modifiée
+		// Ligne modifiee
 		else if ($s1 > 0 && $s2 > 0)
 		{
 			array_unshift($this->entries, array(
@@ -280,7 +280,7 @@ class Diff extends Fsb_model
 	}
 
 	/*
-	** Affiche le résultat du diff en dur
+	** Affiche le resultat du diff en dur
 	** -----
 	** $wrap ::		Wrap automatique
 	*/
@@ -328,8 +328,8 @@ class Diff extends Fsb_model
 	/*
 	** Formate l'affichage du diff
 	** -----
-	** $str ::		Chaine de caractère
-	** $wrap ::		Retour à la ligne à la fin du block
+	** $str ::		Chaine de caractere
+	** $wrap ::		Retour a la ligne a la fin du block
 	*/
 	public function format($str, $wrap)
 	{

@@ -21,7 +21,7 @@ if (strpos($_SERVER['PHP_SELF'], 'online.') !== FALSE)
 }
 
 //
-// On génère la légende si l'affichage des membres en ligne est activé
+// On genere la legende si l'affichage des membres en ligne est active
 //
 if (Fsb::$session->is_authorized('online_box'))
 {
@@ -41,7 +41,7 @@ if (Fsb::$session->is_authorized('online_box'))
 		}
 		Fsb::$db->free($result);
 
-		// Tri des groupes de la légende
+		// Tri des groupes de la legende
 		usort($legend[GROUP_SPECIAL], create_function('$a,$b', 'return (($a[\'g_id\'] < $b[\'g_id\']) ? 1 : -1);'));
 		usort($legend[GROUP_NORMAL], create_function('$a,$b', 'return (($a[\'g_name\'] > $b[\'g_name\']) ? 1 : -1);'));
 		$legend = array_merge($legend[GROUP_SPECIAL], $legend[GROUP_NORMAL]);
@@ -121,7 +121,7 @@ if (Fsb::$session->is_authorized('online_box'))
 					$total_user++;
 				}
 
-				// Autorisation de voir les invités ?
+				// Autorisation de voir les invites ?
 				if (!$row['u_activate_hidden'] || (Fsb::$session->auth() >= MODOSUP || Fsb::$session->id() == $row['s_id']))
 				{
 					Fsb::$tpl->set_blocks('online', array(
@@ -134,7 +134,7 @@ if (Fsb::$session->is_authorized('online_box'))
 		Fsb::$db->free($result);
 		unset($ip_array, $id_array);
 
-		// Mise à jour du nombre max de visiteurs sur le forum
+		// Mise a jour du nombre max de visiteurs sur le forum
 		if (($total_visitor + $total_user + $total_hidden) > Fsb::$cfg->get('max_visitors_total'))
 		{
 			Fsb::$cfg->update('max_visitors_total', $total_visitor + $total_user + $total_hidden);
@@ -148,7 +148,7 @@ if (Fsb::$session->is_authorized('online_box'))
 	}
 
 	//
-	// On affiche les membres ayant visités le forum aujourd'hui
+	// On affiche les membres ayant visites le forum aujourd'hui
 	//
 	if (Fsb::$mods->is_active('online_show_today'))
 	{
@@ -190,7 +190,7 @@ if (Fsb::$session->is_authorized('online_box'))
 	}
 
 	//
-	// On récupère les membres dont l'anniversaire est aujourd'hui
+	// On recupere les membres dont l'anniversaire est aujourd'hui
 	//
 	if (Fsb::$mods->is_active('online_show_birthday'))
 	{
@@ -237,7 +237,7 @@ if (Fsb::$session->is_authorized('online_box'))
 	}
 
 	//
-	// Affichage des évènements de la journée
+	// Affichage des evenements de la journee
 	//
 	if (Fsb::$mods->is_active('calendar_stats') && Fsb::$session->is_authorized('calendar_read'))
 	{

@@ -11,7 +11,7 @@
 */
 
 /*
-** Vérifie la dernière version du forum en date, et la stoque dans la table de configuration
+** Verifie la derniere version du forum en date, et la stoque dans la table de configuration
 */
 function check_fsb_version()
 {

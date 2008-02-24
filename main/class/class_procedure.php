@@ -11,7 +11,7 @@
 */
 
 /*
-** Parse et execute des procédures de modération (dans un langage de scripting très basique)
+** Parse et execute des procedures de moderation (dans un langage de scripting tres basique)
 */
 class Procedure extends Fsb_model
 {
@@ -21,7 +21,7 @@ class Procedure extends Fsb_model
 	// Contient les variables en cours
 	private $vars = array();
 
-	// Contient la liste des fonctions avec les paramètres obligatoires
+	// Contient la liste des fonctions avec les parametres obligatoires
 	private $fcts = array(
 		'var' =>			array('varname', 'value'),
 		'input' =>			array('explain', 'default'),
@@ -49,7 +49,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Définit une variable
+	** Definit une variable
 	** -----
 	** $name ::		Nom de la variable
 	** $value ::	Valeur
@@ -71,9 +71,9 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Parse et execute une procédure de modération
+	** Parse et execute une procedure de moderation
 	** -----
-	** $code ::		Code à executer
+	** $code ::		Code a executer
 	*/
 	public function parse($code)
 	{
@@ -86,13 +86,13 @@ class Procedure extends Fsb_model
 			}
 		}
 
-		// Parse XML de la procédure
+		// Parse XML de la procedure
 		$xml = new Xml;
 		$xml->load_content($code);
 
 		foreach ($xml->document->function AS $line)
 		{
-			// Récupération des arguments
+			// Recuperation des arguments
 			$argv = array();
 			$function = $line->getAttribute('name');
 			foreach ($line->children() AS $child)
@@ -125,7 +125,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Remplace les variables dans la chaine de caractère
+	** Remplace les variables dans la chaine de caractere
 	** -----
 	** $str ::		Chaine contenant potentiellement des variables
 	*/
@@ -154,15 +154,15 @@ class Procedure extends Fsb_model
 	/*
 	** Affiche une erreur
 	** -----
-	** $errstr ::		Erreur recensée
+	** $errstr ::		Erreur recensee
 	*/
 	private function error($errstr)
 	{
-		die('<b>FSB Fatal error : <i>' . $errstr . '</i> a la ligne ' . $this->line_number . ' de la procédure<br />');
+		die('<b>FSB Fatal error : <i>' . $errstr . '</i> a la ligne ' . $this->line_number . ' de la procedure<br />');
 	}
 
 	/*
-	** Met les variables en champs cachés
+	** Met les variables en champs caches
 	*/
 	private function save_vars(&$node, $varname = '')
 	{
@@ -183,7 +183,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Met les variables GP en champs cachés
+	** Met les variables GP en champs caches
 	*/
 	private function save_gp_vars(&$var, $varname = '')
 	{
@@ -204,21 +204,21 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Appel une méthode des procédures de modération
+	** Appel une methode des procedures de moderation
 	** -----
-	** $method ::		Nom de la méthode
+	** $method ::		Nom de la methode
 	** $argv ::			Arguments
 	*/
 	private function call_method($method, $argv)
 	{
-		// Existance de la méthode
+		// Existance de la methode
 		$call = 'process_' . $method;
 		if (!method_exists($this, $call) || !isset($this->fcts[$method]))
 		{
-			$this->error('La méthode ' . $call . ' n\'existe pas');
+			$this->error('La methode ' . $call . ' n\'existe pas');
 		}
 
-		// Vérification des arguments
+		// Verification des arguments
 		foreach ($this->fcts[$method] AS $key => $value)
 		{
 			if (is_int($key))
@@ -249,7 +249,7 @@ class Procedure extends Fsb_model
 	/*
 	** Transforme un pseudonyme en ID
 	** -----
-	** $str ::		Chaîne à vérifier
+	** $str ::		Chaine a verifier
 	*/
 	private function nickname_to_id($str)
 	{
@@ -264,7 +264,7 @@ class Procedure extends Fsb_model
 	}
 
 	//
-	// Fonctions utilisables dans les procédures
+	// Fonctions utilisables dans les procedures
 	//
 
 	/*
@@ -276,7 +276,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Affiche un formulaire et récupère la valeur de la variable
+	** Affiche un formulaire et recupere la valeur de la variable
 	*/
 	private function process_input($argv)
 	{
@@ -300,7 +300,7 @@ class Procedure extends Fsb_model
 				'INPUT_IDENTIFIER' =>	$identifier,
 			));
 
-			// On met les variables actuelles en champs cachés
+			// On met les variables actuelles en champs caches
 			$this->save_vars($this->vars);
 			$this->save_gp_vars($_POST);
 			$this->save_gp_vars($_GET);
@@ -319,7 +319,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Déverrouille un sujet
+	** Deverrouille un sujet
 	*/
 	private function process_unlock($argv)
 	{
@@ -327,7 +327,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Envoie un message privé
+	** Envoie un message prive
 	*/
 	private function process_send_mp($argv)
 	{
@@ -342,7 +342,7 @@ class Procedure extends Fsb_model
 	*/
 	private function process_redirect($argv)
 	{
-		// On log l'action de modération, car la procédure fini là
+		// On log l'action de moderation, car la procedure fini la
 		Log::add(Log::MODO, 'log_procedure', $this->name);
 
 		Http::redirect($argv['url']);
@@ -353,13 +353,13 @@ class Procedure extends Fsb_model
 	*/
 	private function process_send_post($argv)
 	{
-		// Données du sujet
+		// Donnees du sujet
 		$sql = 'SELECT f_id, t_title
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . $argv['topicID'];
 		$topic_data = Fsb::$db->request($sql);
 
-		// Données du membre
+		// Donnees du membre
 		if (intval($argv['fromID']) != Fsb::$session->id())
 		{
 			$sql = 'SELECT u_nickname
@@ -386,11 +386,11 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Déplace un sujet
+	** Deplace un sujet
 	*/
 	private function process_move($argv)
 	{
-		// Données du sujet
+		// Donnees du sujet
 		$sql = 'SELECT f_id
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . $argv['topicID'];
@@ -414,7 +414,7 @@ class Procedure extends Fsb_model
 	{
 		$argv['warnType'] = ($argv['warnType'] != 'less') ? 'more' : $argv['warnType'];
 
-		// Données du membre
+		// Donnees du membre
 		$sql = 'SELECT u_id, u_warn_post, u_warn_read, u_total_warning
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id = ' . $argv['toID'] . '
@@ -448,7 +448,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Récupère les informations sur un utilisateur
+	** Recupere les informations sur un utilisateur
 	*/
 	private function process_userdata($argv)
 	{
@@ -478,7 +478,7 @@ class Procedure extends Fsb_model
 	}
 
 	/*
-	** Récupère le contenu d'une variable globale PHP
+	** Recupere le contenu d'une variable globale PHP
 	*/
 	private function process_global()
 	{

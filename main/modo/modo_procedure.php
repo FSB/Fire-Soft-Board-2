@@ -10,21 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-// On affiche ce module si le membre a l'autorisation de créer des procédures
+// On affiche ce module si le membre a l'autorisation de creer des procedures
 if (Fsb::$session->is_authorized('procedure'))
 {
 	$show_this_module = TRUE;
 }
 
 /*
-** Module permettant la création de procédures de modération
+** Module permettant la creation de procedures de moderation
 */
 class Page_modo_procedure extends Fsb_model
 {
 	public $mode;
 	public $id;
 
-	// Liste des fonctions de l'éditeur
+	// Liste des fonctions de l'editeur
 	public $fcts = array(
 		'var' => array(
 			'argv' =>	array(
@@ -144,7 +144,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Affiche la liste des procédures
+	** Affiche la liste des procedures
 	*/
 	public function list_procedure()
 	{
@@ -170,11 +170,11 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Ajout de procédure
+	** Ajout de procedure
 	*/
 	public function new_procedure($name = '', $auth = MODOSUP)
 	{
-		// Droits sur la procédure
+		// Droits sur la procedure
 		$list_auth = array(
 			USER =>			Fsb::$session->lang('modo_proc_owner_topic'),
 			MODO =>			Fsb::$session->lang('modo'),
@@ -194,7 +194,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Soumission de la modification des données de la procédure
+	** Soumission de la modification des donnees de la procedure
 	*/
 	public function submit_procedure_name()
 	{
@@ -222,11 +222,11 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Editeur de procédure
+	** Editeur de procedure
 	*/
 	public function edit_procedure()
 	{
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $this->id;
@@ -251,7 +251,7 @@ class Page_modo_procedure extends Fsb_model
 		{
 			foreach ($xml->document->function AS $k => $line)
 			{
-				// Fonction utilisée
+				// Fonction utilisee
 				$fct = $line->getAttribute('name');
 
 				Fsb::$tpl->set_blocks('line', array(
@@ -267,7 +267,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Supprime une procédure
+	** Supprime une procedure
 	*/
 	public function delete_procedure()
 	{
@@ -291,20 +291,20 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Déplace une ligne de code
+	** Deplace une ligne de code
 	*/
 	public function move_line()
 	{
 		$nb =	intval(Http::request('line'));
 		$move = (Http::request('move') == 'up') ? -1 : 1;
 
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT procedure_source
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $this->id;
 		$source = Fsb::$db->get($sql, 'procedure_source');
 
-		// Parse XML de la source, le déplacement de ligne pourra directement se faire avec la méthode moveChild()
+		// Parse XML de la source, le deplacement de ligne pourra directement se faire avec la methode moveChild()
 		$xml = new Xml;
 		$xml->load_content($source);
 		$xml->document->moveChild('function', $nb, $move);
@@ -325,13 +325,13 @@ class Page_modo_procedure extends Fsb_model
 		$nb = intval(Http::request('line'));
 		if ($this->mode == 'proc_edit')
 		{
-			// Données de la procédure
+			// Donnees de la procedure
 			$sql = 'SELECT procedure_source
 					FROM ' . SQL_PREFIX . 'sub_procedure
 					WHERE procedure_id = ' . $this->id;
 			$source = Fsb::$db->get($sql, 'procedure_source');
 
-			// Parse XML afin de récupérer la ligne éditée
+			// Parse XML afin de recuperer la ligne editee
 			$xml = new Xml;
 			$xml->load_content($source);
 
@@ -341,7 +341,7 @@ class Page_modo_procedure extends Fsb_model
 			}
 			$line = &$xml->document->function[$nb];
 
-			// Fonction utilisée
+			// Fonction utilisee
 			$fct = $line->getAttribute('name');
 
 			if (!isset($this->fcts[$fct]))
@@ -372,7 +372,7 @@ class Page_modo_procedure extends Fsb_model
 				$list_functions[$name] = Fsb::$session->lang('modo_proc_function_name_' . $name);
 			}
 
-			// Fonction utilisée
+			// Fonction utilisee
 			$fct = Http::request('fct_used', 'post');
 
 			Fsb::$tpl->set_switch('show_fcts');
@@ -387,7 +387,7 @@ class Page_modo_procedure extends Fsb_model
 			'U_ACTION' =>				sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=procedure&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;line=' . $nb),
 		));
 
-		// Affichage des paramètres de la fonction
+		// Affichage des parametres de la fonction
 		if ($fct)
 		{
 			if (!isset($this->fcts[$fct]))
@@ -434,7 +434,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Soumet les modifications liées à la fonction
+	** Soumet les modifications liees a la fonction
 	*/
 	public function submit_fct_edit()
 	{
@@ -445,13 +445,13 @@ class Page_modo_procedure extends Fsb_model
 			Display::message('modo_proc_function_not_exists');
 		}
 
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT procedure_source
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $this->id;
 		$source = Fsb::$db->get($sql, 'procedure_source');
 
-		// Parse XML de la source afin d'ajouter les nouveaux éléments
+		// Parse XML de la source afin d'ajouter les nouveaux elements
 		$xml = new Xml;
 		$xml->load_content($source);
 
@@ -459,7 +459,7 @@ class Page_modo_procedure extends Fsb_model
 		$function->setAttribute('name', $fct);
 		foreach ($this->fcts[$fct]['argv'] AS $argname => $data)
 		{
-			// Exeption pour la déclaration de variables
+			// Exeption pour la declaration de variables
 			if ($fct == 'var' && $argname == 'value')
 			{
 				if (Http::request('value'))
@@ -484,7 +484,7 @@ class Page_modo_procedure extends Fsb_model
 						default :
 							$parse_arg = Http::request($argname . '_nickname', 'post');
 
-							// On récupère l'ID du membre
+							// On recupere l'ID du membre
 							$sql = 'SELECT u_id
 									FROM ' . SQL_PREFIX . 'users
 									WHERE u_nickname = \'' . Fsb::$db->escape($parse_arg) . '\'
@@ -567,7 +567,7 @@ class Page_modo_procedure extends Fsb_model
 			$xml->document->function[$nb] = $function;
 		}
 
-		// Mise à jour de la ligne
+		// Mise a jour de la ligne
 		Fsb::$db->update('sub_procedure', array(
 			'procedure_source' =>	$xml->document->asXML(),
 		), 'WHERE procedure_id = ' . $this->id);
@@ -582,7 +582,7 @@ class Page_modo_procedure extends Fsb_model
 	{
 		$nb = intval(Http::request('line'));
 
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT procedure_source
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $this->id;
@@ -592,7 +592,7 @@ class Page_modo_procedure extends Fsb_model
 		$xml->load_content($source);
 		$xml->document->deleteChild('function', $nb);
 
-		// Mise à jour de la ligne
+		// Mise a jour de la ligne
 		Fsb::$db->update('sub_procedure', array(
 			'procedure_source' =>	$xml->document->asXML(),
 		), 'WHERE procedure_id = ' . $this->id);
@@ -605,13 +605,13 @@ class Page_modo_procedure extends Fsb_model
 	*/
 	public function edit_source()
 	{
-		// Données de la procédure
+		// Donnees de la procedure
 		$sql = 'SELECT procedure_source
 				FROM ' . SQL_PREFIX . 'sub_procedure
 				WHERE procedure_id = ' . $this->id;
 		$source = Fsb::$db->get($sql, 'procedure_source');
 
-		// On formate la source avec la méthode asXML()
+		// On formate la source avec la methode asXML()
 		$xml = new Xml;
 		$xml->load_content($source);
 
@@ -625,7 +625,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Soumet l'édition de la source
+	** Soumet l'edition de la source
 	*/
 	public function submit_edit_full()
 	{
@@ -637,11 +637,11 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	//
-	// Liste des méthodes pour le buffer des arguments
+	// Liste des methodes pour le buffer des arguments
 	//
 
 	/*
-	** Champ caché
+	** Champ cache
 	*/
 	public function method_select_hidden($name, $s, $default)
 	{
@@ -677,7 +677,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Selection du destinataire pour le message privé
+	** Selection du destinataire pour le message prive
 	*/
 	public function method_select_mp_to($name, $s)
 	{
@@ -771,7 +771,7 @@ class Page_modo_procedure extends Fsb_model
 	}
 
 	/*
-	** Durée du banissement
+	** Duree du banissement
 	*/
 	public function method_select_ban_length($name, $s)
 	{

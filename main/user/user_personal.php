@@ -14,20 +14,20 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur permettant de modifier ses données personelles
+** Module d'utilisateur permettant de modifier ses donnees personelles
 */
 class Page_user_personal extends Fsb_model
 {
 	// Erreurs
 	public $errstr = array();
 
-	// Les champs qu'on peut récupérer dans le formulaire
+	// Les champs qu'on peut recuperer dans le formulaire
 	public $post_data = array();
 
-	// Données du profil personel
+	// Donnees du profil personel
 	public $data = array();
 
-	// Défini si l'utilisateur peut modifier son profil personel
+	// Defini si l'utilisateur peut modifier son profil personel
 	public $can_edit_nickname = FALSE;
 	
 	// Objet Profil_fields
@@ -38,7 +38,7 @@ class Page_user_personal extends Fsb_model
 	*/
 	public function __construct()
 	{
-		// l'utilisateur peut il éditer son pseudonyme ?
+		// l'utilisateur peut il editer son pseudonyme ?
 		$this->can_edit_nickname = Fsb::$cfg->get('user_edit_nickname');
 
 		$this->get_data();
@@ -54,8 +54,8 @@ class Page_user_personal extends Fsb_model
 	}
 
 	/*
-	** Récupère dans $this->data les données du membre, si le formulaire a été
-	** soumis on prend les valeurs postées
+	** Recupere dans $this->data les donnees du membre, si le formulaire a ete
+	** soumis on prend les valeurs postees
 	*/
 	public function get_data()
 	{
@@ -85,7 +85,7 @@ class Page_user_personal extends Fsb_model
 	}
 
 	/*
-	** Affiche le formulaire d'éditer les données personnelles
+	** Affiche le formulaire d'editer les donnees personnelles
 	*/
 	public function personal_form()
 	{
@@ -99,19 +99,19 @@ class Page_user_personal extends Fsb_model
 			Fsb::$tpl->set_switch('error');
 		}
 
-		// Peut éditer la langue ?
+		// Peut editer la langue ?
 		if (!Fsb::$cfg->get('override_lang'))
 		{
 			Fsb::$tpl->set_switch('can_change_lang');
 		}
 
-		// Peut éditer le thème ?
+		// Peut editer le theme ?
 		if (!Fsb::$cfg->get('override_tpl'))
 		{
 			Fsb::$tpl->set_switch('can_change_tpl');
 		}
 
-		// On récupère la date de naissance du membre
+		// On recupere la date de naissance du membre
 		if (Fsb::$mods->is_active('user_birthday') && preg_match('#^([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})$#i', $this->data['u_birthday'], $match))
 		{
 			$u_birthday_day = intval($match[1]);
@@ -123,7 +123,7 @@ class Page_user_personal extends Fsb_model
 			$u_birthday_day = $u_birthday_month = $u_birthday_year = 0;
 		}
 
-		// On génère les listes de jours, mois, années
+		// On genere les listes de jours, mois, annees
 		if (Fsb::$mods->is_active('user_birthday'))
 		{
 			$build_list = array('day' => array(1, 31), 'month' => array(1, 12), 'year' => array(1920, (date('Y', CURRENT_TIME) - 8)));
@@ -173,12 +173,12 @@ class Page_user_personal extends Fsb_model
 			'CONTENT' =>			Html::make_errstr($this->errstr),
 		));
 		
-		// Champs personals créés par l'administrateur
+		// Champs personals crees par l'administrateur
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id());
 	}
 
 	/*
-	** Retourne un identifiant de ressource sur la requète de récupération des rangs du membre
+	** Retourne un identifiant de ressource sur la requete de recuperation des rangs du membre
 	*/
 	public function get_user_ranks()
 	{
@@ -194,7 +194,7 @@ class Page_user_personal extends Fsb_model
 	}
 
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{
@@ -218,20 +218,20 @@ class Page_user_personal extends Fsb_model
 				$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 			}
 
-			// Vérification de l'existance du pseudonyme
+			// Verification de l'existance du pseudonyme
 			if (User::nickname_exists($this->data['u_nickname']))
 			{
 				$this->errstr[] = Fsb::$session->lang('user_nickname_exists');
 			}
 		}
 
-		// On vérifie la langue choisie
+		// On verifie la langue choisie
 		if (Fsb::$cfg->get('override_lang') || !file_exists(ROOT . 'lang/' . $this->data['u_language']))
 		{
 			$this->data['u_language'] = Fsb::$session->data['u_language'];
 		}
 
-		// On vérifie le thème choisi
+		// On verifie le theme choisi
 		if (Fsb::$cfg->get('override_tpl') || !file_exists(ROOT . 'tpl/' . $this->data['u_tpl']))
 		{
 			$this->data['u_tpl'] = Fsb::$session->data['u_tpl'];
@@ -250,13 +250,13 @@ class Page_user_personal extends Fsb_model
 		}
 		$this->data['u_birthday'] = substr($this->data['u_birthday'], 0, -1);
 		
-		// On vérifie les champs personels
+		// On verifie les champs personels
 		if (!$this->errstr)
 		{
 			Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, Fsb::$session->id());
 		}
 
-		// On vérifie les rangs du membre
+		// On verifie les rangs du membre
 		if ($this->data['u_rank_id'])
 		{
 			$result = $this->get_user_ranks();
@@ -281,11 +281,11 @@ class Page_user_personal extends Fsb_model
 	}
 
 	/*
-	** Enregistre les données du formulaire dans la base de donnée
+	** Enregistre les donnees du formulaire dans la base de donnee
 	*/
 	public function submit_form()
 	{
-		// Mise à jour de la table fsb2_users
+		// Mise a jour de la table fsb2_users
 		$update_array = array();
 		foreach ($this->post_data AS $value)
 		{
@@ -295,7 +295,7 @@ class Page_user_personal extends Fsb_model
 			}
 		}
 
-		// Si la date de naissance est désactivée ...
+		// Si la date de naissance est desactivee ...
 		if (!Fsb::$mods->is_active('user_birthday'))
 		{
 			unset($update_array['u_birthday']);
@@ -312,7 +312,7 @@ class Page_user_personal extends Fsb_model
 			unset($update_array['u_nickname']);
 		}
 
-		// Mise à jour des données du membre
+		// Mise a jour des donnees du membre
 		Fsb::$db->update('users', $update_array, 'WHERE u_id = ' . Fsb::$session->id());
 		Fsb::$db->destroy_cache('users_birthday_');
 

@@ -18,10 +18,10 @@ class Cache_apc extends Cache
 	// Contient la liste des clefs en cache
 	private $stack = array();
 
-	// Time To Live de la mise en cache des données
+	// Time To Live de la mise en cache des donnees
 	private $ttl = 86400;
 
-	// Identifiant unique pour différencier les types de cache
+	// Identifiant unique pour differencier les types de cache
 	private static $key_id = 0;
 	private $id = 0;
 
@@ -50,7 +50,7 @@ class Cache_apc extends Cache
 	/*
 	** Retourne TRUE s'il y a un cache pour le hash, sinon FALSE
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function exists($hash)
 	{
@@ -58,9 +58,9 @@ class Cache_apc extends Cache
 	}
 
 	/*
-	** Retourne le tableau de données mises en cache
+	** Retourne le tableau de donnees mises en cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function get($hash)
 	{
@@ -68,26 +68,26 @@ class Cache_apc extends Cache
 	}
 
 	/*
-	** Ajoute des données dans le cache
+	** Ajoute des donnees dans le cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
-	** $array ::		Tableau de données à mettre en cache
+	** $hash ::			Clef pour les donnees cherchees
+	** $array ::		Tableau de donnees a mettre en cache
 	** $comments ::		Commentaire pour le fichier du cache
-	** $timestamp ::	Date de création du cache
+	** $timestamp ::	Date de creation du cache
 	*/
 	public function put($hash, $array, $comments = '', $timestamp = NULL)
 	{
 		apc_store($hash . $this->uniq_hash, serialize($array), $this->ttl);
 
-		// On garde en mémoire la clef mise en cache
+		// On garde en memoire la clef mise en cache
 		$this->stack[$hash] = ($timestamp) ? $timestamp : CURRENT_TIME;
 		apc_store('_apc_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
 	/*
-	** Renvoie le timestamp de création du cache
+	** Renvoie le timestamp de creation du cache
 	** -----
-	** $hash ::			Clef pour les données cherchées
+	** $hash ::			Clef pour les donnees cherchees
 	*/
 	public function get_time($hash)
 	{
@@ -97,7 +97,7 @@ class Cache_apc extends Cache
 	/*
 	** Supprime une clef
 	** -----
-	** $hash ::		Clef à supprimer
+	** $hash ::		Clef a supprimer
 	*/
 	public function delete($hash)
 	{
@@ -109,7 +109,7 @@ class Cache_apc extends Cache
 	/*
 	** Destruction du cache
 	** -----
-	** $prefix ::		Si un préfixe est spécifié, on supprime uniquement les hash commençant par ce préfixe
+	** $prefix ::		Si un prefixe est specifie, on supprime uniquement les hash commencant par ce prefixe
 	*/
 	public function destroy($prefix = NULL)
 	{
@@ -124,9 +124,9 @@ class Cache_apc extends Cache
 	}
 
 	/*
-	** Supprime les données du cache exedant un certain temps
+	** Supprime les donnees du cache exedant un certain temps
 	** -----
-	** $time ::		Durée après laquelle les données du cache sont vidées
+	** $time ::		Duree apres laquelle les donnees du cache sont videes
 	*/
 	public function garbage_colector($time)
 	{

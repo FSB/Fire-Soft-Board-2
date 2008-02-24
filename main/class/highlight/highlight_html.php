@@ -32,7 +32,7 @@ class Highlight_html extends Highlight
 	}
 
 	/*
-	** Parse une chaîne de caractère HTML
+	** Parse une chaine de caractere HTML
 	*/
 	protected function _parse($str)
 	{
@@ -48,7 +48,7 @@ class Highlight_html extends Highlight
 	}
 
 	/*
-	** Vérifie si le tag HTML n'est pas un tag spécial
+	** Verifie si le tag HTML n'est pas un tag special
 	*/
 	private function _parse_html_tags($match)
 	{

@@ -15,7 +15,7 @@
 */
 class Http extends Fsb_model
 {
-	// Méthode d'accès à la page
+	// Methode d'acces a la page
 	const GET = 'get';
 	const POST = 'post';
 
@@ -24,8 +24,8 @@ class Http extends Fsb_model
 	*/
 	public static function clean_gpc()
 	{
-		// On supprime toutes les variables crées par la directive register_globals
-		// On stripslashes() toutes les variables GPC pour la compatibilité DBAL
+		// On supprime toutes les variables crees par la directive register_globals
+		// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 		$gpc = array('_GET', '_POST', '_COOKIE');
 		$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
 		$register_globals = TRUE;//(ini_get('register_globals')) ? TRUE : FALSE;
@@ -56,9 +56,9 @@ class Http extends Fsb_model
 	/*
 	** Envoie un header HTTP
 	** -----
-	** $key ::		Clef à envoyer
+	** $key ::		Clef a envoyer
 	** $value ::	Valeur
-	** $replace ::	Ecraser les précédentes valeurs
+	** $replace ::	Ecraser les precedentes valeurs
 	*/
 	public static function header($key, $value, $replace = NULL)
 	{
@@ -73,7 +73,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Méthode d'accès à la page
+	** Methode d'acces a la page
 	*/
 	public static function method()
 	{
@@ -85,7 +85,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Récupère une variable transmise à la page via les super globales
+	** Recupere une variable transmise a la page via les super globales
 	** -----
 	** $key ::		Clef de la variable
 	** $mode ::		Liste de super globales dans lesquelles on va rechercher si la clef existe.
@@ -108,8 +108,8 @@ class Http extends Fsb_model
 	** Redirige automatiquement la page.
 	** -----
 	** $url ::	URL de destination
-	** $time ::	Durée avant la redirection, si inférieur à 0 on ne redirige pas, si vaut 0 on redirige
-	**			instantanément via un header, sinon on redirige via une balise META refresh.
+	** $time ::	Duree avant la redirection, si inferieur a 0 on ne redirige pas, si vaut 0 on redirige
+	**			instantanement via un header, sinon on redirige via une balise META refresh.
 	*/
 	public static function redirect($url, $time = 0)
 	{
@@ -132,7 +132,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Redirige à partir d'une information précise
+	** Redirige a partir d'une information precise
 	** -----
 	** $redirect ::	Information pour la redirection (vers une page du forum, ou locale au site web)
 	*/
@@ -157,7 +157,7 @@ class Http extends Fsb_model
 			{
 				if (preg_match('#^\s*[a-zA-Z0-9]+://#i', $redirect))
 				{
-					// URL externe interdites pour des raisons de sécurité
+					// URL externe interdites pour des raisons de securite
 					Http::redirect('index.php');
 				}
 				Http::redirect($redirect);
@@ -192,7 +192,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Ajoute des relation suivants / précédents / première page
+	** Ajoute des relation suivants / precedents / premiere page
 	*/
 	public static function add_relation($current, $total, $url)
 	{
@@ -264,7 +264,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Les pages ne doivent pas êtres mises en cache
+	** Les pages ne doivent pas etres mises en cache
 	*/
 	public static function no_cache()
 	{
@@ -274,7 +274,7 @@ class Http extends Fsb_model
 	}
 
 	/*
-	** Lance le téléchargement d'un fichier
+	** Lance le telechargement d'un fichier
 	** -----
 	** $filename ::		Nom du fichier
 	** $content ::		Contenu du fichier

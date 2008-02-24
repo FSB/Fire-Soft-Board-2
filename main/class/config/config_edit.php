@@ -24,13 +24,13 @@ class Config_edit extends Fsb_model
 	// Arguments de la ligne courante
 	private $args;
 
-	// Prefixe de langue à utiliser
+	// Prefixe de langue a utiliser
 	private $lang_prefix;
 
 	/*
 	** CONSTRUCTEUR
 	** -----
-	** $current_cfg ::		Tableau de valeur de configuration à utiliser
+	** $current_cfg ::		Tableau de valeur de configuration a utiliser
 	*/
 	public function __construct(&$cfg, $lang_prefix)
 	{
@@ -39,9 +39,9 @@ class Config_edit extends Fsb_model
 	}
 
 	/*
-	** Ajoute une catégorie de configuration
+	** Ajoute une categorie de configuration
 	** -----
-	* $cat_name ::		Nom de la catégorie
+	* $cat_name ::		Nom de la categorie
 	** $explain ::		Explication de la categorie
 	*/
 	public function set_cat($cat_name, $explain = NULL)
@@ -56,8 +56,8 @@ class Config_edit extends Fsb_model
 	** Affiche une line de configuration
 	** -----
 	** $name ::		Nom de la configuration
-	** $method ::	Méthode de la classe à utiliser
-	** $args ::		Arguments de la méthode, sous forme de chaîne de caractère (qui sera évaluée)
+	** $method ::	Methode de la classe a utiliser
+	** $args ::		Arguments de la methode, sous forme de chaine de caractere (qui sera evaluee)
 	*/
 	public function set_line($name, $method, $args)
 	{
@@ -77,13 +77,13 @@ class Config_edit extends Fsb_model
 			// Nom de la configuration courante
 			$this->name = $name;
 
-			// Appel de la méthode
+			// Appel de la methode
 			$this->$method();
 		}
 	}
 
 	/*
-	** Valide des données de configuration, à partir d'un champ "type" dans la base de donnée
+	** Valide des donnees de configuration, a partir d'un champ "type" dans la base de donnee
 	** qui peut prendre par exemple comme valeurs : int, unsigned int, regexp ma_regexp
 	** ------
 	*/
@@ -112,7 +112,7 @@ class Config_edit extends Fsb_model
 				}
 				else if (preg_match('#^regexp (.*?)$#', $row[$type], $m))
 				{
-					// Si la regexp n'est pas validée on vide le champ
+					// Si la regexp n'est pas validee on vide le champ
 					if (!@preg_match('#' . $m[1] . '#', $return[$row[$name]]))
 					{
 						$return[$row[$name]] = '';
@@ -152,7 +152,7 @@ class Config_edit extends Fsb_model
 	}
 
 	/*
-	** Affiche une ligne avec le code HTML spécifié en paramètre
+	** Affiche une ligne avec le code HTML specifie en parametre
 	*/
 	private function put_html_code()
 	{

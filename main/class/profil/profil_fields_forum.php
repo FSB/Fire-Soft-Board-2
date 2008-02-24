@@ -18,11 +18,11 @@ class Profil_fields_forum extends Profil_fields
 	private static $fields_data = array();
 
 	/*
-	** Affiche le formulaire pour remplir le champ personalisé
+	** Affiche le formulaire pour remplir le champ personalise
 	** -----
 	** $field_type ::			Type du champ personel
 	** $field_name ::			Nom du champ
-	** $u_id ::					ID du membre, si elle est renseignée on récupère les informations dans sa table
+	** $u_id ::					ID du membre, si elle est renseignee on recupere les informations dans sa table
 	** $register_page ::		TRUE si on est sur la page d'inscription
 	*/
 	public static function form($field_type, $field_name, $u_id = NULL, $register_page = FALSE)
@@ -30,14 +30,14 @@ class Profil_fields_forum extends Profil_fields
 		$data = array();
 		if ($u_id !== NULL)
 		{
-			// Données du membre
+			// Donnees du membre
 			$sql = 'SELECT *
 					FROM ' . SQL_PREFIX . 'users_' . $field_name . '
 					WHERE u_id = ' . $u_id;
 			$data = Fsb::$db->request($sql);
 		}
 
-		// Les données émises par formulaires écrasent les valeurs par défaut du membre
+		// Les donnees emises par formulaires ecrasent les valeurs par defaut du membre
 		$new = array();
 		foreach ($_POST AS $key => $value)
 		{
@@ -52,7 +52,7 @@ class Profil_fields_forum extends Profil_fields
 			$data = $new;
 		}
 
-		// On récupère la liste des champs personels
+		// On recupere la liste des champs personels
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'profil_fields
 				WHERE pf_type = ' . $field_type . '
@@ -61,7 +61,7 @@ class Profil_fields_forum extends Profil_fields
 		$result = Fsb::$db->query($sql, 'profil_fields_');
 		while ($row = Fsb::$db->row($result))
 		{
-			// Valeur par défaut
+			// Valeur par defaut
 			$name = $field_name . '_' . $row['pf_id'];
 			$default_value = (isset($data[$name])) ? $data[$name] : '';
 			if ($row['pf_html_type'] == self::MULTIPLE && !is_array($default_value))
@@ -79,7 +79,7 @@ class Profil_fields_forum extends Profil_fields
 				'SIZELIST' =>	$row['pf_sizelist'],
 			));
 
-			// En fonction du type HTML de la ligne on génère différement les arguments
+			// En fonction du type HTML de la ligne on genere differement les arguments
 			switch ($row['pf_html_type'])
 			{
 				case self::TEXT :
@@ -107,15 +107,15 @@ class Profil_fields_forum extends Profil_fields
 	/*
 	** Valide le formulaire pour les champs personels
 	** -----
-	** $field_type ::		Type de champ personalisé
-	** $field_name ::		Nom du champ personalisé
+	** $field_type ::		Type de champ personalise
+	** $field_name ::		Nom du champ personalise
 	** $errstr ::			Logs d'erreurs
-	** $u_id ::				Si l'ID du membre est renseignée, on insère les données dans la base.
+	** $u_id ::				Si l'ID du membre est renseignee, on insere les donnees dans la base.
 	** $register_page ::	Page d'inscription ?
 	*/
 	public static function validate($field_type, $field_name, &$errstr, $u_id = NULL, $register_page = FALSE)
 	{
-		// Liste des champs personalisés
+		// Liste des champs personalises
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'profil_fields
 				WHERE pf_type = ' . $field_type . '
@@ -134,7 +134,7 @@ class Profil_fields_forum extends Profil_fields
 				$post_data[$key] = implode(',', (array) $post_data[$key]);
 			}
 
-			// Vérification de longueur
+			// Verification de longueur
 			if (is_array($errstr) && isset($info['maxlength']) && strlen($post_data[$key]) > $info['maxlength'])
 			{
 				$errstr[] = sprintf(Fsb::$session->lang('user_error_personal_textarea'), $info['maxlength'], String::parse_lang($row['pf_lang']), strlen($post_data[$key]));
@@ -147,7 +147,7 @@ class Profil_fields_forum extends Profil_fields
 		}
 		Fsb::$db->free($result);
 
-		// Insertion dans la base de donnée, si aucune erreur
+		// Insertion dans la base de donnee, si aucune erreur
 		if ($u_id !== NULL && !$errstr && $post_data)
 		{
 			$post_data['u_id'] = array($u_id, TRUE);
@@ -158,11 +158,11 @@ class Profil_fields_forum extends Profil_fields
 	}
 
 	/*
-	** Affiche les valeurs des champs personalisés d'un membre
+	** Affiche les valeurs des champs personalises d'un membre
 	** -----
-	** $field_type ::	Type de profil personalisé
+	** $field_type ::	Type de profil personalise
 	** $field_name ::	Nom du profil
-	** $user_data ::	Données du membre
+	** $user_data ::	Donnees du membre
 	*/
 	public static function show_fields($field_type, $field_name, &$user_data)
 	{
@@ -173,14 +173,14 @@ class Profil_fields_forum extends Profil_fields
 		$result = Fsb::$db->query($sql, 'profil_fields_');
 		while ($row = Fsb::$db->row($result))
 		{
-			// On vérifie si le membre appartient à un groupe pouvant voir le champ
+			// On verifie si le membre appartient a un groupe pouvant voir le champ
 			$pf_groups = ($row['pf_groups']) ? explode(',', $row['pf_groups']) : array();
 			if ($pf_groups && !array_intersect(Fsb::$session->data['groups'], $pf_groups))
 			{
 				continue;
 			}
 
-			// On récupère la valeur du champ
+			// On recupere la valeur du champ
 			$value = NULL;
 			if (isset($user_data[$field_name . '_' . $row['pf_id']]))
 			{
@@ -235,9 +235,9 @@ class Profil_fields_forum extends Profil_fields
 	}
 
 	/*
-	** Récupère les données des champs personalisés, dans les sujets
+	** Recupere les donnees des champs personalises, dans les sujets
 	** -----
-	** $sql_fields_personal ::	Liste des champs à récupérer dans la table fsb2_users_personal
+	** $sql_fields_personal ::	Liste des champs a recuperer dans la table fsb2_users_personal
 	*/
 	public static function topic_info(&$sql_fields_personal)
 	{
@@ -250,7 +250,7 @@ class Profil_fields_forum extends Profil_fields
 		{
 			$sql_fields_personal .= (($sql_fields_personal) ? ', ' : '') . 'up.personal_' . $row['pf_id'];
 
-			// On vérifie si le membre peut voir le champ
+			// On verifie si le membre peut voir le champ
 			$groups = explode(',', $row['pf_groups']);
 			$profil_list = unserialize($row['pf_list']);
 			if (!$groups || !$groups[0] || ($groups && $groups[0] && array_intersect(Fsb::$session->data['groups'], $groups)))
@@ -269,7 +269,7 @@ class Profil_fields_forum extends Profil_fields
 	/*
 	** Affiche les champs personels dans le sujet
 	** -----
-	** $fields_data ::			Liste des champs personels à afficher
+	** $fields_data ::			Liste des champs personels a afficher
 	** $fields_value ::			Valeur des champs
 	*/
 	public static function topic_show($fields_value)

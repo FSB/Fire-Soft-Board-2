@@ -11,7 +11,7 @@
 */
 
 /*
-** Permet d'envoyer un Email de masse à un groupe
+** Permet d'envoyer un Email de masse a un groupe
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
@@ -72,7 +72,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Vérifie les données envoyées par le formulaire
+	** Verifie les donnees envoyees par le formulaire
 	*/
 	public function check_form()
 	{
@@ -86,7 +86,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['subject'] = Fsb::$session->lang('no_subject');
 		}
 
-		// On vérifie si les membres envoyés existent
+		// On verifie si les membres envoyes existent
 		$sql_nickname = array();
 		foreach (explode("\n", $this->data['users']) AS $nickname)
 		{
@@ -129,7 +129,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Envoie d'Email aux membres / groupes concernés
+	** Envoie d'Email aux membres / groupes concernes
 	*/
 	public function send_email()
 	{
@@ -140,7 +140,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::message('adm_email_no_dest');
 		}
 
-		// On récupère les membres des groupes
+		// On recupere les membres des groupes
 		$send_email = TRUE;
 		$result_email = TRUE;
 		$this->data['groups'] = array_map('intval', $this->data['groups']);
@@ -163,7 +163,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
 			$this->total++;
 
-			// On limite le nombre de destinataires (100 par défaut) par Email en BCC
+			// On limite le nombre de destinataires (100 par defaut) par Email en BCC
 			$send_email = FALSE;
 			if ($this->total == $this->max_user_per_email)
 			{
@@ -188,7 +188,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	/*
 	** Envoie de l'Email en plusieurs parties
 	** -----
-	** $result_email ::		Succès d'envoie de l'Email
+	** $result_email ::		Succes d'envoie de l'Email
 	*/
 	public function send_email_part(&$result_email)
 	{

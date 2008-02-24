@@ -11,7 +11,7 @@
 */
 
 /*
-** Module de portail permettant de gérer une newsletter
+** Module de portail permettant de gerer une newsletter
 */
 class Page_portail_newsletter extends Fsb_model
 {
@@ -61,7 +61,7 @@ class Page_portail_newsletter extends Fsb_model
 	*/
 	public function send_email()
 	{
-		// On récupère la liste des membres souscrits à la newsletter
+		// On recupere la liste des membres souscrits a la newsletter
 		$sql = 'SELECT u_nickname, u_email, u_language
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_newsletter = 1';

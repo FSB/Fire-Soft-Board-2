@@ -11,22 +11,22 @@
 */
 
 /*
-** Extension de la classe Captcha, générant directement des fichiers PNG basiques sans GD
+** Extension de la classe Captcha, generant directement des fichiers PNG basiques sans GD
 */
 class Captcha_png extends Captcha
 {
-	// Liste des méthodes
+	// Liste des methodes
 	protected $methods = array(
 		'a' =>		'method_classic',
 	);
 
-	// Espace entre chaque caractère
+	// Espace entre chaque caractere
 	protected $space = 34;
 
 	// Objet PNG
 	private $png;
 
-	// Liste des caractères
+	// Liste des caracteres
 	private $char_list = array();
 
 	/*
@@ -39,7 +39,7 @@ class Captcha_png extends Captcha
 	}
 
 	/*
-	** Création de l'image
+	** Creation de l'image
 	*/
 	protected function open_image()
 	{
@@ -54,7 +54,7 @@ class Captcha_png extends Captcha
 	}
 
 	/*
-	** Ecrit un caractère sur l'image
+	** Ecrit un caractere sur l'image
 	*/
 	protected function write_char($size, $angle, $x, $y, $fontcolor, $font, $char)
 	{
@@ -70,7 +70,7 @@ class Captcha_png extends Captcha
 	}
 
 	/*
-	** Ajouts de bruits sur l'image (lignes, points aléatoires)
+	** Ajouts de bruits sur l'image (lignes, points aleatoires)
 	*/
 	protected function add_noise()
 	{
@@ -109,7 +109,7 @@ class Png extends Image
 	// Hauteur du PNG
 	protected $height = 0;
 
-	// Image à vraie couleurs ?
+	// Image a vraie couleurs ?
 	protected $truecolor = FALSE;
 
 	// Contenu du PNG
@@ -130,7 +130,7 @@ class Png extends Image
 	*/
 	public function __construct($width, $height, $truecolor = TRUE)
 	{
-		// Paramètres
+		// Parametres
 		$this->truecolor = $truecolor;
 		$this->width = $width;
 		$this->height = $height;
@@ -161,8 +161,8 @@ class Png extends Image
 	/*
 	** Calcul de l'index d'un pixel
 	** -----
-	** $x ::	Coordonnée $x du pixel
-	** $y ::	Coordonnée $y du pixel
+	** $x ::	Coordonnee $x du pixel
+	** $y ::	Coordonnee $y du pixel
 	*/
 	public function find_index($x, $y)
 	{
@@ -179,8 +179,8 @@ class Png extends Image
 	/*
 	** Ajoute un pixel sur l'image
 	** -----
-	** $x ::		Coordonnée $x du pixel
-	** $y ::		Coordonnée $y du pixel
+	** $x ::		Coordonnee $x du pixel
+	** $y ::		Coordonnee $y du pixel
 	** $color ::	Couleur du pixel
 	*/
 	public function set_pixel($x, $y, $color)
@@ -206,8 +206,8 @@ class Png extends Image
 	/*
 	** Retourne la couleur d'un pixel
 	** -----
-	** $x ::		Coordonnée $x du pixel
-	** $y ::		Coordonnée $y du pixel
+	** $x ::		Coordonnee $x du pixel
+	** $y ::		Coordonnee $y du pixel
 	*/
 	public function colorat($x, $y)
 	{
@@ -251,8 +251,8 @@ class Png extends Image
 	}
 
 	/*
-	** Un PNG est constitué de plusieurs block contenant : la longueur,
-	** le type, les données && un CRC
+	** Un PNG est constitue de plusieurs block contenant : la longueur,
+	** le type, les donnees && un CRC
 	** -----
 	** $length ::	Longueur du block
 	** $type ::		Type du block
@@ -263,7 +263,7 @@ class Png extends Image
 		// Signature
 		$crc = crc32($type . $data);
 
-		// Génération du block
+		// Generation du block
 		return (pack('N', $length) . $type . $data . pack('N', $crc));
 	}
 
@@ -346,10 +346,10 @@ class Png extends Image
 	}
 
 	/*
-	** Implémentation de l'algorithme de hash Adler-32
+	** Implementation de l'algorithme de hash Adler-32
 	** -----
-	** $raw_image ::	Chaîne de caractère à hasher
-	** $length ::		Longueur de la chaîne
+	** $raw_image ::	Chaine de caractere a hasher
+	** $length ::		Longueur de la chaine
 	*/
 	private function adler32($str, $length)
 	{
@@ -383,7 +383,7 @@ class Png extends Image
 class Png_color extends Fsb_model
 {
 	/*
-	** Retourne une couleur à partir d'un entier.
+	** Retourne une couleur a partir d'un entier.
 	** Exemple : Png_color::hexa(0xff00cc)
 	*/
 	public static function hexa($hexa)
@@ -395,7 +395,7 @@ class Png_color extends Fsb_model
 	}
 
 	/*
-	** Retourne une couleur à partir d'une chaîne de caractère simulant l'hexadécimal
+	** Retourne une couleur a partir d'une chaine de caractere simulant l'hexadecimal
 	** Exemple : Png_color('ff00cc');
 	*/
 	public static function hexa_str($str)
@@ -407,7 +407,7 @@ class Png_color extends Fsb_model
 	}
 
 	/*
-	** Retourne une couleur à partir de son code couleur
+	** Retourne une couleur a partir de son code couleur
 	** Exemple : Png_color::str('red')
 	*/
 	public static function str($color)
@@ -435,7 +435,7 @@ class Png_color extends Fsb_model
 	}
 
 	/*
-	** Retourne une couleur à partir des composantes RGB
+	** Retourne une couleur a partir des composantes RGB
 	** Exemple : Png_color::rgb(255, 0, 0)
 	*/
 	public static function rgb($red, $green, $blue)
@@ -446,22 +446,22 @@ class Png_color extends Fsb_model
 
 /*
 ** Classe permettant l'ajout de formes sur des images.
-** Elle est prévue pour être étendue par des classes implémentants
-** les spécifications de formats d'images (GIF, PNG, etc ..)
+** Elle est prevue pour etre etendue par des classes implementants
+** les specifications de formats d'images (GIF, PNG, etc ..)
 */
 abstract class Image extends Fsb_model
 {
-	// Polices chargées en mémoire
+	// Polices chargees en memoire
 	private $fonts = array();
 
-	// Méthode abstraite pour ajouter un pixel sur l'image
+	// Methode abstraite pour ajouter un pixel sur l'image
 	abstract public function set_pixel($x, $y, $color);
 
 	/*
-	** Permet la création de pixel avec taille de bordure
+	** Permet la creation de pixel avec taille de bordure
 	** -----
-	** $x ::		Coordonnée X
-	** $y ::		Coordonnée Y
+	** $x ::		Coordonnee X
+	** $y ::		Coordonnee Y
 	** $color ::	Couleur
 	** $size ::		Taille du pixel
 	*/
@@ -585,8 +585,8 @@ abstract class Image extends Fsb_model
 	/*
 	** Ajoute un rectangle sur l'image
 	** -----
-	** $x ::		Coordonnée $x du coin supérieur gauche du rectangle
-	** $y ::		Coordonnée $y du coin supérieur gauche du rectangle
+	** $x ::		Coordonnee $x du coin superieur gauche du rectangle
+	** $y ::		Coordonnee $y du coin superieur gauche du rectangle
 	** $width ::	Largeur du rectangle
 	** $height ::	Hauteur du rectangle
 	** $style ::	Style
@@ -598,7 +598,7 @@ abstract class Image extends Fsb_model
 		$border_width =		(isset($style['border-width'])) ? $style['border-width'] : 1;
 		$background_color = (isset($style['background-color'])) ? $style['background-color'] : NULL;
 
-		// Arrière plan ?
+		// Arriere plan ?
 		if ($background_color !== NULL)
 		{
 			$max_width = min($x + $width, $this->width);
@@ -635,8 +635,8 @@ abstract class Image extends Fsb_model
 	/*
 	** Ajoute un cercle sur l'image
 	** -----
-	** $x ::		Coordonnée X du centre
-	** $y ::		Coordonnée Y du centre
+	** $x ::		Coordonnee X du centre
+	** $y ::		Coordonnee Y du centre
 	** $r ::		Rayon du cercle
 	** $style ::	Style
 	*/
@@ -677,14 +677,14 @@ abstract class Image extends Fsb_model
 	/*
 	** Ecrit du texte sur l'image
 	** -----
-	** $str ::		Chaîne de caractère
+	** $str ::		Chaine de caractere
 	** $x ::		Position X du texte
 	** $y ::		Position Y du texte
-	** $font ::		Police utilisée
+	** $font ::		Police utilisee
 	** $size ::		Taille du texte
 	** $color ::	Couleur du texte
 	** $italic ::	Texte en italique
-	** $random_h ::	Coefficient pour modifier aléatoirement la hauteur
+	** $random_h ::	Coefficient pour modifier aleatoirement la hauteur
 	*/
 	public function write($str, $x, $y, $font, $size, $color, $italic = FALSE, $random_h = 0)
 	{
@@ -696,7 +696,7 @@ abstract class Image extends Fsb_model
 			$this->load_font($font);
 		}
 
-		// Affichage caractère par caractère
+		// Affichage caractere par caractere
 		$pixel_size = floor($size / 6);
 		$spacer = 0;
 		foreach (str_split($str) AS $char)
@@ -711,7 +711,7 @@ abstract class Image extends Fsb_model
 
 	public function _write($info, $x, $y, $pixel_size, $color, $italic = FALSE)
 	{
-		// Affichage du caractère
+		// Affichage du caractere
 		$offset_y = $y;$k = 0;
 		foreach ($info AS $r => $row)
 		{
@@ -736,7 +736,7 @@ abstract class Image extends Fsb_model
 
 	/*
 	** Ajoute un effet de blur sur l'image (fonction assez lente)
-	** Tiré du tutorial http://www.xgarreau.org/aide/devel/gd/libgd4.php
+	** Tire du tutorial http://www.xgarreau.org/aide/devel/gd/libgd4.php
 	** ----
 	** $index ::		Coefficient du blur
 	*/
@@ -780,7 +780,7 @@ abstract class Image extends Fsb_model
 	}
 
 	/*
-	** Charge la police en mémoire
+	** Charge la police en memoire
 	** -----
 	** $path ::		Chemin vers la police
 	*/

@@ -11,7 +11,7 @@
 */
 
 /*
-** Supprime les informations inutiles dans la base de donnée (messages sans sujets, sujets sans messages, etc ..)
+** Supprime les informations inutiles dans la base de donnee (messages sans sujets, sujets sans messages, etc ..)
 */
 function prune_bad_data()
 {

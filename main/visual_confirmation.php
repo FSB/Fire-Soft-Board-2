@@ -11,8 +11,8 @@
 */
 
 /*
-** Génère une image aléatoire pour le code de confirmation visuel.
-** Ce code est ensuite sauvé dans la session du membre et vérifié lors du traitement du formulaire d'inscription.
+** Genere une image aleatoire pour le code de confirmation visuel.
+** Ce code est ensuite sauve dans la session du membre et verifie lors du traitement du formulaire d'inscription.
 */
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
@@ -22,7 +22,7 @@ include(ROOT . 'main/start.' . PHPEXT);
 
 Fsb::$session->start('', FALSE);
 
-// Page accessible uniquement aux invités
+// Page accessible uniquement aux invites
 if (Fsb::$session->is_logged())
 {
 	exit;
@@ -31,7 +31,7 @@ if (Fsb::$session->is_logged())
 // Nouvelle image captcha
 $captcha = Captcha::factory();
 
-// On récupère le mode de l'image, suivant ce mode on régénère ou non l'image (sachant que chaque régénération d'image ajoute +1
+// On recupere le mode de l'image, suivant ce mode on regenere ou non l'image (sachant que chaque regeneration d'image ajoute +1
 // dans le nombre de tentative)
 $mode = Http::request('mode');
 if ($mode == NULL)
@@ -39,19 +39,19 @@ if ($mode == NULL)
 	$mode = 'generate';
 }
 
-// Si on est en création de messages
+// Si on est en creation de messages
 if ($mode == 'post_captcha' || $mode == 'contact_captcha')
 {
 	$captcha->create_str();
 }
 else
 {
-	// On génère une liste de caractère si on est en mode de génération
+	// On genere une liste de caractere si on est en mode de generation
 	if ($mode == 'generate' || $mode == 'refresh')
 	{
 		$captcha->create_str();
 	}
-	// Sinon si on garde la même image ...
+	// Sinon si on garde la meme image ...
 	else
 	{
 		$captcha->set_str(Fsb::$session->data['s_visual_code']);
@@ -61,7 +61,7 @@ else
 // On affiche l'image
 $captcha->output();
 
-// On met à jour la session du membre si l'image est régénérée
+// On met a jour la session du membre si l'image est regeneree
 if ($mode == 'generate')
 {
 	Fsb::$db->update('sessions', array(

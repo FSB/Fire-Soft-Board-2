@@ -11,19 +11,19 @@
 */
 
 /*
-** La classe User() permet d'identifier le visiteur sur chaque page. Les données
-** du membre sont chargées dès le début de la session dans un tableau PHP stoqué
-** dans la base de donnée.
+** La classe User() permet d'identifier le visiteur sur chaque page. Les donnees
+** du membre sont chargees des le debut de la session dans un tableau PHP stoque
+** dans la base de donnee.
 */
 class Session extends Fsb_model
 {
-	// Contient les données du membre
+	// Contient les donnees du membre
 	public $data = array();
 	
-	// Contient les données sur le thème du membre
+	// Contient les donnees sur le theme du membre
 	public $style = array();
 
-	// Contient les clefs de langues chargées
+	// Contient les clefs de langues chargees
 	public $lg = array();
 
 	// IP du visiteur
@@ -44,26 +44,26 @@ class Session extends Fsb_model
 	// Page courante
 	public $page = '';
 
-	// Mise à jour de la page de session ?
+	// Mise a jour de la page de session ?
 	private $update_page = TRUE;
 
-	// Table de clef sur les droits pour les accès directs
+	// Table de clef sur les droits pour les acces directs
 	private $key_auths = array();
 
 	/*
 	** Constructeur de la classe user.
-	** Assigne le répertoire de session et récupère l'IP du visiteur.
+	** Assigne le repertoire de session et recupere l'IP du visiteur.
 	** -----
-	** $session_dir :: Répertoire des sessions.
+	** $session_dir :: Repertoire des sessions.
 	*/
 	public function __construct()
 	{
-		// Récupération de l'IP, du user_agent et de l'ID de session
+		// Recuperation de l'IP, du user_agent et de l'ID de session
 		$this->ip = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
 		$this->user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : NULL;
 		$this->get_sid();
 
-		// Récupération de la page
+		// Recuperation de la page
 		$this->page = (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : getenv('REQUEST_URI');
 		if (!$this->page)
 		{
@@ -75,8 +75,8 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Récupère la SID (ID de session) du visiteur en cherchant dans les cookies, puis
-	** dans l'URL. Si elle n'existe pas on la créé.
+	** Recupere la SID (ID de session) du visiteur en cherchant dans les cookies, puis
+	** dans l'URL. Si elle n'existe pas on la cree.
 	*/
 	private function get_sid()
 	{
@@ -97,14 +97,14 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Récupère les données du visiteur. Créé une nouvelle session si besoin.
+	** Recupere les donnees du visiteur. Cree une nouvelle session si besoin.
 	** -----
 	** $location ::		Localisation du visiteur sur le forum.
-	** $update_page ::	Mise à jour de la page de session
+	** $update_page ::	Mise a jour de la page de session
 	*/
 	public function start($location, $update_page = TRUE)
 	{
-		// On récupère les données du visiteur, création de la session si besoin
+		// On recupere les donnees du visiteur, creation de la session si besoin
 		$this->update_page = $update_page;
 		$this->get_data();
 
@@ -126,7 +126,7 @@ class Session extends Fsb_model
 		$this->load_lang('lg_common');
 		$this->load_lang($location);
 
-		// Chargement des langues personalisées
+		// Chargement des langues personalisees
 		$sql = 'SELECT lang_key, lang_value
 				FROM ' . SQL_PREFIX . 'langs
 				WHERE lang_name = \'' . Fsb::$db->escape($this->data['u_language']) . '\'';
@@ -176,16 +176,16 @@ class Session extends Fsb_model
 			Display::message(sprintf(Fsb::$session->lang('you_are_ban'), $this->data['you_are_ban']['reason']));
 		}
 
-		// On récupère la liste des MODS
+		// On recupere la liste des MODS
 		Fsb::$mods = new Mods;
 
-		// Mise à jour de la dernière visite
+		// Mise a jour de la derniere visite
 		if ($this->status == 'update' || $this->status == 'new')
 		{
 			$this->update_last_visit($this->id());
 		}
 
-		// Création des switch des droits
+		// Creation des switch des droits
 		foreach ($this->data['auth']['other'] AS $k => $v)
 		{
 			if ($v[0])
@@ -197,7 +197,7 @@ class Session extends Fsb_model
 		// A partir de maintenant on peut logguer les erreurs SQL
 		define('CAN_LOG_SQL_ERROR', TRUE);
 
-		// Forum désactivé ?
+		// Forum desactive ?
 		if ((Fsb::$cfg->get('disable_board') == 'modo' && $this->auth() < MODO) || (Fsb::$cfg->get('disable_board') == 'admin' && $this->auth() < MODOSUP))
 		{
 			if (!defined('CANT_DISABLE_BOARD'))
@@ -208,7 +208,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Renvoie les données du membre sauvées dans le fichier de session.
+	** Renvoie les donnees du membre sauvees dans le fichier de session.
 	*/
 	private function get_data()
 	{
@@ -227,7 +227,7 @@ class Session extends Fsb_model
 		$this->data = array_merge($cache_data, $data);
 		unset($this->data['s_cache'], $cache_data, $data);
 
-		// Mise à jour de la session si on change de page ou que le temps resté sur cette page exède la limite refresh_time
+		// Mise a jour de la session si on change de page ou que le temps reste sur cette page exede la limite refresh_time
 		if ($this->data['u_last_visit'] < (CURRENT_TIME - $this->refresh_time) || ($this->update_page && $this->data['s_page'] != $this->page))
 		{
 			if ($this->data['u_last_visit'] < (CURRENT_TIME - $this->refresh_time))
@@ -241,8 +241,8 @@ class Session extends Fsb_model
 			), 'WHERE s_sid = \'' . $this->sid . '\' AND s_ip = \'' . $this->ip . '\'');
 		}
 
-		// Si le signal Sync::SESSION est plus récent que la date de création de la
-		// session, on met à jour les droits et les groupes. De même avec le signal Sync::USER.
+		// Si le signal Sync::SESSION est plus recent que la date de creation de la
+		// session, on met a jour les droits et les groupes. De meme avec le signal Sync::USER.
 		if ((!isset($this->data['s_session_start_time']) || Fsb::$cfg->get('signal_session') > $this->data['s_session_start_time']) || ($this->data['s_signal_user'] > $this->data['s_session_start_time']))
 		{
 			$this->create_auths();
@@ -251,12 +251,12 @@ class Session extends Fsb_model
 
 		if (!is_array($this->data))
 		{
-			die('User :: Les données de la session sont erronées');
+			die('User :: Les donnees de la session sont erronees');
 		}
 	}
 
 	/*
-	** Créé une nouvelle session et renvoie les données.
+	** Cree une nouvelle session et renvoie les donnees.
 	*/
 	private function new_session($allow_auto = FALSE)
 	{
@@ -276,7 +276,7 @@ class Session extends Fsb_model
 			$u_id = Fsb::$db->get($sql, 'u_id') OR $u_id = VISITOR_ID;
 		}
 
-		// Récupération des données du membre pour la session
+		// Recuperation des donnees du membre pour la session
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . "users 
 				WHERE u_id = $u_id";
@@ -289,7 +289,7 @@ class Session extends Fsb_model
 
 		$this->create_auths();
 
-		// Mise à jour de la session si le membre n'a pas été banni
+		// Mise a jour de la session si le membre n'a pas ete banni
 		if (!$reason = $this->is_ban($this->id(), $this->data['u_nickname'], $this->ip, $this->data['u_email']))
 		{
 			$this->update_session(TRUE);
@@ -300,19 +300,19 @@ class Session extends Fsb_model
 			$this->data['you_are_ban'] = $reason;
 		}
 
-		// Dernière visite mise à jour dans le cookie
+		// Derniere visite mise a jour dans le cookie
 		Http::cookie('last_visit', $this->data['u_last_visit'], 0);
 	}
 
 	/*
-	** Récupère les autorisation du membre sur tout le forum ainsi que ses groupes
+	** Recupere les autorisation du membre sur tout le forum ainsi que ses groupes
 	** -----
 	** $u_id ::			ID du membre (necessaire, car parfois on doit calculer les droits avant la connexion du membre)
 	** $u_auth ::		Niveau d'autorisation du membre
 	*/
 	private function create_auths()
 	{
-		// Droits indépendants des forums
+		// Droits independants des forums
 		$sql = 'SELECT auth_name, auth_level
 					FROM ' . SQL_PREFIX . 'auths';
 		$result = Fsb::$db->query($sql, 'auths_');
@@ -341,7 +341,7 @@ class Session extends Fsb_model
 		Fsb::$db->free($result);
 
 		// Le membre subit une restriction ?
-		// TODO : A déplacer pour éviter les problèmes de cache ?
+		// TODO : A deplacer pour eviter les problemes de cache ?
 		$post_restriction = ($this->data['u_warn_post'] == 1 || $this->data['u_warn_post'] >= CURRENT_TIME) ? TRUE : FALSE;
 		$read_restriction = ($this->data['u_warn_read'] == 1 || $this->data['u_warn_read'] >= CURRENT_TIME) ? TRUE : FALSE;
 
@@ -383,7 +383,7 @@ class Session extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// On réduit au maximum les données des droits, pour limiter la place prise dans la table session
+		// On reduit au maximum les donnees des droits, pour limiter la place prise dans la table session
 		foreach ($this->data['auth'] AS $id => $values)
 		{
 			$this->data['auth'][$id] = array();
@@ -397,9 +397,9 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Ecrit les données de la session dans le fichier session.
+	** Ecrit les donnees de la session dans le fichier session.
 	** -----
-	** $new_session ::	Définit si la session est créé
+	** $new_session ::	Definit si la session est cree
 	*/
 	private function update_session($new_session = FALSE)
 	{
@@ -420,12 +420,12 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si le membre a l'autorisation pour le forum spécifié
+	** Retourne TRUE si le membre a l'autorisation pour le forum specifie
 	** -----
 	** $f_id ::			ID du forum, ou bien nom du droit pour un droit particulier.
 	**					Par exemple $this->is_authorized(1, 'ga_view') => Droit sur un forum
-	**					Ou bien $this->is_authorized('auth_ip') => Droit général
-	** $auth_type ::	Nom du droit, si on passe l'ID d'un forum en premier paramètre
+	**					Ou bien $this->is_authorized('auth_ip') => Droit general
+	** $auth_type ::	Nom du droit, si on passe l'ID d'un forum en premier parametre
 	*/
 	public function is_authorized($f_id, $auth_type = NULL)
 	{
@@ -443,8 +443,8 @@ class Session extends Fsb_model
 		}
 		else
 		{
-			// Les droits sont stoqués sur deux chiffres consécutifs : le premier 1 / 0 détermine si le membre a
-			// ce droit, le second détermine le droit par défaut enregistré.
+			// Les droits sont stoques sur deux chiffres consecutifs : le premier 1 / 0 determine si le membre a
+			// ce droit, le second determine le droit par defaut enregistre.
 			return (@$this->data['auth']['other'][$f_id][0]);
 		}
 	}
@@ -459,8 +459,8 @@ class Session extends Fsb_model
 	*/
 	public function log_user($login, $password, $is_hidden = FALSE, $use_auto_connexion = FALSE)
 	{
-		// On récupère les informations sur le mot de passe du membre en fonction de son login,
-		// pour déterminer ensuite si le mot de passe entré est correct
+		// On recupere les informations sur le mot de passe du membre en fonction de son login,
+		// pour determiner ensuite si le mot de passe entre est correct
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'users_password
 				WHERE u_login = \'' . Fsb::$db->escape($login) . '\'
@@ -472,8 +472,8 @@ class Session extends Fsb_model
 			return (Fsb::$session->lang('login_unknow'));
 		}
 
-		// Si les informations actuelles sur le mot de passe ne sont pas en concordance avec FSB, on met à jour ces informations.
-		// Cette opération sert à faciliter la transition en cas de conversion de forums vers FSB.
+		// Si les informations actuelles sur le mot de passe ne sont pas en concordance avec FSB, on met a jour ces informations.
+		// Cette operation sert a faciliter la transition en cas de conversion de forums vers FSB.
 		if (!$pwd_data['u_use_salt'])
 		{
 			Fsb::$db->update('users_password', array(
@@ -483,7 +483,7 @@ class Session extends Fsb_model
 			), 'WHERE u_id = ' . $pwd_data['u_id']);
 		}
 
-		// Le mot de passe entré est correct, on peut procéder à l'authentification du membre
+		// Le mot de passe entre est correct, on peut proceder a l'authentification du membre
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id = ' . $pwd_data['u_id'];
@@ -516,7 +516,7 @@ class Session extends Fsb_model
 			'u_activate_hidden' =>	($is_hidden && $this->is_authorized('log_hidden')) ? TRUE : FALSE,
 		), 'WHERE u_id = ' . $this->id());
 
-		// Si le MOD affichant la dernière visite sur l'index est activé on envoie un cookie contenant celle ci
+		// Si le MOD affichant la derniere visite sur l'index est active on envoie un cookie contenant celle ci
 		if (Fsb::$mods->is_active('update_last_visit') && Fsb::$mods->is_active('last_visit_index'))
 		{
 			Http::cookie('last_visit', $this->data['u_last_visit'], 0);
@@ -588,9 +588,9 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Déconnexion
+	** Deconnexion
 	** -----
-	** $u_id ::		ID du membre à déconnecter
+	** $u_id ::		ID du membre a deconnecter
 	*/
 	public function logout($u_id = NULL)
 	{
@@ -609,12 +609,12 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le login, l'ip ou l'adresse mail d'un membre ont
-	** été bannis.
+	** Verifie si le login, l'ip ou l'adresse mail d'un membre ont
+	** ete bannis.
 	** -----
 	** $id ::		ID du membre - En passant -1 a l'ID on annule tout banissement via cookie
 	** $login ::	Login du membre
-	** $ip ::		IP décodée du membre
+	** $ip ::		IP decodee du membre
 	** $mail ::		Adresse mail du membre
 	*/
 	public function is_ban($id, $login, $ip, $mail)
@@ -624,13 +624,13 @@ class Session extends Fsb_model
 			$login = '';
 		}
 
-		// Administrateurs non affectés par le banissement
+		// Administrateurs non affectes par le banissement
 		if ($this->auth() >= ADMIN)
 		{
 			return (NULL);
 		}
 
-		// On vérifie si le membre a un cookie de banissement
+		// On verifie si le membre a un cookie de banissement
 		if ($id != -1 && $cookie_ban = Http::getcookie('ban_' . $id))
 		{
 			$cookie_ban = unserialize($cookie_ban);
@@ -644,7 +644,7 @@ class Session extends Fsb_model
 			}
 		}
 
-		// Si le membre n'a pas de cookie de banissement on regarde s'il a été banni, si c'est le cas on créé un cookie de banissement
+		// Si le membre n'a pas de cookie de banissement on regarde s'il a ete banni, si c'est le cas on cree un cookie de banissement
 		// si besoin
 		$sql = 'SELECT ban_type, ban_content, ban_length, ban_cookie, ban_reason
 					FROM ' . SQL_PREFIX . 'ban';
@@ -672,7 +672,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Retourne le chemin d'une image pour le thème
+	** Retourne le chemin d'une image pour le theme
 	** -----
 	** $img ::		Indice de configuration de l'image
 	*/
@@ -704,7 +704,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Mise à jour de la dernière visite
+	** Mise a jour de la derniere visite
 	** -----
 	** $u_id ::		ID du membre
 	*/
@@ -720,7 +720,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le visiteur actuel est un robot référencé ou non. Si c'est le cas on renvoie son ID, sinon on renvoie 0
+	** Verifie si le visiteur actuel est un robot reference ou non. Si c'est le cas on renvoie son ID, sinon on renvoie 0
 	*/
 	public function is_bot()
 	{
@@ -752,7 +752,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si le membre est connecté
+	** Retourne TRUE si le membre est connecte
 	*/
 	public function is_logged()
 	{
@@ -813,7 +813,7 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Retourne la liste des forums modérés
+	** Retourne la liste des forums moderes
 	** -----
 	** $format ::		Si FALSE on retourne un tableau, si TRUE on utilise implode()
 	*/
@@ -857,18 +857,18 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Cette fonction retourne une date à partir d'un timestamp.
-	** Si la date corespond à aujourd'hui on affiche le texte aujourd'hui, idem pour hier.
-	** De plus la date a un format fixe définit dans le fichier de langue, permettant de traduire le mois
+	** Cette fonction retourne une date a partir d'un timestamp.
+	** Si la date corespond a aujourd'hui on affiche le texte aujourd'hui, idem pour hier.
+	** De plus la date a un format fixe definit dans le fichier de langue, permettant de traduire le mois
 	** -----
-	** $timestamp ::	Timestamp pour la date. S'il n'est pas fourni, le timestamp actuel sera utilisé.
-	** $show_hour ::	Ajoute ou non l'heure à la suite de la date
+	** $timestamp ::	Timestamp pour la date. S'il n'est pas fourni, le timestamp actuel sera utilise.
+	** $show_hour ::	Ajoute ou non l'heure a la suite de la date
 	** $format ::		Format de la date si on doit le mettre manuellement
-	** $extra_format ::	Peut utiliser un format extra (Aujourd'hui à [...], Hier à [...])
+	** $extra_format ::	Peut utiliser un format extra (Aujourd'hui a [...], Hier a [...])
 	*/
 	public function print_date($timestamp, $show_hour = TRUE, $format = NULL, $extra_format = TRUE)
 	{
-		// Pour éviter un bug sous windows + PHP4
+		// Pour eviter un bug sous windows + PHP4
 		if (!$timestamp && OS_SERVER == 'windows')
 		{
 			$timestamp = ONE_DAY;
@@ -878,7 +878,7 @@ class Session extends Fsb_model
 		$dst = (($this->is_logged()) ? ($this->data['u_utc'] + $this->data['u_utc_dst']) : (Fsb::$cfg->get('default_utc') + Fsb::$cfg->get('default_utc_dst'))) * ONE_HOUR;
 		$timestamp = $timestamp + $dst;
 
-		// Formatage imposé ?
+		// Formatage impose ?
 		if ($format)
 		{
 			return (gmdate($format, $timestamp));

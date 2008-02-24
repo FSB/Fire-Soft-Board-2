@@ -11,7 +11,7 @@
 */
 
 /*
-** Page de gestion des thèmes (fichiers templates, CSS, images ...)
+** Page de gestion des themes (fichiers templates, CSS, images ...)
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
@@ -126,7 +126,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page par défaut de la gestion des thèmes
+	** Page par defaut de la gestion des themes
 	*/
 	public function page_default_tpl()
 	{
@@ -143,11 +143,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche les thèmes disponibles
+	** Affiche les themes disponibles
 	*/
 	public function page_put_tpl()
 	{
-		// Utilisation du thème
+		// Utilisation du theme
 		$sql = 'SELECT u_tpl, COUNT(u_tpl) AS total
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id <> ' . VISITOR_ID . '
@@ -185,7 +185,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la liste des fichiers templates du thème
+	** Affiche la liste des fichiers templates du theme
 	*/
 	public function page_show_tpl()
 	{
@@ -214,7 +214,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('tpl_list_templates');
 		$cache = Cache::factory('tpl');
 
-		// On récupère la liste des fichiers template du thème (_root pour placer cette clef au début)
+		// On recupere la liste des fichiers template du theme (_root pour placer cette clef au debut)
 		$fd = opendir(ROOT . 'tpl/' . $this->tpl_name . '/files');
 		$list_tpl = array('_root' => array());
 		while ($file = readdir($fd))
@@ -272,7 +272,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Edite un fichier du thème
+	** Edite un fichier du theme
 	*/
 	public function page_edit_tpl()
 	{
@@ -306,7 +306,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Charge le contenu d'un fichier pour l'afficher d'éditeur Codepress
+	** Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
 	*/
 	public function page_codepress()
 	{
@@ -325,7 +325,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Sauvegarde mes modifications effectuées sur un fichier template
+	** Sauvegarde mes modifications effectuees sur un fichier template
 	*/
 	public function page_submit_edit()
 	{
@@ -373,7 +373,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche les classes disponibles dans la css main.css du thème
+	** Affiche les classes disponibles dans la css main.css du theme
 	*/
 	public function page_show_tpl_css()
 	{
@@ -424,13 +424,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page d'édition d'une classe de la feuille de style
+	** Affiche la page d'edition d'une classe de la feuille de style
 	*/
 	public function page_edit_tpl_css()
 	{
 		$id = intval(Http::request('id'));
 
-		// On récupère la classe CSS
+		// On recupere la classe CSS
 		$css = new Css();
 		$css->load_file(ROOT . 'tpl/' . $this->tpl_name . '/' . $this->class_name);
 
@@ -464,7 +464,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$edit_css_type = 'simple';
 		}
 
-		// On récupère les classes de la CSS pour la liste
+		// On recupere les classes de la CSS pour la liste
 		$list_class_ary = array();
 		foreach ($css->data[$this->class_name] AS $class)
 		{
@@ -472,7 +472,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		
 		/*
-		** Prévisualisation de la CSS ?
+		** Previsualisation de la CSS ?
 		*/
 		if ($preview_css)
 		{
@@ -498,7 +498,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$list_class = Html::create_list('choose_class_name', $id, $list_class_ary, '', 'onchange="location.href=\'' . sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name . '&amp;edit_css_type=' . $edit_css_type . '&amp;class_name=' . $this->class_name) . '&amp;id=\' + this.value;"');
 
-		// Champs cachés
+		// Champs caches
 		$hidden = Html::hidden('edit_css_type_submit', $edit_css_type) . Html::hidden('tpl_name', $this->tpl_name) . Html::hidden('class_name', $this->class_name);
 
 		Fsb::$tpl->set_vars(array(
@@ -517,7 +517,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			// Affiche l'éditeur de CSS
+			// Affiche l'editeur de CSS
 			$list_size = array('px' => 'px', 'pt' => 'pt', 'em' => 'em', '%' => '%');
 			$list_border_type = array(
 				'solid' =>		Fsb::$session->lang('adm_css_border_type_solid'),
@@ -573,7 +573,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Récupère dans un tableau de données valide les propriétés de la classe
+	** Recupere dans un tableau de donnees valide les proprietes de la classe
 	*/
 	public function page_check_css_style($class_data, $content = NULL)
 	{
@@ -641,20 +641,20 @@ class Fsb_frame_child extends Fsb_admin_frame
 			unset($tmp);
 		}
 
-		// Couleur de l'arière plan
+		// Couleur de l'ariere plan
 		if (isset($p['background-color']))
 		{
 			$this->style['background_color'] = $p['background-color'];
 		}
 
-		// Image d'arrière plan
+		// Image d'arriere plan
 		if (isset($p['background-image']))
 		{
 			$this->style['background_img'] = preg_replace('#url\((\'|")?(.*?)(\'|")?\)#i', '$2', $p['background-image']);
 			$this->style['background_img'] = preg_replace('#^img/#', '', $this->style['background_img']);
 		}
 
-		// Répétition de l'image en arrière plan
+		// Repetition de l'image en arriere plan
 		if (isset($p['background-repeat']))
 		{
 			$this->style['background_repeat'] = $p['background-repeat'];
@@ -666,7 +666,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->style['bold'] = TRUE;
 		}
 
-		// Texte souligné
+		// Texte souligne
 		if (isset($p['text-decoration']) && $p['text-decoration'] == 'underline')
 		{
 			$this->style['underline'] = TRUE;
@@ -815,22 +815,22 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Upload un template et tente de le décompresser
+	** Upload un template et tente de le decompresser
 	*/
 	public function page_install_tpl()
 	{
-		// Upload du thème sur le serveur
+		// Upload du theme sur le serveur
 		if (!$this->tpl_name = Http::request('upload_tpl', 'post'))
 		{
 			$upload = new Upload('upload_tpl');
 			$upload->allow_ext(array('zip', 'tar', 'gz', 'xml'));
 			$this->tpl_name = $upload->store(ROOT . 'tpl/');
 
-			// Cette ligne permettra de mettre en champ caché le template si on utilise une connexion FTP
+			// Cette ligne permettra de mettre en champ cache le template si on utilise une connexion FTP
 			$_POST['upload_tpl'] = $this->tpl_name;
 		}
 
-		// Instance de l'un objet File() pour la décompression
+		// Instance de l'un objet File() pour la decompression
 		$file = File::factory(Http::request('use_ftp'));
 
 		// Decompression des fichiers
@@ -842,19 +842,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Exporte un thème et lance le téléchargement
+	** Exporte un theme et lance le telechargement
 	*/
 	public function page_export_tpl()
 	{
 		$ext =		trim(Http::request('export_tpl_ext'));
 		$tpl_name = trim(Http::request('export_tpl_name'));
 
-		// On récupère le fichier compressé
+		// On recupere le fichier compresse
 		$compress = new Compress('.' . $ext);
 		$compress->add_file('tpl/' . $tpl_name . '/', 'tpl/');
 		$content = $compress->write(TRUE);
 
-		// On lance le téléchargement sur le navigateur
+		// On lance le telechargement sur le navigateur
 		Http::download($tpl_name . '.' . $ext, $content);
 	}
 
@@ -983,13 +983,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la liste des derniers thèmes
+	** Affiche la liste des derniers themes
 	*/
 	public function page_tpl_news()
 	{
 		Fsb::$tpl->set_switch('tpl_streaming');
 
-		// On récupère les news
+		// On recupere les news
 		$news = Http::get_file_on_server(FSB_REQUEST_SERVER, FSB_REQUEST_TPL_NEWS, 10);
 		if (!$news)
 		{
@@ -1031,14 +1031,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Installe le thème à partir du site officiel
+	** Installe le theme a partir du site officiel
 	*/
 	public function page_install_from_news()
 	{
 		$url = key(Http::request('install_news_tpl', 'post'));
 		if ($url)
 		{
-			// Instance d'un objet File() pour la décompression
+			// Instance d'un objet File() pour la decompression
 			$file = File::factory(Http::request('use_ftp'));
 
 			$tpl_name = basename($url);
@@ -1051,7 +1051,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// On copie le contenu
 			$file->write('tpl/' . $tpl_name, $content);
 
-			// Decompression du thème
+			// Decompression du theme
 			$compress = new Compress('tpl/' . $tpl_name, $file);
 			$compress->extract('tpl/');
 			@unlink(ROOT . 'tpl/' . $tpl_name);
@@ -1061,7 +1061,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Afficher les différences entre deux thèmes
+	** Afficher les differences entre deux themes
 	*/
 	public function page_show_diff()
 	{
@@ -1079,7 +1079,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$filter = FALSE;
 		}
 
-		// Thème à "gauche"
+		// Theme a "gauche"
 		$tpl_src = Http::request('tpl_src', 'post');
 		if (!$tpl_src)
 		{
@@ -1096,7 +1096,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::message(sprintf(Fsb::$session->lang('adm_tpl_diff_not_exists'), $tpl_src));
 		}
 
-		// Thème à "droite"
+		// Theme a "droite"
 		$tpl_dst = Http::request('tpl_dst', 'post');
 		if (!$tpl_dst)
 		{
@@ -1113,7 +1113,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::message(sprintf(Fsb::$session->lang('adm_tpl_diff_not_exists'), $tpl_dst));
 		}
 
-		// Fichiers à comparer
+		// Fichiers a comparer
 		$list_file = (array) Http::request('list_file', 'post');
 
 		// Lancement du diff
@@ -1192,7 +1192,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 		}
 
-		// Génération des listes des templates
+		// Generation des listes des templates
 		$path = ROOT . 'tpl/' . $tpl_src . '/';
 		$fd = opendir($path);
 		$list = '<select name="list_file[]" multiple="multiple" size="10"><optgroup label="' . Fsb::$session->lang('adm_tpl_diff_name') . '">';
@@ -1268,19 +1268,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Générateur de CSS simplifié
+	** Generateur de CSS simplifie
 	*/
 	public function page_css_generator()
 	{
 		if (Http::request('submit_css_generator', 'post'))
 		{
-			// Génération du style
+			// Generation du style
 			$style = $this->page_get_css_content();
 			echo preg_replace("#[\r\n]#i", ' ', htmlspecialchars($style));
 			exit;
 		}
 
-		// Affichage de l'éditeur
+		// Affichage de l'editeur
 		$list_size = array('px' => 'px', 'pt' => 'pt', 'em' => 'em', '%' => '%');
 
 		Fsb::$tpl->set_file('css_generator.html');

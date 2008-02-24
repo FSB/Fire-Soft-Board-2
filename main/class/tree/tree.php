@@ -11,7 +11,7 @@
 */
 
 /*
-** Génère un arbre à partir d'une liste d'ID et de parents
+** Genere un arbre a partir d'une liste d'ID et de parents
 */
 class Tree extends Fsb_model
 {
@@ -20,7 +20,7 @@ class Tree extends Fsb_model
 	protected $tmp;
 
 	/*
-	** Ajoute un item à l'arbre
+	** Ajoute un item a l'arbre
 	*/
 	public function add_item($id, $parent, $data)
 	{
@@ -36,7 +36,7 @@ class Tree extends Fsb_model
 		$this->tmp[$id] = new Tree_node($data, $parent);
 		$this->stack[$id] = &$this->tmp[$id];
 
-		// On récupère les parents
+		// On recupere les parents
 		if (isset($this->tmp[$id]->parent) && $this->tmp[$id]->parent)
 		{
 			$p = $this->tmp[$id]->parent;

@@ -11,7 +11,7 @@
 */
 
 /*
-** Execute les procédures programmées du forum et envoie les messages en attente. Cette page doit être appelée sous forme
+** Execute les procedures programmees du forum et envoie les messages en attente. Cette page doit etre appelee sous forme
 ** d'image, pour que les fonctions s'executent en background.
 */
 
@@ -48,7 +48,7 @@ while ($row = Fsb::$db->row($result))
 }
 Fsb::$db->free($result);
 
-// Mise à jour des taches effectuées
+// Mise a jour des taches effectuees
 if ($update_id)
 {
 	Fsb::$db->update('process', array(

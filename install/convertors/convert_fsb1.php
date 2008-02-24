@@ -13,8 +13,8 @@
 /*
 ** Convertisseur FSB1 -> FSB2
 **
-** Mods supportés :
-**	- Messagerie privée
+** Mods supportes :
+**	- Messagerie privee
 **	- Groupes et autorisations des groupes
 **	- Sondages
 **	- Login / pseudo
@@ -28,7 +28,7 @@ class Convert_fsb1 extends Convert
 	public $forum_type = 'FSB (Fire Soft Board) 1.0.X';
 	public static function forum_type(){return (self::$static_forum_type);}
 
-	// UTF-8 activé sur le forum ?
+	// UTF-8 active sur le forum ?
 	protected $use_utf8 = FALSE;
 
 	// Configuration additionelle
@@ -36,15 +36,15 @@ class Convert_fsb1 extends Convert
 		'forum_path' => '<input type="text" name="forum_path" value="{VALUE}" size="35" />',
 	);
 
-	// Les mods installés sur FSB1
+	// Les mods installes sur FSB1
 	private $fsb1_mods = array();
 
 	/*
-	** Méthode permettant de récupérer sur chaque page des informations sur le forum
+	** Methode permettant de recuperer sur chaque page des informations sur le forum
 	*/
 	protected function forum_information()
 	{
-		// Recherche des MOS FSB1 installés
+		// Recherche des MOS FSB1 installes
 		$sql = 'SHOW TABLES LIKE \'' . $this->config('sql_prefix') . '%\'';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result, 'row'))
@@ -74,7 +74,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne la liste des conversions implémentées
+	** Retourne la liste des conversions implementees
 	*/
 	protected function _get_implement()
 	{
@@ -166,7 +166,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne un tableau contenant à chaque ligne les informations sur un membre
+	** Retourne un tableau contenant a chaque ligne les informations sur un membre
 	*/
 	protected function convert_users($offset, $step, $state)
 	{
@@ -242,7 +242,7 @@ class Convert_fsb1 extends Convert
 				FROM ' . $this->config('sql_prefix') . 'membres';
 		$max_user_id = Fsb::$db->get($sql, 'total') + 20;
 
-		// Création des groupes
+		// Creation des groupes
 		$sql = 'SELECT *
 				FROM ' . $this->config('sql_prefix') . 'groupes
 				ORDER BY g_id';
@@ -266,7 +266,7 @@ class Convert_fsb1 extends Convert
 		}
 		Fsb::$db->free($result);
 
-		// Générations des membres des groupes
+		// Generations des membres des groupes
 		$sql = 'SELECT *
 				FROM ' . $this->config('sql_prefix') . 'groupes_membres
 				ORDER BY g_id';
@@ -293,22 +293,22 @@ class Convert_fsb1 extends Convert
 		$forums = $this->fsb1_load_cache('forum');
 		$cat = $this->fsb1_load_cache('categorie');
 
-		// On récupère l'ID max des forums, afin de pouvoir créer des ID de catégories correctes puisque
-		// dans FSB1 catégories et forums sont séparés
+		// On recupere l'ID max des forums, afin de pouvoir creer des ID de categories correctes puisque
+		// dans FSB1 categories et forums sont separes
 		$max_forum_id = 0;
 		foreach ($forums AS $f)
 		{
 			$max_forum_id = max($max_forum_id, $f['forum_id']);
 		}
 
-		// A partir de cette ID on créé les vrais ID des catégories
+		// A partir de cette ID on cree les vrais ID des categories
 		$tree = new Convert_tree_forums();
 		$cat_id = array();
 		foreach ($cat AS $c)
 		{
 			$cat_id[$c['cat_id']] = ++$max_forum_id;
 
-			// Ajout des catégories dans l'arbre
+			// Ajout des categories dans l'arbre
 			$tree->add_item($cat_id[$c['cat_id']], 0, array(
 				'f_id' =>		$cat_id[$c['cat_id']],
 				'f_name' =>		$c['cat_nom'],
@@ -319,11 +319,11 @@ class Convert_fsb1 extends Convert
 			));
 		}
 
-		// Création de l'arbre des forums
+		// Creation de l'arbre des forums
 		$index_cat_id = array();
 		$store = $forums;
 
-		// On parcourt plusieurs fois cette zone afin de pouvoir ajouter les forums qui éventuellement n'auraient pas encore été ajoutés
+		// On parcourt plusieurs fois cette zone afin de pouvoir ajouter les forums qui eventuellement n'auraient pas encore ete ajoutes
 		while (count($store))
 		{
 			$last_count = count($store);
@@ -378,7 +378,7 @@ class Convert_fsb1 extends Convert
 				unset($store[$key]);
 			}
 
-			// Sécurité pour éviter les boucles infinies
+			// Securite pour eviter les boucles infinies
 			if ($last_count == count($store))
 			{
 				break;
@@ -392,8 +392,8 @@ class Convert_fsb1 extends Convert
 	** Doit retourner un tableau multidimensionel contenant :
 	** - Au premier niveau en clef, l'ID d'un forum
 	** - Au second niveau en clef, l'ID d'un groupe
-	** - Au troisième niveau, les clefs des droits avec TRUE / FALSE
-	** En clair, ce tableau permet de déterminer les droits pour chaque groupe pour chaque forum.
+	** - Au troisieme niveau, les clefs des droits avec TRUE / FALSE
+	** En clair, ce tableau permet de determiner les droits pour chaque groupe pour chaque forum.
 	** Une abscence de forum ou de groupe signifie aucun droit.
 	*/
 	protected function convert_auths()
@@ -415,7 +415,7 @@ class Convert_fsb1 extends Convert
 			'ga_answer_global_announce' =>	'droit_annonce',
 		);
 
-		// Gestion des droits simples (droits d'un groupe spécial sur un forum)
+		// Gestion des droits simples (droits d'un groupe special sur un forum)
 		$forums = $this->fsb1_load_cache('forum');
 		foreach ($forums AS $f)
 		{
@@ -460,9 +460,9 @@ class Convert_fsb1 extends Convert
 			}
 			Fsb::$db->free($result);
 
-			// Membres passant modérateurs
+			// Membres passant moderateurs
 
-			// On récupère les membres passants au stade de modérateurs
+			// On recupere les membres passants au stade de moderateurs
 			$sql = 'SELECT u.u_id
 					FROM ' . $this->config('sql_prefix') . 'groupes_droits gd
 					LEFT JOIN ' . $this->config('sql_prefix') . 'groupes_membres u
@@ -487,7 +487,7 @@ class Convert_fsb1 extends Convert
 			}
 		}
 
-		// Liste des modérateurs en dur
+		// Liste des moderateurs en dur
 		$moderation = $this->fsb1_load_cache('moderation');
 		$idx = array();
 		foreach ($moderation AS $modo)
@@ -528,7 +528,7 @@ class Convert_fsb1 extends Convert
 			}
 		}
 
-		// Mise à jour des couleurs
+		// Mise a jour des couleurs
 		$return['sql'][] = 'UPDATE ' . SQL_PREFIX . 'users SET u_color = \'class="user"\' WHERE u_auth = ' . USER;
 		$return['sql'][] = 'UPDATE ' . SQL_PREFIX . 'users SET u_color = \'class="modo"\' WHERE u_auth = ' . MODO;
 		$return['sql'][] = 'UPDATE ' . SQL_PREFIX . 'users SET u_color = \'class="modosup"\' WHERE u_auth = ' . MODOSUP;
@@ -548,7 +548,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne un tableau contenant à chaque ligne les informations sur un sujet
+	** Retourne un tableau contenant a chaque ligne les informations sur un sujet
 	*/
 	protected function convert_topics($offset, $step, $state)
 	{
@@ -600,7 +600,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne un tableau contenant à chaque ligne les informations sur un message
+	** Retourne un tableau contenant a chaque ligne les informations sur un message
 	*/
 	protected function convert_posts($offset, $step, $state)
 	{
@@ -634,7 +634,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne le nombre de messages privés qu'on va convertir
+	** Retourne le nombre de messages prives qu'on va convertir
 	*/
 	protected function count_convert_mp()
 	{
@@ -644,7 +644,7 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** Retourne un tableau contenant à chaque ligne les informations sur un message privé
+	** Retourne un tableau contenant a chaque ligne les informations sur un message prive
 	*/
 	protected function convert_mp($offset, $step, $state)
 	{
@@ -680,13 +680,13 @@ class Convert_fsb1 extends Convert
 	/*
 	** Retourne un tableau contenant les sondages, avec un sondage par ligne. Chaque ligne de sondage
 	** doit contenir un sous tableau "options" avec le tableau d'options, ainsi qu'un tableau "voters"
-	** contenant les ID des membres qui ont voté.
+	** contenant les ID des membres qui ont vote.
 	*/
 	protected function convert_polls()
 	{
 		$return = array('data' => array(), 'sql' => array());
 
-		// Récupération des sondages
+		// Recuperation des sondages
 		$sql = 'SELECT t.sujet_nom, s.sujet_id, s.sondage_nbre_reponse, s.sondage_nombre_vote, sv.membre_id AS voter_id, so.sondage_reponse_num, so.sondage_reponse, so.sondage_votes
 				FROM ' . $this->config('sql_prefix') . 'sondage s
 				INNER JOIN ' . $this->config('sql_prefix') . 'sujets t
@@ -731,7 +731,7 @@ class Convert_fsb1 extends Convert
 				$options_id_iterator++;
 			}
 
-			// Gestions des membres qui ont votés
+			// Gestions des membres qui ont votes
 			$voter_id = $this->fsb1_user_id($row['voter_id']);
 			if (!in_array($voter_id, $return['data'][$topic_id]['voters']))
 			{
@@ -867,8 +867,8 @@ class Convert_fsb1 extends Convert
 	}
 
 	/*
-	** On ajoute 1 aux ID de FSB1 (car sous FSB1 les ID commencent à 0 pour l'invité, et donc l'admin à une ID de 1, là où dans FSB2 l'administrateur
-	** a une ID de 2 par défaut).
+	** On ajoute 1 aux ID de FSB1 (car sous FSB1 les ID commencent a 0 pour l'invite, et donc l'admin a une ID de 1, la ou dans FSB2 l'administrateur
+	** a une ID de 2 par defaut).
 	*/
 	private function fsb1_user_id($user_id)
 	{
@@ -959,7 +959,7 @@ class Convert_fsb1 extends Convert
 				FROM ' . $this->config('sql_prefix') . 'membres';
 		$max_user_id = Fsb::$db->get($sql, 'total') + 20;
 
-		// Création des groupes
+		// Creation des groupes
 		$sql = 'SELECT g_id
 				FROM ' . $this->config('sql_prefix') . 'groupes
 				ORDER BY g_id';

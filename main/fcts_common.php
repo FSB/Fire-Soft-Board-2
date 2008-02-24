@@ -11,7 +11,7 @@
 */
 
 /*
-** Un print_r() directement formaté
+** Un print_r() directement formate
 ** -----
 ** $array ::	Tableau
 */
@@ -23,9 +23,9 @@ function printr($array)
 }
 
 /*
-** Ajoute l'ID de session à l'url
+** Ajoute l'ID de session a l'url
 ** -----
-** $url ::		URL à modifier
+** $url ::		URL a modifier
 ** $force ::	Si TRUE, on force l'ajout de la SID dans l'URL
 */
 function sid($url, $force = FALSE)
@@ -50,7 +50,7 @@ function sid($url, $force = FALSE)
 }
 
 /*
-** Vérification de la confirmation. Retourne TRUE si tout est ok.
+** Verification de la confirmation. Retourne TRUE si tout est ok.
 */
 function check_confirm()
 {
@@ -63,9 +63,9 @@ function check_confirm()
 }
 
 /*
-** Vérifie la validité d'un code entré pour une image de confirmation visuelle
+** Verifie la validite d'un code entre pour une image de confirmation visuelle
 ** -----
-** $code ::		Code entré
+** $code ::		Code entre
 */
 function check_captcha($code)
 {
@@ -83,11 +83,11 @@ function check_captcha($code)
 ** Renvoie le chemin depuis la racine du forum
 ** -----
 ** $path ::		Chemin complet (avec __FILE__ par exemple)
-** $dir_name ::	Nom du répertoire à la racine
+** $dir_name ::	Nom du repertoire a la racine
 */
 function fsb_basename($path, $dir_name)
 {
-	// On récupère le bon répertoire si le chemin total a été passé en argument
+	// On recupere le bon repertoire si le chemin total a ete passe en argument
 	$dir_name = basename($dir_name);
 
 	$delimiter = (preg_match('/^WIN/', PHP_OS) && strpos($path, '\\')) ? '\\' : '/';
@@ -109,7 +109,7 @@ function fsb_basename($path, $dir_name)
 }
 
 /*
-** Retourne la chaîne de caractère à afficher pour retourner sur une page via un clic
+** Retourne la chaine de caractere a afficher pour retourner sur une page via un clic
 ** -----
 ** $url ::		URL sans la SID
 ** $name ::		Nom de la page (pour la variable de langue)
@@ -120,7 +120,7 @@ function return_to($url, $name)
 }
 
 /*
-** Converti une taille en octet dans une unité plus grande si possible
+** Converti une taille en octet dans une unite plus grande si possible
 ** -----
 ** $size ::		Taille en octet
 */
@@ -166,7 +166,7 @@ function ini_get_bytes($ini_size)
 /*
 ** Selectionne une ligne de tableau multi dimensionel en fonction de la valeur d'une clef
 ** -----
-** $ary ::		Tableau à fouiller
+** $ary ::		Tableau a fouiller
 ** $field ::	Nom de la clef
 ** $value ::	Valeur de la clef
 */
@@ -183,10 +183,10 @@ function array_select(&$ary, $field, $value)
 }
 
 /*
-** Ecrit des données dans un fichier.
+** Ecrit des donnees dans un fichier.
 ** -----
 ** $filename ::		Nom du fichier
-** $code ::			Données à écrire
+** $code ::			Donnees a ecrire
 */
 function fsb_write($filename, $code)
 {
@@ -204,7 +204,7 @@ function fsb_write($filename, $code)
 }
 
 /*
-** Agit comme la fonction array_map() de PHP, mais récusivement sur tous les
+** Agit comme la fonction array_map() de PHP, mais recusivement sur tous les
 ** sous tableaux.
 */
 function array_map_recursive($callback, $ary)
@@ -227,7 +227,7 @@ function array_map_recursive($callback, $ary)
 ** Renvoie tous les forums dans un tableau
 ** -----
 ** $where ::		Clause WHERE de selection des forums
-** $use_cache ::	Définit si on utilise le cache pour la requète
+** $use_cache ::	Definit si on utilise le cache pour la requete
 */
 function get_forums($where = '', $use_cache = TRUE)
 {
@@ -241,10 +241,10 @@ function get_forums($where = '', $use_cache = TRUE)
 }
 
 /*
-** Retourne TRUE s'il s'agit de la dernière version comparée
+** Retourne TRUE s'il s'agit de la derniere version comparee
 ** -----
 ** $current_version ::	Version actuelle de ce script
-** $last_version ::		Dernière version connue pour le script
+** $last_version ::		Derniere version connue pour le script
 */
 function is_last_version($current_version, $last_version)
 {
@@ -258,7 +258,7 @@ function is_last_version($current_version, $last_version)
 		return (FALSE);
 	}
 
-	// Comparaison des versions majeures, mineures et des révisions
+	// Comparaison des versions majeures, mineures et des revisions
 	for ($i = 1; $i < 4; $i++)
 	{
 		if ($m_current[$i] != $m_last[$i])
@@ -267,7 +267,7 @@ function is_last_version($current_version, $last_version)
 		}
 	}
 
-	// Comparaison du numéro de RC et des révisions mineures
+	// Comparaison du numero de RC et des revisions mineures
 	$rc_current = (isset($m_current[6])) ? $m_current[6] : '';
 	$rc_last = (isset($m_last[6])) ? $m_last[6] : '';
 	if (($rc_current || $rc_last) && $rc_current != $rc_last)
@@ -286,7 +286,7 @@ function is_last_version($current_version, $last_version)
 }
 
 /*
-** Retourne les données d'un fichier (extension ou bien corps)
+** Retourne les donnees d'un fichier (extension ou bien corps)
 */
 function get_file_data($filename, $type)
 {
@@ -305,7 +305,7 @@ function get_file_data($filename, $type)
 }
 
 /*
-** Un preg_replace() qui remplace tous les éléments de la chaîne, même les éléments imbriqués
+** Un preg_replace() qui remplace tous les elements de la chaine, meme les elements imbriques
 ** -----
 ** $args :	Voir les arguments de preg_replace sur php.net
 */
@@ -319,8 +319,8 @@ function preg_replace_multiple($pattern, $replace, $str, $limit = -1)
 }
 
 /*
-** Retourne un tableau contenant un boolean signalant si un sujet est lu, et une chaîne de caractère
-** de type t_id=xx ou p_id=yy#yy à place à la fin de l'URL pointant vers le dernier message d'un sujet
+** Retourne un tableau contenant un boolean signalant si un sujet est lu, et une chaine de caractere
+** de type t_id=xx ou p_id=yy#yy a place a la fin de l'URL pointant vers le dernier message d'un sujet
 ** -----
 ** $p_id ::			ID du dernier message
 ** $p_time ::		Date du dernier message

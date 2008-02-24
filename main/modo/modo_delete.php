@@ -14,14 +14,14 @@
 $show_this_module = FALSE;
 
 /*
-** Module de modération pour la suppression d'un message
+** Module de moderation pour la suppression d'un message
 */
 class Page_modo_delete extends Fsb_model
 {
-	// ID du message à supprimer
+	// ID du message a supprimer
 	public $id;
 
-	// Données du sujet
+	// Donnees du sujet
 	public $topic_data;
 
 	/*
@@ -55,8 +55,8 @@ class Page_modo_delete extends Fsb_model
 			Display::message('not_allowed');
 		}
 
-		// S'il s'agit du premier message et que le sujet comporte des réponses on
-		// empèche de supprimer le sujet
+		// S'il s'agit du premier message et que le sujet comporte des reponses on
+		// empeche de supprimer le sujet
 		if ($this->topic_data['t_first_p_id'] == $this->id && $this->topic_data['t_total_post'] > 1)
 		{
 			Display::message('modo_delete_first_post');

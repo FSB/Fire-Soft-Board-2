@@ -22,7 +22,7 @@ class Tree_forum extends Tree
 	*/
 	public function __construct()
 	{
-		// On créé un arbre des forums
+		// On cree un arbre des forums
 		$sql = 'SELECT f_id, f_parent
 				FROM ' . SQL_PREFIX . 'forums
 				ORDER BY f_left';
@@ -39,7 +39,7 @@ class Tree_forum extends Tree
 			$tmp[$current_id] = array();
 		}
 
-		// On récupère les données des forums
+		// On recupere les donnees des forums
 		$sql = 'SELECT f_id, COUNT(*) AS f_total_topic, SUM(t_total_post) AS f_total_post, MAX(t_last_p_time) AS f_last_p_time, MAX(t_last_p_id) AS f_last_p_id
 				FROM ' . SQL_PREFIX . 'topics
 				GROUP BY f_id';
@@ -55,7 +55,7 @@ class Tree_forum extends Tree
 	** Rempli les informations sur un forum
 	** -----
 	** $f_id ::		ID du forum
-	** $data ::		Données du forum
+	** $data ::		Donnees du forum
 	*/
 	public function fill($f_id, $data)
 	{
@@ -77,9 +77,9 @@ class Tree_forum extends Tree
 	}
 
 	/*
-	** Parse l'arbre des forums de façon a regrouper les informations en amont du premier forum.
-	** Ainsi si par exemple un forum A a 10 messages à son actif, et que son fils B a 15 messages,
-	** une fois cette méthode appelée le forum A aura 25 messages.
+	** Parse l'arbre des forums de facon a regrouper les informations en amont du premier forum.
+	** Ainsi si par exemple un forum A a 10 messages a son actif, et que son fils B a 15 messages,
+	** une fois cette methode appelee le forum A aura 25 messages.
 	*/
 	public function parse()
 	{
@@ -95,7 +95,7 @@ class Tree_forum extends Tree
 	}
 
 	/*
-	** Parse récursif des données des forums
+	** Parse recursif des donnees des forums
 	** -----
 	** $node ::		Noeud actuelle dans l'arbre des forums
 	** $level ::	Niveau de profondeur

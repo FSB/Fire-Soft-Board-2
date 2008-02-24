@@ -11,8 +11,8 @@
 */
 
 /*
-** Fichier permetant de gérer la configuration générale du forum.
-** Chaque ligne du tableau de configuration est gérée dans la table
+** Fichier permetant de gerer la configuration generale du forum.
+** Chaque ligne du tableau de configuration est geree dans la table
 ** fsb2_config_handler
 */
 class Fsb_frame_child extends Fsb_admin_frame
@@ -83,7 +83,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page par défaut de la gestion des autorisations sur le FORUM
+	** Affiche la page par defaut de la gestion des autorisations sur le FORUM
 	*/
 	public function page_default_config()
 	{
@@ -93,7 +93,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		foreach ($this->config_data[$this->module] AS $key_cat => $value_cat)
 		{
-			// Ajout d'une catégorie
+			// Ajout d'une categorie
 			$this->config->set_cat(Fsb::$session->lang('adm_config_' . $key_cat), (Fsb::$session->lang('adm_config_' . $key_cat . '_explain')) ? Fsb::$session->lang('adm_config_' . $key_cat . '_explain') : NULL);
 
 			if (is_array($value_cat))
@@ -130,7 +130,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Validation des informations
 		$data = $this->config->validate($data, 'config_handler', 'cfg_name', 'cfg_type');
 
-		// Mise à jour dans la base de donnée
+		// Mise a jour dans la base de donnee
 		foreach ($data AS $k => $v)
 		{
 			Fsb::$cfg->update($k, $v, FALSE);
@@ -142,7 +142,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Récupère le quota d'upload par membre
+	** Recupere le quota d'upload par membre
 	*/
 	public function get_upload_quota()
 	{
@@ -150,7 +150,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Récupère le quota d'upload par fichier
+	** Recupere le quota d'upload par fichier
 	*/
 	public function get_upload_max_filesize()
 	{
@@ -158,7 +158,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Récupère la taille maximale de l'avatar
+	** Recupere la taille maximale de l'avatar
 	*/
 	public function get_avatar_weight()
 	{
@@ -170,7 +170,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 ** Affiche un champ texte et une liste de taille pour entrer la taille d'un fichier
 ** -----
 ** $name ::		Nom des champs
-** $value ::	Valeur par défaut
+** $value ::	Valeur par defaut
 */
 function input_filesize($name, $value)
 {

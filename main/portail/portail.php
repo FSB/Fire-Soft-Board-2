@@ -11,7 +11,7 @@
 */
 
 /*
-** Fonction appelée dans les templates pour inclure dynamiquement des fichiers templates
+** Fonction appelee dans les templates pour inclure dynamiquement des fichiers templates
 */
 function include_portail_module($filename)
 {

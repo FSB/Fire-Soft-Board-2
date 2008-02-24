@@ -14,11 +14,11 @@
 $show_this_module = FALSE;
 
 /*
-** Module de modération pour la suppression d'un sujet
+** Module de moderation pour la suppression d'un sujet
 */
 class Page_modo_delete_topic extends Fsb_model
 {
-	// ID du message à supprimer
+	// ID du message a supprimer
 	public $id;
 
 	/*

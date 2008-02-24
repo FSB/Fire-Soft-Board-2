@@ -11,13 +11,13 @@
 */
 
 /*
-** Messagerie privée des membres
-** La messagerie privée possède un header bien à elle en plus du header normal, ce header
-** affiche les liens vers les différentes options et boites de la messagerie privé
+** Messagerie privee des membres
+** La messagerie privee possede un header bien a elle en plus du header normal, ce header
+** affiche les liens vers les differentes options et boites de la messagerie prive
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -25,13 +25,13 @@ class Fsb_frame_child extends Fsb_frame
 	// Boite
 	public $box;
 	
-	// ID du message privé
+	// ID du message prive
 	public $id;
 	
-	// Numéro de la page courante
+	// Numero de la page courante
 	public $page;
 
-	// Donnée du MP en cas de lecture
+	// Donnee du MP en cas de lecture
 	public $mp_data;
 	
 	/*
@@ -39,7 +39,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// Le membre a le droit d'accéder à cette page ?
+		// Le membre a le droit d'acceder a cette page ?
 		if (!Fsb::$session->is_logged())
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=mp');
@@ -57,9 +57,9 @@ class Fsb_frame_child extends Fsb_frame
 			$this->box = 'inbox';
 		}
 
-		// On récupère l'ID du MP passée en paramètre, puis on défini la boite en fonction de
-		// cette ID. Si l'ID est nulle on affiche le contenu de la boite, sinon on récupère les
-		// données du MP
+		// On recupere l'ID du MP passee en parametre, puis on defini la boite en fonction de
+		// cette ID. Si l'ID est nulle on affiche le contenu de la boite, sinon on recupere les
+		// donnees du MP
 		$this->id = intval(Http::request('id'));
 		if ($this->id)
 		{
@@ -99,7 +99,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function show_message_box()
 	{
-		// Si l'argument $id est passé on affiche le contenu du message
+		// Si l'argument $id est passe on affiche le contenu du message
 		if ($this->id)
 		{
 			$this->show_message();
@@ -109,7 +109,7 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_file('forum/forum_mp.html');
 		Fsb::$tpl->set_switch('mp_list');
 		
-		// On construit les requètes pour récupérer les messages de la boite
+		// On construit les requetes pour recuperer les messages de la boite
 		switch ($this->box)
 		{
 			case 'inbox' :
@@ -118,7 +118,7 @@ class Fsb_frame_child extends Fsb_frame
 				$sql_mp_and_login_id = 'mp.mp_to = ' . Fsb::$session->id();
 				$lang_send = Fsb::$session->lang('mp_send_by');
 
-				// Si on est dans la messagerie privée, on annule l'ouverture de la popup
+				// Si on est dans la messagerie privee, on annule l'ouverture de la popup
 				if (Fsb::$session->data['u_new_mp'])
 				{
 					Fsb::$tpl->set_vars(array(
@@ -153,7 +153,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 		}
 
-		// Recherche dans les messages privés ?
+		// Recherche dans les messages prives ?
 		$sql_search = '';
 		if ($search = Http::request('mp_search', 'post|get'))
 		{
@@ -176,10 +176,10 @@ class Fsb_frame_child extends Fsb_frame
 					. $sql_search;
 		$total_mp = Fsb::$db->get($sql, 'total');
 
-		// Si ce nombre de MP dépasse le quota de la page ...
+		// Si ce nombre de MP depasse le quota de la page ...
 		$this->delete_quota_mp($total_mp, Fsb::$cfg->get('mp_max_' . $check_max), $sql_mp_type);
 		
-		// Pagination des messages privés
+		// Pagination des messages prives
 		$per_page = 30;
 		$sql_mp_limit = ($this->page - 1) * $per_page;
 		if (ceil($total_mp / $per_page) > 1)
@@ -205,7 +205,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('can_savebox');
 		}
 
-		// On affiche les messages privés
+		// On affiche les messages prives
 		$sql = 'SELECT mp.mp_id, mp.mp_title, mp.mp_read, mp.mp_time, ' . $sql_mp_login_id . ', u.u_id, u.u_nickname, u.u_color
 				FROM ' . SQL_PREFIX . 'mp mp
 				LEFT JOIN ' . SQL_PREFIX . 'users u
@@ -237,7 +237,7 @@ class Fsb_frame_child extends Fsb_frame
 	** -----
 	** $current_total ::			Nombre actuel de MP dans la boite
 	** $quota_total ::			Quota max
-	** $box ::					Boite concernée
+	** $box ::					Boite concernee
 	*/
 	public function delete_quota_mp($current_total, $quota_total, $box)
 	{
@@ -276,7 +276,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$action = array_map('intval', $action);
 			
-			// On vérifie si on a assez d'espace dans la boite d'archive pour archiver les nouveaux messages
+			// On verifie si on a assez d'espace dans la boite d'archive pour archiver les nouveaux messages
 			$sql = 'SELECT COUNT(*) AS total
 					FROM ' . SQL_PREFIX . 'mp
 					WHERE mp_type = ' . (($this->box == 'inbox') ? MP_SAVE_INBOX : MP_SAVE_OUTBOX) . '
@@ -299,15 +299,15 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche la page d'option pour la messagerie privée, ainsi que la blacklist et
-	** le répondeur.
+	** Affiche la page d'option pour la messagerie privee, ainsi que la blacklist et
+	** le repondeur.
 	*/
 	public function show_options_box()
 	{
 		Fsb::$tpl->set_file('forum/forum_mp.html');
 		Fsb::$tpl->set_switch('mp_options');
 
-		// On créé la liste de la blacklist
+		// On cree la liste de la blacklist
 		if (Fsb::$mods->is_active('mp_blacklist'))
 		{
 			$sql = 'SELECT bl.blacklist_id, u.u_nickname
@@ -332,7 +332,7 @@ class Fsb_frame_child extends Fsb_frame
 			$count_blacklist = 0;
 		}
 		
-		// On génère les variables de template
+		// On genere les variables de template
 		Fsb::$tpl->set_vars(array(
 			'AUTO_ANSWER_ACTIV_YES' =>	(Fsb::$session->data['u_mp_auto_answer_activ']) ? 'checked="checked"' : '',
 			'AUTO_ANSWER_ACTIV_NO' =>	(!Fsb::$session->data['u_mp_auto_answer_activ']) ? 'checked="checked"' : '',
@@ -345,7 +345,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Ajout d'un membre dans la blacklist des messages privés
+	** Ajout d'un membre dans la blacklist des messages prives
 	*/
 	public function add_user_in_blacklist()
 	{
@@ -356,7 +356,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		$u_nickname = trim(Http::request('blacklist_add', 'post'));
 		
-		// On récupère l'ID du membre
+		// On recupere l'ID du membre
 		$sql = 'SELECT u_id, u_auth
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_nickname = \'' . Fsb::$db->escape($u_nickname) . '\'';
@@ -365,13 +365,13 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('mp_user_not_exists');
 		}
 
-		// Pas de blacklist pour les administrateurs / modérateurs globaux
+		// Pas de blacklist pour les administrateurs / moderateurs globaux
 		if ($row['u_auth'] >= MODOSUP)
 		{
 			Display::message('mp_cant_blacklist_admin');
 		}
 
-		// Si le membre n'étais pas déjà dans la blacklist on l'y met
+		// Si le membre n'etais pas deja dans la blacklist on l'y met
 		$sql = 'SELECT blacklist_from_id
 				FROM ' . SQL_PREFIX . 'mp_blacklist
 				WHERE blacklist_from_id = ' . $row['u_id'] . '
@@ -416,7 +416,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Vérifie les données du formulaire et sauve les modifications du répondeur
+	** Verifie les donnees du formulaire et sauve les modifications du repondeur
 	*/
 	public function submit_auto_answer()
 	{
@@ -445,11 +445,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Récupère les données du MP qu'on lit
+	** Recupere les donnees du MP qu'on lit
 	*/
 	public function get_read_mp_data()
 	{
-		// Données du MP
+		// Donnees du MP
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'mp
 				WHERE mp_id = ' . $this->id;
@@ -485,7 +485,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 		}
 
-		// On vérifie si le membre a le droit de lire ce MP
+		// On verifie si le membre a le droit de lire ce MP
 		if (Fsb::$session->id() != $this->mp_data[$user_key])
 		{
 			Display::message('mp_not_allowed');
@@ -493,11 +493,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche le message privé qu'on veut lire
+	** Affiche le message prive qu'on veut lire
 	*/
 	public function show_message()
 	{
-		// Mise à jour du nombre de messages non lus du membre
+		// Mise a jour du nombre de messages non lus du membre
 		switch ($this->mp_data['mp_type'])
 		{
 			case MP_INBOX :
@@ -541,7 +541,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		if ($this->mp_data['mp_read'] == MP_UNREAD && $okbox)
 		{
-			// Mise à jour du MP en lu
+			// Mise a jour du MP en lu
 			$in = $this->id;
 			if (!$this->mp_data['is_auto_answer'])
 			{
@@ -569,7 +569,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		$parser = new Parser();
 
-		// Total de messages dans cette discussion privées
+		// Total de messages dans cette discussion privees
 		$per_page = 15;
 		$sql = 'SELECT COUNT(*) AS total
 				FROM ' . SQL_PREFIX . 'mp mp
@@ -624,7 +624,7 @@ class Fsb_frame_child extends Fsb_frame
 			// Parse du HTML ?
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['u_nickname'],
@@ -648,7 +648,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Supprime un ou plusieurs messages privés et redirige vers la boîte de réception
+	** Supprime un ou plusieurs messages prives et redirige vers la boite de reception
 	*/
 	public function delete_mp()
 	{
@@ -682,7 +682,7 @@ class Fsb_frame_child extends Fsb_frame
 					break;
 				}
 
-				// Filtre des MP à supprimer
+				// Filtre des MP a supprimer
 				$sql = 'SELECT mp_id, mp_read
 						FROM ' . SQL_PREFIX . 'mp
 						WHERE mp_id IN (' . implode(', ', $action) . ')

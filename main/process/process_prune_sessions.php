@@ -13,7 +13,7 @@
 $GLOBALS['use_register_shutdown'] = FALSE;
 
 /*
-** Supprime les sessions périmées
+** Supprime les sessions perimees
 */
 function prune_sessions()
 {

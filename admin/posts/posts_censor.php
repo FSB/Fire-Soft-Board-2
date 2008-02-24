@@ -52,7 +52,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ADD' =>				sid('index.' . PHPEXT . '?p=posts_censor&amp;mode=add')
 		));
 
-		// On récupère les censures
+		// On recupere les censures
 		$sql = 'SELECT censor_id, censor_word, censor_replace
 				FROM ' . SQL_PREFIX . 'censor';
 		$result = Fsb::$db->query($sql, 'censor_');
@@ -70,13 +70,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer des mots à censurer
+	** Affiche la page permettant d'ajouter / editer des mots a censurer
 	*/
 	public function page_add_edit_censor()
 	{
 		if ($this->mode == 'edit')
 		{
-			// Données de la censure selectionnée
+			// Donnees de la censure selectionnee
 			$sql = 'SELECT censor_word, censor_replace, censor_regexp
 					FROM ' . SQL_PREFIX . 'censor
 					WHERE censor_id = ' . $this->id;
@@ -111,7 +111,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition des mots à censurer
+	** Valide le formulaire d'ajout / edition des mots a censurer
 	*/
 	public function query_add_edit_censor()
 	{
@@ -153,7 +153,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page de suppression d'un mot censuré
+	** Page de suppression d'un mot censure
 	*/
 	public function page_delete_censor()
 	{

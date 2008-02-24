@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -25,10 +25,10 @@ class Fsb_frame_child extends Fsb_frame
 	public $area = '';
 	public $section = '';
 	
-	// Contient les sections trouvées lors d'une recherche
+	// Contient les sections trouvees lors d'une recherche
 	public $result = array();
 	
-	// Données de la FAQ
+	// Donnees de la FAQ
 	public $faq_data = array();
 	
 	/*
@@ -54,7 +54,7 @@ class Fsb_frame_child extends Fsb_frame
 		$this->faq_data = $GLOBALS['faq_data'];
 		unset($GLOBALS['faq_data']);
 		
-		// Récupération des arguments de la page
+		// Recuperation des arguments de la page
 		$this->area =		Http::request('area');
 		$this->section =	Http::request('section');
 		$this->keyword =	trim(Http::request('keyword'));
@@ -97,7 +97,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// Déclaration du template
+		// Declaration du template
 		Fsb::$tpl->set_file('forum/forum_faq.html');
 		Fsb::$tpl->set_vars(array(
 			'KEYWORD' =>			htmlspecialchars($this->keyword),
@@ -139,13 +139,13 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Affiche la réponse
+	** Affiche la reponse
 	*/
 	public function show_answer()
 	{
 		$fsbcode = new Parser_fsbcode();
 
-		// On vérifie l'existance de la section
+		// On verifie l'existance de la section
 		if (!isset($this->faq_data[$this->section][$this->area]))
 		{
 			Display::message('faq_area_no_exists');
@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Recherche dans la FAQ les mots clefs cherchés
+	** Recherche dans la FAQ les mots clefs cherches
 	*/
 	public function search_keyword()
 	{

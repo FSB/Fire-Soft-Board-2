@@ -15,7 +15,7 @@
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
@@ -35,7 +35,7 @@ class Fsb_frame_child extends Fsb_frame
 	// Liste des ordres
 	public $order_array = array('u_joined', 'u_nickname', 'u_total_post', 'u_total_topic', 'u_last_visit');
 
-	// Liste des colones à afficher
+	// Liste des colones a afficher
 	public $columns = array(
 		'u_joined' =>		'date',
 		'u_total_post' =>	'int',
@@ -47,7 +47,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function main()
 	{
-		// Droit d'accès ?
+		// Droit d'acces ?
 		if (!Fsb::$session->is_authorized('can_see_memberlist'))
 		{
 			Display::message('not_allowed');
@@ -67,8 +67,8 @@ class Fsb_frame_child extends Fsb_frame
 			$this->id = GROUP_SPECIAL_USER;
 		}
 
-		// On vérifie quel type de formatage de la liste des membres on utilise. Si ce formatage est différent de celui stoqué
-		// dans le profil utilisateur, on met à jour celui ci
+		// On verifie quel type de formatage de la liste des membres on utilise. Si ce formatage est different de celui stoque
+		// dans le profil utilisateur, on met a jour celui ci
 		if ($this->module != USERLIST_SIMPLE && $this->module != USERLIST_ADVANCED)
 		{
 			$this->module = Fsb::$session->data['u_activate_userlist'];
@@ -112,7 +112,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else if (Http::request('submit_add_user', 'post') && $this->is_group_moderator)
 		{
-			// Ajout de membre par un modérateur de groupe
+			// Ajout de membre par un moderateur de groupe
 			$this->add_user(TRUE);
 		}
 		else if (Http::request('register_submit', 'post') && $this->group_data['gu_status'] === NULL)
@@ -128,7 +128,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Données du groupe
+	** Donnees du groupe
 	*/
 	public function get_group_data()
 	{
@@ -149,7 +149,7 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('userlist_group_not_exists');
 		}
 
-		// Le membre parcourant la page est il modérateur ?
+		// Le membre parcourant la page est il moderateur ?
 		$this->is_group_moderator = (($this->group_data['gu_status'] == GROUP_MODO || Fsb::$session->auth() >= MODOSUP) && $this->group_data['g_type'] != GROUP_SPECIAL) ? TRUE : FALSE;
 
 		// Le membre peut il voir ce groupe ?
@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Affiche la liste des membres en fonction du résultat de la recherche
+	** Affiche la liste des membres en fonction du resultat de la recherche
 	*/
 	public function show_userlist()
 	{
@@ -182,7 +182,7 @@ class Fsb_frame_child extends Fsb_frame
 			$where_count .= ' AND u.u_nickname ' . Fsb::$db->like() . ' \'' . $like_begin . Fsb::$db->escape($this->search_user) . $like_end . '\'';
 		}
 		
-		// On récupère le nombre de membre du groupe et le nombre de page
+		// On recupere le nombre de membre du groupe et le nombre de page
 		$sql = 'SELECT COUNT(gu.u_id) AS total
 				FROM ' . SQL_PREFIX . 'groups_users gu
 				LEFT JOIN ' . SQL_PREFIX . 'users u
@@ -326,7 +326,7 @@ class Fsb_frame_child extends Fsb_frame
 				$age = sprintf(Fsb::$session->lang('age_format'), $age);
 			}
 
-			// Date de dernière visite
+			// Date de derniere visite
 			$last_visit = '';
 			if (!$row['u_activate_hidden'] || Fsb::$session->auth() >= MODO || Fsb::$session->id() == $row['u_id'])
 			{
@@ -368,11 +368,11 @@ class Fsb_frame_child extends Fsb_frame
 	}
 	
 	/*
-	** Créé l'URL a passée pour les pages de la liste des membres
+	** Cree l'URL a passee pour les pages de la liste des membres
 	** -----
 	** $order ::		Ordre a passer dans l'url
 	** $direction ::	Sens du tri a passer dans l'url
-	** $module ::		Affichage à passer dans l'url
+	** $module ::		Affichage a passer dans l'url
 	*/
 	public function generate_url($order = '', $direction = '')
 	{
@@ -435,7 +435,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		if ($action)
 		{
-			// On vérifie si le groupe est bien normal
+			// On verifie si le groupe est bien normal
 			$sql = 'SELECT g_id
 					FROM ' . SQL_PREFIX . 'groups
 					WHERE g_id = ' . $this->id . '
@@ -481,7 +481,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		if ($action)
 		{
-			// On vérifie que les membres sont bien dans le groupe
+			// On verifie que les membres sont bien dans le groupe
 			$sql = 'SELECT u_id
 					FROM ' . SQL_PREFIX . 'groups_users
 					WHERE g_id = ' . $this->id . '
@@ -499,14 +499,14 @@ class Fsb_frame_child extends Fsb_frame
 
 			if ($idx)
 			{
-				// On vérifie si le groupe est bien normal
+				// On verifie si le groupe est bien normal
 				$sql = 'SELECT g_id
 						FROM ' . SQL_PREFIX . 'groups
 						WHERE g_id = ' . $this->id . '
 							AND g_type = ' . GROUP_NORMAL . '';
 				$row = Fsb::$db->request($sql);
 
-				// Validation des membres selectionnés
+				// Validation des membres selectionnes
 				if ($row)
 				{
 					Fsb::$db->update('groups_users', array(
@@ -531,7 +531,7 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Ajout d'un membre au groupe
 	** -----
-	** $admin ::		TRUE si le membre est ajouté au groupe par un modérateur
+	** $admin ::		TRUE si le membre est ajoute au groupe par un moderateur
 	**					du groupe
 	*/
 	public function add_user($admin)

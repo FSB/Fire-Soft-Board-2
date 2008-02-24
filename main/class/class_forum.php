@@ -12,21 +12,21 @@
 
 /*
 ** Classe de gestion des forums.
-** Utilise la classe Sql_interval pour la représentation intervallaire des forums.
+** Utilise la classe Sql_interval pour la representation intervallaire des forums.
 */
 class Forum extends Fsb_model
 {
 	/*
 	** Affiche un forum
 	** -----
-	** $forum ::		Données du forum à afficher
+	** $forum ::		Donnees du forum a afficher
 	** $type ::			forum ou subforum
-	** $current_level ::	Détermine le niveau actuel au niveau de la hierarchie
-	** $is_read ::		Détermine si le forum comporte des sujets non lus ou pas
+	** $current_level ::	Determine le niveau actuel au niveau de la hierarchie
+	** $is_read ::		Determine si le forum comporte des sujets non lus ou pas
 	*/
 	public static function display(&$forum, $type, $current_level, $is_read = TRUE)
 	{
-		// Décalage en cas d'affichage des forums en arbre
+		// Decalage en cas d'affichage des forums en arbre
 		$width = (Fsb::$cfg->get('display_subforums')) ? 'padding-left: ' . ((20 * $forum['f_level']) - 13) . 'px' : '';
 
 		if ($type == 'subforum')
@@ -50,7 +50,7 @@ class Forum extends Fsb_model
 		}
 		else
 		{
-			// Données du dernier message
+			// Donnees du dernier message
 			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], $forum['f_last_p_time'], $forum['f_last_t_id'], $forum['tr_last_time'], $forum['last_unread_id']);
 
 			// On tronque le titre du sujet ?
@@ -79,7 +79,7 @@ class Forum extends Fsb_model
 				'U_MARKREAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;markread=true&amp;forum=' . $forum['f_id']),
 			));
 
-			// Modérateurs du forum ?
+			// Moderateurs du forum ?
 			if (Fsb::$mods->is_active('forums_moderators'))
 			{
 				Forum::get_moderators($forum['f_id']);
@@ -91,11 +91,11 @@ class Forum extends Fsb_model
 	** Marque les sujets d'un / plusieurs forums comme lu
 	** -----
 	** $type ::		Peut prendre les valeurs :
-	**					all =>		marquer tous les forums comme étant lus
-	**					cat =>		marquer les forums d'une catégorie comme étant lus
-	**					forum =>	marquer un (ou plusieurs) forum comme étant lu
-	**					topic =>	marquer un (ou plusieurs sujets comme étant lu)
-	** $id ::		ID de forum ou de catégorie
+	**					all =>		marquer tous les forums comme etant lus
+	**					cat =>		marquer les forums d'une categorie comme etant lus
+	**					forum =>	marquer un (ou plusieurs) forum comme etant lu
+	**					topic =>	marquer un (ou plusieurs sujets comme etant lu)
+	** $id ::		ID de forum ou de categorie
 	*/
 	public static function markread($type, $id = NULL)
 	{
@@ -104,12 +104,12 @@ class Forum extends Fsb_model
 			return ;
 		}
 
-		// On récupère tous les sujets non lu de ce forum
+		// On recupere tous les sujets non lu de ce forum
 		$select = new Sql_select();
 		$select->join_table('FROM', 'topics t', 't.t_id, t.f_id, t.t_last_p_time, t.t_last_p_id');
 		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 
-		// On créé la clause WHERE
+		// On cree la clause WHERE
 		switch ($type)
 		{
 			case 'all' :
@@ -188,7 +188,7 @@ class Forum extends Fsb_model
 		}
 		$select->where('(tr.tr_last_time IS NULL OR tr.tr_last_time < t.t_last_p_time) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
 
-		// On met à jour la table fsb2_topics_read
+		// On met a jour la table fsb2_topics_read
 		$result = $select->execute();
 		while ($row = Fsb::$db->row($result))
 		{
@@ -204,14 +204,14 @@ class Forum extends Fsb_model
 		}
 		Fsb::$db->free($result);
 
-		// Si la SGBD le suporte on lance la procédure de multi insertion
+		// Si la SGBD le suporte on lance la procedure de multi insertion
 		Fsb::$db->query_multi_insert();
 	}
 
 	/*
-	** Récupère les forums avec une jointure sur le dernier message
+	** Recupere les forums avec une jointure sur le dernier message
 	** -----
-	** $where ::		Condition sur la requète
+	** $where ::		Condition sur la requete
 	*/
 	public static function query($where = '')
 	{
@@ -233,7 +233,7 @@ class Forum extends Fsb_model
 	*/
 	public static function get_topics_read()
 	{
-		// Cette requète récupère pour chaque forum, le nombre de messages non lus.
+		// Cette requete recupere pour chaque forum, le nombre de messages non lus.
 		$link = (SQL_DBAL != 'sqlite') ? 'f.' : '';
 		$sql = 'SELECT f.f_id, f.f_parent, (
 					SELECT COUNT(*)
@@ -285,7 +285,7 @@ class Forum extends Fsb_model
 			}
 		}
 
-		// En cas de message non lu / lu on met à jour les informations sur le dernier message lu dans la table des membres
+		// En cas de message non lu / lu on met a jour les informations sur le dernier message lu dans la table des membres
 		if (Fsb::$session->is_logged())
 		{
 			if ($have_unread && Fsb::$session->data['u_last_read_flag'])
@@ -311,8 +311,8 @@ class Forum extends Fsb_model
 	** -----
 	** $f_id ::		ID du forum
 	** $args_ary ::		Tableau aditionel pour ajouter des liens en fin de navigation
-	** $obj ::			Objet de la page courante, afin d'ajouter à la propriété $obj->tab_title
-	**					le dernier élément ajouté à la navigation
+	** $obj ::			Objet de la page courante, afin d'ajouter a la propriete $obj->tab_title
+	**					le dernier element ajoute a la navigation
 	*/
 	public static function nav($f_id, $args_ary, &$obj)
 	{
@@ -346,11 +346,11 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Retourne les ID des forums autorisés.
+	** Retourne les ID des forums autorises.
 	** Cette fonction se base sur le cache de la session.
 	** -----
 	** $auths :: Contient dans un tableau la liste des droits 
-	**				necessaires pour que le forum soit ajouté à la liste
+	**				necessaires pour que le forum soit ajoute a la liste
 	*/
 	public static function get_authorized($auths)
 	{
@@ -369,13 +369,13 @@ class Forum extends Fsb_model
 					}
 				}
 
-				// Forum protégé par un mot de passe ?
+				// Forum protege par un mot de passe ?
 				if (isset($value['f_password']) && !isset($access[$f_id]))
 				{
 					continue;
 				}
 
-				// On ajoute l'ID du forum aux ID autorisées
+				// On ajoute l'ID du forum aux ID autorisees
 				$return[] = $f_id;
 			}
 		}
@@ -383,10 +383,10 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Ajoute un forum dans la base de donnée
+	** Ajoute un forum dans la base de donnee
 	** -----
 	** $parent ::	Parent du forum
-	** $var ::	Tableau de données à insérer dans le forum
+	** $var ::	Tableau de donnees a inserer dans le forum
 	*/
 	public static function add($parent, $var)
 	{	
@@ -396,11 +396,11 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Met à jour un forum.
+	** Met a jour un forum.
 	** ------
 	** $id ::		ID du forum
 	** $parent ::	Nouveau parent du forum
-	** $var ::		Tableau de données du forum, à mettre à jour
+	** $var ::		Tableau de donnees du forum, a mettre a jour
 	*/
 	public static function update($id, $parent, $var)
 	{
@@ -419,7 +419,7 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Permet de déplacer un forum vers le haut ou vers le bas
+	** Permet de deplacer un forum vers le haut ou vers le bas
 	** -----
 	** $id ::		ID du forum
 	** $direction ::	Direction du mouvement, 1 pour le bas et -1 pour le haut
@@ -436,20 +436,20 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Supprime un forum, ses sous forums, ainsi que l'ensemble des données
-	** liées à ce forum (sujets, messages, etc ...).
+	** Supprime un forum, ses sous forums, ainsi que l'ensemble des donnees
+	** liees a ce forum (sujets, messages, etc ...).
 	** -----
-	** $id ::		ID du forum à supprimer
+	** $id ::		ID du forum a supprimer
 	*/
 	public static function delete($id)
 	{
-		// On récupère les enfants du forum
+		// On recupere les enfants du forum
 		$childs = Sql_interval::get_childs($id);
 		$list_childs = implode(', ', $childs);
 
 		if ($childs)
 		{
-			// Début de transaction SQL
+			// Debut de transaction SQL
 			Fsb::$db->transaction('begin');
 
 			// Suppression des tables ne contenant pas explicitement de champs f_id
@@ -458,8 +458,8 @@ class Forum extends Fsb_model
 				't_id' =>	array('poll', 'poll_options', 'poll_result', 'topics_notification', 'topics_read'),
 			));
 
-			// Mise à jour des couleurs et des droits de modération
-			// Liste des utilisateurs dont les droits seront affectés par la suppression de ce forum
+			// Mise a jour des couleurs et des droits de moderation
+			// Liste des utilisateurs dont les droits seront affectes par la suppression de ce forum
 			$sql = 'SELECT DISTINCT gu.u_id
 					FROM ' . SQL_PREFIX . 'groups_users gu
 					LEFT JOIN ' . SQL_PREFIX . 'groups g
@@ -476,7 +476,7 @@ class Forum extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			// Suppression des entrées dans les tables disposant d'un champ f_id
+			// Suppression des entrees dans les tables disposant d'un champ f_id
 			$delete_entry = array('groups_auth', 'posts', 'topics');
 			foreach ($delete_entry AS $table)
 			{
@@ -484,7 +484,7 @@ class Forum extends Fsb_model
 				Fsb::$db->query($sql);
 			}
 			
-			// Mise à jour des couleurs et des droits de modération
+			// Mise a jour des couleurs et des droits de moderation
 			if ($gu_idx)
 			{
 				Group::update_auths($gu_idx);
@@ -504,13 +504,13 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Délestage automatique des sujets des forums
+	** Delestage automatique des sujets des forums
 	** -----
-	** $f_id ::		ID de forum si on souhaite délester un forum particulier
+	** $f_id ::		ID de forum si on souhaite delester un forum particulier
 	*/
 	public static function auto_prune($f_id = NULL)
 	{
-		// On récupère les ID des sujets à délester
+		// On recupere les ID des sujets a delester
 		$sql_f_id = ($f_id) ? "f_id = $f_id AND " : '';
 		$sql = 'SELECT t.t_id, t.t_type, f.f_id, f.f_prune_topic_type
 				FROM ' . SQL_PREFIX . 'topics t
@@ -545,7 +545,7 @@ class Forum extends Fsb_model
 				'p_id' =>	array('posts_abuse', 'search_match'),
 			));
 
-			// On supprime les sujets délestés des tables contenant un champ t_id
+			// On supprime les sujets delestes des tables contenant un champ t_id
 			$delete_tables = array('poll', 'poll_options', 'poll_result', 'topics', 'topics_notification', 'topics_read');
 			foreach ($delete_tables AS $table)
 			{
@@ -553,7 +553,7 @@ class Forum extends Fsb_model
 				Fsb::$db->query($sql);
 			}
 
-			// On reconstruit les données des forums (dernier message, etc ...)
+			// On reconstruit les donnees des forums (dernier message, etc ...)
 			if ($updated_forums)
 			{
 				Sync::forums($updated_forums);
@@ -562,14 +562,14 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Ajoute des permissions à un forum
+	** Ajoute des permissions a un forum
 	** ------
 	** $f_id ::		ID du forum
 	** $auth_id ::	ID du forum dont on veut les permissions
 	*/
 	public static function set_default_auth($f_id, $auth_id)
 	{
-		// On récupère les permissions
+		// On recupere les permissions
 		$sql = 'SELECT *
 			FROM ' . SQL_PREFIX . 'groups_auth
 			WHERE f_id = ' . $auth_id;
@@ -588,10 +588,10 @@ class Forum extends Fsb_model
 	}
 
 	/*
-	** Récupère une liste des modérateurs pour chaque forum et les affiche
+	** Recupere une liste des moderateurs pour chaque forum et les affiche
 	** -----
 	** $f_id ::			ID du forum en question
-	** $limit ::		Si $limit vaut TRUE il s'agira d'une recherche de modérateur sur ce forum là uniquement
+	** $limit ::		Si $limit vaut TRUE il s'agira d'une recherche de moderateur sur ce forum la uniquement
 	*/
 	public static function get_moderators($f_id, $limit = FALSE)
 	{
@@ -601,7 +601,7 @@ class Forum extends Fsb_model
 		{
 			$modo_list = array();
 
-			// Requète récupérant la liste des groupes modérants un forum
+			// Requete recuperant la liste des groupes moderants un forum
 			$sql = 'SELECT ga.f_id, ga.g_id, g.g_name, g.g_type, g.g_color, u.u_id, u.u_nickname, u.u_color
 					FROM ' . SQL_PREFIX . 'groups_auth ga
 					LEFT JOIN ' . SQL_PREFIX . 'groups g
@@ -645,7 +645,7 @@ class Forum extends Fsb_model
 			unset($select);
 		}
 
-		// Affichage des modérateurs du forum
+		// Affichage des moderateurs du forum
 		if (isset($modo_list[$f_id]))
 		{
 			foreach ($modo_list[$f_id] AS $moderator)

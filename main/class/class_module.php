@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_module.php
 ** | Begin :	29/05/2005
-** | Last :		05/11/2007
+** | Last :		24/02/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -15,7 +15,7 @@ class Module extends Fsb_model
 	// Objet Xml
 	public $xml;
 
-	// Ressource sur les données actuelles de l'instruction d'installation
+	// Ressource sur les donnees actuelles de l'instruction d'installation
 	private $handler = NULL;
 
 	// Configuration de la classe
@@ -27,7 +27,7 @@ class Module extends Fsb_model
 	// Contenu du fichier
 	private $file_content = '';
 
-	// Code à trouver
+	// Code a trouver
 	private $find_code = '';
 
 	// Fichier actuellement ouvert
@@ -42,16 +42,16 @@ class Module extends Fsb_model
 	// Fichier n'existe pas
 	const MOD_ERROR_FILE_NOT_FOUND = 1;
 
-	// Code non trouvé dans le fichier
+	// Code non trouve dans le fichier
 	const MOD_ERROR_CODE_NOT_FOUND = 2;
 
-	// Fichier non accessible en écriture
+	// Fichier non accessible en ecriture
 	const MOD_ERROR_PERMISSION_DENIED = 3;
 
 	// Erreur SQL
 	const MOD_ERROR_SQL = 4;
 
-	// Répertoire non accessible en écriture
+	// Repertoire non accessible en ecriture
 	const MOD_ERROR_DIR_NOT_WRITABLE = 5;
 
 	// Instruction inconnue
@@ -72,9 +72,9 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Assigne une configuration à la classe.
+	** Assigne une configuration a la classe.
 	** -----
-	** $data ::		Si $data est un tableau, on l'ajoute entièrement a la configuration.
+	** $data ::		Si $data est un tableau, on l'ajoute entierement a la configuration.
 	**					Sinon, on se sert de $data comme clef et de $value comme valeur.
 	** $value ::	Valeur de $data si celui ci n'est pas un tableau.
 	*/
@@ -94,7 +94,7 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Retourne la valeur d'un élément de configuration
+	** Retourne la valeur d'un element de configuration
 	** -----
 	** $key ::	Clef de configuration
 	*/
@@ -104,9 +104,9 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Créé l'objet $file pour manipuler les fichiers
+	** Cree l'objet $file pour manipuler les fichiers
 	** -----
-	** $use_ftp ::		Définit si on utilise une connexion FTP
+	** $use_ftp ::		Definit si on utilise une connexion FTP
 	*/
 	public function file_system($use_ftp)
 	{
@@ -117,7 +117,7 @@ class Module extends Fsb_model
 	/*
 	** Charge un fichier template
 	** -----
-	** $template_name ::		Chemin vers le fichier tempkate à charger. Il peut s'agir d'un code XML
+	** $template_name ::		Chemin vers le fichier tempkate a charger. Il peut s'agir d'un code XML
 	** $load_type ::			'file' si $template_name est un fichier, 'code' si c'est du code XML
 	*/
 	public function load_template($template_name, $load_type = 'file')
@@ -160,7 +160,7 @@ class Module extends Fsb_model
 					$duplicat = FALSE;
 				}
 
-				// Si duplication, on ajoute des nodes à l'arbre XML
+				// Si duplication, on ajoute des nodes a l'arbre XML
 				if ($duplicat)
 				{
 					$add_node[] = $handler;
@@ -170,16 +170,16 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Duplique un contenu autant de fois qu'il y a de dossier dans le répertoire concerné
+	** Duplique un contenu autant de fois qu'il y a de dossier dans le repertoire concerne
 	** -----
-	** $list_node ::		Liste des nodes à dupliquer
+	** $list_node ::		Liste des nodes a dupliquer
 	*/
 	private function duplicat_content(&$list_node)
 	{
-		// On récupère tout d'abord le dossier à dupliquer
+		// On recupere tout d'abord le dossier a dupliquer
 		$dir = $list_node[0]->duplicat[0]->getData();
 
-		// On récupère ensuite le fichier qui va être modifié, pour savoir le répertoire par défaut à ne pas dupliquer
+		// On recupere ensuite le fichier qui va etre modifie, pour savoir le repertoire par defaut a ne pas dupliquer
 		$default_file = $list_node[0]->file[0]->getData();
 		$split_file = explode('/', $default_file);
 		$default_dir = $split_file[1];
@@ -190,10 +190,10 @@ class Module extends Fsb_model
 		{
 			if ($file != '.' && $file != '..' && is_dir(ROOT . $dir . $file) && $file != $default_dir)
 			{
-				// On peut désormais dupliquer les nodes
+				// On peut desormais dupliquer les nodes
 				foreach ($list_node AS $node)
 				{
-					// On met à jour l'élément <file> si on est sur une instruction open
+					// On met a jour l'element <file> si on est sur une instruction open
 					$pos = count($this->xml->document->instruction[0]->line) - 1;
 					$new_node = clone($node);
 					if ($this->convert_to_valid_function($node->getAttribute('name')) == 'open')
@@ -230,7 +230,7 @@ class Module extends Fsb_model
 		}
 		$this->subparse_end();
 
-		// remise à 0 des variables
+		// remise a 0 des variables
 		$this->file_open = $this->file_content = $this->find_code = NULL;
 	}
 
@@ -277,14 +277,16 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Remplace le code trouvé par le nouveau code
+	** Remplace le code trouve par le nouveau code
 	*/
 	private function subparse_replace()
 	{
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $code, $this->file_content, 1);
+			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $code);
+			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
+			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
 		}
 	}
 
@@ -296,31 +298,37 @@ class Module extends Fsb_model
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $code . "\n" . $this->find_code, $this->file_content, 1);
+			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $code . "\n" . $this->find_code);
+			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
+			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
 		}
 	}
 
 	/*
-	** Ajoute le code après
+	** Ajoute le code apres
 	*/
 	private function subparse_after()
 	{
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $this->find_code . "\n" . $code . "\n", $this->file_content, 1);
+			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $this->find_code . "\n" . $code);
+			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
+			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
 		}
 	}
 
 	/*
-	** Ajoute le code après
+	** Ajoute le code apres
 	*/
 	private function subparse_afterline()
 	{
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $this->find_code . $code, $this->file_content, 1);
+			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $this->find_code . $code);
+			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
+			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
 		}
 	}
 
@@ -336,7 +344,7 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Execute les requètes SQL du MOD
+	** Execute les requetes SQL du MOD
 	*/
 	private function subparse_sql()
 	{
@@ -376,17 +384,17 @@ class Module extends Fsb_model
 					$duplicat .= '/';
 				}
 
-				// Duplication de fichier = copier un fichier dans plusieurs répertoires similaires, par
-				// exemple les langues, thèmes, etc ...
+				// Duplication de fichier = copier un fichier dans plusieurs repertoires similaires, par
+				// exemple les langues, themes, etc ...
 				if ($duplicat)
 				{
-					// On récupère le chemin du fichier à éditer
+					// On recupere le chemin du fichier a editer
 					$file_name = substr($filename, strlen($duplicat));
 					$exp = explode('/', $file_name);
 					unset($exp[0]);
 					$file_name = implode('/', $exp);
 
-					// On parcourt le répertoire de duplicat et on copie le fichier autant de fois qu'il y a de répertoires
+					// On parcourt le repertoire de duplicat et on copie le fichier autant de fois qu'il y a de repertoires
 					$fd = opendir(ROOT . $duplicat);
 					while ($file = readdir($fd))
 					{
@@ -424,7 +432,7 @@ class Module extends Fsb_model
 
 			if ($this->get_config('install_file'))
 			{
-				// Si on execute un fichier on l'ouvre et on parse le code, pour ensuite l'évaluer
+				// Si on execute un fichier on l'ouvre et on parse le code, pour ensuite l'evaluer
 				if ($filename)
 				{
 					$fd = fopen(ROOT . $filename, 'r');
@@ -447,7 +455,7 @@ class Module extends Fsb_model
 	*/
 	private function subparse_end()
 	{
-		// Un dernier fichier à écrire ?
+		// Un dernier fichier a ecrire ?
 		if ($this->file_open)
 		{
 			$this->close_file();
@@ -472,10 +480,10 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Copie le contenu d'un répertoire vers un autre
+	** Copie le contenu d'un repertoire vers un autre
 	** -----
-	** $dir_from ::		Répertoire de provenance
-	** $dir_to ::		Répertoire de destination
+	** $dir_from ::		Repertoire de provenance
+	** $dir_to ::		Repertoire de destination
 	*/
 	private function copy_dir($dir_from, $dir_to)
 	{
@@ -498,7 +506,7 @@ class Module extends Fsb_model
 	}
 
 	/*
-	** Copie un fichier vers sa destination, en créant les répertoire non existants
+	** Copie un fichier vers sa destination, en creant les repertoire non existants
 	** -----
 	** $from ::		Fichier de provenance
 	** $to ::		Fichier de destination
@@ -521,6 +529,7 @@ class Module extends Fsb_model
 				{
 					$this->error(self::MOD_ERROR_DIR_NOT_WRITABLE, dirname(ROOT . $path));
 				}
+				$this->file->chmod(substr(dirname($path), 0, strlen(ROOT)), 0755, FALSE);
 			}
 		}
 
@@ -549,15 +558,25 @@ class Module extends Fsb_model
 
 			$this->file->write($filename, $this->file_content);
 			$this->file_open = NULL;
+
+			$this->file->chmod($filename, 0644, FALSE);
 		}
-		else if (!$this->file->chmod($filename, 0666, FALSE) && !is_writable($this->file_open))
+		else
 		{
-			$this->error(self::MOD_ERROR_PERMISSION_DENIED, $this->file_open);
+			if (!is_writable($this->file_open))
+			{
+				$this->file->chmod($filename, 0666, FALSE);
+				if (!is_writable($this->file_open))
+				{
+					$this->error(self::MOD_ERROR_PERMISSION_DENIED, $this->file_open);
+				}
+				$this->file->chmod($filename, 0644, FALSE);
+			}
 		}
 	}
 
 	/*
-	** Renvoie la liste des fichiers qui vont être modifiés
+	** Renvoie la liste des fichiers qui vont etre modifies
 	** par un open lors de l'installation du MOD
 	*/
 	public function get_updated_files()
@@ -577,8 +596,8 @@ class Module extends Fsb_model
 	/*
 	** Sauvegarde les fichiers que le MOD va modifier dans un dossier
 	** -----
-	** $dir ::		Répertoire de destination
-	** $ext ::		Type de compression pour les fichiers sauvés (.tar, .tar.gz, .tar.bz2 ou .zip)
+	** $dir ::		Repertoire de destination
+	** $ext ::		Type de compression pour les fichiers sauves (.tar, .tar.gz, .tar.bz2 ou .zip)
 	** $files ::	Tableau contenant les fichiers a sauver
 	*/
 	public function save_files($dir, $ext = 'zip', $files = NULL)
@@ -588,7 +607,7 @@ class Module extends Fsb_model
 			$files = $this->get_updated_files();
 		}
 
-		// Création d'un fichier log.mod pour stoquer les informations sur le backup
+		// Creation d'un fichier log.mod pour stoquer les informations sur le backup
 		$this->file->write('mod.log', $this->get_config('mod_name') . "\n");
 		$files[] = 'mod.log';
 
@@ -691,7 +710,7 @@ class Module extends Fsb_model
 				return ('end');
 			
 			case 'php' :
-			case 'exécuter' :
+			case 'executer' :
 			case 'exec' :
 				return ('exec');
 

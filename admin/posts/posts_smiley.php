@@ -66,7 +66,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_CAT' =>			sid('index.' . PHPEXT . '?p=posts_smiley&amp;mode=add_cat'),
 		));
 
-		// On récupère les smileys et on les affiche
+		// On recupere les smileys et on les affiche
 		$sql = 'SELECT sc.*, s.*
 				FROM ' . SQL_PREFIX . 'smilies_cat sc
 				LEFT JOIN ' . SQL_PREFIX . 'smilies s
@@ -107,7 +107,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer les smileys
+	** Affiche la page permettant d'ajouter / editer les smileys
 	*/
 	public function page_add_edit_smiley()
 	{
@@ -133,7 +133,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$s_cat = '';
 		}
 
-		// Liste des catégories de smileys
+		// Liste des categories de smileys
 		$sql = 'SELECT cat_id, cat_name
 				FROM ' . SQL_PREFIX . 'smilies_cat
 				ORDER BY cat_order';
@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Valide le formulaire d'ajout / édition des smileys
+	** Valide le formulaire d'ajout / edition des smileys
 	*/
 	public function query_add_edit_smiley()
 	{
@@ -169,13 +169,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$s_cat =	Http::request('smiley_cat', 'post');
 		$errstr = array();
 
-		// On doit spécifier un tag et une image ...
+		// On doit specifier un tag et une image ...
 		if (empty($s_tag) || empty($s_tag))
 		{
 			$errstr[] = Fsb::$session->lang('fields_empty');
 		}
 
-		// ... ainsi qu'un tag non utilisé bien sur
+		// ... ainsi qu'un tag non utilise bien sur
 		$sql = 'SELECT smiley_id
 				FROM ' . SQL_PREFIX . 'smilies
 				WHERE smiley_tag = \'' . Fsb::$db->escape($s_tag) . '\'';
@@ -218,7 +218,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			// Données du smiley
+			// Donnees du smiley
 			$sql = 'SELECT smiley_cat, smiley_order
 					FROM ' . SQL_PREFIX . 'smilies
 					WHERE smiley_id = ' . $this->id;
@@ -233,7 +233,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$max = Fsb::$db->get($sql, 'max');
 			}
 
-			// Mise à jour su smiley
+			// Mise a jour su smiley
 			Fsb::$db->update('smilies', array(
 				'smiley_tag' =>			$s_tag,
 				'smiley_name' =>		$s_img,
@@ -254,7 +254,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		if ($this->id > 0)
 		{
-			// On récupère l'ordre du smiley pour mettre à jour les ordres
+			// On recupere l'ordre du smiley pour mettre a jour les ordres
 			$sql = 'SELECT smiley_order
 					FROM ' . SQL_PREFIX . 'smilies
 					WHERE smiley_id = ' . $this->id;
@@ -276,7 +276,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace un smiley avec un autre
+	** Deplace un smiley avec un autre
 	*/
 	public function page_move_smiley()
 	{
@@ -290,7 +290,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($d)
 		{
-			// ID du smiley à switcher
+			// ID du smiley a switcher
 			$sql = 'SELECT smiley_id
 					FROM ' . SQL_PREFIX . 'smilies
 					WHERE smiley_cat = ' . $d['smiley_cat'] . '
@@ -299,7 +299,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			if ($swap_smiley_id)
 			{
-				// Mise à jour de la position des deux smilies
+				// Mise a jour de la position des deux smilies
 				Fsb::$db->update('smilies', array(
 					'smiley_order' =>	($d['smiley_order'] + $move),
 				), 'WHERE smiley_id = ' . intval($this->id));
@@ -315,7 +315,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche la page permettant d'ajouter / éditer une catégorie de smiley
+	** Affiche la page permettant d'ajouter / editer une categorie de smiley
 	*/
 	public function page_add_edit_cat()
 	{
@@ -349,7 +349,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Soumission du formulaire d'ajout de catégorie
+	** Soumission du formulaire d'ajout de categorie
 	*/
 	public function query_add_edit_cat()
 	{
@@ -380,13 +380,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplace une catégorie de smiley
+	** Deplace une categorie de smiley
 	*/
 	public function page_move_cat()
 	{
 		$move = ($this->mode == 'up_cat') ? -1 : 1;
 
-		// Position de la catégorie
+		// Position de la categorie
 		$sql = 'SELECT cat_order
 				FROM ' . SQL_PREFIX . 'smilies_cat
 				WHERE cat_id = ' . intval($this->id);
@@ -394,7 +394,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($current_cat_order)
 		{
-			// ID de la catégorie à switcher
+			// ID de la categorie a switcher
 			$sql = 'SELECT cat_id
 					FROM ' . SQL_PREFIX . 'smilies_cat
 					WHERE cat_order = ' . ($current_cat_order + $move);
@@ -402,7 +402,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			if ($swap_cat_id)
 			{
-				// Mise à jour de la position des deux smilies
+				// Mise a jour de la position des deux smilies
 				Fsb::$db->update('smilies_cat', array(
 					'cat_order' =>	($current_cat_order + $move),
 				), 'WHERE cat_id = ' . intval($this->id));
@@ -426,7 +426,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			if ($this->id > 0)
 			{
-				// On met à jour l'ordre des catégories
+				// On met a jour l'ordre des categories
 				$sql = 'SELECT cat_order
 						FROM ' . SQL_PREFIX . 'smilies_cat
 						WHERE cat_id = ' . $this->id;
@@ -440,7 +440,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					'cat_order' =>	array('(cat_order - 1)', 'is_field' => TRUE),
 				), 'WHERE cat_order > ' . $cat_order);
 
-				// Suppression de la catégorie
+				// Suppression de la categorie
 				$sql = 'DELETE FROM ' . SQL_PREFIX . 'smilies_cat
 						WHERE cat_id = ' . $this->id;
 				Fsb::$db->query($sql);
@@ -490,26 +490,26 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$pack = $upload->store(SMILEY_PATH);
 			$filename = get_file_data($pack, 'filename');
 
-			// Décompression du pack de smilies
+			// Decompression du pack de smilies
 			$compress = new Compress('images/smileys/' . $pack);
 			$compress->extract('images/smileys/', $filename . '/');
 
 			// On supprime le zip du pack de smiley
 			@unlink(SMILEY_PATH . $pack);
 
-			// On vérifie la présence du fichier smiley.txt listant les smileys du pack
+			// On verifie la presence du fichier smiley.txt listant les smileys du pack
 			if (file_exists(SMILEY_PATH . 'smiley.txt'))
 			{
 				// Chargement du fichier
 				$lines = file(SMILEY_PATH . 'smiley.txt');
 				
-				// On récupère les tags déjà utilisés. Si le tag est déjà utilisé on renomme automatiquement le smiley
+				// On recupere les tags deja utilises. Si le tag est deja utilise on renomme automatiquement le smiley
 				$sql = 'SELECT smiley_tag 
 						FROM ' . SQL_PREFIX . 'smilies';
 				$result = Fsb::$db->query($sql);
 				$tags = Fsb::$db->rows($result, 'assoc', 'smiley_tag');
 
-				// On prépare les données pou la mise à jour de la bdd
+				// On prepare les donnees pou la mise a jour de la bdd
 				$cat_id = NULL;
 				$max = 1;
 				foreach ($lines as $line)
@@ -535,7 +535,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						{
 							list($smiley_img, $smiley_tag) = explode(',', $line);
 
-							// On empèche les smileys d'avoir le même tag
+							// On empeche les smileys d'avoir le meme tag
 							while (isset($tags[$smiley_tag]))
 							{
 								$smiley_tag = ':' . substr(md5(rand(0, time())), 0, 10) . ':';
@@ -555,7 +555,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				Fsb::$db->query_multi_insert();
 				Fsb::$db->destroy_cache('smilies_');
 
-				// Maintenant que le fichier est traité, on le supprime
+				// Maintenant que le fichier est traite, on le supprime
 				@unlink(SMILEY_PATH . 'smiley.txt');
 			}
 			else
@@ -584,7 +584,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_pack_export_smiley()
 	{
-		// Liste des catégories de smilies
+		// Liste des categories de smilies
 		$sql = 'SELECT cat_id, cat_name
 				FROM ' . SQL_PREFIX . 'smilies_cat
 				ORDER BY cat_order';
@@ -613,7 +613,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($pack_cat)
 		{
-			// On vérifie si le nom du pack ne contient que des caractères [a-z0-9\-_]
+			// On verifie si le nom du pack ne contient que des caracteres [a-z0-9\-_]
 			if (!preg_match('#^[a-z0-9\-_]+$#i', $pack_name))
 			{
 				Display::message('adm_smiley_pack_bad_name');
@@ -651,7 +651,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$compress->add_file('upload/smiley.txt', 'upload/', $pack_name . '/');
 			$compress->file->unlink('upload/smiley.txt');
 
-			// On lance le téléchargement
+			// On lance le telechargement
 			Http::download($pack_name . '.' . $pack_ext, $compress->write(TRUE));
 		}
 	}

@@ -23,7 +23,7 @@ class Page_portail_news extends Fsb_model
 		// Instance de la classe Post() pour parser les messages
 		$parser = new Parser();
 
-		// On vérifie que le membre peut voir les news, sinon, on affiche rien
+		// On verifie que le membre peut voir les news, sinon, on affiche rien
 		$id_news = $this->portail_config['id_forum_news'];
 		if (Fsb::$session->is_authorized($id_news, 'ga_view') && Fsb::$session->is_authorized($id_news, 'ga_view_topics') && Fsb::$session->is_authorized($id_news, 'ga_read'))
 		{
@@ -42,7 +42,7 @@ class Page_portail_news extends Fsb_model
 			$result = Fsb::$db->query($sql);
 			while ($row = Fsb::$db->row($result))
 			{
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['p_nickname'],
@@ -70,7 +70,7 @@ class Page_portail_news extends Fsb_model
 		}
 		else
 		{
-			// N'est pas autorisé à regarder les news
+			// N'est pas autorise a regarder les news
 			Fsb::$tpl->set_switch('dont_show_news');
 		}
 	}

@@ -25,7 +25,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $like = '';
 	public $search_user = '';
 
-	// Liste des opérateurs
+	// Liste des operateurs
 	public $operators = array('<', '<=', '=', '>', '>=');
 
 	/*
@@ -95,7 +95,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		Fsb::$tpl->set_switch('users_list');
 
-		// Nombre de résultats
+		// Nombre de resultats
 		$sql = 'SELECT COUNT(*) AS total
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id <> ' . VISITOR_ID . '
@@ -103,7 +103,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$total = Fsb::$db->get($sql, 'total');
 		$total_page = ceil($total / $this->limit);
 
-		// On récupère la liste des membres
+		// On recupere la liste des membres
 		$sql = 'SELECT u_id, u_nickname, u_total_post, u_total_topic, u_color, u_joined
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_id <> ' . VISITOR_ID . '
@@ -180,7 +180,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$data['u_nickname'] = $data['u_login'];
 		}
 
-		// Vérification du login
+		// Verification du login
 		if (!$data['u_login'])
 		{
 			Display::message('adm_users_add_error_login');
@@ -191,19 +191,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::message('adm_users_add_error_login_exists');
 		}
 
-		// Vérification du mot de passe
+		// Verification du mot de passe
 		if (!$data['u_password'])
 		{
 			Display::message('adm_users_add_error_password');
 		}
 
-		// Vérification du pseudonyme
+		// Verification du pseudonyme
 		if (User::nickname_exists($data['u_nickname']))
 		{
 			Display::message('adm_users_add_error_nickname_exists');
 		}
 
-		// Vérification de l'email
+		// Verification de l'email
 		if (!User::email_valid($data['u_email'], FALSE))
 		{
 			Display::message('adm_users_add_error_email');
@@ -228,7 +228,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function page_prune_users()
 	{
-		// Liste des jours, mois et années
+		// Liste des jours, mois et annees
 		$list_pos = array(
 			'before' =>	Fsb::$session->lang('adm_users_before'),
 			'after' =>	Fsb::$session->lang('adm_users_after'),
@@ -284,13 +284,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Soumet le formulaire de délestage des membres
+	** Soumet le formulaire de delestage des membres
 	*/
 	public function submit_prune()
 	{
 		if (check_confirm())
 		{
-			// Délestage des membres
+			// Delestage des membres
 			$delete_type = Http::request('delete_type', 'post');
 			if (!in_array($delete_type, array('desactivate', 'visitor', 'topics')))
 			{
@@ -302,7 +302,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			switch ($delete_type)
 			{
 				case 'desactivate' :
-					// Désactivation des membres
+					// Desactivation des membres
 					Fsb::$db->update('users', array(
 						'u_activated' =>	FALSE,
 					), 'WHERE u_id IN (' . implode(', ', $action) . ')');
@@ -328,7 +328,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			// On récupère les informations passées à la page
+			// On recupere les informations passees a la page
 			$topic_operator =	Http::request('topic_operator', 'post');
 			$post_operator =	Http::request('post_operator', 'post');
 			$joined =			Http::request('prune_joined', 'post');
@@ -348,14 +348,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$visit_month =		intval(Http::request('visit_month', 'post'));
 			$visit_year =		intval(Http::request('visit_year', 'post'));
 
-			// Maintenant on construit petit à petit la requète qui va récupérer les membres à supprimer
+			// Maintenant on construit petit a petit la requete qui va recuperer les membres a supprimer
 			$build_sql = '';
 			$main_sql = 'SELECT u_id, u_nickname
 					FROM ' . SQL_PREFIX . 'users
 					WHERE u_id <> ' . VISITOR_ID . '
 						AND u_auth < ' . MODOSUP . "\n";
 
-			// On vérifie l'existance des pseudonymes passés en paramètres
+			// On verifie l'existance des pseudonymes passes en parametres
 			if ($nicknames)
 			{
 				$nicknames = explode("\n", $nicknames);
@@ -388,17 +388,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 					Display::message(Html::make_errstr($errstr));
 				}
 
-				// Ajoute la clause à la requète
+				// Ajoute la clause a la requete
 				$build_sql .= ' AND u_id IN (' . implode(', ', $idx) . ")\n";
 			}
 
-			// Vérification des adresses Emails
+			// Verification des adresses Emails
 			if ($email)
 			{
 				$build_sql .= ' AND u_email LIKE \'' . Fsb::$db->escape(str_replace('*', '%', $email)) . "'\n";
 			}
 	
-			// Vérification des adresses IP d'inscriptions
+			// Verification des adresses IP d'inscriptions
 			if ($ip)
 			{
 				$build_sql .= ' AND u_register_ip LIKE \'' . Fsb::$db->escape(str_replace('*', '%', $ip)) . "'\n";
@@ -412,7 +412,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$build_sql .= ' AND u_joined ' . $operator . ' ' . $timestamp . "\n";
 			}
 
-			// En fonction de la date de dernière visite
+			// En fonction de la date de derniere visite
 			if ($visit)
 			{
 				$timestamp = mktime(0, 0, 0, $visit_month, $visit_day, $visit_year);
@@ -440,13 +440,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$build_sql .= ' AND u_total_topic ' . $topic_operator . ' ' . intval($topic) . "\n";
 			}
 
-			// Aucun paramètre entré
+			// Aucun parametre entre
 			if (!$build_sql)
 			{
 				Display::message('adm_users_prune_no_args');
 			}
 
-			// On execute la requète et on récupère les ID des membres à supprimer
+			// On execute la requete et on recupere les ID des membres a supprimer
 			$action = array();
 			$nicks = '';
 			$exists = array();
@@ -462,7 +462,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 			Fsb::$db->free($result);
 
-			// Aucun résultat ?
+			// Aucun resultat ?
 			if (!$exists)
 			{
 				Display::message('no_result');
@@ -540,7 +540,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if ($this->mode == 'add')
 		{
-			// Création de la gallerie
+			// Creation de la gallerie
 			$file->mkdir('images/avatars/gallery/' . $gallery_name);
 			$file->chmod('images/avatars/gallery/' . $gallery_name, 0777);
 		}

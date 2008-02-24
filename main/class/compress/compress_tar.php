@@ -11,8 +11,8 @@
 */
 
 /**
-* Classe de compression / decompression en tar et tar.gz, tirée du fichier
-* includes/functions_compress.php de phpBB3, et modifiée pour les besoins
+* Classe de compression / decompression en tar et tar.gz, tiree du fichier
+* includes/functions_compress.php de phpBB3, et modifiee pour les besoins
 * de la classe Compress() de FSB2.
 *
 * Tar/tar.gz compression routine
@@ -24,7 +24,7 @@ class Compress_tar extends Fsb_model
 	private $filename = '';
 	private $wrote = false;
 
-	// Données pour l'extraction
+	// Donnees pour l'extraction
 	public $Entries = array();
 
 	/**
@@ -77,7 +77,7 @@ class Compress_tar extends Fsb_model
 
 				if ($filetype == 5)
 				{
-					// Création des dossiers inutile puisque gérée plus haut
+					// Creation des dossiers inutile puisque geree plus haut
 				}
 				else if($filesize != 0 && ($filetype == 0 || $filetype == "\0"))
 				{
@@ -140,20 +140,20 @@ class Compress_tar extends Fsb_model
 		$header .= pack("a155", '');						// filename prefix
 		$header .= pack("a12", '');							// end
 
-		// Compression, puis retour des données
+		// Compression, puis retour des donnees
 		if ($this->isgz && @extension_loaded('zlib'))
 		{
 			$fzopen = 'gzopen';
 			$fzwrite = 'gzwrite';
 			$fzclose = 'gzclose';
 
-			// Fichier temporaire pour compresser les données
+			// Fichier temporaire pour compresser les donnees
 			$tmp = ROOT . 'upload/compress_' . md5($name) . '.tar.gz';
 			$fd = $fzopen($tmp, 'w');
 			$fzwrite($fd, $header . (($stat[7] !== 0 && !$is_dir) ? $data . (($stat[7] % 512 > 0) ? str_repeat("\0", 512 - $stat[7] % 512) : '') : ''));
 			$fzclose($fd);
 
-			// Retour des données compressés
+			// Retour des donnees compresses
 			$content = file_get_contents($tmp);
 			unlink($tmp);
 			return ($content);

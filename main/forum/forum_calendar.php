@@ -11,11 +11,11 @@
 */
 
 /*
-** Affiche un calendrier avec planification possible d'évênements
+** Affiche un calendrier avec planification possible d'evenements
 */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Paramètres d'affichage de la page (barre de navigation, boite de stats)
+	// Parametres d'affichage de la page (barre de navigation, boite de stats)
 	public $_show_page_header_nav = TRUE;
 	public $_show_page_footer_nav = FALSE;
 	public $_show_page_stats = FALSE;
@@ -23,7 +23,7 @@ class Fsb_frame_child extends Fsb_frame
 	// Temps unix
 	public $current;
 
-	// Jour, mois, année courante
+	// Jour, mois, annee courante
 	public $current_day;
 	public $current_month;
 	public $current_year;
@@ -79,13 +79,13 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche le calendrier courant, ainsi que les calendriers des mois suivants et précédents
+	** Affiche le calendrier courant, ainsi que les calendriers des mois suivants et precedents
 	*/
 	public function show_calendar()
 	{
 		Fsb::$tpl->set_file('forum/forum_calendar.html');
 
-		// Mois précédent
+		// Mois precedent
 		$month_previous = $this->current_month;
 		$year_previous = $this->current_year;
 		if ($month_previous == 1)
@@ -111,7 +111,7 @@ class Fsb_frame_child extends Fsb_frame
 			$month_next++;
 		}
 
-		// On récupère les évènements pour cette période
+		// On recupere les evenements pour cette periode
 		$begin_timestamp =	intval(mktime(0, 0, 0, $month_previous, 1, $year_previous));
 		$end_timestamp =	intval(mktime(0, 0, 0, $month_next, date('t', mktime(23, 59, 59, $month_next, 1, $year_next)), $year_next));
 		$sql_in_group =		(Fsb::$session->auth() < ADMIN && Fsb::$session->data['groups']) ? ' AND c_view IN (' . implode(', ', Fsb::$session->data['groups']) . ')' : '';
@@ -128,8 +128,8 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			if ($row['c_approve'] || Fsb::$session->is_authorized('approve_event') || Fsb::$session->id() == $row['u_id'])
 			{
-				// On ajoute les évenements au tableau $event, avec en clef le mois et le jour, par exemple
-				// pour la liste des évenements du 24 décembre 2006 : $events[12][24]
+				// On ajoute les evenements au tableau $event, avec en clef le mois et le jour, par exemple
+				// pour la liste des evenements du 24 decembre 2006 : $events[12][24]
 				$timestamp_begin =	($row['c_begin'] < $begin_timestamp) ? $begin_timestamp : $row['c_begin'];
 				$timestamp_end =	($row['c_end'] > $end_timestamp) ? $end_timestamp : $row['c_end'];
 				for ($timestamp =	$timestamp_begin; $timestamp <= $timestamp_end; $timestamp += ONE_DAY)
@@ -143,7 +143,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		Fsb::$db->free($result);
 
-		// On récupère les anniversaires pour le calendrier
+		// On recupere les anniversaires pour le calendrier
 		if (Fsb::$cfg->get('calendar_birthday_activate'))
 		{
 			$sql = 'SELECT u_nickname, u_birthday
@@ -172,7 +172,7 @@ class Fsb_frame_child extends Fsb_frame
 		$previous_time =	$this->generate_calendar('simple', $month_previous, $year_previous, $events);
 		$next_time =		$this->generate_calendar('simple', $month_next, $year_next, $events);
 
-		// Liste des mois, années
+		// Liste des mois, annees
 		$list_month = array();
 		for ($i = 1; $i <= 12; $i++)
 		{
@@ -197,7 +197,7 @@ class Fsb_frame_child extends Fsb_frame
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;mode=' . $this->mode),
 		));
 
-		// Peut créer un évènement ?
+		// Peut creer un evenement ?
 		if (Fsb::$session->is_authorized('calendar_write'))
 		{
 			Fsb::$tpl->set_switch('can_add_event');
@@ -205,16 +205,16 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Génère un calendrier simple ou complexe
+	** Genere un calendrier simple ou complexe
 	** -----
 	** $type ::		Type de calendrier (simple ou complex)
 	** $month ::	Mois
-	** $year ::		Année
+	** $year ::		Annee
 	** $events ::	Liste des evenements
 	*/
 	public function generate_calendar($type, $month, $year, &$events)
 	{
-		// On récupère le jour du premier du mois
+		// On recupere le jour du premier du mois
 		$first_day_time =		mktime(0, 0, 0, $month, 1, $year);
 		$first_day_week_day =	date('w', $first_day_time);
 		$first_day_week_day =	($first_day_week_day == 0) ? 6 : $first_day_week_day - 1;
@@ -222,7 +222,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Nombre de jours dans le mois
 		$total_day = date('t', $first_day_time);
 
-		// En mode simple on créé un sous block
+		// En mode simple on cree un sous block
 		if ($type == 'simple')
 		{
 			Fsb::$tpl->set_blocks('sub', array(
@@ -238,7 +238,7 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 
-		// On rempli de vide les jours avant le jour de départ
+		// On rempli de vide les jours avant le jour de depart
 		for ($i = 0; $i < $first_day_week_day; $i++)
 		{
 			Fsb::$tpl->set_blocks((($type == 'simple') ? 'sub.' : '') . 'day', array(
@@ -252,7 +252,7 @@ class Fsb_frame_child extends Fsb_frame
 		$todays_year = date('Y', CURRENT_TIME);
 		for ($i = 1; $i <= $total_day; $i++)
 		{
-			// Suppression des anniversaires antérieurs à la date de naissance
+			// Suppression des anniversaires anterieurs a la date de naissance
 			$total_events = 0;
 			if (isset($events[$month][$i]))
 			{
@@ -316,7 +316,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		// On rempli de vide les jours après le jour de fin de mois
+		// On rempli de vide les jours apres le jour de fin de mois
 		if (($first_day_week_day + $total_day) % 7)
 		{
 			for ($i = ($first_day_week_day + $total_day) % 7; $i < 7; $i++)
@@ -331,7 +331,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Affiche les évènements de la journée
+	** Affiche les evenements de la journee
 	*/
 	public function show_events()
 	{
@@ -339,7 +339,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		$parser = new Parser();
 
-		// On récupère les évênements de la journée
+		// On recupere les evenements de la journee
 		$begin_timestamp =	mktime(0, 0, 0, date('n', $this->current), date('d', $this->current), date('Y', $this->current));
 		$end_timestamp =	mktime(23, 59, 59, date('n', $this->current), date('d', $this->current), date('Y', $this->current));
 		$sql_in_group =		(Fsb::$session->auth() < ADMIN && Fsb::$session->data['groups']) ? ' AND c.c_view IN (' . implode(', ', Fsb::$session->data['groups']) . ')' : '';
@@ -361,7 +361,7 @@ class Fsb_frame_child extends Fsb_frame
 				list($day, $month, $year, $hour, $min) = explode(' ', date('d n Y H i', $row['c_end']));
 				$end = ($min == '00' && $hour == '00') ? sprintf(Fsb::$session->lang('calendar_event_date'), sprintf(Fsb::$session->lang('format_date'), $day, Fsb::$session->lang('month_' . $month), $year)) : sprintf(Fsb::$session->lang('calendar_event_date2'), sprintf(Fsb::$session->lang('format_date'), $day, Fsb::$session->lang('month_' . $month), $year), $hour, $min);
 
-				// Informations passées au parseur de message
+				// Informations passees au parseur de message
 				$parser_info = array(
 					'u_id' =>			$row['u_id'],
 					'p_nickname' =>		$row['u_nickname'],
@@ -422,7 +422,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$db->free($result);
 		}
 
-		// Liste des jours, mois, années
+		// Liste des jours, mois, annees
 		$list_day = array();
 		for ($i = 1; $i <= 31; $i++)
 		{
@@ -441,7 +441,7 @@ class Fsb_frame_child extends Fsb_frame
 			$list_year[$i] = $i;
 		}
 
-		// Modère le calendrier
+		// Modere le calendrier
 		if (Fsb::$session->is_authorized('approve_event'))
 		{
 			Fsb::$tpl->set_switch('can_approve');
@@ -463,7 +463,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Approuve un évènement
+	** Approuve un evenement
 	*/
 	public function approve_event()
 	{
@@ -487,7 +487,7 @@ class Fsb_frame_child extends Fsb_frame
 	}
 
 	/*
-	** Supprime un évènement
+	** Supprime un evenement
 	*/
 	public function delete_event()
 	{

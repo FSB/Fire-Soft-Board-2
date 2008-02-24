@@ -12,11 +12,11 @@
 
 /*
 ** Classe de gestion de template
-** La documentation sur cette classe et ses possibilités se trouve dans ~/doc/template.html
+** La documentation sur cette classe et ses possibilites se trouve dans ~/doc/template.html
 */
 class Tpl extends Fsb_model
 {
-	// Répertoire du template
+	// Repertoire du template
 	public $tpl_dir = '';
 
 	// Boolean pour savoir si on utilise le cache ou non
@@ -25,10 +25,10 @@ class Tpl extends Fsb_model
 	// Tableau contenant toutes les variables du template, ainsi que les switchs et les blocks
 	public $data = array();
 
-	// Tableau contenant les alias, empilés par ordre d'aparition
+	// Tableau contenant les alias, empiles par ordre d'aparition
 	private $stack = array();
 
-	// Contient le numéro de l'alias courant, dans la pile
+	// Contient le numero de l'alias courant, dans la pile
 	private $current_stack = -1;
 
 	// Alias courant
@@ -44,7 +44,7 @@ class Tpl extends Fsb_model
 	/*
 	** Constructeur de la classe Tpl()
 	** -----
-	** $tpl_dir ::			Répertoire contenant les fichiers templates
+	** $tpl_dir ::			Repertoire contenant les fichiers templates
 	*/
 	public function __construct($tpl_dir)
 	{
@@ -54,9 +54,9 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Annonce qu'un fichier template va être créé plus tard dans le script.
-	** Cette fonction est à utiliser si vous souhaitez déclarer des variables avant
-	** de déclarer un nom pour le fichier template.
+	** Annonce qu'un fichier template va etre cree plus tard dans le script.
+	** Cette fonction est a utiliser si vous souhaitez declarer des variables avant
+	** de declarer un nom pour le fichier template.
 	** -----
 	** $alias ::	Nom de l'alias du futur template
 	*/
@@ -74,11 +74,11 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Créé un alias ayant comme modèle le template passé en paramètre. L'alias est ajouté
+	** Cree un alias ayant comme modele le template passe en parametre. L'alias est ajoute
 	** dans la pile d'alias afin de permettre un imbriquement simple de templates.
 	** -----
-	** $alias ::		Alias du modèle
-	** $template ::		Modèle de template à charger
+	** $alias ::		Alias du modele
+	** $template ::		Modele de template a charger
 	*/
 	public function set_file($template, $alias = 'main')
 	{
@@ -107,9 +107,9 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Assigne un dossier pour le thème
+	** Assigne un dossier pour le theme
 	** -----
-	** $tpl_dir ::			Répertoire contenant les fichiers templates
+	** $tpl_dir ::			Repertoire contenant les fichiers templates
 	*/
 	public function set_template($tpl_dir)
 	{
@@ -123,22 +123,22 @@ class Tpl extends Fsb_model
 		$this->tpl_dir = $tpl_dir;
 		if (!is_dir($this->tpl_dir))
 		{
-			trigger_error('Tpl->Tpl :: ' . $this->tpl_dir . ' n\'est pas un répertoire', FSB_ERROR);
+			trigger_error('Tpl->Tpl :: ' . $this->tpl_dir . ' n\'est pas un repertoire', FSB_ERROR);
 		}
 	}
 
 	/*
-	** Ajoute un tableau de variables de templates au modèle actuel
+	** Ajoute un tableau de variables de templates au modele actuel
 	** -----
 	** $ary ::		Tableau contenant en clef les variables de templates et en valeurs ce par quoi elles
-	**			seront remplacées
-	** $alias ::		Alias à spécifier pour assigner ces variables à un modèle particulier
+	**			seront remplacees
+	** $alias ::		Alias a specifier pour assigner ces variables a un modele particulier
 	*/
 	public function set_vars($ary, $alias = NULL)
 	{
 		if (!is_array($ary))
 		{
-			trigger_error('Tpl->set_vars :: Le premier argument doit être un tableau', FSB_ERROR);
+			trigger_error('Tpl->set_vars :: Le premier argument doit etre un tableau', FSB_ERROR);
 		}
 
 		$current_alias = (($alias == NULL) ? $this->stack[$this->current_stack] : $alias);
@@ -146,13 +146,13 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Ajoute un block de variables pour le modèle de template
+	** Ajoute un block de variables pour le modele de template
 	** -----
-	** $block ::	Nom du block. Si ce block est rataché a des précédents blocks, utiliser . comme séparateur
+	** $block ::	Nom du block. Si ce block est ratache a des precedents blocks, utiliser . comme separateur
 	**				de block ; par exemple block1.block2.blockN
 	** $ary ::		Tableau contenant en clef les variables de templates et en valeurs ce par quoi elles
-	**				seront remplacées
-	** $alias ::	Alias à spécifier pour assigner ces variables à un modèle particulier
+	**				seront remplacees
+	** $alias ::	Alias a specifier pour assigner ces variables a un modele particulier
 	*/
 	public function set_blocks($block, $ary = array(), $alias = NULL)
 	{
@@ -177,10 +177,10 @@ class Tpl extends Fsb_model
 		}
 
 		//
-		// ITERATOR est une variable de template donnant l'itération actuelle dans un block
+		// ITERATOR est une variable de template donnant l'iteration actuelle dans un block
 		// SIZEOF est une variable de template donnant le nombre de cycles pour le block
-		// FIRST_ROW est une variable de template définissant s'il s'agit de la première ligne
-		// LAST_ROW est une variable définissant s'il s'agit de la dernière ligne
+		// FIRST_ROW est une variable de template definissant s'il s'agit de la premiere ligne
+		// LAST_ROW est une variable definissant s'il s'agit de la derniere ligne
 		//
 		$ary['ITERATOR'] = count($tmp[$explode[$i]]);
 		$ary['LAST_ROW'] = TRUE;
@@ -199,18 +199,18 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Modifie un block de variable déjà défini. Il est donc possible de créer un block avec la méthode Tpl::set_blocks() puis
-	** de modifier par la suite des variables propres à ce block.
+	** Modifie un block de variable deja defini. Il est donc possible de creer un block avec la methode Tpl::set_blocks() puis
+	** de modifier par la suite des variables propres a ce block.
 	** -----
-	** $block ::	Nom du block. Si ce block est rataché a des précédents blocks, utiliser . comme séparateur
+	** $block ::	Nom du block. Si ce block est ratache a des precedents blocks, utiliser . comme separateur
 	**				de block ; par exemple block1.block2.blockN
-	** $pos ::		Position du block à modifier par rapport à la valeur courante. Par exemple si vous souhaitez modifier
-	**				les valeurs des variables du précédent block déclaré, il faut passer -1 à la position. Par exemple :
+	** $pos ::		Position du block a modifier par rapport a la valeur courante. Par exemple si vous souhaitez modifier
+	**				les valeurs des variables du precedent block declare, il faut passer -1 a la position. Par exemple :
 	**					Fsb::$tpl->set_blocks('test', array('KEY' => 'VALUE'), 'alias');
 	**					Fsb::$tpl->update_blocks('test', -1, array('KEY' => 'NEW_VALUE'), 'alias');
 	** $ary ::		Tableau contenant en clef les variables de templates et en valeurs ce par quoi elles
-	**				seront remplacées
-	** $alias ::	Alias à spécifier pour assigner ces variables à un modèle particulier
+	**				seront remplacees
+	** $alias ::	Alias a specifier pour assigner ces variables a un modele particulier
 	*/
 	public function update_blocks($block, $pos, $ary, $alias = NULL)
 	{
@@ -229,7 +229,7 @@ class Tpl extends Fsb_model
 			$tmp = &$tmp[count($tmp) - 1];
 		}
 
-		// Récupération du dernier block
+		// Recuperation du dernier block
 		if (!isset($tmp[$explode[$i]]))
 		{
 			trigger_error('Tpl->update_blocks :: Le block ' . $explode[$i] . ' n\'existe pas', FSB_ERROR);
@@ -237,10 +237,10 @@ class Tpl extends Fsb_model
 		$tmp = &$tmp[$explode[$i]];
 		$count_current = count($tmp);
 
-		// Mise à jour des variables
+		// Mise a jour des variables
 		if (!isset($tmp[$count_current + $pos]))
 		{
-			trigger_error('Tpl->update_blocks :: La position indiquée n\'existe pas : ' . $pos, FSB_ERROR);
+			trigger_error('Tpl->update_blocks :: La position indiquee n\'existe pas : ' . $pos, FSB_ERROR);
 		}
 
 		foreach ($ary AS $key => $value)
@@ -250,7 +250,7 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Créé un switch
+	** Cree un switch
 	** -----
 	** $name ::		Nom du switch
 	*/
@@ -270,10 +270,10 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Parse le fichier modèle donné
+	** Parse le fichier modele donne
 	** -----
-	** $alias ::		Alias du fichier à parser
-	** $keep_alias ::	Définit si on doit changer l'alias ou non
+	** $alias ::		Alias du fichier a parser
+	** $keep_alias ::	Definit si on doit changer l'alias ou non
 	*/
 	public function parse($alias = 'main', $keep_alias = FALSE)
 	{
@@ -282,7 +282,7 @@ class Tpl extends Fsb_model
 			trigger_error('Tpl->parse :: L\'alias ' . $alias . ' n\'existe pas', FSB_ERROR);
 		}
 
-		// L'alias est dépilé
+		// L'alias est depile
 		if (!$keep_alias)
 		{
 			$this->alias = $alias;
@@ -290,7 +290,7 @@ class Tpl extends Fsb_model
 		array_pop($this->stack);
 		$this->current_stack--;
 
-		// Vérification de la mise en cache du template
+		// Verification de la mise en cache du template
 		if ($this->use_cache)
 		{
 			$cache = Cache::factory('tpl');
@@ -311,7 +311,7 @@ class Tpl extends Fsb_model
 			$tpl_code = $this->compile($alias);
 		}
 
-		// Affichage du template parsé
+		// Affichage du template parse
 		if (Fsb::$debug->show_output)
 		{
 			eval($tpl_code);
@@ -331,10 +331,10 @@ class Tpl extends Fsb_model
 
 	/*
 	** Compile le code du template avec les variables de template de celui
-	** ci pour former un code PHP éxécutable.
+	** ci pour former un code PHP executable.
 	** -----
-	** $alias ::	Alias du fichier à compiler
-	** $content ::	Contenu par défaut
+	** $alias ::	Alias du fichier a compiler
+	** $content ::	Contenu par defaut
 	*/
 	public function compile($alias = 'main', $content = NULL)
 	{
@@ -344,7 +344,7 @@ class Tpl extends Fsb_model
 			$filename = $this->data[$alias]['file'];
 			if (empty($filename))
 			{
-				trigger_error('Tpl::compile() :: Aucun fichier template n\'a été renseigné, vous devez utiliser la méthode Tpl::set_file()', FSB_ERROR);
+				trigger_error('Tpl::compile() :: Aucun fichier template n\'a ete renseigne, vous devez utiliser la methode Tpl::set_file()', FSB_ERROR);
 			}
 			else if (!file_exists($filename))
 			{
@@ -409,8 +409,8 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Compile les instructions de controle "if" et "else if", tout en gérant
-	** les variables de templates qui doivent cette fois être précédées d'un $. Par
+	** Compile les instructions de controle "if" et "else if", tout en gerant
+	** les variables de templates qui doivent cette fois etre precedees d'un $. Par
 	** exemple : <if content="$block1.block2.VAR == 51">
 	*/
 	private function compile_scripting_vars($match)
@@ -495,7 +495,7 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Compile les switch. Il est possible d'utiliser les opérateurs & et | pour les switch, par exemple
+	** Compile les switch. Il est possible d'utiliser les operateurs & et | pour les switch, par exemple
 	** <switch name="switch1 | switch2">
 	*/
 	private function compile_switch($match)
@@ -519,7 +519,7 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Parse des déclarations de fonctions template
+	** Parse des declarations de fonctions template
 	*/
 	private function compile_functions_declaration($match)
 	{
@@ -549,12 +549,12 @@ class Tpl extends Fsb_model
 	}
 
 	/*
-	** Transforme un block du type block1.block2.blockN en chaine de caractère
+	** Transforme un block du type block1.block2.blockN en chaine de caractere
 	** evaluable durant la compilation comme une variable de template
 	** -----
 	** $block ::		Nom du block
 	** $alias ::		Alias du template courant
-	** $number ::		Nombre de blocks en finalité
+	** $number ::		Nombre de blocks en finalite
 	** $type ::			Type de compilation de block
 	*/
 	private function block2code($block, &$str_block, $type)
@@ -576,7 +576,7 @@ class Tpl extends Fsb_model
 
 		$str .= "['${explode[$i]}']";
 		
-		// Mise en cache des blocks calculés pour éviter de repasser cette étape pour les même blocks
+		// Mise en cache des blocks calcules pour eviter de repasser cette etape pour les meme blocks
 		$this->cache_block[$block] = array('str_block' => $str_block, 'str' => $str);
 		
 		if (!$type)

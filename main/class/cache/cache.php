@@ -11,12 +11,12 @@
 */
 
 /*
-** Classe de mise en cache de données. La classe supporte en natif plusieurs types de cache :
+** Classe de mise en cache de donnees. La classe supporte en natif plusieurs types de cache :
 ** - Si vous installez Eaccelerator la classe se servira des fonctions fournies par Eaccelerator
 ** - Si vous installez APC la classe se servira des fonctions fournies par APC
 ** - Si vous installez Turck MMCache la classe se servira des fonctions fournies par Turck MMCache
-** - Si vous possédez les droits d'écriture sur le dossier cache/ la classe se servira d'un cache de fichier
-** - Si vous ne possédez rien de tout ce qui est cité ci dessus une mise en cache SQL sera faite
+** - Si vous possedez les droits d'ecriture sur le dossier cache/ la classe se servira d'un cache de fichier
+** - Si vous ne possedez rien de tout ce qui est cite ci dessus une mise en cache SQL sera faite
 */
 abstract class Cache extends Fsb_model
 {
@@ -32,11 +32,11 @@ abstract class Cache extends Fsb_model
 	private static $clearstatcache = FALSE;
 
 	/*
-	** Retourne une instance de la classe cache en fonction des données passées
+	** Retourne une instance de la classe cache en fonction des donnees passees
 	** -----
 	** $path ::		Nom du cache (servira pour le chemin du Cache_ftp ou le nom de la table pour le cache Sql)
 	** $type ::		Type de cache (ftp | db | eaccelerator | auto)
-	** $where ::	Clause WHERE pour la requète de récupération des données du cache
+	** $where ::	Clause WHERE pour la requete de recuperation des donnees du cache
 	*/
 	public static function factory($path, $type = 'auto', $where = '')
 	{

@@ -11,50 +11,50 @@
 */
 
 /*
-** Classe de compression / décompression de données. Les algorithmes supportés sont .zip, .tar, .tar.gz
-** L'utilisation est très simple. Pour une création d'archive ZIP :
+** Classe de compression / decompression de donnees. Les algorithmes supportes sont .zip, .tar, .tar.gz
+** L'utilisation est tres simple. Pour une creation d'archive ZIP :
 **		$compress = new Compress('archive.zip');
 **		$compress->add_file('dir/file.txt');
 **		$compress->add_file('dir/file2.txt');
 **		$compress->write();
 **
-** Pour une décompression d'archive :
+** Pour une decompression d'archive :
 **		$compress = new Compress('archive.zip');
 **		$compress->extract($dst_path);
 **
-** Veuillez noter qu'il est recommander d'utiliser un objet File() en second paramètre du constructeur. Cet objet
-** permettra de gérer automatiquement les droits des dossiers et veillera au bon déroulement de l'écriture
-** des fichiers. Si vous ne passez pas cet objet en second argument, la classe instanciera elle même
+** Veuillez noter qu'il est recommander d'utiliser un objet File() en second parametre du constructeur. Cet objet
+** permettra de gerer automatiquement les droits des dossiers et veillera au bon deroulement de l'ecriture
+** des fichiers. Si vous ne passez pas cet objet en second argument, la classe instanciera elle meme
 ** un objet File() pour les fichiers locaux. (Il est donc necessaire d'avoir le fichier ~/main/class/class_file.php)
 **
-** La classe compress_tar() a été reprise du logiciel libre phpBB3 (www.phpbb.com) et a été fortement modifiée pour les
+** La classe compress_tar() a ete reprise du logiciel libre phpBB3 (www.phpbb.com) et a ete fortement modifiee pour les
 ** besoins du forum.
-** Les classes zipfile() et SimpleUnzip() ont été reprises telles quelles du logiciel libre phpMyAdmin (www.phpmyadmin.net)
+** Les classes zipfile() et SimpleUnzip() ont ete reprises telles quelles du logiciel libre phpMyAdmin (www.phpmyadmin.net)
 **
 */
 class Compress extends Fsb_model
 {
-	// Méthode de compression
+	// Methode de compression
 	public $method = 'zip';
 
 	// Objet courant pour la compression
 	private $obj;
 
-	// Objet d'écriture de fichier File()
+	// Objet d'ecriture de fichier File()
 	public $file;
 
 	// Fichier pour l'archive
 	private $filename = '';
 
-	// Buffer à écrire
+	// Buffer a ecrire
 	private $buffer = '';
 
 	/*
 	** CONSTRUCTEUR
-	** Récupère les données sur le fichier qu'on veut créer / extraire
+	** Recupere les donnees sur le fichier qu'on veut creer / extraire
 	** -----
 	** $filenamme ::	Fichier archive
-	** $file ::			Objet d'écriture de fichier
+	** $file ::			Objet d'ecriture de fichier
 	*/
 	public function __construct($filename, $file = NULL)
 	{
@@ -65,7 +65,7 @@ class Compress extends Fsb_model
 			$this->file->connexion('', '', '', '', ROOT);
 		}
 
-		// Informations sur l'archive (méthode de compression)
+		// Informations sur l'archive (methode de compression)
 		$this->filename = $filename;
 		if (preg_match('#\.zip$#i', $this->filename))
 		{
@@ -85,17 +85,17 @@ class Compress extends Fsb_model
 	}
 
 	/*
-	** Ajoute un fichier à l'archive
+	** Ajoute un fichier a l'archive
 	** -----
-	** $filename ::		Nom du fichier à ajouter à l'archive
-	** $remove ::		Supprime un répertoire du chemin
-	** $add ::			Ajoute un répertoire devant le chemin
+	** $filename ::		Nom du fichier a ajouter a l'archive
+	** $remove ::		Supprime un repertoire du chemin
+	** $add ::			Ajoute un repertoire devant le chemin
 	*/
 	public function add_file($filename, $remove = '', $add = '')
 	{
 		if (is_dir(ROOT . $filename))
 		{
-			// On ajoute - si necessaire - un / à la fin du nom de fichier
+			// On ajoute - si necessaire - un / a la fin du nom de fichier
 			if ($filename[strlen($filename) - 1] != '/')
 			{
 				$filename .= '/';
@@ -162,7 +162,7 @@ class Compress extends Fsb_model
 	** Extraction de l'archive
 	** -----
 	** $path ::		Dossier de destination
-	** $remove ::	Supprime un répertoire du chemin
+	** $remove ::	Supprime un repertoire du chemin
 	*/
 	public function extract($path = './', $remove = '')
 	{

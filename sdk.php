@@ -11,71 +11,71 @@
 */
 
 /*
-** SDK : Software Developement Kit : Outil de développement du logiciel
+** SDK : Software Developement Kit : Outil de developpement du logiciel
 **
-** Ce fichier contient le SDK de FSB2, c'est à dire une librairie de méthodes permettant de
+** Ce fichier contient le SDK de FSB2, c'est a dire une librairie de methodes permettant de
 ** faire communiquer votre forum FSB2 avec d'autres applications PHP (votre site web par exemple).
 ** 
-** L'utilisation est faite pour être simple : vous devez en premier lieu inclure ce fichier
-** le plus haut possible dans votre site web. C'est à dire que si vous voullez utiliser ce SDK
-** dans votre page web test.php vous devez inclure la librairie au tout début du programme. En
-** aucun cas vous ne devez inclure ce fichier après avoir écrit du HTML (sauf si vous utilisez
+** L'utilisation est faite pour etre simple : vous devez en premier lieu inclure ce fichier
+** le plus haut possible dans votre site web. C'est a dire que si vous voullez utiliser ce SDK
+** dans votre page web test.php vous devez inclure la librairie au tout debut du programme. En
+** aucun cas vous ne devez inclure ce fichier apres avoir ecrit du HTML (sauf si vous utilisez
 ** une bufferisation de sortie).
 **
-** Pour inclure la librairie, procédez comme ceci :
+** Pour inclure la librairie, procedez comme ceci :
 **		<?php
 **		define('ROOT', 'forum/');
 **		include(ROOT . 'sdk.php');
 **
-** Vous devez remplacer la valeur de la constante ROOT (forum/ par défaut) par le chemin de votre forum.
-** Si par exemple votre page test.php utilisant le SDK se trouve à la racine de votre site web, et que votre
+** Vous devez remplacer la valeur de la constante ROOT (forum/ par defaut) par le chemin de votre forum.
+** Si par exemple votre page test.php utilisant le SDK se trouve a la racine de votre site web, et que votre
 ** forum se situe dans le dossier fsb2/ vous devez mettre :
 **		define('ROOT', 'fsb2/');
 **
-** Si le chemin entré est incorrect, le SDK ne fonctionnera pas. Veuillez noter que si vous voullez utiliser
-** le SDK au sein même des fichiers du forum, il ne faut pas déclarer la constante ROOT (qui existe déjà).
+** Si le chemin entre est incorrect, le SDK ne fonctionnera pas. Veuillez noter que si vous voullez utiliser
+** le SDK au sein meme des fichiers du forum, il ne faut pas declarer la constante ROOT (qui existe deja).
 **
-** Une fois le SDK inclu, une variable $fsb est créée (instance de la classe Fsb_sdk). Vous pouvez ainsi
-** utiliser les différentes méthodes du SDK. Vous avez aussi accès à l'ensemble de la librairie du forum,
-** c'est à dire aux différentes classes du dossier ~/main/class/ du forum. N'oubliez pas que vous pouvez
-** accéder aux globales principales du forum tel que la base de donnée, la session, la configuration de cette
-** façon : Fsb::$db ou Fsb::$cfg etc ..
+** Une fois le SDK inclu, une variable $fsb est creee (instance de la classe Fsb_sdk). Vous pouvez ainsi
+** utiliser les differentes methodes du SDK. Vous avez aussi acces a l'ensemble de la librairie du forum,
+** c'est a dire aux differentes classes du dossier ~/main/class/ du forum. N'oubliez pas que vous pouvez
+** acceder aux globales principales du forum tel que la base de donnee, la session, la configuration de cette
+** facon : Fsb::$db ou Fsb::$cfg etc ..
 **
 ** Voici une liste des principales fonctions (pour faciliter la recherche) :
 **	nickname2id()				Converti un pseudonyme en ID
 **	id2nickname()				Converti une ID en pseudonyme
 **	forumname2id()				Converti un nom de forum en ID
 **	userdata()					Retourne des informations sur le visiteur actuel
-**	is_logged()					Vérifie si le membre est connecté
+**	is_logged()					Verifie si le membre est connecte
 **	login()						Connexion d'un membre
-**	logout()					Déconnexion d'un membre
+**	logout()					Deconnexion d'un membre
 **	nickname()					Retourne le pseudonyme du visiteur courant avec un lien vers son profile et sa couleur
 **	last_user()					Informations sur le dernier membre inscrit
-**	get_users()					Récupération d'une liste de membres.
-**	get_best_posters()			Récupération des membres avec le plus de messages
-**	get_worst_posters()			Récupération des membres avec le moins de messages
+**	get_users()					Recuperation d'une liste de membres.
+**	get_best_posters()			Recuperation des membres avec le plus de messages
+**	get_worst_posters()			Recuperation des membres avec le moins de messages
 **
-**	get_topics()				Récupération d'une liste de sujets
-**	get_most_viewed_topics()	Récupération des sujets les plus lus
-**	get_less_viewed_topics()	Récupération des sujets les moins lus
-**	get_most_posted_topics()	Récupération des sujets avec le plus de réponses
-**	get_less_posted_topics()	Récupération des sujets avec le moins de réponses
-**	get_posts()					Récupération d'une liste de messages
+**	get_topics()				Recuperation d'une liste de sujets
+**	get_most_viewed_topics()	Recuperation des sujets les plus lus
+**	get_less_viewed_topics()	Recuperation des sujets les moins lus
+**	get_most_posted_topics()	Recuperation des sujets avec le plus de reponses
+**	get_less_posted_topics()	Recuperation des sujets avec le moins de reponses
+**	get_posts()					Recuperation d'une liste de messages
 **
-**  post_topic()				Création d'un nouveau sujet
-**  post_reply()				Réponse à un sujet
-**  post_mp()					Envoie un message privé
-**	post_poll()					Création d'un sondage
+**  post_topic()				Creation d'un nouveau sujet
+**  post_reply()				Reponse a un sujet
+**  post_mp()					Envoie un message prive
+**	post_poll()					Creation d'un sondage
 **
 **	who_is_online()				Tableau d'information sur les membres en ligne
-**	who_was_online_today()		Tableau d'information sur les membres qui étaient en ligne aujourd'hui
-**	who_has_birthday_today()	Tableau d'information sur les membres fétant leur anniversaire aujourd'hui
+**	who_was_online_today()		Tableau d'information sur les membres qui etaient en ligne aujourd'hui
+**	who_has_birthday_today()	Tableau d'information sur les membres fetant leur anniversaire aujourd'hui
 **
-**	get_calendar_events()		Tableau d'information sur les évènements à venir
+**	get_calendar_events()		Tableau d'information sur les evenements a venir
 **
-**	get_poll()					Récupère les informations sur un sondage
-**	get_last_poll()				Récupère le dernier sondage créé
-**	get_random_poll()			Récupère un sondage aléatoire
+**	get_poll()					Recupere les informations sur un sondage
+**	get_last_poll()				Recupere le dernier sondage cree
+**	get_random_poll()			Recupere un sondage aleatoire
 **	submit_poll()				Soumet le vote
 **
 **	url_topic()					URL vers un sujet
@@ -84,15 +84,15 @@
 **	url_user()					URL vers un profile
 **	url_index()					URL vers l'index
 **
-**	template_path()				Modifie le chemin du thème
+**	template_path()				Modifie le chemin du theme
 **
-**	captcha_valid()				Vérifie si la chaîne passée en paramètre est un code Captcha valide
+**	captcha_valid()				Verifie si la chaine passee en parametre est un code Captcha valide
 **	captcha_img()				Retourne une URL pour l'image du Captcha
-**	captcha_output()			Génère l'image du Captcha
+**	captcha_output()			Genere l'image du Captcha
 **
-**	rsa_create()				Inialisation du chiffrage RSA, à appeler au tout début
-**	rsa_encrypt()				Génération du Javascript pour crypter les champs du formulaire
-**	rsa_decrypt()				Décrypte les champs du formulaire chiffrés en RSA
+**	rsa_create()				Inialisation du chiffrage RSA, a appeler au tout debut
+**	rsa_encrypt()				Generation du Javascript pour crypter les champs du formulaire
+**	rsa_decrypt()				Decrypte les champs du formulaire chiffres en RSA
 */
 
 if (!defined('FSB_SDK'))
@@ -107,7 +107,7 @@ if (!defined('ROOT'))
 
 if (!defined('FORUM'))
 {
-	// ~/main/start.php est utilisé pour initialiser le necessaire au SDK
+	// ~/main/start.php est utilise pour initialiser le necessaire au SDK
 	define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 	include(ROOT . 'main/start.' . PHPEXT);
 
@@ -128,7 +128,7 @@ class Fsb_sdk extends Fsb_model
 	// Version du SDK
 	public $version = '1.1.1';
 
-	// Dernière erreur rencontrée
+	// Derniere erreur rencontree
 	public $errstr = '';
 
 	// Variables RSA
@@ -185,9 +185,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Retourne des informations sur le visiteur actuel (informations tirées de la table fsb2_users)
+	** Retourne des informations sur le visiteur actuel (informations tirees de la table fsb2_users)
 	** -----
-	** $key ::		Information à récupérer (par exemple u_nickname pour le pseudonyme, u_email pour son email, etc ..)
+	** $key ::		Information a recuperer (par exemple u_nickname pour le pseudonyme, u_email pour son email, etc ..)
 	*/
 	public function userdata($key)
 	{
@@ -195,7 +195,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Vérifie si le membre est connecté (retourne TRUE s'il l'est, sinon FALSE)
+	** Verifie si le membre est connecte (retourne TRUE s'il l'est, sinon FALSE)
 	*/
 	public function is_logged()
 	{
@@ -226,7 +226,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Déconnexion d'un membre
+	** Deconnexion d'un membre
 	*/
 	public function logout()
 	{
@@ -261,9 +261,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération d'une liste de membres.
-	** Cette fonction retournera un tableau avec pour chaque entrée les informations sur un membre.
-	** $total ::	Nombre de membres à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
+	** Recuperation d'une liste de membres.
+	** Cette fonction retournera un tableau avec pour chaque entree les informations sur un membre.
+	** $total ::	Nombre de membres a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
 	** $order ::	Ordre dans lequel trier les membres
 	*/
 	public function get_users($total = 5, $order = 'u_joined DESC')
@@ -280,7 +280,7 @@ class Fsb_sdk extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['u_nickname'],
@@ -308,9 +308,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des membres avec le plus de messages
+	** Recuperation des membres avec le plus de messages
 	** -----
-	** $total ::	Nombre de membres à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
+	** $total ::	Nombre de membres a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
 	*/
 	public function get_best_posters($total = 15)
 	{
@@ -318,9 +318,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des membres avec le moins de messages
+	** Recuperation des membres avec le moins de messages
 	** -----
-	** $total ::	Nombre de membres à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
+	** $total ::	Nombre de membres a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les membres
 	*/
 	public function get_worst_posters($total = 15)
 	{
@@ -332,13 +332,13 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Récupération d'une liste de sujets.
-	** Cette fonction retournera un tableau avec pour chaque entrée les informations sur un sujet.
+	** Recuperation d'une liste de sujets.
+	** Cette fonction retournera un tableau avec pour chaque entree les informations sur un sujet.
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de sujets à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
+	** $total ::	Nombre de sujets a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
 	** $order ::	Ordre dans lequel trier les sujets
 	*/
 	public function get_topics($forums = '*', $total = 15, $order = 't_last_p_time DESC')
@@ -346,7 +346,7 @@ class Fsb_sdk extends Fsb_model
 		$forums =	$this->_request_forums($forums);
 		$total =	$this->_request_total($total);
 
-		// Requête de récupération des sujets
+		// Requete de recuperation des sujets
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE 1 = 1'
@@ -359,12 +359,12 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des sujets les plus lus
+	** Recuperation des sujets les plus lus
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de sujets à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
+	** $total ::	Nombre de sujets a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
 	*/
 	public function get_most_viewed_topics($forums = '*', $total = 15)
 	{
@@ -372,12 +372,12 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des sujets les moins lus
+	** Recuperation des sujets les moins lus
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de sujets à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
+	** $total ::	Nombre de sujets a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
 	*/
 	public function get_less_viewed_topics($forums = '*', $total = 15)
 	{
@@ -385,12 +385,12 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des sujets avec le plus de réponses
+	** Recuperation des sujets avec le plus de reponses
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de sujets à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
+	** $total ::	Nombre de sujets a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
 	*/
 	public function get_most_posted_topics($forums = '*', $total = 15)
 	{
@@ -398,12 +398,12 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération des sujets avec le moins de réponses
+	** Recuperation des sujets avec le moins de reponses
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de sujets à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
+	** $total ::	Nombre de sujets a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les sujets
 	*/
 	public function get_less_posted_topics($forums = '*', $total = 15)
 	{
@@ -411,13 +411,13 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupération d'une liste de messages.
-	** Cette fonction retournera un tableau avec pour chaque entrée les informations sur un message.
+	** Recuperation d'une liste de messages.
+	** Cette fonction retournera un tableau avec pour chaque entree les informations sur un message.
 	** -----
 	** $forums ::	Forums dans lesquels on va chercher les messages. On peut lui donner un tableau d'ID de
 	**				forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte
 	**				des droits bien sur)
-	** $total ::	Nombre de messages à afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les messages
+	** $total ::	Nombre de messages a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les messages
 	** $order ::	Ordre dans lequel trier les messages
 	** $gbt ::		(Group By Topics) si TRUE, on ne recherche qu'un message par sujet
 	*/
@@ -447,7 +447,7 @@ class Fsb_sdk extends Fsb_model
 		{
 			$parser->parse_html = FALSE;
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_sig_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],
@@ -467,7 +467,7 @@ class Fsb_sdk extends Fsb_model
 			$row['nickname'] =		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']);
 			$row['u_signature'] =	$parser->sig($row['u_signature'], $parser_sig_info);
 
-			// Informations passées au parseur de message
+			// Informations passees au parseur de message
 			$parser_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],
@@ -493,24 +493,24 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Création d'un nouveau sujet
+	** Creation d'un nouveau sujet
 	** -----
 	** $title ::		Titre du sujet
 	** $content ::		Contenu du message
-	** $forum_id ::		ID du forum dans lequel le sujet sera créé
-	** $user_id ::		ID du membre créant le sujet
+	** $forum_id ::		ID du forum dans lequel le sujet sera cree
+	** $user_id ::		ID du membre creant le sujet
 	** $description ::	Description du sujet
 	** $type ::			Type de sujet
 	*/
 	public function post_topic($title, $content, $forum_id, $user_id = NULL, $description = '', $type = NULL)
 	{
-		// Si l'ID du membre n'est pas donnée on prend celle du membre courrant
+		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
 		if ($user_id === NULL)
 		{
 			$user_id = Fsb::$session->id();
 		}
 
-		// Par défaut on prend le dernier type pour les topics, donc le "sujet de base"
+		// Par defaut on prend le dernier type pour les topics, donc le "sujet de base"
 		if ($type === NULL)
 		{
 			$type = count($GLOBALS['_topic_type']) - 1;
@@ -524,7 +524,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Réponse à un sujet déjà existant
+	** Reponse a un sujet deja existant
 	** -----
 	** $topic_id ::		ID du sujet
 	** $content ::		Contenu du message
@@ -542,7 +542,7 @@ class Fsb_sdk extends Fsb_model
 		$content = $message->document->asValidXML();
 		unset($message);
 
-		// Si l'ID du membre n'est pas donnée on prend celle du membre courrant
+		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
 		if ($user_id === NULL)
 		{
 			$user_id = Fsb::$session->id();
@@ -576,16 +576,16 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Envoie un message privé
+	** Envoie un message prive
 	** -----
-	** $title ::		Titre du message privé
-	** $content ::		Contenu du message privé
+	** $title ::		Titre du message prive
+	** $content ::		Contenu du message prive
 	** $to_id ::		ID du destinataire
 	** $from_id ::		ID de l'envoyeur
 	*/
 	public function post_mp($title, $content, $to_id, $from_id = NULL)
 	{
-		// Si l'ID du membre n'est pas donnée on prend celle du membre courrant
+		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
 		if ($from_id === NULL)
 		{
 			$from_id = Fsb::$session->id();
@@ -595,20 +595,20 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Création d'un nouveau sondage
+	** Creation d'un nouveau sondage
 	** -----
 	** $poll_name ::		Nom du sondage
 	** $poll_values ::		Tableau PHP contenant les options du sondage
 	** $title ::			Titre du sujet
 	** $content ::			Contenu du message
-	** $forum_id ::			ID du forum dans lequel le sujet sera créé
+	** $forum_id ::			ID du forum dans lequel le sujet sera cree
 	** $poll_max_vote ::	Nombre d'option pour lesquelles un membre peut voter
-	** $user_id ::			ID du membre créant le sujet
+	** $user_id ::			ID du membre creant le sujet
 	** $description ::		Description du sujet
 	*/
 	public function post_poll($poll_name, $poll_values, $title, $content, $forum_id, $user_id = NULL, $poll_max_vote = 1, $description = '')
 	{
-		// Si l'ID du membre n'est pas donnée on prend celle du membre courrant
+		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
 		if ($user_id === NULL)
 		{
 			$user_id = Fsb::$session->id();
@@ -616,10 +616,10 @@ class Fsb_sdk extends Fsb_model
 
 		if (!is_array($poll_values) || count($poll_values) < 2)
 		{
-			trigger_error('Fsb_sdk :: $poll_values doit être un tableau pour le sondage', FSB_ERROR);
+			trigger_error('Fsb_sdk :: $poll_values doit etre un tableau pour le sondage', FSB_ERROR);
 		}
 
-		// Vérification de l'intégrité du sondage
+		// Verification de l'integrite du sondage
 		if ($poll_max_vote < 1 || $poll_max_vote > count($poll_values))
 		{
 			$poll_max_vote = 1;
@@ -641,7 +641,7 @@ class Fsb_sdk extends Fsb_model
 
 	/*
 	** Tableau d'information sur les membres en ligne
-	** La clef 'list' contient un tableau listant les membres en ligne (is_hidden détermine s'ils sont invisibles)
+	** La clef 'list' contient un tableau listant les membres en ligne (is_hidden determine s'ils sont invisibles)
 	*/
 	public function who_is_online()
 	{
@@ -710,7 +710,7 @@ class Fsb_sdk extends Fsb_model
 					$total_user++;
 				}
 
-				// Autorisation de voir les invités ?
+				// Autorisation de voir les invites ?
 				if (!$row['u_activate_hidden'] || (Fsb::$session->auth() >= MODOSUP || Fsb::$session->id() == $row['s_id']))
 				{
 					$return['list'][] = array(
@@ -736,7 +736,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Tableau d'information sur les membres qui étaient en ligne aujourd'hui
+	** Tableau d'information sur les membres qui etaient en ligne aujourd'hui
 	*/
 	public function who_was_online_today()
 	{
@@ -785,7 +785,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Tableau d'information sur les membres fétant leur anniversaire aujourd'hui
+	** Tableau d'information sur les membres fetant leur anniversaire aujourd'hui
 	*/
 	public function who_has_birthday_today()
 	{
@@ -841,9 +841,9 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Tableau d'information sur les évènements à venir
+	** Tableau d'information sur les evenements a venir
 	** -----
-	** $calendar_days ::	Afficher les évènements des $calendar_days prochains jours
+	** $calendar_days ::	Afficher les evenements des $calendar_days prochains jours
 	*/
 	public function get_calendar_events($calendar_days = 3)
 	{
@@ -894,11 +894,11 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Récupère les informations sur un sondage
+	** Recupere les informations sur un sondage
 	** -----
 	** $name ::		Nom pour le formulaire
-	** $order ::	tri à appliquer pour récupérer le sondage
-	** $topic_id ::	ID du sujet si on veut un sondage précis
+	** $order ::	tri a appliquer pour recuperer le sondage
+	** $topic_id ::	ID du sujet si on veut un sondage precis
 	*/
 	public function get_poll($name = 'fsbpoll', $order = 't.t_last_p_time DESC', $topic_id = NULL)
 	{
@@ -969,7 +969,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupère le dernier sondage créé
+	** Recupere le dernier sondage cree
 	** -----
 	** $name ::		Nom pour le formulaire
 	*/
@@ -979,7 +979,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Récupère un sondage aléatoire
+	** Recupere un sondage aleatoire
 	** -----
 	** $name ::		Nom pour le formulaire
 	*/
@@ -1005,7 +1005,7 @@ class Fsb_sdk extends Fsb_model
 			return (FALSE);
 		}
 
-		// Données du sondage
+		// Donnees du sondage
 		$sql = 'SELECT p.poll_max_vote, pr.poll_result_u_id
 				FROM ' . SQL_PREFIX . 'poll p
 				LEFT JOIN ' . SQL_PREFIX . 'poll_result pr
@@ -1015,7 +1015,7 @@ class Fsb_sdk extends Fsb_model
 				WHERE p.t_id = ' . $topic_id;
 		$row = Fsb::$db->request($sql);
 
-		// On vérifie tout de même si le membre n'a pas déjà voté et que le sondage existe
+		// On verifie tout de meme si le membre n'a pas deja vote et que le sondage existe
 		if (!$row)
 		{
 			$this->errstr = Fsb::$session->lang('topic_poll_not_exists');
@@ -1027,7 +1027,7 @@ class Fsb_sdk extends Fsb_model
 			return (FALSE);
 		}
 
-		// On récupère les votes
+		// On recupere les votes
 		$poll_result = Http::request($name, 'post');
 		if (!is_array($poll_result))
 		{
@@ -1035,21 +1035,21 @@ class Fsb_sdk extends Fsb_model
 		}
 		$poll_result = array_map('intval', $poll_result);
 
-		// On vérifie qu'il y ai au moins un vote :p
+		// On verifie qu'il y ai au moins un vote :p
 		if (!$poll_result)
 		{
 			$this->errstr = Fsb::$session->lang('topic_poll_need_vote');
 			return (FALSE);
 		}
 
-		// On vérifie qu'il n'y ait pas trop de votes
+		// On verifie qu'il n'y ait pas trop de votes
 		if (count($poll_result) > $row['poll_max_vote'])
 		{
 			$this->errstr = sprintf(Fsb::$session->lang('topic_poll_too_much_vote'), $row['poll_max_vote']);
 			return (FALSE);
 		}
 
-		// On met à jour le nombre de vote par option et on signale que le membre a voté
+		// On met a jour le nombre de vote par option et on signale que le membre a vote
 		Fsb::$db->insert('poll_result', array(
 			'poll_result_u_id' =>	$this->userdata('u_id'),
 			't_id' =>				$topic_id,
@@ -1126,10 +1126,10 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Change le chemin du thème, afin de pouvoir utiliser le système de template en utilisant un thème
-	** indépendant à celui du forum
+	** Change le chemin du theme, afin de pouvoir utiliser le systeme de template en utilisant un theme
+	** independant a celui du forum
 	** -----
-	** $dir ::	Nouveau chemin vers le thème
+	** $dir ::	Nouveau chemin vers le theme
 	*/
 	public function template_path($dir)
 	{
@@ -1141,9 +1141,9 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Vérifie si la chaîne passée en paramètre est un code Captcha valide
+	** Verifie si la chaine passee en parametre est un code Captcha valide
 	** -----
-	** $str ::	Code Captcha à vérifier
+	** $str ::	Code Captcha a verifier
 	*/
 	public function captcha_valid($str)
 	{
@@ -1153,7 +1153,7 @@ class Fsb_sdk extends Fsb_model
 	/*
 	** Retourne une URL pour l'image du Captcha. A appeller dans une balise HTML <img />
 	** -----
-	** $mode ::		keep gardera la chaîne actuelle, new créera une nouvelle chaîne
+	** $mode ::		keep gardera la chaine actuelle, new creera une nouvelle chaine
 	*/
 	public function captcha_img($mode = 'new')
 	{
@@ -1166,9 +1166,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Génère l'image du Captcha
+	** Genere l'image du Captcha
 	** -----
-	** $mode ::		keep gardera la chaîne actuelle, new créera une nouvelle chaîne
+	** $mode ::		keep gardera la chaine actuelle, new creera une nouvelle chaine
 	*/
 	public function captcha_output($mode = 'new')
 	{
@@ -1198,8 +1198,8 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Inialisation du chiffrage RSA, à appeler au tout début
-	** Peut prendre un nombre d'argument variable. Chaque argument correspond à un nom de champ
+	** Inialisation du chiffrage RSA, a appeler au tout debut
+	** Peut prendre un nombre d'argument variable. Chaque argument correspond a un nom de champ
 	** du formulaire, qu'on veut crypter.
 	*/
 	public function rsa_create()
@@ -1219,9 +1219,9 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Génération du Javascript pour crypter les champs du formulaire
+	** Generation du Javascript pour crypter les champs du formulaire
 	** A placer si possible dans les balises <head> .. </head>
-	** Le formulaire HTML doit contenir un évènement onsubmit appelant la fonction submit_rsa(this)
+	** Le formulaire HTML doit contenir un evenement onsubmit appelant la fonction submit_rsa(this)
 	*/
 	public function rsa_encrypt()
 	{
@@ -1254,7 +1254,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Décrypte les champs du formulaire chiffrés en RSA
+	** Decrypte les champs du formulaire chiffres en RSA
 	*/
 	public function rsa_decrypt()
 	{
@@ -1273,7 +1273,7 @@ class Fsb_sdk extends Fsb_model
 	//
 
 	/*
-	** Filtre les forums à afficher
+	** Filtre les forums a afficher
 	*/
 	private function _request_forums($forums)
 	{
@@ -1299,7 +1299,7 @@ class Fsb_sdk extends Fsb_model
 	}
 
 	/*
-	** Filtre un total d'élément à afficher
+	** Filtre un total d'element a afficher
 	*/
 	private function _request_total($total)
 	{

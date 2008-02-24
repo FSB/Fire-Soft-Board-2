@@ -14,7 +14,7 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur affichant les différents groupes
+** Module d'utilisateur affichant les differents groupes
 */
 class Page_user_groups extends Fsb_model
 {
@@ -37,7 +37,7 @@ class Page_user_groups extends Fsb_model
 	{
 		Fsb::$tpl->set_file('user/user_groups.html');
 
-		// On récupère les groupes
+		// On recupere les groupes
 		$sql = 'SELECT g.g_id, g.g_name, g.g_desc, g.g_type, g.g_hidden, g.g_color, gu.u_id
 				FROM ' . SQL_PREFIX . 'groups g
 				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
@@ -97,12 +97,12 @@ class Page_user_groups extends Fsb_model
 	}
 
 	/*
-	** Soumet le groupe par défaut
+	** Soumet le groupe par defaut
 	*/
 	public function submit_default_group()
 	{
 		$default_group = intval(Http::request('default_group', 'post'));
-		// On vérifie que le groupe par défaut existe pour le membre
+		// On verifie que le groupe par defaut existe pour le membre
 		$sql = 'SELECT g.g_color
 				FROM ' . SQL_PREFIX . 'groups g
 				INNER JOIN ' . SQL_PREFIX . 'groups_users gu

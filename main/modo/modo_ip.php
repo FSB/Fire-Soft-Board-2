@@ -17,7 +17,7 @@ if (Fsb::$session->is_authorized('auth_ip'))
 }
 
 /*
-** Module de modération pour la recherche sur les IP
+** Module de moderation pour la recherche sur les IP
 */
 class Page_modo_ip extends Fsb_model
 {
@@ -50,7 +50,7 @@ class Page_modo_ip extends Fsb_model
 	}
 
 	/*
-	** Récupère les informations sur le pseudonyme cherché
+	** Recupere les informations sur le pseudonyme cherche
 	*/
 	public function get_data()
 	{
@@ -86,7 +86,7 @@ class Page_modo_ip extends Fsb_model
 	}
 
 	/*
-	** Affiche le résultat de la recherche sur une IP
+	** Affiche le resultat de la recherche sur une IP
 	*/
 	public function print_result_ip()
 	{
@@ -115,7 +115,7 @@ class Page_modo_ip extends Fsb_model
 			$show_user = TRUE;
 			$show_other = TRUE;
 
-			// Données du message
+			// Donnees du message
 			$sql = 'SELECT u_id, u_ip, p_nickname
 					FROM ' . SQL_PREFIX . 'posts
 					WHERE p_id = ' . $this->id;
@@ -206,7 +206,7 @@ class Page_modo_ip extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			// Liste des membres connectés utilisant l'IP
+			// Liste des membres connectes utilisant l'IP
 			$sql = 'SELECT u.u_id, u.u_nickname
 					FROM ' . SQL_PREFIX . 'sessions s
 					LEFT JOIN ' . SQL_PREFIX . 'users u
@@ -225,7 +225,7 @@ class Page_modo_ip extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			// Liste des membres connectés enregistrés sous l'IP
+			// Liste des membres connectes enregistres sous l'IP
 			$sql = 'SELECT u_id, u_nickname
 					FROM ' . SQL_PREFIX . 'users u
 					WHERE u_register_ip = \'' . $this->ip . '\'

@@ -11,9 +11,9 @@
 */
 
 /*
-** Implémentation du protocole MSNP9 pour se connecter à MSN live messenger.
-** Un grand merci à la classe MSNP9.class (http://flumpcakes.co.uk/php/msn-messenger) et au site
-** http://www.hypothetic.org/docs/msn/ qui sont deux bonnes mines de diamants dans la compréhension du
+** Implementation du protocole MSNP9 pour se connecter a MSN live messenger.
+** Un grand merci a la classe MSNP9.class (http://flumpcakes.co.uk/php/msn-messenger) et au site
+** http://www.hypothetic.org/docs/msn/ qui sont deux bonnes mines de diamants dans la comprehension du
 ** protocole MSNP9.
 */
 class Notify_msn extends Fsb_model
@@ -27,20 +27,20 @@ class Notify_msn extends Fsb_model
 	// File descriptor du socket de connexion au serveur
 	private $socket;
 	
-	// Id incrémentée à chaque commande, pour identifier chaque message
+	// Id incrementee a chaque commande, pour identifier chaque message
 	private $id = 1;
 	
 	// Dernier buffer lu
 	private $buffer = '';
 
-	// Serveur pour récupérer le ticket
+	// Serveur pour recuperer le ticket
 	public $ssh_login = 'login.live.com/login2.srf';
 
 	// Identifiants de connexion
 	public $email = '';
 	public $password = '';
 
-	// Débugage
+	// Debugage
 	public $verbose = FALSE;
 
 	/*
@@ -87,7 +87,7 @@ class Notify_msn extends Fsb_model
 		$os = (preg_match('/^WIN/', PHP_OS)) ? 'win' : 'unix';
 		$this->put('CVR ' . $this->id . ' 0x0409 ' . $os . ' 4.10 i386 FSB 2.0.0 MSMSGS ' . $this->email);
 		
-		// Réponse du serveur ...
+		// Reponse du serveur ...
 		if (!$this->read())
 		{
 			return (FALSE);
@@ -96,7 +96,7 @@ class Notify_msn extends Fsb_model
 		// Initialisation de la connexion utilisateur
 		$this->put('USR ' . $this->id . ' TWN I ' . $this->email);
 		
-		// Réponse du serveur ...
+		// Reponse du serveur ...
 		if (!$this->read())
 		{
 			return (FALSE);
@@ -119,10 +119,10 @@ class Notify_msn extends Fsb_model
 			return (TRUE);
 		}
 
-		// Le serveur nous a accepté, et a envoyer une chaine d'authentification
+		// Le serveur nous a accepte, et a envoyer une chaine d'authentification
 		list(,,,,$hash) = explode(' ', $this->buffer);
 
-		// On récupère un ticket de connexion
+		// On recupere un ticket de connexion
 		if (!$ticket = $this->get_ticket($hash))
 		{
 			return (FALSE);
@@ -131,18 +131,18 @@ class Notify_msn extends Fsb_model
 		// Authentification
 		$this->put('USR ' . $this->id . ' TWN S ' . $ticket);
 
-		// Affichage de la présence
+		// Affichage de la presence
 		$this->put('SYN ' . $this->id . ' 0');
 		$this->put('CHG ' . $this->id . ' NLN');
 
-		// On zappe les réponses :p
+		// On zappe les reponses :p
 		while ($this->read());
 
 		return (TRUE);
 	}
 	
 	/*
-	** Récupération d'un ticket de connexion
+	** Recuperation d'un ticket de connexion
 	** -----
 	** $hash ::		Chaine d'authentification
 	*/
@@ -150,8 +150,8 @@ class Notify_msn extends Fsb_model
 	{
 		if (!$this->ssh_login)
 		{
-			// Connexion au site https://nexus.passport.com/rdr/pprdr.asp pour la récupération d'une adresse de serveur
-			// permettant la création d'un ticket
+			// Connexion au site https://nexus.passport.com/rdr/pprdr.asp pour la recuperation d'une adresse de serveur
+			// permettant la creation d'un ticket
 			$ch = curl_init('https://nexus.passport.com/rdr/pprdr.asp');
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_NOBODY, 1);
@@ -170,7 +170,7 @@ class Notify_msn extends Fsb_model
 			}
 			else
 			{
-				die('Impossible de récupérer un ticket');
+				die('Impossible de recuperer un ticket');
 			}
 		}
 		else
@@ -202,7 +202,7 @@ class Notify_msn extends Fsb_model
 	}
 
 	/*
-	** Envoie un message à un destinataire
+	** Envoie un message a un destinataire
 	** -----
 	** $content ::		Contenu du message
 	** $to_email ::		Destinataire
@@ -227,7 +227,7 @@ class Notify_msn extends Fsb_model
 				$step = 0;
 			}
 
-			// On est définitivement bloqué .. Le message n'a pas pu être envoyé.
+			// On est definitivement bloque .. Le message n'a pas pu etre envoye.
 			if ($step == 20000)
 			{
 				return (FALSE);
@@ -251,7 +251,7 @@ class Notify_msn extends Fsb_model
 					}
 					while ($stop_cycle < 10);
 
-					// Erreur de préparation du message
+					// Erreur de preparation du message
 					if ($stop_cycle == 10)
 					{
 						return (FALSE);
@@ -297,9 +297,9 @@ class Notify_msn extends Fsb_model
 	}
 	
 	/*
-	** Ecrit des données sur le socket du serveur
+	** Ecrit des donnees sur le socket du serveur
 	** -----
-	** $str ::	Données à envoyer
+	** $str ::	Donnees a envoyer
 	*/
 	private function put($str)
 	{

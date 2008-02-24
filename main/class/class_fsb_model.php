@@ -11,12 +11,12 @@
 */
 
 /*
-** Toutes les classes doivent étendre cette classe
+** Toutes les classes doivent etendre cette classe
 */
 class Fsb_model
 {
 	/*
-	** Affichage intéligent d'un objet
+	** Affichage inteligent d'un objet
 	*/
 	public function __toString()
 	{
@@ -32,8 +32,8 @@ class Fsb_model
 	}
 
 	/*
-	** Surcharge de méthodes
-	** Les fonctions peuvent désormais faire $this->set_my_attribute('value') ce qui aura comme effet $this->_set('my_attribute', 'value')
+	** Surcharge de methodes
+	** Les fonctions peuvent desormais faire $this->set_my_attribute('value') ce qui aura comme effet $this->_set('my_attribute', 'value')
 	** et $this->_get_my_attribute() ce qui donnera $this->_get('my_attribute')
 	*/
 	public function __call($method, $attr)
@@ -50,7 +50,7 @@ class Fsb_model
 			return ($this->_get($after));
 		}
 
-		// Pour la méthode magique __sleep() lors de la sérialization
+		// Pour la methode magique __sleep() lors de la serialization
 		if ($method == '__sleep')
 		{
 			return (array_keys(get_object_vars($this)));
@@ -60,7 +60,7 @@ class Fsb_model
 	}
 
 	/*
-	** Affectation de propriété
+	** Affectation de propriete
 	*/
 	public function _set($property, $value)
 	{
@@ -68,7 +68,7 @@ class Fsb_model
 	}
 
 	/*
-	** Valeur d'une propriété
+	** Valeur d'une propriete
 	*/
 	public function _get($property)
 	{

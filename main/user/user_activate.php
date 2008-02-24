@@ -14,8 +14,8 @@
 $show_this_module = TRUE;
 
 /*
-** Module d'utilisateur permettant au membre d'activer / désactiver certaines donées du forum (avatar, signature,
-** images, E-mails, etc ...). Tous les champs sont précédés du prefixe u_activate_ y compris dans la table
+** Module d'utilisateur permettant au membre d'activer / desactiver certaines donees du forum (avatar, signature,
+** images, E-mails, etc ...). Tous les champs sont precedes du prefixe u_activate_ y compris dans la table
 ** fsb2_users.
 **
 ** Rapide information, sur cette page on utilise soit des valeurs boolean quand il n y a que des choix yes / no
@@ -29,7 +29,7 @@ $show_this_module = TRUE;
 */
 class Page_user_activate extends Fsb_model
 {
-	// Tableau contenant toutes les données utiles pour les activations
+	// Tableau contenant toutes les donnees utiles pour les activations
 	public $data = array();
 	
 	/*
@@ -37,7 +37,7 @@ class Page_user_activate extends Fsb_model
 	*/
 	public function __construct()
 	{	
-		// On déclare tous les champs d'activation
+		// On declare tous les champs d'activation
 		$this->data = array(
 			'email' => array(
 				'br' =>		TRUE,
@@ -164,13 +164,13 @@ class Page_user_activate extends Fsb_model
 			),
 		);
 
-		// Editeur WYSIWYG désactivé ?
+		// Editeur WYSIWYG desactive ?
 		if (!Fsb::$mods->is_active('wysiwyg'))
 		{
 			unset($this->data['wysiwyg']);
 		}
 
-		// Connexion invisible autorisée ?
+		// Connexion invisible autorisee ?
 		if (!Fsb::$session->is_authorized('log_hidden'))
 		{
 			unset($this->data['hidden']);

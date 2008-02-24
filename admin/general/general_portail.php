@@ -11,7 +11,7 @@
 */
 
 /*
-** Page permettant de déplacer, cacher / afficher les modules du portail
+** Page permettant de deplacer, cacher / afficher les modules du portail
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
@@ -29,17 +29,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->module = Http::request('module');
 		$this->move =	Http::request('move');
 
-		// Déplacement du module
+		// Deplacement du module
 		if ($this->move && $this->module)
 		{
 			$this->move_module();
 		}
-		// Activation / désactivation du module
+		// Activation / desactivation du module
 		else if ($this->activ)
 		{
 			$this->activ_module();
 		}
-		// Mise à jour de la configuration
+		// Mise a jour de la configuration
 		else if (Http::request('submit', 'post'))
 		{
 			$this->update_config();
@@ -68,8 +68,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$print_pos = array();
 		while ($row = Fsb::$db->row($result))
 		{
-			// On gère les colones sans block (c'est à dire s'il y a deux blocks a droite, deux blocks à gauche, et
-			// rien au centre on affiche tout de même la colone centrale)
+			// On gere les colones sans block (c'est a dire s'il y a deux blocks a droite, deux blocks a gauche, et
+			// rien au centre on affiche tout de meme la colone centrale)
 			if (!isset($print_pos[$row['pm_position']]))
 			{
 				if (($row['pm_position'] == 'middle' && !isset($print_pos['left'])) || ($row['pm_position'] == 'right' && !isset($print_pos['left'])))
@@ -114,23 +114,23 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Déplacement d'un module
+	** Deplacement d'un module
 	*/
 	public function move_module()
 	{
-		// Données courantes du module
+		// Donnees courantes du module
 		$sql = 'SELECT pm_position, pm_order
 					FROM ' . SQL_PREFIX . 'portail_module
 					WHERE pm_name = \'' . Fsb::$db->escape($this->module) . '\'';
 		$current = Fsb::$db->request($sql);
 		if ($current)
 		{
-			// Suivant si on déplace verticalement ou horizontalement l'algorithme change
+			// Suivant si on deplace verticalement ou horizontalement l'algorithme change
 			switch ($this->move)
 			{
 				case 'up' :
 				case 'down' :
-					// On récupère le module dont la position est avant / après le module actuel
+					// On recupere le module dont la position est avant / apres le module actuel
 					$sql = 'SELECT pm_name, pm_order
 								FROM ' . SQL_PREFIX . 'portail_module
 								WHERE pm_order = ' . intval($current['pm_order'] + (($this->move == 'down') ? 1 : -1)) . '
@@ -141,7 +141,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 					if ($swap)
 					{
-						// On met à jour l'ordre des deux modules
+						// On met a jour l'ordre des deux modules
 						Fsb::$db->update('portail_module', array(
 							'pm_order' =>		$swap['pm_order'],
 						), 'WHERE pm_name = \'' . Fsb::$db->escape($this->module) . '\'');
@@ -154,7 +154,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 				case 'left' :
 				case 'right' :
-					// Déplacement normal
+					// Deplacement normal
 					if (($this->move == 'left' && $current['pm_position'] != 'left') || ($this->move == 'right' && $current['pm_position'] != 'right'))
 					{
 						$position_table = array('left', 'middle', 'right');
@@ -163,24 +163,24 @@ class Fsb_frame_child extends Fsb_admin_frame
 					}
 					else
 					{
-						// Déplacement d'une extrémité vers une autre (par un exemple si on déplace un block qui est à la base
-						// à droite, encore à droite, on le met cette fois à gauche)
+						// Deplacement d'une extremite vers une autre (par un exemple si on deplace un block qui est a la base
+						// a droite, encore a droite, on le met cette fois a gauche)
 						$next_position = ($this->move == 'right') ? 'left' : 'right';
 					}
 
-					// On récupère l'ordre maximale pour la nouvelle position
+					// On recupere l'ordre maximale pour la nouvelle position
 					$sql = 'SELECT MAX(pm_order) AS max
 								FROM ' . SQL_PREFIX . 'portail_module
 								WHERE pm_position = \'' . Fsb::$db->escape($next_position) . '\'';
 					$max = Fsb::$db->get($sql, 'max');
 
-					// On met à jour le modulé déplace
+					// On met a jour le module deplace
 					Fsb::$db->update('portail_module', array(
 						'pm_position' =>	$next_position,
 						'pm_order' =>		(isset($max['max'])) ? $max['max'] + 1 : 0,
 					), 'WHERE pm_name = \'' . Fsb::$db->escape($this->module) . '\'');
 
-					// On met à jour les ordres des modules qui étaient sous le module déplace
+					// On met a jour les ordres des modules qui etaient sous le module deplace
 					Fsb::$db->update('portail_module', array(
 						'pm_order' =>		array('(pm_order - 1)', 'is_field' => TRUE),
 					), 'WHERE pm_position = \'' . Fsb::$db->escape($current['pm_position']) . '\' AND pm_order > ' . intval($current['pm_order']));
@@ -193,11 +193,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Activation / Désactivation d'un module
+	** Activation / Desactivation d'un module
 	*/
 	public function activ_module()
 	{
-		// Données courantes du module
+		// Donnees courantes du module
 		$sql = 'SELECT pm_position
 					FROM ' . SQL_PREFIX . 'portail_module
 					WHERE pm_name = \'' . Fsb::$db->escape($this->module) . '\'';
@@ -260,7 +260,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$config = new Config_edit($tmp, 'adm_pm_config_');
 		$data = $config->validate($_POST, 'portail_config', 'portail_name', 'portail_type');
 
-		// Mise à jour de la configuration
+		// Mise a jour de la configuration
 		foreach ($data AS $key => $value)
 		{
 			Fsb::$db->update('portail_config', array(

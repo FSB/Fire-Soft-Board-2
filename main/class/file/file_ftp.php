@@ -11,14 +11,14 @@
 */
 
 /*
-** Méthode FTP
+** Methode FTP
 */
 class File_ftp extends File
 {
 	// Ressource de connexion au serveur FTP
 	private $stream;
 
-	// Méthode
+	// Methode
 	public $method = 'ftp';
 
 	/*
@@ -31,7 +31,7 @@ class File_ftp extends File
 	*/
 	protected function _connexion($server, $login, $password, $port, $path)
 	{
-		// Vérification de la gestion de l'extension FTP
+		// Verification de la gestion de l'extension FTP
 		if (!extension_loaded('ftp'))
 		{
 			return (File::FILE_FTP_EXTENSION_DISABLED);
@@ -50,13 +50,13 @@ class File_ftp extends File
 			return (File::FILE_CANT_AUTHENTIFICATE);
 		}
 
-		// On passe en mode passif (le client écoute la connexion)
+		// On passe en mode passif (le client ecoute la connexion)
 		ftp_pasv($this->stream, TRUE);
 
 		$this->root_path = './';
 		$this->local_path = ROOT;
 
-		// On se déplace à la racine du forum
+		// On se deplace a la racine du forum
 		if (!$this->_chdir($path))
 		{
 			return (File::FILE_CANT_CHDIR);
@@ -65,9 +65,9 @@ class File_ftp extends File
 	}
 
 	/*
-	** Change de répertoire courant
+	** Change de repertoire courant
 	** -----
-	** $path ::		Nouveau répertoire courant
+	** $path ::		Nouveau repertoire courant
 	*/
 	protected function _chdir($path)
 	{
@@ -104,8 +104,8 @@ class File_ftp extends File
 	*/
 	protected function _put($src, $dst)
 	{
-		// Apparament ftp_put() a certains problèmes, probablement liés au safe mode.
-		// On utilise donc ftp_fput() qui fonctionne sans problèmes.
+		// Apparament ftp_put() a certains problemes, probablement lies au safe mode.
+		// On utilise donc ftp_fput() qui fonctionne sans problemes.
 		//		$result = ftp_put($this->stream, $dst, $src, FTP_BINARY);
 		$fd = fopen($this->local_path . $src, 'r');
 		$result = ftp_fput($this->stream, $dst, $fd, FTP_BINARY);
@@ -116,7 +116,7 @@ class File_ftp extends File
 	/*
 	** Supprime un fichier
 	** -----
-	** $filename ::		Nom du fichier à supprimer
+	** $filename ::		Nom du fichier a supprimer
 	*/
 	protected function _unlink($filename)
 	{
@@ -124,9 +124,9 @@ class File_ftp extends File
 	}
 
 	/*
-	** Créé un répertoire
+	** Cree un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _mkdir($dir)
 	{
@@ -134,9 +134,9 @@ class File_ftp extends File
 	}
 
 	/*
-	** Supprime un répertoire
+	** Supprime un repertoire
 	** -----
-	** $dir ::		Nom du répertoire
+	** $dir ::		Nom du repertoire
 	*/
 	protected function _rmdir($dir)
 	{

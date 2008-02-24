@@ -14,14 +14,14 @@
 $show_this_module = TRUE;
 
 /*
-** Module de modération pour le déplacement de sujets
+** Module de moderation pour le deplacement de sujets
 */
 class Page_modo_move extends Fsb_model
 {
-	// ID du sujet à déplacer
+	// ID du sujet a deplacer
 	public $id;
 
-	// ID des sujets à déplacer s'il y en a plusieurs, avec l'ID du forum
+	// ID des sujets a deplacer s'il y en a plusieurs, avec l'ID du forum
 	public $idx;
 	public $f_id;
 
@@ -34,7 +34,7 @@ class Page_modo_move extends Fsb_model
 		$this->idx =	urldecode(Http::request('topics'));
 		$this->f_id =	intval(Http::request('f_id'));
 
-		// On protège $this->idx qui est une liste d'ID
+		// On protege $this->idx qui est une liste d'ID
 		if ($this->idx)
 		{
 			$this->idx = explode(',', strval($this->idx));
@@ -50,7 +50,7 @@ class Page_modo_move extends Fsb_model
 	}
 
 	/*
-	** Affiche le formulaire de déplacement du sujet
+	** Affiche le formulaire de deplacement du sujet
 	*/
 	public function show_form()
 	{
@@ -88,26 +88,26 @@ class Page_modo_move extends Fsb_model
 	}
 
 	/*
-	** Déplace le sujet vers le forum indiqué
+	** Deplace le sujet vers le forum indique
 	*/
 	public function move_topic()
 	{
 		$forum_id = intval(Http::request('move_forum', 'post'));
 		$trace =	intval(Http::request('trace_topic', 'post'));
 
-		// Données du forum cible
+		// Donnees du forum cible
 		$sql = 'SELECT f_type
 				FROM ' . SQL_PREFIX . 'forums
 				WHERE f_id = ' . $forum_id;
 		$f_type = Fsb::$db->get($sql, 'f_type');
 
-		// On vérifie le type de forum
+		// On verifie le type de forum
 		if ($f_type != FORUM_TYPE_NORMAL)
 		{
 			Display::message('modo_move_bad_type');
 		}
 
-		// On vérifie les droits d'écriture du forum
+		// On verifie les droits d'ecriture du forum
 		if (!Fsb::$session->is_authorized($forum_id, 'ga_create_' . $GLOBALS['_topic_type'][count($GLOBALS['_topic_type']) - 1]))
 		{
 			Display::message('modo_move_no_write');
@@ -115,7 +115,7 @@ class Page_modo_move extends Fsb_model
 
 		if ($this->id)
 		{
-			// Déplacement d'un unique sujet
+			// Deplacement d'un unique sujet
 			$sql = 'SELECT f_id, t_title
 					FROM ' . SQL_PREFIX . 'topics
 					WHERE t_id = ' . $this->id
@@ -133,7 +133,7 @@ class Page_modo_move extends Fsb_model
 		}
 		else if ($this->idx)
 		{
-			// Protection des sujets à déplacer
+			// Protection des sujets a deplacer
 			$sql = 'SELECT t_id
 					FROM ' . SQL_PREFIX . 'topics
 					WHERE t_id IN (' . $this->idx . ')'
@@ -146,7 +146,7 @@ class Page_modo_move extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			// Déplacement de plusieurs sujets
+			// Deplacement de plusieurs sujets
 			if ($this->idx)
 			{
 				Moderation::move_topics($this->idx, $this->f_id, $forum_id, $trace);

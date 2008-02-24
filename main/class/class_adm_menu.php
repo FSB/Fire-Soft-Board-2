@@ -16,7 +16,7 @@
 */
 class Adm_menu extends Fsb_model
 {
-	// Données du fichier cache `adm_menu`
+	// Donnees du fichier cache `adm_menu`
 	public $data = array();
 
 	// Dossiers a ne pas prendre en compte (adm_tpl/ par exemple)
@@ -85,7 +85,7 @@ class Adm_menu extends Fsb_model
 	*/
 	public function refresh_menu()
 	{
-		// Suppression de tous les liens de la base de donnée
+		// Suppression de tous les liens de la base de donnee
 		Fsb::$db->query_truncate('menu_admin');
 
 		if (!$fd = @opendir(ROOT . 'admin/'))
@@ -123,14 +123,14 @@ class Adm_menu extends Fsb_model
 	}
 
 	/*
-	** Permet de gérer les ajouts / suppressions du au rafrachissement dans le menu, en gardant
+	** Permet de gerer les ajouts / suppressions du au rafrachissement dans le menu, en gardant
 	** l'ordre du menu dans l'administration
 	** -----
-	** $ary ::		Tableau contenant les données du menu
+	** $ary ::		Tableau contenant les donnees du menu
 	*/
 	private function keep_order(&$ary)
 	{
-		// Supression des pages qui ont été supprimées
+		// Supression des pages qui ont ete supprimees
 		$cats = array();
 		$max_order = 0;
 		foreach ($this->data AS $value)
@@ -150,7 +150,7 @@ class Adm_menu extends Fsb_model
 			}
 		}
 
-		// Ajout des nouvelles pages dans la base de donnée
+		// Ajout des nouvelles pages dans la base de donnee
 		foreach ($ary AS $value)
 		{
 			if (!array_select($this->data, 'page', $value['page']))
@@ -174,10 +174,10 @@ class Adm_menu extends Fsb_model
 	}
 	
 	/*
-	** Déplace une catégorie du menu vers le haut ou vers le bas
+	** Deplace une categorie du menu vers le haut ou vers le bas
 	** -----
-	** $move ::		-1 pour déplacer vers le haut, 1 pour déplacer vers le bas
-	** $name ::		Nom de la catégorie
+	** $move ::		-1 pour deplacer vers le haut, 1 pour deplacer vers le bas
+	** $name ::		Nom de la categorie
 	*/
 	public function move_cat($move, $name)
 	{
@@ -208,9 +208,9 @@ class Adm_menu extends Fsb_model
 	}
 
 	/*
-	** Déplace un lien du menu vers le haut ou vers le bas
+	** Deplace un lien du menu vers le haut ou vers le bas
 	** -----
-	** $move ::		-1 pour déplacer vers le haut, 1 pour déplacer vers le bas
+	** $move ::		-1 pour deplacer vers le haut, 1 pour deplacer vers le bas
 	** $name ::		Nom du lien
 	*/
 	public function move_link($move, $name)

@@ -20,7 +20,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $id;
 	public $module;
 	
-	// Données du formulaire
+	// Donnees du formulaire
 	public $data = array();
 
 	// Type HTML choisi
@@ -40,7 +40,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->mode =	Http::request('mode');
 		$this->id =		intval(Http::request('id'));
 
-		// On récupère le type HTML
+		// On recupere le type HTML
 		$this->type = intval(Http::request('type', 'post|get'));
 
 		$call = new Call($this);
@@ -74,7 +74,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Affiche le listing des champs existants, avec les boutons ajouter, éditer, etc ...
+	** Affiche le listing des champs existants, avec les boutons ajouter, editer, etc ...
 	*/
 	public function main_form_pf()
 	{		
@@ -149,7 +149,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_switch('html_type');
 		}
 		
-		// On génère la liste des types HTML
+		// On genere la liste des types HTML
 		$list_type = array();
 		foreach (Profil_fields::$type AS $key => $data)
 		{
@@ -181,7 +181,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Vérification des données du formulaire
+	** Verification des donnees du formulaire
 	*/
 	public function check_form_pf()
 	{
@@ -216,7 +216,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	*/
 	public function delete_pf()
 	{
-		// On récupère le nom du champ, pour le log
+		// On recupere le nom du champ, pour le log
 		$sql = 'SELECT pf_lang
 				FROM ' . SQL_PREFIX . 'profil_fields
 				WHERE pf_id = ' . $this->id;
@@ -246,7 +246,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 	
 	/*
-	** Déplace un champ personel
+	** Deplace un champ personel
 	*/
 	public function move_pf()
 	{
