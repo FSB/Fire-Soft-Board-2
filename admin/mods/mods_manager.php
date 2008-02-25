@@ -522,7 +522,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			Display::confirmation(sprintf(Fsb::$session->lang('adm_mods_uninstall_confirm'), $module->xml->document->header[0]->name[0]->getData()), 'index.' . PHPEXT . '?p=mods_manager&amp;module=backup', array('module' => $this->module, 'mode' => $this->mode, 'mod_path' => $this->mod_path));
+			Display::confirmation(sprintf(Fsb::$session->lang('adm_mods_uninstall_confirm'), $module->xml->document->header[0]->name[0]->getData()), 'index.' . PHPEXT . '?p=mods_manager&amp;module=mods', array('module' => $this->module, 'mode' => $this->mode, 'mod_path' => $this->mod_path));
 		}
 	}
 

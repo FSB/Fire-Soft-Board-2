@@ -284,9 +284,7 @@ class Module extends Fsb_model
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $code);
-			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
+			$this->file_content = $this->replace_code($this->file_content, $this->find_code, $code);
 		}
 	}
 
@@ -298,9 +296,7 @@ class Module extends Fsb_model
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $code . "\n" . $this->find_code);
-			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
+			$this->file_content = $this->replace_code($this->file_content, $this->find_code, $code . "\n" . $this->find_code);
 		}
 	}
 
@@ -312,9 +308,7 @@ class Module extends Fsb_model
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $this->find_code . "\n" . $code);
-			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
+			$this->file_content = $this->replace_code($this->file_content, $this->find_code, $this->find_code . "\n" . $code);
 		}
 	}
 
@@ -326,9 +320,7 @@ class Module extends Fsb_model
 		if ($this->file_open)
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$replace = 	preg_replace('#(\$[0-9]+)#', '\\\\\1', $this->find_code . $code);
-			$replace = preg_replace('#(\\\\[0-9]+)#', '\\\\\\\\\1', $replace);
-			$this->file_content = preg_replace('#' . preg_quote($this->find_code, '#') . '#', $replace, $this->file_content, 1);
+			$this->file_content = $this->replace_code($this->file_content, $this->find_code, $this->find_code . $code);
 		}
 	}
 
@@ -642,6 +634,24 @@ class Module extends Fsb_model
 			break;
 		}
 		$this->file->unlink('mod.log');
+	}
+
+	/*
+	** Remplace le code cherché en protégeant les variables de remplacements dans les regexp
+	** -----
+	** $content ::		Contenu du fichier
+	** $find ::			Code cherché
+	** $replace ::		Code de remplacement
+	*/
+	private function replace_code($content, $find, $replace)
+	{
+		$replace = preg_replace('#\$([0-9]+)#', '__FSB_MOD_INSTALLER1__\\1', $replace);
+		$replace = preg_replace('#\\\\\\\([0-9]+)#', '\\\\\\__FSB_MOD_INSTALLER2__\\1', $replace);
+		$replace = preg_replace('#\\\\([0-9]+)#', '__FSB_MOD_INSTALLER2__\\1', $replace);
+		$content = preg_replace('#' . preg_quote($find, '#') . '#', $replace, $content, 1);
+		$content = str_replace(array('__FSB_MOD_INSTALLER1__', '__FSB_MOD_INSTALLER2__'), array('$', '\\'), $content);
+
+		return ($content);
 	}
 
 	/*
