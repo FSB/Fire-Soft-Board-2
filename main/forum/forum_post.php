@@ -482,7 +482,7 @@ class Fsb_frame_child extends Fsb_frame
 					Fsb::$tpl->set_switch('post_description');
 
 					$this->title = $this->data['t_title'];
-					$this->description = htmlspecialchars($this->data['t_description']);
+					$this->description = $this->data['t_description'];
 
 					// On verifie si le sondage a deja recu des reponses, si ce n'est pas le cas
 					// on permet son edition
@@ -641,8 +641,9 @@ class Fsb_frame_child extends Fsb_frame
 		// Previsualisation
 		if ($this->preview)
 		{
-			$this->content = Map::build_map_content($this->post_map);
-			$this->title = trim(Http::request('post_title', 'post'));
+			$this->content =		Map::build_map_content($this->post_map);
+			$this->title =			trim(Http::request('post_title', 'post'));
+			$this->description =	trim(Http::request('post_description', 'post'));
 
 			$parser = new Parser();
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
