@@ -121,6 +121,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('flood_post', '30');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('post_min_length', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_next_events', '5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_date_events', '10');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('use_fsockopen', '1');
 
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_description', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
@@ -157,6 +158,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_password', 'put_text', 'array(''size'' => 35, ''password'' => TRUE)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_port', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_path', 'put_text', 'array(''size'' => 35)', '');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'network', 'use_fsockopen', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'auser', 'user_edit_nickname', 'put_boolean', 'array(''yes'' => 1, ''no'' => 0)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'auser', 'nickname_chars', 'put_boolean', 'array(''adm_config_nickname_chars_low'' => ''low'', ''adm_config_nickname_chars_middle'' => ''middle'', ''adm_config_nickname_chars_high'' => ''high'')', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'sig', 'sig_max_chars', 'put_text', 'array(''size'' => 5)', 'unsigned int');

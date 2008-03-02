@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_http.php
 ** | Begin :	19/06/2007
-** | Last :		03/12/2007
+** | Last :		02/03/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -241,7 +241,7 @@ class Http extends Fsb_model
 	*/
 	public static function get_file_on_server($server, $filename, $timeout = 5, $port = 80)
 	{
-		if ($content = @file_get_contents($server . $filename))
+		if (Fsb::$cfg->get('use_fsockopen') && $content = @file_get_contents($server . $filename))
 		{
 			return ($content);
 		}

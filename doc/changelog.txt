@@ -11,6 +11,7 @@
 - Ajout de la possibilité d'éditer ses fichiers joints (nom du fichier, droits du fichier)
 - Ajout de la gestion de l'url rewriting sur les flux RSS
 - Ajout de Javascript dans la jumpbox pour une utilisation plus simple
+- Ajout d'une configuration pour désactiver les connexions réseaux
 - Fix de la mise en cache avec APC / Eaccelerator et Memcache
 - Fix de la suppression des fichiers en cache pour le cache FTP
 - Fix de bugs dans le SDK

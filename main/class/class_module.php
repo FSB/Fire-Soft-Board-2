@@ -3,7 +3,7 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_module.php
 ** | Begin :	29/05/2005
-** | Last :		24/02/2008
+** | Last :		02/03/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
@@ -369,7 +369,7 @@ class Module extends Fsb_model
 			{
 				$filename = $file_handler->filename[0]->getData();
 				$duplicat = ($file_handler->childExists('duplicat')) ? $file_handler->duplicat[0]->getData() : NULL;
-				$directory = ($file_handler->childExists('directory')) ? $file_handler->directory[0]->getData() : NULL;
+				$directory = $file_handler->childExists('directory');
 
 				if ($duplicat[strlen($duplicat) - 1] != '/')
 				{
@@ -420,17 +420,14 @@ class Module extends Fsb_model
 		if ($this->get_config('install'))
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$filename = $this->handler->file[0]->getData();
+			$filename = ($this->handler->childExists('file')) ? $this->handler->file[0]->getData() : NULL;
 
 			if ($this->get_config('install_file'))
 			{
 				// Si on execute un fichier on l'ouvre et on parse le code, pour ensuite l'evaluer
 				if ($filename)
 				{
-					$fd = fopen(ROOT . $filename, 'r');
-					$content = trim(fread($fd, filesize(ROOT . $filename)));
-					fclose($fd);
-
+					$content = trim(file_get_contents(ROOT . $filename));
 					$content = preg_replace('#^<\?(php)?#', '', $content);
 					$content = preg_replace('#\?>$#', '', $content);
 					$content = preg_replace('#/\*\s*begin include\s*\*/.*?/\*\s*end include\s*\*/#si', '', $content);

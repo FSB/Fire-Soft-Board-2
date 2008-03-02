@@ -129,6 +129,9 @@ return (array (
   'adm_config_fsb_path_explain' => 'Entrez ici l\'URL de votre forum, sans le / final. Par exemple http://votredomaine.com/forum.',
   'adm_config_activate_html' => 'Activer le HTML dans les messages',
   'adm_config_activate_html_explain' => 'Cette option ne sera accessible qu\'aux modérateurs globaux / administrateurs. Soyez sûr de ce que vous faites avant de l\'activer.',
+  'adm_config_network' => 'Réseau',
+  'adm_config_use_fsockopen' => 'Activer les connexions réseaux',
+  'adm_config_use_fsockopen_explain' => 'Certaines fonctions de FSB comme la vérification de la nouvelle version du forum, ou la vérification de la version des MODS nécessitent une connexion réseau depuis votre forum. Si le serveur de votre forum est derrière un serveur proxy qu\'il ne peut pas passer, ces fonctions risquent de ralentir le chargement de certaines pages. Aussi il est conseillé de les désactiver dans ce cas là, via cette option.',
 ));
 
 
