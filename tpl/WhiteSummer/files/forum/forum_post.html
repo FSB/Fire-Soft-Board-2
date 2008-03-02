@@ -215,29 +215,28 @@ FSB_editor_lg['rtab_explain'] = '#addslashes{$LG_EDITOR_WYSIWYG_EXPLAIN}';
 	<div class="round">
 		<h1>{LG_POST_TOPIC_REVIEW}</h1>
 		<block name="post">
-			<table class="post">
-				<tr>
-					<td class="userinfo">
-						<div class="userinfo_box">
-							<div style="text-align: center">{post.NICKNAME}</div>
-							<div style="overflow: hidden; width: {AVATAR_WIDTH}px; text-align: center">
-								<img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" />
+			<div class="post">
+				<div class="userinfo">
+					<div class="userinfo_box">
+						<div style="text-align: center">{post.NICKNAME}</div>
+						<div style="overflow: hidden; width: {AVATAR_WIDTH}px; text-align: center">
+							<img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" />
+						</div>
+					</div>
+				</div>
+				<div class="postcontent">
+					<div class="postheader">
+						<if content="$CAN_QUICK_QUOTE">
+							<div style="float: right">
+								<a href="#" onclick="quote_post({post.ID}, 'map_textarea_post_map_description', false, textEditor['map_textarea_post_map_description'], <switch name="post_login_to">true<else>false</switch>); return false"><img src="{IMG_QUOTE_POST}" alt="{LG_POST_QUOTE}" title="{LG_POST_QUOTE}" /></a>
 							</div>
-						</div>
-					</td>
-					<td class="postcontent">
-						<div class="postheader">
-							<if content="$CAN_QUICK_QUOTE">
-								<div style="float: right">
-									<a href="javascript:quote_post({post.ID}, 'map_textarea_post_map_description', false, textEditor['map_textarea_post_map_description'], <switch name="post_login_to">true<else>false</switch>)"><img src="{IMG_QUOTE_POST}" alt="{LG_POST_QUOTE}" title="{LG_POST_QUOTE}" /></a>
-								</div>
-							</if>
-							{post.DATE}
-						</div>
-						<div class="message">{post.CONTENT}</div>
-					</td>
-				</tr>
-			</table>
+						</if>
+						{post.DATE}
+					</div>
+					<div class="message">{post.CONTENT}</div>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
 		</block>
 	</div>
 	</div>

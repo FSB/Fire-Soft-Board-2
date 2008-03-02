@@ -23,28 +23,26 @@
 <div class="round">
 	<h1>{MP_TITLE}</h1>
 	<block name="mp">
-		<table class="post">
-			<tr>
-				<td class="userinfo">
-					<div class="userinfo_box" align="center">
-						{mp.NICKNAME}
-						<if content="$mp.U_AVATAR"><br /><img src="{mp.U_AVATAR}" alt="{mp.U_AVATAR}" title="{mp.U_AVATAR}" /></if>
-					</div>
-				</td>
-				<td class="postcontent">
-					<div class="postheader">
-						<span>
-							<if content="$mp.U_EDIT_MP"><a href="{mp.U_EDIT_MP}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></if>
-							<a href="{mp.U_ABUSE}"><img src="{IMG_ABUSE}" title="{LG_MP_ABUSE}" alt="{LG_MP_ABUSE}" /></a>
-						</span>
-						{mp.DATE} <if content="$mp.IP">- {LG_IP} : <a href="{mp.U_IP}">{mp.IP}</a></if>
-					</div>
-					<p>{mp.CONTENT}</p>
-				</td>
-			</tr>
-		</table>
+		<div class="post">
+			<div class="userinfo">
+				<div class="userinfo_box" align="center">
+					{mp.NICKNAME}
+					<if content="$mp.U_AVATAR"><br /><img src="{mp.U_AVATAR}" alt="{mp.U_AVATAR}" title="{mp.U_AVATAR}" /></if>
+				</div>
+			</div>
+			<div class="postcontent">
+				<div class="postheader">
+					<span>
+						<if content="$mp.U_EDIT_MP"><a href="{mp.U_EDIT_MP}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a></if>
+						<a href="{mp.U_ABUSE}"><img src="{IMG_ABUSE}" title="{LG_MP_ABUSE}" alt="{LG_MP_ABUSE}" /></a>
+					</span>
+					{mp.DATE} <if content="$mp.IP">- {LG_IP} : <a href="{mp.U_IP}">{mp.IP}</a></if>
+				</div>
+				<p>{mp.CONTENT}</p>
+				<div class="clearer">&nbsp;</div>
+			</div>
+		</div>
 	</block>
-	</div>
 </div>
 </form>
 

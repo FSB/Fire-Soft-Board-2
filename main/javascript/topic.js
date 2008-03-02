@@ -2,7 +2,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/popup.js
 ** | Begin :		03/10/2006
-** | Last :			20/01/2008
+** | Last :			02/03/2008
 ** | User :			Genova
 ** | License :		GPL v2.0
 ** +---------------------------------------------------+
@@ -259,6 +259,6 @@ function quote_post(post_id, form_id, open_id, editor_obj, is_mp)
 	}
 	ajax.set_arg(AJAX_GET, 'mode', (is_mp) ? 'quote_mp' : 'quote_post');
 	ajax.set_arg(AJAX_GET, 'id', post_id);
-	ajax.set_arg(AJAX_GET, 'is_wysiwyg', ((editor_obj && editor_obj.w.current == 'wysiwyg') ? '1' : '0'));
+	ajax.set_arg(AJAX_GET, 'is_wysiwyg', ((editor_obj && editor_obj.get_type() == 'wysiwyg') ? '1' : '0'));
 	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_XML);
 }

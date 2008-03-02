@@ -2,7 +2,7 @@
 ** +---------------------------------------------------+
 ** | Name :			~/main/javascript/wysiwyg.js
 ** | Begin :		13/08/2005
-** | Last :			21/01/2008
+** | Last :			02/03/2008
 ** | User :			Genova
 ** | License :		GPL v2.0
 ** +---------------------------------------------------+
@@ -70,6 +70,11 @@ var FSB_editor_interface = new Class(
 	change_mode: function(tab)
 	{
 		this.w.change_mode(tab);
+	},
+
+	get_type: function()
+	{
+		return (this.w.current);
 	}
 });
 

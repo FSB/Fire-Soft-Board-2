@@ -39,15 +39,14 @@
 	<div class="round">
 		<h1><if content="$IS_NEW"><b>[{LG_MODO_APPROVE_NEW}]</b> </if><a href="{U_TOPIC}">{TOPIC_TITLE}</a></h1>
 		<block name="post">
-			<table class="post">
-			<tr>
-				<td class="userinfo">
+			<div class="post">
+				<div class="userinfo">
 					<div class="userinfo_box">
 						{post.NICKNAME}
 						<if content="$post.AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px;"><img src="{post.AVATAR}" alt="{post.AVATAR}" title="{post.AVATAR}" /></div></if>
 					</div>
-				</td>
-				<td class="postcontent">
+				</div>
+				<div class="postcontent">
 					<div class="postheader">
 						<span>
 							<a href="{post.U_APPROVE}" class="submit">{LG_MODO_APPROVE}</a>
@@ -57,9 +56,9 @@
 						<b>{post.DATE}<if content="$post.IP"> / <a href="{post.U_IP}">{post.IP}</a></if></b>
 					</div>
 					<div class="message">{post.CONTENT}</div>
-				</td>
-			</tr>
-			</table>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
 		</block>
 	</div>
 </switch>

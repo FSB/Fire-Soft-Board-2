@@ -72,21 +72,20 @@ function check_boxes_pos(form_name, element_name, direction, post_id)
 	<div class="round">
 		<h1>{TOPIC_NAME}</h1>
 		<block name="post">
-			<table class="post">
-			<tr>
-				<td class="userinfo" style="width: 100px">
+			<div class="post">
+				<div class="userinfo" style="width: 100px">
 					<div class="userinfo_box">
 						<input type="checkbox" name="action[]" value="{post.ID}" />
 						<a href="#" onclick="check_boxes_pos('form_box', 'action[]', 'up', '{post.ID}'); return false;"><img src="{IMG_UP}" alt="" title="{LG_MODO_CHECK_UP}" border="0" /></a>
 						<a href="#" onclick="check_boxes_pos('form_box', 'action[]', 'down', '{post.ID}'); return false;"><img src="{IMG_DOWN}" alt="" title="{LG_MODO_CHECK_DOWN}" border="0" /></a>
 					</div>
-				</td>
-				<td class="postcontent">
+				</div>
+				<div class="postcontent">
 					<div class="postheader">{post.NICKNAME} / {post.DATE}</div>
 					{post.CONTENT}
-				</td>
-			</tr>
-			</table>
+					<div class="clearer">&nbsp;</div>
+				</div>
+			</div>
 		</block>
 	</div>
 </switch>

@@ -43,23 +43,22 @@
 <switch name="show_abuse">
 	<div class="round">
 		<h1>{LG_MODO_ABUSE_SHOW_MESSAGE}</h1>
-		<table class="post">
-			<tr>
-				<td class="userinfo">
-					<div class="userinfo_box">
-						{MESSAGE_NICKNAME}
-						<if content="$MESSAGE_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{MESSAGE_AVATAR}" alt="{MESSAGE_AVATAR}" title="{MESSAGE_AVATAR}" /></div></if>
-					</div>
-				</td>
-				<td class="postcontent">
-					<div class="postheader">
-						<a href="{U_FORUM}">{MESSAGE_FORUM}</a> &#187; <a href="{U_TOPIC}">{MESSAGE_TOPIC}</a>
-						- {MESSAGE_DATE}<if content="$MESSAGE_IP"> / <a href="{U_IP}">{MESSAGE_IP}</a></if>
-					</div>
-					<p>{MESSAGE_CONTENT}</p>
-				</td>
-			</tr>
-		</table>
+		<div class="post">
+			<div class="userinfo">
+				<div class="userinfo_box">
+					{MESSAGE_NICKNAME}
+					<if content="$MESSAGE_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{MESSAGE_AVATAR}" alt="{MESSAGE_AVATAR}" title="{MESSAGE_AVATAR}" /></div></if>
+				</div>
+			</div>
+			<div class="postcontent">
+				<div class="postheader">
+					<a href="{U_FORUM}">{MESSAGE_FORUM}</a> &#187; <a href="{U_TOPIC}">{MESSAGE_TOPIC}</a>
+					- {MESSAGE_DATE}<if content="$MESSAGE_IP"> / <a href="{U_IP}">{MESSAGE_IP}</a></if>
+				</div>
+				<p>{MESSAGE_CONTENT}</p>
+				<div class="clearer">&nbsp;</div>
+			</div>
+		</div>
 
 		<table class="form">
 			<tr>
@@ -90,20 +89,19 @@
 	<div class="round">
 		<h1>{LG_MODO_ABUSE_COMMENTS}</h1>
 		<block name="post">
-		<table class="post">
-			<tr>
-				<td class="userinfo">
-					<div class="userinfo_box">
-						{post.NICKNAME}
-						<if content="$post.U_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{post.U_AVATAR}" alt="{post.U_AVATAR}" title="{post.U_AVATAR}" /></div></if>
-					</div>
-				</td>
-				<td class="postcontent">
-					<div class="postheader">{post.DATE}</div>
-					<p>{post.CONTENT}</p>
-				</td>
-			</tr>
-		</table>
+		<div class="post">
+			<div class="userinfo">
+				<div class="userinfo_box">
+					{post.NICKNAME}
+					<if content="$post.U_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{post.U_AVATAR}" alt="{post.U_AVATAR}" title="{post.U_AVATAR}" /></div></if>
+				</div>
+			</div>
+			<div class="postcontent">
+				<div class="postheader">{post.DATE}</div>
+				<p>{post.CONTENT}</p>
+				<div class="clearer">&nbsp;</div>
+			</div>
+		</div>
 		</block>
 	</div>
 

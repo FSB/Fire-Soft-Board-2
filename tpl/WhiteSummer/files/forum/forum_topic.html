@@ -73,9 +73,8 @@ InitBulle();
 
 <div class="round">
 	<block name="post">
-	<table class="post" id="p{post.ID}">
-		<tr>
-			<td class="userinfo">
+	<div class="post" id="p{post.ID}">
+			<div class="userinfo">
 				<div class="userinfo_box">
 				<if content="$post.IS_VISITOR">
 					<span class="nickname">{post.NICKNAME}</span>
@@ -125,8 +124,8 @@ InitBulle();
 					</ul>
 				</if>
 				</div>
-			</td>
-			<td class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (Nav_Safari) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
+			</div>
+			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (Nav_Safari) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
 				<div class="postheader">
 					<span>
                     	<if content="$post.HAVE_EDIT">{post.EDIT_DATA} &nbsp;</if>
@@ -161,9 +160,9 @@ InitBulle();
 					<br /><hr class="post_delimiter" align="left" />
 					<if content="$CFG_SIG_MAX_HEIGHT"><div style="max-height: {CFG_SIG_MAX_HEIGHT}px; overflow: hidden">{post.SIG}</div><else>{post.SIG}</if>
 				</if>
-			</td>
-		</tr>
-	</table>
+				<div class="clearer">&nbsp;</div>
+			</div>
+	</div>
 	</block>
 </div>
 

@@ -566,6 +566,7 @@ a:hover
 {
 	width: 200px;
 	vertical-align: top;
+	float: left;
 }
 
 /* Boite affichant les informations dans les sujets */
@@ -578,7 +579,6 @@ a:hover
 	border-radius: 7px;
 	border: none;
 	background: #F1F1F1;
-	clear: both;
 }
 
 /* Information sur le pseudonyme du membre */
@@ -639,6 +639,7 @@ a:hover
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
+	margin-left: 200px;
 }
 
 /* Entête du message */
@@ -680,7 +681,6 @@ a:hover
 {
 	padding: 5px;
 	overflow: auto;
-	clear: both;
 }
 
 /* Sondage */
@@ -1013,6 +1013,12 @@ td.last_message
 	border-color: #CCCCCC;
 }
 
+.clearer
+{
+    clear:both;
+    font-size: 0px;
+}
+
 /* Attente AJAX */
 #ajax_waiter
 {
@@ -1103,6 +1109,7 @@ td.last_message
 {
 	width: 100%;
 	padding: 1px;
+	text-align: center;
 }
 
 .editor_tabs

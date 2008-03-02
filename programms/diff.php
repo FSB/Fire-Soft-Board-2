@@ -3,14 +3,14 @@
 ** +---------------------------------------------------+
 ** | Name :		~/programms/diff.php
 ** | Begin :	07/11/2006
-** | Last :		07/11/2006
+** | Last :		02/03/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
 ** +---------------------------------------------------+
 */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /*
 ** Ce fichier permet de comparer deux fichiers
@@ -48,7 +48,7 @@ $diff1 = (isset($_POST['diff1'])) ? $_POST['diff1'] : '';
 $diff2 = (isset($_POST['diff2'])) ? $_POST['diff2'] : '';
 
 echo '<form action="" method="post">';
-echo '<textarea name="diff1" rows="20" cols="60">' . $diff1 . '</textarea> <textarea name="diff2" rows="20" cols="60">' . $diff2 . '</textarea>';
+echo '<textarea name="diff1" rows="20" cols="60">' . htmlspecialchars($diff1) . '</textarea> <textarea name="diff2" rows="20" cols="60">' . htmlspecialchars($diff2) . '</textarea>';
 echo '<br /><input type="checkbox" value="1" name="wrap" checked="checked" /> Wrap automatique &nbsp; &nbsp; &nbsp; ';
 echo '<input type="submit" name="submit" value="Comparer" /></form>';
 
