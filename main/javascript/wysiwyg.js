@@ -475,6 +475,29 @@ var FSB_editor_text = FSB_editor.extend(
 				}
 			break;
 
+			// Lien
+			case 'url' :
+				var url = prompt('Entrez votre URL (adresse) :', 'http://');
+				var str = this._get_selection();
+
+				if (url != null)
+				{
+					if (str == '')
+					{
+						str = prompt('Donnez un nom au lien :', '');
+					}
+
+					if (str != '')
+					{
+						this._insert_text(str, '[url=' + url + ']', '[/url]');
+					}
+					else
+					{
+						this._insert_text(url, '[url]', '[/url]');
+					}
+				}
+			break;
+
 			case 'attach' :
 				this.show_box('attach');
 			break;
