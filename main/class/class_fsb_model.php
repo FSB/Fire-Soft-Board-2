@@ -10,14 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Toutes les classes doivent etendre cette classe
-*/
+/**
+ * Classe generale devant etre etendue par toutes les autres
+ */
 class Fsb_model
 {
-	/*
-	** Affichage inteligent d'un objet
-	*/
+	/**
+	 * Methode magique affichant inteligement un objet.
+	 * 
+	 * Par exemple :
+	 * <code>
+	 * echo $obj;
+	 * </code>
+	 *
+	 * @return string
+	 */
 	public function __toString()
 	{
 		$str = '<b>Classname :</b> ' . get_class($this) . '<br />';
@@ -31,11 +38,13 @@ class Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Surcharge de methodes
-	** Les fonctions peuvent desormais faire $this->set_my_attribute('value') ce qui aura comme effet $this->_set('my_attribute', 'value')
-	** et $this->_get_my_attribute() ce qui donnera $this->_get('my_attribute')
-	*/
+	/**
+	 * Capture les methodes inexistantes et gere la surcharge de methode _set_*() et _get_*()
+	 *
+	 * @param string $method Nom de la methode
+	 * @param array $attr Arguments de la methode
+	 * @return mixed Valeur de retour de la methode
+	 */
 	public function __call($method, $attr)
 	{
 		$before = substr($method, 0, 5);
@@ -59,17 +68,23 @@ class Fsb_model
 		trigger_error('Call to undefined method ' . $method . ' in class ' . get_class(), FSB_ERROR);
 	}
 
-	/*
-	** Affectation de propriete
-	*/
+	/**
+	 * Affecte une valeur a une propriete
+	 *
+	 * @param string $property Nom de la propriete
+	 * @param mixed $value Valeur de la propriete
+	 */
 	public function _set($property, $value)
 	{
 		$this->$property = $value;
 	}
 
-	/*
-	** Valeur d'une propriete
-	*/
+	/**
+	 * Recupere la valeur d'une propriete
+	 *
+	 * @param string $property Nom de la propriete
+	 * @return mixed Valeur de la propriete
+	 */
 	public function _get($property)
 	{
 		if (isset($this->$property))

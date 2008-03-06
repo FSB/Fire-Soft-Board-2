@@ -10,45 +10,94 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe permettant de realiser des backups de diverses donnees (mysql, pgsql, etc ...).
-**
-** ----
-**
-** La methode de dump de la base de donnee MySQL a ete inspiree par cette source :
-**		http://www.developpez.net/forums/viewtopic.php?p=1405354#1405354
-**
-** Les methodes de dump PostgreSQL ont ete realisees a partir de celles de phpBB3
-** (http://www.phpbb.com) et de phpPgAdmin (http://phppgadmin.sourceforge.net/).
-*/
+/**
+ * Classe permettant de realiser des backups de la base de donnee
+ */
 abstract class Backup extends Fsb_model
 {
-	// DBMS utilisee
+	/**
+	 * Type de base de donnee utilisee
+	 *
+	 * @var string
+	 */
 	private $dbal = '';
 
-	// Multi insertion ?
+	/**
+	 * Gestion des multi insertions
+	 *
+	 * @var bool
+	 */
 	public $multi_insert = FALSE;
 
-	// Methode pour le dump
+	/**
+	 * Methode utilisee pour le dump des donnees
+	 *
+	 * @var string
+	 */
 	protected $dump_method;
 
+	/**
+	 * Affiche le backup
+	 */
 	const OUTPUT = 1;
+	
+	/**
+	 * Lance le telechargement du backup
+	 */
 	const DOWNLOAD = 2;
+	
+	/**
+	 * Sauve le backup dans un fichier
+	 */
 	const FTP = 3;
+	
+	/**
+	 * Retourne le contenu du backup
+	 */
 	const GET = 4;
 
+	/**
+	 * Fait un backup de la structure
+	 */
 	const STRUCT = 1;
+	
+	/**
+	 * Fait un backup des donnees
+	 *
+	 */
 	const DATA = 2;
+	
+	/**
+	 * Fait un backup des donnees et de la structure
+	 */
 	const ALL = 255;
 
+	/**
+	 * Ouvre le gestionaire de sortie pour le backup
+	 *
+	 * @param string $filename Nom du fichier
+	 */
 	abstract public function open($filename);
+	
+	/**
+	 * Ecrit des donnees dans le gestionaire de sortie
+	 *
+	 * @param string $str Donnees a ecrire
+	 */
 	abstract public function write($str);
+	
+	/**
+	 * Ferme le gestionaire de sortie
+	 */
 	abstract public function close();
 
-	/*
-	** Retourne une instance de la classe Backup, etendue par la classe gerant le buffer de sortie, et contenant
-	** une propriete pointant sur la methode avec laquelle on souhaite faire un backup.
-	*/
+	/**
+	 * Design pattern factory, retourne une instance de la classe backup en fonction du gestionaire de sortie utilise
+	 *
+	 * @param string $sgbd Type de base de donnee utilisee
+	 * @param int $output Type de gestionaire de sortie
+	 * @return Backup Objet backup
+	 */
 	public static function &factory($sgbd, $output)
 	{
 		// Gestion du buffer
@@ -81,9 +130,13 @@ abstract class Backup extends Fsb_model
 		return ($obj);
 	}
 
-	/*
-	** Lance le backup
-	*/
+	/**
+	 * Demarre le backup
+	 *
+	 * @param int $type Type des donnees a sauver (structure, donnees, tout)
+	 * @param array $tables Liste des tables sur lesquelles effectuer le backup
+	 * @return string Donnees du backup en cas de methode Backup::GET
+	 */
 	public function save($type, $tables)
 	{
 		$filename = $this->generate_filename();
@@ -94,11 +147,11 @@ abstract class Backup extends Fsb_model
 		return ($this->close());
 	}
 
-	/*
-	** Cree un header pour les backups
-	** -----
-	** $data_type ::	Type de donnees a sauver (mysql, etc ..)
-	*/
+	/**
+	 * Cree le header pour les backups
+	 *
+	 * @return string
+	 */
 	private function create_header()
 	{
 		$header = sprintf("#\n# FSB version %s :: `%s` dump\n# Cree le %s\n#\n\n", Fsb::$cfg->get('fsb_version'), $this->dump_method, date("d/m/y H:i", CURRENT_TIME));
@@ -106,30 +159,31 @@ abstract class Backup extends Fsb_model
 		return ($header);
 	}
 
-	/*
-	** Genere un nom pour le backup
-	** -----
-	** $data_type ::	Type de donnees a sauver (mysql, etc ..)
-	*/
+	/**
+	 * Genere un nom pour le fichier du backup
+	 *
+	 * @return string
+	 */
 	private function generate_filename()
 	{
 		return ('backup_' . $this->dump_method . '_' . date('d_m_y_H_i', CURRENT_TIME) . '.sql');
 	}
 
-	/*
-	** Effectue un dump des tables MySQL du forum
-	** -----
-	** $type ::			Le type de donnees qu'on veut sauvegarder (structure, contenu ou les deux)
-	** $save_table ::	Les tables a sauvegarder
-	** $comment ::		Ajoute un commentaire en debut de table
-	*/
+	/**
+	 * Lance un dump des tables MySQL du forum
+	 * La methode de dump de la base de donnee MySQL a ete inspiree par cette source :
+	 * @link http://www.developpez.net/forums/viewtopic.php?p=1405354#1405354
+	 *
+	 * @param int $type Le type de donnees qu'on veut sauvegarder (structure, contenu ou les deux)
+	 * @param array $save_table Les tables a sauvegarder
+	 * @param bool $comment Ajoute un commentaire en debut de table
+	 */
 	public function dump_mysql($type, $save_table, $comment = TRUE)
 	{
 		if (is_array($save_table))
 		{
 			$sql = "SHOW TABLES";
 			$result = Fsb::$db->query($sql);
-			$content = '';
 			while ($table = Fsb::$db->row($result, 'row'))
 			{
 				if (in_array($table[0], $save_table))
@@ -163,19 +217,20 @@ abstract class Backup extends Fsb_model
 		{
 			trigger_error('La variable $save_table doit etre un tableau dans la classe backup() : ' . $save_table, FSB_ERROR);
 		}
-		return ($content);
 	}
 
-	/*
-	** Effectue un backup des tables PostgreSQL du forum.
-	** -----
-	** $type ::			Type de backup
-	** $save_table ::	Tables pour le backup
-	** $comment ::		Ajoute un commentaire en debut de table
-	*/
+	/**
+	 * Lance un dump des tables PostGreSQL du forum
+	 * Les methodes de dump PostgreSQL ont ete realisees a partir de celles de phpBB3 et de phpPgAdmin
+	 * @link http://www.phpbb.com
+	 * @link http://phppgadmin.sourceforge.net/
+	 *
+	 * @param int $type Le type de donnees qu'on veut sauvegarder (structure, contenu ou les deux)
+	 * @param array $save_table Les tables a sauvegarder
+	 * @param bool $comment Ajoute un commentaire en debut de table
+	 */
 	public function dump_pgsql($type, $save_table, $comment = TRUE)
 	{
-		$content = '';
 		if ($type & self::STRUCT)
 		{
 			$this->write($this->pgsql_get_sequence());
@@ -198,16 +253,16 @@ abstract class Backup extends Fsb_model
 				$this->write($this->dump_database($tablename, "PostgreSQL", $comment, $this->multi_insert));
 			}
 		}
-		return ($content);
 	}
 
-	/*
-	** Creer le shema CREATE d'une table PostgreSQL.
-	** -----
-	** $table ::	Nom de la table pour la creation du shema
-	** $crlf ::		Caractere de retour a la ligne
-	** $drop ::		TRUE pour inserer des ennonces DROP vaant la creation des tables
-	*/
+	/**
+	 * Cree le schema CREATE d'une table PostGreSQL
+	 *
+	 * @param string $table Nom de la table pour la creation du shema
+	 * @param string $crlf Caractere de retour a la ligne
+	 * @param bool $drop TRUE pour inserer des ennonces DROP avant la creation des tables
+	 * @return string Schema de la table
+	 */
 	private function pgsql_get_create_table($table, $crlf, $drop)
 	{
 		$schema_create = '';
@@ -350,9 +405,11 @@ abstract class Backup extends Fsb_model
 		return (stripslashes($schema_create));
 	}
 
-	/*
-	** Permet de recuperer les sequences Postgresql
-	*/
+	/**
+	 * Permet de recuperer les sequences Postgresql
+	 *
+	 * @return string
+	 */
 	private function pgsql_get_sequence()
 	{
 		$content = '';
@@ -398,13 +455,13 @@ abstract class Backup extends Fsb_model
 		return ($content);
 	}
 
-	/*
-	** Effectue un backup des tables SQLite du forum.
-	** -----
-	** $type ::			Type de backup
-	** $save_table ::	Tables pour le backup
-	** $comment ::		Ajoute un commentaire en debut de table
-	*/
+	/**
+	 * Lance un dump des tables SQLite du forum
+	 *
+	 * @param int $type Le type de donnees qu'on veut sauvegarder (structure, contenu ou les deux)
+	 * @param array $save_table Les tables a sauvegarder
+	 * @param bool $comment Ajoute un commentaire en debut de table
+	 */
 	public function dump_sqlite($type, $save_table, $comment = TRUE)
 	{
 		$content = '';
@@ -419,7 +476,7 @@ abstract class Backup extends Fsb_model
 
 				if ($comment)
 				{
-					$content .= "\n#\n# Structure de la table SQLite `$tablename`\n#\n";
+					$this->write("\n#\n# Structure de la table SQLite `$tablename`\n#\n");
 				}
 
 				while ($row = Fsb::$db->row($result))
@@ -433,21 +490,20 @@ abstract class Backup extends Fsb_model
 
 			if ($type & self::DATA)
 			{
-				$content .= $this->dump_database($tablename, "SQLite", $comment, $this->multi_insert);
+				$this->write($this->dump_database($tablename, "SQLite", $comment, $this->multi_insert));
 			}
 		}
-		return ($content);
 	}
 
-	/*
-	** Cree les requetes d'insertion, commun pour chaque des bases de donnee.
-	** -----
-	** $tablename ::	Nom de la table
-	** $dbms_name ::	Nom de la SGBD
-	** $comment ::		Ajoute un commentaire en debut de table
-	** $multi_insert ::	Gerer les requetes sous forme de multi insertion
-	** $exept ::		Contient la liste des champs a ne pas prendre en compte
-	*/
+	/**
+	 * Cree un dump du contenu d'une table
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sgbd_name Type de base de donnee
+	 * @param bool $comment Commentaire pour le dump
+	 * @param bool $multi_insert Gestion des multi insertions
+	 * @param array $exept Contient la liste des champs a ne pas prendre en compte
+	 */
 	public function dump_database($tablename, $sgbd_name, $comment = TRUE, $multi_insert = FALSE, $exept = array())
 	{
 		// Si la SGBD ne supporte pas les multi insertions on force le parametre a FALSE

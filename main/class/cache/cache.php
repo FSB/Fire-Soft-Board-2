@@ -10,25 +10,78 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe de mise en cache de donnees. La classe supporte en natif plusieurs types de cache :
-** - Si vous installez Eaccelerator la classe se servira des fonctions fournies par Eaccelerator
-** - Si vous installez APC la classe se servira des fonctions fournies par APC
-** - Si vous installez Turck MMCache la classe se servira des fonctions fournies par Turck MMCache
-** - Si vous possedez les droits d'ecriture sur le dossier cache/ la classe se servira d'un cache de fichier
-** - Si vous ne possedez rien de tout ce qui est cite ci dessus une mise en cache SQL sera faite
-*/
+/**
+ * Gestion de la mise en cache de donnees
+ */
 abstract class Cache extends Fsb_model
 {
+	/**
+	 * Verifie si le cache existe
+	 *
+	 * @param string $hash Clef identifiant la donnee mise en cache
+	 * @return bool
+	 */
 	abstract public function exists($hash);
+	
+	/**
+	 * Recupere une information mise en cache
+	 *
+	 * @param string $hash Clef identifiant la donnee mise en cache
+	 * @return mixed
+	 */
 	abstract public function get($hash);
-	abstract public function put($hash, $array, $comments = '', $timestamp = NULL);
+	
+	/**
+	 * Sauve une donne en cache
+	 *
+	 * @param string $hash clef identifiant la donnee mise en cache
+	 * @param mixed $value Donnees a mettre en cache
+	 * @param string $comments Commentaires sur la donnee en cache
+	 * @param int $timestamp Timestamp de la mise en cache de l'information (par defaut la date actuelle)
+	 */
+	abstract public function put($hash, $value, $comments = '', $timestamp = NULL);
+	
+	/**
+	 * Recupere la date de mise en cache
+	 *
+	 * @param string $hash Clef identifiant la donnee mise en cache
+	 * @return int Timestamp
+	 */
 	abstract public function get_time($hash);
+	
+	/**
+	 * Supprime une donnee en cache
+	 *
+	 * @param string $hash Clef identifiant la donnee mise en cache
+	 */
 	abstract public function delete($hash);
+	
+	/**
+	 * Detruit un ensemble de donnees en cache
+	 *
+	 * @param string $prefix Supprime les clefs commencant par ce prefixe
+	 */
 	abstract public function destroy($prefix = NULL);
+	
+	/**
+	 * Nettoie les donnees trop vielles en cache
+	 *
+	 * @param int $time Duree apres laquelle les fichiers les plus donnees en cache les plus vielles sont supprimes
+	 */
 	abstract public function garbage_colector($time);
+	
+	/**
+	 * Retourne la liste des clefs mises en cache
+	 * 
+	 * @return array
+	 */
 	abstract public function list_keys();
 
+	/**
+	 * Verifie si un clearstatcache() a ete execute
+	 *
+	 * @var bool
+	 */
 	private static $clearstatcache = FALSE;
 
 	/*
@@ -38,6 +91,14 @@ abstract class Cache extends Fsb_model
 	** $type ::		Type de cache (ftp | db | eaccelerator | auto)
 	** $where ::	Clause WHERE pour la requete de recuperation des donnees du cache
 	*/
+	/**
+	 * Design pattern factory, retourne une instance du cache en fonction des parametres
+	 *
+	 * @param string $path Nom du cache (servira pour le chemin du Cache_ftp ou le nom de la table pour le cache Sql)
+	 * @param string $type Type de cache (ftp | db | eaccelerator | mmcache | apc | auto)
+	 * @param string $where Classe WHERE pour le cache SQL pour limiter les informations recherchees
+	 * @return Cache
+	 */
 	public static function factory($path, $type = 'auto', $where = '')
 	{
 		if (!self::$clearstatcache)

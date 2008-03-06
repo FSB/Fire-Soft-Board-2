@@ -10,32 +10,37 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet d'afficher le backup a l'ecran
-*/
+/**
+ * Recupere les donnees du backup
+ */
 class Backup_get extends Backup
 {
+	/**
+	 * Contenu a retourner
+	 *
+	 * @var string
+	 */
 	private $_return = '';
 
-	/*
-	** Ouverture de la sortie
-	*/
+	/**
+	 * @see Backup::open()
+	 */
 	public function open($filename)
 	{
 		$this->_return = '';
 	}
 
-	/*
-	** Ecriture dans la sortie
-	*/
+	/**
+	 * @see Backup::write()
+	 */
 	public function write($str)
 	{
 		$this->_return .= $str;
 	}
 
-	/*
-	** Fermeture de la sortie
-	*/
+	/**
+	 * @see Backup::close()
+	 */
 	public function close()
 	{
 		return ($this->_return);

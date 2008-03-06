@@ -10,29 +10,36 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion d'evenements AJAX
-*/
+/**
+ * Gestion d'evenements AJAX
+ */
 class Ajax extends Fsb_model
 {
-	// Constante indiquant qu'on envoie des donnees text/plain au navigateur
+	/**
+	 * Indique que l'on envoie des donnees text/plain au navigateur
+	 */
 	const TXT = 1;
 
-	// Constante indiquant qu'on envoie des donnees text/xml au navigateur
+	/**
+	 * Indique que l'on envoie des donnees text/xml au navigateur
+	 */
 	const XML = 2;
 
-	// Liste des evenements
+	/**
+	 * Liste des evenements
+	 *
+	 * @var array
+	 */
 	protected $events = array();
 
-	/*
-	** Ajoute un evenement
-	** Le nombre d'arguments de cette fonction est variable, cependant les trois premiers arguments sont
-	** indispensables :
-	**	Premier argument ::		constante Ajax::TXT ou Ajax::XML
-	**	Second argument ::		nom de l'evenement
-	**	Troisieme argument ::	fonction de callback appellee pour l'evenement
-	**	Autres arguments ::		Arguments additionels pour la fonction de callback
-	*/
+	/**
+	 * Ajoute un evenement a surveiller
+	 *
+	 * @param int $type constante Ajax::TXT ou Ajax::XML
+	 * @param string $name nom de l'evenement
+	 * @param string $callback fonction de callback appellee pour l'evenement
+	 * @param mixed $v,... arguments de la fonction de callback
+	 */
 	public function add_event($type, $name, $callback)
 	{
 		$count = func_num_args();
@@ -55,11 +62,11 @@ class Ajax extends Fsb_model
 		);
 	}
 
-	/*
-	** Supprime un evenement
-	** -----
-	** $name ::		Nom de l'evenement
-	*/
+	/**
+	 * Supprime un evenement
+	 *
+	 * @param string $name Nom de l'evenement
+	 */
 	public function drop_event($name)
 	{
 		if (isset($this->events[$name]))
@@ -68,11 +75,11 @@ class Ajax extends Fsb_model
 		}
 	}
 
-	/*
-	** Declenche un evenement
-	** -----
-	** $name ::		Nom de l'evenement
-	*/
+	/**
+	 * Declenche un evenement
+	 *
+	 * @param string $name Nom de l'evenement
+	 */
 	public function trigger($name)
 	{
 		if (isset($this->events[$name]))

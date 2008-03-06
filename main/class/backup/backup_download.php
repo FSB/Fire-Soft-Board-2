@@ -10,14 +10,14 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet de telecharger le backup
-*/
+/**
+ * Telechargement du backup
+ */
 class Backup_download extends Backup
 {
-	/*
-	** Ouverture de la sortie
-	*/
+	/**
+	 * @see Backup::open()
+	 */
 	public function open($filename)
 	{
 		header('Content-Type: text/x-sql');
@@ -27,17 +27,17 @@ class Backup_download extends Backup
 		header('Pragma: public');
 	}
 
-	/*
-	** Ecriture dans la sortie
-	*/
+	/**
+	 * @see Backup::write()
+	 */
 	public function write($str)
 	{
 		echo $str;
 	}
 
-	/*
-	** Fermeture de la sortie
-	*/
+	/**
+	 * @see Backup::close()
+	 */
 	public function close()
 	{
 		exit;

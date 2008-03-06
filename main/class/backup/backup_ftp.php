@@ -10,16 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet d'afficher le backup a l'ecran
-*/
+/**
+ * Sauve le backup dans un fichier
+ */
 class Backup_ftp extends Backup
 {
+	/**
+	 * Descripteur de fichier
+	 *
+	 * @var resource
+	 */
 	private $fd;
 
-	/*
-	** Ouverture de la sortie
-	*/
+	/**
+	 * @see Backup::open()
+	 */
 	public function open($filename)
 	{
 		$dir = ROOT . 'cache/sql_backup/';
@@ -31,17 +36,17 @@ class Backup_ftp extends Backup
 		$this->fd = fopen($dir . $filename, 'w');
 	}
 
-	/*
-	** Ecriture dans la sortie
-	*/
+	/**
+	 * @see Backup::write()
+	 */
 	public function write($str)
 	{
 		fwrite($this->fd, $str);
 	}
 
-	/*
-	** Fermeture de la sortie
-	*/
+	/**
+	 * @see Backup::close()
+	 */
 	public function close()
 	{
 		fclose($this->fd);
