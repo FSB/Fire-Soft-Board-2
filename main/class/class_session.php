@@ -895,7 +895,7 @@ class Session extends Fsb_model
 			{
 				$min = 1;
 			}
-			$date = sprintf(Fsb::$session->lang('few_minutes'), $min) . ', ' . gmdate('G:i', $timestamp);
+			$date = sprintf(String::plural('few_minute', $min), $min) . ', ' . gmdate('G:i', $timestamp);
 		}
 		else if ($extra_format && $time_day == $this_day)
 		{
