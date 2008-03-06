@@ -229,7 +229,7 @@ class Parser extends Fsb_model
 	{
 		$fsbcode = new Parser_fsbcode();
 		$str = ' ' . $str . ' ';
-		$str = preg_replace_callback('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.)([^ \"\t\n\r<]{3,}))))/i', array($fsbcode, 'generate_url'), $str);
+		$str = preg_replace_callback('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.)([^ \"\t\n\r\0<]{3,}))))/i', array($fsbcode, 'generate_url'), $str);
 		$str = preg_replace_callback('/(?<=^|[\s])()()([a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4})/i', array($fsbcode, 'generate_mail'), $str);
 		return (substr($str, 1, -1));
 	}
