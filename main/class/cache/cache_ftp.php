@@ -15,30 +15,38 @@
 */
 class Cache_ftp extends Cache
 {
-	// Chemin du cache FTP
+	/**
+	 * Dossiers ou sont stockes les fichiers cache
+	 *
+	 * @var string
+	 */
 	private $path;
 
-	// Type de cache
+	/**
+	 * Nom du cache
+	 *
+	 * @var unknown_type
+	 */
 	public $cache_type = 'FSB FTP cache';
 
-	// Mise en cache des informations du cache
+	/**
+	 * Sauve certaines informations deja chargees pour optimiser en memoire
+	 */
 	private $store = array();
 
-	/*
-	** Constructeur
-	** -----
-	** $ftp_path ::			Chemin vers le dossier du cache
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param string $ftp_path Chemin vers le dossier du cache
+	 */
 	public function __construct($ftp_path)
 	{
 		$this->path = $ftp_path;
 	}
 
-	/*
-	** Retourne TRUE s'il y a un cache pour le hash, sinon FALSE
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::exists()
+	 */
 	public function exists($hash)
 	{
 		if (file_exists($this->path . $hash . '.' . PHPEXT))
@@ -56,11 +64,9 @@ class Cache_ftp extends Cache
 		return (FALSE);
 	}
 
-	/*
-	** Retourne le tableau de donnees mises en cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get()
+	 */
 	public function get($hash)
 	{
 		if (isset($this->store[$hash]))
@@ -71,17 +77,12 @@ class Cache_ftp extends Cache
 		return (@unserialize($include));
 	}
 
-	/*
-	** Retourne le tableau de donnees mises en cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	** $array ::		Tableau de donnees a mettre en cache
-	** $comments ::		Commentaire pour le fichier du cache
-	** $timestamp ::	Date de creation du cache
-	*/
-	public function put($hash, $array, $comments = '', $timestamp = NULL)
+	/**
+	 * @see Cache::put()
+	 */
+	public function put($hash, $value, $comments = '', $timestamp = NULL)
 	{
-		$export = str_replace(array('\\', "'"), array('\\\\', "\'"), serialize($array));
+		$export = str_replace(array('\\', "'"), array('\\\\', "\'"), serialize($value));
 		$fd = @fopen($this->path . $hash . '.' . PHPEXT, 'w');
 		fwrite($fd, "<?php\n/*\n$comments\n*/\n\$_cache_data = '" . $export . "';\nreturn(\$_cache_data);\n?>");
 		fclose($fd);
@@ -89,21 +90,17 @@ class Cache_ftp extends Cache
 		@chmod($this->path . $hash . '.' . PHPEXT, 0666);
 	}
 
-	/*
-	** Renvoie le timestamp de creation du cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get_time()
+	 */
 	public function get_time($hash)
 	{
 		return (filemtime($this->path . $hash . '.' . PHPEXT));
 	}
 
-	/*
-	** Supprime une clef
-	** -----
-	** $hash ::		Clef a supprimer
-	*/
+	/**
+	 * @see Cache::delete()
+	 */
 	public function delete($hash)
 	{
 		if (is_writable($this->path) && is_writable($this->path . $hash . '.' . PHPEXT))
@@ -112,11 +109,9 @@ class Cache_ftp extends Cache
 		}
 	}
 
-	/*
-	** Destruction du cache
-	** -----
-	** $prefix ::		Si un prefixe est specifie, on supprime uniquement les hash commencant par ce prefixe
-	*/
+	/**
+	 * @see Cache::destroy()
+	 */
 	public function destroy($prefix = NULL)
 	{
 		$fd = opendir($this->path);
@@ -130,11 +125,9 @@ class Cache_ftp extends Cache
 		closedir($fd);
 	}
 
-	/*
-	** Supprime les donnees du cache exedant un certain temps
-	** -----
-	** $time ::		Duree apres laquelle les donnees du cache sont videes
-	*/
+	/**
+	 * @see Cache::garbage_colector()
+	 */
 	public function garbage_colector($time)
 	{
 		$fd = opendir($this->path);
@@ -148,9 +141,9 @@ class Cache_ftp extends Cache
 		closedir($fd);
 	}
 
-	/*
-	** Retourne la liste des clefs mises en cache
-	*/
+	/**
+	 * @see Cache::list_keys()
+	 */
 	public function list_keys()
 	{
 		$return = array();

@@ -3,12 +3,14 @@
 ** +---------------------------------------------------+
 ** | Name :		~/main/class/class_sync.php
 ** | Begin :	21/09/2007
-** | Last :		10/12/2007
+** | Last :		04/03/2008
 ** | User :		Genova
 ** | Project :	Fire-Soft-Board 2 - Copyright FSB group
 ** | License :	GPL v2.0
 ** +---------------------------------------------------+
 */
+
+
 
 /*
 ** Permet de syncroniser des informations mises en cache sur le forum
@@ -49,7 +51,7 @@ class Sync extends Fsb_model
 							ORDER BY t2.t_last_p_time DESC
 							LIMIT 1
 						)'
-				. (($forums) ? ' WHERE f.f_id IN (' . implode(', ', $forums) . ')' : '') . 
+				/*. (($forums) ? ' WHERE f.f_id IN (' . implode(', ', $forums) . ')' : '')*/ .
 				' GROUP BY f2.f_id, t.t_id, t.t_title, t.t_last_p_nickname, t.t_last_p_id, t.t_last_p_time, t.t_last_u_id';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))

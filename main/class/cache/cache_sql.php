@@ -15,21 +15,33 @@
 */
 class Cache_sql extends Cache
 {
-	// Identifiant pour le type de cache actuel
+	/**
+	 * Identifiant pour le cache en cours
+	 *
+	 * @var string
+	 */
 	private $id = '';
 
-	// Contient les donnees en cache
+	/**
+	 * Contient les informations sauvées dans le cache SQL
+	 *
+	 * @var array
+	 */
 	private $data = array();
 
-	// Type de cache
+	/**
+	 * Nom du cache
+	 *
+	 * @var unknown_type
+	 */
 	public $cache_type = 'FSB SQL cache';
 
-	/*
-	** Constructeur
-	** -----
-	** $type ::				Identifiant pour le type de cache actuel
-	** $where ::			Clause WHERE pour la requete
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param string $id Identifiant pour le cache en cours
+	 * @param string $where Clause WHERE SQL
+	 */
 	public function __construct($id, $where = '')
 	{
 		$this->id = $id;
@@ -51,21 +63,17 @@ class Cache_sql extends Cache
 		Fsb::$db->cache = NULL;
 	}
 
-	/*
-	** Retourne TRUE s'il y a un cache pour le hash, sinon FALSE
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::exists()
+	 */
 	public function exists($hash)
 	{
 			return ((isset($this->data[$hash])) ? TRUE : FALSE);
 	}
 
-	/*
-	** Retourne le tableau de donnees mises en cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get()
+	 */
 	public function get($hash)
 	{
 		if (!$this->exists($hash))
@@ -81,39 +89,30 @@ class Cache_sql extends Cache
 		return ($this->data[$hash]['content']);
 	}
 
-	/*
-	** Retourne le tableau de donnees mises en cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	** $array ::		Tableau de donnees a mettre en cache
-	** $comments ::		Commentaire pour le fichier du cache
-	** $timestamp ::	Date de creation du cache
-	*/
-	public function put($hash, $array, $comments = '', $timestamp = NULL)
+	/**
+	 * @see Cache::put()
+	 */
+	public function put($hash, $value, $comments = '', $timestamp = NULL)
 	{
 		Fsb::$db->insert('cache', array(
 			'cache_type' =>		array($this->id, TRUE),
 			'cache_hash' =>		array($hash, TRUE),
-			'cache_content' =>	serialize($array),
+			'cache_content' =>	serialize($value),
 			'cache_time' =>		($timestamp === NULL) ? CURRENT_TIME : $timestamp,
 		), 'REPLACE');
 	}
 
-	/*
-	** Renvoie le timestamp de creation du cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get_time()
+	 */
 	public function get_time($hash)
 	{
 		return ($this->data[$hash]['time']);
 	}
 
-	/*
-	** Supprime une clef
-	** -----
-	** $hash ::		Clef a supprimer
-	*/
+	/**
+	 * @see Cache::delete()
+	 */
 	public function delete($hash, $delete_sql = TRUE)
 	{
 		if ($delete_sql)
@@ -126,11 +125,9 @@ class Cache_sql extends Cache
 		unset($this->data[$hash]);
 	}
 
-	/*
-	** Destruction du cache
-	** -----
-	** $prefix ::		Si un prefixe est specifie, on supprime uniquement les hash commencant par ce prefixe
-	*/
+	/**
+	 * @see Cache::destroy()
+	 */
 	public function destroy($prefix = NULL)
 	{
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'cache
@@ -147,11 +144,9 @@ class Cache_sql extends Cache
 		}
 	}
 
-	/*
-	** Supprime les donnees du cache exedant un certain temps
-	** -----
-	** $time ::		Duree apres laquelle les donnees du cache sont videes
-	*/
+	/**
+	 * @see Cache::garbage_colector()
+	 */
 	public function garbage_colector($time)
 	{
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'cache
@@ -160,9 +155,9 @@ class Cache_sql extends Cache
 		Fsb::$db->query($sql, FALSE);
 	}
 
-	/*
-	** Retourne la liste des clefs mises en cache
-	*/
+	/**
+	 * @see Cache::list_keys()
+	 */
 	public function list_keys()
 	{
 		$return = array();

@@ -46,7 +46,17 @@ class Tree_forum extends Tree
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$this->data[$row['f_id']] = $row;
+			$this->data[$row['f_id']] = array(
+				'f_total_topic' =>		0,
+				'f_total_post' =>		0,
+				'f_last_p_id' =>		0,
+				'f_last_t_id' =>		0,
+				'f_last_t_title' =>		'',
+				'f_last_p_nickname' =>	'',
+				'f_last_u_id' =>		0,
+				'f_last_p_time' =>		0,
+			);
+			$this->data[$row['f_id']] = array_merge($this->data[$row['f_id']], $row);
 		}
 		Fsb::$db->free($result);
 	}
@@ -57,7 +67,7 @@ class Tree_forum extends Tree
 	** $f_id ::		ID du forum
 	** $data ::		Donnees du forum
 	*/
-	public function fill($f_id, $data)
+	public function fill($f_id, $data = array())
 	{
 		if (!isset($this->data[$f_id]))
 		{
@@ -83,7 +93,11 @@ class Tree_forum extends Tree
 	*/
 	public function parse()
 	{
-		$this->_parse($this->document);
+		foreach ($this->document AS $f_id => $childs)
+		{
+			$this->_parse($this->document, $f_id);
+		}
+
 		foreach ($this->data AS $f_id => $data)
 		{
 			if (isset($data['is_filled']))
@@ -94,62 +108,52 @@ class Tree_forum extends Tree
 		}
 	}
 
-	/*
-	** Parse recursif des donnees des forums
-	** -----
-	** $node ::		Noeud actuelle dans l'arbre des forums
-	** $level ::	Niveau de profondeur
-	*/
-	private function _parse(&$node, $level = 0)
+	private function _parse(&$node, $id)
 	{
-		$data = array(
-			'f_total_topic' =>		0,
-			'f_total_post' =>		0,
-			'f_last_p_id' =>		0,
-			'f_last_t_id' =>		0,
-			'f_last_t_title' =>		'',
-			'f_last_p_nickname' =>	'',
-			'f_last_u_id' =>		0,
-			'f_last_p_time' =>		0,
-		);
-
 		foreach ($node AS $f_id => $childs)
 		{
-			if ($level > 0 && !isset($this->data[$f_id]['is_filled']))
-			{
-				continue ;
-			}
+			$this->_parse($childs->children(), $f_id);
 
 			if (!isset($this->data[$f_id]))
 			{
-				$this->fill($f_id, array());
+				$this->data[$f_id] = array(
+					'f_total_topic' =>		0,
+					'f_total_post' =>		0,
+					'f_last_p_id' =>		0,
+					'f_last_t_id' =>		0,
+					'f_last_t_title' =>		'',
+					'f_last_p_nickname' =>	'',
+					'f_last_u_id' =>		0,
+					'f_last_p_time' =>		0,
+				);
 			}
 
-			if ($childs)
+			if (!isset($this->data[$id]))
 			{
-				$return = $this->_parse($childs->children(), $level + 1);
-				$if =										($this->data[$f_id]['f_last_p_time'] < $return['f_last_p_time']) ? TRUE : FALSE;
-				$this->data[$f_id]['f_total_topic'] +=		$return['f_total_topic'];
-				$this->data[$f_id]['f_total_post'] +=		$return['f_total_post'];
-				$this->data[$f_id]['f_last_p_id'] =			intval(($if) ? $return['f_last_p_id'] : $this->data[$f_id]['f_last_p_id']);
-				$this->data[$f_id]['f_last_t_id'] =			intval(($if) ? $return['f_last_t_id'] : $this->data[$f_id]['f_last_t_id']);
-				$this->data[$f_id]['f_last_t_title'] =		($if) ? $return['f_last_t_title'] : $this->data[$f_id]['f_last_t_title'];
-				$this->data[$f_id]['f_last_p_nickname'] =	($if) ? $return['f_last_p_nickname'] : $this->data[$f_id]['f_last_p_nickname'];
-				$this->data[$f_id]['f_last_u_id'] =			intval(($if) ? $return['f_last_u_id'] : $this->data[$f_id]['f_last_u_id']);
-				$this->data[$f_id]['f_last_p_time'] =		max($this->data[$f_id]['f_last_p_time'], $return['f_last_p_time']);
+				$this->data[$id] = array(
+					'f_total_topic' =>		0,
+					'f_total_post' =>		0,
+					'f_last_p_id' =>		0,
+					'f_last_t_id' =>		0,
+					'f_last_t_title' =>		'',
+					'f_last_p_nickname' =>	'',
+					'f_last_u_id' =>		0,
+					'f_last_p_time' =>		0,
+				);
 			}
 
-			$if =						($data['f_last_p_time'] < $this->data[$f_id]['f_last_p_time']) ? TRUE : FALSE;
-			$data['f_total_topic'] +=	$this->data[$f_id]['f_total_topic'];
-			$data['f_total_post'] +=	$this->data[$f_id]['f_total_post'];
-			$data['f_last_p_id'] =		($if) ? @$this->data[$f_id]['f_last_p_id'] : $data['f_last_p_id'];
-			$data['f_last_t_id'] =		($if) ? @$this->data[$f_id]['f_last_t_id'] : $data['f_last_t_id'];
-			$data['f_last_t_title'] =	($if) ? @$this->data[$f_id]['f_last_t_title'] : $data['f_last_t_title'];
-			$data['f_last_p_nickname'] =($if) ? @$this->data[$f_id]['f_last_p_nickname'] : $data['f_last_p_nickname'];
-			$data['f_last_u_id'] =		($if) ? @$this->data[$f_id]['f_last_u_id'] : $data['f_last_u_id'];
-			$data['f_last_p_time'] =	max($data['f_last_p_time'], $this->data[$f_id]['f_last_p_time']);
+			$this->data[$id]['f_total_topic'] +=	$this->data[$f_id]['f_total_topic'];
+			$this->data[$id]['f_total_post'] +=		$this->data[$f_id]['f_total_post'];
+			if ($this->data[$id]['f_last_p_time'] < $this->data[$f_id]['f_last_p_time'])
+			{
+				$this->data[$id]['f_last_p_id'] =		$this->data[$f_id]['f_last_p_id'];
+				$this->data[$id]['f_last_t_id'] =		$this->data[$f_id]['f_last_t_id'];
+				$this->data[$id]['f_last_t_title'] =	$this->data[$f_id]['f_last_t_title'];
+				$this->data[$id]['f_last_p_nickname'] =	$this->data[$f_id]['f_last_p_nickname'];
+				$this->data[$id]['f_last_u_id'] =		$this->data[$f_id]['f_last_u_id'];
+				$this->data[$id]['f_last_p_time'] =		max($this->data[$id]['f_last_p_time'], $this->data[$f_id]['f_last_p_time']);
+			}
 		}
-		return ($data);
 	}
 }
 

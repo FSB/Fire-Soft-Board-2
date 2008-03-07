@@ -15,25 +15,51 @@
 */
 class Cache_mmcache extends Cache
 {
-	// Contient la liste des clefs en cache
+	/**
+	 * Contient la liste des clefs en cache
+	 *
+	 * @var array
+	 */
 	private $stack = array();
 
-	// Time To Live de la mise en cache des donnees
+	/**
+	 * TTL des informations en cache
+	 *
+	 * @var int
+	 */
 	private $ttl = 86400;
 
-	// Identifiant unique pour differencier les types de cache
+	/**
+	 * Identifiant unique pour différencier les types de cache
+	 *
+	 * @var int
+	 */
 	private static $key_id = 0;
+	
+	/**
+	 * Identifiant unique
+	 *
+	 * @var int
+	 */
 	private $id = 0;
 
-	// Type de cache
+	/**
+	 * Nom du cache
+	 *
+	 * @var unknown_type
+	 */
 	public $cache_type = 'Turck MMcache';
 
-	// Hash unique
+	/**
+	 * Hash unique pour différencier les clefs
+	 *
+	 * @var string
+	 */
 	private $uniq_hash = '';
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		self::$key_id++;
@@ -47,58 +73,46 @@ class Cache_mmcache extends Cache
 			$this->stack = array();
 		}
 	}
-	/*
-	** Retourne TRUE s'il y a un cache pour le hash, sinon FALSE
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+
+	/**
+	 * @see Cache::exists()
+	 */
 	public function exists($hash)
 	{
 		return ((mmcache_get($hash . $this->uniq_hash) !== NULL) ? TRUE : FALSE);
 	}
 
-	/*
-	** Retourne le tableau de donnees mises en cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get()
+	 */
 	public function get($hash)
 	{
 		return (unserialize(mmcache_get($hash . $this->uniq_hash)));
 	}
 
-	/*
-	** Ajoute des donnees dans le cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	** $array ::		Tableau de donnees a mettre en cache
-	** $comments ::		Commentaire pour le fichier du cache
-	** $timestamp ::	Date de creation du cache
-	*/
-	public function put($hash, $array, $comments = '', $timestamp = NULL)
+	/**
+	 * @see Cache::put()
+	 */
+	public function put($hash, $value, $comments = '', $timestamp = NULL)
 	{
-		mmcache_put($hash . $this->uniq_hash, serialize($array), $this->ttl);
+		mmcache_put($hash . $this->uniq_hash, serialize($value), $this->ttl);
 
 		// On garde en memoire la clef mise en cache
 		$this->stack[$hash] = ($timestamp) ? $timestamp : CURRENT_TIME;
 		mmcache_put('_mmcache_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
-	/*
-	** Renvoie le timestamp de creation du cache
-	** -----
-	** $hash ::			Clef pour les donnees cherchees
-	*/
+	/**
+	 * @see Cache::get_time()
+	 */
 	public function get_time($hash)
 	{
 		return ((isset($this->stack[$hash])) ? $this->stack[$hash] : 0);
 	}
 
-	/*
-	** Supprime une clef
-	** -----
-	** $hash ::		Clef a supprimer
-	*/
+	/**
+	 * @see Cache::delete()
+	 */
 	public function delete($hash)
 	{
 		mmcache_rm($hash . $this->uniq_hash);
@@ -106,11 +120,9 @@ class Cache_mmcache extends Cache
 		mmcache_put('_mmcache_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
-	/*
-	** Destruction du cache
-	** -----
-	** $prefix ::		Si un prefixe est specifie, on supprime uniquement les hash commencant par ce prefixe
-	*/
+	/**
+	 * @see Cache::destroy()
+	 */
 	public function destroy($prefix = NULL)
 	{
 		foreach ($this->stack AS $key => $bool)
@@ -123,11 +135,9 @@ class Cache_mmcache extends Cache
 		}
 	}
 
-	/*
-	** Supprime les donnees du cache exedant un certain temps
-	** -----
-	** $time ::		Duree apres laquelle les donnees du cache sont videes
-	*/
+	/**
+	 * @see Cache::garbage_colector()
+	 */
 	public function garbage_colector($time)
 	{
 		foreach ($this->stack AS $key => $timestamp)
@@ -141,9 +151,9 @@ class Cache_mmcache extends Cache
 		mmcache_put('_mmcache_keys_' . $this->id . $this->uniq_hash, serialize($this->stack), ONE_MONTH);
 	}
 
-	/*
-	** Retourne la liste des clefs mises en cache
-	*/
+	/**
+	 * @see Cache::list_keys()
+	 */
 	public function list_keys()
 	{
 		$return = array();
