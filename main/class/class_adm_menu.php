@@ -10,21 +10,39 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion du menu administratif avec une mise en cache des liens afin
-** de pouvoir modifier leur ordre / permission.
-*/
+/**
+ * Gestion du menu administratif avec une mise en cache des liens afin de pouvoir modifier leur ordre / permission.
+ * @todo revoir cette classe ...
+ */
 class Adm_menu extends Fsb_model
 {
-	// Donnees du fichier cache `adm_menu`
+	/**
+	 * Donnees du menu
+	 *
+	 * @var array
+	 */
 	public $data = array();
 
-	// Dossiers a ne pas prendre en compte (adm_tpl/ par exemple)
+	// 
+	/**
+	 * Dossiers a ne pas prendre en compte dans l'administration (adm_tpl/ par exemple)
+	 *
+	 * @var array
+	 */
 	public $exept = array();
 
-	// Information sur la page actuelle
+	/**
+	 * Informations sur la page actuelle
+	 *
+	 * @var array
+	 */
 	public $include = NULL;
 
+	/**
+	 * Constructeur, charge le menu en memoire
+	 *
+	 * @param string $page Nom de la page actuelle
+	 */
 	public function __construct($page)
 	{
 		$sql = 'SELECT page, auth, cat, cat_order, page_order, page_icon
@@ -42,9 +60,11 @@ class Adm_menu extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Renvoie le code HTML du menu administratif
-	*/
+	/**
+	 * Cree le template du menu administratif
+	 *
+	 * @param string $current_page Nom de la page actuelle
+	 */
 	public function get_adm_menu($current_page)
 	{
 		$cat_menu = array();
@@ -80,9 +100,9 @@ class Adm_menu extends Fsb_model
 		}
 	}
 
-	/*
-	** Resource la table du menu administratif
-	*/
+	/**
+	 * Rafraichi le menu administratif en fonction des ajouts / suppression de page
+	 */
 	public function refresh_menu()
 	{
 		// Suppression de tous les liens de la base de donnee
@@ -122,12 +142,11 @@ class Adm_menu extends Fsb_model
 		$this->data = $this->keep_order($ary);
 	}
 
-	/*
-	** Permet de gerer les ajouts / suppressions du au rafrachissement dans le menu, en gardant
-	** l'ordre du menu dans l'administration
-	** -----
-	** $ary ::		Tableau contenant les donnees du menu
-	*/
+	/**
+	 * Rafraichi le menu administratif en gardant l'ordre des pages actuelles
+	 *
+	 * @param array $ary Contient les donnees du menu
+	 */
 	private function keep_order(&$ary)
 	{
 		// Supression des pages qui ont ete supprimees
@@ -173,12 +192,13 @@ class Adm_menu extends Fsb_model
 		Fsb::$db->destroy_cache('menu_admin_');
 	}
 	
-	/*
-	** Deplace une categorie du menu vers le haut ou vers le bas
-	** -----
-	** $move ::		-1 pour deplacer vers le haut, 1 pour deplacer vers le bas
-	** $name ::		Nom de la categorie
-	*/
+	/**
+	 * Deplace une categorie du menu
+	 *
+	 * @param int $move -1 pour bouger vers le haut ou 1 vers le bas
+	 * @param string $name Nom de la categorie
+	 * @return bool TRUE si la categorie a pu bouger
+	 */
 	public function move_cat($move, $name)
 	{
 		$sql = 'SELECT cat_order
@@ -207,12 +227,13 @@ class Adm_menu extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Deplace un lien du menu vers le haut ou vers le bas
-	** -----
-	** $move ::		-1 pour deplacer vers le haut, 1 pour deplacer vers le bas
-	** $name ::		Nom du lien
-	*/
+	/**
+	 * Deplace un lien du menu du menu
+	 *
+	 * @param int $move -1 pour bouger vers le haut ou 1 vers le bas
+	 * @param string $name Nom du lien
+	 * @return bool TRUE si le lien a pu bouger
+	 */
 	public function move_link($move, $name)
 	{
 		$sql = 'SELECT cat, page_order

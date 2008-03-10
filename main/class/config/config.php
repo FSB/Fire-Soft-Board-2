@@ -10,24 +10,31 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Configuration du forum
-*/
+/**
+ * Gestion de la configuration du forum
+ */
 class Config extends Fsb_model
 {
+	/**
+	 * Contenu de la configuration
+	 *
+	 * @var array
+	 */
 	public $data = array();
 
-	// Table de configuration
+	/**
+	 * Table de la base de donnee gerant la configuration
+	 *
+	 * @var string
+	 */
 	private $table = 'config';
 
-	/*
-	** Constructeur
-	** Chargement de la configuration du forum
-	** -----
-	** $table ::		Table de la configuration
-	** $default ::		En renseignant ce champ, on entre un tableau de configuration a la main (le forum 
-	**					n'ira donc pas lire la table)
-	*/
+	/**
+	 * Constructeur, charge la configuration du forum
+	 *
+	 * @param string $table Table de la base de donnee gerant la configuration
+	 * @param array $default Configuration par defaut, si passe ne va pas lire la base de donnee
+	 */
 	public function __construct($table = 'config', $default = array())
 	{
 		$this->table = $table;
@@ -49,44 +56,46 @@ class Config extends Fsb_model
 		}
 	}
 
-	/*
-	** Verifie l'existance d'une clef de configuration
-	** -----
-	** $key ::		Clef de configuration
-	*/
+	/**
+	 * Verifie l'existence d'une clef de configuration
+	 *
+	 * @param string $key Clef de configuration
+	 * @return bool
+	 */
 	public function exists($key)
 	{
 		return (isset($this->data[$key]));
 	}
 
-	/*
-	** Recupere une valeur de la configuration
-	** -----
-	** $key ::		Clef de configuration
-	*/
+	/**
+	 * Recupere une valeur de la configuration
+	 *
+	 * @param string $key Clef de configuration
+	 * @return string
+	 */
 	public function get($key)
 	{
 		return ((isset($this->data[$key])) ? $this->data[$key] : NULL);
 	}
 
-	/*
-	** Modifie la valeur d'une clef (pas dans la base de donnee)
-	** -----
-	** $key ::		Clef de configuration
-	** $value ::	Nouvelle valeur
-	*/
+	/**
+	 * Modifie localement une valeur de configuration (modification non sauvee en base de donnee)
+	 *
+	 * @param string $key Clef de configuration
+	 * @param string $value Nouvelle valeur
+	 */
 	public function set($key, $value)
 	{
 		$this->data[$key] = $value;
 	}
 
-	/*
-	** Modifie une valeur de la configuration dans la base de donnee
-	** -----
-	** $key ::		Clef de configuration
-	** $value ::	Nouvelle valeur
-	** $cache ::	Mise a jour du cache ?
-	*/
+	/**
+	 * Modifie une valeur de la configuration dans la base de donnee
+	 *
+	 * @param string $key Clef de configuration
+	 * @param  string $value Nouvelle valeur
+	 * @param bool $cache Si TRUE, rafraichi a jour le cache
+	 */
 	public function update($key, $value, $cache = TRUE)
 	{
 		$this->set($key, $value);
@@ -100,9 +109,9 @@ class Config extends Fsb_model
 		}
 	}
 
-	/*
-	** Destruction du cache de la configuration
-	*/
+	/**
+	 * Rafraichi le cache de configuration
+	 */
 	public function destroy_cache()
 	{
 		Fsb::$db->destroy_cache('config_');

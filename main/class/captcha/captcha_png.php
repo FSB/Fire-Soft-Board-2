@@ -10,52 +10,68 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Extension de la classe Captcha, generant directement des fichiers PNG basiques sans GD
-*/
+/**
+ * Extension de la classe Captcha, generant directement des fichiers PNG basiques sans GD
+ */
 class Captcha_png extends Captcha
 {
-	// Liste des methodes
+	/**
+	 * Liste des methodes de calcul de Captcha supportees
+	 *
+	 * @var array
+	 */
 	protected $methods = array(
 		'a' =>		'method_classic',
 	);
 
-	// Espace entre chaque caractere
+	/**
+	 * Espaces entre chaque charactere
+	 * 
+	 * @var int
+	 */
 	protected $space = 34;
 
-	// Objet PNG
+	/**
+	 * Objet Png
+	 *
+	 * @var Png
+	 */
 	private $png;
 
-	// Liste des caracteres
+	/**
+	 * Liste des caracteres
+	 *
+	 * @var array
+	 */
 	private $char_list = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur, instance d'un objet PNG
+	 */
 	public function __construct()
 	{
 		$this->font_path = ROOT . 'main/class/captcha/fonts/';
 		$this->png = new Png($this->width, $this->height, TRUE);
 	}
 
-	/*
-	** Creation de l'image
-	*/
+	/**
+	 * @see Captcha::open_image()
+	 */
 	protected function open_image()
 	{
 	}
 
-	/*
-	** Affiche l'image
-	*/
+	/**
+	 * @see Captcha::close_image()
+	 */
 	protected function close_image()
 	{
 		$this->png->close();
 	}
 
-	/*
-	** Ecrit un caractere sur l'image
-	*/
+	/**
+	 * @see Captcha::write_char()
+	 */
 	protected function write_char($size, $angle, $x, $y, $fontcolor, $font, $char)
 	{
 		if ($fontcolor === NULL)
@@ -69,9 +85,9 @@ class Captcha_png extends Captcha
 		$this->png->write($char, $x, $y - 20, $this->font_path . 'chars.txt', $size, Png_color::rgb($red, $green, $blue), TRUE, 5);
 	}
 
-	/*
-	** Ajouts de bruits sur l'image (lignes, points aleatoires)
-	*/
+	/**
+	 * @see Captcha::add_noise()
+	 */
 	protected function add_noise()
 	{
 		$noise_color = Png_color::hexa(0xBBBBBB);
@@ -95,54 +111,68 @@ class Captcha_png extends Captcha
 	}
 }
 
-define('MYPNG_FILTER_NONE', 0);
-define('MYPNG_FILTER_HORIZONTAL', 1);
-define('MYPNG_FILTER_VERTICAL', 2);
-define('MYPNG_FILTER_AVG', 3);
-define('MYPNG_FILTER_PAETH', 4);
-
+/**
+ * Genere des fichiers PNG basiques sans la librairie GD
+ *
+ */
 class Png extends Image
 {
-	// Largeur du PNG
+	/**
+	 * Largeur de l'image
+	 *
+	 * @var int
+	 */
 	protected $width = 0;
 
-	// Hauteur du PNG
+	/**
+	 * Hauteur de l'image
+	 *
+	 * @var int
+	 */
 	protected $height = 0;
 
-	// Image a vraie couleurs ?
+	/**
+	 * Image avec des vraies couleurs
+	 *
+	 * @var bool
+	 */
 	protected $truecolor = FALSE;
 
-	// Contenu du PNG
+	/**
+	 * Contenu de l'image (avec les headers)
+	 *
+	 * @var string
+	 */
 	protected $content = '';
 
-	// Contenu de l'image
+	/**
+	 * Contenu de l'image (sans les headers)
+	 *
+	 * @var string
+	 */
 	protected $image = '';
 
-	// Filtre
-	protected $filter = 0;
-
-	/*
-	** Constructeur d'une image PNG
-	** -----
-	** $width ::		Largeur de l'image
-	** $height ::		Hauteur de l'image
-	** $truecolor ::	Mode vraies couleurs (si FALSE, on passe en niveau de gris)
-	*/
+	/**
+	 * Constructeur d'une image PNG
+	 *
+	 * @param int $width Largeur de l'image
+	 * @param int $height Hauteur de l'image
+	 * @param bool $truecolor Mode vraies couleurs (si FALSE, on passe en niveau de gris)
+	 */
 	public function __construct($width, $height, $truecolor = TRUE)
 	{
 		// Parametres
 		$this->truecolor = $truecolor;
 		$this->width = $width;
 		$this->height = $height;
-		$this->filter = MYPNG_FILTER_NONE;
 
 		// Initialisation de l'image
 		$this->init();
 	}
 
-	/*
-	** Initialise tous les pixels de l'image, ainsi que les filtres
-	*/
+	/**
+	 * Initialise la creation de l'image
+	 */
 	private function init()
 	{
 		$repeat = $this->width;
@@ -158,12 +188,13 @@ class Png extends Image
 		}
 	}
 
-	/*
-	** Calcul de l'index d'un pixel
-	** -----
-	** $x ::	Coordonnee $x du pixel
-	** $y ::	Coordonnee $y du pixel
-	*/
+	/**
+	 * Calcul l'index d'un pixel donne
+	 *
+	 * @param int $x Coordonnee X du pixel
+	 * @param int $y Coordonnee Y du pixel
+	 * @return int
+	 */
 	public function find_index($x, $y)
 	{
 		if (!$this->truecolor)
@@ -176,13 +207,13 @@ class Png extends Image
 		}
 	}
 
-	/*
-	** Ajoute un pixel sur l'image
-	** -----
-	** $x ::		Coordonnee $x du pixel
-	** $y ::		Coordonnee $y du pixel
-	** $color ::	Couleur du pixel
-	*/
+	/**
+	 * Ajoute un pixel sur l'image
+	 *
+	 * @param int $x Coordonnee X du pixel
+	 * @param int $y Coordonnee Y du pixel
+	 * @param color $color Couleur du pixel
+	 */
 	public function set_pixel($x, $y, $color)
 	{
 		if ($x >= $this->width || $y >= $this->height)
@@ -203,12 +234,13 @@ class Png extends Image
 		}
 	}
 
-	/*
-	** Retourne la couleur d'un pixel
-	** -----
-	** $x ::		Coordonnee $x du pixel
-	** $y ::		Coordonnee $y du pixel
-	*/
+	/**
+	 * Retourne la couleur d'un pixel
+	 *
+	 * @param int $x Coordonnee X du pixel
+	 * @param int $y Coordonnee Y du pixel
+	 * @return string Couleur du pixel
+	 */
 	public function colorat($x, $y)
 	{
 		$index = $this->find_index($x, $y);
@@ -231,9 +263,12 @@ class Png extends Image
 		return ($color);
 	}
 
-	/*
-	** Fin du fichier PNG
-	*/
+	/**
+	 * Fin du fichier PNG
+	 *
+	 * @param bool $print Si true, affiche l'image
+	 * @return string Contenu de l'image
+	 */
 	public function close($print = TRUE)
 	{
 		$this->add_signature();
@@ -250,14 +285,14 @@ class Png extends Image
 		return ($this->content);
 	}
 
-	/*
-	** Un PNG est constitue de plusieurs block contenant : la longueur,
-	** le type, les donnees && un CRC
-	** -----
-	** $length ::	Longueur du block
-	** $type ::		Type du block
-	** $data ::		Contenu du block
-	*/
+	/**
+	 * Cree un block dans le PNG
+	 *
+	 * @param int $length Longueur du block
+	 * @param string $type Type du block
+	 * @param string $data Contenu du block
+	 * @return string Contenu du block
+	 */
 	private function add_block($length, $type, $data)
 	{
 		// Signature
@@ -267,17 +302,17 @@ class Png extends Image
 		return (pack('N', $length) . $type . $data . pack('N', $crc));
 	}
 
-	/*
-	** Signature du PNG
-	*/
+	/**
+	 * Genere la signature du PNG
+	 */
 	private function add_signature()
 	{
 		$this->content = pack('C8', 137, 80, 78, 71, 13, 10, 26, 10);
 	}
 
-	/*
-	** Ajout du block contenant les informations de l'image
-	*/
+	/**
+	 * Ajout du block contenant les informations de l'image
+	 */
 	private function add_ihdr()
 	{
 		// Largeur
@@ -304,17 +339,17 @@ class Png extends Image
 		$this->content .= $this->add_block(13, 'IHDR', $data);
 	}
 
-	/*
-	** Ajout du block de fin d'image
-	*/
+	/**
+	 * Ajout du block de fin d'image
+	 */
 	private function add_iend()
 	{
 		$this->content .= $this->add_block(0, 'IEND', '');
 	}
 
-	/*
-	** Ajout du block IDAT
-	*/
+	/**
+	 * Ajout du block IDAT
+	 */
 	private function add_idat()
 	{
 		$this->image{599} = chr(150);
@@ -345,12 +380,13 @@ class Png extends Image
 		$this->content .= $this->add_block($length, 'IDAT', $this->image);
 	}
 
-	/*
-	** Implementation de l'algorithme de hash Adler-32
-	** -----
-	** $raw_image ::	Chaine de caractere a hasher
-	** $length ::		Longueur de la chaine
-	*/
+	/**
+	 * Implementation de l'algorithme de hash Adler-32
+	 *
+	 * @param string $str Chaine de caractere a hasher
+	 * @param int $length Longueur de la chaine
+	 * @return string Chaine hashee
+	 */
 	private function adler32($str, $length)
 	{
 		$temp_length = $length;
@@ -377,15 +413,17 @@ class Png extends Image
 	}
 }
 
-/*
-** Retourne des couleurs valides pour la class Png
-*/
+/**
+ * Gestion des couleurs sur les images PNG
+ */
 class Png_color extends Fsb_model
 {
-	/*
-	** Retourne une couleur a partir d'un entier.
-	** Exemple : Png_color::hexa(0xff00cc)
-	*/
+	/**
+	 * Retourne une couleur a partir d'un entier.
+	 *
+	 * @param int $hexa Par exemple 0xff00cc
+	 * @return string
+	 */
 	public static function hexa($hexa)
 	{
 		$red = ($hexa & 0xFF0000) >> 16;
@@ -394,10 +432,12 @@ class Png_color extends Fsb_model
 		return (Png_color::rgb($red, $green, $blue));
 	}
 
-	/*
-	** Retourne une couleur a partir d'une chaine de caractere simulant l'hexadecimal
-	** Exemple : Png_color('ff00cc');
-	*/
+	/**
+	 * Retourne une couleur a partir d'une chaine de caractere simulant l'hexadecimal
+	 *
+	 * @param string $hexa Par exemple ff00cc
+	 * @return string
+	 */
 	public static function hexa_str($str)
 	{
 		$red = hexdec(substr($str, 0, 2));
@@ -406,10 +446,12 @@ class Png_color extends Fsb_model
 		return (Png_color::rgb($red, $green, $blue));
 	}
 
-	/*
-	** Retourne une couleur a partir de son code couleur
-	** Exemple : Png_color::str('red')
-	*/
+	/**
+	 * Retourne une couleur a partir de son code couleur
+	 *
+	 * @param string $hexa Par exemple red
+	 * @return string
+	 */
 	public static function str($color)
 	{
 		$color = strtolower($color);
@@ -434,37 +476,49 @@ class Png_color extends Fsb_model
 		return (Png_color::hexa_str($index));
 	}
 
-	/*
-	** Retourne une couleur a partir des composantes RGB
-	** Exemple : Png_color::rgb(255, 0, 0)
-	*/
+	/**
+	 * Retourne une couleur a partir des composantes RGB
+	 *
+	 * @param int $red Rouge, de 0 a 255
+	 * @param int $green Vert, de 0 a 255
+	 * @param int $blue Bleu, de 0 a 255
+	 * @return string
+	 */
 	public static function rgb($red, $green, $blue)
 	{
 		return (pack('c3', $red, $green, $blue));
 	}
 }
 
-/*
-** Classe permettant l'ajout de formes sur des images.
-** Elle est prevue pour etre etendue par des classes implementants
-** les specifications de formats d'images (GIF, PNG, etc ..)
-*/
+/**
+ * Permet l'ajout de formes sur des images. Prevue pour etre etendue par des classes implementants les specifications d'images.
+ */
 abstract class Image extends Fsb_model
 {
-	// Polices chargees en memoire
+	/**
+	 * Polices chargees en memoire
+	 *
+	 * @var array
+	 */
 	private $fonts = array();
 
-	// Methode abstraite pour ajouter un pixel sur l'image
+	/**
+	 * Ajoute un pixel sur l'image
+	 *
+	 * @param int $x Coordonnee X du pixel
+	 * @param int $y Coordonnee Y du pixel
+	 * @param color $color Couleur du pixel
+	 */
 	abstract public function set_pixel($x, $y, $color);
 
-	/*
-	** Permet la creation de pixel avec taille de bordure
-	** -----
-	** $x ::		Coordonnee X
-	** $y ::		Coordonnee Y
-	** $color ::	Couleur
-	** $size ::		Taille du pixel
-	*/
+	/**
+	 * Permet la creation de pixel avec taille de bordure
+	 *
+	 * @param int $x Coordonnee X du pixel
+	 * @param int $y Coordonnee Y du pixel
+	 * @param color $color Couleur du pixel
+	 * @param int $size Taille du pixel
+	 */
 	public function set_real_pixel($x, $y, $color, $size = 1)
 	{
 		if ($size <= 0)
@@ -493,15 +547,15 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute une ligne sur l'image
-	** -----
-	** $x1 ::		Position X du premier point
-	** $y1 ::		Position Y du premier point
-	** $x2 ::		Position X du second point
-	** $y2 ::		Position Y du second point
-	** $style ::	Style
-	*/
+	/**
+	 * Trace une ligne sur l'image
+	 *
+	 * @param int $x1 Coordonnee X du premier point
+	 * @param int $y1 Coordonnee Y du premier point
+	 * @param int $x2 Coordonnee X du seconde point
+	 * @param int $y2 Coordonnee Y du second point
+	 * @param array $style Styles a appliquer
+	 */
 	public function set_line($x1, $y1, $x2, $y2, $style)
 	{
 		// Information sur le style
@@ -562,7 +616,7 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	public function _set_line($d1, $d2, $iterator, $max, $iterator2, $str1, $str2, $inc1, $inc2, $style)
+	private function _set_line($d1, $d2, $iterator, $max, $iterator2, $str1, $str2, $inc1, $inc2, $style)
 	{
 		// Information sur le style
 		$border_color =		(isset($style['border-color'])) ? $style['border-color'] : Png_color::str('black');
@@ -582,15 +636,15 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un rectangle sur l'image
-	** -----
-	** $x ::		Coordonnee $x du coin superieur gauche du rectangle
-	** $y ::		Coordonnee $y du coin superieur gauche du rectangle
-	** $width ::	Largeur du rectangle
-	** $height ::	Hauteur du rectangle
-	** $style ::	Style
-	*/
+	/**
+	 * Trace un rectangle sur l'image
+	 *
+	 * @param int $x Position X du point haut gauche du rectangle
+	 * @param int $y Position Y du point haut gauche du rectangle
+	 * @param int $width Largeur
+	 * @param int $height Hauteur
+	 * @param array $style Styles a appliquer
+	 */
 	public function set_rectangle($x, $y, $width, $height, $style = array())
 	{
 		// Information sur le style
@@ -632,14 +686,14 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un cercle sur l'image
-	** -----
-	** $x ::		Coordonnee X du centre
-	** $y ::		Coordonnee Y du centre
-	** $r ::		Rayon du cercle
-	** $style ::	Style
-	*/
+	/**
+	 * Trace un cercle sur l'image
+	 *
+	 * @param int $x Position X du centre du cercle
+	 * @param int $y Position Y du centre du cercle
+	 * @param int $r Rayon du cercle
+	 * @param array $style Styles a appliquer
+	 */
 	public function set_circle($x, $y, $r, $style = array())
 	{
 		// Information sur le style
@@ -674,18 +728,18 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Ecrit du texte sur l'image
-	** -----
-	** $str ::		Chaine de caractere
-	** $x ::		Position X du texte
-	** $y ::		Position Y du texte
-	** $font ::		Police utilisee
-	** $size ::		Taille du texte
-	** $color ::	Couleur du texte
-	** $italic ::	Texte en italique
-	** $random_h ::	Coefficient pour modifier aleatoirement la hauteur
-	*/
+	/**
+	 * Ecrit du texte sur l'image
+	 *
+	 * @param string $str Chaine de caractere
+	 * @param int $x Coordonnee X du debut du texte
+	 * @param int $y Coordonnee Y du debut du texte
+	 * @param string $font Police
+	 * @param int $size Taille
+	 * @param string $color Couleur
+	 * @param bool $italic Texte en italique
+	 * @param int $random_h Coefficient pour modifier aleatoirement la hauteur
+	 */
 	public function write($str, $x, $y, $font, $size, $color, $italic = FALSE, $random_h = 0)
 	{
 		// Informations sur la police
@@ -709,10 +763,11 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	public function _write($info, $x, $y, $pixel_size, $color, $italic = FALSE)
+	private function _write($info, $x, $y, $pixel_size, $color, $italic = FALSE)
 	{
 		// Affichage du caractere
-		$offset_y = $y;$k = 0;
+		$offset_y = $y;
+		$k = 0;
 		foreach ($info AS $r => $row)
 		{
 			$offset_x = $x;
@@ -734,12 +789,12 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un effet de blur sur l'image (fonction assez lente)
-	** Tire du tutorial http://www.xgarreau.org/aide/devel/gd/libgd4.php
-	** ----
-	** $index ::		Coefficient du blur
-	*/
+	/**
+	 * Ajoute un effet de blur sur l'image (fonction assez lente)
+	 * @link http://www.xgarreau.org/aide/devel/gd/libgd4.php
+	 *
+	 * @param int $index Coefficient du blur
+	 */
 	public function filter_blur($index = 1)
 	{
 		$coeffs = array (
@@ -779,11 +834,11 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	/*
-	** Charge la police en memoire
-	** -----
-	** $path ::		Chemin vers la police
-	*/
+	/**
+	 * Charge la police en memoire
+	 *
+	 * @param string $path Chemin vers la police
+	 */
 	private function load_font($path)
 	{
 		$i = 0;

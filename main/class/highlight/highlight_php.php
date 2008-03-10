@@ -10,17 +10,49 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Colorateur syntaxique PHP
-*/
+/**
+ * Colorateur syntaxique PHP
+ */
 class Highlight_php extends Highlight
 {
+	/**
+	 * Liste des fonctions speciales en PHP
+	 *
+	 * @var array
+	 */
 	private static $php_special_functions = array();
+	
+	/**
+	 * Liste des fonctions internes a PHP
+	 *
+	 * @var array
+	 */
 	public static $php_internal_functions = array();
+	
+	/**
+	 * Liste des variables speciales en PHP
+	 *
+	 * @var array
+	 */
 	private static $php_special_vars = array();
+	
+	/**
+	 * Liste des prototypes de fonctions en PHP
+	 *
+	 * @var array
+	 */
 	private static $lib_php = array();
+	
+	/**
+	 * Classe deja initialisee
+	 *
+	 * @var bool
+	 */
 	private static $init = FALSE;
 
+	/**
+	 * Constructeur, initialise une seule fois la classe
+	 */
 	public function __construct()
 	{
 		if (self::$init)
@@ -40,9 +72,10 @@ class Highlight_php extends Highlight
 		unset($defined_functions);
 
 		// On charge la librairie des fonctions PHP
-		if (file_exists(ROOT . 'main/class/highlight/keywords/lib_php_prototype.txt'))
+		$prototype_path = ROOT . 'main/class/highlight/keywords/lib_php_prototype.txt';
+		if (file_exists($prototype_path))
 		{
-			$lib_php = (array) @explode("\n", gzuncompress(file_get_contents(ROOT . 'main/class/highlight/keywords/lib_php_prototype.txt')));
+			$lib_php = (array) @explode("\n", gzuncompress(file_get_contents($prototype_path)));
 			self::$lib_php = array();
 			foreach ($lib_php AS $line)
 			{
@@ -56,9 +89,9 @@ class Highlight_php extends Highlight
 		}
 	}
 
-	/*
-	** Parse une chaine de caractere PHP
-	*/
+	/**
+	 * @see Highlight::_parse()
+	 */
 	protected function _parse($str)
 	{
 		$len = strlen($str);

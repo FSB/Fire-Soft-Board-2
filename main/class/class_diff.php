@@ -10,34 +10,79 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet de comparer deux chaines de caracteres lignes par ligne, afin de trouver les differences.
-*/
+/**
+ * Permet de comparer deux chaines de caracteres lignes par ligne, afin de trouver les differences
+ */
 class Diff extends Fsb_model
 {
-	// Contenu des deux chaines
-	private $data1, $data2;
+	/**
+	 * Contenu de la premiere chaine
+	 *
+	 * @var string
+	 */
+	private $data1;
+	
+	/**
+	 * Contenu de la seconde chaine
+	 *
+	 * @var string
+	 */
+	private $data2;
 
-	// Longueur des deux chaines
-	private $count1, $count2;
+	/**
+	 * Longueur de la premiere chaine
+	 *
+	 * @var int
+	 */
+	private $count1;
+	
+	/**
+	 * Longueur de la seconde chaine
+	 *
+	 * @var int
+	 */
+	private $count2;
 
-	// Lignes stoquees avec leurs informations
+	/**
+	 * Informations sur les lignes du DIFF
+	 *
+	 * @var array
+	 */
 	private $stack = array();
 
-	// Liste des differences entre les deux fichiers
+	/**
+	 * Liste des differences entre les deux chaines
+	 *
+	 * @var array
+	 */
 	public $entries = array();
 
+	/**
+	 * Aucune difference entre les deux chaine
+	 */
 	const EQUAL = '=';
+	
+	/**
+	 * Ajout de code
+	 */
 	const ADD = '+';
+	
+	/**
+	 * Suppression de code
+	 */
 	const DROP = '-';
+	
+	/**
+	 * Remplacement de code
+	 */
 	const CHANGE = '~';
 
-	/*
-	** Charge a partir de chaines de caracteres
-	** -----
-	** $str1 ::		Code a gauche
-	** $str2 ::		Code a droite
-	*/
+	/**
+	 * Charge en memoire les deux chaines et lance la creation du diff
+	 *
+	 * @param string $str1 Premiere chaine
+	 * @param string $str2 Seconde chaine
+	 */
 	public function load_content($str1, $str2)
 	{
 		$this->data1 = preg_split('#(\r\n|\n|\r)#', $str1);
@@ -48,15 +93,14 @@ class Diff extends Fsb_model
 		$this->parse();
 	}
 
-	/*
-	** Charge a partir de noms de fichiers.
-	** Pour cette methode un cache implemente, il est fortement recommande de l'utiliser, les gains de performances
-	** sont assez enormes sur les gros fichiers.
-	** -----
-	** $src ::			Fichier a gauche
-	** $dst ::			Fichier a droite
-	** $use_cache ::	Si on met les fichiers en cache
-	*/
+	/**
+	 * Charge en memoire le contenu de deux fichiers et lance la creation du diff.
+	 * Cette methode permet la mise en cache des donnees (chose conseille puisque le calcul du DIFF est assez lourd)
+	 *
+	 * @param string $src Premier fichier
+	 * @param string $dst Second fichier
+	 * @param bool $use_cache Utilisation du cache
+	 */
 	public function load_file($src, $dst, $use_cache = FALSE)
 	{
 		// Date de derniere modification des fichiers, utile pour savoir si on compte faire une remise en cache
@@ -98,10 +142,10 @@ class Diff extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les deux textes, afin de recuperer les differences
-	*/
-	public function parse()
+	/**
+	 * Generation du DIFF
+	 */
+	private function parse()
 	{
 		// Creation d'une matrice schematisant les differences des fichiers
  		$matrix = array();
@@ -190,21 +234,23 @@ class Diff extends Fsb_model
 		}
 	}
 
-	/*
-	** Compresse une ligne de tableau pour eviter d'allouer trop de memoires dans la matrice
-	** -----
-	** $row ::		Ligne de matrice
-	*/
+	/**
+	 * Compresse une ligne de tableau pour eviter d'allouer trop de memoires dans la matrice
+	 *
+	 * @param array $row Ligne de matrice
+	 * @return string Ligne de matrice compressee
+	 */
 	private function memory_put($row)
 	{
 		return (implode('-', $row));
 	}
 
-	/*
-	** Decompresse une ligne compressee de la matrice
-	** -----
-	** $row ::		Ligne de matrice
-	*/
+	/**
+	 * Decompresse une ligne compressee de la matrice
+	 *
+	 * @param string $row Ligne de matrice
+	 * @return array Ligne de matrice decompressee
+	 */
 	private function memory_get($row)
 	{
 		$result = array();
@@ -217,11 +263,11 @@ class Diff extends Fsb_model
 		return ($result);
 	}
 
-	/*
-	** Ajoute une entree si la ligne reste inchangee
-	** -----
-	** $code ::		Code inchange
-	*/
+	/**
+	 * Ajoute une entree si la ligne reste inchangee
+	 *
+	 * @param string $code Code inchange
+	 */
 	private function match(&$code)
 	{
 		if (count($code) > 0)
@@ -237,12 +283,12 @@ class Diff extends Fsb_model
 		$code = array();
 	}
 
-	/*
-	** Ajoute une entree en cas de modifications entre les deux codes
-	** -----
-	** $src ::		Code du fichier original
-	** $dst ::		Code du second fichier
-	*/
+	/**
+	 * Ajoute une entree en cas de modifications entre les deux codes
+	 *
+	 * @param string $src Code original
+	 * @param string $dst Code modifie
+	 */
 	private function unmatch(&$src, &$dst)
 	{
 		$s1 = count($src);
@@ -279,11 +325,11 @@ class Diff extends Fsb_model
 		$src = $dst = array();
 	}
 
-	/*
-	** Affiche le resultat du diff en dur
-	** -----
-	** $wrap ::		Wrap automatique
-	*/
+	/**
+	 * Affiche le resultat du diff en dur
+	 *
+	 * @param bool $wrap Si TRUE, revient a la ligne en cas de ligne trop longue
+	 */
 	public function output($wrap = TRUE)
 	{
 		$style_equal = 'width: 50%; background-color: #F3F3F3;';
@@ -325,12 +371,13 @@ class Diff extends Fsb_model
 		echo '</table>';
 	}
 
-	/*
-	** Formate l'affichage du diff
-	** -----
-	** $str ::		Chaine de caractere
-	** $wrap ::		Retour a la ligne a la fin du block
-	*/
+	/**
+	 * Formate l'affichage du diff
+	 *
+	 * @param string $str
+	 * @param bool $wrap Retour a la ligne a la fin du block
+	 * @return string
+	 */
 	public function format($str, $wrap)
 	{
 		if ($wrap)

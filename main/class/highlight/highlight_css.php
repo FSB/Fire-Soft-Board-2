@@ -10,13 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Colorateur syntaxique CSS
-*/
+/**
+ * Colorateur syntaxique CSS
+ */
 class Highlight_css extends Highlight
 {
-	private static $init = array();
+	/**
+	 * Classe deja initialisee
+	 *
+	 * @var bool
+	 */
+	private static $init = FALSE;
 
+	/**
+	 * Constructeur, initialise une seule fois la classe
+	 */
 	public function __construct()
 	{
 		if (self::$init)
@@ -26,9 +34,9 @@ class Highlight_css extends Highlight
 		self::$init = TRUE;
 	}
 
-	/*
-	** Parse une chaine de caractere CSS
-	*/
+	/**
+	 * @see Highlight::_parse()
+	 */
 	protected function _parse($str)
 	{
 		$len = strlen($str);

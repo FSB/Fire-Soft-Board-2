@@ -10,14 +10,28 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Colorateur syntaxique HTML
-*/
+/**
+ * Colorateur syntaxique HTML
+ */
 class Highlight_html extends Highlight
 {
+	/**
+	 * Tags HTML speciaux
+	 *
+	 * @var unknown_type
+	 */
 	private static $html_tags = array();
-	private static $init = array();
+	
+	/**
+	 * Classe deja initialisee
+	 *
+	 * @var bool
+	 */
+	private static $init = FALSE;
 
+	/**
+	 * Constructeur, initialise une seule fois la classe
+	 */
 	public function __construct()
 	{
 		if (self::$init)
@@ -31,9 +45,9 @@ class Highlight_html extends Highlight
 		self::$html_tags = $this->get_conf($file_content, 'TEMPLATE');
 	}
 
-	/*
-	** Parse une chaine de caractere HTML
-	*/
+	/**
+	 * @see Highlight::_parse()
+	 */
 	protected function _parse($str)
 	{
 		$str = str_replace('"', '&quot;', $str);
@@ -47,9 +61,12 @@ class Highlight_html extends Highlight
 		return ($str);
 	}
 
-	/*
-	** Verifie si le tag HTML n'est pas un tag special
-	*/
+	/**
+	 * Verifie si le tag HTML n'est pas un tag special
+	 *
+	 * @param array $match Argument cree par preg_replace_callback()
+	 * @return string
+	 */
 	private function _parse_html_tags($match)
 	{
 		if (in_array(strtolower($match[2]), self::$html_tags))

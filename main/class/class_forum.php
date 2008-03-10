@@ -10,20 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe de gestion des forums.
-** Utilise la classe Sql_interval pour la representation intervallaire des forums.
-*/
+/**
+ * Classe de gestion des forums.
+ * La modelisation des forums dans la base de donnee passe par la classe Sql_interval
+ *
+ */
 class Forum extends Fsb_model
 {
-	/*
-	** Affiche un forum
-	** -----
-	** $forum ::		Donnees du forum a afficher
-	** $type ::			forum ou subforum
-	** $current_level ::	Determine le niveau actuel au niveau de la hierarchie
-	** $is_read ::		Determine si le forum comporte des sujets non lus ou pas
-	*/
+	/**
+	 * Affiche un forum
+	 *
+	 * @param array $forum Donnees du forum a afficher
+	 * @param string $type forum ou subforum
+	 * @param int $current_level Determine le niveau actuel au niveau de la hierarchie
+	 * @param bool $is_read Determine si le forum comporte des sujets non lus ou pas
+	 */
 	public static function display(&$forum, $type, $current_level, $is_read = TRUE)
 	{
 		// Decalage en cas d'affichage des forums en arbre
@@ -87,16 +88,12 @@ class Forum extends Fsb_model
 		}
 	}
 
-	/*
-	** Marque les sujets d'un / plusieurs forums comme lu
-	** -----
-	** $type ::		Peut prendre les valeurs :
-	**					all =>		marquer tous les forums comme etant lus
-	**					cat =>		marquer les forums d'une categorie comme etant lus
-	**					forum =>	marquer un (ou plusieurs) forum comme etant lu
-	**					topic =>	marquer un (ou plusieurs sujets comme etant lu)
-	** $id ::		ID de forum ou de categorie
-	*/
+	/**
+	 * Marque les sujets d'un / plusieurs forums comme lu
+	 *
+	 * @param string $type Peut prendre les valeurs all, cat, forum ou topic
+	 * @param int $id ID du forum, de la categorie ou du sujet
+	 */
 	public static function markread($type, $id = NULL)
 	{
 		if (!Fsb::$session->is_logged())
@@ -208,11 +205,12 @@ class Forum extends Fsb_model
 		Fsb::$db->query_multi_insert();
 	}
 
-	/*
-	** Recupere les forums avec une jointure sur le dernier message
-	** -----
-	** $where ::		Condition sur la requete
-	*/
+	/**
+	 * Recupere les forums avec une jointure sur le dernier message
+	 *
+	 * @param string $where Condition sur la requete
+	 * @return resource Resultat SQL
+	 */
 	public static function query($where = '')
 	{
 		$sql = 'SELECT f.*, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color
@@ -227,10 +225,11 @@ class Forum extends Fsb_model
 		return (Fsb::$db->query($sql));
 	}
 
-	/*
-	** Renvoie un tableau avec comme clef l'ID du forum en en valeur
-	** le nombre de sujets non lus.
-	*/
+	/**
+	 * Recupere les sujets non lus
+	 *
+	 * @return array Tableau avec en clef l'ID du forum et en valeur le nombre de sujets non lus
+	 */
 	public static function get_topics_read()
 	{
 		// Cette requete recupere pour chaque forum, le nombre de messages non lus.
@@ -306,14 +305,14 @@ class Forum extends Fsb_model
 		return ($forum_topic_read);
 	}
 
-	/*
-	** Retourne un tableau de navigation pour le forum
-	** -----
-	** $f_id ::		ID du forum
-	** $args_ary ::		Tableau aditionel pour ajouter des liens en fin de navigation
-	** $obj ::			Objet de la page courante, afin d'ajouter a la propriete $obj->tab_title
-	**					le dernier element ajoute a la navigation
-	*/
+	/**
+	 * Recupere un tableaude navigation pour le forum
+	 *
+	 * @param unknown_type $f_id ID du forum
+	 * @param array $args_ary Tableau aditionel pour ajouter des liens en fin de navigation
+	 * @param mixed $obj Objet de la page courante, afin d'ajouter a la propriete $obj->tab_title le dernier element ajoute a la navigation
+	 * @return array
+	 */
 	public static function nav($f_id, $args_ary, &$obj)
 	{
 		$nav = array();
@@ -345,13 +344,13 @@ class Forum extends Fsb_model
 		return ($nav);
 	}
 
-	/*
-	** Retourne les ID des forums autorises.
-	** Cette fonction se base sur le cache de la session.
-	** -----
-	** $auths :: Contient dans un tableau la liste des droits 
-	**				necessaires pour que le forum soit ajoute a la liste
-	*/
+	/**
+	 * Obtiens les ID des forums autorises.
+	 * Cette fonction se base sur le cache de la session.
+	 *
+	 * @param array $auths Contient dans un tableau la liste des droits necessaires pour que le forum soit ajoute a la liste
+	 * @return array Tableau d'IDs de forums
+	 */
 	public static function get_authorized($auths)
 	{
 		$access = (isset(Fsb::$session->data['s_forum_access'])) ? array_flip(explode(',', Fsb::$session->data['s_forum_access'])) : array();
@@ -382,12 +381,13 @@ class Forum extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Ajoute un forum dans la base de donnee
-	** -----
-	** $parent ::	Parent du forum
-	** $var ::	Tableau de donnees a inserer dans le forum
-	*/
+	/**
+	 * Ajoute un forum dans la base de donnee
+	 *
+	 * @param int $parent Parent du forum
+	 * @param array $var Tableau de donnees a inserer dans le forum
+	 * @return int ID du nouveau forum
+	 */
 	public static function add($parent, $var)
 	{	
 		$last_id = Sql_interval::put($parent, $var);
@@ -395,13 +395,13 @@ class Forum extends Fsb_model
 		return ($last_id);
 	}
 
-	/*
-	** Met a jour un forum.
-	** ------
-	** $id ::		ID du forum
-	** $parent ::	Nouveau parent du forum
-	** $var ::		Tableau de donnees du forum, a mettre a jour
-	*/
+	/**
+	 * Met a jour un forum.
+	 *
+	 * @param int $id ID du forum
+	 * @param int $parent Nouveau parent du forum
+	 * @param array $var Tableau de donnees du forum, a mettre a jour
+	 */
 	public static function update($id, $parent, $var)
 	{
 		$sql = 'SELECT f_parent
@@ -418,12 +418,13 @@ class Forum extends Fsb_model
 		}
 	}
 
-	/*
-	** Permet de deplacer un forum vers le haut ou vers le bas
-	** -----
-	** $id ::		ID du forum
-	** $direction ::	Direction du mouvement, 1 pour le bas et -1 pour le haut
-	*/
+	/**
+	 * Permet de deplacer un forum vers le haut ou vers le bas
+	 *
+	 * @param int $id ID du forum
+	 * @param int $direction Direction du mouvement, 1 pour le bas et -1 pour le haut
+	 * @return string Nom du forum deplace
+	 */
 	public static function move($id, $direction)
 	{
 		Sql_interval::move($id, $direction);
@@ -435,12 +436,11 @@ class Forum extends Fsb_model
 		return ($f_name);
 	}
 
-	/*
-	** Supprime un forum, ses sous forums, ainsi que l'ensemble des donnees
-	** liees a ce forum (sujets, messages, etc ...).
-	** -----
-	** $id ::		ID du forum a supprimer
-	*/
+	/**
+	 * Supprime un forum, ses sous forums, ainsi que l'ensemble des donnees liees a ce forum
+	 *
+	 * @param int $id ID du forum a supprimer
+	 */
 	public static function delete($id)
 	{
 		// On recupere les enfants du forum
@@ -503,11 +503,11 @@ class Forum extends Fsb_model
 		}
 	}
 
-	/*
-	** Delestage automatique des sujets des forums
-	** -----
-	** $f_id ::		ID de forum si on souhaite delester un forum particulier
-	*/
+	/**
+	 * Delestage automatique des sujets des forums
+	 *
+	 * @param int $f_id ID de forum si on souhaite delester un forum particulier
+	 */
 	public static function auto_prune($f_id = NULL)
 	{
 		// On recupere les ID des sujets a delester
@@ -561,12 +561,12 @@ class Forum extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute des permissions a un forum
-	** ------
-	** $f_id ::		ID du forum
-	** $auth_id ::	ID du forum dont on veut les permissions
-	*/
+	/**
+	 * Ajoute des permissions par defaut a un forum
+	 *
+	 * @param int $f_id ID du forum
+	 * @param int $auth_id ID du forum dont on veut les permissions
+	 */
 	public static function set_default_auth($f_id, $auth_id)
 	{
 		// On recupere les permissions
@@ -587,12 +587,12 @@ class Forum extends Fsb_model
 		Fsb::$db->destroy_cache('groups_auth_');
 	}
 
-	/*
-	** Recupere une liste des moderateurs pour chaque forum et les affiche
-	** -----
-	** $f_id ::			ID du forum en question
-	** $limit ::		Si $limit vaut TRUE il s'agira d'une recherche de moderateur sur ce forum la uniquement
-	*/
+	/**
+	 * Recupere une liste des moderateurs pour chaque forum et les affiche
+	 *
+	 * @param int $f_id ID du forum en question
+	 * @param bool $limit Si $limit vaut TRUE il s'agira d'une recherche de moderateur sur ce forum la uniquement
+	 */
 	public static function get_moderators($f_id, $limit = FALSE)
 	{
 		static $modo_list = NULL;

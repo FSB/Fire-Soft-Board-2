@@ -10,9 +10,9 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion du cache FTP
-*/
+/**
+ * Gestion du cache avec le systeme de fichier
+ */
 class Cache_ftp extends Cache
 {
 	/**

@@ -10,16 +10,42 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Colorateur syntaxique SQL
-*/
+/**
+ * Colorateur syntaxique SQL
+ */
 class Highlight_sql extends Highlight
 {
+	/**
+	 * Mots clefs importants SQL
+	 *
+	 * @var array
+	 */
 	private static $sql_keywords = array();
+	
+	/**
+	 * Fonctions SQL
+	 *
+	 * @var array
+	 */
 	private static $sql_functions = array();
+	
+	/**
+	 * Operateurs SQL
+	 *
+	 * @var array
+	 */
 	private static $sql_operator = array();
+	
+	/**
+	 * Classe deja initialisee
+	 *
+	 * @var bool
+	 */
 	private static $init = array();
 
+	/**
+	 * Constructeur, initialise une seule fois la classe
+	 */
 	public function __construct()
 	{
 		if (self::$init)
@@ -35,9 +61,9 @@ class Highlight_sql extends Highlight
 		self::$sql_operator = $this->get_conf($file_content, 'OPERATORS');
 	}
 
-	/*
-	** Parse une chaine de caractere SQL
-	*/
+	/**
+	 * @see Highlight::_parse()
+	 */
 	protected function _parse($str)
 	{
 		$len = strlen($str);
@@ -73,6 +99,13 @@ class Highlight_sql extends Highlight
 		return ($result);
 	}
 
+	/**
+	 * Parse une chaine de caractere SQL
+	 *
+	 * @param string $c Caractere courant
+	 * @param string $tmp
+	 * @return string
+	 */
 	private function _sql_string($c, &$tmp)
 	{
 		$result = '';

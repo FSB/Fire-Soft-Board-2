@@ -10,21 +10,20 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Affichage de messages sur le forum (erreurs, confirmations, etc..)
-*/
+/**
+ * Gestion des affichages sur le forum (erreur, confirmation, etc.)
+ *
+ */
 class Display extends Fsb_model
 {
-	/*
-	** Handler lie a trigger_error(). Deux constantes liees au forum ont ete crees :
-	**	FSB_ERROR pour les messages d'erreur critique
-	**	FSB_MESSAGE pour les messages d'information
-	** -----
-	** $errno ::	Code de l'erreur
-	** $errstr ::	Nom de l'erreur
-	** $errfile ::	Fichier ou l'erreur se situe
-	** $errline ::	Ligne ou l'erreur se situe
-	*/
+	/**
+	 * Fonction de callback appelle par trigger_error()
+	 *
+	 * @param int $errno Code d'erreur
+	 * @param string $errstr Contenu de l'erreur
+	 * @param string $errfile Fichier d'erreur
+	 * @param int $errline Ligne d'erreur
+	 */
 	public static function error_handler($errno, $errstr, $errfile, $errline)
 	{
 		if (!(error_reporting() & $errno))
@@ -142,22 +141,14 @@ class Display extends Fsb_model
 		}
 	}
 
-
-	/*
-	** Affiche un simple message d'information, suivit d'un message de redirection
-	** Cette fonction prend en compte la configuration de redirection du membre, c'est a
-	** dire que dans son profil le membre peut definir s'il souhaite etre redirige apres 
-	** les messages d'informations
-	** -----
-	** $1 ::		Message a afficher
-	** $2 ::		URL de redirection
-	** $3 ::		Nom de la page de la frame
-	** $... ::		La suite des arguments doit etre une repetition $2, $3. Par exemple :
-	**					Display::message('message', 'url', 'frame', 'url', 'frame', 'url', 'frame');
-	*/
-	public static function message()
+	/**
+	 * Affiche un message d'information, suivit potentiellement d'un message de redirection.
+	 * 
+	 * @param string $message Message a afficher
+	 */
+	public static function message($message)
 	{
-		$str = func_get_arg(0);
+		$str = $message;
 		$str_add = '';
 		if (func_num_args() > 1)
 		{
@@ -193,13 +184,13 @@ class Display extends Fsb_model
 		trigger_error(((Fsb::$session->lang($str)) ? Fsb::$session->lang($str) : $str) . $content . $str_add, FSB_MESSAGE);
 	}
 
-	/*
-	** Affiche une boite de confirmation oui / non
-	** -----
-	** $str ::	Question de confirmation
-	** $url ::	URL de redirection de la confirmation
-	** $hidden ::	Tableau de champs HIDDEN a passer au formulaire
-	*/
+	/**
+	 * Affiche une boite de confirmation oui / non
+	 *
+	 * @param string $str Question de confirmation
+	 * @param string $url URL de redirection de la confirmation
+	 * @param array $hidden Tableau de champs HIDDEN a passer au formulaire
+	 */
 	public static function confirmation($str, $url, $hidden = array())
 	{		
 		Fsb::$tpl->set_file('confirmation.html');
@@ -245,9 +236,11 @@ class Display extends Fsb_model
 		exit;
 	}
 
-	/*
-	** Affiche un formulaire pour entrer les identifiants FTP
-	*/
+	/**
+	 * Affiche un formulaire pour entrer les identifiants FTP
+	 *
+	 * @return array Informations entrees pour la connexion FTP
+	 */
 	public static function check_ftp()
 	{
 		// Si on a entre les identifiants dans la configuration
@@ -350,12 +343,12 @@ class Display extends Fsb_model
 		exit;
 	}
 
-	/*
-	** Genere l'affichage des FSBcodes
-	** -----
-	** $in_sig ::		TRUE si on est dans l'edition de signature
-	** $where ::		Clause WHERE alternative
-	*/
+	/**
+	 * Genere l'affichage des FSBcodes
+	 *
+	 * @param bool $in_sig TRUE si on est dans l'edition de signature
+	 * @param string $where Clause WHERE alternative
+	 */
 	public static function fsbcode($in_sig = FALSE, $where = NULL)
 	{
 		if ($where === NULL)
@@ -432,9 +425,9 @@ class Display extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Genere l'affichage des smilies
-	*/
+	/**
+	 * Genere l'affichage des smilies
+	 */
 	public static function smilies()
 	{
 		$sql = 'SELECT sc.*, s.*
@@ -471,14 +464,14 @@ class Display extends Fsb_model
 		));
 	}
 
-	/*
-	** Verifie si le membre a acces au forum protege par un mot de passe
-	** Si ce n'est pas le cas on affiche le formulaire du mot de passe
-	** -----
-	** $f_id ::		ID du forum
-	** $password ::	Mot de passe du forum
-	** $action ::	Action pour le formulaire
-	*/
+	/**
+	 * Verifie si le membre a acces au forum protege par un mot de passe, et affiche ou non le formulaire
+	 *
+	 * @param int $f_id ID du forum
+	 * @param string $password Mot de passe du forum
+	 * @param string $action Action pour le formulaire
+	 * @return bool Acces autorise ou non
+	 */
 	public static function forum_password($f_id, $password, $action)
 	{
 		if (!Fsb::$session->data['s_forum_access'] || !in_array($f_id, (array)explode(',', Fsb::$session->data['s_forum_access'])))
@@ -516,14 +509,14 @@ class Display extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un systeme d'onglet sur une page
-	** -----
-	** $module_list ::		Liste des onglets
-	** $current_module ::	Onglet selectionne
-	** $url ::				URL du lien
-	** $prefix_lang ::		Prefixe pour la clef de langue
-	*/
+	/**
+	 * Ajoute un systeme d'onglet sur une page de l'administration
+	 *
+	 * @param array $module_list Liste des onglets
+	 * @param string $current_module Onglet selectionne
+	 * @param string $url URL du lien
+	 * @param string $prefix_lang Prefixe pour la clef de langue
+	 */
 	public static function header_module($module_list, $current_module, $url, $prefix_lang = '')
 	{
 		$width = floor(100 / count($module_list));
@@ -539,11 +532,11 @@ class Display extends Fsb_model
 		Fsb::$tpl->set_switch('use_module_page');
 	}
 
-	/*
-	** Header pour la messagerie privee
-	** -----
-	** $box ::	Boite courante
-	*/
+	/**
+	 * Affiche le header de la messagerie prive
+	 *
+	 * @param string $box Boite courante
+	 */
 	public static function header_mp($box)
 	{
 		Fsb::$tpl->set_switch('show_mp_header');

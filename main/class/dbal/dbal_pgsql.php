@@ -10,25 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe pour postgreSQL 8
-*/
+/**
+ * Abstraction pour PostGreSQL
+ */
 class Dbal_pgsql extends Dbal
 {
-	// Dernieres requete pgsql executee
+	/**
+	 * Derniere requete executee
+	 *
+	 * @var string
+	 */
 	private $last_query = '';
 
-	/*
-	** Constructeur de la classe Sql
-	** Etablit une connexion
-	** -----
-	** $server ::		Adresse du serveur MySQL
-	** $login ::		Login d'acces MySQL
-	** $pass ::			Mot de passe associe au login
-	** $db ::			Nom de la base de donnee a selectionner
-	** $port ::			Port de connexion
-	** $use_cache ::	Utilisation du cache SQL ?
-	*/
+	/**
+	 * @see Dbal::factory()
+	 */
 	public function  __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
 	{
 		$this->use_cache = $use_cache;
@@ -56,14 +52,9 @@ class Dbal_pgsql extends Dbal
 		$this->can_use_truncate = TRUE;
 	}
 
-	/*
-	** Execute la requete SQL et renvoie le resultat
-	** -----
-	** $sql ::		Requete a executer
-	** $buffer ::	Si TRUE, le resultat est bufferise. Utiliser FALSE pour les
-	**				requetes ne renvoyant pas explicitement de resultat (UPDATE, DELETE,
-	**				INSERT, etc ...)
-	*/
+	/**
+	 * @see Dbal::_query()
+	 */
 	public function _query($sql, $buffer = TRUE)
 	{
 		// Gestion des limites de requetes
@@ -82,20 +73,18 @@ class Dbal_pgsql extends Dbal
 		return ($result);
 	}
 	
-	/*
-	** Simple requete n'affichant pas directement l'erreur
-	** -----
-	** $sql ::		Requete a executer
-	*/
+	/**
+	 * @see Dbal::simple_query()
+	 */
 	public function simple_query($sql)
 	{
 		$this->last_query = $sql;
 		return (@pg_exec($this->id, $sql));
 	}
 
-	/*
-	** Voir parent::row()
-	*/
+	/**
+	 * @see Dbal::_row()
+	 */
 	public function _row($result, $function = 'assoc')
 	{
 		switch ($function)
@@ -115,9 +104,9 @@ class Dbal_pgsql extends Dbal
 		return (pg_fetch_array($result, NULL, $flag));
 	}
 
-	/*
-	** Voir parent::free()
-	*/
+	/**
+	 * @see Dbal::_free()
+	 */
 	public function _free($result)
 	{
 		if (!isset($this->cache_query[$result])	&& is_resource($result))
@@ -126,10 +115,9 @@ class Dbal_pgsql extends Dbal
 		}
 	}
 
-	/*
-	** Retourne la derniere ID apres un INSERT en cas d'incrementation automatique.
-	** Pour postgresql nous allons piocher ce numero directement dans la sequence.
-	*/
+	/**
+	 * @see Dbal::last_id()
+	 */
 	public function last_id()
 	{
 		$last_id = 0;
@@ -144,54 +132,41 @@ class Dbal_pgsql extends Dbal
 		return ($last_id);
 	}
 
-	/*
-	** Voir parent::count()
-	*/
+	/**
+	 * @see Dbal::_count()
+	 */
 	public function _count($result)
 	{
 		return (pg_numrows($result));
 	}
 
-	/*
-	** Protege un champ de la requete
-	** -----
-	** $str :: Chaine a proteger
-	*/
+	/**
+	 * @see Dbal::escape()
+	 */
 	public function escape($str)
 	{
 		return (pg_escape_string($str));
 	}
 
-	/*
-	** Renvoie le nombre de lignes affectees par une requete
-	** -----
-	** $result ::		Resultat d'une requete
-	*/
+	/**
+	 * @see Dbal::affected_rows()
+	 */
 	public function affected_rows($result)
 	{
 		return (pg_affected_rows($result));
 	}
 
-	/*
-	** Renvoie le type d'un champ
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::field_type()
+	 */
 	public function field_type($result, $field, $table = NULL)
 	{
 		return (pg_field_type($result, (is_int($field)) ? $field : pg_field_num($result, $field)));
 	}
 
-	/*
-	** Renvoie simplement 'string' ou bien 'int' suivant si le champ est un entier
-	** ou une chaine de caracteres.
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::get_field_type()
+	 */
 	public function get_field_type($result, $field, $table = NULL)
 	{
 		$field_type = $this->field_type($result, $field);
@@ -214,11 +189,9 @@ class Dbal_pgsql extends Dbal
 		}
 	}
 
-	/*
-	** Renvoie un tableau contenant la liste des tables
-	** -----
-	** $limit ::	Si TRUE, ne recupere que les tables ayant le meme prefixe que le forum
-	*/
+	/**
+	 * @see Dbal::list_tables()
+	 */
 	public function list_tables($limit = TRUE)
 	{
 		$tables = array();
@@ -237,9 +210,9 @@ class Dbal_pgsql extends Dbal
 		return ($tables);
 	}
 
-	/*
-	** Execute une multi insertion
-	*/
+	/**
+	 * @see Dbal::query_multi_insert()
+	 */
 	public function query_multi_insert()
 	{
 		if ($this->multi_insert)
@@ -252,27 +225,25 @@ class Dbal_pgsql extends Dbal
 		}
 	}
 	
-	/*
-	** Renvoie la derniere erreur MySQL
-	*/
+	/**
+	 * @see Dbal::sql_error()
+	 */
 	public function sql_error()
 	{
 		return (@pg_last_error());
 	}
 
-	/*
-	** Ferme la connexion a la base de donnee
-	*/
+	/**
+	 * @see Dbal::_close()
+	 */
 	public function _close()
 	{
 		pg_close($this->id);
 	}
 
-	/*
-	** Transactions
-	** -----
-	** $type ::		Etat de la transaction (begin, commit ou rollback)
-	*/
+	/**
+	 * @see Dbal::transaction()
+	 */
 	public function transaction($type)
 	{
 		switch ($type)
@@ -303,14 +274,9 @@ class Dbal_pgsql extends Dbal
 		}
 	}
 
-	/*
-	** Supprime des elements de plusieurs tables
-	** (PostgreSQL ne supporte pas les multi suppressions)
-	** -----
-	** $default_table ::		Table par defaut dont on va recuperer les champs
-	** $default_where ::		Clause WHERE pour la recuperation des champs
-	** $delete_join ::			Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
-	*/
+	/**
+	 * @see Dbal::delete_tables()
+	 */
 	public function delete_tables($default_table, $default_where, $delete_join)
 	{
 		foreach ($delete_join AS $field => $tables)
@@ -338,9 +304,9 @@ class Dbal_pgsql extends Dbal
 		}
 	}
 
-	/*
-	** Retourne l'operateur LIKE
-	*/
+	/**
+	 * @see Dbal::like()
+	 */
 	public function like()
 	{
 		return ('ILIKE');

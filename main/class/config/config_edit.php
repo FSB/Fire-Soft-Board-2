@@ -10,40 +10,57 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion d'une configuration dynamique
-*/
+/**
+ * Gestion des champs de configuration dynamiques
+ */
 class Config_edit extends Fsb_model
 {
-	// Tableau de configuration
+	/**
+	 * Tableau de configuration
+	 *
+	 * @var array
+	 */
 	public $cfg = array();
 
-	// Nom de la configuration courante pour la ligne
+	/**
+	 * Nom de la configuration courante lors de l'affichage d'une ligne
+	 *
+	 * @var string
+	 */
 	public $name;
 
-	// Arguments de la ligne courante
+	/**
+	 * Arguments passes a la fonction d'affichage de la ligne courante
+	 *
+	 * @var mixed
+	 */
 	private $args;
 
-	// Prefixe de langue a utiliser
+	/**
+	 * Prefixe de langue
+	 *
+	 * @var string
+	 */
 	private $lang_prefix;
 
-	/*
-	** CONSTRUCTEUR
-	** -----
-	** $current_cfg ::		Tableau de valeur de configuration a utiliser
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param array $cfg Tableau de valeur de configuration a utiliser
+	 * @param string $lang_prefix Prefixe de langue a utiliser
+	 */
 	public function __construct(&$cfg, $lang_prefix)
 	{
 		$this->cfg = $cfg;
 		$this->lang_prefix = $lang_prefix;
 	}
 
-	/*
-	** Ajoute une categorie de configuration
-	** -----
-	* $cat_name ::		Nom de la categorie
-	** $explain ::		Explication de la categorie
-	*/
+	/**
+	 * Ajoute une categorie de configuration
+	 *
+	 * @param string $cat_name Nom de la categorie
+	 * @param string $explain Explication de la categorie
+	 */
 	public function set_cat($cat_name, $explain = NULL)
 	{
 		Fsb::$tpl->set_blocks('cat', array(
@@ -52,13 +69,13 @@ class Config_edit extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche une line de configuration
-	** -----
-	** $name ::		Nom de la configuration
-	** $method ::	Methode de la classe a utiliser
-	** $args ::		Arguments de la methode, sous forme de chaine de caractere (qui sera evaluee)
-	*/
+	/**
+	 * Affiche une ligne de configuration (nom, explication et champ d'entree de valeur)
+	 *
+	 * @param string $name Nom de la configuration
+	 * @param string $method Methode de la classe a utiliser
+	 * @param string $args Arguments de la methode, sous forme de chaine de caractere (qui sera evaluee)
+	 */
 	public function set_line($name, $method, $args)
 	{
 		Fsb::$tpl->set_blocks('cat.line', array());
@@ -82,11 +99,16 @@ class Config_edit extends Fsb_model
 		}
 	}
 
-	/*
-	** Valide des donnees de configuration, a partir d'un champ "type" dans la base de donnee
-	** qui peut prendre par exemple comme valeurs : int, unsigned int, regexp ma_regexp
-	** ------
-	*/
+	/**
+	 * Valide des donnees de configuration a partir d'un champ $type dans la base de donnee.
+	 * Champ pouvant prendre comme valeurs : int, unsigned int, regexp ma_regexp
+	 *
+	 * @param array $ary Tableau de configuration a valider
+	 * @param string $table Nom de la table
+	 * @param string $name Nom de champ contenant la clef de configuration
+	 * @param string $type Nom du champ de typage
+	 * @return array Tableau de configuration traite
+	 */
 	public function validate(&$ary, $table, $name, $type)
 	{
 		$return = array();
@@ -125,13 +147,9 @@ class Config_edit extends Fsb_model
 		return ($return);
 	}
 
-	//
-	// ========== METHODES D'AFFICHAGE DE CONFIGURATION DYNAMIQUE ==========
-	//
-
-	/*
-	** Affiche une ligne avec un oui / non
-	*/
+	/**
+	 * Affiche une ligne avec des bouttons radios
+	 */
 	private function put_boolean()
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_boolean', array(
@@ -151,9 +169,9 @@ class Config_edit extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche une ligne avec le code HTML specifie en parametre
-	*/
+	/**
+	 * Affiche une ligne le code HTML passe en parametre
+	 */
 	private function put_html_code()
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_html_code', array(
@@ -163,9 +181,9 @@ class Config_edit extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche une ligne avec un champ de type "text"
-	*/
+	/**
+	 * Affiche une ligne avec un champ texte
+	 */
 	private function put_text()
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_text', array(
@@ -188,9 +206,9 @@ class Config_edit extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche une ligne avec un champ de type "textarea"
-	*/
+	/**
+	 * Affiche une ligne avec un champ textarea
+	 */
 	private function put_textarea()
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_textarea', array(

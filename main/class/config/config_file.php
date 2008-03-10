@@ -10,24 +10,27 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet de gerer des fichiers de configuration ayant ce format :
-**
-**   [categorie]
-**   clef = valeur
-**   clef2 = une autre valeur
-**
-**   [seconde_categorie]
-**   clef = ma_valeur
-*/
+/**
+ * Gere des fichiers de configuration de type INI (version simplifie).
+ * Exemple de fichier :
+ * <code>
+ *   [categorie]
+ *   clef = valeur
+ *   clef2 = une autre valeur
+ *
+ *   [seconde_categorie]
+ *   clef = ma_valeur
+ * </code>
+ */
 class Config_file extends Fsb_model
 {
-	/*
-	** Lit un fichier de configuration d'un theme
-	** -----
-	** $filename ::		Nom du fichier
-	** $use_cache ::	Activation ou non de la mise en cache du fichier
-	*/
+	/**
+	 * Lit un fichier de configuration
+	 *
+	 * @param string $filename Nom du fichier
+	 * @param bool $use_cache Activation ou non de la mise en cache du fichier
+	 * @return array Tableau de configuration
+	 */
 	public static function read($filename, $use_cache = TRUE)
 	{
 		$hash = 'cfg_' . md5($filename);
@@ -60,12 +63,12 @@ class Config_file extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Ecrit le contenu d'un tableau dans un fichier de configuration
-	** -----
-	** $filename ::	Fichier cible
-	** $ary ::		Tableau a ecrire
-	*/
+	/**
+	 * Ecrit le contenu d'un tableau dans un fichier de configuration
+	 *
+	 * @param string $filename Fichier de destination
+	 * @param array $ary Tableau a ecrire
+	 */
 	public static function write($filename, $ary)
 	{
 		if (!$fd = @fopen($filename, 'w'))

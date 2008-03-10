@@ -15,12 +15,12 @@
 */
 class Group extends Fsb_model
 {
-	/*
-	** Ajoute un groupe
-	** -----
-	** $data ::		Tableau d'informations sur le groupe (g_name, g_description, etc..)
-	** $modo_idx ::	Tableau d'ID des moderateurs
-	*/
+	/**
+	 * Ajoute un groupe
+	 *
+	 * @param array $data Tableau d'informations sur le groupe (g_name, g_description, etc..)
+	 * @param array $modo_idx Tableau d'ID des moderateurs
+	 */
 	public static function add($data, $modo_idx)
 	{
 		Fsb::$db->insert('groups', $data);
@@ -29,13 +29,13 @@ class Group extends Fsb_model
 		Fsb::$db->destroy_cache('groups_');
 	}
 
-	/*
-	** Edite un groupe
-	** -----
-	** $group_id ::	ID du groupe
-	** $data ::		Tableau d'informations sur le groupe (g_name, g_description, etc..)
-	** $modo_idx ::	Tableau d'ID des moderateurs
-	*/
+	/**
+	 * Edite un groupe
+	 *
+	 * @param int $group_id ID du groupe
+	 * @param array $data Tableau d'informations sur le groupe (g_name, g_description, etc..)
+	 * @param array $modo_idx Tableau d'ID des moderateurs
+	 */
 	public static function edit($group_id, $data, $modo_idx)
 	{
 		Fsb::$db->update('groups', $data, 'WHERE g_id = ' . $group_id);
@@ -60,14 +60,14 @@ class Group extends Fsb_model
 		}
 	}
 
-	/*
-	** Mise a jour des moderateurs et des rangs du groupe
-	** -----
-	** $group_id ::		ID du groupe
-	** $group_type ::	Type du groupe
-	** $modo_idx ::		Tableau d'ID des moderateurs
-	** $group_rank ::	ID du rang du groupe
-	*/
+	/**
+	 * Mise a jour des moderateurs et des rangs du groupe
+	 *
+	 * @param int $group_id ID du groupe
+	 * @param int $group_type Type du groupe
+	 * @param array $modo_idx Tableau d'ID des moderateurs
+	 * @param int $group_rank ID du rang du groupe
+	 */
 	public static function update_moderators($group_id, $group_type, $modo_idx, $group_rank)
 	{
 		// Ajout / Suppression de moderateurs dans le grouoe
@@ -103,11 +103,11 @@ class Group extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime un groupe
-	** -----
-	** $group_id ::		ID du groupe
-	*/
+	/**
+	 * Supprime un groupe
+	 *
+	 * @param int $group_id ID du groupe
+	 */
 	public static function delete($group_id)
 	{
 		// Membres du groupe
@@ -140,15 +140,15 @@ class Group extends Fsb_model
 		self::update_auths($idx);
 	}
 
-	/*
-	** Ajoute un ou plusieurs utilisateurs a un groupe
-	** -----
-	** $idx ::				ID ou tableau d'ID de utilisateurs
-	** $group_id ::			ID du groupe
-	** $state ::			Status du membre dans le groupe (GROUP_MODO | GROUP_USER | GROUP_WAIT)
-	** $update ::			Mise a jour ou non des autorisations des membres
-	** $is_single_groupe ::	TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
-	*/
+	/**
+	 * Ajoute un ou plusieurs utilisateurs a un groupe
+	 *
+	 * @param array $idx ID ou tableau d'ID de utilisateurs
+	 * @param int $group_id ID du groupe
+	 * @param int $state Status du membre dans le groupe (GROUP_MODO | GROUP_USER | GROUP_WAIT)
+	 * @param bool $update Mise a jour ou non des autorisations des membres
+	 * @param bool $is_single_groupe TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
+	 */
 	public static function add_users($idx, $group_id, $state, $update = TRUE, $is_single_groupe = FALSE)
 	{
 		if (!is_array($idx))
@@ -187,14 +187,14 @@ class Group extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime une ou plusieurs utilisateurs d'un groupe
-	** -----
-	** $idx ::			ID ou tableau d'ID de utilisateurs
-	** $group_id ::		ID du groupe
-	** $update ::		Mise a jour ou non des autorisations des membres
-	** $delete_modo ::	Suppression des moderateurs du groupe ?
-	*/
+	/**
+	 * Supprime une ou plusieurs utilisateurs d'un groupe
+	 *
+	 * @param array $idx ID ou tableau d'ID de utilisateurs
+	 * @param int $group_id ID du groupe
+	 * @param bool $update Mise a jour ou non des autorisations des membres
+	 * @param bool $delete_modo Suppression des moderateurs du groupe ?
+	 */
 	public static function delete_users($idx, $group_id, $update = TRUE, $delete_modo = TRUE)
 	{
 		if (!is_array($idx))
@@ -214,12 +214,11 @@ class Group extends Fsb_model
 		}
 	}
 
-	/*
-	** Met a jour le niveau d'autorisation des membres, leur groupe par defaut et leur couleur
-	** -----
-	** $idx ::	ID ou tableau d'ID d'utilisateurs a mettre a jour. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum a jour.
-	*/
+	/**
+	 * Met a jour le niveau d'autorisation des membres, leur groupe par defaut et leur couleur
+	 *
+	 * @param array $idx ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met l'ensemble des utilisateurs du forum a jour.
+	 */
 	public static function update_auths($idx = array())
 	{
 		if (!is_array($idx))
@@ -320,12 +319,11 @@ class Group extends Fsb_model
 		Fsb::$db->destroy_cache('groups_auth_');
 	}
 
-	/*
-	** Met a jour le groupe par defaut des membres, s'ils n'appartienent plus a leur ancien groupe par defaut
-	** -----
-	** $idx ::	ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum a jour.
-	*/
+	/**
+	 * Enter description here...
+	 *
+	 * @param array $idx ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met l'ensemble des utilisateurs du forum a jour.
+	 */
 	public static function update_default($idx = array())
 	{
 		if (!is_array($idx))
@@ -343,12 +341,11 @@ class Group extends Fsb_model
 		Fsb::$db->query($sql);
 	}
 
-	/*
-	** Met a jour la couleur des utilisateurs en fonction de leur groupe par defaut
-	** -----
-	** $idx ::	ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met
-	**			l'ensemble des utilisateurs du forum a jour.
-	*/
+	/**
+	 * Met a jour la couleur des utilisateurs en fonction de leur groupe par defaut
+	 *
+	 * @param array $idx ID ou tableau d'ID d'utilisateurs. Si $idx est vide on met l'ensemble des utilisateurs du forum a jour.
+	 */
 	public static function update_colors($idx = array())
 	{
 		if (!is_array($idx))
@@ -391,11 +388,12 @@ class Group extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne TRUE si le groupe est un groupe special
-	** -----
-	** $group_id ::		ID du groupe
-	*/
+	/**
+	 * Verifie si un groupe est special
+	 *
+	 * @param int $group_id ID du groupe
+	 * @return bool
+	 */
 	public static function is_special_group($group_id)
 	{
 		return (in_array($group_id, array(GROUP_SPECIAL_USER, GROUP_SPECIAL_MODO, GROUP_SPECIAL_MODOSUP, GROUP_SPECIAL_ADMIN)) ? TRUE : FALSE);

@@ -10,25 +10,28 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Methode FTP
-*/
+/**
+ * Gestion des fichiers via les fonctions FTP ftp_***()
+ */
 class File_ftp extends File
 {
-	// Ressource de connexion au serveur FTP
+	/**
+	 * Connexion au serveur FTP
+	 *
+	 * @var resource
+	 */
 	private $stream;
 
-	// Methode
+	/**
+	 * Methode de gestion des fichiers
+	 *
+	 * @var string
+	 */
 	public $method = 'ftp';
 
-	/*
-	** Connnexion au serveur
-	** -----
-	** $server ::		Adresse du serveur
-	** $login ::		Login
-	** $password ::		Mot de passe
-	** $port ::			Port
-	*/
+	/**
+	 * @see File::connexion()
+	 */
 	protected function _connexion($server, $login, $password, $port, $path)
 	{
 		// Verification de la gestion de l'extension FTP
@@ -64,44 +67,32 @@ class File_ftp extends File
 		return (TRUE);
 	}
 
-	/*
-	** Change de repertoire courant
-	** -----
-	** $path ::		Nouveau repertoire courant
-	*/
+	/**
+	 * @see File::chdir()
+	 */
 	protected function _chdir($path)
 	{
 		return (@ftp_chdir($this->stream, $path));
 	}
 
-	/*
-	** Renomme un fichier
-	** -----
-	** $from ::		Nom du fichier d'origine
-	** $to ::		Nom du fichier de destination
-	*/
+	/**
+	 * @see File::rename()
+	 */
 	protected function _rename($from, $to)
 	{
 		return (@ftp_rename($this->stream, $from, $to));
 	}
-
-	/*
-	** Change les droits d'un fichier
-	** -----
-	** $file ::		Nom du fichier
-	** $mode ::		Mode du chmod
-	*/
+	/**
+	 * @see File::chmod()
+	 */
 	protected function _chmod($file, $mode)
 	{
 		return (@ftp_chmod($this->stream, $mode, $file));
 	}
 
-	/*
-	** Copie un fichier vers une destination
-	** -----
-	** $src ::		Fichier source
-	** $dst ::		Fichier destination
-	*/
+	/**
+	 * @see File::_put()
+	 */
 	protected function _put($src, $dst)
 	{
 		// Apparament ftp_put() a certains problemes, probablement lies au safe mode.
@@ -113,39 +104,33 @@ class File_ftp extends File
 		return ($result);
 	}
 
-	/*
-	** Supprime un fichier
-	** -----
-	** $filename ::		Nom du fichier a supprimer
-	*/
+	/**
+	 * @see File::unlink()
+	 */
 	protected function _unlink($filename)
 	{
 		ftp_delete($this->stream, $filename);
 	}
 
-	/*
-	** Cree un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::mkdir()
+	 */
 	protected function _mkdir($dir)
 	{
 		return (ftp_mkdir($this->stream, $dir));
 	}
 
-	/*
-	** Supprime un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::rmdir()
+	 */
 	protected function _rmdir($dir)
 	{
 		return (ftp_rmdir($this->stream, $dir));
 	}
 
-	/*
-	** Ferme la connexion
-	*/
+	/**
+	 * @see File::_close()
+	 */
 	protected function _close()
 	{
 		ftp_close($this->stream);

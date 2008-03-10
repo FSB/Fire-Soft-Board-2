@@ -11,29 +11,34 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Manipulation de la librairie GD
-*/
+/**
+ * Manipulation de la librairie GD
+ */
 class Gd extends Fsb_model
 {
-	// Si l'extension GD est chargee
+	/**
+	 * True si l'extension GD est chargee
+	 *
+	 * @var bool
+	 */
 	public $loaded = TRUE;
 
-	/*
-	** CONSTRUCTEUR
-	*/
+	/**
+	 * Constructeur, verifie si l'extension GD est chargee
+	 */
 	public function __construct()
 	{
 		$this->loaded = (PHP_EXTENSION_GD) ? TRUE : FALSE;
 	}
 
-	/*
-	** Verifie si une image est trop grande
-	** -----
-	** $path ::			Chemin de l'image
-	** $max_width ::	Largeur maximale
-	** $max_height ::	Hauteur maximale
-	*/
+	/**
+	 * Verifie si une image est trop grande
+	 *
+	 * @param string $path Chemin de l'image
+	 * @param int $max_width Largeur maximale
+	 * @param int $max_height Hauteur maximale
+	 * @return bool
+	 */
 	public function need_resize($path, $max_width, $max_height)
 	{
 		// Taille de l'image actuelle
@@ -52,13 +57,14 @@ class Gd extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Redimensionne une image
-	** -----
-	** $path ::			Chemin de l'image
-	** $max_width ::	Largeur maximale
-	** $max_height ::	Hauteur maximale
-	*/
+	/**
+	 * Redimensionne une image
+	 *
+	 * @param string $path Chemin de l'image
+	 * @param int $max_width Largeur maximale
+	 * @param int $max_height Hauteur maximale
+	 * @return bool|string False si la redimension echoue, sinon le contenu de la nouvelle image
+	 */
 	public function resize($path, $max_width, $max_height)
 	{
 		// Taille de l'image actuelle
@@ -123,16 +129,17 @@ class Gd extends Fsb_model
 		return ($content);
 	}
  
-	/*
-	** Redimensionement de l'image, avec gestion de la transparence
-	** Un grand merci a Shekral (http://www.fire-soft-board.com/fsb/membre-828.html) pour son aide.
-	** -----
-	** $src ::			Ressource GD de l'image source
-	** $new_width ::	Nouvelle largeur de l'image
-	** $new_height ::	Nouvelle hauteur de l'image
-	** $old_width ::	Ancienne largeur de l'image
-	** $old_height ::	Ancienne hauteur de l'image
-	*/
+	/**
+	 * Redimensionement de l'image, avec gestion de la transparence.
+	 * Un grand merci a Shekral (http://www.fire-soft-board.com/fsb/membre-828.html) pour son aide.
+	 *
+	 * @param resource $src Ressource GD de l'image source
+	 * @param int $new_width Nouvelle largeur de l'image
+	 * @param int $new_height Nouvelle hauteur de l'image
+	 * @param int $old_width Ancienne largeur de l'image
+	 * @param int $old_height Ancienne hauteur de l'image
+	 * @return resource
+	 */
 	private function resize_alpha(&$src, $new_width, $new_height, $old_width, $old_height)
 	{
 		$thumb = imagecreatetruecolor($new_width, $new_height);

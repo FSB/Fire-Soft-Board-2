@@ -10,13 +10,18 @@
 ** +---------------------------------------------------+
 */
 
+/**
+ * Fourni une interface pour la compression et decompression ZIP a partir des classes zipfile et SimpleUnzip
+ */
 class Compress_zip extends Fsb_model
 {
-	/*
-	** Retourne un objet zipfile() pour compresser, ou un objet SimpleUnzip() pour decompresser
-	** -----
-	** $action ::		zip | unzip
-	*/
+	/**
+	 * Design pattern factory, retourne un objet zipfile() pour la compression ou un obket SimpleUnzip pour decompresser
+	 *
+	 * @param string $action zip ou unzip
+	 * @param mixed $arg Argument pour la classe de decompression
+	 * @return SimpleUnzip|zipfile
+	 */
 	public static function factory($action, $arg = NULL)
 	{
 		switch ($action)

@@ -10,48 +10,85 @@
 ** +---------------------------------------------------+
 */
 
+/**
+ * Genere un graphique de statistiques avec des boites
+ *
+ */
 class Gd_stats extends Fsb_model
 {
-	// Largeur de l'image
+	/**
+	 * Largeur de l'image
+	 *
+	 * @var int
+	 */
 	public $width = 600;
 
-	// Hauteur de l'image
+	/**
+	 * Hauteur de l'image
+	 *
+	 * @var int
+	 */
 	public $height = 300;
 
-	// Largeur des boites sur l'axe X
+	/**
+	 * Largeur des boites sur l'axe X
+	 *
+	 * @var int
+	 */
 	public $x_width = 20;
 
-	// Hauteur des boites sur l'axe Y
+	/**
+	 * Hauteur des boites sur l'axe Y
+	 *
+	 * @var int
+	 */
 	public $y_height = 25;
 
-	// Valeurs a afficher sur le graphique
+	/**
+	 * Valeurs a afficher sur le graphique
+	 *
+	 * @var array
+	 */
 	protected $value = array();
+	
+	/**
+	 * Valeur maximale
+	 *
+	 * @var int
+	 */
 	protected $max;
 
-	// Ressource pour la creation de l'image
+	/**
+	 * Ressource de l'image cree
+	 *
+	 * @var resource
+	 */
 	protected $img;
 
-	// Couleurs predefinis
+	/**
+	 * Couleurs predefinies
+	 *
+	 * @var array
+	 */
 	protected $color = array();
 
-	/*
-	** Constructeur
-	** -----
-	** $width ::	Largeur de l'image
-	** $height ::	Hauteur de l'image
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param int $width Largeur de l'image
+	 * @param int $height Hauteur de l'image
+	 */
 	public function __construct($width, $height)
 	{
 		$this->width = $width;
 		$this->height = $height;
 	}
 
-	/*
-	** Assigne les valeurs
-	** -----
-	** $value ::	Tableau de valeur avec en indice le texte a affiche sur l'axe des abscices, et
-	**				en ordonnee les valeurs
-	*/
+	/**
+	 * Assigne les valeurs
+	 *
+	 * @param array $value Tableau de valeur avec en indice le texte a affiche sur l'axe des abscices, et en ordonnee les valeurs
+	 */
 	public function values($value)
 	{
 		$this->value = $value;
@@ -66,9 +103,9 @@ class Gd_stats extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche l'image
-	*/
+	/**
+	 * Genere et affiche l'image
+	 */
 	public function output()
 	{
 		// Creation de l'image
@@ -100,9 +137,9 @@ class Gd_stats extends Fsb_model
 		imagegif($this->img);
 	}
 
-	/*
-	** Affiche les axes
-	*/
+	/**
+	 * Affiche les axes de l'image
+	 */
 	private function axis()
 	{
 		// Axe des abscices
@@ -148,9 +185,9 @@ class Gd_stats extends Fsb_model
 		}
 	}
 
-	/*
-	** Traits fins de la legende a afficher avant les boites
-	*/
+	/**
+	 * Traits fins de la legende a afficher avant les boites
+	 */
 	private function pre_axis()
 	{
 		$m = $this->x_width / 2;
@@ -162,9 +199,9 @@ class Gd_stats extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche les boites
-	*/
+	/**
+	 * Affiche les boites
+	 */
 	private function box()
 	{
 		$iterator = 1;
@@ -182,17 +219,18 @@ class Gd_stats extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche un rectangle rempli en faisant un degrade de couleur de $start a $end
-	** -----
-	** $x ::			Position X du bord haut gauche du rectangle
-	** $y ::			Position Y du bord haut gauche du rectangle
-	** $width ::		Largeur du rectangle
-	** $height ::		Hauteur du rectangle
-	** $start ::		Tableau RGB contenant la couleur de depart
-	** $end ::			Tableau RGB contenant la couleur de fin
-	** $bordercolor ::	Couleur de la bordure
-	*/
+	/**
+	 * Affiche un rectangle rempli en faisant un degrade de couleur de $start a $end
+	 *
+	 * @param int $x Position X du bord haut gauche du rectangle
+	 * @param int $y Position Y du bord haut gauche du rectangle
+	 * @param int $width Largeur du rectangle
+	 * @param int $height Hauteur du rectangle
+	 * @param array $start Tableau RGB contenant la couleur de depart
+	 * @param array $end Tableau RGB contenant la couleur de fin
+	 * @param int $step Precision du degrade, plus le nombre est grand moins le degrade sera precis
+	 * @param array $bordercolor Couleur de la bordure
+	 */
 	private function gradedRectangle($x, $y, $width, $height, $start, $end, $step = 1, $bordercolor = array())
 	{
 		$step_red =		($end[0] - $start[0]) / ($height / $step);

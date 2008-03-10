@@ -10,27 +10,18 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe pour SQLite (necessite PHP5)
-** Attention, SQLite est sensible a la casse. Des LOWER ont ete ajoutes dans les requetes
-** ou la casse risquerait de jouer de mauvais tours, mais pas partout (question de logique).
-** Si vous developpez un MOD utilisant des chaines de caracteres dans les requetes, veillez a
-** bien tester le fonctionement de la requete sous SQLite
-*/
-
+/**
+ * Abstraction pour SQLite
+ * Attention, SQLite est sensible a la casse. Des LOWER ont ete ajoutes dans les requetes
+ * ou la casse risquerait de jouer de mauvais tours, mais pas partout (question de logique).
+ * Si vous developpez un MOD utilisant des chaines de caracteres dans les requetes, veillez a
+ * bien tester le fonctionement de la requete sous SQLite
+ */
 class Dbal_sqlite extends Dbal
 {
-	/*
-	** Constructeur de la classe Sql
-	** Etablit la connexion a la base de donnee
-	** -----
-	** $server ::		Adresse du serveur MySQL
-	** $login ::		Login d'acces MySQL
-	** $pass ::			Mot de passe associe au login
-	** $db ::			Nom de la base de donnee a selectionner
-	** $port ::			Port de connexion
-	** $use_cache ::	Utilisation du cache SQL ?
-	*/
+	/**
+	 * @see Dbal::factory()
+	 */
 	public function __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
 	{
 		$this->use_cache = $use_cache;
@@ -52,14 +43,9 @@ class Dbal_sqlite extends Dbal
 		return ($this->id);
 	}
 
-	/*
-	** Execute la requete SQL et renvoie le resultat
-	** -----
-	** $sql ::		Requete a executer
-	** $buffer ::	Si TRUE, le resultat est bufferise. Utiliser FALSE pour les
-	**				requetes ne renvoyant pas explicitement de resultat (UPDATE, DELETE,
-	**				INSERT, etc ...)
-	*/
+	/**
+	 * @see Dbal::_query()
+	 */
 	public function _query($sql, $buffer = TRUE)
 	{
 		$result = (($buffer) ? @sqlite_query($this->id, $sql) : @sqlite_unbuffered_query($this->id, $sql));
@@ -70,19 +56,17 @@ class Dbal_sqlite extends Dbal
 		return ($result);
 	}
 	
-	/*
-	** Simple requete n'affichant pas directement l'erreur
-	** -----
-	** $sql ::		Requete a executer
-	*/
+	/**
+	 * @see Dbal::simple_query()
+	 */
 	public function simple_query($sql)
 	{
 		return (sqlite_query($this->id, $sql));
 	}
 
-	/*
-	** Voir parent::row()
-	*/
+	/**
+	 * @see Dbal::_row()
+	 */
 	public function _row($result, $function = 'assoc')
 	{
 		$flags = array(
@@ -93,57 +77,49 @@ class Dbal_sqlite extends Dbal
 		return (sqlite_fetch_array($result, $flags[$function]));
 	}
 
-	/*
-	** Voir parent::free()
-	*/
+	/**
+	 * @see Dbal::_free()
+	 */
 	public function _free($result)
 	{
 		return (TRUE);
 	}
 
-	/*
-	** Retourne la derniere ID apres un INSERT en cas d'incrementation automatique
-	*/
+	/**
+	 * @see Dbal::last_id()
+	 */
 	public function last_id()
 	{
 		return (sqlite_last_insert_rowid($this->id));
 	}
 
-	/*
-	** Voir parent::count()
-	*/
+	/**
+	 * @see Dbal::_count()
+	 */
 	public function _count($result)
 	{
 		return (sqlite_num_rows($result));
 	}
 
-	/*
-	** Protege un champ de la requete
-	** -----
-	** $str :: Chaine a proteger
-	*/
+	/**
+	 * @see Dbal::escape()
+	 */
 	public function escape($str)
 	{
 		return (sqlite_escape_string($str));
 	}
 
-	/*
-	** Renvoie le nombre de lignes affectees par une requete
-	** -----
-	** $result ::		Resultat d'une requete
-	*/
+	/**
+	 * @see Dbal::affected_rows()
+	 */
 	public function affected_rows($result)
 	{
 		return (sqlite_changes($this->id));
 	}
 
-	/*
-	** Recupere le type d'une colone
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::field_type()
+	 */
 	public function field_type($result, $field, $table = NULL)
 	{
 		if (!isset($this->cache_field_type[$table]))
@@ -170,24 +146,17 @@ class Dbal_sqlite extends Dbal
 		}
 	}
 
-	/*
-	** On retourne dans tous les cas 'string', car les types n'ont pas reellement d'importance
-	** avec SQLite
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::get_field_type()
+	 */
 	public function get_field_type($result, $field, $table = NULL)
 	{
 		return ('string');
 	}
 
-	/*
-	** Renvoie un tableau contenant la liste des tables
-	** -----
-	** $limit ::	Si TRUE, ne recupere que les tables ayant le meme prefixe que le forum
-	*/
+	/**
+	 * @see Dbal::list_tables()
+	 */
 	public function list_tables($limit = TRUE)
 	{
 		$tables = array();
@@ -207,9 +176,9 @@ class Dbal_sqlite extends Dbal
 		return ($tables);
 	}
 
-	/*
-	** Execute une multi insertion
-	*/
+	/**
+	 * @see Dbal::query_multi_insert()
+	 */
 	public function query_multi_insert()
 	{
 		if ($this->multi_insert)
@@ -223,27 +192,25 @@ class Dbal_sqlite extends Dbal
 		$this->multi_insert = array();
 	}
 
-	/*
-	** Renvoie la derniere erreur
-	*/
+	/**
+	 * @see Dbal::sql_error()
+	 */
 	public function sql_error()
 	{
 		return (sqlite_error_string(sqlite_last_error($this->id)));
 	}
 
-	/*
-	** Voir parent::close()
-	*/
+	/**
+	 * @see Dbal::_close()
+	 */
 	public function _close()
 	{
 		sqlite_close($this->id);
 	}
 
-	/*
-	** Transactions
-	** -----
-	** $type ::		Etat de la transaction (begin, commit ou rollback)
-	*/
+	/**
+	 * @see Dbal::transaction()
+	 */
 	public function transaction($type)
 	{
 		switch ($type)
@@ -274,14 +241,9 @@ class Dbal_sqlite extends Dbal
 		}
 	}
 
-	/*
-	** Supprime des elements de plusieurs tables
-	** (SQLITE ne supporte pas les multi suppressions)
-	** -----
-	** $default_table ::		Table par defaut dont on va recuperer les champs
-	** $default_where ::		Clause WHERE pour la recuperation des champs
-	** $delete_join ::			Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
-	*/
+	/**
+	 * @see Dbal::delete_tables()
+	 */
 	public function delete_tables($default_table, $default_where, $delete_join)
 	{
 		foreach ($delete_join AS $field => $tables)
@@ -309,24 +271,21 @@ class Dbal_sqlite extends Dbal
 		}
 	}
 
-	/*
-	** Retourne l'operateur LIKE
-	*/
+	/**
+	 * @see Dbal::like()
+	 */
 	public function like()
 	{
 		return ('LIKE');
 	}
 
-	/*
-	** SQLite ne supportant pas l'operateur ALTER dans certaines de ses versions, cette methode va simuler
-	** le comportement d'un ALTER en permettant d'ajouter / supprimer un champ, ou de renommer la table.
-	** -----
-	** $tablename ::	Nom de la table
-	** $action ::		Action a effectuer : ADD, DROP ou RENAME
-	** $arg ::			Argument passe a l'action.
-	**						Lors d'un ajout ou d'une suppression, on passe le nom du champ.
-	**						Lors du renomage de la table, on passe le nom de la nouvelle table.
-	*/
+	/**
+	 * Simule le comportement d'un ALTER pour SQLite
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $action ADD, DROP ou RENAME
+	 * @param string $arg Nom du champ pour ajout /suppression de champ, nom de la table pour le renomage de la table
+	 */
 	public function alter($tablename, $action, $arg)
 	{
 		// On recupere les champs de la table originale

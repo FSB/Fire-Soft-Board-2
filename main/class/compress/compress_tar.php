@@ -11,25 +11,44 @@
 */
 
 /**
-* Classe de compression / decompression en tar et tar.gz, tiree du fichier
-* includes/functions_compress.php de phpBB3, et modifiee pour les besoins
-* de la classe Compress() de FSB2.
-*
-* Tar/tar.gz compression routine
-* Header/checksum creation derived from tarfile.pl, (c) Tom Horsley, 1994
-*/
+ * Classe de compression / decompression en tar et tar.gz.
+ * Tiree du fichier includes/functions_compress.php de phpBB3, et modifiee pour les besoins de la classe Compress() de FSB2.
+ * @link http://www.phpbb.com
+ *
+ * Tar/tar.gz compression routine
+ * Header/checksum creation derived from tarfile.pl, (c) Tom Horsley, 1994
+ */
 class Compress_tar extends Fsb_model
 {
+	/**
+	 * Encodage GZIP
+	 *
+	 * @var bool
+	 */
 	private $isgz = false;
+	
+	/**
+	 * Nom du fichier
+	 *
+	 * @var string
+	 */
 	private $filename = '';
+	
+	/**
+	 * @var bool
+	 */
 	private $wrote = false;
 
-	// Donnees pour l'extraction
+	/**
+	 * Donnees pour l'extraction
+	 *
+	 * @var array
+	 */
 	public $Entries = array();
 
 	/**
-	* Constructor
-	*/
+	 * Constructor
+	 */
 	public function __construct($file, $type = '')
 	{
 		$type = (!$type) ? $file : $type;
@@ -39,8 +58,8 @@ class Compress_tar extends Fsb_model
 	}
 
 	/**
-	* Extract archive
-	*/
+	 * Extract archive
+	 */
 	public function extract($filename)
 	{
 		// Fonctions de lecture des fichiers
@@ -94,8 +113,8 @@ class Compress_tar extends Fsb_model
 	}
 
 	/**
-	* Create the structures
-	*/
+	 * Create the structures
+	 */
 	public function data($name, $falsepath = '', $is_dir = false)
 	{
 		if (!$falsepath)

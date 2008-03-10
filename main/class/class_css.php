@@ -10,19 +10,36 @@
 ** +---------------------------------------------------+
 */
 
+/**
+ * Parse et gestion de fichier CSS
+ */
 class Css extends Fsb_model
 {
+	/**
+	 * Informations sur les fichiers CSS charges
+	 *
+	 * @var array
+	 */
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @var unknown_type
+	 */
 	public $data = array();
-	private $basename = NULL, $dirname = NULL;
 
-	// Les import seront sauves dans cette propriete
+	/**
+	 * Gestion des fichiers CSS importes
+	 *
+	 * @var array
+	 */
 	private $import = array();
 
-	/*
-	** Charge un fichier CSS
-	** -----
-	** $filename ::	Nom du fichier a charger
-	*/
+	/**
+	 * Charge et parse un fichier CSS
+	 *
+	 * @param string $filename Fichier CSS
+	 */
 	public function load_file($filename)
 	{
 		if (!file_exists($filename))
@@ -33,13 +50,13 @@ class Css extends Fsb_model
 		$this->load_content(file_get_contents($filename), $filename);
 	}
 
-	/*
-	** Charge du code CSS
-	** -----
-	** $content ::	Contenu CSS a charger
-	** $filename ::	Chemin du fichier, qui servira d'identifiant
-	** $parent ::	Parent si le fichier actuel est importe
-	*/
+	/**
+	 * Charge et parse du code CSS
+	 * 
+	 * @param string $content Contenu CSS a charger
+	 * @param string $filename Nom du fichier, qui servira d'identifiant
+	 * @param string $parent Parent si le fichier actuel est importe
+	 */
 	public function load_content($content, $filename, $parent = NULL)
 	{
 		// Suppression des commentaires inutiles
@@ -102,11 +119,11 @@ class Css extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse des proprietes
-	** -----
-	** $str ::	Chaine de caractere (proprietes)
-	*/
+	/**
+	 * Parse les proprietes d'une classe CSS
+	 * 
+	 * @param string $str Les proprietes a parser
+	 */
 	public function parse_properties($str)
 	{
 		// Suppression des commentaires dans les proprietes
@@ -127,12 +144,12 @@ class Css extends Fsb_model
 		return ($properties);
 	}
 
-	/*
-	** Regenere les fichiers CSS
-	** -----
-	** $path ::		Chemin ou regenerer les fichiers
-	** $file ::		Nom du fichier a regenerer, si aucun fichier precise on les regenere tous
-	*/
+	/**
+	 * Regenere et ecrit les fichiers CSS
+	 *
+	 * @param string $path Chemin ou regenerer les fichiers
+	 * @param string $file Nom du fichier a regenerer, si aucun fichier precise on les regenere tous
+	 */
 	public function write($path, $file = NULL)
 	{
 		if (!is_dir($path))
@@ -186,12 +203,13 @@ class Css extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne les proprietes d'une classe sous forme de chaine
-	** -----
-	** $data ::		Donnees de la classe
-	** $prefix ::	Chaine a afficher avant les proprietes
-	*/
+	/**
+	 * Retourne les proprietes d'une classe sous forme de chaine
+	 *
+	 * @param array $data Donnees de la classe
+	 * @param string $prefix Chaine a afficher avant les proprietes
+	 * @return string
+	 */
 	public function get_properties($data, $prefix = '')
 	{
 		$content = '';
@@ -202,24 +220,25 @@ class Css extends Fsb_model
 		return ($content);
 	}
 
-	/*
-	** Retourne la valeur d'une propriete
-	** -----
-	** $data ::		Donnees de la classe
-	** $key ::		Nom de la propriete
-	*/
+	/**
+	 * Retourne la valeur d'une propriete
+	 *
+	 * @param array $data Donnees de la classe
+	 * @param string $key Nom de la propriete
+	 * @return string
+	 */
 	public function get_property($data, $key)
 	{
 		return ((isset($data['properties'][$key])) ? $data['properties'][$key] : NULL);
 	}
 
-	/*
-	** Assigne une propriete a la classe
-	** -----
-	** $data ::		Donnees de la classe
-	** $key ::		Nom de la propriete
-	** $value ::	Valeur de la propriete
-	*/
+	/**
+	 * Assigne une propriete a la classe
+	 *
+	 * @param unknown_type $data Donnees de la classe
+	 * @param unknown_type $key Nom de la propriete
+	 * @param unknown_type $value Valeur de la propriete
+	 */
 	public function set_property(&$data, $key, $value)
 	{
 		$data['properties'][$key] = $value;

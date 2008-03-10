@@ -10,9 +10,9 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion du cache SQL
-*/
+/**
+ * Gestion du cache en base de donnee
+ */
 class Cache_sql extends Cache
 {
 	/**

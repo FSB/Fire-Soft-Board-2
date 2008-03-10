@@ -10,41 +10,62 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Extension de la classe Captcha, utilisant la librairie GD
-*/
+/**
+ * Extension de la classe Captcha, utilisant la librairie GD
+ *
+ */
 class Captcha_gd extends Captcha
 {
-	// Liste des methodes
+	/**
+	 * Liste des methodes de calcul de Captcha supportees
+	 *
+	 * @var array
+	 */
 	public $methods = array(
 		'a' =>		'method_classic',
 		'b' =>		'method_color',
 		'c' =>		'method_maths',
 	);
 
-	// Hauteur suplementaire, non prise en compte pour l'affichage des lettres
+	/**
+	 * Hauteur suplementaire, non prise en compte pour l'affichage des lettres
+	 *
+	 * @var int
+	 */
 	private $extra_height = 40;
 
-	// Couleur du fond de l'image
+	/**
+	 * Couleur du fond de l'image
+	 *
+	 * @var int
+	 */
 	private $background_color = 0xFFFFFF;
 
-	// Espace entre chaque caractere
+	/**
+	 * Espaces entre chaque charactere
+	 * 
+	 * @var int
+	 */
 	protected $space = 40;
 
-	// Handler de l'image
+	/**
+	 * Pointe sur l'image courante
+	 *
+	 * @var resource
+	 */
 	private $img;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->font_path = ROOT . 'main/class/captcha/fonts/';
 	}
 
-	/*
-	** Creation de l'image
-	*/
+	/**
+	 * @see Captcha::open_image()
+	 */
 	protected function open_image()
 	{
 		$this->img = imagecreatetruecolor($this->width, $this->height + $this->extra_height);
@@ -52,9 +73,9 @@ class Captcha_gd extends Captcha
 		imagefill($this->img, 0, 0, $background);
 	}
 
-	/*
-	** Affiche l'image
-	*/
+	/**
+	 * @see Captcha::close_image()
+	 */
 	protected function close_image()
 	{
 		$this->add_footer($this->explain);
@@ -63,12 +84,13 @@ class Captcha_gd extends Captcha
 		imagegif($this->img);
 	}
 
-	/*
-	** Alloue une couleur a partir d'un code hexadecimal
-	** -----
-	** $hexa ::		Couleur en hexadecimal
-	** $callback ::	Callback de couleur
-	*/
+	/**
+	 * Alloue une couleur
+	 *
+	 * @param int $hexa Hexadecimal de la couleur, par exemple 0xCCCCCC
+	 * @param string $callback Callback pour le type de couleur
+	 * @return mixed
+	 */
 	private function color($hexa, $callback = 'imagecolorallocate')
 	{
 		$red = ($hexa & 0xFF0000) >> 16;
@@ -77,9 +99,9 @@ class Captcha_gd extends Captcha
 		return ($callback($this->img, $red, $green, $blue));
 	}
 
-	/*
-	** Ecrit un caractere sur l'image
-	*/
+	/**
+	 * @see Captcha::write_char()
+	 */
 	protected function write_char($size, $angle, $x, $vertical, $fontcolor, $font, $char)
 	{
 		if ($fontcolor === NULL)
@@ -100,9 +122,9 @@ class Captcha_gd extends Captcha
 		imagettftext($this->img, $size, $angle, $x, $vertical, $fontcolor, $font, $char);
 	}
 
-	/*
-	** Ajouts de bruits sur l'image (lignes, points aleatoires)
-	*/
+	/**
+	 * @see Captcha::add_noise()
+	 */
 	protected function add_noise()
 	{
 		$noise_color = $this->color(0xBBBBBB);
@@ -125,11 +147,11 @@ class Captcha_gd extends Captcha
 		}
 	}
 
-	/*
-	** Affiche du texte au pied de l'image
-	** -----
-	** $text ::		Texte a afficher
-	*/
+	/**
+	 * Affiche du texte au pied de l'image
+	 *
+	 * @param string $text Texte a afficher
+	 */
 	private function add_footer($text)
 	{
 		$text = wordwrap($text, $this->width / 8);

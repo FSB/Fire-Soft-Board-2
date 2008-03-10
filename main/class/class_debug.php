@@ -10,79 +10,112 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe developpee dans le but d'aider a debuguer le forum
-*/
+/**
+ * Gestion du debugage du forum
+ */
 class Debug extends Fsb_model
 {
+	/**
+	 * Debugage actif
+	 *
+	 * @var bool
+	 */
 	public $can_debug = TRUE;
+	
+	/**
+	 * Debugage des requetes actif
+	 *
+	 * @var unknown_type
+	 */
 	public $debug_query = FALSE;
-	public $debug_vars = FALSE;
-	private $method = 'get';
+	
+	/**
+	 * Donnees POST
+	 *
+	 * @var array
+	 */
 	private $post_ary = array();
 
-	// Definit si on affiche le resultat des templates
+	/**
+	 * Definit si on affiche le resultat des templates
+	 *
+	 * @var bool
+	 */
 	public $show_output = TRUE;
 
-	// Cache des URL de debugage
+	/**
+	 * Cache des URL a generer
+	 *
+	 * @var string
+	 */
 	private $url_begin = '';
+	
+	/**
+	 * Cache des URL a generer
+	 *
+	 * @var string
+	 */
 	private $url_end = '';
 
-	// Contient les differents temps pour les etapes
+	/**
+	 * Contient les differents temps les benchmarks
+	 *
+	 * @var array
+	 */
 	private $data = array();
 
-	// Temps final
+	/**
+	 * Temps final
+	 *
+	 * @var int
+	 */
 	public $end = 0;
 
-	// Temps de depart
+	/**
+	 * Temps de depart
+	 *
+	 * @var int
+	 */
 	public $start = 0;
 	
-	/*
-	** Constructeur de la classe Debug()
-	*/
+	/**
+	 * Constructeur, initialise le benchmark et les informations sur la page
+	 */
 	public function __construct()
 	{
 		// Benchmark de depart
-		$this->start = $this->get_time();
+		$this->start = microtime(true);
 
 		$this->can_debug = (!(error_reporting() ^ E_ALL)) ? TRUE : FALSE;
 		$this->debug_query = ($this->can_debug && isset($_GET['debug_query'])) ? TRUE : FALSE;
-		$this->debug_vars = ($this->can_debug && isset($_GET['debug_vars'])) ? TRUE : FALSE;
 
-		if ($this->debug_query || $this->debug_vars)
-		{
-			$this->show_output = FALSE;
-		}
-		else
-		{
-			$this->show_output = TRUE;
-		}
+		$this->show_output = !$this->debug_query;
 	}
-	
-	/*
-	** Initialise la page en recuperant la methode d'acces, ainsi que le tableau $_POST si la methode est post
-	*/
+
+	/**
+	 * Initialise la page en recuperant la methode d'acces, ainsi que le tableau $_POST si la methode est post
+	 */
 	public function request_vars()
 	{
 		if (!$this->can_debug)
 		{
 			return ;
 		}
-
-		$this->method = (Http::request('method')) ? strtolower(Http::request('method')) : 'get';
 		
-		$this->post_ary = (Http::request('post_ary') && $this->method == 'post') ? unserialize(urldecode(Http::request('post_ary'))) : array();
+		$this->post_ary = (Http::request('post_ary') && Http::method() == Http::POST) ? unserialize(urldecode(Http::request('post_ary'))) : array();
 		if (!is_array($this->post_ary))
 		{
 			$this->post_ary = array();
 		}
 		$_POST = array_merge($_POST, $this->post_ary);
 	}
-	
-	/*
-	** Cree une URL pour acceder a la page de debugage
-	*/
-	public function debug_url($mode)
+
+	/**
+	 * Cree une URL pour acceder a la page de debugage
+	 *
+	 * @return string
+	 */
+	public function debug_url()
 	{
 		if ($this->url_begin == '')
 		{
@@ -94,33 +127,25 @@ class Debug extends Fsb_model
 			$this->url_end = '&amp;method=' . $request_method . (($request_method == 'POST') ? '&amp;post_ary=' . urlencode(serialize($_POST)) : '');
 		}
 
-		switch ($mode)
-		{
-			case 'query' :
-				return ($this->url_begin . 'debug_query=true' . $this->url_end);
-
-			case 'vars' :
-				return ($this->url_begin . 'debug_vars=true' . $this->url_end);
-		}
+		return ($this->url_begin . 'debug_query=true' . $this->url_end);
 	}
 
-	/*
-	** Cree un marqueur qui retient le temps ecoule.
-	** -----
-	** $name :: Nom du marqueur.
-	*/
+	/**
+	 * Cree un marqueur pour le benchmark
+	 *
+	 * @param string $name Nom du marqueur
+	 */
 	public function mark($name)
 	{
-		$this->data[] = array('name' => $name, 'time' => $this->get_time());
+		$this->data[] = array('name' => $name, 'time' => microtime(true));
 	}
 
-	/*
-	** Sauvegarde le temps final et affiche tous les temps des marqueurs,
-	** avec un certain nombre de statistique.
-	*/
+	/**
+	 * Affiche le resultat du benchmark
+	 */
 	public function finish()
 	{
-		$this->end = $this->get_time();
+		$this->end = microtime(true);
 		$total = $this->end - $this->start;
 
 		echo '
@@ -172,18 +197,11 @@ class Debug extends Fsb_model
 		';
 	}
 
-	/*
-	** Renvoie un temps pour le benchmark.
-	*/
-	public function get_time()
-	{
-		$ary = explode(' ', microtime());
-		return ($ary[0] + $ary[1]);
-	}
-
-	/*
-	** Retourne la memoire utilisee par le script
-	*/
+	/**
+	 * Retourne la memoire utilisee actuellement par le script
+	 *
+	 * @return int
+	 */
 	public function memory()
 	{
 		if (function_exists('memory_get_usage'))

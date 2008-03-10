@@ -10,16 +10,26 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Colorateur syntaxique
-*/
+/**
+ * Colorateur syntaxique
+ *
+ */
 abstract class Highlight extends Fsb_model
 {
+	/**
+	 * Parse et colorie la syntaxe d'une chaine de code
+	 *
+	 * @param string $str Chaine de code a traiter
+	 * @return string Chaine de code traitee
+	 */
 	abstract protected function _parse($str);
 
-	/*
-	** Retourne une instance de la classe Highlight suivant le language utilise
-	*/
+	/**
+	 * Design pattern factory, Retourne une instance de la classe Highlight suivant le langage utilise
+	 *
+	 * @param string $language Langage utilise (php, css, etc.)
+	 * @return Highlight
+	 */
 	public static function &factory($language)
 	{
 		if (!in_array($language, array('php', 'sql', 'css', 'html')))
@@ -32,11 +42,12 @@ abstract class Highlight extends Fsb_model
 		return ($obj);
 	}
 
-	/*
-	** Parse un fichier
-	** -----
-	** $filename ::	Nom de fichier
-	*/
+	/**
+	 * Charge le contenu d'un fichier et colorie la syntaxe
+	 *
+	 * @param string $filename Nom de fichier
+	 * @return string
+	 */
 	public function parse_file($filename)
 	{
 		if (!file_exists($filename))
@@ -48,25 +59,27 @@ abstract class Highlight extends Fsb_model
 		return ($this->_parse($str));
 	}
 
-	/*
-	** Parse la chaine de caractere
-	** -----
-	** $str ::		Chaine de caractere contenant du PHP
-	*/
+	/**
+	 * Charge le une chaine de caractere et colorie la syntaxe
+	 *
+	 * @param string $str Chaine a colorier
+	 * @return string
+	 */
 	public function parse_code($str)
 	{
 		$str = str_replace("\r\n", "\n", $str);
 		return ($this->_parse($str));
 	}
 
-	/*
-	** Parse les commentaires
-	** -----
-	** $str ::		Chaine de caractere
-	** $i ::		Iteration actuelle
-	** $len ::		Longueur de la chaine
-	** $color ::	Couleur de la syntaxe
-	*/
+	/**
+	 * Parse les commentaires dans le code
+	 *
+	 * @param string $str Chaine a analyser
+	 * @param int $i Position actuelle dans la chaine
+	 * @param int $len Longueur de la chaine
+	 * @param string $color Couleur de la syntaxe
+	 * @return string
+	 */
 	protected function _comment_string(&$str, &$i, &$len, $color)
 	{
 		$result = $this->open_style($color);
@@ -85,15 +98,16 @@ abstract class Highlight extends Fsb_model
 		return ($result);
 	}
 	
-	/*
-	** Colorie la chaine comprise entre deux caracteres identiques (", ', etc ...)
-	** -----
-	** $str ::		Chaine de caractere
-	** $i ::		Iteration actuelle
-	** $len ::		Longueur de la chaine
-	** $c ::		Caractere unique
-	** $color ::	Couleur de la syntaxe
-	*/
+	/**
+	 * Colorie la chaine comprise entre deux caracteres identiques
+	 *
+	 * @param string $str Chaine a analyser
+	 * @param int $i Iteration actuelle
+	 * @param int $len Longueur de la chaine
+	 * @param string $c Delimiteur
+	 * @param string $color Couleur de la syntaxe
+	 * @return unknown
+	 */
 	protected function _quote_string(&$str, &$i, $len, &$c, $color)
 	{
 		$result = $c . $this->open_style($color);
@@ -118,30 +132,44 @@ abstract class Highlight extends Fsb_model
 		return ($result);
 	}
 
+	/**
+	 * Ajoute une balise d'ouverture de style
+	 *
+	 * @param string $style Proprietes CSS a appliquer
+	 * @return string
+	 */
 	protected function open_style($style)
 	{
 		return ('<span class="' . $style . '">');
 	}
 
+	/**
+	 * Ajoute une balise de fermeture de style
+	 *
+	 * @return string
+	 */
 	protected function close_style()
 	{
 		return ('</span>');
 	}
 
-	/*
-	** Echape des caracteres speciaux pour le forum
-	*/
+	/**
+	 * Echappe les caracteres speciaux importants dans le parseur du forum
+	 *
+	 * @param string $c Chaine a echapper
+	 * @return string
+	 */
 	protected function escape_special_char($c)
 	{
 		return (str_replace(array(':', '[', ']', ')', '('), array('&#58;', '&#91;', '&#93;', '&#41;', '&#40;'), htmlspecialchars($c)));
 	}
 
-	/*
-	** Supprime les anciens tags de coloration dans la chaine passee en argument
-	** et renvoie la chaine encadree d'un nouveau tag.
-	** -----
-	** $str ::		Chaine de caractere a parser.
-	*/
+	/**
+	 * Supprime les anciens tags de coloration et renvoie la chaine encadree d'un nouveau tag
+	 *
+	 * @param array $match Tableau cree par la fonction preg_replace_callback()
+	 * @return string
+	 */
 	protected function up_coloration($match)
 	{
 		$match[1] = str_replace('\"', '"', $match[1]);
@@ -150,13 +178,13 @@ abstract class Highlight extends Fsb_model
 		return ('<span class="sc_html_tag">&lt;</span><span class="sc_html_comment">' . $match[1] . '</span>');
 	}
 
-	/*
-	** Retourne un tableau contenant les donnees ligne par ligne d'une variable de configuration
-	** du colorateur
-	** -----
-	** $file_content ::		Contenu du ficheir de conf
-	** $var_name ::			Nom de la variable a parser
-	*/
+	/**
+	 * Retourne un tableau contenant les donnees ligne par ligne d'une variable de configuration du colorateur
+	 *
+	 * @param string $file_content Contenu du fichier de conf
+	 * @param string $var_name Nom de la variable a parser
+	 * @return array
+	 */
 	protected function get_conf($file_content, $var_name)
 	{
 		if (preg_match('#\$' . $var_name . '\(([^\)]*?)\);#si', $file_content, $match))

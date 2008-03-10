@@ -10,52 +10,71 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe de compression / decompression de donnees. Les algorithmes supportes sont .zip, .tar, .tar.gz
-** L'utilisation est tres simple. Pour une creation d'archive ZIP :
-**		$compress = new Compress('archive.zip');
-**		$compress->add_file('dir/file.txt');
-**		$compress->add_file('dir/file2.txt');
-**		$compress->write();
-**
-** Pour une decompression d'archive :
-**		$compress = new Compress('archive.zip');
-**		$compress->extract($dst_path);
-**
-** Veuillez noter qu'il est recommander d'utiliser un objet File() en second parametre du constructeur. Cet objet
-** permettra de gerer automatiquement les droits des dossiers et veillera au bon deroulement de l'ecriture
-** des fichiers. Si vous ne passez pas cet objet en second argument, la classe instanciera elle meme
-** un objet File() pour les fichiers locaux. (Il est donc necessaire d'avoir le fichier ~/main/class/class_file.php)
-**
-** La classe compress_tar() a ete reprise du logiciel libre phpBB3 (www.phpbb.com) et a ete fortement modifiee pour les
-** besoins du forum.
-** Les classes zipfile() et SimpleUnzip() ont ete reprises telles quelles du logiciel libre phpMyAdmin (www.phpmyadmin.net)
-**
-*/
+/**
+ * Classe de compression / decompression d'archives. Les formats supportes sont ZIP, TAR et GZIP.
+ * L'utilisation de la classe est simple, pour creer une archive :
+ * <code>
+ *	$compress = new Compress('archive.zip');
+ *	$compress->add_file('dir/file.txt');
+ *	$compress->add_file('dir/file2.txt');
+ *	$compress->write();
+ * </code>
+ * 
+ * Pour decompresser une archive :
+ * <code>
+ *	$compress = new Compress('archive.zip');
+ *	$compress->extract($dst_path);
+ * </code>
+ * 
+ * Important : il est recommander d'utiliser un objet File() en second parametre du constructeur. Cet objet
+ * permettra de gerer automatiquement les droits des dossiers et veillera au bon deroulement de l'ecriture
+ * des fichiers. Si vous ne passez pas cet objet en second argument, la classe instanciera elle meme
+ * un objet File() pour les fichiers locaux. (Il est donc necessaire d'avoir le fichier ~/main/class/class_file.php)
+ *
+ */
 class Compress extends Fsb_model
 {
-	// Methode de compression
+	/**
+	 * Methode de compression
+	 *
+	 * @var string
+	 */
 	public $method = 'zip';
 
-	// Objet courant pour la compression
+	/**
+	 * Objet courant pour la compression
+	 *
+	 * @var mixed
+	 */
 	private $obj;
 
-	// Objet d'ecriture de fichier File()
+	/**
+	 * Objet File
+	 *
+	 * @var File
+	 */
 	public $file;
 
-	// Fichier pour l'archive
+	/**
+	 * Fichier pour l'archive
+	 *
+	 * @var string
+	 */
 	private $filename = '';
 
-	// Buffer a ecrire
+	/**
+	 * Buffer a ecrire
+	 *
+	 * @var string
+	 */
 	private $buffer = '';
 
-	/*
-	** CONSTRUCTEUR
-	** Recupere les donnees sur le fichier qu'on veut creer / extraire
-	** -----
-	** $filenamme ::	Fichier archive
-	** $file ::			Objet d'ecriture de fichier
-	*/
+	/**
+	 * Constructeur, Recupere les donnees sur le fichier qu'on veut creer / extraire
+	 *
+	 * @param string $filename Fichier archive
+	 * @param File $file
+	 */
 	public function __construct($filename, $file = NULL)
 	{
 		$this->file = $file;
@@ -84,13 +103,13 @@ class Compress extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un fichier a l'archive
-	** -----
-	** $filename ::		Nom du fichier a ajouter a l'archive
-	** $remove ::		Supprime un repertoire du chemin
-	** $add ::			Ajoute un repertoire devant le chemin
-	*/
+	/**
+	 * Ajoute un fichier a l'archive
+	 *
+	 * @param string $filename Nom du fichier a ajouter a l'archive
+	 * @param string $remove Supprime un repertoire du chemin
+	 * @param string $add Ajoute un repertoire devant le chemin
+	 */
 	public function add_file($filename, $remove = '', $add = '')
 	{
 		if (is_dir(ROOT . $filename))
@@ -129,9 +148,12 @@ class Compress extends Fsb_model
 		}
 	}
 
-	/*
-	** Ecrit l'archive
-	*/
+	/**
+	 * Genere l'archive
+	 *
+	 * @param bool $return Si TRUE, ecrit le fichier, si FALSE, retourne le contenu
+	 * @return mixed Contenu du fichier si $return vaut TRUE
+	 */
 	public function write($return = FALSE)
 	{
 		// Contenu de l'archive
@@ -158,12 +180,12 @@ class Compress extends Fsb_model
 		}
 	}
 
-	/*
-	** Extraction de l'archive
-	** -----
-	** $path ::		Dossier de destination
-	** $remove ::	Supprime un repertoire du chemin
-	*/
+	/**
+	 * Extraction de l'archive
+	 *
+	 * @param string $path Dossier de destination
+	 * @param string $remove Supprime un repertoire du chemin
+	 */
 	public function extract($path = './', $remove = '')
 	{
 		// Extraction des fichiers

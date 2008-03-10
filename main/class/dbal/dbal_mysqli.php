@@ -10,21 +10,20 @@
 ** +---------------------------------------------------+
 */
 
+/**
+ * Abstraction pour MySQL via MySQLi
+ *
+ */
 class Dbal_mysqli extends Dbal
 {
-	// Objet MySQLI (on utilise le style objet pour MySQLI)
+	/**
+	 * @var mysqli
+	 */
 	private $mysqli;
 
-	/*
-	** Constructeur de la classe Sql
-	** Etablit une connexion et une transaction a MySQL
-	** -----
-	** $server ::		Adresse du serveur MySQL
-	** $login ::		Login d'acces MySQL
-	** $pass ::			Mot de passe associe au login
-	** $db ::			Nom de la base de donnee a selectionner
-	** $use_cache ::	Utilisation du cache SQL ?
-	*/
+	/**
+	 * @see Dbal::factory()
+	 */
 	public function __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
 	{
 		$this->use_cache = $use_cache;
@@ -45,14 +44,9 @@ class Dbal_mysqli extends Dbal
 		$this->can_use_truncate = TRUE;
 	}
 
-	/*
-	** Execute la requete SQL et renvoie le resultat
-	** -----
-	** $sql ::		Requete a executer
-	** $buffer ::	Si TRUE, le resultat est bufferise. Utiliser FALSE pour les
-	**				requetes ne renvoyant pas explicitement de resultat (UPDATE, DELETE,
-	**				INSERT, etc ...)
-	*/
+	/**
+	 * @see Dbal::_query()
+	 */
 	public function _query($sql, $buffer = TRUE)
 	{
 		if (!$result = $this->mysqli->query($sql))
@@ -64,28 +58,26 @@ class Dbal_mysqli extends Dbal
 		return ($result);
 	}
 	
-	/*
-	** Simple requete n'affichant pas directement l'erreur
-	** -----
-	** $sql ::		Requete a executer
-	*/
+	/**
+	 * @see Dbal::simple_query()
+	 */
 	public function simple_query($sql)
 	{
 		return ($this->mysqli->query($sql));
 	}
 
-	/*
-	** Voir parent::row()
-	*/
+	/**
+	 * @see Dbal::_row()
+	 */
 	public function _row($result, $function = 'assoc')
 	{
 		$pointer = 'fetch_' . $function;
 		return ($result->{$pointer}());
 	}
 
-	/*
-	** Voir parent::free()
-	*/
+	/**
+	 * @see Dbal::_free()
+	 */
 	public function _free($result)
 	{
 		if (is_object($result))
@@ -94,49 +86,41 @@ class Dbal_mysqli extends Dbal
 		}
 	}
 
-	/*
-	** Retourne la derniere ID apres un INSERT en cas d'incrementation automatique
-	*/
+	/**
+	 * @see Dbal::last_id()
+	 */
 	public function last_id()
 	{
 		return ($this->mysqli->insert_id);
 	}
 
-	/*
-	** Voir parent::count()
-	*/
+	/**
+	 * @see Dbal::_count()
+	 */
 	public function _count($result)
 	{
 		return ($result->num_rows);
 	}
 
-	/*
-	** Protege un champ de la requete
-	** -----
-	** $str :: Chaine a proteger
-	*/
+	/**
+	 * @see Dbal::escape()
+	 */
 	public function escape($str)
 	{
 		return ($this->mysqli->real_escape_string($str));
 	}
 
-	/*
-	** Renvoie le nombre de lignes affectees par une requete
-	** -----
-	** $result ::		Resultat d'une requete
-	*/
+	/**
+	 * @see Dbal::affected_rows()
+	 */
 	public function affected_rows($result)
 	{
 		return ($this->mysqli->affected_rows);
 	}
 
-	/*
-	** Renvoie le type d'un champ
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::field_type()
+	 */
 	public function field_type($result, $field, $table = NULL)
 	{
 		if (!isset($this->cache_field_type[$table]))
@@ -150,14 +134,9 @@ class Dbal_mysqli extends Dbal
 		return ($this->cache_field_type[$table][$field]);
 	}
 
-	/*
-	** Renvoie simplement 'string' ou bien 'int' suivant si le champ est un entier
-	** ou une chaine de caracteres.
-	** -----
-	** $result ::	Resultat de la requete
-	** $field ::	Champ a verifier
-	** $table ::	Nom de la table concernee
-	*/
+	/**
+	 * @see Dbal::get_field_type()
+	 */
 	public function get_field_type($result, $field, $table = NULL)
 	{
 		$field_type = $this->field_type($result, $field, $table);
@@ -178,11 +157,9 @@ class Dbal_mysqli extends Dbal
 		}
 	}
 
-	/*
-	** Renvoie un tableau contenant la liste des tables
-	** -----
-	** $limit ::	Si TRUE, ne recupere que les tables ayant le meme prefixe que le forum
-	*/
+	/**
+	 * @see Dbal::list_tables()
+	 */
 	public function list_tables($limit = TRUE)
 	{
 		$tables = array();
@@ -200,9 +177,9 @@ class Dbal_mysqli extends Dbal
 		return ($tables);
 	}
 
-	/*
-	** Execute une multi insertion
-	*/
+	/**
+	 * @see Dbal::query_multi_insert()
+	 */
 	public function query_multi_insert()
 	{
 		if ($this->multi_insert)
@@ -215,27 +192,25 @@ class Dbal_mysqli extends Dbal
 		}
 	}
 	
-	/*
-	** Renvoie la derniere erreur MySQL
-	*/
+	/**
+	 * @see Dbal::sql_error()
+	 */
 	public function sql_error()
 	{
 		return ($this->mysqli->error);
 	}
 
-	/*
-	** Voir parent::close()
-	*/
+	/**
+	 * @see Dbal::_close()
+	 */
 	public function _close()
 	{
 		$this->mysqli->close();
 	}
 
-	/*
-	** Transactions
-	** -----
-	** $type ::		Etat de la transaction (begin, commit ou rollback)
-	*/
+	/**
+	 * @see Dbal::transaction()
+	 */
 	public function transaction($type)
 	{
 		switch ($type)
@@ -266,14 +241,9 @@ class Dbal_mysqli extends Dbal
 		}
 	}
 
-	/*
-	** Supprime des elements de plusieurs tables
-	** (MySQL supporte les multi suppressions)
-	** -----
-	** $default_table ::		Table par defaut dont on va recuperer les champs
-	** $default_where ::		Clause WHERE pour la recuperation des champs
-	** $delete_join ::			Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
-	*/
+	/**
+	 * @see Dbal::delete_tables()
+	 */
 	public function delete_tables($default_table, $default_where, $delete_join)
 	{
 		$sql_delete = 'DELETE ' . SQL_PREFIX . $default_table;
@@ -292,9 +262,9 @@ class Dbal_mysqli extends Dbal
 		$this->query($sql_delete . $sql_table . $sql_where);
 	}
 
-	/*
-	** Retourne l'operateur LIKE
-	*/
+	/**
+	 * @see Dbal::like()
+	 */
 	public function like()
 	{
 		return ('LIKE');

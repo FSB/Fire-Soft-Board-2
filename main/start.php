@@ -28,18 +28,49 @@ function __autoload($classname)
 	fsb_import($classname);
 }
 
-/*
-** Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
-*/
+/**
+ * Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
+ */
 class Fsb extends Fsb_model
 {
+	/**
+	 * @var Config
+	 */
 	public static $cfg;
+	
+	/**
+	 * @var Dbal
+	 */
 	public static $db;
+
+	/**
+	 * @var Debug
+	 */
 	public static $debug;
+
+	/**
+	 * @var Fsb_frame
+	 */
 	public static $frame;
+	
+	/**
+	 * @var Adm_menu
+	 */
 	public static $menu;
+
+	/**
+	 * @var Mods
+	 */
 	public static $mods;
+	
+	/**
+	 * @var Session
+	 */
 	public static $session;
+	
+	/**
+	 * @var Tpl
+	 */
 	public static $tpl;
 }
 

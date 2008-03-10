@@ -10,9 +10,9 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion du cache Turck MMcache
-*/
+/**
+ * Gestion du cache avec Turck MMcache
+ */
 class Cache_mmcache extends Cache
 {
 	/**

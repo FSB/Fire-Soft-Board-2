@@ -10,75 +10,231 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Couche d'abstraction pour base de donnee.
-*/
+/**
+ * Couche d'abstraction pour base de donnee
+ */
 abstract class Dbal extends Fsb_model
 {
-	// ID de ressource de la connexion
+	/**
+	 * ID de ressource de la connexion
+	 *
+	 * @var resource
+	 */
 	protected $id = NULL;
 	
-	// Nombres de requetes
+	/**
+	 * Nombre de requetes executees sur la page
+	 *
+	 * @var int
+	 */
 	public $count = 0;
-	
-	// Chaine de caractere contenant les informations de debugage des requetes
+
+	/**
+	 * Chaine de caractere contenant les informations de debugage des requetes
+	 *
+	 * @var string
+	 */
 	private $debug_str = '';
 
-	// Peut utiliser les requetes explain
+	/**
+	 * Peut utiliser les requetes explain
+	 *
+	 * @var bool
+	 */
 	public $can_use_explain = FALSE;
 
-	// Peut utiliser les requetes REPLACE
+	/**
+	 * Peut utiliser les requetes REPLACE
+	 *
+	 * @var bool
+	 */
 	public $can_use_replace = FALSE;
 
-	// Peut utiliser les multi-insertions
+	/**
+	 * Peut utiliser les multi-insertions
+	 *
+	 * @var bool
+	 */
 	public $can_use_multi_insert = FALSE;
 
-	// Peut utiliser des requetes TRUNCATE
+	/**
+	 * Peut utiliser des requetes TRUNCATE
+	 *
+	 * @var bool
+	 */
 	public $can_use_truncate = FALSE;
 
-	// Tableau contenant les requetes mises en cache
+	/**
+	 * Contient les requetes en cache
+	 *
+	 * @var array
+	 */
 	private $cache_query;
 
-	// Dernier resultat de requete
+	/**
+	 * Dernier resultat de requete
+	 *
+	 * @var int
+	 */
 	private $result_query = 0;
 
-	// Iterateur pour les requetes en cache
+	/**
+	 * Iterateur pour les requetes en cache
+	 *
+	 * @var array
+	 */
 	private $iterator_query = array();
 
-	// Tableau de multi insertion
+	/**
+	 * Contient les informations pour la multi-insertion
+	 *
+	 * @var array
+	 */
 	protected $multi_insert = array();
 
-	// Tableau de mise ne cache pour pouvoir acceder a l'offset d'un champ
-	// a partir de son nom en chaine de caractere
+	/**
+	 * Mise en cache pour acceder a l'offset d'un champ a partir de son nom
+	 *
+	 * @var array
+	 */
 	private $cache_field_type = array();
 
-	// Definit si on est dans une transaction
+	/**
+	 * Definit si on est dans une transaction
+	 *
+	 * @var bool
+	 */
 	protected $in_transaction = FALSE;
 
-	// Objet cache
+	/**
+	 * @var Cache
+	 */
 	public $cache = NULL;
 
+	/**
+	 * Execute une requete SQL
+	 *
+	 * @param string $sql Requete SQL
+	 * @param bool $buffer Mise en bufferisation de la requete
+	 * @return resource Resultat de la requete
+	 */
 	abstract public function _query($sql, $buffer = TRUE);
+	
+	/**
+	 * Execute une simple requete directement
+	 *
+	 * @param string $sql Requete SQL
+	 * @return Resultat de la requete
+	 */
 	abstract public function simple_query($sql);
+	
+	/**
+	 * @see Dbal::row()
+	 */
 	abstract public function _row($result, $function = 'assoc');
+	
+	/**
+	 * @see Dbal::free()
+	 */
 	abstract public function _free($result);
+	
+	/**
+	 * Retourne l'ID de la dernière auto incrémentation
+	 */
 	abstract public function last_id();
+	
+	/**
+	 * @see Dbal::count()
+	 */
 	abstract public function _count($result);
+	
+	/**
+	 * Protege la chaine de caractere contre les injections SQL
+	 *
+	 * @param string $str Chaine a proteger
+	 * @return string
+	 */
 	abstract public function escape($str);
+	
+	/**
+	 * Recupere le nombre de lignes affectees par une requete de mise a jour de la table (UPDATE par exemple)
+	 *
+	 * @param resource $result Resultat de la requete
+	 * @return int
+	 */
 	abstract public function affected_rows($result);
+	
+	/**
+	 * Renvoie le type d'un champ
+	 *
+	 * @param resource $result Resultat de la requete
+	 * @param string $field Nom du champ
+	 * @param string $table Nom de la table du champ
+	 * @return string Type du champ
+	 */
 	abstract public function field_type($result, $field, $table = NULL);
+	
+	/**
+	 * Recupere si le champ est une chaine ou un entier
+	 *
+	 * @param resource $result Resultat de la requete
+	 * @param string $field Nom du champ
+	 * @param string $table Nom de la table du champ
+	 * @return string int ou string
+	 */
 	abstract public function get_field_type($result, $field, $table = NULL);
-	abstract public function list_tables($limit = TRUE);
-	abstract public function query_multi_insert();
-	abstract public function sql_error();
-	abstract public function _close();
-	abstract public function transaction($type);
-	abstract public function delete_tables($default_table, $default_where, $delete_join);
-	abstract public function like();
 
-	/*
-	** Destructeur
-	*/
+	/**
+	 * Recupere la liste des tables du forum
+	 *
+	 * @param bool $limit si FALSE, recupere l'ensemble des tables de la base de donnee
+	 * @return array
+	 */
+	abstract public function list_tables($limit = TRUE);
+	
+	/**
+	 * Lance la requete de multi-insertion
+	 */
+	abstract public function query_multi_insert();
+
+	/**
+	 * Retourne la derniere erreur SQL
+	 *
+	 * @return string
+	 */
+	abstract public function sql_error();
+	
+	/**
+	 * @see Dbal::close()
+	 */
+	abstract public function _close();
+	
+	/**
+	 * Gestion des transactions
+	 *
+	 * @param string $type begin, commit ou rollback
+	 */
+	abstract public function transaction($type);
+	
+	/**
+	 * Supprime plusieurs lignes sur plusieurs tables, liees par un champ
+	 *
+	 * @param string $default_table Table principale
+	 * @param string $default_where Clause WHERE sur la table par defaut pour limiter la suppression
+	 * @param unknown_type $delete_join Tableau associatif contenant en clef les champs et en valeur des tableaux de tables SQL
+	 */
+	abstract public function delete_tables($default_table, $default_where, $delete_join);
+	
+	/**
+	 * Abstraction sur le mot clef LIKE suivant la base
+	 * 
+	 * @return string
+	 */
+	abstract public function like();
+	
+	/**
+	 * Destructeur, ferme la connexion a la base de donnee
+	 */
 	public function __destruct()
 	{
 		if ($this->_get_id())
@@ -87,9 +243,17 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne une instance de la classe Sql sur le bon type de base de donnee
-	*/
+	/**
+	 * Design pattern factory, retourne une instance de la classe Dbal en fonction des bons parametres
+	 *
+	 * @param string $sql_server Adresse du serveur
+	 * @param string $sql_login Login de connexion
+	 * @param string $sql_pass Mot de passe de connexion
+	 * @param string $sql_db Nom de la base de donnee
+	 * @param int $sql_port Port de connexion
+	 * @param bool $use_cache Utilisation du cache
+	 * @return Dbal
+	 */
 	public static function factory($sql_server = NULL, $sql_login = NULL, $sql_pass = NULL, $sql_db = NULL, $sql_port = NULL, $use_cache = TRUE)
 	{
 		$sql_server =	($sql_server === NULL) ? SQL_SERVER : $sql_server;
@@ -102,12 +266,13 @@ abstract class Dbal extends Fsb_model
 		return (new $classname($sql_server, $sql_login, $sql_pass, $sql_db, $sql_port, $use_cache));
 	}
 
-	/*
-	** Execute une requete SQL
-	** -----
-	** $sql ::			Requete SQL
-	** $cache_prefix ::	Chaine de caractere utilisee pour identifier une serie de requetes a mettre en cache
-	*/
+	/**
+	 * Execute une requete SQL avec gestion du cache et du debugage
+	 *
+	 * @param string $sql Requete SQL
+	 * @param string $cache_prefix Si cet argument est passe la requete est mise en cache avec comme prefixe le chaine donnee
+	 * @return resource Pointe sur le resultat de la requete
+	 */
 	public function query($sql, $cache_prefix = NULL)
 	{
 		if (!$this->use_cache)
@@ -172,16 +337,15 @@ abstract class Dbal extends Fsb_model
 		return ($result);
 	}
 
-	/*
-	** Construit une requete INSERT / REPLACE a partir d'un tableau.
-	** -----
-	** $table ::		Nom de la table
-	** $ary ::			Tableau contenant en clef les champs de la requete et en
-	**						valeur les valeurs pour la requete
-	** $insert ::		INSERT ou REPLACE
-	** $multi_insert ::	TRUE pour une insertion multiple, a utiliser avec la methode finale
-	**						Dbal::query_multi_insert()
-	*/
+	/**
+	 * Construit une requete INSERT / REPLACE a partir d'un tableau.
+	 *
+	 * @param string $table Nom de la table
+	 * @param array $ary Tableau contenant en clef les champs de la requete et en valeur les valeurs pour la requete
+	 * @param string $insert INSERT ou REPLACE
+	 * @param bool $multi_insert TRUE pour une insertion multiple, a utiliser avec la methode Dbal::query_multi_insert()
+	 * @return resource
+	 */
 	public function insert($table, $ary, $insert = 'INSERT', $multi_insert = FALSE)
 	{
 		if ($insert == 'REPLACE' && !$this->can_use_replace)
@@ -253,14 +417,14 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Construit une requete UPDATE a partir d'un tableau
-	** -----
-	** $table ::	Nom de la table
-	** $ary ::		Tableau contenant en clef les champs de la requete et en
-	**				valeur les valeurs pour la requete
-	** $where ::	Clause where de la requete
-	*/
+	/**
+	 * Construit une requete UPDATE a partir d'un tableau
+	 *
+	 * @param string $table Nom de la table
+	 * @param array $ary Tableau contenant en clef les champs de la requete et en valeur les valeurs pour la requete
+	 * @param string $where Clause where de la requete
+	 * @return resource
+	 */
 	public function update($table, $ary, $where = '')
 	{
 		$sql = 'UPDATE ' . SQL_PREFIX . $table . ' SET ';
@@ -287,11 +451,11 @@ abstract class Dbal extends Fsb_model
 		return ($this->query($sql));
 	}
 
-	/*
-	** Vide une table
-	** -----
-	** $table ::		Nom de la table
-	*/
+	/**
+	 * Vide une table
+	 *
+	 * @param string $table Nom de la table
+	 */
 	public function query_truncate($table)
 	{
 		if ($this->can_use_truncate)
@@ -304,16 +468,13 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne une ligne du resultat et deplace le pointeur
-	** vers la ligne suivante.
-	** -----
-	** $result ::		Resultat d'une requete
-	** $function ::		Fonction a appeler par defaut il s'agira de "assoc" qui
-	**					appellera mysql_fetch_assoc(). Il existe aussi "row" et
-	**					"array" qui retournent respectivement un tableau sous forme d'indice
-	**					et un melange de "assoc" et "row".
-	*/
+	/**
+	 * Retourne une ligne du resultat et deplace le pointeur vers la ligne suivante.
+	 *
+	 * @param resource $result Resultat d'une requete
+	 * @param string $function Formation des index du tableau de retour (assoc | row | array)
+	 * @return array
+	 */
 	public function row($result, $function = 'assoc')
 	{
 		if (is_int($result) && isset($this->cache_query[$result]))
@@ -330,14 +491,14 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Renvoie un tableau contenant chaque ligne du resultat
-	** -----
-	** $result ::		Resultat d'une requete
-	** $function ::		Voir la methode row()
-	** $field_name ::	Si le nom d'un champ est passe en parametre, le tableau sera associe aux valeurs de ce champ. Ce champ
-	**					doit etre unique.
-	*/
+	/**
+	 * Recupere toutes les lignes du resultat
+	 *
+	 * @param resource $result Resultat d'une requete
+	 * @param string $function Formation des index du tableau de retour (assoc | row | array)
+	 * @param string $field_name Le tableau sera associe aux valeurs de ce champ si le parametre est passe
+	 * @return array
+	 */
 	public function rows($result, $function = 'assoc', $field_name = NULL)
 	{
 		$data = array();
@@ -358,11 +519,11 @@ abstract class Dbal extends Fsb_model
 		return ($data);
 	}
 
-	/*
-	** Libere le resultat d'une requete
-	** -----
-	** $result ::		Resultat d'une requete
-	*/
+	/**
+	 * Libere la memoire allouee pour le resultat d'une requete
+	 *
+	 * @param resource $result Resultat d'une requete
+	 */
 	public function free($result)
 	{
 		$this->_free($result);
@@ -373,15 +534,23 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne un ou plusieurs champs d'une requete, par exemple :
-	**	$sql = 'SELECT field FROM table WHERE field = xxx';
-	**	$field = Fsb::$db->get($sql, 'field');
-	**
-	** ou bien pour plusieurs champs :
-	**	$sql = 'SELECT field1, field2 FROM table WHERE field = xxx';
-	**	list($field1, $field2) = Fsb::$db->get($sql, array('field1', 'field2'));
-	*/
+	/**
+	 * Retourne un ou plusieurs champs d'une requete.
+	 * Par exemple :
+	 * <code>
+	 *  $sql = 'SELECT field FROM table WHERE field = xxx';
+	 *  $field = Fsb::$db->get($sql, 'field');
+	 * </code>
+	 * ou
+	 * <code>
+	 *  $sql = 'SELECT field1, field2 FROM table WHERE field = xxx';
+	 *  list($field1, $field2) = Fsb::$db->get($sql, array('field1', 'field2'));
+	 * </code>
+	 * 
+	 * @param string $query Requete SQL
+	 * @param array|string $fields
+	 * @return mixed
+	 */
 	public function get($query, $fields)
 	{
 		$result = $this->query($query);
@@ -408,11 +577,12 @@ abstract class Dbal extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Retourne le resultat d'une requete
-	** -----
-	** $query ::	Requete SQL
-	*/
+	/**
+	 * Retourne la premiere ligne d'une requete
+	 *
+	 * @param string $query Requete SQL
+	 * @return array
+	 */
 	public function request($query)
 	{
 		$result = $this->query($query);
@@ -422,11 +592,11 @@ abstract class Dbal extends Fsb_model
 		return ($row);
 	}
 
-	/*
-	** Detruit les requetes mises en cache
-	** -----
-	** $prefix ::	Prefixe des requetesa detruire
-	*/
+	/**
+	 * Detruit les requetes mises en cache
+	 *
+	 * @param string $prefix Prefixe des requetes a detruire
+	 */
 	public function destroy_cache($prefix = NULL)
 	{
 		if ($this->cache)
@@ -435,19 +605,20 @@ abstract class Dbal extends Fsb_model
 		}
 	}
 
-	/*
-	** Renvoie le nombre de ligne retournee par une requete SELECT
-	** -----
-	** $result ::		Resultat d'une requete
-	*/
+	/**
+	 * Renvoie le nombre de ligne retournee par une requete SELECT
+	 *
+	 * @param resource $result Resultat d'une requete
+	 * @return int
+	 */
 	public function count($result)
 	{
 		return ((is_int($result) && isset($this->cache_query[$result])) ? count($this->cache_query[$result]) : $this->_count($result));
 	}
 
-	/*
-	** Ferme la connexion a la base de donnee
-	*/
+	/**
+	 * Ferme la connexion a la base de donnee
+	 */
 	public function close()
 	{		
 		if (Fsb::$debug->_get_debug_query())
@@ -460,14 +631,14 @@ abstract class Dbal extends Fsb_model
 		$this->id = NULL;
 	}
 
-	/*
-	** Permet d'afficher le debugage d'une requete
-	** -----
-	** $sql ::					Requete SQL
-	** $result_explain ::		Resultat de la requete EXPLAIN
-	** $start_time ::			Temps de debut de la requete
-	** $result ::				Resultat de la requete
-	*/
+	/**
+	 * Permet d'afficher le debugage d'une requete
+	 *
+	 * @param string $sql Requete SQL
+	 * @param resource $result_explain Resultat de la requete EXPLAIN
+	 * @param int $start_query Temps de debut de la requete<b></b>
+	 * @param resource $result Resultat de la requete
+	 */
 	private function debug_query($sql, &$result_explain, &$start_query, $result = 0)
 	{
 		if (!$result)

@@ -10,22 +10,22 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Methode locale
-*/
+/**
+ * Gestion des fichiers via les fonction f***()
+ *
+ */
 class File_local extends File
 {
-	// Methode
+	/**
+	 * Methode de gestion des fichiers
+	 *
+	 * @var string
+	 */
 	public $method = 'local';
 
-	/*
-	** Connnexion au serveur
-	** -----
-	** $server ::		Adresse du serveur
-	** $login ::		Login
-	** $password ::		Mot de passe
-	** $port ::			Port
-	*/
+	/**
+	 * @see File::connexion()
+	 */
 	protected function _connexion($server, $login, $password, $port, $path)
 	{
 		$this->root_path = $path;
@@ -33,44 +33,33 @@ class File_local extends File
 		return (TRUE);
 	}
 
-	/*
-	** Change de repertoire courant
-	** -----
-	** $path ::		Nouveau repertoire courant
-	*/
+	/**
+	 * @see File::chdir()
+	 */
 	protected function _chdir($path)
 	{
 		return (@chdir($path));
 	}
 
-	/*
-	** Renomme un fichier
-	** -----
-	** $from ::		Nom du fichier d'origine
-	** $to ::		Nom du fichier de destination
-	*/
+	/**
+	 * @see File::rename()
+	 */
 	protected function _rename($from, $to)
 	{
 		return (@rename($from, $to));
 	}
 
-	/*
-	** Change les droits d'un fichier
-	** -----
-	** $file ::		Nom du fichier
-	** $mode ::		Mode du chmod
-	*/
+	/**
+	 * @see File::chmod()
+	 */
 	protected function _chmod($file, $mode)
 	{
 		return (@chmod($file, $mode));
 	}
 
-	/*
-	** Copie un fichier vers une destination
-	** -----
-	** $src ::		Fichier source
-	** $dst ::		Fichier destination
-	*/
+	/**
+	 * @see File::_put()
+	 */
 	protected function _put($src, $dst)
 	{
 		$result = @rename($src, $dst);
@@ -88,39 +77,33 @@ class File_local extends File
 		return ($result);
 	}
 
-	/*
-	** Supprime un fichier
-	** -----
-	** $filename ::		Nom du fichier a supprimer
-	*/
+	/**
+	 * @see File::unlink()
+	 */
 	protected function _unlink($filename)
 	{
 		return (@unlink($filename));
 	}
 
-	/*
-	** Cree un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::mkdir()
+	 */
 	protected function _mkdir($dir)
 	{
 		return (@mkdir($dir));
 	}
 
-	/*
-	** Supprime un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::rmdir()
+	 */
 	protected function _rmdir($dir)
 	{
 		return (@rmdir($dir));
 	}
 
-	/*
-	** Ferme la connexion
-	*/
+	/**
+	 * @see File::_close()
+	 */
 	protected function _close()
 	{
 

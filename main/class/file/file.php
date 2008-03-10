@@ -10,34 +10,103 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet de manipuler des fichiers sur le serveur via trois methodes differentes :
-**	- Manipulation des fichiers en local (soumis au safe mode)
-**	- Manipulation des fichiers via l'extension FTP (necessite les identifiants de connexion au serveur de fichier)
-**	- Manipulation des fichiers via l'envoie de commandes au socket du server avec fsockopen() (necessite les identifiants de connexion au serveur de fichier)
-**
-** L'algo general des classes est inspire de la classe transfer() de phpBB3 (http://www.phpbb.com)
-*/
-class File extends Fsb_model
+/**
+ * Permet de manipuler des fichiers sur le serveur de plusieurs façon (f***(), ftp_***() ou fsockopen())
+ */
+abstract class File extends Fsb_model
 {
-	// Chemin d'acces vers la racine
+	/**
+	 * Chemin vers la racine du forum
+	 *
+	 * @var string
+	 */
 	public $root_path = './';
 
-	// Chemin local d'acces vers la racine
+	/**
+	 * Chemin local vers la racine du forum
+	 *
+	 * @var string
+	 */
 	public $local_path = './';
 
-	// Liste des erreurs possibles
+	/**
+	 * Impossible de se connecter au serveur
+	 */
 	const FILE_CANT_CONNECT_SERVER = 1;
+	
+	/**
+	 * Impossible de s'authentifier
+	 */
 	const FILE_CANT_AUTHENTIFICATE = 2;
+	
+	/**
+	 * Impossible de changer de dossier
+	 */
 	const FILE_CANT_CHDIR = 3;
+	
+	/**
+	 * La fonction fsockopen() est desactivee
+	 */
 	const FILE_FSOCKOPEN_DISABLED = 4;
+	
+	/**
+	 * L'extension FTP est desactivee
+	 */
 	const FILE_FTP_EXTENSION_DISABLED = 5;
+	
+	/**
+	 * @see File::connexion()
+	 */
+	abstract protected function _connexion($server, $login, $password, $port, $path);
+	
+	/**
+	 * @see File::chdir()
+	 */
+	abstract protected function _chdir($path);
+	
+	/**
+	 * @see File::rename()
+	 */
+	abstract protected function _rename($from, $to);
+	
+	/**
+	 * @see File::chmod()
+	 */
+	abstract protected function _chmod($file, $mode);
+	
+	/**
+	 * Copie un fichier vers une destination
+	 *
+	 * @param string $src Fichier source
+	 * @param string $dst Destination
+	 */
+	abstract protected function _put($src, $dst);
+	
+	/**
+	 * @see File::unlink()
+	 */
+	abstract protected function _unlink($filename);
+	
+	/**
+	 * @see File::mkdir()
+	 */
+	abstract protected function _mkdir($dir);
 
-	/*
-	** Retourne une instance de la bonne classe File a utiliser
-	** -----
-	** $use_ftp ::		Si on utilise une connexion FTP (TRUE / FALSE)
-	*/
+	/**
+	 * @see File::rmdir()
+	 */
+	protected function _rmdir($dir);
+	/**
+	 * Ferme la connexion
+	 */
+	protected function _close();
+
+	/**
+	 * Design pattern factory, retourne une instance de la classe File
+	 *
+	 * @param bool $use_ftp True si on utilise une connexion FTP
+	 * @return File
+	 */
 	public static function factory($use_ftp)
 	{
 		if ($use_ftp)
@@ -61,14 +130,15 @@ class File extends Fsb_model
 		return ($file);
 	}
 
-	/*
-	** Connnexion au serveur
-	** -----
-	** $server ::		Adresse du serveur
-	** $login ::		Login
-	** $password ::		Mot de passe
-	** $port ::			Port
-	*/
+	/**
+	 * Connnexion au serveur
+	 *
+	 * @param string $server Adresse du serveur
+	 * @param string $login Login
+	 * @param string $password Mot de passe
+	 * @param int $port Port
+	 * @param string $path Chemin vers la racine du forum
+	 */
 	public function connexion($server, $login, $password, $port, $path)
 	{
 		$result = $this->_connexion($server, $login, $password, $port, $path);
@@ -101,13 +171,13 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Change les droits d'un fichier
-	** -----
-	** $file ::		Nom du fichier
-	** $mode ::		Mode du chmod
-	** $debug ::	Debugage du CHMOD ?
-	*/
+	/**
+	 * Change les droits d'un fichier
+	 *
+	 * @param string $file Nom du fichier
+	 * @param int $mode Mode du chmod
+	 * @param bool $debug Debugage du CHMOD ?
+	 */
 	public function chmod($file, $mode, $debug = TRUE)
 	{
 		$result = $this->_chmod($this->root_path . $file, $mode);
@@ -117,12 +187,13 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Ecrits des donnees dans un fichier
-	** -----
-	** $filename ::		Nom du fichier
-	** $content ::		Contenu a ecrire
-	*/
+	/**
+	 * Ecrit des donnees dans un fichier
+	 *
+	 * @param string $filename Nom du fichier
+	 * @param string $content Contenu a ecrire
+	 * @return bool
+	 */
 	public function write($filename, $content)
 	{
 		// Nom du fichier
@@ -153,12 +224,12 @@ class File extends Fsb_model
 		return (TRUE);
 	}
 
-	/*
-	** Copie un fichier vers un repertoire
-	** -----
-	** $src ::		Fichier source
-	** $dst ::		Fichier destination
-	*/
+	/**
+	 * Copie un fichier ailleurs
+	 *
+	 * @param unknown_type $src Fichier source
+	 * @param unknown_type $dst Fichier destination
+	 */
 	public function copy($src, $dst)
 	{
 		//$this->_unlink($dst);
@@ -198,11 +269,11 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Cree un repertoire et les repertoires de son arborescence
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * Cree un repertoire et ses repertoires parents s'ils n'existent pas
+	 *
+	 * @param string $dir Nom du repertoire
+	 */
 	public function mkdir($dir)
 	{
 		if (is_dir($dir))
@@ -227,11 +298,11 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime un repertoire et les repertoires de son arborescence
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * Supprime un repertoire
+	 *
+	 * @param string $dir Nom du repertoire
+	 */
 	public function rmdir($dir)
 	{
 		if (!$this->_rmdir($this->root_path . $dir))
@@ -240,12 +311,13 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Cree un nom de fichier temporaire
-	** -----
-	** $dir ::		Nom du dossier
-	** $prefix ::	Prefixe du fichier
-	*/
+	/**
+	 * Cree un nom de fichier temporaire
+	 *
+	 * @param string $dir Nom du dossier
+	 * @param string $prefix Prefixe du fichier
+	 * @return string
+	 */
 	protected function uniq_name($dir, $prefix)
 	{
 		do
@@ -256,32 +328,35 @@ class File extends Fsb_model
 		return ($filename);
 	}
 
-	/*
-	** Change de repertoire courant
-	** -----
-	** $path ::		Nouveau repertoire courant
-	*/
+	/**
+	 * Change le repertoire courant
+	 *
+	 * @param string $path Repertoire de destination
+	 * @return bool
+	 */
 	public function chdir($path)
 	{
 		return ($this->_chdir($this->root_path . $path));
 	}
 
-	/*
-	** Renomme un fichier
-	** -----
-	** $from ::		Nom du fichier d'origine
-	** $to ::		Nom du fichier de destination
-	*/
+	/**
+	 * Renomme un fichier
+	 *
+	 * @param string $from Nom du fichier d'origine
+	 * @param string $to Nom du nouveau fichier
+	 * @return bool
+	 */
 	public function rename($from, $to)
 	{
 		return ($this->_rename($this->root_path . $from, $this->root_path . $to));
 	}
 
-	/*
-	** Supprime un fichier
-	** -----
-	** $filename ::		Nom du fichier a supprimer
-	*/
+	/**
+	 * Supprime un fichier
+	 *
+	 * @param string $filename Nom du fichier a supprimer
+	 * @return bool
+	 */
 	public function unlink($filename)
 	{
 		if (is_dir($this->local_path . $filename))
@@ -304,9 +379,10 @@ class File extends Fsb_model
 		}
 	}
 
-	/*
-	** Destructeur
-	*/
+	/**
+	 * Destructeur, ferme la connexion
+	 *
+	 */
 	public function __destruct()
 	{
 		$this->_close();

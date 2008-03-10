@@ -331,7 +331,7 @@ class Fsb_frame extends Fsb_model
 			), 'WHERE u_utc_dst <> ' . $dst);
 		}
 
-		Fsb::$debug->end = Fsb::$debug->get_time();
+		Fsb::$debug->end = microtime(true);
 		Fsb::$tpl->set_vars( array(
 			'U_LOGIN' =>			sid(ROOT . 'index.' . PHPEXT . '?p=login' . $get_url),
 			'U_LOGOUT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=logout', TRUE),
@@ -344,7 +344,7 @@ class Fsb_frame extends Fsb_model
 			'PHPEXT' =>				PHPEXT,
 			'USER_TPL' =>			Fsb::$session->data['u_tpl'],
 			'MODO_HAVE_MESSAGE' =>	$modo_have_message,
-			'U_DEBUG_QUERY' =>		Fsb::$debug->debug_url('query'),
+			'U_DEBUG_QUERY' =>		Fsb::$debug->debug_url(),
 			'FSB_VERSION' =>		Fsb::$cfg->get('fsb_version'),
 			'EXEC_QUERY' =>			sprintf(Fsb::$session->lang('exec_query'), Fsb::$db->count),
 			'EXEC_TIME' =>			sprintf(Fsb::$session->lang('exec_time'), substr(Fsb::$debug->end - Fsb::$debug->start, 0, 4)),

@@ -152,7 +152,7 @@ class Fsb_admin_frame extends Fsb_model
 	*/
 	public function frame_footer()
 	{
-		Fsb::$debug->end = Fsb::$debug->get_time();
+		Fsb::$debug->end = microtime(true);
 
 		// Navigation ?
 		if (isset($this->nav) && $this->nav)
@@ -174,7 +174,7 @@ class Fsb_admin_frame extends Fsb_model
 		}
 
 		Fsb::$tpl->set_vars(array(
-			'U_DEBUG_QUERY' =>	Fsb::$debug->debug_url('query'),
+			'U_DEBUG_QUERY' =>	Fsb::$debug->debug_url(),
 			'FSB_VERSION' =>	Fsb::$cfg->get('fsb_version'),
 			'EXEC_QUERY' =>		sprintf(Fsb::$session->lang('exec_query'), Fsb::$db->count),
 			'EXEC_TIME' =>		sprintf(Fsb::$session->lang('exec_time'), substr(Fsb::$debug->end - Fsb::$debug->start, 0, 4)),

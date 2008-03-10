@@ -10,25 +10,28 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Methode socket
-*/
+/**
+ * Gestion des fichiers via une connexion socket
+ */
 class File_socket extends File
 {
-	// Socket de connexion
+	/**
+	 * Socket de connexion
+	 *
+	 * @var resource
+	 */
 	private $sock;
 
-	// Methode
+	/**
+	 * Methode de gestion des fichiers
+	 *
+	 * @var string
+	 */
 	public $method = 'socket';
 
-	/*
-	** Connnexion au serveur
-	** -----
-	** $server ::		Adresse du serveur
-	** $login ::		Login
-	** $password ::		Mot de passe
-	** $port ::			Port
-	*/
+	/**
+	 * @see File::connexion()
+	 */
 	protected function _connexion($server, $login, $password, $port, $path)
 	{
 		$list = explode(',', @ini_get('disable_functions'));
@@ -70,45 +73,34 @@ class File_socket extends File
 		return (TRUE);
 	}
 
-	/*
-	** Change de repertoire courant
-	** -----
-	** $path ::		Nouveau repertoire courant
-	*/
+	/**
+	 * @see File::chdir()
+	 */
 	protected function _chdir($path)
 	{
 		return ($this->_send("CWD $path"));
 	}
 
-	/*
-	** Renomme un fichier
-	** -----
-	** $from ::		Nom du fichier d'origine
-	** $to ::		Nom du fichier de destination
-	*/
+	/**
+	 * @see File::rename()
+	 */
 	protected function _rename($from, $to)
 	{
 		$this->_send("RNFR $from");
 		$this->_send("RNTO $to");
 	}
 
-	/*
-	** Change les droits d'un fichier
-	** -----
-	** $file ::		Nom du fichier
-	** $mode ::		Mode du chmod
-	*/
+	/**
+	 * @see File::chmod()
+	 */
 	protected function _chmod($file, $mode)
 	{
 		return ($this->_send("SITE CHMOD $mode $file"));
 	}
 
-	/*
-	** Copie un fichier vers une destination
-	** -----
-	** $src ::		Fichier source
-	** $dst ::		Fichier destination
-	*/
+	/**
+	 * @see File::_put()
+	 */
 	protected function _put($src, $dst)
 	{
 		$this->_send("TYPE I");
@@ -134,39 +126,33 @@ class File_socket extends File
 		return (TRUE);
 	}
 
-	/*
-	** Supprime un fichier
-	** -----
-	** $filename ::		Nom du fichier a supprimer
-	*/
+	/**
+	 * @see File::unlink()
+	 */
 	protected function _unlink($filename)
 	{
 		$this->_send("DELE $filename");
 	}
 
-	/*
-	** Cree un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::mkdir()
+	 */
 	protected function _mkdir($dir)
 	{
 		return ($this->_send("MKD $dir"));
 	}
 
-	/*
-	** Supprime un repertoire
-	** -----
-	** $dir ::		Nom du repertoire
-	*/
+	/**
+	 * @see File::rmdir()
+	 */
 	protected function _rmdir($dir)
 	{
 		return ($this->_send("RMD $dir"));
 	}
 
-	/*
-	** Lit la reponse du serveur sur la socket
-	*/
+	/**
+	 * Lit la reponse du serveur sur la socket
+	 */
 	protected function _read()
 	{
 		$str = '';
@@ -183,9 +169,9 @@ class File_socket extends File
 		return ($str);
 	}
 
-	/*
-	** Ecrit sur la socket
-	*/
+	/**
+	 * Ecrit sur la socket
+	 */
 	protected function _send($command, $check = TRUE)
 	{
 		fwrite($this->sock, $command . "\r\n");
@@ -196,9 +182,9 @@ class File_socket extends File
 		return (TRUE);
 	}
 
-	/*
-	** Ouvre une connexion pour l'envoie de donnees sur le socket, renvoie le socket de connexion
-	*/
+	/**
+	 * Ouvre une connexion pour l'envoie de donnees sur le socket, renvoie le socket de connexion
+	 */
 	protected function _open_connexion()
 	{
 		$this->_send("PASV", FALSE);
@@ -228,19 +214,20 @@ class File_socket extends File
 		return ($socket);
 	}
 
-	/*
-	** Ferme la connexion ouverte par la methode Socket_file::_open_connexion()
-	** -----
-	** $socket ::	File descriptor
-	*/
+	/**
+	 * Ferme la connexion ouverte par la methode _open_connexion()
+	 *
+	 * @param resource $socket
+	 * @return bool
+	 */
 	protected function _close_connexion($socket)
 	{
 		return (fclose($socket));
 	}
 
-	/*
-	** Ferme la connexion
-	*/
+	/**
+	 * @see File::_close()
+	 */
 	protected function _close()
 	{
 		$this->_send("QUIT", FALSE);

@@ -10,31 +10,58 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion de FSBcard pour exporter son profil
-** Pour les specifications consulter le schema ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
-*/
+/**
+ * Gestion des FSBcard pour importer / exporter son profil
+ * Pour les specifications consulter ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
+ *
+ */
 class Fsbcard extends Fsb_model
 {
-	// Objet XML
+	/**
+	 * @var Xml
+	 */
 	public $xml;
 
-	// Version des FSBcards
+	/**
+	 * Version du système de FSBcards
+	 *
+	 * @var string
+	 */
 	public $version = '1.0';
 
-	// Generateur
+	/**
+	 * Generateur de la FSBcard
+	 *
+	 * @var unknown_type
+	 */
 	public $generator = 'fsb2';
 
-	// Liste des sexes disponibles
+	/**
+	 * Liste des sexes disponibles pour la FSBcard
+	 *
+	 * @var array
+	 */
 	private $sexe = array('none', 'male', 'female');
 
-	// Liste des hashs disponibles
+	/**
+	 * Liste des hash disponibles
+	 *
+	 * @var array
+	 */
 	private $hash = array('none', 'md5', 'sha1');
 
-	// Liste des methodes d'avatar disponibles
+	/**
+	 * Liste des methodes d'avatar disponibles
+	 *
+	 * @var array
+	 */
 	private $avatar = array('link', 'content');
 
-	// Options disponibles
+	/**
+	 * Options disponibles
+	 *
+	 * @var array
+	 */
 	private $options = array(
 		'notifyMp' =>			array('true', 'false'),
 		'sessionHidden' =>		array('true', 'false'),
@@ -48,9 +75,9 @@ class Fsbcard extends Fsb_model
 		'displayImg' =>			array('posts' => array('true', 'false'), 'sigs' => array('true', 'false')),
 	);
 
-	/*
-	** Constructeur qui instanticie un objet XML
-	*/
+	/**
+	 * Constructeur, instancie un objet XML
+	 */
 	public function __construct()
 	{
 		// Instance d'un objet XML et creation de la FSBcard
@@ -72,11 +99,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->appendChild($item);
 	}
 
-	/*
-	** Charge une FSBcard
-	** -----
-	** $filenamme ::	Chemin vers le fichier FSBcard
-	*/
+	/**
+	 * Charge une FSBcard
+	 *
+	 * @param string $filename Chemin vers le fichier FSBcard
+	 */
 	public function load_file($filename)
 	{
 		if (!file_exists($filename))
@@ -87,11 +114,11 @@ class Fsbcard extends Fsb_model
 		$this->load_content(file_get_contents($filename));
 	}
 
-	/*
-	** Charge du code contenu dans une FSBcard
-	** -----
-	** $content ::		Contenu de la FSBcard
-	*/
+	/**
+	 * Charge du code XML contenu dans une FSBcard
+	 *
+	 * @param string $content Contenu de la FSBcard
+	 */
 	public function load_content($content)
 	{
 		$this->xml->load_content($content);
@@ -121,17 +148,21 @@ class Fsbcard extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne le code XML de la FSBcard
-	*/
+	/**
+	 * Retourne le code XML de la FSBcard
+	 *
+	 * @return string
+	 */
 	public function generate()
 	{
 		return ($this->xml->document->asValidXML());
 	}
 
-	/*
-	** Theme du membre
-	*/
+	/**
+	 * Precise le theme
+	 *
+	 * @param string $string Nom du theme
+	 */
 	public function set_template($string)
 	{
 		$item = $this->xml->document->personal[0]->createElement('template');
@@ -139,9 +170,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->personal[0]->appendChild($item);
 	}
 
-	/*
-	** Theme du membre
-	*/
+	/**
+	 * Recupere le theme
+	 *
+	 * @return string
+	 */
 	public function get_template()
 	{
 		if ($this->xml->document->personal[0]->childExists('template'))
@@ -151,9 +184,11 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Langue du membre
-	*/
+	/**
+	 * Precise la langue
+	 *
+	 * @param string $string Nom de la langue
+	 */
 	public function set_lang($string)
 	{
 		$item = $this->xml->document->personal[0]->createElement('lang');
@@ -161,9 +196,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->personal[0]->appendChild($item);
 	}
 
-	/*
-	** Langue du membre
-	*/
+	/**
+	 * Recupere la langue
+	 *
+	 * @return string
+	 */
 	public function get_lang()
 	{
 		if ($this->xml->document->personal[0]->childExists('lang'))
@@ -173,9 +210,13 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Date de naissance (format dd-mm-yyyy)
-	*/
+	/**
+	 * Precise la date de naissance
+	 *
+	 * @param int $day Jour
+	 * @param int $month Mois
+	 * @param int $year Annee
+	 */
 	public function set_birthday($day, $month, $year)
 	{
 		if (!$day)
@@ -197,9 +238,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->personal[0]->appendChild($item);
 	}
 
-	/*
-	** Date de naissance (format dd-mm-yyyy)
-	*/
+	/**
+	 * Recupere la date de naissance
+	 *
+	 * @return array day, month, year
+	 */
 	public function get_birthday()
 	{
 		if ($this->xml->document->personal[0]->childExists('birthday') && !$this->xml->document->personal[0]->birthday[0]->hasChildren())
@@ -215,9 +258,11 @@ class Fsbcard extends Fsb_model
 		return (array(NULL, NULL, NULL));
 	}
 
-	/*
-	** Sexe du membre
-	*/
+	/**
+	 * Precise le sexe
+	 *
+	 * @param string $string none, male ou female
+	 */
 	public function set_sexe($string)
 	{
 		if (!in_array($string, $this->sexe))
@@ -230,9 +275,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->personal[0]->appendChild($item);
 	}
 
-	/*
-	** Sexe du membre
-	*/
+	/**
+	 * Recupere le sexe
+	 *
+	 * @return string
+	 */
 	public function get_sexe()
 	{
 		if ($this->xml->document->personal[0]->childExists('sexe'))
@@ -247,9 +294,12 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Fuseau horaire
-	*/
+	/**
+	 * Precise le fuseau horaire
+	 *
+	 * @param string $utc Fuseau horaire
+	 * @param int $dst Heure d'hiver ou d'ete
+	 */
 	public function set_date($utc, $dst)
 	{
 		if (!isset($GLOBALS['_utc'][$utc]))
@@ -274,9 +324,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->personal[0]->date[0]->appendChild($item);
 	}
 
-	/*
-	** Fuseau horaire
-	*/
+	/**
+	 * Recupere le fuseau horaire
+	 *
+	 * @return array utc, dst
+	 */
 	public function get_date()
 	{
 		if ($this->xml->document->personal[0]->childExists('date'))
@@ -307,9 +359,11 @@ class Fsbcard extends Fsb_model
 		return (array(NULL, NULL));
 	}
 
-	/*
-	** Signature du membre
-	*/
+	/**
+	 * Precise la signature
+	 *
+	 * @param string $string
+	 */
 	public function set_sig($string)
 	{
 		$item = $this->xml->document->createElement('sig');
@@ -317,9 +371,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->appendChild($item);
 	}
 
-	/*
-	** Signature du membre
-	*/
+	/**
+	 * Recupere la signature
+	 *
+	 * @return string
+	 */
 	public function get_sig()
 	{
 		if ($this->xml->document->childExists('sig'))
@@ -329,9 +385,11 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Login de connexion
-	*/
+	/**
+	 * Precise le login
+	 *
+	 * @param string $string
+	 */
 	public function set_login($string)
 	{
 		$item = $this->xml->document->register[0]->createElement('login');
@@ -339,9 +397,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->register[0]->appendChild($item);
 	}
 
-	/*
-	** Login de connexion
-	*/
+	/**
+	 * Recupere le login
+	 *
+	 * @return string
+	 */
 	public function get_login()
 	{
 		if ($this->xml->document->register[0]->childExists('login'))
@@ -351,9 +411,11 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Pseudonyme de connexion
-	*/
+	/**
+	 * Precise le pseudonyme
+	 *
+	 * @param string $string
+	 */
 	public function set_nickname($string)
 	{
 		$item = $this->xml->document->register[0]->createElement('nickname');
@@ -361,9 +423,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->register[0]->appendChild($item);
 	}
 
-	/*
-	** Pseudonyme de connexion
-	*/
+	/**
+	 * Recupere le pseudonyme
+	 *
+	 * @return string
+	 */
 	public function get_nickname()
 	{
 		if ($this->xml->document->register[0]->childExists('nickname'))
@@ -373,9 +437,12 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Mot de passe de connexion
-	*/
+	/**
+	 * Mot de passe de connexion
+	 *
+	 * @param string $string
+	 * @param string $hash Hash sur le mot de passe a appliquer
+	 */
 	public function set_password($string, $hash = 'none')
 	{
 		if ($hash == 'md5' || $hash == 'sha1')
@@ -393,9 +460,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->register[0]->appendChild($item);
 	}
 
-	/*
-	** Mot de passe de connexion
-	*/
+	/**
+	 * Recupere le mot de passe
+	 *
+	 * @return array mot de passe, hash
+	 */
 	public function get_password()
 	{
 		if ($this->xml->document->register[0]->childExists('password'))
@@ -412,9 +481,11 @@ class Fsbcard extends Fsb_model
 		return (array(NULL, 'none'));
 	}
 
-	/*
-	** Adresse Email
-	*/
+	/**
+	 * Precise l'adresse mail
+	 *
+	 * @param string $string
+	 */
 	public function set_email($string)
 	{
 		$item = $this->xml->document->register[0]->createElement('email');
@@ -422,9 +493,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->register[0]->appendChild($item);
 	}
 
-	/*
-	** Adresse Email
-	*/
+	/**
+	 * Recupere l'adresse mail
+	 *
+	 * @return string
+	 */
 	public function get_email()
 	{
 		if ($this->xml->document->register[0]->childExists('email'))
@@ -434,9 +507,12 @@ class Fsbcard extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Avatar
-	*/
+	/**
+	 * Precise l'avatar
+	 *
+	 * @param string $string
+	 * @param string $method content ou link
+	 */
 	public function set_avatar($string, $method)
 	{
 		if (!in_array($method, $this->avatar))
@@ -467,9 +543,11 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->avatar[0]->appendChild($item);
 	}
 
-	/*
-	** Avatar
-	*/
+	/**
+	 * Recupere l'avatar
+	 *
+	 * @return array avatar, methode
+	 */
 	public function get_avatar()
 	{
 		if ($this->xml->document->childExists('avatar'))
@@ -494,9 +572,12 @@ class Fsbcard extends Fsb_model
 		return (array(NULL, NULL));
 	}
 
-	/*
-	** Gestion des options d'utilisateur
-	*/
+	/**
+	 * Gestion des options utilisateur
+	 *
+	 * @param string $key Nom de l'option
+	 * @param mixed $value Valeur de l'option
+	 */
 	public function set_option($key, $value)
 	{
 		if (!isset($this->options[$key]))
@@ -559,9 +640,12 @@ class Fsbcard extends Fsb_model
 		$this->xml->document->options[0]->appendChild($item);
 	}
 
-	/*
-	** Lit une option
-	*/
+	/**
+	 * Recupere une option
+	 *
+	 * @param string $key Nom de l'option
+	 * @return mixed
+	 */
 	public function get_option($key)
 	{
 		if (!isset($this->options[$key]) || !$this->xml->document->options[0]->childExists($key))
@@ -615,9 +699,12 @@ class Fsbcard extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne les informations sur une option
-	*/
+	/**
+	 * Retourne les informations sur une option
+	 *
+	 * @param string $key Nom de l'option
+	 * @return array attributs, valeurs
+	 */
 	private function options_info($key)
 	{
 		$attributes = $values = array();
