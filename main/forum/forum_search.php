@@ -155,9 +155,9 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_file('forum/forum_search.html');
 		Fsb::$tpl->set_vars(array(
 			'SEARCH_EXPLAIN' =>	$search_explain,
-			'LIST_DATE' =>		Html::create_list('date', 0, $list_date),
-			'LIST_ORDER' =>		Html::create_list('order', 't_last_p_time', $list_order),
-			'LIST_DIRECTION' =>	Html::create_list('direction', 'desc', $list_direction),
+			'LIST_DATE' =>		Html::make_list('date', 0, $list_date),
+			'LIST_ORDER' =>		Html::make_list('order', 't_last_p_time', $list_order),
+			'LIST_DIRECTION' =>	Html::make_list('direction', 'desc', $list_direction),
 
 			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=result'),
 		));

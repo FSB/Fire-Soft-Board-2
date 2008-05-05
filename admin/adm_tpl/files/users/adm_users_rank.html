@@ -66,7 +66,7 @@
 				<input type="text" name="rank_style" id="rank_color" value="{RANK_STYLE_CONTENT}" size="50" /> &nbsp;
 				<br />
 				<input type="radio" name="rank_style_type" value="" <if content="!$RANK_STYLE_TYPE">checked="checked"</if> /> {LG_ADM_RANK_STYLE_TYPE_NONE} &nbsp;
-				<input type="radio" name="rank_style_type" id="rank_style_type" value="style" <if content="$RANK_STYLE_TYPE == 'style'">checked="checked"</if> /> <a href="#" onclick="window.open('index.php?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=rank_color&amp;radio=rank_style_type', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_RANK_STYLE_TYPE_S}</a> &nbsp; 
+				<input type="radio" name="rank_style_type" id="rank_style_type" value="style" <if content="$RANK_STYLE_TYPE == 'style'">checked="checked"</if> /> <a href="#" onclick="window.open('index.<?php echo PHPEXT ?>?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=rank_color&amp;radio=rank_style_type', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_RANK_STYLE_TYPE_S}</a> &nbsp; 
 				<input type="radio" name="rank_style_type" value="class" <if content="$RANK_STYLE_TYPE == 'class'">checked="checked"</if> /> {LG_ADM_RANK_STYLE_TYPE_C}
 			</dd>
 		</dl>

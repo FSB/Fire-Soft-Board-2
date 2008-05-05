@@ -12,7 +12,6 @@
 
 /**
  * Gestion des fichiers via les fonction f***()
- *
  */
 class File_local extends File
 {

@@ -10,9 +10,9 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Methodes permettants de gerer les groupes du forum (ajout, validation, suppression, etc..)
-*/
+/**
+ * Methodes permettants de gerer les groupes du forum (ajout, validation, suppression, etc..)
+ */
 class Group extends Fsb_model
 {
 	/**

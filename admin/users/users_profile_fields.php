@@ -155,6 +155,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			$list_type[$key] = Fsb::$session->lang('adm_pf_type_' . $data['name']);
 		}
+		$list_personal_type = Html::make_list('type', $this->type, $list_type, array(
+			'onchange' =>	'location.href=\'' . sid('index.' . PHPEXT . '?p=users_profile_fields&amp;module=personal&amp;mode=add&amp;type=') . '\' + this.value',
+		));
 
 		Profil_fields_admin::form($this->type);
 		$info = Profil_fields::$type[$this->type];
@@ -173,7 +176,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'PF_REGISTER' =>		($this->data['pf_register']) ? TRUE : FALSE,
 			'MAXLENGTH_EXPLAIN' =>	(isset($info['maxlength'])) ? sprintf(Fsb::$session->lang('adm_pf_maxlength_explain'), $info['maxlength']['min'] + 1, $info['maxlength']['max']) : '',
 			
-			'LIST_PERSONAL_TYPE' =>	Html::create_list('type', $this->type, $list_type, '', 'onchange="location.href=\'' . sid('index.' . PHPEXT . '?p=users_profile_fields&amp;module=personal&amp;mode=add&amp;type=') . '\' + this.value"'),
+			'LIST_PERSONAL_TYPE' =>	$list_personal_type,
 			'LIST_GROUPS' =>		Html::list_groups('pf_groups[]', GROUP_SPECIAL |GROUP_NORMAL, $this->data['pf_groups'], TRUE),
 			
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;type=' . $this->type . '&amp;module=' . $this->module),

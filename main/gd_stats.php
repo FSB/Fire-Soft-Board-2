@@ -18,7 +18,7 @@
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');
 define('FORUM', TRUE);
-include(ROOT . 'main/start.php');
+include(ROOT . 'main/start.' . PHPEXT);
 
 Fsb::$session->start('', FALSE);
 

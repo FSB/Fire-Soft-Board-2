@@ -10,16 +10,16 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Classe gerant les actions de moderations sur le forum (suppression de messages, de sujets, etc ..)
-*/
+/**
+ * Gestion des actions de moderation
+ */
 class Moderation extends Fsb_model
 {
-	/*
-	** Supprime un ou plusieurs messages
-	** -----
-	** $where ::		Condition des messages a supprimer
-	*/
+	/**
+	 * Supprime un ou plusieurs messages
+	 *
+	 * @param string $where Condition des messages a supprimer
+	 */
 	public static function delete_posts($where)
 	{
 		// On recupere les donnees pour chaque message
@@ -146,11 +146,11 @@ class Moderation extends Fsb_model
 		Fsb::$cfg->update('total_topics', Fsb::$cfg->get('total_topics') - $total_topics);
 	}
 
-	/*
-	** Supprime les messages
-	** -----
-	** $posts ::		ID des messages a supprimer
-	*/
+	/**
+	 * Supprime les messages
+	 *
+	 * @param array $posts ID des messages a supprimer
+	 */
 	public static function _delete_posts($posts)
 	{
 		if (!$posts)
@@ -173,11 +173,11 @@ class Moderation extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime un ou plusieurs sujets
-	** -----
-	** $where ::		Condition de supression des sujets
-	*/
+	/**
+	 * Supprime un ou plusieurs sujets
+	 *
+	 * @param string $where Condition de supression des sujets
+	 */
 	public static function delete_topics($where)
 	{
 		// On recupere la liste des sujets a supprimer
@@ -198,9 +198,11 @@ class Moderation extends Fsb_model
 		}
 	}
 
-	/*
-	** Suppression des sujets
-	*/
+	/**
+	 * Suppression des sujets
+	 *
+	 * @param array $topics ID des sujets a supprimer
+	 */
 	public static function _delete_topics($topics)
 	{
 		if (!$topics)
@@ -220,11 +222,11 @@ class Moderation extends Fsb_model
 		Moderation::delete_poll($topics);
 	}
 
-	/*
-	** Suppression de messages prives
-	** -----
-	** $idx ::	ID / tableau d'ID de messages a supprimer
-	*/
+	/**
+	 * Suppression de messages prives
+	 *
+	 * @param int|array $idx ID des messages a supprimer
+	 */
 	public static function delete_mp($idx)
 	{
 		if (!is_array($idx))
@@ -248,11 +250,11 @@ class Moderation extends Fsb_model
 		Sync::signal(Sync::ABUSE);
 	}
 
-	/*
-	** Suppression d'un sondage
-	** -----
-	** $t_id ::	ID du sujet (possibilite de passer plusieurs sujets en parametre pour la clause IN)
-	*/
+	/**
+	 * Suppression d'un sondage
+	 *
+	 * @param int|array $topics ID du / des sujets
+	 */
 	public static function delete_poll($topics)
 	{
 		if (!is_array($topics))
@@ -274,16 +276,15 @@ class Moderation extends Fsb_model
 		Fsb::$db->query($sql);
 	}
 
-	/*
-	** Divise un sujet.
-	** Retourne un tableau contenant l'ID du nouveau sujet et le nom de l'ancien sujet.
-	**		array('new_topic_id', 'old_topic_name')
-	** -----
-	** $topic_id ::		ID du sujet a deplacer
-	** $forum_id ::		ID du forum cible
-	** $title ::		Titre du sujet de destination
-	** $action ::		ID des messages sellectiones pour le split
-	*/
+	/**
+	 * Divise un sujet.
+	 *
+	 * @param int $topic_id ID du sujet a diviser
+	 * @param int $forum_id ID du forum cible
+	 * @param string $title Titre du sujet de destination
+	 * @param array $action ID des messages selectiones pour le split
+	 * @return array array('new_topic_id', 'old_topic_name')
+	 */
 	public static function split_topic($topic_id, $forum_id, $title, $action)
 	{
 		$count_action = count($action);
@@ -400,13 +401,13 @@ class Moderation extends Fsb_model
 		return (array($new_topic_id, $topic_data['t_title']));
 	}
 
-	/*
-	** Permet de fusioner un ou plusieurs sujets avec un autre sujet
-	** -----
-	** $t_id ::		ID du sujet initial
-	** $f_id ::		ID du forum du sujet initial
-	** $idx ::		Tableau d'ID des sujets a fusioner avec le sujet original
-	*/
+	/**
+	 * Permet de fusioner un ou plusieurs sujets avec un autre sujet
+	 *
+	 * @param int $t_id ID du sujet initial
+	 * @param int $f_id ID du forum du sujet initial
+	 * @param array $idx ID des sujets a fusioner avec le sujet original
+	 */
 	public static function merge_topics($t_id, $f_id, $idx)
 	{
 		// On exclu $t_id du tableau $idx
@@ -489,14 +490,14 @@ class Moderation extends Fsb_model
 		Sync::topics_read(array($t_id));
 	}
 
-	/*
-	** Deplace un ou plusieurs sujets vers un autre forum
-	** -----
-	** $id ::			ID des sujets
-	** $from_f_id ::	ID du forum de provenance
-	** $to_f_id ::		ID du forum de destination
-	** $trace ::		Si les sujets doivent etre traces ou pas
-	*/
+	/**
+	 * Deplace un ou plusieurs sujets vers un autre forum
+	 *
+	 * @param int|array $id ID des sujets
+	 * @param int $from_f_id ID du forum de provenance
+	 * @param int $to_f_id ID du forum de destination
+	 * @param bool $trace Si les sujets doivent etre traces ou pas
+	 */
 	public static function move_topics($id, $from_f_id, $to_f_id, $trace)
 	{
 		if (!is_array($id))
@@ -536,13 +537,13 @@ class Moderation extends Fsb_model
 		}
 	}
 
-	/*
-	** Modifie le status du sujet (verrouille ou non verrouille)
-	** -----
-	** $id ::		ID du sujet
-	** $status ::	Status du sujet
-	** $f_id ::		ID du forum (protection facultative)
-	*/
+	/**
+	 * Modifie le status du sujet (verrouille ou non verrouille)
+	 *
+	 * @param int $id ID du sujet
+	 * @param int $status Status du sujet
+	 * @param int $f_id ID du forum (protection facultative)
+	 */
 	public static function lock_topic($id, $status, $f_id = NULL)
 	{
 		if (is_array($id))
@@ -555,11 +556,11 @@ class Moderation extends Fsb_model
 		), 'WHERE t_id IN (' . $id . ') ' . (($f_id !== NULL) ? 'AND f_id = ' . $f_id : ''));
 	}
 
-	/*
-	** Approuve un message
-	** -----
-	** $p_id ::		ID du message a approuver
-	*/
+	/**
+	 * Approuve un message
+	 *
+	 * @param int $p_id ID du message a approuver
+	 */
 	public static function approve_post($p_id)
 	{
 		// Donnees du sujet du message
@@ -625,15 +626,15 @@ class Moderation extends Fsb_model
 		}
 	}
 
-	/*
-	** Banissement d'un pseudonyme / email / IP
-	** -----
-	** $type ::			Type de banissement
-	** $content ::		Element a banir
-	** $reason ::		Raison
-	** $total_length ::	Duree du banissement
-	** $cookie ::		Banissement par cookie
-	*/
+	/**
+	 * Banissement d'un pseudonyme / email / IP
+	 *
+	 * @param string $type Type de banissement
+	 * @param string $content Element a banir
+	 * @param string $reason Raison
+	 * @param int $total_length Duree du banissement
+	 * @param bool $cookie Banissement par cookie
+	 */
 	public static function ban($type, $content, $reason, $total_length, $cookie)
 	{
 		switch ($type)
@@ -713,17 +714,17 @@ class Moderation extends Fsb_model
 		Fsb::$db->destroy_cache('ban_');
 	}
 
-	/*
-	** Donne un avertissement a un membre
-	** -----
-	** $mode ::			Type d'avertissement (more pour ajouter, less pour supprimer)
-	** $modo_id ::		ID de la personne donnant l'avertissement
-	** $user_id ::		ID du membre cible
-	** $reason ::		Raison de l'avertissement
-	** $u_warn_post ::	Restriction d'ecriture
-	** $u_warn_read ::	Restriction de lecture
-	** $disable ::		Tableau contenant les donnee a desactiver
-	*/
+	/**
+	 * Donne un avertissement a un membre
+	 *
+	 * @param string $mode Type d'avertissement (more pour ajouter, less pour supprimer)
+	 * @param int $modo_id ID de la personne donnant l'avertissement
+	 * @param int $user_id ID du membre cible
+	 * @param string $reason Raison de l'avertissement
+	 * @param int $u_warn_post Restriction d'ecriture
+	 * @param int $u_warn_read Restriction de lecture
+	 * @param array $disable Contient les donnees a desactiver
+	 */
 	public static function warn_user($mode, $modo_id, $user_id, $reason, $u_warn_post, $u_warn_read, $disable)
 	{
 		// On determine une nouvelle restriction

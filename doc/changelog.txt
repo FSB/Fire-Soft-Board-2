@@ -53,6 +53,7 @@
 - Fix de bugs graphiques sur le thème WhiteSummer
 - Fix de la mise à jour de la description d'un sujet (entités HTML incorrectes, modifications non prises en compte par la prévisualisation)
 - Fix du parse automatique des URL dans les balises CODE
+- Fix d'oublies de PHPEXT
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

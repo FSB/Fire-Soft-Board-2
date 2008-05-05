@@ -268,17 +268,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		Fsb::$tpl->set_switch('users_prune');
 		Fsb::$tpl->set_vars(array(
-			'LIST_JOINED_POS' =>		Html::create_list('joined_pos', 'before', $list_pos),
-			'LIST_JOINED_DAY' =>		Html::create_list('joined_day', date('d'), $list_day),
-			'LIST_JOINED_MONTH' =>		Html::create_list('joined_month', date('m'), $list_month),
-			'LIST_JOINED_YEAR' =>		Html::create_list('joined_year', date('Y'), $list_year),
-			'LIST_VISIT_POS' =>			Html::create_list('visit_pos', 'before', $list_pos),
-			'LIST_VISIT_DAY' =>			Html::create_list('visit_day', date('d'), $list_day),
-			'LIST_VISIT_MONTH' =>		Html::create_list('visit_month', date('m'), $list_month),
-			'LIST_VISIT_YEAR' =>		Html::create_list('visit_year', date('Y'), $list_year),
-			'LIST_POST_OPERATOR' =>		Html::create_list('post_operator', '==', $list_operators),
-			'LIST_TOPIC_OPERATOR' =>	Html::create_list('topic_operator', '==', $list_operators),
-			'LIST_DELETE' =>			Html::create_list('delete_type', 'desactivate', $list_delete),
+			'LIST_JOINED_POS' =>		Html::make_list('joined_pos', 'before', $list_pos),
+			'LIST_JOINED_DAY' =>		Html::make_list('joined_day', date('d'), $list_day),
+			'LIST_JOINED_MONTH' =>		Html::make_list('joined_month', date('m'), $list_month),
+			'LIST_JOINED_YEAR' =>		Html::make_list('joined_year', date('Y'), $list_year),
+			'LIST_VISIT_POS' =>			Html::make_list('visit_pos', 'before', $list_pos),
+			'LIST_VISIT_DAY' =>			Html::make_list('visit_day', date('d'), $list_day),
+			'LIST_VISIT_MONTH' =>		Html::make_list('visit_month', date('m'), $list_month),
+			'LIST_VISIT_YEAR' =>		Html::make_list('visit_year', date('Y'), $list_year),
+			'LIST_POST_OPERATOR' =>		Html::make_list('post_operator', '==', $list_operators),
+			'LIST_TOPIC_OPERATOR' =>	Html::make_list('topic_operator', '==', $list_operators),
+			'LIST_DELETE' =>			Html::make_list('delete_type', 'desactivate', $list_delete),
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=manage_users&amp;module=prune'),
 		));
 	}

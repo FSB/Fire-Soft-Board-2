@@ -10,18 +10,24 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion des headers, meta, redirections, etc ..
-*/
+/**
+ * Gestion des headers, meta, redirections, etc ..
+ */
 class Http extends Fsb_model
 {
-	// Methode d'acces a la page
+	/**
+	 * Acces a la page via la methode GET
+	 */
+	
+	/**
+	 * Acces a la page via la methode POST
+	 */
 	const GET = 'get';
 	const POST = 'post';
 
-	/*
-	** Nettoie les variables GET, POST et COOKIE
-	*/
+	/**
+	 * Nettoie les superglobales $_GET, $_POST et $_COOKIE
+	 */
 	public static function clean_gpc()
 	{
 		// On supprime toutes les variables crees par la directive register_globals
@@ -53,13 +59,13 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Envoie un header HTTP
-	** -----
-	** $key ::		Clef a envoyer
-	** $value ::	Valeur
-	** $replace ::	Ecraser les precedentes valeurs
-	*/
+	/**
+	 * Envoie un header HTTP
+	 *
+	 * @param string $key Clef a envoyer
+	 * @param string $value Valeur
+	 * @param bool $replace Ecraser les precedentes valeurs
+	 */
 	public static function header($key, $value, $replace = NULL)
 	{
 		if ($replace === NULL)
@@ -72,9 +78,11 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Methode d'acces a la page
-	*/
+	/**
+	 * Recupere la methode d'acces a la page
+	 *
+	 * @return string self::GET ou self::POST
+	 */
 	public static function method()
 	{
 		if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) == 'post')
@@ -84,12 +92,18 @@ class Http extends Fsb_model
 		return (self::GET);
 	}
 
-	/*
-	** Recupere une variable transmise a la page via les super globales
-	** -----
-	** $key ::		Clef de la variable
-	** $mode ::		Liste de super globales dans lesquelles on va rechercher si la clef existe.
-	*/
+	/**
+	 * Recupere une variable transmise a la page via les super globales
+	 * Exemple :
+	 * <code>
+	 *   $var = Http::request('var', 'post');
+	 *   $var2 = Http::request('var2', 'post|get|cookie');
+	 * </code>
+	 *
+	 * @param string $key Clef de la variable
+	 * @param string $mode Liste de super globales dans lesquelles on va rechercher si la clef existe.
+	 * @return mixed
+	 */
 	public static function request($key, $mode = 'get|post')
 	{
 		$split = explode('|', $mode);
@@ -104,13 +118,12 @@ class Http extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Redirige automatiquement la page.
-	** -----
-	** $url ::	URL de destination
-	** $time ::	Duree avant la redirection, si inferieur a 0 on ne redirige pas, si vaut 0 on redirige
-	**			instantanement via un header, sinon on redirige via une balise META refresh.
-	*/
+	/**
+	 * Fait une redirection automatique
+	 *
+	 * @param string $url URL de destination
+	 * @param int $time Duree avant la redirection. Si la duree est inferieure a 0 on ne redirige pas. Si la duree est superieure a 0 on fait une direction a retardement avec un META refresh
+	 */
 	public static function redirect($url, $time = 0)
 	{
 		if ($time < 0)
@@ -131,11 +144,11 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Redirige a partir d'une information precise
-	** -----
-	** $redirect ::	Information pour la redirection (vers une page du forum, ou locale au site web)
-	*/
+	/**
+	 * Redirige a partir d'une information precise
+	 *
+	 * @param string $redirect Information pour la redirection (vers une page du forum, ou locale au site web)
+	 */
 	public static function redirect_to($redirect)
 	{
 		if ($redirect)
@@ -158,7 +171,7 @@ class Http extends Fsb_model
 				if (preg_match('#^\s*[a-zA-Z0-9]+://#i', $redirect))
 				{
 					// URL externe interdites pour des raisons de securite
-					Http::redirect('index.php');
+					Http::redirect('index.' . PHPEXT);
 				}
 				Http::redirect($redirect);
 			}
@@ -170,12 +183,12 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un tag META HTML sur le page.
-	** -----
-	** $name ::		Nom de la balise
-	** $attr ::		Attributs de la balise META
-	*/
+	/**
+	 * Ajoute un tag dans le header template
+	 *
+	 * @param string $name Nom de la balise
+	 * @param array $attr Attributs de la balise
+	 */
 	public static function add_meta($name, $attr)
 	{
 		Fsb::$tpl->set_blocks('meta', array(
@@ -191,9 +204,13 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute des relation suivants / precedents / premiere page
-	*/
+	/**
+	 * Ajoute des relations suivants / precedent / premiere ou derniere page au navigateur
+	 *
+	 * @param int $current Page actuelle
+	 * @param int $total Nombre total de page
+	 * @param string $url URL vers laquelle pointer la navigation
+	 */
 	public static function add_relation($current, $total, $url)
 	{
 		if ($current > 1)
@@ -209,36 +226,37 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Envoie un cookie au client
-	** -----
-	** $name ::		Nom du cookie
-	** $value ::	Valeur du cookie
-	** $time ::		Temps d'expiration
-	*/
+	/**
+	 * Envoie un cookie au navigateur
+	 *
+	 * @param string $name Nom du cookie
+	 * @param string $value Valeur du cookie
+	 * @param int $time Temps d'expiration
+	 */
 	public static function cookie($name, $value, $time)
 	{
 		setcookie(Fsb::$cfg->get('cookie_name') . $name, $value, $time, Fsb::$cfg->get('cookie_path'), Fsb::$cfg->get('cookie_dommain'), Fsb::$cfg->get('cookie_secure'));
 	}
 
-	/*
-	** Renvoie la valeur d'un cookie du forum
-	** -----
-	** $name ::		Nom du cookie
-	*/
+	/**
+	 * Recupere la valeur d'un cookie
+	 *
+	 * @param string $name Nom du cookie
+	 * @return string
+	 */
 	public static function getcookie($name)
 	{
 		$cookie_name = Fsb::$cfg->get('cookie_name') . $name;
 		return (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : NULL);
 	}
 
-	/*
-	** Renvoie le contenu d'un fichier sur le serveur distant
-	** -----
-	** $server ::		Adresse du serveur
-	** $filename ::		Fichier dont on veut le contenu
-	** $timeout ::		Temps de connexion maximal
-	*/
+	/**
+	 * Recupere le contenu d'un fichier sur un serveur distant
+	 *
+	 * @param string $server Adresse du serveur
+	 * @param string $filename Fichier dont on veut le contenu
+	 * @return string
+	 */
 	public static function get_file_on_server($server, $filename, $timeout = 5, $port = 80)
 	{
 		if (Fsb::$cfg->get('use_fsockopen') && $content = @file_get_contents($server . $filename))
@@ -248,9 +266,9 @@ class Http extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Utilisation de la compression GZIP ?
-	*/
+	/**
+	 * Verifie si la compression GZIP est supportee, et active la bufferisation
+	 */
 	public static function check_gzip()
 	{
 		if (Fsb::$cfg->get('use_gzip') && extension_loaded('zlib') && isset($_SERVER['HTTP_ACCEPT_ENCODING']) && (strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false || strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate') !== false) && ini_get('zlib.output_compression') == 'Off')
@@ -263,9 +281,9 @@ class Http extends Fsb_model
 		}
 	}
 
-	/*
-	** Les pages ne doivent pas etres mises en cache
-	*/
+	/**
+	 * Desactive la mise en cache des pages par le navigateur
+	 */
 	public static function no_cache()
 	{
 		self::header('Cache-Control', 'post-check=0, pre-check=0', FALSE);
@@ -273,13 +291,13 @@ class Http extends Fsb_model
 		self::header('Pragma', 'no-cache');
 	}
 
-	/*
-	** Lance le telechargement d'un fichier
-	** -----
-	** $filename ::		Nom du fichier
-	** $content ::		Contenu du fichier
-	** $type ::			Type mime du fichier
-	*/
+	/**
+	 * Lance le telechargement d'un fichier
+	 *
+	 * @param string $filename Nom du fichier
+	 * @param string $content Contenu du fichier
+	 * @param string $type Type mime du fichier
+	 */
 	public static function download($filename, &$content, $type = 'text/x-delimtext')
 	{
 		self::header('Pragma', 'no-cache');

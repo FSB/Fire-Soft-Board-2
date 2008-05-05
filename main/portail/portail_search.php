@@ -26,7 +26,7 @@ class Page_portail_search extends Fsb_model
 		}
 
 		// Liste des moteurs de recherche disponibles pour ce module
-		$list_search_motor = Html::create_list('search_motor', 'pm_search_on_forum', array(
+		$list_search_motor = Html::make_list('search_motor', 'pm_search_on_forum', array(
 			'forum' =>		Fsb::$session->lang('pm_search_on_forum'),
 			'google' =>		'Google',
 			'yahoo' =>		'Yahoo',

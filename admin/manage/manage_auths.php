@@ -302,10 +302,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function page_view_auths($result, $type, $list_mode_ary)
 	{
 		// Liste des modes pour la page
-		$list_mode = Html::create_list('mode_type', $this->mode_type, $list_mode_ary);
+		$list_mode = Html::make_list('mode_type', $this->mode_type, $list_mode_ary);
 
 		// Liste des status de membre
-		$list_users_status = Html::create_list('users_status', $this->users_status, array(
+		$list_users_status = Html::make_list('users_status', $this->users_status, array(
 			VISITOR =>		'----------',
 			MODOSUP =>		Fsb::$session->lang('modosup'),
 			ADMIN =>		Fsb::$session->lang('admin'),
@@ -386,11 +386,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 						foreach ($GLOBALS['_auth_type'] AS $value)
 						{
 							$id =  $value . '_' . $row['real_this_id'];
-							$list = Html::create_list($id, $row[$value], array(
+							$list = Html::make_list($id, $row[$value], array(
 								FALSE =>	Fsb::$session->lang('no'),
 								TRUE =>		Fsb::$session->lang('yes'),
 							),
-							'', 'id="' . $id . '"');
+							array(
+								'id' =>	$id,
+							));
 
 							Fsb::$tpl->set_blocks('group_cat.group.g_auth', array(
 								'LIST' =>	$list,
@@ -476,7 +478,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						}
 
 						Fsb::$tpl->set_blocks('group_cat.group.g_auth', array(
-							'LIST' =>		Html::create_list($row['real_this_id'] . '_' . $cat_auth, $list_value, $list),
+							'LIST' =>		Html::make_list($row['real_this_id'] . '_' . $cat_auth, $list_value, $list),
 						));
 					}
 				}
@@ -535,7 +537,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 							}
 						}
 
-						$list_auth = Html::create_list($value, $break, array(
+						$list_auth = Html::make_list($value, $break, array(
 							-1 =>		Fsb::$session->lang('adm_auths_no_level'),
 							VISITOR =>	Fsb::$session->lang('visitor'),
 							USER =>		Fsb::$session->lang('user'),
@@ -901,7 +903,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_blocks('auth', array(
 				'L_AUTH' =>			Fsb::$session->lang('adm_auths_o_' . $row['auth_name']),
 				'L_AUTH_EXPLAIN' =>	Fsb::$session->lang('adm_auths_e_' . $row['auth_name']),
-				'AUTH' =>			Html::create_list($row['auth_name'], $row['auth_level'], $list_level),
+				'AUTH' =>			Html::make_list($row['auth_name'], $row['auth_level'], $list_level),
 			));
 		}
 		Fsb::$db->free($result);

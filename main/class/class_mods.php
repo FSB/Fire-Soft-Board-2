@@ -10,30 +10,39 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion des modules installes sur le forum
-*/
+/**
+ * Informations sur les modules installes sur le forum
+ */
 class Mods extends Fsb_model
 {
+	/**
+	 * Donnees des modules
+	 *
+	 * @var array
+	 */
 	private $data = array();
 
-	// MOD fourni de base avec le forum
+	/**
+	 * MOD fourni de base avec le forum
+	 */
 	const INTERN = 0;
 
-	// MOD installe
+	/**
+	 * MOD installe
+	 */
 	const EXTERN = 1;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur, charge les MODS
+	 */
 	public function __construct()
 	{
 		$this->load();
 	}
 
-	/*
-	** Chargement de la liste des MODS
-	*/
+	/**
+	 * Chargement de la liste des MODS
+	 */
 	private function load()
 	{
 		$tpl_exists = (is_object(Fsb::$tpl)) ? TRUE : FALSE;
@@ -59,35 +68,37 @@ class Mods extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Verifie si un MOD existe
-	** -----
-	** $modname ::	Nom du MOD
-	*/
+	/**
+	 * Verifie si un MOD existe
+	 *
+	 * @param string $modname Nom du MOD
+	 * @return bool
+	 */
 	public function exists($modname)
 	{
 		return ((isset($this->data[$modname])) ? TRUE : FALSE);
 	}
 
-	/*
-	** Verifie si un MOD est active
-	** -----
-	** $modname ::	Nom du MOD
-	*/
+	/**
+	 * Verifie si un MOD est active
+	 *
+	 * @param string $modname Nom du MOD
+	 * @return bool
+	 */
 	public function is_active($modname)
 	{
 		return (($this->exists($modname) && $this->data[$modname]) ? TRUE : FALSE);
 	}
 
-	/*
-	** Change le status d'un MOD
-	** -----
-	** $modname ::	Nom du MOD
-	** $bool ::		TRUE pour active, FALSE pour desactive
-	*/
-	public function change_status($modname, $bool)
+	/**
+	 * Change le status d'un MOD localement (pas sauve en base)
+	 *
+	 * @param string $modname Nom du MOD
+	 * @param bool $bool TRUE pour active, FALSE pour desactive
+	 */
+	public function change_status($modname, $state)
 	{
-		$this->data[$modname] = (bool) $bool;
+		$this->data[$modname] = (bool) $state;
 	}
 }
 

@@ -62,13 +62,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->query($sql);
 
 		// Generation des listes et de la page
-		$list_ban_type = Html::create_list('ban_type', 'login', array(
+		$list_ban_type = Html::make_list('ban_type', 'login', array(
 			'login' =>		Fsb::$session->lang('adm_ban_login'),
 			'ip' =>			Fsb::$session->lang('adm_ban_ip'),
 			'mail' =>		Fsb::$session->lang('adm_ban_mail'),
 		));
 
-		$list_ban_length = Html::create_list('ban_length_unit', ONE_HOUR, array(
+		$list_ban_length = Html::make_list('ban_length_unit', ONE_HOUR, array(
 			ONE_HOUR =>		Fsb::$session->lang('hour'),
 			ONE_DAY =>		Fsb::$session->lang('day'),
 			ONE_WEEK =>		Fsb::$session->lang('week'),

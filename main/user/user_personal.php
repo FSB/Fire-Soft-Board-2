@@ -159,14 +159,14 @@ class Page_user_personal extends Fsb_model
 		Fsb::$tpl->set_file('user/user_personal.html');
 		Fsb::$tpl->set_vars(array(
 			'USER_NICKNAME' =>		htmlspecialchars($this->data['u_nickname']),
-			'LIST_RANKS' =>			Html::create_list('u_rank_id', Fsb::$session->data['u_rank_id'], $list_ranks),
+			'LIST_RANKS' =>			Html::make_list('u_rank_id', Fsb::$session->data['u_rank_id'], $list_ranks),
 			'LIST_TPL' =>			Html::list_dir('u_tpl', $this->data['u_tpl'], ROOT . 'tpl/', array(), TRUE),
 			'LIST_LANG' =>			Html::list_langs('u_language', $this->data['u_language']),
 			'LIST_UTC' =>			Html::list_utc('u_utc', Fsb::$session->data['u_utc'], 'utc'),
 			'LIST_UTC_DST' =>		Html::list_utc('u_utc_dst', Fsb::$session->data['u_utc_dst'], 'dst'),
-			'LIST_DAY' =>			Html::create_list('u_birthday_day', $u_birthday_day, $list_day),
-			'LIST_MONTH' =>			Html::create_list('u_birthday_month', $u_birthday_month, $list_month),
-			'LIST_YEAR' =>			Html::create_list('u_birthday_year', $u_birthday_year, $list_year),
+			'LIST_DAY' =>			Html::make_list('u_birthday_day', $u_birthday_day, $list_day),
+			'LIST_MONTH' =>			Html::make_list('u_birthday_month', $u_birthday_month, $list_month),
+			'LIST_YEAR' =>			Html::make_list('u_birthday_year', $u_birthday_year, $list_year),
 			'SEXE_MALE' =>			($this->data['u_sexe'] == SEXE_MALE) ? 'checked="checked"' : '',
 			'SEXE_FEMALE' =>		($this->data['u_sexe'] == SEXE_FEMALE) ? 'checked="checked"' : '',
 			'SEXE_NONE' =>			($this->data['u_sexe'] == SEXE_NONE) ? 'checked="checked"' : '',

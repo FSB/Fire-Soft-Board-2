@@ -152,7 +152,7 @@ class Page_modo_upload extends Fsb_model
 		Fsb::$tpl->set_switch('upload_edit');
 		Fsb::$tpl->set_vars(array(
 			'UPLOAD_NAME' =>	htmlspecialchars($data['upload_realname']),
-			'LIST_AUTH' =>		Html::create_list('upload_auth', $data['upload_auth'], $list_upload_auth),
+			'LIST_AUTH' =>		Html::make_list('upload_auth', $data['upload_auth'], $list_upload_auth),
 
 			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;mode=edit&amp;id=' . $this->id),
 		));

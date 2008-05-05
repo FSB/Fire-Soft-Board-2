@@ -145,7 +145,7 @@
 			<dd>
 				<input type="text" id="forum_color" name="f_style" value="{STYLE}" maxlength="255" size="50" /><br />
 				<input type="radio" name="f_style_type" value="" {STYLE_TYPE_NONE} /> {LG_ADM_FORUM_STYLE_NONE} &nbsp;
-				<input type="radio" name="f_style_type" id="f_style_type_id" value="color" {STYLE_TYPE_COLOR} /> <a href="#" onclick="window.open('index.php?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=forum_color&amp;radio=f_style_type_id', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_FORUM_STYLE_COLOR}</a> &nbsp;
+				<input type="radio" name="f_style_type" id="f_style_type_id" value="color" {STYLE_TYPE_COLOR} /> <a href="#" onclick="window.open('index.<?php echo PHPEXT ?>?p=general_tpl&amp;module=tpl&amp;mode=css_generator&amp;id=forum_color&amp;radio=f_style_type_id', 'color_window', 'height=275,resizable=yes,width=600,scrollbars'); return false;">{LG_ADM_FORUM_STYLE_COLOR}</a> &nbsp;
 				<input type="radio" name="f_style_type" value="class" {STYLE_TYPE_CLASS} /> {LG_ADM_FORUM_STYLE_CLASS}
 			</dd>
 		</dl>

@@ -10,17 +10,18 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Ensemble de methodes retournant du code HTML genere
-*/
+/**
+ * Ensemble de methodes retournant du code HTML genere
+ */
 class Html extends Fsb_model
 {
-	/*
-	** Cree un champ cache
-	** -----
-	** $name ::		Nom du champ cache
-	** $valeur ::		Valeur du champ cache
-	*/
+	/**
+	 * Cree un champ cache
+	 *
+	 * @param string|array $name Nom du champ
+	 * @param string $value Valeur du champ
+	 * @return string
+	 */
 	public static function hidden($name, $value = '')
 	{
 		if (is_array($name))
@@ -38,14 +39,16 @@ class Html extends Fsb_model
 		}
 	}
 
-	/*
-	** Gestion d'une pagination
-	** -----
-	** $cur ::			Valeur de la page courante
-	** $total ::		Nombre de page
-	** $url ::			URL de redirection de la pagination, sans sid()
-	** $page_info ::	Ajoute des informations a la pagination : page suivante, precedente, premiere page, etc ...
-	*/
+	/**
+	 * Gestion d'une pagination
+	 *
+	 * @param int $cur Valeur de la page courante
+	 * @param int $total Nombre de page
+	 * @param string $url URL de redirection de la pagination, sans sid()
+	 * @param int $page_info Ajoute des informations a la pagination : page suivante, precedente, premiere page, etc ...
+	 * @param bool $simple_style Si TRUE, utilise du style simple
+	 * @return string
+	 */
 	public static function pagination($cur, $total, $url, $page_info = PAGINATION_ALL, $simple_style = FALSE)
 	{
 		// Style de la pagination
@@ -112,17 +115,18 @@ class Html extends Fsb_model
 		return (sprintf(Fsb::$session->style['pagination'][$default_style . '_global'], $str, $url, Fsb::$session->lang('go')));
 	}
 
-	/*
-	** Retourne sous forme de liste HTML les categories, forums et sous forums
-	** -----
-	** $forums ::		Tableau contenant la liste des forums
-	** $value ::		Valeur par defaut a donner a la liste
-	** $name ::			Nom de la liste
-	** $choose_cat ::	Definit si on peut sellectionner la categorie
-	** $script ::		Atributs ajoutes dans la balise <select>
-	** $all_select ::	Definit si on selectionne toutes les valeurs par defaut ou pas
-	** $option_html ::	Options facultatives
-	*/
+	/**
+	 * Retourne sous forme de liste HTML les categories, forums et sous forums
+	 *
+	 * @param array $forums Tableau contenant la liste des forums
+	 * @param string $value Valeur par defaut a donner a la liste
+	 * @param string $name Nom de la liste
+	 * @param bool $choose_cat Definit si on peut selectionner la categorie
+	 * @param string $script Atributs ajoutes dans la balise <select>
+	 * @param bool $all_select Definit si on selectionne toutes les valeurs par defaut ou pas
+	 * @param string $option_html Options facultatives
+	 * @return string
+	 */
 	public static function list_forums($forums, $value, $name, $choose_cat = TRUE, $script = '', $all_select = FALSE, $option_html = '')
 	{
 		// Calcul des forums ?
@@ -190,12 +194,12 @@ class Html extends Fsb_model
 		return ($list);
 	}
 
-	/*
-	** La jumpbox est une liste deroulante permettant d'acceder rapidement a n'importe quel forum,
-	** ou aux sections importantes du forum.
-	** -----
-	** $redirect ::		Si on est en mode redirection
-	*/
+	/**
+	 * Cree une liste deroulante permettant d'acceder rapidement aux sections principales et forums
+	 *
+	 * @param unknown_type $redirect Si on est en mode redirection
+	 * @return string
+	 */
 	public static function jumpbox($redirect = FALSE)
 	{
 		if ($redirect)
@@ -222,41 +226,71 @@ class Html extends Fsb_model
 			return (Html::list_forums(get_forums(), '', 'jumpbox', FALSE, 'onchange="location.href = (isNaN(this.value)) ? this.value : \'index.php?p=forum&amp;f_id=\' + this.value"', FALSE, $html));
 		}
 	}
-
-	/*
-	** Cree une liste HTML
-	** -----
-	** $name ::			Nom de la liste
-	** $value ::		Valeur par defaut de la liste
-	** $ary ::			Tableau contenant en clef les valeurs des options et
-	**					en valeur les elements.
-	** $multilist ::	S'il s'agit d'une multiliste on precise le code ici, $value devra 
-	**					etre un tableau
-	** $code ::			Code HTML (ou javascript) a rajouter a la liste
-	*/
-	public static function create_list($name, $value, $ary, $multilist = '', $code = '')
+	
+	/**
+	 * Cree une liste HTML
+	 *
+	 * @param string $name Nom de la liste
+	 * @param string|array $default Valeur par defaut (si l'attribut multiple est passe, doit etre un tableau)
+	 * @param array $values Contient en clef la valeur de l'option, et en valeur la langue
+	 * @param array $attributes Liste d'attributs a ajouter a la balise select ouvrante
+	 * @return string
+	 */
+	public static function make_list($name, $default, $values, $attributes = array())
 	{
-		$list = '<select name="' . $name . '" ' . $multilist . ' ' . $code . '>';
-		foreach ($ary AS $k => $v)
+		// Ajout des attributs
+		$attrs = '';
+		foreach ($attributes AS $key => $value)
 		{
-			$list .= '<option value="' . $k . '" ' . (((!$multilist && $k == $value) || ($multilist && is_array($value) && in_array($k, $value))) ? 'selected="selected"' : '') . '>' . $v . '</option>';
+			$attrs .= ' ' . $key . '="' . $value . '"';
+		}
+
+		$list = '<select name="' . $name . '"' . $attrs . '>';
+		if ($values)
+		{
+			// Gestion des optgroup ?
+			if (is_array(current($values)))
+			{
+				foreach ($values AS $optgroup)
+				{
+					$list .= '<optgroup label="' . $optgroup['lang'] . '">';
+					foreach ($optgroup['options'] AS $option_value => $option_lang)
+					{
+						$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? TRUE : FALSE;
+						
+						$list .= '<option value="' . $option_value . '" ' . (($selected) ? 'selected="selected"' : '') . '>' . $option_lang . '</option>';
+					}
+					$list .= '</optgroup>';
+				}
+			}
+			// Pas d'optgroup
+			else
+			{
+				foreach ($values AS $option_value => $option_lang)
+				{
+					$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? TRUE : FALSE;
+					
+					$list .= '<option value="' . $option_value . '" ' . (($selected) ? 'selected="selected"' : '') . '>' . $option_lang . '</option>';
+				}
+			}
 		}
 		$list .= '</select>';
+		
 		return ($list);
 	}
 
-	/*
-	** Cree une liste HTML en fonction des elements dans un dossier
-	** -----
-	** $name ::		Nom de la liste
-	** $value ::	Valeur par defaut de la liste
-	** $dir ::		Chemin du repertoire a lister
-	** $allowed_ext ::	Contient les extensions autorisees.
-	**					Laisser vide pour autoriser tous les fichiers.
-	** $only_dir ::	Autorise uniquement les dossiers si TRUE
-	** $first ::	Rajouter un element en debut de liste
-	** $code ::		Pour rajouter des atributs ou du code javascript dans le <select>
-	*/
+	/**
+	 * Cree une liste a partir du contenu d'un dossier
+	 *
+	 * @param string $name Nom de la liste
+	 * @param string $value Valeur par defaut de la liste
+	 * @param string $dir Chemin du repertoire a lister
+	 * @param array $allowed_ext Contient les extensions autorisees. Laisser vide pour tout autoriser
+	 * @param bool $only_dir Autorise uniquement les dossiers si TRUE
+	 * @param string $first Rajouter un element en debut de liste
+	 * @param string $code Pour rajouter des atributs ou du code javascript dans le <select>
+	 * @return string
+	 */
 	public static function list_dir($name, $value, $dir, $allowed_ext = array(), $only_dir = FALSE, $first = '', $code = '')
 	{
 		$count = count($allowed_ext);
@@ -283,12 +317,13 @@ class Html extends Fsb_model
 		return ($list);
 	}
 
-	/*
-	** Liste les langues installees sur le forum
-	** -----
-	** $name ::		Nom de la liste
-	** $value ::	Valeur par defaut de la liste
-	*/
+	/**
+	 * Liste les langues installees sur le forum
+	 *
+	 * @param string $name Nom de la liste
+	 * @param string $value Valeur par defaut de la liste
+	 * @return string
+	 */
 	public static function list_langs($name, $value)
 	{
 		$list = array();
@@ -309,18 +344,18 @@ class Html extends Fsb_model
 		}
 		closedir($fd);
 
-		return (Html::create_list($name, $value, $list));
+		return (Html::make_list($name, $value, $list));
 	}
 
-	/*
-	** Liste des fuseaux horaires
-	** -----
-	** $name ::		Nom de la liste
-	** $default ::	Valeur par defaut de la liste
-	** $type ::		Type de la liste : utc pour les fuseaux horaires, dst pour les decalages
-	** $multiple ::	Selection multiple si TRUE
-	*/
-	public static function list_utc($name, $default, $type = 'utc', $multiple = '')
+	/**
+	 * Liste des fuseaux horaires
+	 *
+	 * @param string $name Nom de la liste
+	 * @param string $default Valeur par defaut de la liste
+	 * @param string $type Type de la liste : utc pour les fuseaux horaires, dst pour les decalages
+	 * @return string
+	 */
+	public static function list_utc($name, $default, $type = 'utc')
 	{
 		switch ($type)
 		{
@@ -339,22 +374,22 @@ class Html extends Fsb_model
 				);
 			break;
 		}
-		return (Html::create_list($name, $default, $list, $multiple));
+		return (Html::make_list($name, $default, $list));
 	}
 
-	/*
-	** Genere la liste des groupes
-	** -----
-	** $list_name ::		Nom de la liste
-	** $type_groupe ::		GROUP_SPECIAL ou bien GROUP_NORMAL, possibilite 
-	**						d'utiliser les deux avec un ou binaire
-	** $value ::			Valeur de la liste
-	** $multiple ::			Liste multiple
-	** $exept ::			ID des groupes qu'on ne veut pas voir dans la liste
-	** $erase_sql ::		Requete personalisee
-	** $add_html ::			Code HTML ajoutable dans la liste
-	** $add_option ::		Options HTML a ajouter
-	*/
+	/**
+	 * Genere la liste des groupes
+	 *
+	 * @param string $list_name Nom de la liste
+	 * @param int $type_group GROUP_SPECIAL ou GROUP_NORMAL (possibilite d'utilise un OU binaire)
+	 * @param string $value Valeur de la liste
+	 * @param bool $multiple Liste multiple
+	 * @param array $exept ID des groupes qu'on ne veut pas voir dans la liste
+	 * @param string $erase_sql Requete personalisee
+	 * @param string $add_html Code HTML ajoutable dans la liste
+	 * @param string $add_option Options HTML a ajouter
+	 * @return string
+	 */
 	public static function list_groups($list_name, $type_group, $value, $multiple = FALSE, $exept = array(), $erase_sql = NULL, $add_html = '', $add_option = '')
 	{
 		static $groups = NULL;
@@ -429,13 +464,14 @@ class Html extends Fsb_model
 		return (($groups) ? $list : null);
 	}
 
-	/*
-	** Affiche le pseudonyme d'un membre dans le bon format
-	** -----
-	** $nickname ::		Pseudonyme du membre
-	** $u_id ::			ID du membre
-	** $color ::		Couleur du membre
-	*/
+	/**
+	 * Affiche le pseudonyme d'un membre avec un lien vers son profil et sa couleur
+	 *
+	 * @param string $nickname Pseudonyme du membre
+	 * @param int $u_id ID du membre
+	 * @param string $color Couleur du membre
+	 * @return string
+	 */
 	public static function nickname($nickname, $u_id = VISITOR_ID, $color = '')
 	{
 		if (!$color)
@@ -454,14 +490,15 @@ class Html extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche le nom d'un forum avec lien et style
-	** -----
-	** $forum ::		Nom du forum
-	** $id ::			ID du forum
-	** $color ::		style
-	** $location ::		URL en dur
-	*/
+	/**
+	 * Affiche le nom d'un forum avec un lien et sa couleur
+	 *
+	 * @param string $forum Nom du forum
+	 * @param int $id ID du forum
+	 * @param string $color style
+	 * @param string $location URL en dur si on ne souhaite pas qu'elle soit generee automatiquement
+	 * @return string
+	 */
 	public static function forumname($forum, $id, $color = '', $location = '')
 	{
 		if (!$color)
@@ -473,13 +510,14 @@ class Html extends Fsb_model
 		return (sprintf(Fsb::$session->style['other']['forum_link'], $url, $color, $forum));
 	}
 
-	/*
-	** Genere une chaine qui sera applicable en tant que style sur une balise, a partir de l'information style / class et de son contenu
-	** -----
-	** $type ::		style ou class
-	** $content ::	Contenu de la balise
-	** $default ::	Valeur par defaut au cas ou le style est vide
-	*/
+	/**
+	 * Genere une chaine qui sera applicable en tant que style sur une balise
+	 *
+	 * @param string $type style ou class
+	 * @param string $content Contenu de la balise
+	 * @param string $default Valeur par defaut au cas ou le style est vide
+	 * @return string
+	 */
 	public static function set_style($type, $content, $default = '')
 	{
 		if (!$type || $type == 'none' || !$content)
@@ -496,11 +534,12 @@ class Html extends Fsb_model
 		return ($type . '="' . $content . '"');
 	}
 
-	/*
-	** Retourne les elements type et content d'un style
-	** -----
-	** $style ::	Style a parser
-	*/
+	/**
+	 * Retourne le type (style ou class) et le contenu d'un style
+	 *
+	 * @param string $style Style a parser
+	 * @return array type, content
+	 */
 	public static function get_style($style)
 	{
 		if (preg_match('#^(class|style)="(.*?)"$#i', $style, $m))
@@ -510,12 +549,12 @@ class Html extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Genere une liste d'erreur a partir d'un tableau PHP en prenant en compte
-	** le style definit pour le theme
-	** -----
-	** $errstr ::	Tableau d'erreurs
-	*/
+	/**
+	 * Genere une liste d'erreur a partir d'un tableau PHP
+	 *
+	 * @param array $errstr Liste d'erreurs
+	 * @return string
+	 */
 	public static function make_errstr(&$errstr)
 	{
 		if (!$errstr)

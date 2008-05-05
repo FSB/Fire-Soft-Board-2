@@ -93,8 +93,11 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_switch('page_contact');
 		Fsb::$tpl->set_vars(array(
 			'EMAIL_TO' =>		Fsb::$session->lang('nav_contact'),
-			'LIST_METHOD' =>	Html::create_list('contact_method', 'mp', $list_method),
-			'LIST_ADMIN' =>		Html::create_list('contact_admin[]', $selected, $list_admin, 'multiple="multiple" size="5"'),
+			'LIST_METHOD' =>	Html::make_list('contact_method', 'mp', $list_method),
+			'LIST_ADMIN' =>		Html::make_list('contact_admin[]', $selected, $list_admin, array(
+									'multiple' =>	'multiple',
+									'size' =>		5,
+			)),
 			'CAPTCHA' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=contact_captcha&amp;uniqd=' . md5(rand(1, time()))),
 
 			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=contact'),

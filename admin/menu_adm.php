@@ -82,7 +82,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$lg_page = (Fsb::$session->lang('menu_' . $subary['page'])) ? Fsb::$session->lang('menu_' . $subary['page']) : $subary['page'];
 				Fsb::$tpl->set_blocks('cat.link', array(
 					'NAME' =>		$lg_page,
-					'LIST_AUTH' =>	Html::create_list('auth_menu_' . $subary['page'], $subary['auth'], $list_auth),
+					'LIST_AUTH' =>	Html::make_list('auth_menu_' . $subary['page'], $subary['auth'], $list_auth),
 
 					'U_UP' =>		sid('index.' . PHPEXT . '?p=menu_adm&amp;mode=up_link&amp;name=' . $subary['page']),
 					'U_DOWN' =>		sid('index.' . PHPEXT . '?p=menu_adm&amp;mode=down_link&amp;name=' . $subary['page']),

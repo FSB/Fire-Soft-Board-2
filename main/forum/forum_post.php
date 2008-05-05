@@ -607,16 +607,16 @@ class Fsb_frame_child extends Fsb_frame
 				Fsb::$tpl->set_switch('calendar_print');
 
 				Fsb::$tpl->set_vars(array(
-					'LIST_CALENDAR_BEGIN_DAY' =>		Html::create_list('begin_day', $current_begin_day, $list_day),
-					'LIST_CALENDAR_BEGIN_MONTH' =>		Html::create_list('begin_month', $current_begin_month, $list_month),
-					'LIST_CALENDAR_BEGIN_YEAR' =>		Html::create_list('begin_year', $current_begin_year, $list_year),
-					'LIST_CALENDAR_BEGIN_HOUR' =>		Html::create_list('begin_hour', $current_begin_hour, $list_hour),
-					'LIST_CALENDAR_BEGIN_MIN' =>		Html::create_list('begin_min', $current_begin_min, $list_min),
-					'LIST_CALENDAR_END_DAY' =>			Html::create_list('end_day', $current_end_day, $list_day),
-					'LIST_CALENDAR_END_MONTH' =>		Html::create_list('end_month', $current_end_month, $list_month),
-					'LIST_CALENDAR_END_YEAR' =>			Html::create_list('end_year', $current_end_year, $list_year),
-					'LIST_CALENDAR_END_HOUR' =>			Html::create_list('end_hour', $current_end_hour, $list_hour),
-					'LIST_CALENDAR_END_MIN' =>			Html::create_list('end_min', $current_end_min, $list_min),
+					'LIST_CALENDAR_BEGIN_DAY' =>		Html::make_list('begin_day', $current_begin_day, $list_day),
+					'LIST_CALENDAR_BEGIN_MONTH' =>		Html::make_list('begin_month', $current_begin_month, $list_month),
+					'LIST_CALENDAR_BEGIN_YEAR' =>		Html::make_list('begin_year', $current_begin_year, $list_year),
+					'LIST_CALENDAR_BEGIN_HOUR' =>		Html::make_list('begin_hour', $current_begin_hour, $list_hour),
+					'LIST_CALENDAR_BEGIN_MIN' =>		Html::make_list('begin_min', $current_begin_min, $list_min),
+					'LIST_CALENDAR_END_DAY' =>			Html::make_list('end_day', $current_end_day, $list_day),
+					'LIST_CALENDAR_END_MONTH' =>		Html::make_list('end_month', $current_end_month, $list_month),
+					'LIST_CALENDAR_END_YEAR' =>			Html::make_list('end_year', $current_end_year, $list_year),
+					'LIST_CALENDAR_END_HOUR' =>			Html::make_list('end_hour', $current_end_hour, $list_hour),
+					'LIST_CALENDAR_END_MIN' =>			Html::make_list('end_min', $current_end_min, $list_min),
 					'LIST_CALENDAR_GROUPS' =>			Html::list_groups('c_groups', GROUP_NORMAL|GROUP_SPECIAL, $current_group),
 					'CALENDAR_PRINT' =>					$calendar_print,
 				));
@@ -756,7 +756,7 @@ class Fsb_frame_child extends Fsb_frame
 			'HIDDEN' =>				Html::hidden('mp_parent', $this->mp_parent),
 			'UPLOAD_EXPLAIN' =>		sprintf(Fsb::$session->lang('post_max_filesize'), convert_size(Fsb::$cfg->get('upload_max_filesize')), implode(', ', explode(',', Fsb::$cfg->get('upload_extensions')))),
 			'CAN_QUICK_QUOTE' =>	($this->post_map == 'classic') ? TRUE : FALSE,
-			'LIST_UPLOAD_AUTH' =>	Html::create_list('upload_auth', Fsb::$session->data['auth']['other']['download_file'][1], $list_upload_auth),
+			'LIST_UPLOAD_AUTH' =>	Html::make_list('upload_auth', Fsb::$session->data['auth']['other']['download_file'][1], $list_upload_auth),
 
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
 		));
@@ -1394,7 +1394,10 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function list_maps()
 	{
-		return (Html::create_list('post_map', $this->post_map, Map::get_list(), '', 'onchange="location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=' . $this->mode . '&amp;id=' . $this->id) . '&amp;post_map=' . '\' + this.value"'));
+		$list = Html::make_list('post_map', $this->post_map, Map::get_list(), array(
+			'onchange' =>	'location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=' . $this->mode . '&amp;id=' . $this->id) . '&amp;post_map=' . '\' + this.value',
+		));
+		return ($list);
 	}
 }
 

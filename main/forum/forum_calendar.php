@@ -187,8 +187,8 @@ class Fsb_frame_child extends Fsb_frame
 
 		Fsb::$tpl->set_vars(array(
 			'CURRENT_MONTH' =>		Fsb::$session->lang('month_' . date('n', $this->current)) . ' ' . $this->current_year,
-			'LIST_MONTH' =>			Html::create_list('month', $this->current_month, $list_month),
-			'LIST_YEAR' =>			Html::create_list('year', $this->current_year, $list_year),
+			'LIST_MONTH' =>			Html::make_list('month', $this->current_month, $list_month),
+			'LIST_YEAR' =>			Html::make_list('year', $this->current_year, $list_year),
 
 			'U_PREVIOUS' =>			sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;time=' . $previous_time),
 			'U_NEXT' =>				sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;time=' . $next_time),
@@ -448,9 +448,9 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		Fsb::$tpl->set_vars(array(
-			'LIST_DAY' =>			Html::create_list('day', $this->current_day, $list_day),
-			'LIST_MONTH' =>			Html::create_list('month', $this->current_month, $list_month),
-			'LIST_YEAR' =>			Html::create_list('year', $this->current_year, $list_year),
+			'LIST_DAY' =>			Html::make_list('day', $this->current_day, $list_day),
+			'LIST_MONTH' =>			Html::make_list('month', $this->current_month, $list_month),
+			'LIST_YEAR' =>			Html::make_list('year', $this->current_year, $list_year),
 
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;mode=' . $this->mode),
 		));

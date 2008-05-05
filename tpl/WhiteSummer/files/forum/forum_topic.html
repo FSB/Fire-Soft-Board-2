@@ -1,7 +1,6 @@
 <include name="header.html">
 
 <call name="javascript" arg1="highlight.js" />
-<call name="javascript" arg1="ajax.js" />
 <script type="text/javascript">
 <!--
 topic = new Array;
@@ -64,7 +63,7 @@ InitBulle();
 </table>
 
 <div class="round">
-	<h1>{TOPIC_NAME}</h1>
+	<h1 id="page_title">{TOPIC_NAME}</h1>
 	<if content="$TOPIC_DESCRIPTION OR tpl_switch_exists('poll')">
 		<if content="$TOPIC_DESCRIPTION"><div id="topic_description">{TOPIC_DESCRIPTION}</div></if>
 		<switch name="poll"><include name="poll.html" /></switch>
@@ -125,7 +124,7 @@ InitBulle();
 				</if>
 				</div>
 			</div>
-			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (Nav_Safari) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
+			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (window.webkit) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
 				<div class="postheader">
 					<span>
                     	<if content="$post.HAVE_EDIT">{post.EDIT_DATA} &nbsp;</if>
@@ -140,7 +139,7 @@ InitBulle();
 
 						<switch name="can_reply">
 							<if content="$USE_AJAX AND $post.CAN_QUICK_QUOTE">
-								<a href="{post.U_QUOTE}" onclick="if (Nav_Safari) return true; quote_post({post.ID}, 'quick_reply_form', 'quick_reply'); document.getElementById('quote_id_{post.ID}').src = '{IMG_QUOTE_POST_SELECTED}'; return false">
+								<a href="{post.U_QUOTE}" onclick="if (window.webkit) return true; quote_post({post.ID}, 'quick_reply_form', 'quick_reply'); document.getElementById('quote_id_{post.ID}').src = '{IMG_QUOTE_POST_SELECTED}'; return false">
 							<else>
 								<a href="{post.U_QUOTE}">
 							</if>

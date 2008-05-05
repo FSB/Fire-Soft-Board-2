@@ -153,7 +153,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'L_ADM_SMILEY_UPLOAD_EXP' =>sprintf(Fsb::$session->lang('adm_smiley_upload_exp'), SMILEY_PATH),
 			'SMILEY_TAG' =>				$s_tag,
 			'LIST_SMILEY' =>			$list_smiley,
-			'LIST_CAT' =>				Html::create_list('smiley_cat', $s_cat, $list_cat),
+			'LIST_CAT' =>				Html::make_list('smiley_cat', $s_cat, $list_cat),
 
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=posts_smiley&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
 		));
@@ -598,7 +598,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		Fsb::$tpl->set_switch('smileys_export');
 		Fsb::$tpl->set_vars(array(
-			'LIST_CAT' =>		Html::create_list('pack_cat', '', $list_cat),
+			'LIST_CAT' =>		Html::make_list('pack_cat', '', $list_cat),
 		));
 	}
 

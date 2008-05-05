@@ -683,7 +683,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($list_procedure)
 		{
 			Fsb::$tpl->set_vars(array(
-				'LIST_PROCEDURE' =>		Html::create_list('procedure', '', $list_procedure),
+				'LIST_PROCEDURE' =>		Html::make_list('procedure', '', $list_procedure),
 
 				'U_PROCEDURE_ACTION' =>	sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=procedure_exec&amp;id=' . $this->topic_data['t_id']),
 			));

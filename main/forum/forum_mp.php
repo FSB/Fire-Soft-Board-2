@@ -338,7 +338,10 @@ class Fsb_frame_child extends Fsb_frame
 			'AUTO_ANSWER_ACTIV_NO' =>	(!Fsb::$session->data['u_mp_auto_answer_activ']) ? 'checked="checked"' : '',
 			'AUTO_ANSWER_MESSAGE' =>	htmlspecialchars(Fsb::$session->data['u_mp_auto_answer_message']),
 			'COUNT_BLACKLIST' =>		$count_blacklist,
-			'LIST_BLACKLIST' =>			Html::create_list('blacklist[]', array(), $list_blacklist, 'multiple="multiple" size="' . (($count_blacklist < 5) ? $count_blacklist : 5) . '"'),
+			'LIST_BLACKLIST' =>			Html::make_list('blacklist[]', array(), $list_blacklist, array(
+											'multiple' =>	'multiple',
+											'size' =>		($count_blacklist < 5) ? $count_blacklist : 5,
+										)),
 
 			'U_ACTION' =>				sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box),
 		));

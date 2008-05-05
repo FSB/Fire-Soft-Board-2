@@ -10,21 +10,26 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion du systeme de MAPS (affichage de la creation de messages a partir d'un modele XML)
-*/
+/**
+ * Gestion du systeme de MAPS (affichage de la creation de messages a partir d'un modele XML)
+ */
 class Map extends Fsb_model
 {
+	/**
+	 * Mise en cache des donnees XML
+	 *
+	 * @var array
+	 */
 	private static $cache_xml = array();
 
-	/*
-	** Construit le formulaire de post de messages a partir de la MAP XML
-	** -----
-	** $content ::		Contenu du message, pour l'edition
-	** $post_map ::		MAP utilisee
-	** $tmp_map ::		MAP de formatage a utiliser sur les champs (par exemple pour les citations [quote=xxx]%s[/quote])
-	** $onupload_str ::	Contenu en cas d'upload
-	*/
+	/**
+	 * Construit le formulaire de post de messages a partir de la MAP XML
+	 *
+	 * @param string $content Contenu du message, pour l'edition
+	 * @param string $post_map MAP utilisee
+	 * @param string $tmp_map MAP de formatage a utiliser sur les champs (par exemple pour les citations [quote=xxx]%s[/quote])
+	 * @param string $onupload_str Contenu en cas d'upload
+	 */
 	public static function create_form($content, $post_map, $tmp_map, $onupload_str)
 	{
 		$parser = new Parser();
@@ -242,13 +247,13 @@ class Map extends Fsb_model
 		unset($xml);
 	}
 
-	/*
-	** Construit la chaine du message en recolant bout a bout sous forme XML
-	** les morceaux de la MAP
-	** -----
-	** $map ::			MAP du message
-	** $is_wysiwyg ::	Si le contenu est passe par l'editeur wysiwyg (les balises HTML en trop sont supprimees)
-	*/
+	/**
+	 * Construit le XML du message qui sera stocke en base
+	 *
+	 * @param string $map MAP du message
+	 * @param bool $is_wysiwyg Si le contenu est passe par l'editeur wysiwyg (les balises HTML en trop sont supprimees)
+	 * @return string XML
+	 */
 	public static function build_map_content($map, $is_wysiwyg = FALSE)
 	{
 		$parser = new Parser();
@@ -297,9 +302,11 @@ class Map extends Fsb_model
 		return ($message->document->asValidXML());
 	}
 
-	/*
-	** Retourne la liste des MAPS
-	*/
+	/**
+	 * Retourne la liste des MAPS
+	 *
+	 * @return array
+	 */
 	public static function get_list()
 	{
 		$fd = opendir(MAPS_PATH);
@@ -318,11 +325,12 @@ class Map extends Fsb_model
 		return ($list_map);
 	}
 
-	/*
-	** Charge les informations de sondage d'une MAP
-	** -----
-	** $map_name ::		Nom de la MAP
-	*/
+	/**
+	 * Charge les informations de sondage d'une MAP
+	 *
+	 * @param string $map_name Nom de la MAP
+	 * @return array
+	 */
 	public static function load_poll($map_name)
 	{
 		$xml = new Xml();
@@ -349,12 +357,13 @@ class Map extends Fsb_model
 		return ($poll_data);
 	}
 
-	/*
-	** Parse un message qui depend d'une MAP XML
-	** -----
-	** $str ::			Chaine du message
-	** $map_name ::		Nom de la MAP
-	*/
+	/**
+	 * Parse un message qui depend d'une MAP XML
+	 *
+	 * @param string $str Message
+	 * @param string $map_name Nom de la MAP
+	 * @return string
+	 */
 	public static function parse_message($str, $map_name)
 	{
 		// Mise en cache du parse XML de la MAP

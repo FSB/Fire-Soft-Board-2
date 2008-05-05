@@ -486,7 +486,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('lang_faq');
 		Fsb::$tpl->set_vars(array(
 			'LIST_LANG' =>		Html::list_langs('language', $this->language),
-			'LIST_SECTION' =>	Html::create_list('faq_section', '', $list_section),
+			'LIST_SECTION' =>	Html::make_list('faq_section', '', $list_section),
 		));
 
 		// Chargement des clefs pour la FAQ

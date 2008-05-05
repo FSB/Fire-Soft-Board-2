@@ -187,7 +187,7 @@ class Page_modo_procedure extends Fsb_model
 		Fsb::$tpl->set_switch('proc_new');
 		Fsb::$tpl->set_vars(array(
 			'PROCEDURE_NAME' =>	htmlspecialchars($name),
-			'LIST_AUTH' =>		Html::create_list('procedure_auth', $auth, $list_auth),
+			'LIST_AUTH' =>		Html::make_list('procedure_auth', $auth, $list_auth),
 
 			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=procedure&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
 		));
@@ -381,7 +381,7 @@ class Page_modo_procedure extends Fsb_model
 		Fsb::$tpl->set_file('modo/modo_procedure_edit.html');
 		Fsb::$tpl->set_switch('proc_function');
 		Fsb::$tpl->set_vars(array(
-			'LIST_FUNCTIONS' =>			Html::create_list('fct_used', $fct, $list_functions),
+			'LIST_FUNCTIONS' =>			Html::make_list('fct_used', $fct, $list_functions),
 			'HIDDEN' =>					Html::hidden('fct_hidden', $fct),
 
 			'U_ACTION' =>				sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=procedure&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;line=' . $nb),
@@ -698,7 +698,7 @@ class Page_modo_procedure extends Fsb_model
 			break;
 		}
 
-		return (Html::create_list($name, $selected, array(
+		return (Html::make_list($name, $selected, array(
 			'owner' =>		Fsb::$session->lang('modo_proc_to_owner'),
 			'last' =>		Fsb::$session->lang('modo_proc_to_last'),
 			'manual' =>		Fsb::$session->lang('modo_proc_to_manual'),
@@ -731,7 +731,7 @@ class Page_modo_procedure extends Fsb_model
 			break;
 		}
 
-		return (Html::create_list($name, $selected, array(
+		return (Html::make_list($name, $selected, array(
 			'topic' =>		Fsb::$session->lang('modo_proc_url_topic'),
 			'forum' =>		Fsb::$session->lang('modo_proc_url_forum'),
 			'index' =>		Fsb::$session->lang('modo_proc_url_index'),
@@ -744,7 +744,7 @@ class Page_modo_procedure extends Fsb_model
 	*/
 	public function method_select_field($name, $s)
 	{
-		return (Html::create_list($name, $s, array(
+		return (Html::make_list($name, $s, array(
 			'text' =>			Fsb::$session->lang('modo_proc_text'),
 			'textarea' =>		Fsb::$session->lang('modo_proc_textarea'),
 		)));
@@ -763,7 +763,7 @@ class Page_modo_procedure extends Fsb_model
 	*/
 	public function method_select_ban_type($name, $s)
 	{
-		return (Html::create_list($name, $s, array(
+		return (Html::make_list($name, $s, array(
 			'login' =>		Fsb::$session->lang('modo_proc_ban_login'),
 			'email' =>		Fsb::$session->lang('modo_proc_ban_email'),
 			'ip' =>			Fsb::$session->lang('modo_proc_ban_ip'),
@@ -776,7 +776,7 @@ class Page_modo_procedure extends Fsb_model
 	public function method_select_ban_length($name, $s)
 	{
 		$html = '<input type="text" name="' . $name . '" size="10" maxlength="10" value="' . (($s) ? $s / ONE_HOUR : 0) . '" /> &nbsp; ';
-		$html .= Html::create_list($name . '_unit', ONE_HOUR, array(
+		$html .= Html::make_list($name . '_unit', ONE_HOUR, array(
 			ONE_HOUR =>		Fsb::$session->lang('hour'),
 			ONE_DAY =>		Fsb::$session->lang('day'),
 			ONE_WEEK =>		Fsb::$session->lang('week'),
@@ -791,7 +791,7 @@ class Page_modo_procedure extends Fsb_model
 	*/
 	public function method_select_warn_mode($name, $s)
 	{
-		return (Html::create_list($name, $s, array(
+		return (Html::make_list($name, $s, array(
 			'more' =>		Fsb::$session->lang('modo_proc_warn_more'),
 			'less' =>		Fsb::$session->lang('modo_proc_warn_less'),
 		)));

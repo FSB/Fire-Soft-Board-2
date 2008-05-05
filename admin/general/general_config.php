@@ -190,7 +190,7 @@ function input_filesize($name, $value)
 		$v2 = 1;
 	}
 	$html = '<input type="text" name="' . $name . '" value="' . $v1 . '" size="10" /> ';
-	$html .= Html::create_list($name . '_list', $v2, array(
+	$html .= Html::make_list($name . '_list', $v2, array(
 		1 =>		'O',
 		1024 =>		'KO',
 		1048576 =>	'MO',

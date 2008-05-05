@@ -241,7 +241,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// Liste des temps pour la duree du delestage
-		$list_prune_time = Html::create_list('f_prune_time_unit', ONE_HOUR, array(
+		$list_prune_time = Html::make_list('f_prune_time_unit', ONE_HOUR, array(
 			ONE_HOUR =>		Fsb::$session->lang('hour'),
 			ONE_DAY =>		Fsb::$session->lang('day'),
 			ONE_WEEK =>		Fsb::$session->lang('week'),
@@ -250,14 +250,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 		
 		// Liste des types de sujets
-		$list_prune_type = Html::create_list('f_prune_topic_type[]', $default_topic_type, $list_topic_type, 'multiple="multiple" size="3"');
+		$list_prune_type = Html::make_list('f_prune_topic_type[]', $default_topic_type, $list_topic_type, array(
+			'multiple' =>	'multiple',
+			'size' =>		3,
+		));
 
 		// Liste des themes
 		$list_tpl = Html::list_dir('f_tpl', $this->data['f_tpl'], ROOT . 'tpl/', array(), TRUE, '<option value="0">' . Fsb::$session->lang('adm_forum_tpl_none') . '</option>');
 
 		// Liste des MAPS
 		$list_map = array('0' => Fsb::$session->lang('adm_forum_map_none')) + Map::get_list();
-		$list_map = Html::create_list('f_map_default', $this->data['f_map_default'], $list_map);
+		$list_map = Html::make_list('f_map_default', $this->data['f_map_default'], $list_map);
 
 		Fsb::$tpl->set_switch('forums_add');
 		Fsb::$tpl->set_vars(array(

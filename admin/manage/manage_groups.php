@@ -200,7 +200,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'GROUP_OPEN' =>			$this->data['g_open'],
 			'GROUP_ONLINE' =>		$this->data['g_online'],
 			'ERRSTR' =>				Html::make_errstr($this->errstr),
-			'LIST_RANKS' =>			Html::create_list('g_rank', $this->data['g_rank'], $list_rank),
+			'LIST_RANKS' =>			Html::make_list('g_rank', $this->data['g_rank'], $list_rank),
 
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
 		));

@@ -582,7 +582,7 @@ class Session extends Fsb_model
 				Fsb::$db->update('sessions', array(
 					's_admin_logged' =>		TRUE,
 				), 'WHERE s_id = ' . $this->id() . ' AND s_sid = \'' . $this->sid . '\' AND s_ip = \'' . $this->ip . '\'');
-				Http::redirect('index.php');
+				Http::redirect('index.' . PHPEXT);
 			}
 		}
 	}

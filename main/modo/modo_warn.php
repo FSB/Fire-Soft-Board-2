@@ -67,7 +67,7 @@ class Page_modo_warn extends Fsb_model
 		);
 
 		Fsb::$tpl->set_vars(array(
-			'LIST_MODE' =>		Html::create_list('mode', $this->mode, $list_mode),
+			'LIST_MODE' =>		Html::make_list('mode', $this->mode, $list_mode),
 			'U_ACTION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=warn&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
 			'THIS_NICKNAME' =>	htmlspecialchars($this->nickname),
 		));
@@ -160,9 +160,13 @@ class Page_modo_warn extends Fsb_model
 			'L_MODO_WARN_DISABLE_READ_EXP' =>	($this->mode == 'more') ? Fsb::$session->lang('modo_warn_disable_read_exp')	: Fsb::$session->lang('modo_warn_disable_read_exp_less'),
 			'POST_STATE' =>						$post_state,
 			'READ_STATE' =>						$read_state,
-			'LIST_MODE_MESSAGE' =>				Html::create_list('mode_message', '', $list_mode_message),
-			'LIST_POST_STEP' =>					Html::create_list('disable_post_time', 0, $list_time, '', 'onfocus="document.getElementById(\'disable_post_id\').checked = true;"'),
-			'LIST_READ_STEP' =>					Html::create_list('disable_read_time', 0, $list_time, '', 'onfocus="document.getElementById(\'disable_read_id\').checked = true;"'),
+			'LIST_MODE_MESSAGE' =>				Html::make_list('mode_message', '', $list_mode_message),
+			'LIST_POST_STEP' =>					Html::make_list('disable_post_time', 0, $list_time, array(
+													'onfocus' => 'document.getElementById(\'disable_post_id\').checked = true',
+												)),
+			'LIST_READ_STEP' =>					Html::make_list('disable_read_time', 0, $list_time, array(
+													'onfocus' => 'document.getElementById(\'disable_read_id\').checked = true',
+												)),
 		));
 	}
 

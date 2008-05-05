@@ -9,60 +9,6 @@
 ** +---------------------------------------------------+
 */
 
-// Navigateur utilisé
-var Nav_Agent =		navigator.userAgent.toLowerCase();
-var Nav_IE =		((Nav_Agent.indexOf("msie") != -1)  && (Nav_Agent.indexOf("opera") == -1)) ? true : false;
-var Nav_IE7 =		(Nav_IE && (Nav_Agent.indexOf("msie 7") != -1)) ? true : false;
-var Nav_IE6 =		(Nav_IE && (Nav_Agent.indexOf("msie 6") != -1)) ? true : false;
-var Nav_Moz =		(Nav_Agent.indexOf("firefox") != -1) ? true : false;
-var Nav_Opera =		(Nav_Agent.indexOf("opera") != -1 && parseInt(navigator.appVersion) >= 9) ? true : false;
-var Nav_Safari =	((Nav_Agent.indexOf('safari') != -1) && (Nav_Agent.indexOf('mac') != -1)) ? true : false;
-var Nav_Konqueror = (Nav_Agent.indexOf('konqueror') != -1);
-
-/*
-** Lit un cookie
-** -----
-** name ::		Nom du cookie
-*/
-function ReadCookie(name)
-{
-	var result = "";
-	var my_cookie = " " + document.cookie + ";";
-	var tmpname =  name + "=";
-	var begin = my_cookie.indexOf(tmpname);
-	var end;
-	if (begin != -1)
-	{
-		begin += tmpname.length;
-		end = my_cookie.indexOf(";", begin);
-		result = unescape(my_cookie.substring(begin, end));
-	}
-	return (result);
-}
- 
-/*
-** Envoie un cookie
-** -----
-** name ::		Nom du cookie
-** value ::		Valeur du cookie
-*/
-function SetCookie(name, value, on)
-{
-	var this_date = new Date();
-	if (on)
-	{
-		this_date.setMonth(this_date.getMonth() + 1);
-	}
-	else
-	{
-		this_date.setMonth(this_date.getMonth() - 1);
-	}
-
-	var cookie_time = this_date.toGMTString();
-	var my_cookie = name + "="+escape(value) + ";expires=" + cookie_time + " path=/;";
-	document.cookie = my_cookie;
-}
-
 /*
 ** Coche / décoche un ensemble de checkbox
 ** -----
@@ -104,7 +50,7 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 {
 	if (hide_block[id_block] == undefined)
 	{
-		cookie_value = ReadCookie(id_block);
+		cookie_value = Cookie.get(id_block);
 		if (cookie_value == 'C')
 		{
 			hide_block[id_block] = false;
@@ -117,7 +63,7 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 	}
 
 	block_check(id_block, id_img, src_img_open, src_img_close, mooeffect);
-	SetCookie(id_block, (hide_block[id_block]) ? "O" : "C", true);
+	Cookie.set(id_block, (hide_block[id_block]) ? "O" : "C", {duration: 31});
 }
 
 /*
@@ -125,35 +71,46 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 */
 function block_cookie_read(block_name, img_name, img_src, mooeffect)
 {
-	cookie_value = ReadCookie(block_name);
+	cookie_value = Cookie.get(block_name);
 	if (cookie_value == 'C')
 	{
-		if (mooeffect)
+		if (!window.ie6 && mooeffect)
 		{
-			blocks_height[block_name] = $(block_name).offsetHeight;
+			blocks_height[block_name] = $(block_name).getCoordinates().height;
 			$(block_name).style.height = '0px';
 			$(block_name).style.opacity = 0;
 		}
-		$(block_name).style.display = 'none';
+		else
+		{
+			$(block_name).style.display = 'none';
+		}
 		$(img_name).src = img_src;
 	}
 }
 
+var fxBlocks = {};
 function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 {
 	hide_block[id_block] ^= true;
 	if (hide_block[id_block])
 	{
-		if (!Nav_IE6 && mooeffect)
+		if (!window.ie6 && mooeffect)
 		{
-			$(id_block).setStyle('opacity', 0);
-			$(id_block).style.display = 'block';
-			$(id_block).effects({duration: 500}).custom(
-				{
-					'height': [0, blocks_height[id_block]],
-					'opacity': [0, 1]
-				}
-			);
+			if ($defined(fxBlocks[id_block]))
+			{
+				fxBlocks[id_block].stop();
+			}
+
+			fxBlocks[id_block] = new Fx.Styles(id_block,
+			{
+				duration: 500,
+				transition: Fx.Transitions.linear
+			});
+			
+			fxBlocks[id_block].start({
+				height: [$(id_block).getStyle('height'), blocks_height[id_block]],
+				opacity: [$(id_block).getStyle('opacity'), 1]
+			});
 		}
 		else
 		{
@@ -163,16 +120,28 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	}
 	else
 	{
-		if (!Nav_IE6 && mooeffect)
+		if (!window.ie6 && mooeffect)
 		{
-			blocks_height[id_block] = $(id_block).offsetHeight;
-			$(id_block).effects({duration: 500}).custom(
-				{
-					'height': [blocks_height[id_block], 0],
-					'opacity': [1, 0]
-				}
-			);
-			setTimeout('$(\'' + id_block + '\').style.display = \'none\'', 500);
+			if ($defined(fxBlocks[id_block]))
+			{
+				fxBlocks[id_block].stop();
+			}
+
+			if (!$defined(blocks_height[id_block]))
+			{
+				blocks_height[id_block] = $(id_block).getCoordinates().height;
+			}
+
+			fxBlocks[id_block] = new Fx.Styles(id_block,
+			{
+				duration: 500,
+				transition: Fx.Transitions.linear
+			});
+			
+			fxBlocks[id_block].start({
+				height: [$(id_block).getStyle('height'), 0],
+				opacity: [$(id_block).getStyle('opacity'), 0]
+			});
 		}
 		else
 		{
@@ -236,25 +205,28 @@ function trim(str)
 */
 function search_user(value, obj, id, id_field)
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT,
 	{
-		if (!data)
+		method: 'get',
+		onComplete: function(txt, xml)
 		{
-			$(id).style.visibility = 'hidden';
-			return ;
+			if (!txt)
+			{
+				$(id).style.visibility = 'hidden';
+				return ;
+			}
+	
+			$(id).innerHTML = txt;
+			$(id).style.visibility = 'visible';
 		}
+	});
 
-		$(id).innerHTML = data;
-		$(id).style.visibility = 'visible';
-	}
-
-	// Envoie des requètes http
-	ajax.set_arg(AJAX_GET, 'mode', 'search_user');
-	ajax.set_arg(AJAX_GET, 'nickname', value);
-	ajax.set_arg(AJAX_GET, 'jsid', id_field);
-	ajax.set_arg(AJAX_GET, 'jsid2', id);
-	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+	ajax.request({
+		mode: 'search_user',
+		nickname: value,
+		jsid: id_field,
+		jsid2: id
+	});
 }
 
 /*
@@ -295,7 +267,7 @@ function clean_field(id)
 }
 
 /*
-** Sélection du code source (balise CODE), fonction reprise de phpBB3
+** Selection du code source (balise CODE), fonction reprise de phpBB3
 */
 function selectCode(a)
 {
@@ -337,4 +309,32 @@ function selectCode(a)
 		r.moveToElementText(e);
 		r.select();
 	}
+}
+
+/*
+** Ouvre la fenêtre d'attente ajax
+*/
+function ajax_waiter_open()
+{
+	if (window.ie)
+	{
+		var scroll_y = document.body.scrollTop;
+	}
+	else
+	{
+		var scroll_y = window.pageYOffset;
+	}
+	$('ajax_waiter').style.top = scroll_y + 'px';
+	$('ajax_waiter').style.left = '0px';
+	$('ajax_waiter').innerHTML = '<img src="images/ajax-loader.gif" />';
+	$('ajax_waiter').style.display = 'block';
+}
+
+/*
+** Ferme la fenête d'attendre ajax
+*/
+function ajax_waiter_close()
+{
+	$('ajax_waiter').style.display = 'none';
+	$('ajax_waiter').innerHTML = '';
 }

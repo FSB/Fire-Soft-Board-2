@@ -207,12 +207,11 @@ function ajax_submit_post($id)
 	}
 
 	// Edition du message
-	$_POST['post_map_description'] = utf8_encode(str_replace('&#43;', '+', Http::request('post_map_description', 'post')));
+	$_POST['post_map_description'] = str_replace('&#43;', '+', Http::request('post_map_description', 'post'));
 	$content = Map::build_map_content('classic', FALSE);
-	$content = String::fsb_utf8_decode($content);
 
 	// Titre du sujet
-	$post_title = String::fsb_utf8_decode(utf8_encode(str_replace('&#43;', '+', Http::request('t_title', 'post'))));
+	$post_title = str_replace('&#43;', '+', Http::request('t_title', 'post'));
 
 	// Soumission du message
 	Send::edit_post($id, $content, Fsb::$session->id(), array(
@@ -434,7 +433,7 @@ function ajax_editor_text()
 		), 'WHERE u_id = ' . Fsb::$session->id());
 	}
 
-	$content = String::fsb_utf8_decode(utf8_encode(str_replace('&#43;', '+', Http::request('content', 'post'))));
+	$content = str_replace('&#43;', '+', Http::request('content', 'post'));
 	return (Parser_wysiwyg::decode($content));
 }
 
@@ -450,7 +449,7 @@ function ajax_editor_wysiwyg()
 		), 'WHERE u_id = ' . Fsb::$session->id());
 	}
 
-	$content = String::fsb_utf8_decode(utf8_encode(str_replace('&#43;', '+', Http::request('content', 'post'))));
+	$content = str_replace('&#43;', '+', Http::request('content', 'post'));
 	return (Parser_wysiwyg::encode($content));
 }
 

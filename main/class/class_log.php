@@ -10,19 +10,41 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion des logs du forum
-*/
+/**
+ * Logs des informations sur le forum
+ */
 class Log extends Fsb_model
 {
-	// Types de logs
+	/**
+	 * Log des erreurs
+	 */
 	const ERROR = 0;
+	
+	/**
+	 * Log des actions utilisateur
+	 */
 	const USER = 1;
+	
+	/**
+	 * Log des actions des moderateurs
+	 */
 	const MODO = 2;
+	
+	/**
+	 * Log des actions des administrateurs
+	 */
 	const ADMIN = 3;
+	
+	/**
+	 * Log des emails
+	 */
 	const EMAIL = 4;
 
-	// Association pour les clefs de langue
+	/**
+	 * Association entre le type d'erreur et les clefs de langues
+	 *
+	 * @var array
+	 */
 	private static $lg_assoc = array(
 		self::ERROR =>	'error',
 		self::USER =>	'user',
@@ -31,25 +53,19 @@ class Log extends Fsb_model
 		self::EMAIL =>	'email',
 	);
 
-	/*
-	** Ajout d'un log dans la base de donnee
-	** Le nombre d'argument de cette fonction est variable, neanmoins il faut respecter cet ordre :
-	**	- Le premier argument doit etre une des constante de log
-	**	- Le second argument doit etre le nom du log
-	**	- Les autres arguments sont des parametres additionels
-	*/
-	public static function add()
+	/**
+	 * Ajout d'une information en log
+	 * 
+	 * @param int $type Type du log
+	 * @param string $key Nom du log
+	 * @param mixed ... Arguments additionels en fonction du type de log
+	 *
+	 */
+	public static function add($type, $key)
 	{
-		$count = func_num_args();
-		if ($count < 2)
-		{
-			trigger_error('Au moins 2 parametres doivent etre passes a la methode Log::add()', FSB_ERROR);
-		}
-
 		// On recupere les arguments de la fonction
-		$type =	func_get_arg(0);
-		$key =	func_get_arg(1);
 		$argv =	array();
+		$count = func_num_args();
 		for ($i = 2; $i < $count; $i++)
 		{
 			$argv[] = func_get_arg($i);
@@ -58,25 +74,19 @@ class Log extends Fsb_model
 		self::add_custom($type, $key, $argv);
 	}
 
-	/*
-	** Ajout d'un log concernant un membre
-	** Le nombre d'argument de cette fonction est variable, neanmoins il faut respecter cet ordre :
-	**	- Le premier argument doit etre l'ID du membre cible
-	**	- Le second argument doit etre le nom du log
-	**	- Les autres arguments sont des parametres additionels
-	*/
-	public static function user()
+	/**
+	 * Ajout d'un log d'action utilisateur
+	 * 
+	 * @param int $user ID du membre implique dans l'action
+	 * @param string $key Nom du log
+	 * @param mixed ... Arguments additionels en fonction du type de log
+	 *
+	 */
+	public static function user($user, $key)
 	{
-		$count = func_num_args();
-		if ($count < 2)
-		{
-			trigger_error('Au moins 2 parametres doivent etre passes a la methode Log::add()', FSB_ERROR);
-		}
-
 		// On recupere les arguments de la fonction
-		$user =	func_get_arg(0);
-		$key =	func_get_arg(1);
 		$argv =	array();
+		$count = func_num_args();
 		for ($i = 2; $i < $count; $i++)
 		{
 			$argv[] = func_get_arg($i);
@@ -85,16 +95,16 @@ class Log extends Fsb_model
 		self::add_custom(self::USER, $key, $argv, NULL, NULL, $user);
 	}
 
-	/*
-	** Ajout d'un log dans la base de donnee
-	** -----
-	** $type ::		Type de log
-	** $key ::		Nom du log
-	** $argv ::		Tableau d'arguments
-	** $line ::		Ligne ou se deroule le log
-	** $file ::		Fichier ou se deroule le log
-	** $user ::		ID du membre si le log concerne un membre particulier
-	*/
+	/**
+	 * Ajout du log dans la base
+	 *
+	 * @param int $type Type de log
+	 * @param string $key Nom du log
+	 * @param array $argv Arguments additionels
+	 * @param int $line Ligne ou se deroule le log
+	 * @param string $file Fichier ou se deroule le log
+	 * @param int $user ID du membre implique
+	 */
 	public static function add_custom($type, $key, $argv = array(), $line = NULL, $file = NULL, $user = NULL)
 	{
 		$user_id = (Fsb::$session && isset(Fsb::$session->data['u_id'])) ? Fsb::$session->id() : VISITOR_ID;
@@ -117,15 +127,16 @@ class Log extends Fsb_model
 		}
 	}
 
-	/*
-	** Recupere un certain type de logs
-	** -----
-	** $type ::		Type de log
-	** $limit ::	Nombre de lignes du logs a recuperer
-	** $offset ::	A partir de l'enregistrement
-	** $and ::		Condition suplementaire pour la requete
-	** $get_user ::	Recupere en plus les informations sur le membre loggue
-	*/
+	/**
+	 * Recupere un certain type de logs
+	 *
+	 * @param int $type Type de log
+	 * @param int $limit Nombre de lignes du logs a recuperer
+	 * @param int $offset A partir de l'enregistrement
+	 * @param string $and Condition suplementaire pour la requete
+	 * @param bool $get_user Recupere en plus les informations sur le membre
+	 * @return array
+	 */
 	public static function read($type, $limit = 100, $offset = 0, $and = '', $get_user = FALSE)
 	{
 		Fsb::$session->load_lang('lg_logs');

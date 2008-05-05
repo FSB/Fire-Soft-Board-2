@@ -226,7 +226,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		Fsb::$tpl->set_vars(array(
-			'BACKUP_LIST_TABLE' =>		Html::create_list('backup_tables[]', $list_table, $list_table, 'multiple="multiple" size="10"'),
+			'BACKUP_LIST_TABLE' =>		Html::make_list('backup_tables[]', $list_table, $list_table, array(
+				'multiple' =>	'multiple',
+				'size' =>		10,
+			)),
 		));
 	}
 

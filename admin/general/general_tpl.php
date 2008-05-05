@@ -491,12 +491,18 @@ class Fsb_frame_child extends Fsb_admin_frame
 			));
 		}
 
-		$list_change_mode = Html::create_list('edit_css_type', $edit_css_type, array(
+		$list_css_mode = array(
 			'simple' =>			Fsb::$session->lang('adm_css_simple_mode'),
 			'complex' =>		Fsb::$session->lang('adm_css_complex_mode'),
-		), '', 'onchange="location.href=\'' . sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name . '&amp;class_name=' . $this->class_name . '&amp;id=' . $id) . '&amp;edit_css_type=\' + this.value;"');
+		);
 
-		$list_class = Html::create_list('choose_class_name', $id, $list_class_ary, '', 'onchange="location.href=\'' . sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name . '&amp;edit_css_type=' . $edit_css_type . '&amp;class_name=' . $this->class_name) . '&amp;id=\' + this.value;"');
+		$list_change_mode = Html::make_list('edit_css_type', $edit_css_type, $list_css_mode, array(
+			'onchange' => 'location.href=\'' . sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name . '&amp;class_name=' . $this->class_name . '&amp;id=' . $id) . '&amp;edit_css_type=\' + this.value;',
+		));
+
+		$list_class = Html::make_list('choose_class_name', $id, $list_class_ary, array(
+			'onchange' => 'location.href=\'' . sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name . '&amp;edit_css_type=' . $edit_css_type . '&amp;class_name=' . $this->class_name) . '&amp;id=\' + this.value;',
+		));
 
 		// Champs caches
 		$hidden = Html::hidden('edit_css_type_submit', $edit_css_type) . Html::hidden('tpl_name', $this->tpl_name) . Html::hidden('class_name', $this->class_name);
@@ -550,10 +556,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'FONT_SIZE' =>				$this->style['font_size'],
 
 				'LIST_BACKGROUND_IMG' =>	Html::list_dir('background_img', $this->style['background_img'], ROOT . 'tpl/' . $this->tpl_name . '/img/', array('gif', 'jpg', 'jpeg'), FALSE, '<option value="0">' . Fsb::$session->lang('adm_css_no_img') . '</option>'),
-				'LIST_REPEAT_IMG' =>		Html::create_list('repeat_img', $this->style['repeat_img'], $list_repeat),
-				'LIST_FONT_SIZE' =>			Html::create_list('font_size_unit', $this->style['font_size_unit'], $list_size),
-				'LIST_BORDER_WIDTH' =>		Html::create_list('border_width_unit', $this->style['border_width_unit'], $list_size),
-				'LIST_BORDER_TYPE' =>		Html::create_list('border_type', $this->style['border_type'], $list_border_type),
+				'LIST_REPEAT_IMG' =>		Html::make_list('repeat_img', $this->style['repeat_img'], $list_repeat),
+				'LIST_FONT_SIZE' =>			Html::make_list('font_size_unit', $this->style['font_size_unit'], $list_size),
+				'LIST_BORDER_WIDTH' =>		Html::make_list('border_width_unit', $this->style['border_width_unit'], $list_size),
+				'LIST_BORDER_TYPE' =>		Html::make_list('border_type', $this->style['border_type'], $list_border_type),
 			));
 
 			foreach ($parse_style AS $key => $value)
@@ -1287,7 +1293,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'OPENER_ID' =>			htmlspecialchars(Http::request('id')),
 			'RADIO_ID' =>			htmlspecialchars(Http::request('radio')),
-			'LIST_FONT_SIZE' =>		Html::create_list('font_size_unit', 'px', $list_size),
+			'LIST_FONT_SIZE' =>		Html::make_list('font_size_unit', 'px', $list_size),
 		));
 	}
 }

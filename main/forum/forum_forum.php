@@ -411,15 +411,15 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 
 		// Liste de classement des sujets
-		$list_order = Html::create_list('order', $this->order, array(
+		$list_order = Html::make_list('order', $this->order, array(
 			't_last_p_time' =>		Fsb::$session->lang('forum_order_time'),
 			't_title' =>			Fsb::$session->lang('forum_order_title'),
 			't_total_view' =>		Fsb::$session->lang('forum_order_view'),
 			't_total_post' =>		Fsb::$session->lang('forum_order_post'),
-			'f_u_nickname' =>			Fsb::$session->lang('forum_order_nickname'),
+			'f_u_nickname' =>		Fsb::$session->lang('forum_order_nickname'),
 		));
 
-		$list_direction = Html::create_list('dir', $this->dir, array(
+		$list_direction = Html::make_list('dir', $this->dir, array(
 			'asc' =>	Fsb::$session->lang('forum_order_asc'),
 			'desc' =>	Fsb::$session->lang('forum_order_desc'),
 		));

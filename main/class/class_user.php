@@ -602,7 +602,7 @@ class User extends Fsb_model
 			$notify->set_vars(array(
 				'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
 				'FORUM_URL' =>		Fsb::$cfg->get('fsb_path'),
-				'CONFIRM_URL' =>	Fsb::$cfg->get('fsb_path') . '/index.php?p=login&confirm_account=' . $user_id,
+				'CONFIRM_URL' =>	Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&confirm_account=' . $user_id,
 				'NICKNAME' =>		htmlspecialchars($user_nickname),
 				'EMAIL' =>			$user_email,
 				'IP' =>				$user_ip,

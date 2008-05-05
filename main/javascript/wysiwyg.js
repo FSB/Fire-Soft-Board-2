@@ -14,8 +14,8 @@ var rainbow_i = 0;
 var editor_box = [];
 
 /*
-** Interface permettant de passer d'un objet de type FSB_editor_text à un objet
-** FSB_editor_wysiwyg très facilement.
+** Interface permettant de passer d'un objet de type FSB_editor_text a un objet
+** FSB_editor_wysiwyg tres facilement.
 ** -----
 ** id ::			ID du WYSIWYG
 ** type ::			text ou wysiwyg
@@ -27,7 +27,7 @@ var FSB_editor_interface = new Class(
 	
 	initialize: function(id, type, use_wysiwyg)
 	{
-		if (!Nav_IE7 && !Nav_Moz && !Nav_Opera)
+		if (!window.ie7 && !window.gecko && !window.opera)
 		{
 			type = 'text';
 		}
@@ -97,12 +97,6 @@ var FSB_editor = new Class(
 		this.id = id;
 		this.edit = $(this.id);
 
-		// Navigateur courant
-		var Nav_Agent =		navigator.userAgent.toLowerCase();
-		this.nav_ie =		((Nav_Agent.indexOf("msie") != -1)  && (Nav_Agent.indexOf("opera") == -1)) ? true : false;
-		this.nav_mozilla =	(Nav_Agent.indexOf("firefox") != -1) ? true : false;
-		this.nav_opera =	(Nav_Agent.indexOf("opera") != -1 && parseInt(navigator.appVersion) >= 9) ? true : false;
-
 		this.load_rainbow();
 		if (show_tabs)
 		{
@@ -130,7 +124,7 @@ var FSB_editor = new Class(
 			return ;
 		}
 
-		if (!Nav_IE7 && !Nav_Moz && !Nav_Opera)
+		if (!window.ie7 && !window.gecko && !window.opera)
 		{
 			return ;
 		}
@@ -145,7 +139,7 @@ var FSB_editor = new Class(
 		ltab.setAttribute('id', this.id + '_tabs_ltab');
 		ltab.setAttribute('class', 'editor_tabs');
 		ltab.setAttribute('title', FSB_editor_lg['ltab_explain']);
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			var add = (this.current == 'text') ? 3 : 0;
 			ltab.style.position = 'absolute';
@@ -180,7 +174,7 @@ var FSB_editor = new Class(
 		rtab.setAttribute('class', 'editor_tabs');
 		rtab.setAttribute('id', this.id + '_tabs_rtab');
 		rtab.setAttribute('title', FSB_editor_lg['rtab_explain']);
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			rtab.style.position = 'absolute';
 			rtab.style.backgroundImage = 'url(tpl/WhiteSummer/img/wysiwyg_tab.png)';
@@ -288,7 +282,7 @@ var FSB_editor = new Class(
 		}
 
 		// Modification graphique des onglets
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			var add = (this.current == 'wysiwyg') ? 2 : 0;
 			tab.style.marginTop = (add + 2) + 'px';
@@ -313,40 +307,43 @@ var FSB_editor = new Class(
 
 		this._send();
 
-		var ajax = new Ajax();
-		ajax.obj = this;
-		ajax.onload = function(data)
-		{
-			ajax_waiter_close();
-			if (this.obj.current == 'wysiwyg')
-			{
-				$(this.obj.id + '_wysiwyg').value = data;
-				new FSB_editor_text(this.obj.id, this.obj.iface);
-			}
-			else
-			{
-				$(this.obj.id).style.display = 'none';
-				$(this.obj.id).value = data;
-				new FSB_editor_wysiwyg(this.obj.id, this.obj.iface);
-			}
+		obj = {
+			mode: 'editor_' + this.current
 		}
 
-		ajax.onprogress = function (current)
+		var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Object.toQueryString(obj),
 		{
-			ajax_waiter_open();
-		}
+			method: 'post',
+			onComplete: function(txt, xml)
+			{
+				ajax_waiter_close();
+				if (this.current == 'wysiwyg')
+				{
+					$(this.id + '_wysiwyg').value = txt;
+					new FSB_editor_text(this.id, this.iface);
+				}
+				else
+				{
+					$(this.id).style.display = 'none';
+					$(this.id).value = txt;
+					new FSB_editor_wysiwyg(this.id, this.iface);
+				}
+			}.bind(this)
+		});
 
 		if (this.current == 'wysiwyg')
 		{
-			ajax.set_arg(AJAX_POST, 'content', $(this.id + '_wysiwyg').value);
+			var content = $(this.id + '_wysiwyg').value;
 		}
 		else
 		{
-			ajax.set_arg(AJAX_POST, 'content', $(this.id).value);
+			var content = $(this.id).value;
 		}
+		
+		ajax.request({
+			'content': content
+		});
 
-		ajax.set_arg(AJAX_GET, 'mode', 'editor_' + this.current);
-		ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
 		$(this.id).value = '';
 	},
 
@@ -528,7 +525,7 @@ var FSB_editor_text = FSB_editor.extend(
 	*/
 	_get_selection: function()
 	{
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -666,19 +663,19 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		$(this.id).parentNode.appendChild(input);
 
 		// Initialisation du designMode
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			this.doc = window.frames[this.id].document;
 			this.win = window.frames[this.id];
 			this.doc.designMode = 'On';
 		}
-		else if (this.nav_opera)
+		else if (window.opera)
 		{
 			this.doc = $(this.id).document;
 			this.win = $(this.id);
 			this.doc.designMode = 'On';
 		}
-		else if (this.nav_mozilla)
+		else if (window.gecko)
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id).contentWindow;
@@ -699,7 +696,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			this.doc.write('<html><head><style type="text/css">body{margin:1px;font-size: 12px;font-family: Verdana, Arial, Helvetica, sans-serif;};p{margin:0px;}</style></head><body>' + this._format_text($(this.id + '_wysiwyg').value) + '</body></html>');
 			this.doc.close();
 
-			if (this.nav_mozilla)
+			if (window.gecko)
 			{
 				this.doc.designMode = 'On';
 			}
@@ -883,11 +880,11 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			case 'bgcolor' :
 				if (args)
 				{
-					if (Nav_IE)
+					if (window.ie)
 					{
 						this.doc.execCommand('backcolor', false, args);
 					}
-					else if (Nav_Moz || Nav_Opera)
+					else if (window.gecko || window.opera)
 					{
 						this.doc.execCommand('hilitecolor', false, args);
 					}
@@ -925,7 +922,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_get_selection: function()
 	{
-		if (this.nav_ie)
+		if (this.window.ie)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -946,7 +943,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		str = this.parse_vars(str, this._get_selection());
 		if (!html) str = htmlspecialchars(str);
 		str = this._format_text(str);
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			var sel = this.doc.selection;
 			this.win.focus();
@@ -958,7 +955,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			}
 
 		}
-		else if (this.nav_mozilla)
+		else if (window.gecko)
 		{
 			var fragment = this.doc.createDocumentFragment();
 			var div = this.doc.createElement('div');
@@ -969,7 +966,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			}
 			this._insertNodeAtSelection(fragment);
 		}
-		else if (this.nav_opera)
+		else if (window.opera)
 		{
 			this.doc.execCommand('InsertHTML', false, str);
 		}
@@ -981,7 +978,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_insertNodeAtSelection: function(toBeInserted)
 	{
-		if (!this.nav_ie)
+		if (!window.ie)
 		{
 			var sel = this.win.getSelection();
 			var range = this._createRange(sel);
@@ -1039,7 +1036,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		this.win.focus();
 		var range;
 		var collapsed = (typeof pos != "undefined");
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			range = this.doc.body.createTextRange();
 			range.moveToElementText(node);
@@ -1062,7 +1059,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_createRange: function(sel)
 	{
-		if (this.nav_ie)
+		if (window.ie)
 		{
 			return sel.createRange();
 		}

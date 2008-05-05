@@ -151,12 +151,12 @@ class Page_modo_user extends Fsb_model
 			'NEW_SIG' =>			htmlspecialchars($this->userdata['u_signature']),
 			'NEW_AVATAR' =>			htmlspecialchars($this->userdata['u_avatar']),
 			'COMMENT' =>			htmlspecialchars($this->userdata['u_comment']),
-			'LIST_USER_DELETE' =>	Html::create_list('delete_type', 'none', $list_user_delete),
+			'LIST_USER_DELETE' =>	Html::make_list('delete_type', 'none', $list_user_delete),
 			'USER_ACTIVATED' =>		$this->userdata['u_activated'],
 			'USER_APPROVED' =>		$this->userdata['u_approve'],
 
-			'LIST_RANK' =>			Html::create_list('u_rank_id', $this->userdata['u_rank_id'], $list_rank),
-			'LIST_DEFAULT' =>		Html::create_list('u_default_group_id', $this->userdata['u_default_group_id'], $list_groups),
+			'LIST_RANK' =>			Html::make_list('u_rank_id', $this->userdata['u_rank_id'], $list_rank),
+			'LIST_DEFAULT' =>		Html::make_list('u_default_group_id', $this->userdata['u_default_group_id'], $list_groups),
 		));
 
 		// Si le compte n'est ni active, ni confirme par Email, on peut lui renvoyer un Email

@@ -13,29 +13,32 @@
 */
 function ajax_check_email()
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_email',
 	{
-		html = '';
-		switch (data)
+		method: 'post',
+		onComplete: function(txt, xml)
 		{
-			case 'invalid' :
-				html = '<span class="ko">' + register_lang['email_invalid'] + '<\/span>';
-			break;
-
-			case 'used' :
-				html = '<span class="ko">' + register_lang['email_used'] + '<\/span>';
-			break;
-
-			case 'valid' :
-				html = '<span class="ok">' + register_lang['email_valid'] + '<\/span>';
-			break;
+			switch (txt)
+			{
+				case 'invalid' :
+					html = '<span class="ko">' + register_lang['email_invalid'] + '<\/span>';
+				break;
+	
+				case 'used' :
+					html = '<span class="ko">' + register_lang['email_used'] + '<\/span>';
+				break;
+	
+				case 'valid' :
+					html = '<span class="ok">' + register_lang['email_valid'] + '<\/span>';
+				break;
+			}
+			$('u_email_ajax_id').innerHTML = html;
 		}
-		document.getElementById('u_email_ajax_id').innerHTML = html;
-	}
-	ajax.set_arg(AJAX_POST, 'email', document.getElementById('u_email_id').value);
-	ajax.set_arg(AJAX_GET, 'mode', 'check_email');
-	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+	});
+
+	ajax.request({
+		email: $('u_email_id').value
+	});
 }
 
 /*
@@ -43,25 +46,29 @@ function ajax_check_email()
 */
 function ajax_check_login()
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_login',
 	{
-		html = '';
-		switch (data)
+		method: 'post',
+		onComplete: function(txt, xml)
 		{
-			case 'used' :
-				html = '<span class="ko">' + register_lang['login_used'] + '<\/span>';
-			break;
-
-			case 'valid' :
-				html = '<span class="ok">' + register_lang['login_valid'] + '<\/span>';
-			break;
+			html = '';
+			switch (txt)
+			{
+				case 'used' :
+					html = '<span class="ko">' + register_lang['login_used'] + '<\/span>';
+				break;
+	
+				case 'valid' :
+					html = '<span class="ok">' + register_lang['login_valid'] + '<\/span>';
+				break;
+			}
+			$('u_login_ajax_id').innerHTML = html;
 		}
-		document.getElementById('u_login_ajax_id').innerHTML = html;
-	}
-	ajax.set_arg(AJAX_POST, 'login', document.getElementById('u_login_id').value);
-	ajax.set_arg(AJAX_GET, 'mode', 'check_login');
-	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+	});
+
+	ajax.request({
+		login: $('u_login_id').value
+	});
 }
 
 /*
@@ -69,29 +76,33 @@ function ajax_check_login()
 */
 function ajax_check_password()
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_password',
 	{
-		html = '';
-		switch (data)
+		method: 'post',
+		onComplete: function(txt, xml)
 		{
-			case 'weak' :
-				html = '<span class="ko">' + register_lang['password_weak'] + '<\/span>';
-			break;
-
-			case 'normal' :
-				html = '<span class="ko">' + register_lang['password_normal'] + '<\/span>';
-			break;
-
-			case 'strong' :
-				html = '<span class="ok">' + register_lang['password_strong'] + '<\/span>';
-			break;
+			html = '';
+			switch (txt)
+			{
+				case 'weak' :
+					html = '<span class="ko">' + register_lang['password_weak'] + '<\/span>';
+				break;
+	
+				case 'normal' :
+					html = '<span class="ko">' + register_lang['password_normal'] + '<\/span>';
+				break;
+	
+				case 'strong' :
+					html = '<span class="ok">' + register_lang['password_strong'] + '<\/span>';
+				break;
+			}
+			$('u_password_ajax_id').innerHTML = html;
 		}
-		document.getElementById('u_password_ajax_id').innerHTML = html;
-	}
-	ajax.set_arg(AJAX_POST, 'password', document.getElementById('u_password_id').value);
-	ajax.set_arg(AJAX_GET, 'mode', 'check_password');
-	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+	});
+
+	ajax.request({
+		password: $('u_password_id').value
+	});
 }
 
 /*
@@ -99,39 +110,43 @@ function ajax_check_password()
 */
 function ajax_check_nickname()
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_nickname',
 	{
-		html = '';
-		switch (data)
+		method: 'post',
+		onComplete: function(txt, xml)
 		{
-			case 'middle' :
-				html = '<span class="ko">' + register_lang['nickname_middle'] + '<\/span>';
-			break;
-
-			case 'high' :
-				html = '<span class="ko">' + register_lang['nickname_high'] + '<\/span>';
-			break;
-
-			case 'short' :
-				html = '<span class="ko">' + register_lang['nickname_short'] + '<\/span>';
-			break;
-
-			case 'long' :
-				html = '<span class="ko">' + register_lang['nickname_long'] + '<\/span>';
-			break;
-
-			case 'used' :
-				html = '<span class="ko">' + register_lang['nickname_used'] + '<\/span>';
-			break;
-
-			case 'valid' :
-				html = '<span class="ok">' + register_lang['nickname_valid'] + '<\/span>';
-			break;
+			html = '';
+			switch (txt)
+			{
+				case 'middle' :
+					html = '<span class="ko">' + register_lang['nickname_middle'] + '<\/span>';
+				break;
+	
+				case 'high' :
+					html = '<span class="ko">' + register_lang['nickname_high'] + '<\/span>';
+				break;
+	
+				case 'short' :
+					html = '<span class="ko">' + register_lang['nickname_short'] + '<\/span>';
+				break;
+	
+				case 'long' :
+					html = '<span class="ko">' + register_lang['nickname_long'] + '<\/span>';
+				break;
+	
+				case 'used' :
+					html = '<span class="ko">' + register_lang['nickname_used'] + '<\/span>';
+				break;
+	
+				case 'valid' :
+					html = '<span class="ok">' + register_lang['nickname_valid'] + '<\/span>';
+				break;
+			}
+			$('u_nickname_ajax_id').innerHTML = html;
 		}
-		document.getElementById('u_nickname_ajax_id').innerHTML = html;
-	}
-	ajax.set_arg(AJAX_POST, 'nickname', document.getElementById('u_nickname_id').value);
-	ajax.set_arg(AJAX_GET, 'mode', 'check_nickname');
-	ajax.send(FSB_ROOT + 'ajax.php', AJAX_MODE_TXT);
+	});
+
+	ajax.request({
+		nickname: $('u_nickname_id').value
+	});	
 }
