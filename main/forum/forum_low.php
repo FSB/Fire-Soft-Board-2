@@ -245,10 +245,22 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function low_topic()
 	{
-		// Informations sur le forum
-		$sql = 'SELECT *
-				FROM ' . SQL_PREFIX . 'topics
-				WHERE t_id = ' . $this->id;
+		// Si la fonction de notification est activee on ajoute une jointure a la requete
+		$sql_select = $sql_join = '';
+		if (Fsb::$mods->is_active('topic_notification'))
+		{
+			$sql_select = ', tn.u_id AS can_notify, tn.tn_status';
+			$sql_join = 'LEFT JOIN ' . SQL_PREFIX . 'topics_notification tn ON tn.t_id = t.t_id AND tn.u_id = ' . Fsb::$session->id();
+		}
+
+		// Informations sur le sujet
+		$sql = 'SELECT t.*, tr.tr_last_time, tr.p_id AS last_unread_id' . $sql_select . '
+				FROM ' . SQL_PREFIX . 'topics t
+				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
+					ON t.t_id = tr.t_id
+						AND tr.u_id = ' . Fsb::$session->id() . '
+				' . $sql_join . '
+				WHERE t.t_id = ' . $this->id;
 		$data = Fsb::$db->request($sql);
 
 		// Verification des droits d'acces
@@ -329,6 +341,59 @@ class Fsb_frame_child extends Fsb_frame
 			));
 		}
 		Fsb::$db->free($result);
+		
+		// Marquer le sujet lu
+		if (Fsb::$session->is_logged() && $data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
+		{
+			if (!$data['tr_last_time'] || $data['tr_last_time'] < $data['t_last_p_time'])
+			{
+				Fsb::$db->insert('topics_read', array(
+					'u_id' =>			array(Fsb::$session->id(), TRUE),
+					't_id' =>			array($data['t_id'], TRUE),
+					'p_id' =>			$data['t_last_p_id'],
+					'tr_last_time' =>	$data['t_last_p_time'],
+				), 'REPLACE');
+			}
+			
+			// Remise a jour de la notification du membre
+			if (Fsb::$mods->is_active('topic_notification') && Fsb::$session->data['u_activate_auto_notification'] & NOTIFICATION_EMAIL && $data['can_notify'] && $data['tn_status'] == IS_NOTIFIED)
+			{
+				Fsb::$db->update('topics_notification', array(
+					'tn_status' =>	IS_NOT_NOTIFIED,
+				), 'WHERE u_id = ' . Fsb::$session->id() . ' AND t_id = ' . $data['t_id']);
+			}
+		}
+		
+		// Visions du sujet
+		$update_total_view = TRUE;
+		if (Fsb::$mods->is_active('cookie_view'))
+		{
+			// Page deja visitee durant la session ?
+			$cookie_view = Http::getcookie('cookie_view');
+			if ($cookie_view)
+			{
+				$cookie_view = @unserialize($cookie_view);
+				$update_total_view = (is_array($cookie_view) && in_array($data['t_id'], $cookie_view)) ? FALSE : TRUE;
+			}
+
+			if ($update_total_view)
+			{
+				if (!is_array($cookie_view))
+				{
+					$cookie_view = array();
+				}
+				$cookie_view[] = $data['t_id'];
+				Http::cookie('cookie_view', serialize($cookie_view), 0);
+			}
+		}
+
+		// +1 visite au sujet si pas deja visite
+		if ($update_total_view)
+		{
+			Fsb::$db->update('topics', array(
+				't_total_view' =>	array('(t_total_view + 1)', 'is_field' => TRUE),
+			), 'WHERE t_id = ' . $data['t_id']);
+		}
 	}
 }
 

@@ -68,6 +68,7 @@ class Fsbcard extends Fsb_model
 		'displayAvatar' =>		array('true', 'false'),
 		'wysiwyg' =>			array('true', 'false'),
 		'ajax' =>				array('true', 'false'),
+		'displaySig' =>			array('true', 'false'),
 		'displayEmail' =>		array('extern', 'intern', 'hide'),
 		'notifyPost' =>			array('none', 'none_email', 'auto', 'auto_email'),
 		'redirect' =>			array('none', 'direct', 'indirect'),

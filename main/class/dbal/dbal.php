@@ -667,12 +667,12 @@ abstract class Dbal extends Fsb_model
 				$result = TRUE;
 			}
 
-			$start_query = Fsb::$debug->get_time();
+			$start_query = microtime(true);
 		}
 		else
 		{
 			$is_cache = (is_int($result) && isset($this->cache_query[$result])) ? TRUE : FALSE;
-			$total_time = substr(Fsb::$debug->get_time() - $start_query, 0, 10);
+			$total_time = substr(microtime(true) - $start_query, 0, 10);
 			$this->debug_str .= '<table cellspacing="0" cellpadding="3" style="width: 100%; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000;"><tr><th style="background-color: #EEEEEE; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">Requete numero ' . ($this->count) . '</th></tr><tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">' . htmlspecialchars($sql) . '</td></tr>';
 			if ($result_explain && $this->can_use_explain)
 			{

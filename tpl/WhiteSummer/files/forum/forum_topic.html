@@ -76,8 +76,12 @@ InitBulle();
 			<div class="userinfo">
 				<div class="userinfo_box">
 				<if content="$post.IS_VISITOR">
-					<span class="nickname">{post.NICKNAME}</span>
-					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR"><br /><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" /></if>
+					<div class="username">{post.NICKNAME}</div>
+					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR">
+						<div style="overflow: hidden; width: {AVATAR_WIDTH}px; max-height: {AVATAR_HEIGHT}px; margin: 0 auto; text-align: center">
+							<img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" />
+						</div>
+					</if>
 				<else>
 					<div class="username">
 						<switch name="ac_mods_update_last_visit"><switch name="ac_mods_online_in_topics">
@@ -94,7 +98,6 @@ InitBulle();
 					</if>
 					
 					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR">
-						<!--<div style="text-align: center">-->
 						<div style="overflow: hidden; width: {AVATAR_WIDTH}px; max-height: {AVATAR_HEIGHT}px; margin: 0 auto; text-align: center">
 							<a href="{post.U_PROFILE}"><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" /></a>
 						</div>

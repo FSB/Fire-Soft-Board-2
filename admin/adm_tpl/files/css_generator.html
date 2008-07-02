@@ -1,35 +1,38 @@
 <include name="adm_simple_header.html">
 
-<script type="text/javascript" src="{ROOT}main/javascript/ajax.js"></script>
 <script type="text/javascript">
 <!--
 function submit_css_generator()
 {
-	var ajax = new Ajax();
-	ajax.onload = function(data)
+	var ajax = new Ajax('index.' + FSB_PHPEXT + '?p=general_tpl&module=tpl&mode=css_generator',
 	{
-		if (!data)
+		method: 'post',
+		onComplete: function(txt, xml)
 		{
-			return ;
+			if (!txt)
+			{
+				return ;
+			}
+	
+			opener.document.getElementById('{OPENER_ID}').value = txt;
+			<if content="$RADIO_ID">opener.document.getElementById('{RADIO_ID}').checked = true;</if>
+			window.close();
 		}
-
-		opener.document.getElementById('{OPENER_ID}').value = data;
-		<if content="$RADIO_ID">opener.document.getElementById('{RADIO_ID}').checked = true;</if>
-		window.close();
+	});
+	
+	obj = {
+		submit_css_generator: 	'true',
+		font_color:				document.css_form.font_color.value,
+		background_color:		document.css_form.background_color.value,
+		font_size:				document.css_form.font_size.value,
+		font_size_unit:			document.css_form.font_size_unit.value
 	}
 
-	ajax.set_arg(AJAX_GET, 'p', 'general_tpl');
-	ajax.set_arg(AJAX_GET, 'module', 'tpl');
-	ajax.set_arg(AJAX_GET, 'mode', 'css_generator');
-	ajax.set_arg(AJAX_POST, 'submit_css_generator', 'true');
-	if (document.css_form.bold.checked) ajax.set_arg(AJAX_POST, 'bold', document.css_form.bold.checked);
-	if (document.css_form.underline.checked) ajax.set_arg(AJAX_POST, 'underline', document.css_form.underline.checked);
-	if (document.css_form.italic.checked) ajax.set_arg(AJAX_POST, 'italic', document.css_form.italic.checked);
-	ajax.set_arg(AJAX_POST, 'font_color', document.css_form.font_color.value);
-	ajax.set_arg(AJAX_POST, 'background_color', document.css_form.background_color.value);
-	ajax.set_arg(AJAX_POST, 'font_size', document.css_form.font_size.value);
-	ajax.set_arg(AJAX_POST, 'font_size_unit', document.css_form.font_size_unit.value);
-	ajax.send('index.' + FSB_PHPEXT, AJAX_MODE_TXT);
+	if (document.css_form.bold.checked) 	obj.bold = document.css_form.bold.checked;
+	if (document.css_form.underline.checked)obj.underline = document.css_form.underline.checked;
+	if (document.css_form.italic.checked)	obj.italic = document.css_form.italic.checked;
+	
+	ajax.request(obj);
 }
 
 var rainbow_box = new Array;

@@ -216,6 +216,14 @@ class Page_user_password extends Fsb_model
 
 		if ($update_pwd_array)
 		{
+			// Regeneration de la clef d'auto connexion
+			$prefix = '';
+			foreach ($update_pwd_array AS $v)
+			{
+				$prefix .= $v;
+			}
+			$update_pwd_array['u_autologin_key'] = Password::generate_autologin_key($v . Fsb::$session->id());
+
 			Fsb::$db->update('users_password', $update_pwd_array, 'WHERE u_id = ' . Fsb::$session->id());
 		}
 

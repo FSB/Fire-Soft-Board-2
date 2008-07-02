@@ -9,7 +9,7 @@
 */
 
 /*
-** Vérification de la validité d'un Email
+** Vérification de la validite d'un Email
 */
 function ajax_check_email()
 {

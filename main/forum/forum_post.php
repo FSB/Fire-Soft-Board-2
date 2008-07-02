@@ -495,7 +495,8 @@ class Fsb_frame_child extends Fsb_frame
 						// Valeurs du sondage
 						$sql = 'SELECT poll_opt_name
 									FROM ' . SQL_PREFIX . 'poll_options
-									WHERE t_id = ' . $this->data['t_id'];
+									WHERE t_id = ' . $this->data['t_id'] . '
+									ORDER BY poll_opt_id';
 						$result = Fsb::$db->query($sql);
 
 						$this->poll_values = '';
@@ -506,6 +507,8 @@ class Fsb_frame_child extends Fsb_frame
 						Fsb::$db->free($result);
 					}
 				}
+				
+				$this->topic_review($this->id);
 
 				// Contenu du message
 				$this->content = $this->data['p_text'];
@@ -765,7 +768,7 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Revue des anciens messages du sujet
 	*/
-	public function topic_review()
+	public function topic_review($post_id = NULL)
 	{
 		Fsb::$tpl->set_switch('topic_review');
 
@@ -776,7 +779,8 @@ class Fsb_frame_child extends Fsb_frame
 				FROM ' . SQL_PREFIX . 'posts p
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON p.u_id = u.u_id
-				WHERE p.t_id = ' . $this->id . '
+				WHERE p.t_id = ' . $this->data['t_id'] . '
+					' . (($post_id) ? ' AND p.p_id <= ' . $post_id : '') . '
 				ORDER BY p.p_time DESC
 				LIMIT 15';
 		$result = Fsb::$db->query($sql);
@@ -989,7 +993,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Edition de sujet
 		else if ($this->mode == 'edit')
 		{
-			if (empty($this->title))
+			if ($this->data['t_first_p_id'] == $this->data['p_id'] && empty($this->title))
 			{
 				$this->errstr[] = Fsb::$session->lang('post_need_title');
 			}
@@ -1068,12 +1072,12 @@ class Fsb_frame_child extends Fsb_frame
 		foreach ($exp AS $v)
 		{
 			$v = trim($v);
-			if ($v)
+			if (strlen($v))
 			{
 				$this->poll_values[] = String::substr($v, 0, 70);
 			}
 		}
-
+		
 		if ($this->poll_name && count($this->poll_values) < 2)
 		{
 			$this->errstr[] = Fsb::$session->lang('post_poll_more_answer');
@@ -1383,7 +1387,7 @@ class Fsb_frame_child extends Fsb_frame
 				'FILESIZE' =>	convert_size($row['upload_filesize']),
 				'TIME' =>		Fsb::$session->print_date($row['upload_time']),
 				'IS_IMG' =>		(strpos($row['upload_mimetype'], 'image/') !== FALSE) ? 'true' : 'false',
-				'PATH' =>		ROOT . 'index.' . PHPEXT . '?p=download&amp;id=' . $row['upload_id'],
+				'PATH' =>		ROOT . 'index.' . PHPEXT . '?p=download&amp;nocount&amp;id=' . $row['upload_id'],
 			));
 		}
 		Fsb::$db->free($result);

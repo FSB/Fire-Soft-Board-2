@@ -121,7 +121,7 @@ class Page_user_fsbcard extends Fsb_model
 			}
 
 			// Notification MP
-			$fsbcard->set_option('displayMp', (Fsb::$session->data['u_activate_mp_notification']) ? TRUE : FALSE);
+			$fsbcard->set_option('notifyMp', (Fsb::$session->data['u_activate_mp_notification']) ? TRUE : FALSE);
 
 			// Connexion invisible
 			$fsbcard->set_option('sessionHidden', (Fsb::$session->data['u_activate_hidden']) ? TRUE : FALSE);
@@ -189,7 +189,7 @@ class Page_user_fsbcard extends Fsb_model
 		{
 			$fsbcard->set_sig(htmlspecialchars(Fsb::$session->data['u_signature']));
 		}
-
+		
 		Http::download('fsbcard.xml', $fsbcard->generate());
 		exit;
 	}
@@ -229,7 +229,7 @@ class Page_user_fsbcard extends Fsb_model
 	{
 		$fsbcard = new Fsbcard();
 		$fsbcard->load_content($content);
-
+		
 		$update_array = array();
 
 		// Affichage de l'Email
@@ -282,7 +282,7 @@ class Page_user_fsbcard extends Fsb_model
 		}
 
 		// Notification MP
-		$update_array['u_activate_mp_notification'] = $fsbcard->get_option('displayMp');
+		$update_array['u_activate_mp_notification'] = $fsbcard->get_option('notifyMp');
 
 		// Connexion invisible
 		$update_array['u_activate_hidden'] = $fsbcard->get_option('sessionHidden');
@@ -302,13 +302,13 @@ class Page_user_fsbcard extends Fsb_model
 		// Affichage FSBcode
 		if ($displayFsbcode = $fsbcard->get_option('displayFsbcode'))
 		{
-			$update_array['u_activate_fscode'] = (($displayFsbcode['posts']) ? 2 : 0) & (($displayFsbcode['sigs']) ? 4 : 0);
+			$update_array['u_activate_fscode'] = (($displayFsbcode['posts']) ? 2 : 0) | (($displayFsbcode['sigs']) ? 4 : 0);
 		}
 
 		// Affichage images
 		if ($displayImg = $fsbcard->get_option('displayImg'))
 		{
-			$update_array['u_activate_img'] = (($displayImg['posts']) ? 2 : 0) & (($displayImg['sigs']) ? 4 : 0);
+			$update_array['u_activate_img'] = (($displayImg['posts']) ? 2 : 0) | (($displayImg['sigs']) ? 4 : 0);
 		}
 
 		// Theme

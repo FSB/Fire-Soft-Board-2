@@ -10,6 +10,7 @@
 
 var adm_menu_pos = new Array();
 var adm_menu_height = new Array();
+var adm_menu_fx = {};
 
 /*
 ** Affiche / Cache un div au niveau du menu administratif
@@ -19,28 +20,43 @@ var adm_menu_height = new Array();
 function hide_menu(id)
 {
 	adm_menu_pos[id] ^= true;
+	
+	if ($defined(adm_menu_fx[id]))
+	{
+		adm_menu_fx[id].stop();
+	}
+	else
+	{
+		adm_menu_fx[id] = new Fx.Styles(id,
+		{
+			duration: 500,
+			transition: Fx.Transitions.linear
+		});
+	}
 
 	// On sauve la position du menu dans un cookie
 	if (adm_menu_pos[id])
 	{
-		adm_menu_height[id] = $(id).offsetHeight;
-		$(id).effects({duration: 500}).custom(
-			{
-				'height': [adm_menu_height[id], 0],
-				'opacity': [1, 0]
-			}
-		);
-		SetCookie(id, "C", true);
+		if (!$defined(adm_menu_height[id]))
+		{
+			adm_menu_height[id] = $(id).getCoordinates().height;
+		}
+
+		adm_menu_fx[id].start({
+			height: [$(id).getStyle('height'), 0],
+			opacity: [$(id).getStyle('opacity'), 0]
+		});
+
+		Cookie.set(id, "C", {duration: 31});
 	}
 	else
 	{
-		$(id).effects({duration: 500}).custom(
-			{
-				'height': [0, adm_menu_height[id]],
-				'opacity': [0, 1]
-			}
-		);
-		SetCookie(id, "O", true);
+		adm_menu_fx[id].start({
+			height: [$(id).getStyle('height'), adm_menu_height[id]],
+			opacity: [$(id).getStyle('opacity'), 1]
+		});
+
+		Cookie.set(id, "O", true);
 	}
 }
 
@@ -53,9 +69,9 @@ function init_admin()
 	{
 		for (var i = 0; i < len; i++)
 		{
-			if (ReadCookie(block_menu[i]) == "C")
+			if (Cookie.get(block_menu[i]) == "C")
 			{
-				adm_menu_height['menu_' + i] = $(block_menu[i]).offsetHeight;
+				adm_menu_height['menu_' + i] = $(block_menu[i]).getCoordinates().height;
 				$(block_menu[i]).style.height = '0px';
 				$(block_menu[i]).style.opacity = '0';
 				adm_menu_pos['menu_' + i] = true;

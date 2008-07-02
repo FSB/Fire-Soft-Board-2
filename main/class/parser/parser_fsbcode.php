@@ -29,6 +29,13 @@ class Parser_fsbcode extends Fsb_model
 
 	// Parse d'une signature ?
 	public $is_signature = FALSE;
+	
+	/**
+	 * Tableau d'informations (variables predefinies)
+	 *
+	 * @var array
+	 */
+	public $info;
 
 	// Variables predefinies qu'on peut potentiellement parser
 	private $static_vars = array(
@@ -46,6 +53,8 @@ class Parser_fsbcode extends Fsb_model
 	*/
 	public function parse($str, $info = array())
 	{
+		$this->info = $info;
+
 		// On recupere les informations sur les FSBcode
 		if (!isset(self::$cache_fsbcode[$this->is_signature]))
 		{
@@ -302,14 +311,21 @@ class Parser_fsbcode extends Fsb_model
 		$arg = $m[2];
 		$content = $m[3];
 
+		$is_content_mail = false;
 		if (!$arg)
 		{
 			$arg = $content;
+			$is_content_mail = true;
 		}
 
 		if (!preg_match('#^[a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4}$#i', $arg))
 		{
 			return ($arg);
+		}
+		
+		if ($is_content_mail)
+		{
+			$content = String::no_spam($content);
 		}
 
 		$arg = String::no_spam($arg);
@@ -422,7 +438,7 @@ class Parser_fsbcode extends Fsb_model
 			if ($attr && strpos($attr, '='))
 			{
 				list($name, $value) = explode('=', $attr);
-				if ($name == 'float' && ($value == 'left' || 'right'))
+				if ($name == 'float' && ($value == 'left' || $value == 'right'))
 				{
 					$attr_str .= 'style="float: ' . $value . '; padding: 3px"';
 				}

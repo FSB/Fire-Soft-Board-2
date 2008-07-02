@@ -302,7 +302,7 @@ class Http extends Fsb_model
 	{
 		self::header('Pragma', 'no-cache');
 		self::header('Content-Type', $type . '; name="' . $filename . '"');
-		self::header('Content-disposition', 'inline; filename=' . $filename);
+		self::header('Content-disposition', 'inline; filename="' . $filename . '"');
 
 		echo $content;
 		exit;

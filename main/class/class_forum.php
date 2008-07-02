@@ -57,6 +57,8 @@ class Forum extends Fsb_model
 			// On tronque le titre du sujet ?
 			$topic_title = Parser::title($forum['f_last_t_title']);
 			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : Parser::title(String::substr($forum['f_last_t_title'], 0, 20)) . '...';
+			
+			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TYPE' =>			$forum['f_type'],
@@ -77,7 +79,7 @@ class Forum extends Fsb_model
 				'U_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum['f_id']),
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $forum['f_last_t_id']),
 				'U_LAST_POST' =>	sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;' . $last_url),
-				'U_MARKREAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;markread=true&amp;forum=' . $forum['f_id']),
+				'U_MARKREAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=' . $markread),
 			));
 
 			// Moderateurs du forum ?

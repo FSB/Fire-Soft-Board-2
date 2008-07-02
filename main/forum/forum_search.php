@@ -246,7 +246,7 @@ class Fsb_frame_child extends Fsb_frame
 					WHERE u_id = ' . $this->id;
 			$nickname = Fsb::$db->get($sql, 'u_nickname');
 		}
-		$this->tag_title = sprintf(Fsb::$session->lang('search_author_title'), $nickname) . ' :: ' . Fsb::$cfg->get('forum_name');
+		$this->tag_title = sprintf(Fsb::$session->lang('search_author_title'), $nickname) . Fsb::$session->style['other']['title_separator'] . Fsb::$cfg->get('forum_name');
 
 		if (!$this->id)
 		{
@@ -301,7 +301,7 @@ class Fsb_frame_child extends Fsb_frame
 					WHERE u_id = ' . $this->id;
 			$nickname = Fsb::$db->get($sql, 'u_nickname');
 		}
-		$this->tag_title = sprintf(Fsb::$session->lang('search_author_topics_title'), $nickname) . ' :: ' . Fsb::$cfg->get('forum_name');
+		$this->tag_title = sprintf(Fsb::$session->lang('search_author_topics_title'), $nickname) . Fsb::$session->style['other']['title_separator'] . Fsb::$cfg->get('forum_name');
 
 		if (!$this->id)
 		{

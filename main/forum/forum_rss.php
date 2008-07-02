@@ -93,6 +93,7 @@ class Fsb_frame_child extends Fsb_frame
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = p.u_id
 				WHERE t.t_id = ' . $this->id . '
+					AND p.p_approve = 0
 				ORDER BY p.p_time DESC';
 		$result = Fsb::$db->query($sql);
 		if ($row = Fsb::$db->row($result))
@@ -157,6 +158,7 @@ class Fsb_frame_child extends Fsb_frame
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = p.u_id
 				WHERE t.f_id = ' . $this->id . '
+					AND p.p_approve = 0
 				ORDER BY t.t_last_p_time DESC
 				LIMIT 100';
 		$this->check_caching($sql, 'rss_' . $this->id . '_');
@@ -164,7 +166,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($row = Fsb::$db->row($result))
 		{
 			$this->rss->open(
-				htmlspecialchars(Fsb::$cfg->get('forum_name') . ' :: ' . $row['f_name']),
+				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->style['other']['title_separator'] . $row['f_name']),
 				htmlspecialchars(sprintf(Fsb::$session->lang('rss_forum_name'), $row['f_name'])),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),
@@ -210,7 +212,7 @@ class Fsb_frame_child extends Fsb_frame
 					ON p.p_id = t.t_first_p_id
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = p.u_id
-				WHERE 1 = 1'
+				WHERE p.p_approve = 0'
 					. (($cat_id = intval(Http::request('cat'))) ? ' AND f.f_cat_id = ' . $cat_id : '')
 					. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics'))) ? ' AND t.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
 				ORDER BY t.t_last_p_time DESC
@@ -219,7 +221,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($row = Fsb::$db->row($result))
 		{
 			$this->rss->open(
-				htmlspecialchars(Fsb::$cfg->get('forum_name') . ' :: ' . Fsb::$session->lang('rss_index')),
+				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->style['other']['title_separator'] . Fsb::$session->lang('rss_index')),
 				htmlspecialchars(Fsb::$session->lang('rss_index')),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),

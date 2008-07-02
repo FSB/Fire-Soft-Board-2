@@ -10,14 +10,21 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Methodes permettants de gerer les utilisateurs du forum
-*/
+/**
+ * Methodes permettants de gerer les utilisateurs du forum
+ */
 class User extends Fsb_model
 {
-	/*
-	** Ajoute un utilisateur sur le forum
-	*/
+	/**
+	 * Ajoute un utilisateur sur le forum
+	 *
+	 * @param string $login Login de connexion
+	 * @param string $nickname Pseudonyme sur le forum
+	 * @param string $password Mot de passe de connexion
+	 * @param string $email Adresse mail
+	 * @param array $data Donnees suplementaires du profil
+	 * @return int ID du membre cree
+	 */
 	public static function add($login, $nickname, $password, $email, $data = array())
 	{
 		unset($data['u_login'], $data['u_password']);
@@ -50,7 +57,7 @@ class User extends Fsb_model
 		$last_id = Fsb::$db->last_id();
 
 		// Insertion du mot de passe
-		$autologin_key = sha1($login . $password . $last_id);
+		$autologin_key = Password::generate_autologin_key($login . $password . $last_id);
 		Fsb::$db->insert('users_password', array(
 			'u_id' =>			$last_id,
 			'u_login' =>		$login,
@@ -86,14 +93,12 @@ class User extends Fsb_model
 		return ($last_id);
 	}
 
-	/*
-	** Suppression d'un utilisateur
-	** -----
-	** $idx ::		ID des membres
-	** $type ::		Type de suppression
-	**					visitor :	passe tous les messages en invite
-	**					topics :	supprime tous les messages du membre ainsi que les sujets dont il est l'auteur
-	*/
+	/**
+	 * Suppression d'un utilisateur
+	 *
+	 * @param int|array $idx ID du ou des membres à supprimer
+	 * @param string $type Type de suppression : visitor pour passer les messages en invite, topics pour tout supprimer
+	 */
 	public static function delete($idx, $type)
 	{
 		if (!$idx)
@@ -203,14 +208,13 @@ class User extends Fsb_model
 		Fsb::$db->transaction('commit');
 	}
 
-	/*
-	** Permet de renommer un membre
-	** -----
-	** $u_id ::			ID du membre
-	** $new_nickname ::	Nouveau pseudonyme
-	** $update_users ::	Flag definissant si la table users doit etre mise a jour (simple 
-	**					economie de requete dans certains cas)
-	*/
+	/**
+	 * Permet de renommer un membre
+	 *
+	 * @param int $u_id ID du membre
+	 * @param string $new_nickname Nouveau pseudonyme
+	 * @param bool $update_users Flag definissant si la table users doit etre mise a jour
+	 */
 	public static function rename($u_id, $new_nickname, $update_users = TRUE)
 	{
 		// Ne pas renommer les visiteurs
@@ -246,11 +250,12 @@ class User extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne TRUE si le login est deja utilise dans la base de donnee
-	** -----
-	** $login ::		Login de connexion
-	*/
+	/**
+	 * Verifie si le login existe deja
+	 *
+	 * @param string $login Login de connexion
+	 * @return bool
+	 */
 	public static function login_exists($login)
 	{
 		$sql = 'SELECT u_login
@@ -261,11 +266,12 @@ class User extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Retourne TRUE si le pseudonyme est deja utilise dans la base de donnee
-	** -----
-	** $nickname ::		Pseudonyme
-	*/
+	/**
+	 * Verifie si le pseudonyme existe deja
+	 *
+	 * @param string $nickname Pseudonyme
+	 * @return bool
+	 */
 	public static function nickname_exists($nickname)
 	{
 		$sql = 'SELECT u_nickname
@@ -276,13 +282,12 @@ class User extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Retourne TRUE si les caracteres du pseudonyme sont autorises.
-	** ATTENTION : Si le pseudonyme n'est pas autorise, la fonction renvoie le niveau de caractere
-	** non autorise (middle ou high).
-	** -----
-	** $nickname ::		Pseudonyme
-	*/
+	/**
+	 * Verifie si les caracteres du pseudonyme sont autorises
+	 *
+	 * @param string $nickname Pseudonyme
+	 * @return bool|string Renvoie le niveau de caractere non autorise si cela echoue, sinon true
+	 */
 	public static function nickname_valid($nickname)
 	{
 		$check = array(
@@ -298,11 +303,12 @@ class User extends Fsb_model
 		return (Fsb::$cfg->get('nickname_chars'));
 	}
 
-	/*
-	** Retourne TRUE si l'Email est deja utilise dans la base de donnee
-	** -----
-	** $email ::		Adresse Email
-	*/
+	/**
+	 * Verifie si le l'adresse email existe deja
+	 *
+	 * @param string $email Email
+	 * @return bool
+	 */
 	public static function email_exists($email)
 	{
 		$sql = 'SELECT u_email
@@ -313,13 +319,14 @@ class User extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Retourne TRUE si l'Email passe match l'expression reguliere, et si le dommaine
-	** de l'Email existe.
-	** Inspire du commentaire http://fr.php.net/manual/fr/function.checkdnsrr.php#74809
-	** -----
-	** $email ::	Adresse Email
-	*/
+	/**
+	 * Verifie si l'email est bien ecrit, et si son domaine existe
+	 * @link http://fr.php.net/manual/fr/function.checkdnsrr.php#74809
+	 * 
+	 * @param string $email Email
+	 * @param bool $check_server Verifie le domaine de l'email
+	 * @return bool
+	 */
 	public static function email_valid($email, $check_server = TRUE)
 	{
 		if (IS_LOCALHOST && OS_SERVER == 'windows')
@@ -371,12 +378,13 @@ class User extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Retourne le rang d'un membre
-	** -----
-	** $total_post ::	Nombre de messages du membre
-	** $rank_id ::		ID du rang special du membre s'il en a un
-	*/
+	/**
+	 * Retourne le rang d'un membre
+	 *
+	 * @param int $total_post Nombre de messages du membre
+	 * @param int $rank_id ID du rang special du membre s'il en a un
+	 * @return array ('name' => '', 'img' => '', 'style' => '')
+	 */
 	public static function get_rank($total_post, $rank_id)
 	{
 		static $ranks = NULL;
@@ -426,14 +434,14 @@ class User extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Calcul l'age en fonction de la date de naissance
-	** Repris d'un commentaire sur cette page : http://fr3.php.net/manual/fr/function.date.php
-	** -----
-	** $birthday ::		Jour de la naissance du membre, sous le format day/month/year (xx/yy/zzzz)
-	** $check_mod ::	Mettre a TRUE si vous voullez que la fonction soit independante de la configuration
-	**					des fonctions du forum
-	*/
+	/**
+	 * Calcul l'age en fonction de la date de naissance
+	 * @link http://fr3.php.net/manual/fr/function.date.php
+	 *
+	 * @param string $birthday Jour de la naissance du membre, sous le format day/month/year (xx/yy/zzzz)
+	 * @param bool $check_mod Mettre a false si vous voulez que la fonction soit independante de la configuration
+	 * @return int
+	 */
 	public static function get_age($birthday, $check_mod = TRUE)
 	{
 		if (!$birthday)
@@ -478,13 +486,13 @@ class User extends Fsb_model
 		return ($age);
 	}
 
-	/*
-	** Recupere le sexe du membre sous forme d'image
-	** -----
-	** $sexe ::			Sexe du membre
-	** $check_mod ::	Mettre a TRUE si vous voullez que la fonction soit independante de la configuration
-	**					des fonctions du forum
-	*/
+	/**
+	 * Recupere le sexe du membre sous forme d'image
+	 *
+	 * @param int $sexe
+	 * @param  bool $check_mod Mettre a false si vous voullez que la fonction soit independante de la configuration
+	 * @return string
+	 */
 	public static function get_sexe($sexe, $check_mod = TRUE)
 	{
 		$return = NULL;
@@ -505,14 +513,14 @@ class User extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Retourne un tableau contenant en premier indice si le membre peut utiliser un avatar, et ensuite
-	** l'URL de l'avatar.
-	** -----
-	** $avatar_name ::		Nom de l'avatar
-	** $avatar_method ::	Methode d'affichage de l'avatar
-	** $can_use ::			Si le membre peut utiliser un avatar
-	*/
+	/**
+	 * Recupere l'adresse de l'avatar du membre
+	 *
+	 * @param string $avatar_name Adresse de l'avatar en base
+	 * @param string $avatar_method Methode de stockage de l'avatar
+	 * @param bool $can_use Si le membre peut utiliser un avatar
+	 * @return string
+	 */
 	public static function get_avatar($avatar_name, $avatar_method, $can_use)
 	{
 		if (Fsb::$cfg->get('avatar_can_use') && $can_use && $avatar_name && $avatar_method)
@@ -540,14 +548,14 @@ class User extends Fsb_model
 		return ($u_avatar);
 	}
 
-	/*
-	** Confirmation par administrateur
-	** -----
-	** $user_id ::			ID du membre
-	** $user_nickname ::	Pseudonyme du membre
-	** $user_email ::		Email du membre
-	** $user_ip ::			IP d'inscription du membre
-	*/
+	/**
+	 * Envoie des emails aux administrateurs pour la confirmation d'inscription
+	 *
+	 * @param int $user_id ID du membre
+	 * @param string $user_nickname Pseudonyme du membre
+	 * @param string $user_email Email du membre
+	 * @param string $user_ip IP d'inscription du membre
+	 */
 	public static function confirm_administrator($user_id, $user_nickname, $user_email, $user_ip)
 	{
 		// Envoie de l'Email a l'utilisateur
@@ -612,11 +620,12 @@ class User extends Fsb_model
 		}
 	}
 
-	/*
-	** Confirme et active le compte
-	** -----
-	** $user_id ::		ID du membre
-	*/
+	/**
+	 * Confirme et active le compte
+	 *
+	 * @param int $user_id ID du membre
+	 * @return bool Si le compte a ete confirme
+	 */
 	public static function confirm_account($user_id)
 	{
 		$sql = 'SELECT u_nickname, u_email, u_language

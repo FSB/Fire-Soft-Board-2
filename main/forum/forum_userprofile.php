@@ -64,7 +64,7 @@ class Fsb_frame_child extends Fsb_frame
 			'url' =>	'',
 			'name' =>	$this->page_title,
 		);
-		$this->tag_title = htmlspecialchars($this->data['u_nickname']) . ' :: ' . Fsb::$cfg->get('forum_name');
+		$this->tag_title = htmlspecialchars($this->data['u_nickname']) . Fsb::$session->style['other']['title_separator'] . Fsb::$cfg->get('forum_name');
 
 		// Liste des modules disponibles
 		$module_list = array('view' => 'userprofile&amp;id=' . $this->id);

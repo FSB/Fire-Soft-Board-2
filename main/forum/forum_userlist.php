@@ -20,11 +20,16 @@ class Fsb_frame_child extends Fsb_frame
 	public $_show_page_footer_nav = TRUE;
 	public $_show_page_stats = FALSE;
 
+	// Tris par defaut
+	public $default_order = 'u_total_post';
+	public $default_direction = 'DESC';
+	public $default_limit = 30;
+	
 	// Arguments de la page
+	public $order;
+	public $direction;
+	public $limit;
 	public $id;
-	public $order = 'u_total_post';
-	public $direction = 'DESC';
-	public $limit = 30;
 	public $search_user;
 	public $group_data;
 	public $is_group_moderator = FALSE;
@@ -82,17 +87,17 @@ class Fsb_frame_child extends Fsb_frame
 
 		if (!$this->order || !in_array($this->order, $this->order_array))
 		{
-			$this->order = 'u_total_post';
+			$this->order = $this->default_order;
 		}
 
 		if ($this->direction != 'ASC' && $this->direction != 'DESC')
 		{
-			$this->direction = 'DESC';
+			$this->direction = $this->default_direction;
 		}
 
 		if (!$this->limit || $this->limit <= 0)
 		{
-			$this->limit = 30;
+			$this->limit = $this->default_limit;
 		}
 		
 		if (!$this->page || $this->page <= 0)

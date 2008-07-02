@@ -10,25 +10,51 @@
 ** +---------------------------------------------------+
 */
 
+/**
+ * Creation et verification des mots de passe
+ */
 class Password extends Fsb_model
 {
-	// Contient les donnees graduees du mot de passe
+	/**
+	 * Contient les donnees graduees du mot de passe
+	 *
+	 * @var array
+	 */
 	public $grade_data = array();
 
-	// Pour la generation de mot de passes
+	/**
+	 * Lettres minuscules
+	 */
 	const LOWCASE = 1;
+	
+	/**
+	 * Lettres majuscules
+	 */
 	const UPPCASE = 2;
+	
+	/**
+	 * Nombres
+	 */
 	const NUMERIC = 4;
+	
+	/**
+	 * Caracteres speciaux
+	 */
 	const SPECIAL = 8;
+	
+	/**
+	 * Majuscules, minuscules, nombres et caracteres speciaux
+	 */
 	const ALL = 255;
 
-	/*
-	** Hash un mot de passe a partir des parametres passes
-	** -----
-	** $password ::		Mot de passe
-	** $algorithm ::	Algorithme utilise (md5 | sha1)
-	** $use_salt ::		Si on concatene un grain au mot de passe
-	*/
+	/**
+	 * Hash un mot de passe a partir des parametres passes
+	 *
+	 * @param string $password Mot de passe
+	 * @param string $algorithm Algorithme utilise
+	 * @param bool $use_salt Si on concatene un grain au mot de passe
+	 * @return string
+	 */
 	public static function hash($password, $algorithm, $use_salt = TRUE)
 	{
 		if (!$algorithm)
@@ -58,13 +84,40 @@ class Password extends Fsb_model
 
 		return ($algorithm($password));
 	}
+	
+	/**
+	 * Cree une clef de connexion automatique
+	 *
+	 * @param string $prefix Chaine qui peut etre utilisee pour la generation de la clef
+	 * @return string
+	 */
+	public function generate_autologin_key($prefix = null)
+	{
+		if (!$prefix)
+		{
+			$prefix = self::generate(20);
+		}
+		
+		do
+		{
+			$key = sha1($prefix . rand(0, time()) . microtime(true));
+			$sql = 'SELECT u_id
+					FROM ' . SQL_PREFIX . 'users_password
+					WHERE u_autologin_key = \'' . Fsb::$db->escape($key) . '\'';
+			$row = Fsb::$db->request($sql);
+		}
+		while ($row);
+		
+		return ($key);
+	}
 
-	/*
-	** Generation d'un mot de passe aleatoire
-	** -----
-	** $length ::	Longueur du mot de passe
-	** $type ::		Types de caracteres utilises
-	*/
+	/**
+	 * Generation d'un mot de passe aleatoire
+	 *
+	 * @param int $length Longueur du mot de passe
+	 * @param int $type Types de caracteres utilises
+	 * @return string
+	 */
 	public static function generate($length = 8, $type = self::ALL)
 	{
 		$chars = '';
@@ -92,13 +145,13 @@ class Password extends Fsb_model
 
 		return ($password);
 	}
-	
-	/*
-	** Test la robustesse d'un mot de passe, renvoie 1, 2, 3 ou 4 en fonction de cette robustesse.
-	** 1 etant un mot de passe faible et 3 / 4 un mot de passe robuste.
-	** -----
-	** $password_str ::		Mot de passe a graduer
-	*/
+
+	/**
+	 * Test la robustesse d'un mot de passe
+	 *
+	 * @param string $password_str Mot de passe a verifier
+	 * @return int Retourne 1, 2, 3 ou 4 en fonction de cette robustesse
+	 */
 	public function grade($password_str)
 	{
 		$this->grade_data = array('len' => 1, 'char_type' => 1, 'average' => 0);
@@ -158,12 +211,13 @@ class Password extends Fsb_model
 		}
 		return (round(($this->grade_data['len'] + $this->grade_data['char_type'] + $this->grade_data['average']) / 3));
 	}
-	
-	/*
-	** Verifie si le caractere est une lettre minuscule
-	** -----
-	** $char ::	Caractere
-	*/
+
+	/**
+	 * Verifie si le caractere est une lettre minuscule
+	 *
+	 * @param string $char Caractere
+	 * @return bool
+	 */
 	private function is_alpha_min($char)
 	{
 		if ($char >= 'a' && $char <= 'z')
@@ -173,11 +227,12 @@ class Password extends Fsb_model
 		return (FALSE);
 	}
 	
-	/*
-	** Verifie si le caractere est une lettre majuscule
-	** -----
-	** $char ::	Caractere
-	*/
+	/**
+	 * Verifie si le caractere est une lettre majuscule
+	 *
+	 * @param string $char Caractere
+	 * @return bool
+	 */
 	private function is_alpha_maj($char)
 	{
 		if ($char >= 'A' && $char <= 'Z')
@@ -187,11 +242,12 @@ class Password extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Verifie si le caractere est un nombre
-	** -----
-	** $char ::	Caractere
-	*/
+	/**
+	 * Verifie si le caractere est un nombre
+	 *
+	 * @param string $char Caractere
+	 * @return bool
+	 */
 	private function is_number($char)
 	{
 		if ($char >= '0' && $char <= '9')

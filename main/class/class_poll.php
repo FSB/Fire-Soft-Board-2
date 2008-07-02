@@ -10,19 +10,19 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Gestion des sondages sur le forum
-*/
+/**
+ * Gestion des sondages sur le forum
+ */
 class Poll extends Fsb_model
 {
-	/*
-	** Affiche le formulaire de creation de sondages
-	** -----
-	** $map_name ::			Nom de la MAP
-	** $poll_name ::		Question du sondage
-	** $poll_values ::		Reponses du sondage
-	** $poll_max_vote ::	Nombre de votes possibles
-	*/
+	/**
+	 * Affiche le formulaire de creation de sondages
+	 *
+	 * @param string $map_name Nom de la MAP
+	 * @param string $poll_name Question du sondage
+	 * @param array $poll_values Reponses du sondage
+	 * @param int $poll_max_vote Nombre de votes possibles
+	 */
 	public static function display_form($map_name, $poll_name = '', $poll_values = array(), $poll_max_vote = 1)
 	{
 		if ($poll_data = Map::load_poll($map_name))
@@ -50,13 +50,12 @@ class Poll extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche le sondage
-	** -----
-	** $t_id ::		ID du sujet du sondage
-	** $data ::		Informations additionelles pour eviter une requete trop lourde (necessite
-	**				les informations sur t_status et f_status)
-	*/
+	/**
+	 * Affiche le sondage
+	 *
+	 * @param int $t_id ID du sujet du sondage
+	 * @param array $data Informations additionelles pour eviter une requete trop lourde
+	 */
 	public static function show($t_id, $data = array())
 	{
 		Fsb::$tpl->set_switch('poll');
@@ -119,11 +118,11 @@ class Poll extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Soumission d'un vote a un sondage
-	** -----
-	** $t_id ::		ID du sujet
-	*/
+	/**
+	 * Soumission d'un vote a un sondage
+	 *
+	 * @param int $t_id ID du sujet
+	 */
 	public static function submit_vote($t_id)
 	{
 		if (!Fsb::$session->is_logged())
@@ -191,21 +190,20 @@ class Poll extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=topic&t_id=' . $t_id);
 	}
 
-	/*
-	** Ajoute un sondage au sujet
-	** -----
-	** $poll_name ::	Titre du sondage
-	** $poll_values ::	Tableau d'options pour le sondage
-	** $topic_id ::		ID du sujet
-	** $max_vote ::		Nombre de votes par personne pour ce sondage (multi choix)
-	*/
+	/**
+	 * Ajoute un sondage au sujet
+	 *
+	 * @param string $poll_name Titre du sondage
+	 * @param array $poll_values Options du sondage
+	 * @param int $topic_id ID du sujet
+	 * @param int $max_vote Nombre de votes par personne pour ce sondage (multi choix)
+	 */
 	public static function send($poll_name, $poll_values, $topic_id, $max_vote)
 	{
 		// Creation du sondage
 		Fsb::$db->insert('poll', array(
 			't_id' =>				$topic_id,
 			'poll_name' =>			$poll_name,
-			't_id' =>				$topic_id,
 			'poll_max_vote' =>		$max_vote,
 		));
 
@@ -220,14 +218,14 @@ class Poll extends Fsb_model
 		Fsb::$db->query_multi_insert();
 	}
 
-	/*
-	** Edition du sondage (suppression des anciens options, ajout des nouvelles)
-	** -----
-	** $t_id ::			ID du sujet
-	** $poll_name ::	Titre du sondage
-	** $poll_values ::	Tableau d'options pour le sondage
-	** $max_vote ::		Nombre de votes par personne pour ce sondage (multi choix)
-	*/
+	/**
+	 * Edition du sondage (suppression des anciennes options, ajout des nouvelles)
+	 *
+	 * @param int $t_id ID du sujet
+	 * @param string $poll_name Titre du sondage
+	 * @param array $poll_values Options du sondage
+	 * @param int $max_vote Nombre de votes par personne pour ce sondage (multi choix)
+	 */
 	public static function edit($t_id, $poll_name, $poll_values, $max_vote)
 	{
 		// Mise a jour du sondage

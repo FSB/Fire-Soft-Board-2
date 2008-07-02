@@ -270,6 +270,6 @@ function quote_post(post_id, form_id, open_id, editor_obj, is_mp)
 	ajax.request({
 		mode: (is_mp) ? 'quote_mp' : 'quote_post',
 		id: post_id,
-		is_wysiwyg: (editor_obj && editor_obj.get_type() == 'wysiwyg') ? '1' : '0',
+		is_wysiwyg: (editor_obj && editor_obj.get_type() == 'wysiwyg') ? '1' : '0'
 	});
 }

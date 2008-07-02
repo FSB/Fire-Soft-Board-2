@@ -12,6 +12,7 @@
 - Ajout de la gestion de l'url rewriting sur les flux RSS
 - Ajout de Javascript dans la jumpbox pour une utilisation plus simple
 - Ajout d'une configuration pour désactiver les connexions réseaux
+- Ajout de la revue des messages précédents lors de l'édition d'un message
 - Fix de la mise en cache avec APC / Eaccelerator et Memcache
 - Fix de la suppression des fichiers en cache pour le cache FTP
 - Fix de bugs dans le SDK
@@ -54,6 +55,12 @@
 - Fix de la mise à jour de la description d'un sujet (entités HTML incorrectes, modifications non prises en compte par la prévisualisation)
 - Fix du parse automatique des URL dans les balises CODE
 - Fix d'oublies de PHPEXT
+- Fix de la regénération de la clef d'auto connexion lors de la modification d'un mot de passe
+- Fix des espaces dans le nom des fichiers à télécharger, avec firefox
+- Fix de l'import / export de FSBcards, qui ne contenaient pas toutes les informations
+- Fix d'un bug sur le tri des options du sondage, et la prise en compte d'une option avec comme intitulé "0"
+- Fix de la redirection lorsqu'on marque un forum comme étant lu
+- Fix des flux RSS qui affichaient les messages non approuvés
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

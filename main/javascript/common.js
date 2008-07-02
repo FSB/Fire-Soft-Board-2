@@ -91,22 +91,24 @@ function block_cookie_read(block_name, img_name, img_src, mooeffect)
 var fxBlocks = {};
 function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 {
+	if ($defined(fxBlocks[id_block]))
+	{
+		fxBlocks[id_block].stop();
+	}
+	else
+	{
+		fxBlocks[id_block] = new Fx.Styles(id_block,
+		{
+			duration: 500,
+			transition: Fx.Transitions.linear
+		});
+	}
+
 	hide_block[id_block] ^= true;
 	if (hide_block[id_block])
 	{
 		if (!window.ie6 && mooeffect)
 		{
-			if ($defined(fxBlocks[id_block]))
-			{
-				fxBlocks[id_block].stop();
-			}
-
-			fxBlocks[id_block] = new Fx.Styles(id_block,
-			{
-				duration: 500,
-				transition: Fx.Transitions.linear
-			});
-			
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), blocks_height[id_block]],
 				opacity: [$(id_block).getStyle('opacity'), 1]
@@ -122,22 +124,11 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	{
 		if (!window.ie6 && mooeffect)
 		{
-			if ($defined(fxBlocks[id_block]))
-			{
-				fxBlocks[id_block].stop();
-			}
-
 			if (!$defined(blocks_height[id_block]))
 			{
 				blocks_height[id_block] = $(id_block).getCoordinates().height;
 			}
 
-			fxBlocks[id_block] = new Fx.Styles(id_block,
-			{
-				duration: 500,
-				transition: Fx.Transitions.linear
-			});
-			
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), 0],
 				opacity: [$(id_block).getStyle('opacity'), 0]
