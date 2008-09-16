@@ -535,8 +535,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$list_repeat = array(
 				'no-repeat' =>		Fsb::$session->lang('adm_css_no_repeat'),
 				'repeat' =>			Fsb::$session->lang('adm_css_repeat'),
-				'repeat_x' =>		Fsb::$session->lang('adm_css_repeat_x'),
-				'repeat_y' =>		Fsb::$session->lang('adm_css_repeat_y'),
+				'repeat-x' =>		Fsb::$session->lang('adm_css_repeat_x'),
+				'repeat-y' =>		Fsb::$session->lang('adm_css_repeat_y'),
 			);
 
 			$parse_style = $this->page_check_css_style($class_data, (Http::request('preview_css', 'post')) ? $preview_style : NULL);
@@ -773,7 +773,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		if (!empty($background_img))
 		{
-			$content .= "background-image: url($background_img);" . EOF;
+			$content .= "background-image: url(img/$background_img);" . EOF;
 		}
 
 		if (!empty($repeat_img) && !empty($background_img))
