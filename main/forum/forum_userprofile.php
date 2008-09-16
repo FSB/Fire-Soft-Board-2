@@ -250,9 +250,9 @@ class Fsb_frame_child extends Fsb_frame
 		// Statistiques sur les sujets et les messages
 		$nb_day_since_register =			ceil((CURRENT_TIME - $this->data['u_joined']) / ONE_DAY);
 		$this->data['post_rate'] =			substr($this->data['u_total_post'] / $nb_day_since_register, 0, 4);
-		$this->data['post_total_rate'] =	($this->data['u_total_post']) ? substr($this->data['u_total_post'] / Fsb::$cfg->get('total_posts') * 100, 0, 4) : 0;
+		$this->data['post_total_rate'] =	($this->data['u_total_post'] && Fsb::$cfg->get('total_posts') > 0) ? substr($this->data['u_total_post'] / Fsb::$cfg->get('total_posts') * 100, 0, 4) : 0;
 		$this->data['topic_rate'] =			substr($this->data['u_total_topic'] / $nb_day_since_register, 0, 4);
-		$this->data['topic_total_rate'] =	($this->data['u_total_topic']) ? substr($this->data['u_total_topic'] / Fsb::$cfg->get('total_topics') * 100, 0, 4) : 0;
+		$this->data['topic_total_rate'] =	($this->data['u_total_topic'] && Fsb::$cfg->get('total_topics') > 0) ? substr($this->data['u_total_topic'] / Fsb::$cfg->get('total_topics') * 100, 0, 4) : 0;
 
 		// Forum dans lequel le membre est le plus actif
 		$forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'));
