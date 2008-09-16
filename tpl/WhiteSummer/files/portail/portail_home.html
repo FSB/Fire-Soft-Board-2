@@ -3,7 +3,9 @@
 	<div class="content" style="text-align: center">
 		<switch name="is_logged">
 			<b>{LG_PM_WELCOME} {HOME_USER_NICKNAME}</b><br />
-			<img src="{HOME_USER_AVATAR}" alt="{HOME_AVATAR_ALT}" title="{HOME_AVATAR_ALT}" />
+			<if content="$HOME_USER_AVATAR">
+				<img src="{HOME_USER_AVATAR}" alt="{HOME_AVATAR_ALT}" title="{HOME_AVATAR_ALT}" />
+			</if>
 			<p>{HOME_MP}</p>
 			<p>{HOME_USER_STATS}</p>
 			<p>{HOME_SUGGESTION}</p>

@@ -205,7 +205,7 @@ class Rsa_key extends Fsb_model
 			$bar = &$foo;
 			return ($bar);
 		}
-		$instance = &new Rsa_key($data['mod'], $data['exp'], $data['type']);
+		$instance = new Rsa_key($data['mod'], $data['exp'], $data['type']);
 		return ($instance);
 	}
 

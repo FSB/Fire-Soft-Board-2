@@ -10,8 +10,8 @@
 */
 
 return (array (
-  'tools_logs_explain_title' => 'Compte rendu du log d\'erreur',
-  'tools_logs_explain_desc' => 'Affiche la liste des erreurs rencontrées sur le forum',
+  'tools_logs_explain_title' => 'Compte rendu des logs',
+  'tools_logs_explain_desc' => 'Affiche les différentes informations logguées par le forum (action d\'administration, de modération, d\'erreurs, etc.)',
   'adm_logs_admin' => 'Administration',
   'adm_logs_error' => 'Erreurs du forum',
   'adm_logs_modo' => 'Modération',

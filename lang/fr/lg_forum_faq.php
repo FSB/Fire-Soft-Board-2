@@ -528,6 +528,11 @@ $GLOBALS['faq_data'] = array (
 	  'question' => 'Comment placer le portail comme page d\'accueil ?',
 	  'answer' => 'Pour placer votre portail en page d\'accueil du forum, vous devez créer un fichier nommé <b>.HTACCESS</b> à la racine de votre forum, et y ajouter le code suivant :[code]DirectoryIndex index.php?p=portail index.html index.php[/code]Lorsqu\'un visiteur tentera d\'accéder à votre site via l\'url http://www.votresiteweb.ext/forum/ il tombera directement sur le portail.',
 	),
+    'galery' => 
+    array (
+      'question' => 'Comment créer une galerie d\'avatar ?',
+      'answer' => 'Pour créer une galerie d\'avatar, vous devez vous rendre sur la page <b>Gestion</b> -> <b>Membres</b> de votre administration. Vous y trouverez un onglet <b>Galerie d\'avatars</b> en haut. Une fois dans cet onglet, vous pourrez y créer une ou plusieurs galeries, et y placer des images que vos membres pourront choisir dans leur profil. N\'oubliez pas d\'activer la galerie d\'avatar dans la configuration du forum.',
+    ),
     'url_rewriting' => 
     array (
       'question' => 'L\'url rewriting',

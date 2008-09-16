@@ -361,7 +361,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$nicknames = explode("\n", $nicknames);
 				$nicknames = array_map('trim', $nicknames);
 				$nicknames = array_map('strtolower', $nicknames);
-				$nicknames = array_map(array(&$GLOBALS['db'], 'escape'), $nicknames);
+				$nicknames = array_map(array(Fsb::$db, 'escape'), $nicknames);
 				$sql = 'SELECT u_id, LOWER(u_nickname) AS u_nickname
 						FROM ' . SQL_PREFIX . 'users
 						WHERE u_id <> ' . VISITOR_ID . '
@@ -389,7 +389,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 
 				// Ajoute la clause a la requete
-				$build_sql .= ' AND u_id IN (' . implode(', ', $idx) . ")\n";
+				if ($idx)
+				{
+					$build_sql .= ' AND u_id IN (' . implode(', ', $idx) . ")\n";
+				}
 			}
 
 			// Verification des adresses Emails

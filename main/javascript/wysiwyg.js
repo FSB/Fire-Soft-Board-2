@@ -27,7 +27,7 @@ var FSB_editor_interface = new Class(
 	
 	initialize: function(id, type, use_wysiwyg)
 	{
-		if (!window.ie7 && !window.gecko && !window.opera)
+		if (!window.ie7 && !window.gecko && !window.opera && !window.webkit420)
 		{
 			type = 'text';
 		}
@@ -124,7 +124,7 @@ var FSB_editor = new Class(
 			return ;
 		}
 
-		if (!window.ie7 && !window.gecko && !window.opera)
+		if (!window.ie7 && !window.gecko && !window.opera && !window.webkit420)
 		{
 			return ;
 		}
@@ -675,10 +675,15 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			this.win = $(this.id);
 			this.doc.designMode = 'On';
 		}
-		else if (window.gecko)
+		else if (window.gecko || window.webkit420)
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id).contentWindow;
+			
+			if (window.webkit420)
+			{
+				this.doc.designMode = 'On';
+			}
 		}
 		else
 		{
@@ -884,7 +889,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 					{
 						this.doc.execCommand('backcolor', false, args);
 					}
-					else if (window.gecko || window.opera)
+					else
 					{
 						this.doc.execCommand('hilitecolor', false, args);
 					}
@@ -922,7 +927,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_get_selection: function()
 	{
-		if (this.window.ie)
+		if (window.ie)
 		{
 			return (this.doc.selection.createRange().text);
 		}

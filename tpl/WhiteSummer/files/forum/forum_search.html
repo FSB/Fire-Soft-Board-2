@@ -2,8 +2,12 @@
 <script type="text/javascript">
 <!--
 function check_forum_list(t, idx) {
-	for (var i = 0; i < idx.length; i++) {
-		$('f' + idx[i]).checked = t.checked;
+	for (var i = 0; i < idx.length; i++)
+	{
+		if ($('f' + idx[i]))
+		{
+			$('f' + idx[i]).checked = t.checked;
+		}
 	}
 }
 -->
