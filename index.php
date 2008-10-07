@@ -244,7 +244,7 @@ class Fsb_frame extends Fsb_model
 		$get_url = '&amp;redirect=' . $this->frame_page;
 		foreach ($_GET AS $key => $value)
 		{
-			if ($key != 'p' && $key != 'sid' && $key != 'redirect')
+			if (!in_array($key, array('p', 'sid', 'redirect')) && preg_match('#^[a-z0-9_\-]*?$#i', $value))
 			{
 				$get_url .= '&amp;' . $key . '=' . $value;
 			}
