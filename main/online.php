@@ -91,7 +91,7 @@ if (Fsb::$session->is_authorized('online_box'))
 
 				Fsb::$tpl->set_blocks('online', array(
 					'IS_HIDDEN' =>	FALSE,
-					'NICKNAME' =>	sprintf(Fsb::$session->style['other']['nickname'], 'class="bot"', $row['bot_name'] . ' (bot)'),
+					'NICKNAME' =>	sprintf(Fsb::$session->getStyle('other', 'nickname'), 'class="bot"', $row['bot_name'] . ' (bot)'),
 				));
 			}
 			// Visiteur ?

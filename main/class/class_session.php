@@ -678,17 +678,17 @@ class Session extends Fsb_model
 	*/
 	public function img($img)
 	{
-		if (!isset($this->style['img'][$img]))
+		if ($this->getStyle('img', $img) === NULL)
 		{
 			return (NULL);
 		}
 
-		if (preg_match('#^https?://#i', $this->style['img'][$img]))
+		if (preg_match('#^https?://#i', $this->getStyle('img', $img)))
 		{
-			return ($this->style[$img]);
+			return ($this->getStyle('img', $img));
 		}
 
-		$cur_style = $this->style['img'][$img];
+		$cur_style = $this->getStyle('img', $img);
 		if (preg_match('#USER_LANGUAGE#', $cur_style))
 		{
 			if (file_exists(ROOT . 'tpl/' . $this->data['u_tpl'] . '/img/' . $this->data['u_language'] . '/' . $cur_style))
@@ -837,12 +837,14 @@ class Session extends Fsb_model
 	** Charge un fichier de langue
 	** -----
 	** $lg_lang ::	Nom du fichier de langue
+	** $full_path :: Si true, utilise $lg_name comme chemin complet vers le fichier de langue
 	*/
-	public function load_lang($lg_name)
+	public function load_lang($lg_name, $full_path = false)
 	{
-		if (file_exists(ROOT . 'lang/' . $this->data['u_language'] . '/' . $lg_name . '.' . PHPEXT))
+		$path = ($full_path) ? $lg_name : ROOT . 'lang/' . $this->data['u_language'] . '/' . $lg_name . '.' . PHPEXT;
+		if (file_exists($path))
 		{
-			$this->lg += include(ROOT . 'lang/' . $this->data['u_language'] . '/' . $lg_name . '.' . PHPEXT);
+			$this->lg += include($path);
 		}
 	}
 
@@ -854,6 +856,17 @@ class Session extends Fsb_model
 	public function lang($key)
 	{
 		return ((isset($this->lg[$key])) ? $this->lg[$key] : NULL);
+	}
+	
+	/*
+	** Retourne le style dans la configuration du theme
+	** -----
+	** $cat :: Categorie de configuration
+	** $key :: Clef de configuration
+	*/
+	public function getStyle($cat, $key)
+	{
+		return ((isset($this->style[$cat], $this->style[$cat][$key])) ? $this->style[$cat][$key] : null);
 	}
 
 	/*

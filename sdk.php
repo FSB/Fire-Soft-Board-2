@@ -717,7 +717,7 @@ class Fsb_sdk extends Fsb_model
 					'id' =>			NULL,
 					'nickname' =>	NULL,
 					'color' =>		'class="bot"',
-					'html' =>		sprintf(Fsb::$session->style['other']['nickname'], 'class="bot"', $row['bot_name'] . ' (bot)'),
+					'html' =>		sprintf(Fsb::$session->getStyle('other', 'nickname'), 'class="bot"', $row['bot_name'] . ' (bot)'),
 				);
 			}
 			// Visiteur ?

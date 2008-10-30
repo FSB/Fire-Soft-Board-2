@@ -134,7 +134,7 @@ else if (file_exists(ROOT . 'install/install.' . PHPEXT))
 
 	if (!@unlink(ROOT . 'install/install.' . PHPEXT))
 	{
-		trigger_error('Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de securite.', FSB_ERROR);
+		trigger_error('Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de securite.<hr />You must rename (or delete) ~/install/install.php for safety reasons.', FSB_ERROR);
 	}
 }
 
@@ -154,7 +154,7 @@ Fsb::$debug->request_vars();
 Fsb::$db = Dbal::factory();
 if (Fsb::$db->_get_id() === NULL)
 {
-	trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error(), FSB_ERROR);
+	trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error() . '<hr />Unable to connect to the database : ' . Fsb::$db->sql_error(), FSB_ERROR);
 }
 
 // On charge la configuration du forum

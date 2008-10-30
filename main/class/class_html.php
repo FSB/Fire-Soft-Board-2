@@ -53,7 +53,7 @@ class Html extends Fsb_model
 	{
 		// Style de la pagination
 		$default_style = ($simple_style) ? 'topic' : 'url';
-		$s = Fsb::$session->style['pagination'][$default_style . '_separator'];
+		$s = Fsb::$session->getStyle('pagination', $default_style . '_separator');
 
 		// Initialisation des variables
 		$total = ceil($total);
@@ -67,7 +67,7 @@ class Html extends Fsb_model
 		{
 			for ($i = $begin; $i <= $end; $i++)
 			{
-				$str .= (($i == $begin) ? '' : $s) . (($i == $cur) ? sprintf(Fsb::$session->style['pagination'][$default_style . '_cur'], $i) : sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . $i), $i));
+				$str .= (($i == $begin) ? '' : $s) . (($i == $cur) ? sprintf(Fsb::$session->getStyle('pagination', $default_style . '_cur'), $i) : sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . $i), $i));
 			}
 		}
 		else
@@ -77,42 +77,42 @@ class Html extends Fsb_model
 			{
 				for ($i = 1; $i <= $total; $i++)
 				{
-					$str .= (($i == 1) ? '' : $s) . sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . $i), $i);
+					$str .= (($i == 1) ? '' : $s) . sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . $i), $i);
 				}
 			}
 			else
 			{
-				$str .= sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . 1), 1);
-				$str .= $s . sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . 2), 2);
+				$str .= sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . 1), 1);
+				$str .= $s . sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . 2), 2);
 				$str .= $s . ' ...';
-				$str .= $s . sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . ($total - 1)), ($total - 1));
-				$str .= $s . sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . $total), $total);
+				$str .= $s . sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . ($total - 1)), ($total - 1));
+				$str .= $s . sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . $total), $total);
 			}
 		}
 
 		// Liens suivants, precedents, premiere page et derniere page
 		if ($page_info & PAGINATION_PREV)
 		{
-			$str = (($cur > 1) ? sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . ($cur - 1)), '&#171;') : sprintf(Fsb::$session->style['pagination'][$default_style . '_cur'], '&#171;')) . $s . $str;
+			$str = (($cur > 1) ? sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . ($cur - 1)), '&#171;') : sprintf(Fsb::$session->getStyle('pagination', $default_style . '_cur'), '&#171;')) . $s . $str;
 		}
 
 		if ($page_info & PAGINATION_FIRST)
 		{
-			$str = sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . 1), Fsb::$session->lang('first_page')) . $s . $str;
+			$str = sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . 1), Fsb::$session->lang('first_page')) . $s . $str;
 		}
 
 		if ($page_info & PAGINATION_NEXT)
 		{
-			$str .= $s . (($cur < $total) ? sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . ($cur + 1)), '&#187;') : sprintf(Fsb::$session->style['pagination'][$default_style . '_cur'], '&#187;'));
+			$str .= $s . (($cur < $total) ? sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . ($cur + 1)), '&#187;') : sprintf(Fsb::$session->getStyle('pagination', $default_style . '_cur'), '&#187;'));
 		}
 
 		if ($page_info & PAGINATION_LAST)
 		{
 			$last_str = ($simple_style) ? Fsb::$session->lang('last_page') : sprintf(Fsb::$session->lang('last_page_total'), $total);
-			$str .= $s . sprintf(Fsb::$session->style['pagination'][$default_style], sid($url . $total), $last_str);
+			$str .= $s . sprintf(Fsb::$session->getStyle('pagination', $default_style), sid($url . $total), $last_str);
 		}
 
-		return (sprintf(Fsb::$session->style['pagination'][$default_style . '_global'], $str, $url, Fsb::$session->lang('go')));
+		return (sprintf(Fsb::$session->getStyle('pagination', $default_style . '_global'), $str, $url, Fsb::$session->lang('go')));
 	}
 
 	/**
@@ -482,11 +482,11 @@ class Html extends Fsb_model
 		if (!$u_id || $u_id == VISITOR_ID)
 		{
 			$nickname = (strtolower($nickname) == 'visitor') ? Fsb::$session->lang('visitor') : $nickname;
-			return (sprintf(Fsb::$session->style['other']['nickname'], $color, htmlspecialchars($nickname)));
+			return (sprintf(Fsb::$session->getStyle('other', 'nickname'), $color, htmlspecialchars($nickname)));
 		}
 		else
 		{
-			return (sprintf(Fsb::$session->style['other']['nickname_link'], sid(FSB_PATH . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $u_id), $color, htmlspecialchars($nickname)));
+			return (sprintf(Fsb::$session->getStyle('other', 'nickname_link'), sid(FSB_PATH . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $u_id), $color, htmlspecialchars($nickname)));
 		}
 	}
 
@@ -507,7 +507,7 @@ class Html extends Fsb_model
 		}
 
 		$url = ($location) ? $location : sid(FSB_PATH . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $id);
-		return (sprintf(Fsb::$session->style['other']['forum_link'], $url, $color, $forum));
+		return (sprintf(Fsb::$session->getStyle('other', 'forum_link'), $url, $color, $forum));
 	}
 
 	/**
@@ -568,12 +568,12 @@ class Html extends Fsb_model
 		}
 		else
 		{
-			$result = Fsb::$session->style['errstr']['open'];
+			$result = Fsb::$session->getStyle('errstr', 'open');
 			foreach ($errstr AS $str)
 			{
-				$result .= sprintf(Fsb::$session->style['errstr']['item'], $str);
+				$result .= sprintf(Fsb::$session->getStyle('errstr', 'item'), $str);
 			}
-			$result .= Fsb::$session->style['errstr']['close'];
+			$result .= Fsb::$session->getStyle('errstr', 'close');
 			return ($result);
 		}
 	}

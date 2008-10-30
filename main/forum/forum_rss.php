@@ -166,7 +166,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($row = Fsb::$db->row($result))
 		{
 			$this->rss->open(
-				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->style['other']['title_separator'] . $row['f_name']),
+				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->getStyle('other', 'title_separator') . $row['f_name']),
 				htmlspecialchars(sprintf(Fsb::$session->lang('rss_forum_name'), $row['f_name'])),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),
@@ -221,7 +221,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($row = Fsb::$db->row($result))
 		{
 			$this->rss->open(
-				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->style['other']['title_separator'] . Fsb::$session->lang('rss_index')),
+				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$session->lang('rss_index')),
 				htmlspecialchars(Fsb::$session->lang('rss_index')),
 				Fsb::$session->data['u_language'],
 				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),

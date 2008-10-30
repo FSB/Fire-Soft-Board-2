@@ -118,6 +118,19 @@ class Tpl extends Fsb_model
 		if (file_exists($config_tpl_dir . 'config_tpl.cfg'))
 		{
 			Fsb::$session->style = Config_file::read($config_tpl_dir . 'config_tpl.cfg');
+			
+			// Chargement de la langue du theme si besoin
+			if (Fsb::$session->getStyle('config', 'extra_lang') == 'true')
+			{
+				if (file_exists($config_tpl_dir . 'lang/' . Fsb::$session->data['u_language'] . '.php'))
+				{
+					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$session->data['u_language'] . '.php', true);
+				}
+				else if (file_exists($config_tpl_dir . 'lang/' . Fsb::$cfg->get('default_lang') . '.php'))
+				{
+					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$cfg->get('default_lang') . '.php', true);
+				}
+			}
 		}
 
 		$this->tpl_dir = $tpl_dir;

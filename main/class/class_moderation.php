@@ -504,6 +504,11 @@ class Moderation extends Fsb_model
 		{
 			$id = array($id);
 		}
+		
+		if (!$id)
+		{
+			return;
+		}
 
 		// On filtre les messages pour qu'ils ne viennent que d'un seul forum
 		$sql = 'SELECT t_id
@@ -549,6 +554,11 @@ class Moderation extends Fsb_model
 		if (is_array($id))
 		{
 			$id = implode(', ', $id);
+		}
+		
+		if (!$id)
+		{
+			return;
 		}
 
 		Fsb::$db->update('topics', array(

@@ -187,7 +187,7 @@ class Parser_fsbcode extends Fsb_model
 		// Sans arguments
 		if (!$arg)
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['quote'], Fsb::$session->lang('quote'), $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'quote'), Fsb::$session->lang('quote'), $content));
 		}
 		// Avec arguments
 		else
@@ -223,7 +223,7 @@ class Parser_fsbcode extends Fsb_model
 				}
 				$arg = sprintf($link, $arg);
 			}
-			return (sprintf(Fsb::$session->style['fsbcode']['quote_user'], Fsb::$session->lang('quote'), $arg, $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'quote_user'), Fsb::$session->lang('quote'), $arg, $content));
 		}
 	}
 
@@ -245,7 +245,7 @@ class Parser_fsbcode extends Fsb_model
 		// Sans arguments
 		if (!$arg || !Fsb::$mods->is_active('highlight_code'))
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['code'], 'Code', $this->block_fsbcode($content), Fsb::$session->lang('select_code')));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'code'), 'Code', $this->block_fsbcode($content), Fsb::$session->lang('select_code')));
 		}
 		// Avec arguments
 		else
@@ -256,16 +256,16 @@ class Parser_fsbcode extends Fsb_model
 				case 'php' :
 				case 'sql' :
 					$highlight = Highlight::factory($arg);
-					return (sprintf(Fsb::$session->style['fsbcode']['code'], strtoupper($arg), $this->block_fsbcode($highlight->parse_code(String::unhtmlspecialchars($content))), Fsb::$session->lang('select_code')));
+					return (sprintf(Fsb::$session->getStyle('fsbcode', 'code'), strtoupper($arg), $this->block_fsbcode($highlight->parse_code(String::unhtmlspecialchars($content))), Fsb::$session->lang('select_code')));
 				break;
 
 				case 'html' :
 					$highlight = Highlight::factory($arg);
-					return (sprintf(Fsb::$session->style['fsbcode']['code'], strtoupper($arg), $this->block_fsbcode($highlight->parse_code($content)), Fsb::$session->lang('select_code')));
+					return (sprintf(Fsb::$session->getStyle('fsbcode', 'code'), strtoupper($arg), $this->block_fsbcode($highlight->parse_code($content)), Fsb::$session->lang('select_code')));
 				break;
 
 				default :
-					return (sprintf(Fsb::$session->style['fsbcode']['code'], 'Code', $this->block_fsbcode($content), Fsb::$session->lang('select_code')));
+					return (sprintf(Fsb::$session->getStyle('fsbcode', 'code'), 'Code', $this->block_fsbcode($content), Fsb::$session->lang('select_code')));
 				break;
 			}
 		}
@@ -291,15 +291,15 @@ class Parser_fsbcode extends Fsb_model
 		// URL interne ou externe ?
 		if (preg_match('#^\w+?://.*?#', $arg))
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['url'], trim($arg), $arg, $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'url'), trim($arg), $arg, $content));
 		}
 		else if (preg_match('#^(www|ftp).*?#', $arg))
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['url'], 'http://' . $arg, $arg, $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'url'), 'http://' . $arg, $arg, $content));
 		}
 		else
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['url'], Fsb::$cfg->get('fsb_path') . '/' . $arg, $arg, $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'url'), Fsb::$cfg->get('fsb_path') . '/' . $arg, $arg, $content));
 		}
 	}
 
@@ -329,7 +329,7 @@ class Parser_fsbcode extends Fsb_model
 		}
 
 		$arg = String::no_spam($arg);
-		return (sprintf(Fsb::$session->style['fsbcode']['url'], 'mailto:' . trim($arg), '', $content));
+		return (sprintf(Fsb::$session->getStyle('fsbcode', 'url'), 'mailto:' . trim($arg), '', $content));
 	}
 
 	/*
@@ -355,17 +355,17 @@ class Parser_fsbcode extends Fsb_model
 		// Droit de telechargement ?
 		if (!$row)
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['cant_attach'], Fsb::$session->lang('attached_file'), Fsb::$session->lang('attached_file_not_exists'), $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'cant_attach'), Fsb::$session->lang('attached_file'), Fsb::$session->lang('attached_file_not_exists'), $content));
 		}
 		else if (Fsb::$session->auth() >= $row['upload_auth'])
 		{
 			$url = sid(ROOT . 'index.' . PHPEXT . '?p=download&amp;id=' . $arg);
 			$explain = sprintf(Fsb::$session->lang('download_total'), $row['upload_total'], $row['upload_realname'], convert_size($row['upload_filesize']), Fsb::$session->print_date($row['upload_time']));
-			return (sprintf(Fsb::$session->style['fsbcode']['attach'], Fsb::$session->lang('attached_file'), $url, Fsb::$session->lang('download'), $explain, $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'attach'), Fsb::$session->lang('attached_file'), $url, Fsb::$session->lang('download'), $explain, $content));
 		}
 		else
 		{
-			return (sprintf(Fsb::$session->style['fsbcode']['cant_attach'], Fsb::$session->lang('attached_file'), Fsb::$session->lang('not_allowed_to_download'), $content));
+			return (sprintf(Fsb::$session->getStyle('fsbcode', 'cant_attach'), Fsb::$session->lang('attached_file'), Fsb::$session->lang('not_allowed_to_download'), $content));
 		}
 	}
 
