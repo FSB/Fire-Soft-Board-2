@@ -129,7 +129,8 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		Forum::markread('forum', $idx);
-		Http::redirect('index.' . PHPEXT . '?p=forum&f_id=' . $this->id);
+		$return = (Http::request('return')) ? Http::request('return') : $this->id;
+		Http::redirect('index.' . PHPEXT . '?p=forum&f_id=' . $return);
 	}
 
 	/*

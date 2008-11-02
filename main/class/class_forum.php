@@ -32,9 +32,13 @@ class Forum extends Fsb_model
 
 		if ($type == 'subforum')
 		{
+			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
+			
 			Fsb::$tpl->set_blocks('cat.forum.subforum', array(
 				'NAME' =>		Html::forumname($forum['f_name'], $forum['f_id'], $forum['f_color'], $forum['f_location']),
 				'IS_READ' =>	$is_read,
+				
+				'U_MARKREAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=' . $markread),
 			));
 		}
 		else if ($forum['f_type'] == FORUM_TYPE_INDIRECT_URL || $forum['f_type'] == FORUM_TYPE_DIRECT_URL)
@@ -58,7 +62,7 @@ class Forum extends Fsb_model
 			$topic_title = Parser::title($forum['f_last_t_title']);
 			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : Parser::title(String::substr($forum['f_last_t_title'], 0, 20)) . '...';
 			
-			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
+			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TYPE' =>			$forum['f_type'],

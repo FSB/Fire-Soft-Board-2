@@ -3,7 +3,7 @@
 - Optimisations importantes de requêtes SQL
 - Intégration du convertisseur FSB1 -> FSB2 dans la procédure d'installation du forum
 - Ajout d'une procédure automatique pour recalculer les derniers sujets des forums
-- Ajout du déplacement des FSBcode entre dans l'administration
+- Ajout du déplacement des FSBcode dans l'administration
 - Ajout de la possibilité de cacher l'icone d'un FSBcode
 - Ajout d'une procédure de modération pour surveiller un sujet
 - Ajout d'une option dans l'administration pour ajouter des membres
@@ -64,6 +64,9 @@
 - Fix sur le délestage de membres inexistants
 - Fix de l'avatar par défaut sur la page d'accueil du portail
 - Fix d'un bug PHP lié à eAccelerator (&new)
+- Fix du parsing du FSBcode PHP
+- Fix de la validation des champs de profil lorsqu'ils sont vide
+- Fix du marquage des forums comme étants lu
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

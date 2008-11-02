@@ -140,7 +140,7 @@ class Profil_fields_forum extends Profil_fields
 				$errstr[] = sprintf(Fsb::$session->lang('user_error_personal_textarea'), $info['maxlength'], String::parse_lang($row['pf_lang']), strlen($post_data[$key]));
 			}
 
-			if (is_array($errstr) && isset($info['regexp']) && trim($row['pf_regexp']) && !preg_match(Regexp::pattern($row['pf_regexp'], TRUE, 'i'), $post_data[$key]))
+			if (is_array($errstr) && isset($info['regexp']) && trim($row['pf_regexp']) && !preg_match(Regexp::pattern($row['pf_regexp'], TRUE, 'i'), $post_data[$key]) && trim($post_data[$key]))
 			{
 				$errstr[] = sprintf(Fsb::$session->lang('user_error_personal_field'), $row['pf_lang']);
 			}

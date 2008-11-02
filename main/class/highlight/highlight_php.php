@@ -195,6 +195,7 @@ class Highlight_php extends Highlight
 						{
 							$result .= $this->open_style('sc_php_normal') . $tmp . $this->close_style();
 						}
+						$tmp = '';
 						break;
 					}
 					$tmp .= $this->escape_special_char($c);
@@ -207,6 +208,11 @@ class Highlight_php extends Highlight
 			{
 				$result .= $this->escape_special_char($c);
 			}
+		}
+		
+		if ($tmp)
+		{
+			$result .= $this->escape_special_char($tmp);
 		}
 
 		return ($result);
