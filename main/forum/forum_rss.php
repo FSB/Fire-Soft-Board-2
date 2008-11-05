@@ -306,7 +306,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Liste des messages
-		$sql = 'SELECT p.p_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_description, t.f_id, u.u_activate_email, u.u_email, u.u_auth
+		$sql = 'SELECT p.p_id, p.p_text, p.p_time, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_description, t.f_id, u.u_nickname, u.u_activate_email, u.u_email, u.u_auth
 				FROM ' . SQL_PREFIX . 'posts p
 				INNER JOIN ' . SQL_PREFIX . 'topics t
 					ON p.t_id = t.t_id
@@ -322,10 +322,10 @@ class Fsb_frame_child extends Fsb_frame
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
 
 			$this->rss->open(
-				Parser::title($row['t_title']),
-				htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'])),
+				htmlspecialchars($row['u_nickname']),
+				'',
 				Fsb::$session->data['u_language'],
-				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->id),
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=user&amp;id=' . $this->id),
 				$row['p_time']
 			);
 
@@ -341,6 +341,22 @@ class Fsb_frame_child extends Fsb_frame
 				);
 			}
 			while ($row = Fsb::$db->row($result));
+		}
+		// Aucun message pour ce membre ...
+		else 
+		{
+			$sql = 'SELECT u_nickname
+					FROM ' . SQL_PREFIX . 'users
+					WHERE u_id = ' . $this->id;
+			$row = Fsb::$db->request($sql);
+			
+			$this->rss->open(
+				htmlspecialchars($row['u_nickname']),
+				'',
+				Fsb::$session->data['u_language'],
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=user&amp;id=' . $this->id),
+				CURRENT_TIME
+			);
 		}
 	}
 
