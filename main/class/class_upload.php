@@ -70,6 +70,42 @@ class Upload extends Fsb_model
 		{
 			trigger_error("La variable \$_FILES['$this->name'] n'existe pas", FSB_ERROR);
 		}
+		
+		// Verifie les erreurs d'upload
+		if ($_FILES[$this->name]['error'])
+		{
+			switch ($_FILES[$this->name]['error'])
+			{
+				case UPLOAD_ERR_INI_SIZE :
+					$ini_size = ini_get_bytes(ini_get('upload_max_filesize'));
+					Display::message(Display::message(sprintf(Fsb::$session->lang('upload_err_ini_size'), convert_size($ini_size))));
+				break;
+				
+				case UPLOAD_ERR_FORM_SIZE :
+					Display::message('upload_err_form_size');
+				break;
+				
+				case UPLOAD_ERR_PARTIAL :
+					Display::message('upload_err_partial');
+				break;
+				
+				case UPLOAD_ERR_NO_FILE :
+					Display::message('upload_err_no_file');
+				break;
+				
+				case UPLOAD_ERR_NO_TMP_DIR :
+					Display::message('upload_err_no_tmp_dir');
+				break;
+				
+				case UPLOAD_ERR_CANT_WRITE :
+					Display::message('upload_err_cant_write');
+				break;
+
+				case UPLOAD_ERR_EXTENSION :
+					Display::message('upload_err_extension');
+				break;
+			}
+		}
 
 		$this->tmp_path =	$_FILES[$this->name]['tmp_name'];
 		$this->filename =	$_FILES[$this->name]['name'];
@@ -77,12 +113,6 @@ class Upload extends Fsb_model
 		$this->filesize =	filesize($this->tmp_path);
 		$this->basename =	get_file_data($this->filename, 'filename');
 		$this->extension =	get_file_data($this->filename, 'extension');
-
-		$ini_size = ini_get_bytes(ini_get('upload_max_filesize'));
-		if ($this->filesize > $ini_size)
-		{
-			Display::message(sprintf(Fsb::$session->lang('bad_ini_size_upload'), $ini_size, $this->filesize));
-		}
 	}
 
 	/*
@@ -225,21 +255,29 @@ class Upload extends Fsb_model
 		$row = Fsb::$db->row($result);
 		Fsb::$db->free($result);
 		$total_filesize = $row['total_filesize'];
-
-		// Quota depasse ?
-		if (!Fsb::$session->is_authorized('upload_quota_unlimited') && $total_filesize > Fsb::$cfg->get('upload_quota'))
-		{
-			Display::message(sprintf(Fsb::$session->lang('post_upload_quota'), $total_filesize, Fsb::$cfg->get('upload_quota')));
-		}
-
+		
 		// Liste des extensions autorisees
 		$this->allow_ext(explode(',', Fsb::$cfg->get('upload_extensions')));
 
+		// Quota depasse ?
+		if (!Fsb::$session->is_authorized('upload_quota_unlimited') && ($this->filesize + $total_filesize) > Fsb::$cfg->get('upload_quota'))
+		{
+			Display::message(sprintf(Fsb::$session->lang('post_upload_quota'), convert_size($total_filesize), convert_size(Fsb::$cfg->get('upload_quota'))));
+		}
+
 		// Taille maximale possible pour le fichier
-		$max_size = min(Fsb::$cfg->get('upload_quota') - $total_filesize, Fsb::$cfg->get('upload_max_filesize'));
+		if (Fsb::$session->is_authorized('upload_quota_unlimited'))
+		{
+			$max_size = Fsb::$cfg->get('upload_max_filesize');
+		}
+		else
+		{
+			$max_size = min(Fsb::$cfg->get('upload_quota') - $total_filesize, Fsb::$cfg->get('upload_max_filesize'));
+		}
+
 		if (!$this->check_img_size(0, 0,  $max_size))
 		{
-			Display::message(sprintf(Fsb::$session->lang('size_too_big'), $this->filesize, $max_size));
+			Display::message(sprintf(Fsb::$session->lang('size_too_big'), convert_size($this->filesize), convert_size($max_size)));
 		}
 
 		// Upload du fichier sur le serveur

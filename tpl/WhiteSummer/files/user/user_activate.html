@@ -7,10 +7,10 @@
 	<table class="form">
 		<block name="activate">
 			<tr>
-				<th><label>{activate.LANG} :</label><if content="$activate.EXPLAIN"><br /><span class="small">{activate.EXPLAIN}</span></if></th>
+				<th><label for="activate_id_{activate.ITERATOR}">{activate.LANG} :</label><if content="$activate.EXPLAIN"><br /><span class="small">{activate.EXPLAIN}</span></if></th>
 				<td>
 					<block name="activate.form">
-						<input type="{activate.TYPE}" name="{activate.NAME}<if content="$activate.TYPE == 'checkbox'">[]</if>" value="{activate.form.VALUE}" {activate.form.CHECKED} /> {activate.form.LANG}<if content="$activate.BR"><br /></if>
+						<input type="{activate.TYPE}" name="{activate.NAME}<if content="$activate.TYPE == 'checkbox'">[]</if>" value="{activate.form.VALUE}" <if content="$activate.form.CHECKED">checked="checked" id="activate_id_{activate.ITERATOR}"</if> /> {activate.form.LANG}<if content="$activate.BR"><br /></if>
 					</block>
 				</td>
 			</tr>

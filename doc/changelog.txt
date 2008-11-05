@@ -13,6 +13,7 @@
 - Ajout de Javascript dans la jumpbox pour une utilisation plus simple
 - Ajout d'une configuration pour désactiver les connexions réseaux
 - Ajout de la revue des messages précédents lors de l'édition d'un message
+- Ajout de langues optionelles pour les thèmes
 - Fix de la mise en cache avec APC / Eaccelerator et Memcache
 - Fix de la suppression des fichiers en cache pour le cache FTP
 - Fix de bugs dans le SDK
@@ -67,6 +68,13 @@
 - Fix du parsing du FSBcode PHP
 - Fix de la validation des champs de profil lorsqu'ils sont vide
 - Fix du marquage des forums comme étants lu
+- Fix du déplacement de sujets d'un forum qui n'en contient pas
+- Fix de la suppression de données en base avec postgresql
+- Fix de la citation de messages contenant un CDATA
+- Fix de la classe MySQL pour permettre de changer le préfixe en cours de script
+- Fix de la vérification des sujets non lus
+- Fix d'un bug javascript sur le menu de l'administration
+- Fix d'un bug sur les flux RSS d'un forum vide
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

@@ -54,7 +54,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function _query($sql, $buffer = TRUE)
 	{
-		if (!$result = (($buffer) ? @mysql_query($sql) : @mysql_unbuffered_query($sql)))
+		if (!$result = (($buffer) ? @mysql_query($sql, $this->id) : @mysql_unbuffered_query($sql, $this->id)))
 		{
 			$errstr = $this->sql_error();
 			$this->transaction('rollback');
@@ -68,7 +68,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function simple_query($sql)
 	{
-		return (@mysql_query($sql));
+		return (@mysql_query($sql, $this->id));
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function last_id()
 	{
-		return (mysql_insert_id());
+		return (mysql_insert_id($this->id));
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function escape($str)
 	{
-		return (mysql_real_escape_string($str));
+		return (mysql_real_escape_string($str, $this->id));
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function affected_rows($result)
 	{
-		return (mysql_affected_rows());
+		return (mysql_affected_rows($this->id));
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Dbal_mysql extends Dbal
 		$result = $this->query($sql);
 		while ($row = $this->row($result, 'row'))
 		{
-			if ($limit && substr($row[0], 0, strlen(SQL_PREFIX)) != SQL_PREFIX)
+			if ($limit && substr($row[0], 0, strlen($this->sql_prefix)) != $this->sql_prefix)
 			{
 				continue;
 			}
@@ -203,7 +203,7 @@ class Dbal_mysql extends Dbal
 	{
 		if ($this->multi_insert)
 		{
-			$sql = $this->multi_insert['insert'] . ' INTO ' . SQL_PREFIX . $this->multi_insert['table']
+			$sql = $this->multi_insert['insert'] . ' INTO ' . $this->sql_prefix . $this->multi_insert['table']
 						. ' (' . $this->multi_insert['fields'] . ')
 						VALUES (' . implode('), (', $this->multi_insert['values']) . ')';
 			$this->multi_insert = array();
@@ -216,7 +216,7 @@ class Dbal_mysql extends Dbal
 	 */
 	public function sql_error()
 	{
-		return (mysql_error());
+		return (mysql_error($this->id));
 	}
 
 	/**
@@ -265,16 +265,16 @@ class Dbal_mysql extends Dbal
 	 */
 	public function delete_tables($default_table, $default_where, $delete_join)
 	{
-		$sql_delete = 'DELETE ' . SQL_PREFIX . $default_table;
-		$sql_table = ' FROM ' . SQL_PREFIX . $default_table;
-		$sql_where = ' WHERE ' . SQL_PREFIX . $default_table . '.' . $default_where;
+		$sql_delete = 'DELETE ' . $this->sql_prefix . $default_table;
+		$sql_table = ' FROM ' . $this->sql_prefix . $default_table;
+		$sql_where = ' WHERE ' . $this->sql_prefix . $default_table . '.' . $default_where;
 		foreach ($delete_join AS $field => $tables)
 		{
 			foreach ($tables AS $table)
 			{
-				$sql_delete .= ', ' . SQL_PREFIX . $table;
-				$sql_table .= ', ' . SQL_PREFIX . $table;
-				$sql_where .= ' AND ' . SQL_PREFIX . $table . '.' . $field . ' = ' . SQL_PREFIX . $default_table . '.' . $field;
+				$sql_delete .= ', ' . $this->sql_prefix . $table;
+				$sql_table .= ', ' . $this->sql_prefix . $table;
+				$sql_where .= ' AND ' . $this->sql_prefix . $table . '.' . $field . ' = ' . $this->sql_prefix . $default_table . '.' . $field;
 			}
 		}
 		$this->query($sql_delete . $sql_table . $sql_where);

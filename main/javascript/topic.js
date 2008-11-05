@@ -57,7 +57,7 @@ var ajax_is_in_edition_mode = new Array;
 var tabindex = 1;
 function edit_post_dynamic(id, post_id, is_first_post)
 {
-	// Si on était deja  en mode d'edition on annule
+	// Si on ï¿½tait dejaï¿½ en mode d'edition on annule
 	if (ajax_is_in_edition_mode[id])
 	{
 		// cancel_post_dynamic(id, post_id);
@@ -248,7 +248,7 @@ function quote_post(post_id, form_id, open_id, editor_obj, is_mp)
 	
 			if (xml.getElementsByTagName('content').item(0))
 			{
-				content = xml.getElementsByTagName('content').item(0).firstChild.nodeValue;
+				content = unhtmlspecialchars(xml.getElementsByTagName('content').item(0).firstChild.nodeValue);
 	
 				if (open_id)
 				{

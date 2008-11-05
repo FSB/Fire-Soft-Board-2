@@ -187,7 +187,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		Fsb::$tpl->set_vars(array(
 			'CURRENT_MONTH' =>		Fsb::$session->lang('month_' . date('n', $this->current)) . ' ' . $this->current_year,
-			'LIST_MONTH' =>			Html::make_list('month', $this->current_month, $list_month),
+			'LIST_MONTH' =>			Html::make_list('month', $this->current_month, $list_month, array('id' => 'list_month_id')),
 			'LIST_YEAR' =>			Html::make_list('year', $this->current_year, $list_year),
 
 			'U_PREVIOUS' =>			sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;time=' . $previous_time),

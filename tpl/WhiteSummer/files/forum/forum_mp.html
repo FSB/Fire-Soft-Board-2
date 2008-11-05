@@ -97,15 +97,15 @@
 		<h1><a href="{FAQ_FORUM_MP}">{LG_MP_AUTO_ANSWER}</a></h1>
 		<table class="form">
 			<tr>
-				<th><label>{LG_MP_AUTO_ANSWER_ACTIV} :</label></th>
+				<th><label for="auto_answer_id">{LG_MP_AUTO_ANSWER_ACTIV} :</label></th>
 				<td>
-					<input type="radio" name="auto_answer_activ" value="1" {AUTO_ANSWER_ACTIV_YES} /> {LG_YES} &nbsp;
-					<input type="radio" name="auto_answer_activ" value="0" {AUTO_ANSWER_ACTIV_NO} /> {LG_NO}
+					<input type="radio" name="auto_answer_activ" value="1" <if content="$AUTO_ANSWER_ACTIV">checked="checked" id="auto_answer_id"</if> /> {LG_YES} &nbsp;
+					<input type="radio" name="auto_answer_activ" value="0" {<if content="!$AUTO_ANSWER_ACTIV">checked="checked" id="auto_answer_id"</if> /> {LG_NO}
 				</td>
 			</tr>
 			<tr>
-				<th><label>{LG_MP_AUTO_ANSWER_MESSAGE} :</label><br /><span class="small">{LG_MP_AUTO_ANSWER_MESSAGE_EXPLAIN}</span></th>
-				<td><textarea name="auto_answer_message" cols="40" rows="4">{AUTO_ANSWER_MESSAGE}</textarea></td>
+				<th><label for="auto_message_id">{LG_MP_AUTO_ANSWER_MESSAGE} :</label><br /><span class="small">{LG_MP_AUTO_ANSWER_MESSAGE_EXPLAIN}</span></th>
+				<td><textarea name="auto_answer_message" id="auto_message_id" cols="40" rows="4">{AUTO_ANSWER_MESSAGE}</textarea></td>
 			</tr>
 			<tr>
 				<th></th>

@@ -166,7 +166,7 @@ class Dbal_sqlite extends Dbal
 		$result = $this->query($sql);
 		while ($row = $this->row($result, 'row'))
 		{
-			if ($limit && substr($row[0], 0, strlen(SQL_PREFIX)) != SQL_PREFIX)
+			if ($limit && substr($row[0], 0, strlen($this->sql_prefix)) != $this->sql_prefix)
 			{
 				continue;
 			}
@@ -183,7 +183,7 @@ class Dbal_sqlite extends Dbal
 	{
 		if ($this->multi_insert)
 		{
-			$sql = $this->multi_insert['insert'] . ' INTO ' . SQL_PREFIX . $this->multi_insert['table']
+			$sql = $this->multi_insert['insert'] . ' INTO ' . $this->sql_prefix . $this->multi_insert['table']
 						. ' (' . $this->multi_insert['fields'] . ')
 						VALUES (' . implode('), (', $this->multi_insert['values']) . ')';
 			return ($this->query($sql));
@@ -249,7 +249,7 @@ class Dbal_sqlite extends Dbal
 		foreach ($delete_join AS $field => $tables)
 		{
 			$sql = 'SELECT ' . $field . '
-					FROM ' . SQL_PREFIX . $default_table
+					FROM ' . $this->sql_prefix . $default_table
 					. ' ' . $default_where;
 			$result = $this->query($sql);
 			$list_idx = '';
@@ -264,7 +264,7 @@ class Dbal_sqlite extends Dbal
 			{
 				foreach ($tables AS $table)
 				{
-					$sql = 'DELETE FROM ' . SQL_PREFIX . $table . ' WHERE ' . $field . ' IN(' . $list_idx . ')';
+					$sql = 'DELETE FROM ' . $this->sql_prefix . $table . ' WHERE ' . $field . ' IN(' . $list_idx . ')';
 					$this->query($sql);
 				}
 			}

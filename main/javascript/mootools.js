@@ -5734,7 +5734,7 @@ Array.extend({
 });
 
 /*
-** Palette de couleur avancée
+** Palette de couleur avancï¿½e
 */
 var MooRainbow = new Class({
 	options: {

@@ -568,18 +568,18 @@ class Fsb_frame_child extends Fsb_frame
 				}
 				else if ($this->preview)
 				{
-					$current_begin_day =		intval(Http::request('begin_day', 'post'));
+					$current_begin_day =	intval(Http::request('begin_day', 'post'));
 					$current_begin_month =	intval(Http::request('begin_month', 'post'));
 					$current_begin_year =	intval(Http::request('begin_year', 'post'));
 					$current_begin_hour =	intval(Http::request('begin_hour', 'post'));
-					$current_begin_min =		intval(Http::request('end_min', 'post'));
+					$current_begin_min =	intval(Http::request('end_min', 'post'));
 					$current_end_day =		intval(Http::request('end_day', 'post'));
-					$current_end_month =		intval(Http::request('end_month', 'post'));
+					$current_end_month =	intval(Http::request('end_month', 'post'));
 					$current_end_year =		intval(Http::request('end_year', 'post'));
 					$current_end_hour =		intval(Http::request('end_hour', 'post'));
 					$current_end_min =		intval(Http::request('end_min', 'post'));
 					$calendar_print =		intval(Http::request('calendar_print', 'post'));
-					$current_group =			intval(Http::request('c_groups', 'post'));
+					$current_group =		intval(Http::request('c_groups', 'post'));
 				}
 				else if ($this->mode == 'calendar_edit')
 				{
@@ -610,12 +610,12 @@ class Fsb_frame_child extends Fsb_frame
 				Fsb::$tpl->set_switch('calendar_print');
 
 				Fsb::$tpl->set_vars(array(
-					'LIST_CALENDAR_BEGIN_DAY' =>		Html::make_list('begin_day', $current_begin_day, $list_day),
+					'LIST_CALENDAR_BEGIN_DAY' =>		Html::make_list('begin_day', $current_begin_day, $list_day, array('id' => 'calendar_begin_id')),
 					'LIST_CALENDAR_BEGIN_MONTH' =>		Html::make_list('begin_month', $current_begin_month, $list_month),
 					'LIST_CALENDAR_BEGIN_YEAR' =>		Html::make_list('begin_year', $current_begin_year, $list_year),
 					'LIST_CALENDAR_BEGIN_HOUR' =>		Html::make_list('begin_hour', $current_begin_hour, $list_hour),
 					'LIST_CALENDAR_BEGIN_MIN' =>		Html::make_list('begin_min', $current_begin_min, $list_min),
-					'LIST_CALENDAR_END_DAY' =>			Html::make_list('end_day', $current_end_day, $list_day),
+					'LIST_CALENDAR_END_DAY' =>			Html::make_list('end_day', $current_end_day, $list_day, array('id' => 'calendar_end_id')),
 					'LIST_CALENDAR_END_MONTH' =>		Html::make_list('end_month', $current_end_month, $list_month),
 					'LIST_CALENDAR_END_YEAR' =>			Html::make_list('end_year', $current_end_year, $list_year),
 					'LIST_CALENDAR_END_HOUR' =>			Html::make_list('end_hour', $current_end_hour, $list_hour),

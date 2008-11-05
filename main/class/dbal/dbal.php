@@ -110,6 +110,13 @@ abstract class Dbal extends Fsb_model
 	 * @var Cache
 	 */
 	public $cache = NULL;
+	
+	/**
+	 * Prefixe SQL pour les noms de table
+	 *
+	 * @var string
+	 */
+	public $sql_prefix = '';
 
 	/**
 	 * Execute une requete SQL
@@ -139,7 +146,7 @@ abstract class Dbal extends Fsb_model
 	abstract public function _free($result);
 	
 	/**
-	 * Retourne l'ID de la dernière auto incrémentation
+	 * Retourne l'ID de la derniï¿½re auto incrï¿½mentation
 	 */
 	abstract public function last_id();
 	
@@ -263,7 +270,9 @@ abstract class Dbal extends Fsb_model
 		$sql_port =		($sql_port === NULL) ? SQL_PORT : $sql_port;
 
 		$classname = 'Dbal_' . SQL_DBAL;
-		return (new $classname($sql_server, $sql_login, $sql_pass, $sql_db, $sql_port, $use_cache));
+		$instance = new $classname($sql_server, $sql_login, $sql_pass, $sql_db, $sql_port, $use_cache);
+		$instance->sql_prefix = SQL_PREFIX;
+		return ($instance);
 	}
 
 	/**
@@ -363,7 +372,7 @@ abstract class Dbal extends Fsb_model
 			}
 			$where_str = substr($where_str, 0, -4);
 
-			$select_table = SQL_PREFIX . $table;
+			$select_table = $this->sql_prefix . $table;
 			$sql = "SELECT $index_field FROM $select_table $where_str";
 			$result = $this->query($sql);
 			$data = $this->row($result);
@@ -409,7 +418,7 @@ abstract class Dbal extends Fsb_model
 			}
 			else
 			{
-				$sql = $insert . ' INTO ' . SQL_PREFIX . $table . "
+				$sql = $insert . ' INTO ' . $this->sql_prefix . $table . "
 								($fields)
 							VALUES ($values)";
 				return ($this->query($sql));
@@ -427,7 +436,7 @@ abstract class Dbal extends Fsb_model
 	 */
 	public function update($table, $ary, $where = '')
 	{
-		$sql = 'UPDATE ' . SQL_PREFIX . $table . ' SET ';
+		$sql = 'UPDATE ' . $this->sql_prefix . $table . ' SET ';
 		foreach ($ary AS $key => $value)
 		{
 			$is_field = FALSE;
@@ -460,11 +469,11 @@ abstract class Dbal extends Fsb_model
 	{
 		if ($this->can_use_truncate)
 		{
-			$this->query('TRUNCATE ' . SQL_PREFIX . $table);
+			$this->query('TRUNCATE ' . $this->sql_prefix . $table);
 		}
 		else
 		{
-			$this->query('DELETE FROM ' . SQL_PREFIX . $table);
+			$this->query('DELETE FROM ' . $this->sql_prefix . $table);
 		}
 	}
 
@@ -710,13 +719,14 @@ abstract class Dbal extends Fsb_model
 */
 class Sql_select extends Fsb_model
 {
-	private $query = '';
-	private $fields = '';
-	private $join = '';
-	private $where = '';
-	private $order = '';
-	private $group = '';
-	private $limit = '';
+	public $query = '';
+	public $fields = '';
+	public $join = '';
+	public $where = '';
+	public $order = '';
+	public $group = '';
+	public $limit = '';
+	public $sql_prefix = '';
 
 	/*
 	** Constructeur
@@ -726,6 +736,7 @@ class Sql_select extends Fsb_model
 	public function __construct($select_state = 'SELECT')
 	{
 		$this->query = $select_state . ' ';
+		$this->sql_prefix = Fsb::$db->sql_prefix;
 	}
 
 	/*
@@ -739,7 +750,7 @@ class Sql_select extends Fsb_model
 	public function join_table($join_state, $tablename, $fields = '', $on = '')
 	{
 		$this->fields .= ($this->fields && $fields) ? ', ' . $fields : $fields;
-		$this->join .= (($this->join) ? "\n" : '') . $join_state . ' ' . SQL_PREFIX . $tablename . (($on) ? "\n" . $on : '');
+		$this->join .= (($this->join) ? "\n" : '') . $join_state . ' ' . $this->sql_prefix . $tablename . (($on) ? "\n" . $on : '');
 	}
 
 	/*

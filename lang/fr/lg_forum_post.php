@@ -40,7 +40,7 @@ return (array (
   'post_upload_auth_explain' => 'Qui peut télécharger le fichier ?',
   'post_upload_path' => 'Chemin du fichier',
   'post_upload_comment' => 'Description du fichier',
-  'post_upload_quota' => 'Vous ne pouvez pas uploader ce fichier car votre quota d\'upload est dépassé. Vous avez uploadé %s octets alors que le quota autorisé est de %s octets',
+  'post_upload_quota' => 'Vous ne pouvez pas uploader ce fichier car votre quota d\'upload est dépassé. Vous avez déjà uploadé %s alors que le quota autorisé est de %s.',
   'post_upload_code' => 'FSBcode [attach]',
   'post_upload_code_explain' => 'Vous venez d\'uploader un fichier, veuillez insérer le code ci-contre dans un des champs du message pour afficher le fichier joint',
   'post_nav_calendar_add' => 'Ajouter un événement sur le calendrier',

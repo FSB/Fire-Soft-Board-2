@@ -136,6 +136,21 @@ class Fsb_frame_child extends Fsb_frame
 			}
 			while ($row = Fsb::$db->row($result));
 		}
+		// Aucun message, on pioche donc directement les informations dans le sujet
+		else 
+		{
+			$sql = 'SELECT t_id, t_title, t_description, t_time
+					FROM ' . SQL_PREFIX . 'topics
+					WHERE t_id = ' . $this->id;
+			$row = Fsb::$db->request($sql);
+			$this->rss->open(
+				Parser::title($row['t_title']),
+				htmlspecialchars($row['t_description']),
+				Fsb::$session->data['u_language'],
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->id),
+				$row['t_time']
+			);
+		}
 	}
 
 	/*
@@ -153,7 +168,7 @@ class Fsb_frame_child extends Fsb_frame
 				FROM ' . SQL_PREFIX . 'forums f
 				LEFT JOIN ' . SQL_PREFIX . 'topics t
 					ON f.f_id = t.f_id
-				INNER JOIN ' . SQL_PREFIX . 'posts p
+				LEFT JOIN ' . SQL_PREFIX . 'posts p
 					ON p.p_id = t.t_first_p_id
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = p.u_id
@@ -196,6 +211,22 @@ class Fsb_frame_child extends Fsb_frame
 			}
 			while ($row = Fsb::$db->row($result));
 		}
+		// Aucun sujet, on pioche donc directement les informations dans le forum
+		else 
+		{
+			$sql = 'SELECT f_id, f_name, f_text
+					FROM ' . SQL_PREFIX . 'forums
+					WHERE f_id = ' . $this->id;
+			$row = Fsb::$db->request($sql);
+
+			$this->rss->open(
+				Parser::title($row['f_name']),
+				htmlspecialchars($row['f_text']),
+				Fsb::$session->data['u_language'],
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),
+				CURRENT_TIME
+			);
+		}
 	}
 
 	/*
@@ -224,7 +255,7 @@ class Fsb_frame_child extends Fsb_frame
 				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$session->lang('rss_index')),
 				htmlspecialchars(Fsb::$session->lang('rss_index')),
 				Fsb::$session->data['u_language'],
-				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=forum&amp;id=' . $this->id),
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=index&amp;cat=' . $cat_id),
 				$row['p_time']
 			);
 
@@ -250,6 +281,17 @@ class Fsb_frame_child extends Fsb_frame
 				);
 			}
 			while ($row = Fsb::$db->row($result));
+		}
+		// Aucun sujet ...
+		else 
+		{
+			$this->rss->open(
+				htmlspecialchars(Fsb::$cfg->get('forum_name') . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$session->lang('rss_index')),
+				htmlspecialchars(Fsb::$session->lang('rss_index')),
+				Fsb::$session->data['u_language'],
+				sid(Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=rss&amp;mode=index&amp;cat=' . $cat_id),
+				CURRENT_TIME
+			);
 		}
 	}
 

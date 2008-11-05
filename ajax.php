@@ -340,7 +340,7 @@ function ajax_quote_post($id)
 	}
 	unset($xml);
 
-	$content = '[quote=' . htmlspecialchars($data['p_nickname']) . ',t=' . $data['p_time'] . ',id=' . $data['p_id'] . ']' . trim($content) . '[/quote]';
+	$content = '[quote=' . htmlspecialchars($data['p_nickname']) . ',t=' . $data['p_time'] . ',id=' . $data['p_id'] . ']' . htmlspecialchars(trim($content)) . '[/quote]';
 	if (Http::request('is_wysiwyg'))
 	{
 		$content = parser_wysiwyg::decode($content);

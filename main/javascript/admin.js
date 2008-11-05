@@ -51,6 +51,7 @@ function hide_menu(id)
 	}
 	else
 	{
+		$(id).setStyle('display', 'block');
 		adm_menu_fx[id].start({
 			height: [$(id).getStyle('height'), adm_menu_height[id]],
 			opacity: [$(id).getStyle('opacity'), 1]
@@ -72,8 +73,9 @@ function init_admin()
 			if (Cookie.get(block_menu[i]) == "C")
 			{
 				adm_menu_height['menu_' + i] = $(block_menu[i]).getCoordinates().height;
-				$(block_menu[i]).style.height = '0px';
-				$(block_menu[i]).style.opacity = '0';
+				$(block_menu[i]).setStyle('display', 'none');
+				$(block_menu[i]).setStyle('height', '0px');
+				$(block_menu[i]).setOpacity('0');
 				adm_menu_pos['menu_' + i] = true;
 			}
 		}

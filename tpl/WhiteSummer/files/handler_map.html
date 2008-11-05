@@ -2,7 +2,7 @@
 	<tr>
 		<th>
 			<if content="$map.TYPE == 'textarea'"><br /><br /></if>
-			<label>{map.LANG} :</label>
+			<label for="<if content="$map.TYPE == 'textarea'">map_textarea_{map.NAME}<else>map_{map.NAME}_id_{map.ITERATOR}</if>">{map.LANG} :</label>
 			<if content="$map.TYPE == 'textarea'">
 				<br /><br />
 				<include name="handler_smilies.html" />
@@ -24,23 +24,23 @@
 				<input type="hidden" name="map_textarea_{map.NAME}_rows" id="map_textarea_{map.NAME}_rows" value="{map.ROWS}" />
 			<elseif content="$map.TYPE == 'radio'">
 				<block name="map.radio">
-					<input type="radio" name="{map.NAME}" value="{map.radio.ELEM}" <if content="$map.radio.CHECKED">checked="checked"</if> /> {map.radio.ELEM}
+					<input type="radio" name="{map.NAME}" value="{map.radio.ELEM}" <if content="$map.radio.CHECKED">checked="checked" id="map_{map.NAME}_id_{map.ITERATOR}"</if> /> {map.radio.ELEM}
 					<if content="$map.DIRECTION == 'vertical'"><br /><else>&nbsp; &nbsp;</if>
 				</block>
 			<elseif content="$map.TYPE == 'checkbox'">
 				<block name="map.checkbox">
-					<input type="checkbox" name="{map.NAME}[]" value="{map.checkbox.ELEM}" <if content="$map.checkbox.CHECKED">checked="checked"</if> />{map.checkbox.ELEM}
+					<input type="checkbox" name="{map.NAME}[]" value="{map.checkbox.ELEM}" <if content="$map.checkbox.CHECKED">checked="checked" id="map_{map.NAME}_id_{map.ITERATOR}"</if> />{map.checkbox.ELEM}
 					<if content="$map.DIRECTION == 'vertical'"><br /><else>&nbsp; &nbsp;</if>
 				</block>
 				</select>
 			<elseif content="$map.TYPE == 'list'">
-				<select name="{map.NAME}">
+				<select name="{map.NAME}" id="map_{map.NAME}_id_{map.ITERATOR}">
 				<block name="map.list">
 					<option value="{map.list.ELEM}" <if content="$map.list.SELECTED">selected="selected"</if>>{map.list.ELEM}</option>
 				</block>
 				</select>
 			<elseif content="$map.TYPE == 'multilist'">
-				<select name="{map.NAME}[]" multiple="multiple" size="{map.SIZE}">
+				<select name="{map.NAME}[]" multiple="multiple" size="{map.SIZE}" id="map_{map.NAME}_id_{map.ITERATOR}">
 				<block name="map.multilist">
 					<option value="{map.multilist.ELEM}" <if content="$map.multilist.SELECTED">selected="selected"</if>>{map.multilist.ELEM}</option>
 				</block>

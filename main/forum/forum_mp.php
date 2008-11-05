@@ -334,8 +334,7 @@ class Fsb_frame_child extends Fsb_frame
 		
 		// On genere les variables de template
 		Fsb::$tpl->set_vars(array(
-			'AUTO_ANSWER_ACTIV_YES' =>	(Fsb::$session->data['u_mp_auto_answer_activ']) ? 'checked="checked"' : '',
-			'AUTO_ANSWER_ACTIV_NO' =>	(!Fsb::$session->data['u_mp_auto_answer_activ']) ? 'checked="checked"' : '',
+			'AUTO_ANSWER_ACTIV' =>	(Fsb::$session->data['u_mp_auto_answer_activ']) ? true : false,
 			'AUTO_ANSWER_MESSAGE' =>	htmlspecialchars(Fsb::$session->data['u_mp_auto_answer_message']),
 			'COUNT_BLACKLIST' =>		$count_blacklist,
 			'LIST_BLACKLIST' =>			Html::make_list('blacklist[]', array(), $list_blacklist, array(

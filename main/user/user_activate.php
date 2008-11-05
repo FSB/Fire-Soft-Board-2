@@ -208,7 +208,7 @@ class Page_user_activate extends Fsb_model
 				Fsb::$tpl->set_blocks('activate.form', array(
 					'VALUE' =>		$form_value,
 					'LANG' =>		$form_lang,
-					'CHECKED' =>	(($value['value'] == 'boolean' && Fsb::$session->data['u_activate_' . $key] == $form_value) || ($value['value'] == 'binary' && (Fsb::$session->data['u_activate_' . $key] & $form_value))) ? 'checked="checked"' : '',
+					'CHECKED' =>	(($value['value'] == 'boolean' && Fsb::$session->data['u_activate_' . $key] == $form_value) || ($value['value'] == 'binary' && (Fsb::$session->data['u_activate_' . $key] & $form_value))) ? TRUE : FALSE,
 				));
 			}
 		}

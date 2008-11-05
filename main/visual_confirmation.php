@@ -54,7 +54,14 @@ else
 	// Sinon si on garde la meme image ...
 	else
 	{
-		$captcha->set_str(Fsb::$session->data['s_visual_code']);
+		if (Fsb::$session->data['s_visual_code'])
+		{
+			$captcha->set_str(Fsb::$session->data['s_visual_code']);
+		}
+		else
+		{
+			$captcha->create_str();
+		}
 	}
 }
 

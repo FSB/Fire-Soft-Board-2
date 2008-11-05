@@ -103,7 +103,7 @@ function copy_dir($path, $to, $clean_path)
 			}
 			else
 			{
-				//echo 'COPY = ' . $to . substr($path, strlen($clean_path)) . $file . '<br />';
+				echo 'COPY = ' . $to . substr($path, strlen($clean_path)) . $file . '<br />';
 				copy($path . $file, $to . substr($path, strlen($clean_path)) . $file);
 			}
 		}

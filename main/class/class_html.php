@@ -344,7 +344,7 @@ class Html extends Fsb_model
 		}
 		closedir($fd);
 
-		return (Html::make_list($name, $value, $list));
+		return (Html::make_list($name, $value, $list, array('id' => 'list_lang_id')));
 	}
 
 	/**
@@ -374,7 +374,7 @@ class Html extends Fsb_model
 				);
 			break;
 		}
-		return (Html::make_list($name, $default, $list));
+		return (Html::make_list($name, $default, $list, array('id' => 'list_' . $type . '_id')));
 	}
 
 	/**
