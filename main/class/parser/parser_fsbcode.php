@@ -458,7 +458,7 @@ class Parser_fsbcode extends Fsb_model
 			$attr_str .= 'alt="' . $content . '" ';
 		}
 
-		return ('<img src="' . trim($content) . '" ' . $attr_str . ' />');
+		return ('<div class="image"><img src="' . trim($content) . '" ' . $attr_str . ' /></div>');
 	}
 
 	/*

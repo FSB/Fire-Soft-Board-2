@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
 	<title>{SITE_NAME}</title>
-	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/print.css">
+	<link type="text/css" rel="stylesheet" href="{ROOT}tpl/{USER_TPL}/print.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset={LG_CHARSET}"  />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 </head>
@@ -28,14 +28,11 @@
 
 <block name="post">
 <hr align="left" />
-<p class="post">
-<a name="{post.ID}"></a>
-<if content="$post.IS_VISITOR">{post.NICKNAME}<else><a href="{post.U_LOGIN}">{post.NICKNAME}</a></if> - {post.DATE}
+<p class="post" id="p{post.ID}">
+	{post.NICKNAME} - {post.DATE}
 </p>
 <hr align="left" />
-<p class="post">
-{post.CONTENT}
-</p>
+<p class="post">{post.CONTENT}</p>
 </block>
 
 <hr align="left" />
@@ -48,4 +45,4 @@
 </div>
 
 </body>
-</head>
+</html>

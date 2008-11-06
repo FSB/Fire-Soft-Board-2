@@ -2,7 +2,7 @@
 	<a class="menu_first" onclick="hide_menu('menu_{cat_menu.ITERATOR}')">{cat_menu.CAT}</a>
 	<div id="menu_{cat_menu.ITERATOR}">
 		<block name="cat_menu.menu">
-			<img src="adm_tpl/img/icon/{cat_menu.menu.ICON}" class="menu_img" alt="{cat_menu.menu.MENU}" title="{cat_menu.menu.MENU}" /> <a href="{cat_menu.menu.U_MENU}" class="<if content="$cat_menu.menu.IS_CURRENT">menu_select<else>menu</if>"> &nbsp;&nbsp; {cat_menu.menu.MENU}</a>
+			<img src="{cat_menu.menu.ICON}" class="menu_img" alt="{cat_menu.menu.MENU}" title="{cat_menu.menu.MENU}" /> <a href="{cat_menu.menu.U_MENU}" class="<if content="$cat_menu.menu.IS_CURRENT">menu_select<else>menu</if>"> &nbsp;&nbsp; {cat_menu.menu.MENU}</a>
 		</block>
 	</div>
 	<br style="line-height: 10px" />

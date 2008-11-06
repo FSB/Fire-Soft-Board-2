@@ -187,3 +187,9 @@ a.download
 	font-weight: bold;
 	font-size: 18px;
 }
+
+/* Images */
+.image
+{
+	overflow: auto;
+}

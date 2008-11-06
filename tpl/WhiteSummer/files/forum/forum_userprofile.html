@@ -100,7 +100,11 @@
 						<if content="$RANK_NAME"><span {RANK_STYLE}>{RANK_NAME}</span><br /></if>
 						<if content="$RANK_IMG"><img src="{RANK_IMG}" alt="{RANK_NAME}" title="{RANK_NAME}" /><br /></if>
 					</switch>
-					<if content="$USER_AVATAR"><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{USER_AVATAR}" alt="{LG_USERPROFILE_AVATAR}" title="{LG_USERPROFILE_AVATAR}" /></div><else>---</if>
+					<if content="$USER_AVATAR">
+						<div style="overflow: hidden; width: {CFG_AVATAR_WIDTH}px; height: {CFG_AVATAR_HEIGHT}px"><img src="{USER_AVATAR}" alt="{LG_USERPROFILE_AVATAR}" title="{LG_USERPROFILE_AVATAR}" /></div>
+					<else>
+						---
+					</if>
 				</div>
 			</div>
 

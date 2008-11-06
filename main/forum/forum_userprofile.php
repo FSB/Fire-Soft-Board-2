@@ -300,7 +300,7 @@ class Fsb_frame_child extends Fsb_frame
 					' . ((Fsb::$session->auth() < MODOSUP) ? 'AND g.g_hidden = 0' : '') . '
 				ORDER BY g_type, g_name';
 		$javascript = 'onchange="if (this.selectedIndex > 0) location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=') . '\' + this.value"';
-		return (Html::list_groups('list_groups', GROUP_NORMAL|GROUP_SPECIAL, '', FALSE, array(), $sql, $javascript, '<option>' . Fsb::$session->lang('userprofile_choose_group')));
+		return (Html::list_groups('list_groups', GROUP_NORMAL|GROUP_SPECIAL, '', FALSE, array(), $sql, $javascript, '<option>' . Fsb::$session->lang('userprofile_choose_group') . '</option>'));
 	}
 
 	/*

@@ -94,7 +94,7 @@ class Adm_menu extends Fsb_model
 					'U_MENU' =>		sid('index.' . PHPEXT . '?p=' . $subary['page']),
 					'MENU' =>		$lg_page,
 					'IS_CURRENT' =>	(($subary['page'] == $current_page) ? TRUE : FALSE),
-					'ICON' =>		($subary['page_icon']) ? $subary['page_icon'] : 'menu.png',
+					'ICON' =>		($subary['page_icon'] && file_exists(ROOT . 'admin/adm_tpl/img/icon/' . $subary['page_icon'])) ? ROOT . 'admin/adm_tpl/img/icon/' . $subary['page_icon'] : ROOT . 'admin/adm_tpl/img/icon/menu.png',
 				));
 			}
 		}
@@ -174,7 +174,7 @@ class Adm_menu extends Fsb_model
 		{
 			if (!array_select($this->data, 'page', $value['page']))
 			{
-				$value['page_icon'] = '';
+				$value['page_icon'] = $value['page'] . '.png';
 				if (isset($cats[$value['cat']]))
 				{
 					$value['cat_order'] = $cats[$value['cat']];

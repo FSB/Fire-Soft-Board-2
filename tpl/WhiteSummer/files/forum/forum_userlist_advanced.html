@@ -21,7 +21,7 @@
 				</if>
 			</div>
 			<div class="avatar" <if content="!$user.AVATAR_WIDTH">style="overflow: hidden; width: {AVATAR_MAX_SIZE}px; height: {AVATAR_MAX_SIZE}px"</if>>
-				<if content="$user.AVATAR"><a href="{user.U_PROFILE}"><img src="{user.AVATAR}" <if content="$user.AVATAR_WIDTH">width="{user.AVATAR_WIDTH}" height="{user.AVATAR_HEIGHT}"</if> /></a></if>
+				<if content="$user.AVATAR"><a href="{user.U_PROFILE}"><img src="{user.AVATAR}" <if content="$user.AVATAR_WIDTH">width="{user.AVATAR_WIDTH}" height="{user.AVATAR_HEIGHT}"</if> alt="{LG_AVATAR}" /></a></if>
 			</div>
 			<div class="profile">
 				<switch name="is_group_moderator"><input type="checkbox" name="action[]" id="action_{user.ITERATOR}" value="{user.ID}" <if content="$user.DISABLED">disabled="disabled"</if> /></switch>

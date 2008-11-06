@@ -119,7 +119,7 @@ class Fsb_frame extends Fsb_model
 			Fsb::$tpl->set_vars(array(
 				'HAVE_NEW_MP' =>		TRUE,
 				'POPUP_CONTENT' =>		addslashes(sprintf(Fsb::$session->lang('mp_new_popup'), Fsb::$session->data['u_total_mp'])),
-				'U_REDIRECT_INBOX' =>	sid(ROOT . 'index.' . PHPEXT . '?p=mp&box=inbox'),
+				'U_REDIRECT_INBOX' =>	sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox'),
 			));
 		}
 
@@ -158,7 +158,7 @@ class Fsb_frame extends Fsb_model
 			'U_SEARCH' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search'),
 			'U_USERLIST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . GROUP_SPECIAL_USER),
 			'U_CALENDAR' =>			sid(ROOT . 'index.' . PHPEXT . '?p=calendar'),
-			'U_MP_POPUP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=mp&box=popup'),
+			'U_MP_POPUP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=popup'),
 			'U_GROUPS_MODO' =>		sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=groups'),
 			'U_FORUMINFO' =>		sid(ROOT . 'index.' . PHPEXT . '?p=info'),
 			'U_LOW_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=low'),

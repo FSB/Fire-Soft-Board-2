@@ -133,6 +133,58 @@ switch ($img_type)
 	break;
 }
 
+// Rempli les jours / mois / annees vides dans l'interval
+if ($state == ONE_DAY)
+{
+	$y = date('Y', $begin_time);
+	$new = array();
+	for ($i = 1; $i <= date('t', $begin_time); $i++)
+	{
+		$i = String::add_zero($i, 2);
+		$new[$i] = (isset($args[$y][$i])) ? $args[$y][$i] : 0;
+	}
+	$args[$y] = $new;
+}
+else if ($state == ONE_MONTH)
+{
+	$start_year = date('Y', $begin_time);
+	$end_year = date('Y', $end_time);
+	$start_month = date('n', $begin_time);
+	$end_month = date('n', $end_time);
+	
+	// Calcul du nombre de mois total
+	$interval = ($end_month - $start_month) + (12 * ($end_year - $start_year));
+	if ($interval < 0)
+	{
+		$interval = 0;
+	}
+
+	$debug = 0;
+	$month = $start_month;
+	$year = $start_year;
+	$new = array();
+	$i = 0;
+	while ($i <= $interval)
+	{
+		if (!isset($new[$year]))
+		{
+			$new[$year] = array();
+		}
+		
+		$m = String::add_zero($month, 2);
+		$new[$year][$month] = (isset($args[$year][$m])) ? $args[$year][$m] : 0;
+		
+		$month++;
+		if ($month == 13)
+		{
+			$year++;
+			$month = 1;
+		}
+		$i++;
+	}
+	$args = $new;
+}
+
 // Creation des valeurs pour le graphique
 $values = array();
 foreach ($args AS $y => $list_y)
@@ -146,7 +198,7 @@ foreach ($args AS $y => $list_y)
 	}
 }
 
-$gd_stats = new Gd_stats(600, 300);
+$gd_stats = new Gd_stats(650, 300);
 $gd_stats->values($values);
 $gd_stats->output();
 

@@ -45,3 +45,16 @@
 	padding-left: 50px;
 	padding-right: 50px;
 }
+
+/* Fix de la largeur des images dans les messages */
+.image
+{
+	width: 100%;
+}
+
+/* Fix de la hauteur des avatars pour IE6 */
+.avatar
+{
+	height: expression(this.scrollHeight > 180 ? "180px" : "auto");
+	
+}

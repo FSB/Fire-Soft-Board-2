@@ -47,7 +47,9 @@
 			<div class="userinfo">
 				<div class="userinfo_box">
 					{MESSAGE_NICKNAME}
-					<if content="$MESSAGE_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{MESSAGE_AVATAR}" alt="{MESSAGE_AVATAR}" title="{MESSAGE_AVATAR}" /></div></if>
+					<if content="$MESSAGE_AVATAR">
+						<br /><div class="avatar" style="overflow: hidden; width: {CFG_AVATAR_WIDTH}px; height: {CFG_AVATAR_HEIGHT}px"><img src="{MESSAGE_AVATAR}" alt="{MESSAGE_AVATAR}" title="{MESSAGE_AVATAR}" /></div>
+					</if>
 				</div>
 			</div>
 			<div class="postcontent">
@@ -93,7 +95,9 @@
 			<div class="userinfo">
 				<div class="userinfo_box">
 					{post.NICKNAME}
-					<if content="$post.U_AVATAR"><br /><div style="overflow: hidden; width: {AVATAR_WIDTH}px; height: {AVATAR_HEIGHT}px"><img src="{post.U_AVATAR}" alt="{post.U_AVATAR}" title="{post.U_AVATAR}" /></div></if>
+					<if content="$post.U_AVATAR">
+						<br /><div style="overflow: hidden; width: {CFG_AVATAR_WIDTH}px; height: {CFG_AVATAR_HEIGHT}px"><img src="{post.U_AVATAR}" alt="{post.U_AVATAR}" title="{post.U_AVATAR}" /></div>
+					</if>
 				</div>
 			</div>
 			<div class="postcontent">

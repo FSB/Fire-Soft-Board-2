@@ -213,8 +213,14 @@ class Gd_stats extends Fsb_model
 				break;
 			}
 
-			$height = $v['v'] * ($this->height - $this->x_width - $m) / $this->max;
-			$this->gradedRectangle($iterator * $this->x_width + $m, ($this->height - $this->x_width) - $height, $this->x_width, $height, array(150, 150, 210), array(220, 220, 235), 5, array(0, 0, 150));
+			if ($this->max > 0)
+			{
+				$height = $v['v'] * ($this->height - $this->x_width - $m) / $this->max;
+				if ($v['v'] > 0)
+				{
+					$this->gradedRectangle($iterator * $this->x_width + $m, ($this->height - $this->x_width) - $height, $this->x_width, $height, array(150, 150, 210), array(220, 220, 235), 5, array(0, 0, 150));
+				}
+			}
 			$iterator++;
 		}
 	}

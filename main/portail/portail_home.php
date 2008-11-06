@@ -48,11 +48,11 @@ class Page_portail_home extends Fsb_model
 
 			if (Fsb::$session->data['u_total_mp'] == 1)
 			{
-				$mp_text = sprintf(Fsb::$session->lang('pm_new_mp'), sid(ROOT . 'index.' . PHPEXT . '?p=mp&box=inbox'));
+				$mp_text = sprintf(Fsb::$session->lang('pm_new_mp'), sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox'));
 			}
 			else if (Fsb::$session->data['u_total_mp'] > 1)
 			{
-				$mp_text = sprintf(Fsb::$session->lang('pm_new_mps'), sid(ROOT . 'index.' . PHPEXT . '?p=mp&box=inbox'));
+				$mp_text = sprintf(Fsb::$session->lang('pm_new_mps'), sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox'));
 			}
 			else
 			{

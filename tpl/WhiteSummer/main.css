@@ -93,6 +93,7 @@ a:hover
 {
 	background-image: url(img/layout/top_background.png);
 	height: 140px;
+	position: relative;
 }
 
 /* Bordure gauche du header */
@@ -159,7 +160,8 @@ a:hover
 /* Zone à droite du header contenant la recherche rapide le profil et la deconnexion */
 #header_right
 {
-	float: right;
+	position: absolute;
+	right: 20px;
 	width: 300px;
 	height: 105px;
 	text-align: right;
