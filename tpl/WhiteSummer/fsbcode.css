@@ -87,92 +87,76 @@ div.fsbcode span
 /* FSBcode citation */
 .quote
 {
-	border: 1px dotted #000000;
-	margin: 8px 5px 8px 5px;
+	border: 1px solid #ff3b00;
+	background: #fff6f6 url(img/layout/quote_background.gif) repeat-x;
 }
 
-/* Titre de citation */
 .quote .quote_title
 {
-	background-color: #e0e6d9;
-	padding: 3px;
-	padding-left: 24px;
-	border-bottom: 1px dotted #000000;
 	font-weight: bold;
-	background-image: url('img/quote.gif');
-	background-repeat: no-repeat;
+	display: block;
+	padding: 2px 0 2px 22px;
+	background: url(img/quote_on.gif) no-repeat;
+	
 }
 
-/* Contenu de la citation */
 .quote .quote_content
 {
-	padding: 5px;
-	background-color: #f0f2ed;
+	padding: 10px;
 	overflow: auto;
 }
 
 /* FSBcode code */
 .code
 {
-	border: 1px dotted #000000;
-	margin: 8px 5px 8px 5px;
+	border: 1px solid #499fff;
+	background: #f5f5ff url(img/layout/code_background.gif) repeat-x;
 }
 
 /* Titre du code */
 .code .code_title
 {
-	background-color: #ededed;
-	padding: 3px;
-	padding-left: 24px;
-	border-bottom: 1px dotted #000000;
 	font-weight: bold;
-	background-image: url('img/code.gif');
-	background-repeat: no-repeat;
+	padding: 2px 0 2px 22px;
+	background: url(img/code.gif) no-repeat;
 }
 
 /* Contenu du code */
 .code .code_content
 {
-	margin: 0px;
-	background-color: #fcfcfc;
 	overflow: auto;
 	height: auto;
 	max-height: 300px;
 	white-space: pre;
-	padding: 3px;
+	padding: 10px;
 	font-family: Helvetica;
-	margin-bottom: 1px;
+	font-size: 0.9em;
 }
 
 /* FSBcode attach */
 .attach
 {
-	border: 1px dotted #000000;
-	margin: 8px 5px 8px 5px;
+	border: 1px solid #ff3b00;
+	background: #fff6f6 url(img/layout/attach_background.gif) repeat-x;
 }
 
 /* Titre du fichier joint */
 .attach .attach_title
 {
-	background-color: #ffdfdf;
-	padding: 3px;
-	padding-left: 18px;
-	border-bottom: 1px dotted #000000;
 	font-weight: bold;
-	background-image: url('img/attachment.gif');
-	background-repeat: no-repeat;
+	padding: 2px 0 2px 22px;
+	background: url(img/attachment.gif) no-repeat;
 }
 
 /* Contenu du fichier joint */
 .attach .attach_content
 {
-	background-color: #fff6f6;
-	white-space: pre;
-	padding: 3px;
+	padding: 10px;
 	font-family: Helvetica;
-	margin-bottom: 1px;
+	font-size: 0.9em;
 	overflow: auto;
 }
+
 
 /* Informations sur le fichier joint */
 .attach_data
