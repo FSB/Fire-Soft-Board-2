@@ -19,7 +19,7 @@
 		* <name> (...) : Nom du MOD
 		* <version> (...) : Version du MOD
 		* <description> (...) : Description du MOD
-		* <autor> <...> #...# : Informations sur l'auteur
+		* <author> <...> #...# : Informations sur l'auteur
 			* <name> (...) : Nom de l'auteur
 			* <email> (...) : Email de l'auteur
 			* <website> (...) : Site web de l'auteur
@@ -27,7 +27,7 @@
 		* <history> <...> (!) : Historique du MOD
 			* <entry> <...> #...# (!) : Un évènement de l'historique
 				* <date> (...) (!) : Doit être au format jj/mm/aaaa
-				* <autor> (...) (!) : Auteur de l'évènement
+				* <author> (...) (!) : Auteur de l'évènement
 				* <text> (...) (!) : Description de l'évènement
 		* <note> (...) : Permet d'ajouter des informations textuelles concernant le MOD ou son installation
 		* <manualQueries> (...) : Requêtes suplémentaires à exécuter en cas d'installation manuelle

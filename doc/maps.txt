@@ -23,7 +23,7 @@
 			- append (true|false) : si true, la balise [attach] sera ajoutée au contenu du champ, si false elle écrasera le contenu du champ
 		* <description> (...) (!) : Description de la MAP (indépendant du champ texte description sur la page)
 			- set (true|false) (!) : si true, remplira le champ description sur la page. False par défaut
-		* <autor> <...> (!) : Informations sur l'auteur de la MAP
+		* <author> <...> (!) : Informations sur l'auteur de la MAP
 			* <name> (...) (!) : Nom de l'auteur
 			* <email> (...) (!) : Email de l'auteur
 			* <website> (...) (!) : Site web de l'auteur
