@@ -216,6 +216,10 @@ class Dbal_mysql extends Dbal
 	 */
 	public function sql_error()
 	{
+		if (!$this->id)
+		{
+			return (mysql_error());
+		}
 		return (mysql_error($this->id));
 	}
 

@@ -33,8 +33,10 @@ class Http extends Fsb_model
 		// On supprime toutes les variables crees par la directive register_globals
 		// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 		$gpc = array('_GET', '_POST', '_COOKIE');
-		$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
-		$register_globals = TRUE;//(ini_get('register_globals')) ? TRUE : FALSE;
+		$keep_globals = array('_GET', '_POST', '_COOKIE', '_REQUEST', 'GLOBALS', '_SERVER', '_COOKIE', '_ENV', 'debug');
+		$magic_quoted = array('_GET', '_POST', '_COOKIE', '_REQUEST');
+		$magic_quote = get_magic_quotes_gpc() || get_magic_quotes_runtime();
+		$register_globals = ini_get('register_globals');
 
 		if ($register_globals || $magic_quote)
 		{
@@ -44,17 +46,20 @@ class Http extends Fsb_model
 				{
 					foreach ($GLOBALS[$value] AS $k => $v)
 					{
-						if ($k != 'debug')
+						if (!in_array($k, $keep_globals))
 						{
 							unset($GLOBALS[$k]);
 						}
 					}
 				}
-				
-				if ($magic_quote && isset($GLOBALS[$value]))
-				{
-					$GLOBALS[$value] = array_map_recursive('stripslashes', $GLOBALS[$value]);
-				}
+			}
+		}
+
+		if ($magic_quote)
+		{
+			foreach ($magic_quoted AS $value)
+			{
+				$GLOBALS[$value] = array_map_recursive('stripslashes', $GLOBALS[$value]);
 			}
 		}
 	}

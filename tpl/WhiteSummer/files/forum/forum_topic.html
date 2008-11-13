@@ -127,7 +127,7 @@ InitBulle();
 				</if>
 				</div>
 			</div>
-			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (window.webkit) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
+			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">if (window.webkit && !window.webkit420) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
 				<div class="postheader">
 					<span>
                     	<if content="$post.HAVE_EDIT">{post.EDIT_DATA} &nbsp;</if>
@@ -142,7 +142,7 @@ InitBulle();
 
 						<switch name="can_reply">
 							<if content="$USE_AJAX AND $post.CAN_QUICK_QUOTE">
-								<a href="{post.U_QUOTE}" onclick="if (window.webkit) return true; quote_post({post.ID}, 'quick_reply_form', 'quick_reply'); document.getElementById('quote_id_{post.ID}').src = '{IMG_QUOTE_POST_SELECTED}'; return false">
+								<a href="{post.U_QUOTE}" onclick="if (window.webkit && !window.webkit420) return true; quote_post({post.ID}, 'quick_reply_form', 'quick_reply'); document.getElementById('quote_id_{post.ID}').src = '{IMG_QUOTE_POST_SELECTED}'; return false">
 							<else>
 								<a href="{post.U_QUOTE}">
 							</if>
