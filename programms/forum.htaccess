@@ -1,0 +1,24 @@
+RewriteEngine On
+
+#
+# Renseignez ici le chemin de votre forum. N'oubliez pas de placer ce fichier a la racine de votre forum (et non de votre site).
+#   Exemple : votre forum est accessible sur www.monsiteweb.com/forum/, vous devez ecrire RewriteBase /forum/
+# Consultez la FAQ du forum pour davantage d'informations.
+# -----
+# Write here the path to your forum. Don't forget to put this file on forum root directory (not on your website directory).
+#   Exemple : your forum is on www.mywebsite.com/forum/, you need to write RewriteBase /forum/
+# Read the FAQ for more informations.
+#
+RewriteBase /fsb2/
+
+RewriteRule ^cat-([0-9]+)\.html$ index.php?p=index&cat=$1 [L]
+RewriteRule ^forum-([0-9]+)-([0-9]+)\.html$ index.php?p=forum&f_id=$1&page=$2 [L]
+RewriteRule ^topic-([0-9]+)-([0-9]+)\.html$ index.php?p=topic&t_id=$1&page=$2 [L]
+RewriteRule ^profile-([0-9]+)\.html$ index.php?p=userprofile&id=$1 [L]
+RewriteRule ^portail\.html$ index.php?p=portail [L]
+RewriteRule ^topic-author-([0-9]+)\.html$ index.php?p=search&mode=author_topic&id=$1 [L]
+RewriteRule ^topic-author-([0-9]+)-([0-9]+)\.html$ index.php?p=search&mode=author_topic&id=$1&page=$2 [L]
+RewriteRule ^author-([0-9]+)\.html$ index.php?p=search&mode=author&id=$1 [L]
+RewriteRule ^author-([0-9]+)-([0-9]+)\.html$ index.php?p=search&mode=author&id=$1&page=$2 [L]
+RewriteRule ^rss-([0-9]+)\.xml$ index.php?p=rss&mode=index&cat=$1 [L]
+RewriteRule ^rss-([a-z_]+)-([0-9]+)\.xml$ index.php?p=rss&mode=$1&id=$2 [L]
