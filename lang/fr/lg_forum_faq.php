@@ -526,7 +526,7 @@ $GLOBALS['faq_data'] = array (
     ),
 	'portail' => array(
 	  'question' => 'Comment placer le portail comme page d\'accueil ?',
-	  'answer' => 'Pour placer votre portail en page d\'accueil du forum, vous devez créer un fichier nommé <b>.HTACCESS</b> à la racine de votre forum, et y ajouter le code suivant :[code]DirectoryIndex index.php?p=portail index.html index.php[/code]Lorsqu\'un visiteur tentera d\'accéder à votre site via l\'url http://www.votresiteweb.ext/forum/ il tombera directement sur le portail.',
+	  'answer' => 'Pour placer votre portail en page d\'accueil du forum, vous devez créer un fichier nommé <b>.htaccess</b> à la racine de votre forum, et y ajouter le code suivant :[code]DirectoryIndex index.php?p=portail index.html index.php[/code]Lorsqu\'un visiteur tentera d\'accéder à votre site via l\'url http://www.votresiteweb.ext/forum/ il tombera directement sur le portail.',
 	),
     'galery' => 
     array (
@@ -539,9 +539,10 @@ $GLOBALS['faq_data'] = array (
       'answer' => 'L\'URL rewriting est une fonction vous permettant de réécrire une URL tout en gardant sa "destination" d\'origine. Ce système permet en
 			général de faciliter le référencement de vos pages par les moteurs de recherche.<br />
 			Pour pouvoir utiliser l\'URL rewriting sur votre forum, vous devez tout d\'abord activer la fonction dans la gestion des modules, puis vous devez copier
-			le fichier <strong>~/programms/REWRITE_HTACCESS</strong> à la racine du forum en le renommant <strong>.HTACCESS</strong>. Ce fichier est fait pour marcher
-			sur la plupart des serveurs mais certains d\'entre eux demandent quelque changement de syntaxe dans le fichier .HTACCESS, en cas de problème venez poster sur
+			le fichier <strong>~/programms/forum.htaccess</strong> à la racine du forum en le renommant <strong>.htaccess</strong>. Ce fichier est fait pour marcher
+			sur la plupart des serveurs mais certains d\'entre eux demandent quelque changement de syntaxe dans le fichier .htaccess, en cas de problème venez poster sur
 			notre forum de support.<br /><br />
+			Vous devez ensuite éditer votre fichier afin de renseigner le bon chemin du forum,au niveau de la ligne <b>RewriteBase /fsb2/</b>. Si votre forum se trouve à l\'URL www.monsiteweb.com/forum, vous devez entrer <b>RewriteBase /forum/</b>.<br /><br />
 			Afin d\'éviter le <b>duplicat content</b> par les robots (le duplicat content est l\'indexation de la même page, via plusieurs URL différentes, ce qui peut être très nocif pour le référencement), copiez le fichier ~/programms/robot.txt à la racine de votre domaine (et non pas à la racine de votre forum). Vous devez ensuite éditer ce fichier, en ajoutant le chemin vers votre forum devant <b>index.php?</b>. Par exemple si votre forum est dans le dossier <b>monforum/</b> mettez <b>monforum/index.php?</b>. Ce fichier empêchera l\'indexation de toutes les URL de type <b>index.php?quelquechose</b> sur votre forum, laissant ainsi référencer librement vos URL réécrites, sans risque de <b>duplicat content</b>.
 		',
     ),

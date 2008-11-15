@@ -514,18 +514,8 @@ class Fsb_frame_child extends Fsb_frame
 				// Validation des membres selectionnes
 				if ($row)
 				{
-					Fsb::$db->update('groups_users', array(
-							'gu_status' =>	GROUP_USER,
-					), 'WHERE u_id IN (' . implode(', ', $idx) . ') AND g_id = ' . $this->id . ' AND gu_status = ' . GROUP_WAIT);
-					Fsb::$db->query($sql);
-
-					// Recalcul des autorisations
-					Group::update_auths($idx);
-
-					// On donne un rang aux membres s'ils n'en avaient pas
-					Fsb::$db->update('users', array(
-						'u_rank_id' =>		$this->group_data['g_rank'],
-					), 'WHERE u_id IN (' . implode(', ', $idx) . ') AND u_rank_id = 0');
+					Group::delete_users($idx, $this->id, FALSE);
+					Group::add_users($idx, $this->id, GROUP_USER);
 				}
 			}
 		}
@@ -562,7 +552,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 
 			// Ajout de l'utilisateur
-			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT);
+			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT, TRUE, FALSE, ($admin) ? TRUE : FALSE);
 
 			// On donne un rang au membre s'il n'en avait pas
 			Fsb::$db->update('users', array(

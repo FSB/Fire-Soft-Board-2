@@ -148,8 +148,9 @@ class Group extends Fsb_model
 	 * @param int $state Status du membre dans le groupe (GROUP_MODO | GROUP_USER | GROUP_WAIT)
 	 * @param bool $update Mise a jour ou non des autorisations des membres
 	 * @param bool $is_single_groupe TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
+	 * @param bool $update_default TRUE si on souhaite mettre a jour le groupe par defaut
 	 */
-	public static function add_users($idx, $group_id, $state, $update = TRUE, $is_single_groupe = FALSE)
+	public static function add_users($idx, $group_id, $state, $update = TRUE, $is_single_groupe = FALSE, $update_default = TRUE)
 	{
 		if (!is_array($idx))
 		{
@@ -164,6 +165,11 @@ class Group extends Fsb_model
 		// Ajout des utilisateurs
 		foreach ($idx AS $id)
 		{
+			if ($id == VISITOR_ID)
+			{
+				continue;
+			}
+
 			Fsb::$db->insert('groups_users', array(
 				'g_id' =>		array($group_id, TRUE),
 				'u_id' =>		array($id, TRUE),
@@ -173,7 +179,7 @@ class Group extends Fsb_model
 		Fsb::$db->query_multi_insert();
 
 		// Mise a jour du groupe par defaut de ces utilisateurs, s'ils etaient sans groupe.
-		if (!self::is_special_group($group_id) && !$is_single_groupe)
+		if (!self::is_special_group($group_id) && !$is_single_groupe && $update_default)
 		{
 			Fsb::$db->update('users', array(
 				'u_default_group_id' =>		$group_id,

@@ -17,6 +17,8 @@
 ** Fait pas le cafe par contre :(
 */
 
+set_time_limit(0);
+
 function delete_like($path, $end)
 {
 	$fd = opendir($path);
@@ -103,7 +105,6 @@ function copy_dir($path, $to, $clean_path)
 			}
 			else
 			{
-				echo 'COPY = ' . $to . substr($path, strlen($clean_path)) . $file . '<br />';
 				copy($path . $file, $to . substr($path, strlen($clean_path)) . $file);
 			}
 		}
@@ -120,8 +121,6 @@ delete_like('../upload/', '.file');
 delete_like('../mods/save/', '.tar.gz');
 delete_like('../mods/save/', '.zip');
 
-copy_dir('../', '../../package_fsb2/fsb2/', '../');
-
 // Supprime les Thumbs.db
 delete_thumbs('../');
 
@@ -130,5 +129,7 @@ truncate_config();
 
 // Met un index.html dans tous les repertoires en ayant besoin
 set_index_html('../');
+
+copy_dir('../', '../../package_fsb2/fsb2/', '../');
 
 ?>
