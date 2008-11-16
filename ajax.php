@@ -1,21 +1,19 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/ajax.php
-** | Begin :	26/09/2006
-** | Last :		10/02/2008
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
-/*
-** Gestions des diverses taches AJAX.
-** Si vous decidez d'utiliser AJAX dans un de vos mods, pointez vos requetes HTTP vers
-** cette page. Cette page est situee a la racine du forum pour eviter les conflits avec la
-** constante ROOT.
-*/
+/**
+ * Gestions des diverses taches AJAX.
+ * Si vous decidez d'utiliser AJAX dans un de vos mods, pointez vos requetes HTTP vers
+ * cette page. Cette page est situee a la racine du forum pour eviter les conflits avec la
+ * constante ROOT.
+ */
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', './');
@@ -47,9 +45,12 @@ $ajax->add_event(Ajax::TXT, 'editor_wysiwyg',		'ajax_editor_wysiwyg');
 
 $ajax->trigger(Http::request('mode'));
 
-/*
-** Verification de l'email
-*/
+/**
+ * Verification de l'email
+ * 
+ * @param string $email Adresse email a verifier
+ * @return string
+ */
 function ajax_check_email($email)
 {
 	if ($email)
@@ -71,9 +72,12 @@ function ajax_check_email($email)
 	return (NULL);
 }
 
-/*
-** Verification du login
-*/
+/**
+ * Verification du login
+ * 
+ * @param string $login Login a verifier
+ * @return string
+ */
 function ajax_check_login($login)
 {
 	if ($login)
@@ -90,9 +94,12 @@ function ajax_check_login($login)
 	return (NULL);
 }
 
-/*
-** Verification du pseudonyme
-*/
+/**
+ * Verification du pseudonyme
+ * 
+ * @param string $nickname Pseudonyme a verifier
+ * @return string
+ */
 function ajax_check_nickname($nickname)
 {
 	if ($nickname)
@@ -121,9 +128,12 @@ function ajax_check_nickname($nickname)
 	return (NULL);
 }
 
-/*
-** Verification du mot de passe
-*/
+/**
+ * Verification du mot de passe
+ * 
+ * @param string $password Mot de passe a verifier
+ * @return string
+ */
 function ajax_check_password($password)
 {
 	if ($password)
@@ -146,9 +156,12 @@ function ajax_check_password($password)
 	return (NULL);
 }
 
-/*
-** Edition rapide de message
-*/
+/**
+ * Edition rapide de message
+ * 
+ * @param int $id ID du message a editer
+ * @return Message edite sous format XML
+ */
 function ajax_edit_post($id)
 {
 	$sql = 'SELECT p.p_text, p.u_id, p.p_map, t.f_id, t.t_title, t.t_status, f.f_status
@@ -182,9 +195,12 @@ function ajax_edit_post($id)
 	return ($xml->document->asValidXML());
 }
 
-/*
-** Soumission du formulaire d'edition rapide
-*/
+/**
+ * Soumission du formulaire d'edition rapide
+ * 
+ * @param int $id ID du message a mettre a jour
+ * @return string Nouveau contenu du message sous format XML
+ */
 function ajax_submit_post($id)
 {
 	$sql = 'SELECT p.u_id, p.p_nickname, p.p_map, t.f_id, t.t_first_p_id, t.t_type, t.t_description, t.t_id, t.t_status, f.f_status, u.u_auth
@@ -256,9 +272,12 @@ function ajax_submit_post($id)
 	return ($xml->document->asValidXML());
 }
 
-/*
-** Affichage basique du message apres edition rapide
-*/
+/**
+ * Affichage d'un message
+ * 
+ * @param int $id ID du message a afficher
+ * @return string Contenu du message a afficher sous format XML
+ */
 function ajax_show_post($id)
 {
 	$sql = 'SELECT p.p_text, p.u_id, p.p_nickname, t.t_id, t.f_id, t.t_first_p_id, u.u_auth
@@ -302,9 +321,12 @@ function ajax_show_post($id)
 	return ($xml->document->asValidXML());
 }
 
-/*
-** Citation du message
-*/
+/**
+ * Citation du message
+ * 
+ * @param int $id ID du message a citer
+ * @return string Message cite sous format XML
+ */
 function ajax_quote_post($id)
 {
 	$sql = 'SELECT p_id, p_time, p_text, p_nickname, p_map
@@ -354,9 +376,12 @@ function ajax_quote_post($id)
 	return ($xml->document->asValidXML());
 }
 
-/*
-** Citation de message prive
-*/
+/**
+ * Citation de message prive
+ * 
+ * @param int $id ID du message prive a citer
+ * @return string Contenu du message prive sous format XML
+ */
 function ajax_quote_mp($id)
 {
 	$sql = 'SELECT mp.mp_content, mp.mp_time, u.u_nickname
@@ -393,9 +418,12 @@ function ajax_quote_mp($id)
 	return ($xml->document->asValidXML());
 }
 
-/*
-** Recherche de noms d'utilisateurs
-*/
+/**
+ * Recherche de noms d'utilisateurs
+ * 
+ * @param string $nickname Partie du pseudonyme a rechercher
+ * @return string Liste HTML des pseudonymes trouves
+ */
 function ajax_search_user($nickname)
 {
 	if ($nickname)
@@ -421,9 +449,11 @@ function ajax_search_user($nickname)
 	return (NULL);
 }
 
-/*
-** Transforme du texte issu de l'editeur de texte en texte pour l'editeur WYSIWYG
-*/
+/**
+ * Transforme du texte issu de l'editeur de texte en texte pour l'editeur WYSIWYG
+ * 
+ * @return string Texte affichable dans l'editeur WYSIWYG
+ */
 function ajax_editor_text()
 {
 	if (Fsb::$session->is_logged())
@@ -437,9 +467,11 @@ function ajax_editor_text()
 	return (Parser_wysiwyg::decode($content));
 }
 
-/*
-** Transforme du texte issu de l'editeur WYSIWYG en texte normal
-*/
+/**
+ * Transforme du texte issu de l'editeur WYSIWYG en texte normal
+ * 
+ * @return string Texte avec FSBcodes
+ */
 function ajax_editor_wysiwyg()
 {
 	if (Fsb::$session->is_logged())
