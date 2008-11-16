@@ -8,25 +8,59 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Couche d'abstraction pour la recherche
-** FSB supporte trois methodes de recherche : fulltext_mysql, fulltext_fsb, like
-** Dans tous les cas, en cas de recherche classique, quelque soit la methode, le resultat est mis en cache pour etre appele instantanement
-** en cas de changement de page sur une recherche avec plusieurs pages de resultats.
-*/
+/**
+ * Couche d'abstraction pour la recherche
+ * FSB supporte trois methodes de recherche : fulltext_mysql, fulltext_fsb, like.
+ * Dans tous les cas, en cas de recherche classique, quelque soit la methode, le resultat est mis en cache pour
+ * etre appele instantanement en cas de changement de page sur une recherche avec plusieurs pages de resultats.
+ */
 abstract class Search extends Fsb_model
 {
-	// Recherche dans les messages et les titres ?
+	/**
+	 * Recherche dans les messages
+	 *
+	 * @var bool
+	 */
 	public $search_in_post = TRUE;
+	
+	/**
+	 * Recherche dans les titres
+	 *
+	 * @var bool
+	 */
 	public $search_in_title = TRUE;
 
-	// Recherche AND ou OR ?
+	/**
+	 * Un seul doit matcher, ou tous les mots doivent matcher ?
+	 *
+	 * @var string 'and' ou 'or'
+	 */
 	public $search_link = 'and';
 
-	// Taille minimale et maximale des mots clefs
+	/**
+	 * Taille minimale du mot clef
+	 *
+	 * @var int
+	 */
 	public $min_len = 2;
+	
+	/**
+	 * Taille maximale du mot clef
+	 *
+	 * @var int
+	 */
 	public $max_len = 40;
 
+	/**
+	 * Lance la recherche
+	 *
+	 * @param array $keywords_array Liste des mots clefs
+	 * @param string $author_nickname Pseudonyme de l'auteur
+	 * @param array $forum_idx ID des forums concernes par la recherche
+	 * @param int $topic_id ID du topic concerne par la recherche
+	 * @param int $date Timestamp pour la recherche
+	 * @return array ID des messages trouves
+	 */
 	abstract public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date);
 
 	/*
@@ -34,6 +68,11 @@ abstract class Search extends Fsb_model
 	** A appeler en statique pour avoir facilement le nom de la
 	** couche a instancier.
 	*/
+	/**
+	 * Retourne une instance de la classe de recherche avec la bonne couche
+	 *
+	 * @return Search
+	 */
 	public static function factory()
 	{
 		$method = Fsb::$cfg->get('search_method');
@@ -51,23 +90,26 @@ abstract class Search extends Fsb_model
 		return (new $method());
 	}
 
-	/*
-	** Explication
-	*/
+	/**
+	 * Explications pour la recherche
+	 *
+	 * @return string
+	 */
 	public function explain()
 	{
 		return (sprintf(Fsb::$session->lang('search_explain_len'), $this->min_len - 1, $this->max_len));
 	}
 
-	/*
-	** Lance la procedure de recherche
-	** -----
-	** $keywords ::			Mots clefs
-	** $author_nickname ::	Pseudonyme
-	** $list_forums ::		Liste des forums
-	** $topic ::			ID d'un topic si on cherche uniquement dans celui ci
-	** $date ::				Date (en nombre de secondes) pour la recherche de messages
-	*/
+	/**
+	 * Lance la recherche
+	 *
+	 * @param array $keywords_array Liste des mots clefs
+	 * @param string $author_nickname Pseudonyme de l'auteur
+	 * @param array $forum_idx ID des forums concernes par la recherche
+	 * @param int $topic_id ID du topic concerne par la recherche
+	 * @param int $date Timestamp pour la recherche
+	 * @return array ID des messages trouves
+	 */
 	public function launch($keywords, $author_nickname, $list_forums, $topic_id = NULL, $date = 0)
 	{
 		// Liens

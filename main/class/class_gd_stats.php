@@ -10,7 +10,6 @@
 
 /**
  * Genere un graphique de statistiques avec des boites
- *
  */
 class Gd_stats extends Fsb_model
 {

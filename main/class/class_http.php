@@ -16,11 +16,11 @@ class Http extends Fsb_model
 	/**
 	 * Acces a la page via la methode GET
 	 */
+	const GET = 'get';
 	
 	/**
 	 * Acces a la page via la methode POST
 	 */
-	const GET = 'get';
 	const POST = 'post';
 
 	/**

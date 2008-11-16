@@ -8,19 +8,24 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Methode FULLTEXT FSB, dont le principe s'inspire fortement de celui de phpBB, qui indexe chaque mot du forum. Cette seconde methode
-**	est utilisee pour les SGBD autre que MySQL 4, qui ne supportent pas le FULLTEXT MYSQL
-**	+ Avantage : Rapide, fonctionne sur chaque SGBD
-**	+ Inconvenient : Un peu lourd, place prise dans la base de donnee assez importante
-*/
+/**
+ * Methode FULLTEXT FSB, dont le principe s'inspire fortement de celui de phpBB, qui indexe chaque mot du forum.
+ * Cette methode est utilisee pour les SGBD autre que MySQL, qui ne supportent pas le FULLTEXT MYSQL.
+ *	+ Avantage : Rapide, fonctionne sur chaque SGBD
+ * 	- Inconvenient : Un peu lourd, place prise dans la base de donnee assez importante
+ */
 class Search_fulltext_fsb extends Search
 {
+	/**
+	 * Liste des mots a ne pas indexer
+	 *
+	 * @var array
+	 */
 	private $stopwords = array();
 
-	/*
-	** CONSTRUCTEUR
-	*/
+	/**
+	 * Constructeur, recupere les mots a ne pas indexer
+	 */
 	public function __construct()
 	{
 		$this->min_len = $GLOBALS['_search_min_len'];
@@ -34,15 +39,9 @@ class Search_fulltext_fsb extends Search
 		}
 	}
 
-	/*
-	** Procedure de recherche
-	** -----
-	** $keywords_array ::		Tableau des mots clefs
-	** $author_nickname ::		Nom de l'auteur
-	** $forum_idx ::			Tableau des IDX de forums autorises
-	** $topic ::				ID d'un topic si on cherche uniquement dans celui ci
-	** $date ::					Date (en nombre de secondes) pour la recherche de messages
-	*/
+	/**
+	 * @see Search::_search()
+	 */
 	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date)
 	{
 		// Suivant si on doit chercher dans les messages / titres, on construit la clause $sql_is_title
@@ -99,13 +98,13 @@ class Search_fulltext_fsb extends Search
 		return ($return);
 	}
 
-	/*
-	** Parse du message pour indexer les mots dans les tables de recherche
-	** -----
-	** $post_id ::		ID du message
-	** $content ::		Contenu du message
-	** $is_title ::		Definit la valeur du champ is_title dans la table fsb2_search_match
-	*/
+	/**
+	 * Parse du message pour indexer les mots dans les tables de recherche
+	 *
+	 * @param int $post_id ID du message
+	 * @param string $content Contenu du message
+	 * @param bool $is_title Definit la valeur du champ is_title dans la table fsb2_search_match
+	 */
 	public function index($post_id, $content, $is_title = FALSE)
 	{
 		// On recupere chaque mot du message
@@ -175,11 +174,11 @@ class Search_fulltext_fsb extends Search
 		}
 	}
 
-	/*
-	** Supprime les index de recherche fulltext_fsb d'un message
-	** -----
-	** $p_id ::		ID du message
-	*/
+	/**
+	 * Supprime les index de recherche fulltext_fsb d'un message
+	 *
+	 * @param int $p_id ID du message
+	 */
 	public function delete_index($p_id)
 	{
 		if (!is_array($p_id))

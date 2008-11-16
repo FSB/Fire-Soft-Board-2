@@ -8,22 +8,16 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Specification RSS 2.0
-*/
+/**
+ * Flux suivant la specification RSS 2.0
+ */
 class Rss_rss2 extends Rss
 {
 	private $document;
 
-	/*
-	** Creation du feed
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $language ::		Langue du fil
-	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la derniere generation de ce fil
-	*/
+	/**
+	 * @see Rss::_open()
+	 */
 	protected function _open($title, $description, $language, $link, $updated)
 	{
 		$this->xml->document->setTagName('rss');
@@ -56,15 +50,9 @@ class Rss_rss2 extends Rss
 		$this->document->appendChild($item);
 	}
 
-	/*
-	** Ajout d'une entree au fil
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $author ::		Auteur de l'entree
-	** $link ::			Lien permettant de consulter l'entree
-	** $updated ::		Timestamp de la derniere generation de cette entree
-	*/
+	/**
+	 * @see Rss::_add_entry()
+	 */
 	protected function _add_entry($title, $description, $author, $link, $updated)
 	{
 		// Creation de l'entree
@@ -105,19 +93,20 @@ class Rss_rss2 extends Rss
 		$this->document->appendChild($entry);
 	}
 
-	/*
-	** Fin du fil RSS
-	*/
+	/**
+	 * @see Rss::_close()
+	 */
 	protected function _close()
 	{
 		$this->xml->document->appendChild($this->document);
 	}
 
-	/*
-	** Converti un timestamp en specification RFC822
-	** -----
-	** $timestamp ::	Timestamp
-	*/
+	/**
+	 * Converti un timestamp en specification RFC822
+	 *
+	 * @param int $timestamp
+	 * @return string
+	 */
 	private function toRFC822($timestamp)
 	{
 		return (date("D, d M Y H:i:s", $timestamp));

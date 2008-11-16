@@ -8,20 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Specification ATOM
-*/
+/**
+ * Flux suivant la specification ATOM
+ */
 class Rss_atom extends Rss
 {
-	/*
-	** Creation du feed
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $language ::		Langue du fil
-	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la derniere generation de ce fil
-	*/
+	/**
+	 * @see Rss::_open()
+	 */
 	protected function _open($title, $description, $language, $link, $updated)
 	{
 		$this->xml->document->setTagName('feed');
@@ -57,15 +51,9 @@ class Rss_atom extends Rss
 		$this->xml->document->appendChild($item);
 	}
 
-	/*
-	** Ajout d'une entree au fil
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $author ::		Auteur de l'entree
-	** $link ::			Lien permettant de consulter l'entree
-	** $updated ::		Timestamp de la derniere generation de cette entree
-	*/
+	/**
+	 * @see Rss::_add_entry()
+	 */
 	protected function _add_entry($title, $description, $author, $link, $updated)
 	{
 		// Creation de l'entree
@@ -113,18 +101,19 @@ class Rss_atom extends Rss
 		$this->xml->document->appendChild($entry);
 	}
 
-	/*
-	** Fin du fil RSS
-	*/
+	/**
+	 * @see Rss::_close()
+	 */
 	protected function _close()
 	{
 	}
 
-	/*
-	** Converti un timestamp en specification ISO8601
-	** -----
-	** $timestamp ::	Timestamp
-	*/
+	/**
+	 * Converti un timestamp en specification ISO8601
+	 *
+	 * @param int $timestamp
+	 * @return string
+	 */
 	private function toISO8601($timestamp)
 	{
 		return (date("Y-m-d\TH:i:sO", $timestamp));

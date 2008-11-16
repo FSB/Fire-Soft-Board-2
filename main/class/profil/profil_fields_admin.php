@@ -8,16 +8,16 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Classe permettant de gerer la creation de champs personels
-*/
+/**
+ * Gestion des champs de profil dynamique dans l'admnistration
+ */
 class Profil_fields_admin extends Profil_fields
 {
-	/*
-	** Genere les switch utilises pour la creation de ce champ de profil
-	** -----
-	** $type ::		Type du champ de profil
-	*/
+	/**
+	 * Genere les switch utilises pour la creation de ce champ de profil
+	 *
+	 * @param int $type Type du champ de profil
+	 */
 	public static function form(&$type)
 	{
 		if (!isset(self::$type[$type]))
@@ -31,12 +31,13 @@ class Profil_fields_admin extends Profil_fields
 		}
 	}
 
-	/*
-	** Validation de la creation du champ
-	** -----
-	** $type ::		Type du champ de profil
-	** $errstr ::	Tableau d'erreurs rencontrees pendant la validation
-	*/
+	/**
+	 * Validation de la creation du champ
+	 *
+	 * @param int $type
+	 * @param array $errstr Erreurs rencontrees pendant la validation
+	 * @return array Informations sur le champ
+	 */
 	public static function validate($type, &$errstr)
 	{
 		if (!isset(self::$type[$type]))
@@ -102,12 +103,12 @@ class Profil_fields_admin extends Profil_fields
 		return ($return);
 	}
 
-	/*
-	** Cree un nouveau champ de profil
-	** -----
-	** $field_type ::	Type de champ
-	** $data ::			Informations sur le champ de profil
-	*/
+	/**
+	 * Ajoute un nouveau champ de profil dynamique
+	 *
+	 * @param int $field_type Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
+	 * @param array $data Informations sur le champ de profil
+	 */
 	public static function add($field_type, $data)
 	{
 		switch (SQL_DBAL)
@@ -152,14 +153,14 @@ class Profil_fields_admin extends Profil_fields
 		Profil_fields_admin::$method(SQL_PREFIX . $tablename, $sql_field_name, $data['pf_html_type'], Fsb::$db->last_id());
 	}
 
-	/*
-	** Ajoute une colone dans une table mysql
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Prefixe du nom du champ
-	** $type ::				Type du champ
-	** $last_id ::			ID pour le nom du champ
-	*/
+	/**
+	 * Ajoute une colonne dans une table mysql
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Prefixe du nom du champ
+	 * @param int $type Type du champ
+	 * @param int $last_id ID pour le nom du champ
+	 */
 	private static function add_column_mysql($tablename, $sql_field_name, $type, $last_id)
 	{
 		$sql_alter = 'ALTER TABLE ' . $tablename . ' ADD ' . Fsb::$db->escape($sql_field_name . $last_id);
@@ -186,14 +187,14 @@ class Profil_fields_admin extends Profil_fields
 		Fsb::$db->query($sql_alter);
 	}
 
-	/*
-	** Ajoute une colone dans une table PostgreSQL
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Prefixe du nom du champ
-	** $type ::				Type HTML du champ
-	** $last_id ::			ID pour le nom du champ
-	*/
+	/**
+	 * Ajoute une colonne dans une table PostgreSQL
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Prefixe du nom du champ
+	 * @param int $type Type du champ
+	 * @param int $last_id ID pour le nom du champ
+	 */
 	private static function add_column_pgsql($tablename, $sql_field_name, $type, $last_id)
 	{
 		// On construit le debut de la requete ALTER
@@ -227,25 +228,25 @@ class Profil_fields_admin extends Profil_fields
 		Fsb::$db->query($sql_alter);
 	}
 
-	/*
-	** Ajoute une colone dans une table SQLITE
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Prefixe du nom du champ
-	** $type ::				Type HTML du champ
-	** $last_id ::			ID pour le nom du champ
-	*/
+	/**
+	 * Ajoute une colonne dans une table SQLITE
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Prefixe du nom du champ
+	 * @param int $type Type du champ
+	 * @param int $last_id ID pour le nom du champ
+	 */
 	private static function add_column_sqlite($tablename, $sql_field_name, $type, $last_id)
 	{
 		Fsb::$db->alter($tablename, 'ADD', $sql_field_name . $last_id);
 	}
 
-	/*
-	** Met a jour un champ du profil
-	** -----
-	** $field_id ::				ID du champ de profil
-	** $data ::					Informations sur la mise a jour
-	*/
+	/**
+	 * Met a jour un champ du profil dynamique
+	 *
+	 * @param int $field_id ID du champ de profil
+	 * @param array $data Informations sur la mise a jour
+	 */
 	public static function update($field_id, $data)
 	{
 		unset($data['pf_type']);
@@ -253,12 +254,12 @@ class Profil_fields_admin extends Profil_fields
 		Fsb::$db->update('profil_fields', $data, 'WHERE pf_id = ' . $field_id);
 	}
 
-	/*
-	** Supprime un champ de profil
-	** -----
-	** $field_id ::		ID du champ a supprimer
-	** $field_type ::	Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
-	*/
+	/**
+	 * Supprime un champ de profil dynamique
+	 *
+	 * @param int $field_id ID du champ a supprimer
+	 * @param int $field_type Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
+	 */
 	public static function delete($field_id, $field_type)
 	{
 		switch (SQL_DBAL)
@@ -302,50 +303,48 @@ class Profil_fields_admin extends Profil_fields
 		Fsb::$db->query($sql);
 	}
 
-	/*
-	** Supprime une colone dans une table mysql
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Nom du champ
-	*/
+	/**
+	 * Supprime une colone dans une table mysql
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Nom du champ
+	 */
 	private static function drop_column_mysql($tablename, $sql_field_name)
 	{
-		// On construit la requete ALTER
 		$sql_alter = "ALTER TABLE $tablename DROP $sql_field_name";
 		Fsb::$db->query($sql_alter);
 	}
 
-	/*
-	** Supprime une colone dans une table PostgreSQL
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Nom du champ
-	*/
+	/**
+	 * Supprime une colone dans une table PostgreSQL
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Nom du champ
+	 */
 	private static function drop_column_pgsql($tablename, $sql_field_name)
 	{
-		// On construit la requete ALTER
 		$sql_alter = "ALTER TABLE $tablename DROP $sql_field_name";
 		Fsb::$db->query($sql_alter);
 	}
 
-	/*
-	** Supprime une colone dans une table SQLITE
-	** -----
-	** $tablename ::		Nom de la table
-	** $sql_field_name ::	Nom du champ
-	*/
+	/**
+	 * Supprime une colone dans une table SQLITE
+	 *
+	 * @param string $tablename Nom de la table
+	 * @param string $sql_field_name Nom du champ
+	 */
 	private static function drop_column_sqlite($tablename, $sql_field_name)
 	{
 		Fsb::$db->alter($tablename, 'DROP', $sql_field_name);
 	}
 
-	/*
-	** Deplace un champ de profil
-	** -----
-	** $field_id ::	ID du champ
-	** $field_move ::	1 pour deplacer vers le bas, -1 pour deplacer vers le haut
-	** $field_type ::	Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
-	*/
+	/**
+	 * Deplace un champ de profil dynamique
+	 *
+	 * @param int $field_id ID du champ
+	 * @param int $field_move 1 pour deplacer vers le bas, -1 pour deplacer vers le haut
+	 * @param int $field_type Constante definissant la table ciblee (PROFIL_FIELDS_CONTACT ou PROFIL_FIELDS_PERSONAL)
+	 */
 	public static function move($field_id, $field_move, $field_type)
 	{		
 		$sql = 'SELECT pf_order

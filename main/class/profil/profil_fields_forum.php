@@ -8,21 +8,26 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Classe permettant de renseigner et d'afficher les champs personels sur le forum
-*/
+/**
+ * Gestion des champs de profil dynamique sur le forum
+ */
 class Profil_fields_forum extends Profil_fields
 {
+	/**
+	 * Informations sur les champs de profil mises en cache
+	 *
+	 * @var array
+	 */
 	private static $fields_data = array();
 
-	/*
-	** Affiche le formulaire pour remplir le champ personalise
-	** -----
-	** $field_type ::			Type du champ personel
-	** $field_name ::			Nom du champ
-	** $u_id ::					ID du membre, si elle est renseignee on recupere les informations dans sa table
-	** $register_page ::		TRUE si on est sur la page d'inscription
-	*/
+	/**
+	 * Affiche le formulaire pour remplir les champs de profil
+	 *
+	 * @param int $field_type Type du champ de profil
+	 * @param string $field_name Nom du champ
+	 * @param int $u_id ID du membre, si elle est renseignee on recupere les informations dans sa table
+	 * @param bool $register_page TRUE si on est sur la page d'inscription
+	 */
 	public static function form($field_type, $field_name, $u_id = NULL, $register_page = FALSE)
 	{
 		$data = array();
@@ -105,12 +110,22 @@ class Profil_fields_forum extends Profil_fields
 	/*
 	** Valide le formulaire pour les champs personels
 	** -----
-	** $field_type ::		Type de champ personalise
-	** $field_name ::		Nom du champ personalise
-	** $errstr ::			Logs d'erreurs
-	** $u_id ::				Si l'ID du membre est renseignee, on insere les donnees dans la base.
+	** $field_type ::		
+	** $field_name ::		
+	** $errstr ::			
+	** $u_id ::				
 	** $register_page ::	Page d'inscription ?
 	*/
+	/**
+	 * Valide les champs de profil
+	 *
+	 * @param int $field_type Type de champ de profil
+	 * @param string $field_name Nom du champ de profil
+	 * @param array $errstr Logs d'erreurs
+	 * @param int $u_id Si l'ID du membre est renseignee, on insere les donnees dans la base
+	 * @param bool $register_page TRUE si on est sur la page d'inscription
+	 * @return array Informations sur les champs 
+	 */
 	public static function validate($field_type, $field_name, &$errstr, $u_id = NULL, $register_page = FALSE)
 	{
 		// Liste des champs personalises
@@ -155,13 +170,13 @@ class Profil_fields_forum extends Profil_fields
 		return ($post_data);
 	}
 
-	/*
-	** Affiche les valeurs des champs personalises d'un membre
-	** -----
-	** $field_type ::	Type de profil personalise
-	** $field_name ::	Nom du profil
-	** $user_data ::	Donnees du membre
-	*/
+	/**
+	 * Affiche les valeurs des champs de profils d'un membre
+	 *
+	 * @param int $field_type Type de champ de profil
+	 * @param string $field_name Nom du champ profil
+	 * @param array $user_data Donnees du membre
+	 */
 	public static function show_fields($field_type, $field_name, &$user_data)
 	{
 		$sql = 'SELECT *
@@ -232,11 +247,12 @@ class Profil_fields_forum extends Profil_fields
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Recupere les donnees des champs personalises, dans les sujets
-	** -----
-	** $sql_fields_personal ::	Liste des champs a recuperer dans la table fsb2_users_personal
-	*/
+
+	/**
+	 * Recupere les donnees des champs de profil, dans les sujets
+	 *
+	 * @param string $sql_fields_personal Liste des champs a recuperer dans la table fsb2_users_personal
+	 */
 	public static function topic_info(&$sql_fields_personal)
 	{
 		$sql = 'SELECT pf_id, pf_lang, pf_groups, pf_html_type, pf_list, pf_output
@@ -264,12 +280,11 @@ class Profil_fields_forum extends Profil_fields
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche les champs personels dans le sujet
-	** -----
-	** $fields_data ::			Liste des champs personels a afficher
-	** $fields_value ::			Valeur des champs
-	*/
+	/**
+	 * Affiche les champs de profil dans le sujet
+	 *
+	 * @param array $fields_value Valeur des champs
+	 */
 	public static function topic_show($fields_value)
 	{
 		foreach (self::$fields_data AS $pf_id => $pf)

@@ -8,30 +8,33 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet de gerer les appels aux methodes des classes des pages en fonction des proprietes de la page.
-** Le but etant de permettre une genericite des appels sur la plupart des pages.
-*/
+/**
+ * Permet de gerer les appels aux methodes des classes des pages en fonction des proprietes de la page.
+ * Le but etant de permettre une genericite des appels sur la plupart des pages.
+ * 
+ * Classe developpe alors que je ne connaissais pas le MVC ... aujourd'hui on peut dire qu'elle ressemble
+ * a une ebauche de controleur. Sur le principe en tout cas.
+ */
 class Call extends Fsb_model
 {
 	private $obj;
 	private $break = FALSE;
 
-	/*
-	** CONSTRUCTEUR
-	** -----
-	** $obj ::		Objet dont on va modifier les propriete et appeler les methodes
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param mixed $obj Objet dont on va modifier les propriete et appeler les methodes
+	 */
 	public function __construct(&$obj)
 	{
 		$this->obj = &$obj;
 	}
 
-	/*
-	** Gestion des modules de la page
-	** -----
-	** $tree ::		Arbre d'instruction pour les modules
-	*/
+	/**
+	 * Gestion des modules de la page
+	 *
+	 * @param array $module 
+	 */
 	public function module($module)
 	{
 		// Module de la page
@@ -43,11 +46,12 @@ class Call extends Fsb_model
 		Display::header_module($module['list'], $this->obj->module, $module['url'], $module['lang']);
 	}
 
-	/*
-	** Gestion des elements POST pour executer des methodes ou changer la valeur de proprietes
-	** -----
-	** $tree ::		Arbre d'instruction pour les elements POST
-	*/
+	/**
+	 * Gestion des elements POST pour executer des methodes ou changer la valeur de proprietes
+	 *
+	 * @param array $posts Arbre d'instruction pour les elements POST
+	 * @return bool Succes ou echec
+	 */
 	public function post($posts)
 	{
 		foreach ($posts AS $key => $value)
@@ -81,11 +85,11 @@ class Call extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Gestion recursives des variables
-	** -----
-	** $vars ::		Arbre des variables
-	*/
+	/**
+	 * Gestion recursives des variables
+	 *
+	 * @param array $vars Arbre des variables
+	 */
 	public function functions($vars)
 	{
 		if ($this->break)

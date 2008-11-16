@@ -8,23 +8,49 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Classe permettant la generation de fils RSS au format RSS 2.0 ou ATOM
-*/
+/**
+ * Classe permettant la generation de fils RSS au format RSS 2.0 ou ATOM
+ */
 abstract class Rss extends Fsb_model
 {
-	// Objet XML
+	/**
+	 * @var Xml
+	 */
 	protected $xml;
 
+	/**
+	 * Methode appelee lors de l'ouverture du flux RSS
+	 *
+	 * @param string $title Titre
+	 * @param string $description Description
+	 * @param string $language Langue
+	 * @param string $link Lien
+	 * @param string $updated Derniere mise a jour
+	 */
 	abstract protected function _open($title, $description, $language, $link, $updated);
+	
+	/**
+	 * Ajoute une entree au flux
+	 *
+	 * @param string $title Titre
+	 * @param string $description Description
+	 * @param string $author Auteur de l'entree
+	 * @param string $link Lien
+	 * @param string $updated Derniere mise a jour
+	 */
 	abstract protected function _add_entry($title, $description, $author, $link, $updated);
+	
+	/**
+	 * Methode appelee lors de la fermeture du flux RSS
+	 */
 	abstract protected function _close();
 
-	/*
-	** Retourne une instance d'un generateur de fil RSS en fonction du type de specificiation choisi
-	** -----
-	** $method ::	Type de specification (rss2 ou atom)
-	*/
+	/**
+	 * Retourne une instance d'un generateur de fil RSS en fonction du type de specificiation choisi
+	 *
+	 * @param string $method Type de specification (rss2 ou atom)
+	 * @return Rss
+	 */
 	public static function factory($method)
 	{
 		switch ($method)
@@ -40,15 +66,15 @@ abstract class Rss extends Fsb_model
 		}
 	}
 
-	/*
-	** Creation du feed
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $language ::		Langue du fil
-	** $link ::			URL du site correspondant au canal
-	** $updated ::		Timestamp de la derniere generation de ce fil
-	*/
+	/**
+	 * Ouvre le flux RSS
+	 *
+	 * @param string $title Titre
+	 * @param string $description Description
+	 * @param string $language Langue
+	 * @param string $link Lien
+	 * @param string $updated Derniere mise a jour
+	 */
 	public function open($title, $description, $language, $link, $updated)
 	{
 		// Instance d'un objet XML
@@ -58,23 +84,25 @@ abstract class Rss extends Fsb_model
 		$this->_open($title, $description, $language, $link, $updated);
 	}
 
-	/*
-	** Ajout d'une entree au fil
-	** -----
-	** $title ::		Titre du fil
-	** $description ::	Description du fil
-	** $author ::		Auteur de l'entree
-	** $link ::			Lien permettant de consulter l'entree
-	** $updated ::		Timestamp de la derniere generation de cette entree
-	*/
+	/**
+	 * Ajoute une entree au flux
+	 *
+	 * @param string $title Titre
+	 * @param string $description Description
+	 * @param string $author Auteur de l'entree
+	 * @param string $link Lien
+	 * @param string $updated Derniere mise a jour
+	 */
 	public function add_entry($title, $description, $author, $link, $updated)
 	{
 		$this->_add_entry($title, $description, $author, $link, $updated);
 	}
 
-	/*
-	** Fermeture et affichage du fil RSS
-	*/
+	/**
+	 * Ferme et affiche le flux
+	 *
+	 * @param bool $print Si on affiche le flux ou si on le recupere
+	 */
 	public function close($print = TRUE)
 	{
 		$this->_close();

@@ -8,21 +8,28 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet d'importer / exporter des langues en XML.
-** Necessite la classe Xml() pour la gestion des donnees en XML.
-*/
-
+/**
+ * Permet d'importer / exporter des langues en XML.
+ * Necessite la classe Xml() pour la gestion des donnees en XML.
+ */
 class Lang_xml extends Fsb_model
 {
+	/**
+	 * @var array
+	 */
 	private $custom = array('lg' => array(), 'faq' => array());
+	
+	/**
+	 * @var Xml
+	 */
 	private $xml;
 
-	/*
-	** Exporte une langue sous forme de fichier XML
-	** -----
-	** $path ::		Dossier de la langue
-	*/
+	/**
+	 * Exporte une langue sous forme de fichier XML
+	 *
+	 * @param string $path Dossier de la langue
+	 * @return string
+	 */
 	public function export($path)
 	{
 		if (!is_dir($path))
@@ -69,11 +76,12 @@ class Lang_xml extends Fsb_model
 		return ($this->xml->document->asValidXml());
 	}
 
-	/*
-	** Exporte les fichiers langue d'un dossier
-	** -----
-	** $path ::		Dossier contenant les fichiers langues
-	*/
+	/**
+	 * Exporte les fichiers langue d'un dossier
+	 *
+	 * @param string $path Dossier contenant les fichiers langues
+	 * @param string $current_dir
+	 */
 	private function export_dir($path, $current_dir = '')
 	{
 		// Type de fichier du repertoire courant
@@ -83,7 +91,7 @@ class Lang_xml extends Fsb_model
 		$fd = opendir($path);
 		while ($file = readdir($fd))
 		{
-			if ($file != '.' && $file != '..' && $file != 'index.html')
+			if ($file != '.' && $file != '..' && $file != '.svn' && $file != 'index.html')
 			{
 				if (is_dir($path . $file))
 				{
@@ -119,13 +127,13 @@ class Lang_xml extends Fsb_model
 		closedir($fd);
 	}
 
-	/*
-	** Exporte le contenu d'un fichier PHP
-	** -----
-	** $f ::		Objet XML_document representant le fichier en cours
-	** $path ::		Chemin du fichier
-	** $filename ::	Nom du fichier
-	*/
+	/**
+	 * Exporte le contenu d'un fichier PHP
+	 *
+	 * @param XML_document $f Represente le fichier en cours
+	 * @param string $path Chemin du fichier
+	 * @param string $filename Nom du fichier
+	 */
 	private function export_php_file(&$f, $path, $filename)
 	{
 		$current_lang = include($path);
@@ -170,12 +178,12 @@ class Lang_xml extends Fsb_model
 		}
 	}
 
-	/*
-	** Exporte le contenu d'un fichier TXT
-	** -----
-	** $f ::		Objet XML_document representant le fichier en cours
-	** $path ::		Chemin du fichier
-	*/
+	/**
+	 * Exporte le contenu d'un fichier TXT
+	 *
+	 * @param XML_document $f Objet Represente le fichier en cours
+	 * @param string $path Chemin du fichier
+	 */
 	private function export_txt_file(&$f, $path)
 	{
 		$dir = dirname($path);
@@ -187,11 +195,11 @@ class Lang_xml extends Fsb_model
 		$f->appendChild($content);
 	}
 
-	/*
-	** Importe un fichier XML sous forme de dossier de langue
-	** -----
-	** $path ::		Chemin du fichier XML
-	*/
+	/**
+	 * Importe un fichier XML sous forme de dossier de langue
+	 *
+	 * @param string $path Chemin du fichier XML
+	 */
 	public function import($path)
 	{
 		// Instance de la classe File
@@ -217,7 +225,7 @@ class Lang_xml extends Fsb_model
 		$file_builder->mkdir($root);
 
 		// On genere les fichiers langue
-		foreach ($xml->document->items[0]->file AS $file)
+		foreach ($xml->document->file AS $file)
 		{
 			// On recupere le nom et le type de fichier
 			$filename = $file->getAttribute('name');
@@ -280,15 +288,14 @@ class Lang_xml extends Fsb_model
 
 					// On genere le fichier langue
 					$content = "<?php\n";
-					$content .= "/*\n";
-					$content .= "** +---------------------------------------------------+\n";
-					$content .= "** | Name :		~/lang/${language}/${filename}.php\n";
-					$content .= "** | Project :	Fire-Soft-Board 2 - Copyright FSB group\n";
-					$content .= "** | License :	GPL v2.0\n";
-					$content .= "** |\n";
-					$content .= "** | Ce fichier est un fichier langue genere automatiquement\n";
-					$content .= "** +---------------------------------------------------+\n";
-					$content .= "*/\n\n";
+					$content .= "/**\n";
+					$content .= " * Fire-Soft-Board version 2\n";
+					$content .= " * \n";
+					$content .= " * @package FSB2\n";
+					$content .= " * @author Genova <genova@fire-soft-board.com>\n";
+					$content .= " * @version \$Id: class_lang_xml.php 51 2008-11-16 20:43:34Z genova \$\n";
+					$content .= " * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2\n";
+					$content .= " */\n\n";
 
 					// Pour la FAQ on ajoute un bout de code
 					if ($faq_data)

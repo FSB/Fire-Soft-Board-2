@@ -8,17 +8,17 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Methode FULLTEXT de MySQL 4
-**	+ Avantage : Rapide, facile a mettre en oeuvre
-**	+ Inconvenient : Compatible uniquement MySQL >= 4, ne prend pas en compte les mots de moins de
-**		4 lettres, ne prend pas en compte les mots contenu dans au moins 50% des resultats
-*/
+/**
+ * Methode FULLTEXT de MySQL 4+
+ *	+ Avantage : Rapide, facile a mettre en oeuvre
+ * 	- Inconvenient : ne prend pas en compte les mots de moins de 4 lettres, ne prend pas en compte
+ * 		les mots contenu dans au moins 50% des resultats
+ */
 class Search_fulltext_mysql extends Search
 {
-	/*
-	** CONSTRUCTEUR
-	*/
+	/**
+	 * Constructeur, recupere les longueurs min / max des mots depuis la config de MySQL
+	 */
 	public function __construct()
 	{
 		$sql = 'SHOW VARIABLES LIKE \'ft_%\'';
@@ -28,15 +28,9 @@ class Search_fulltext_mysql extends Search
 		$this->max_len = $rows['ft_max_word_len']['Value'];
 	}
 
-	/*
-	** Procedure de recherche
-	** -----
-	** $keywords_array ::		Tableau des mots clefs
-	** $author_nickname ::		Nom de l'auteur
-	** $forum_idx ::			Tableau des IDX de forums autorises
-	** $topic ::				ID d'un topic si on cherche uniquement dans celui ci
-	** $date ::					Date (en nombre de secondes) pour la recherche de messages
-	*/
+	/**
+	 * @see Search::_search()
+	 */
 	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date)
 	{
 		// Mots clefs

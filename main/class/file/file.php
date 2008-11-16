@@ -9,7 +9,7 @@
  */
 
 /**
- * Permet de manipuler des fichiers sur le serveur de plusieurs façon (f***(), ftp_***() ou fsockopen())
+ * Permet de manipuler des fichiers sur le serveur de plusieurs faï¿½on (f***(), ftp_***() ou fsockopen())
  */
 abstract class File extends Fsb_model
 {
@@ -93,11 +93,11 @@ abstract class File extends Fsb_model
 	/**
 	 * @see File::rmdir()
 	 */
-	protected function _rmdir($dir);
+	abstract protected function _rmdir($dir);
 	/**
 	 * Ferme la connexion
 	 */
-	protected function _close();
+	abstract protected function _close();
 
 	/**
 	 * Design pattern factory, retourne une instance de la classe File

@@ -11,7 +11,6 @@
 /**
  * Gestion des FSBcard pour importer / exporter son profil
  * Pour les specifications consulter ~/doc/fsbcard.txt ou bien lancer l'application ~/programms/xml_explain.php?id=fsbcard
- *
  */
 class Fsbcard extends Fsb_model
 {
@@ -21,7 +20,7 @@ class Fsbcard extends Fsb_model
 	public $xml;
 
 	/**
-	 * Version du système de FSBcards
+	 * Version du systï¿½me de FSBcards
 	 *
 	 * @var string
 	 */
