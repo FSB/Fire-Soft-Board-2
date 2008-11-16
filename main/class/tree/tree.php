@@ -15,112 +15,99 @@
 */
 class Tree extends Fsb_model
 {
-	public $document = array();
-	protected $stack = array();
-	protected $tmp;
+	public $document = null;
+	protected $data = array();
 
 	/*
 	** Ajoute un item a l'arbre
 	*/
-	public function add_item($id, $parent, $data)
+	public function add_item($id, $parent, $data = null)
 	{
-		if ($parent === NULL)
+		if (!isset($this->data[$id]))
 		{
-			$this->tmp = &$this->document;
+			$this->data[$id] = new Tree_node($data);
+			$this->data[$id]->id = $id;
 		}
-		else
+		else 
 		{
-			$this->tmp = &$this->stack[$parent]->children;
+			$this->data[$id]->data = $data;
 		}
 
-		$this->tmp[$id] = new Tree_node($data, $parent);
-		$this->stack[$id] = &$this->tmp[$id];
-
-		// On recupere les parents
-		if (isset($this->tmp[$id]->parent) && $this->tmp[$id]->parent)
+		if (!isset($this->data[$parent]))
 		{
-			$p = $this->tmp[$id]->parent;
-			$parents = array($p);
-			while ($p && isset($this->stack[$p]))
-			{
-				$p = $this->stack[$p]->parent;
-				if ($p)
-				{
-					$parents[] = $p;
-				}
-			}
-
-			$this->stack[$id]->parents = $parents;
+			$this->data[$parent] = new Tree_node(array());
+			$this->data[$parent]->id = $parent;
+		}
+		
+		$this->data[$parent]->children[$id] = &$this->data[$id];
+		$this->data[$id]->parent = &$this->data[$parent];
+		
+		$this->data[$id]->parents = $this->data[$id]->getParents();
+		
+		if ($this->document === null)
+		{
+			$this->document = &$this->data[$parent];
+		}
+	}
+	
+	public function update_item($id, $data = null)
+	{
+		$this->data[$id]->data = $data;
+	}
+	
+	public function getByID($id)
+	{
+		return (isset($this->data[$id]) ? $this->data[$id] : null);
+	}
+	
+	public function debug($node = null, $level = 0)
+	{
+		if ($node === null)
+		{
+			$node = $this->document;
+		}
+		
+		echo str_repeat('---', $level) . ' [' . $node->id . ']<br />';
+		foreach ($node->children AS $child)
+		{
+			$this->debug($child, $level + 1);
 		}
 	}
 }
 
-/*
-** Feuilles pour l'arbre
-*/
 class Tree_node extends Fsb_model
 {
+	public $data;
+	public $id;
 	public $children = array();
-	public $parent = NULL;
 	public $parents = array();
-	public $data = array();
+	public $parent;
 
-	public function __construct($data, $parent)
+	public function __construct($data)
 	{
 		$this->data = $data;
-		$this->parent = $parent;
 	}
-
-	/*
-	** Retourne une information
-	** -----
-	** $key ::	Clef de l'information
-	*/
-	public function get($key)
+	
+	public function getParents()
 	{
-		return ((isset($this->data[$key])) ? $this->data[$key] : NULL);
-	}
-
-	/*
-	** Ajoute une information
-	** -----
-	** $key ::		Clef de l'information
-	** $value ::	Valeur de l'information
-	*/
-	public function set($key, $value)
-	{
-		$this->data[$key] = $value;
-	}
-
-	/*
-	** Liste des enfants
-	*/
-	public function children()
-	{
-		return ($this->children);
-	}
-
-	/*
-	** Liste des ID de tous les enfants
-	*/
-	public function allChildren()
-	{
-		$list = $this->children;
-		$return = array_keys($list);
-		foreach ($list AS $child)
+		$parents = array();
+		if ($this->parent)
 		{
-			$return = array_merge($return, $child->allChildren());
+			$p = $this->parent;
+			while (true)
+			{
+				$parents[] = $p->id;
+				if (!$p->parent)
+				{
+					break;
+				}
+				$p = $p->parent;
+			}
 		}
-		return ($return);
-	}
 
-	/*
-	** Liste des ID des parents
-	*/
-	public function allParents()
-	{
-		return ($this->parents);
+		return ($parents);
 	}
 }
+	
 
 /* EOF */

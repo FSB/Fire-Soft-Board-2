@@ -16,7 +16,7 @@
 
 if (!defined('ROOT'))
 {
-	die(utf8_decode('This file must be included.<hr />Ce fichier doit etre inclus'));
+	die('This file must be included.<hr />Ce fichier doit etre inclus');
 }
 
 class Convert

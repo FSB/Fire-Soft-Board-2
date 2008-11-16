@@ -32,42 +32,7 @@ class Sync extends Fsb_model
 	public static function forums($forums = array())
 	{
 		$tree = new Tree_forum();
-
-		// On met a jour les forums en recalculant le nombre de messages / sujets ainsi
-		// que l'ID de leur dernier message. La tache est plutot ardue a cause du systeme de sous
-		// forums, ainsi le forum parent pourra avoir comme derniere ID celle d'un de ses
-		// fils (quelque soit le niveau de profondeur du sous fils).
-		$sql = 'SELECT f2.f_id, t.t_id, t.t_title, t.t_last_p_nickname, t.t_last_p_id, t.t_last_p_time, t.t_last_u_id
-				FROM ' . SQL_PREFIX . 'forums f
-				LEFT JOIN ' . SQL_PREFIX . 'forums f2
-					ON (f2.f_left >= f.f_left AND f2.f_right <= f.f_right)
-						OR (f2.f_left <= f.f_left AND f2.f_right >= f.f_right)
-				LEFT JOIN ' . SQL_PREFIX . 'topics t
-					ON f2.f_id = t.f_id
-						AND t.t_id = (
-							SELECT t2.t_id
-							FROM ' . SQL_PREFIX . 'topics t2
-							WHERE t2.f_id = f2.f_id
-							ORDER BY t2.t_last_p_time DESC
-							LIMIT 1
-						)'
-				/*. (($forums) ? ' WHERE f.f_id IN (' . implode(', ', $forums) . ')' : '')*/ .
-				' GROUP BY f2.f_id, t.t_id, t.t_title, t.t_last_p_nickname, t.t_last_p_id, t.t_last_p_time, t.t_last_u_id';
-		$result = Fsb::$db->query($sql);
-		while ($row = Fsb::$db->row($result))
-		{
-			$tree->fill($row['f_id'], array(
-				'f_last_p_id' =>		$row['t_last_p_id'],
-				'f_last_t_id' =>		$row['t_id'],
-				'f_last_t_title' =>		$row['t_title'],
-				'f_last_p_nickname' =>	$row['t_last_p_nickname'],
-				'f_last_u_id' =>		$row['t_last_u_id'],
-			));
-		}
-		Fsb::$db->free($result);
-
-		// Mise a jour des informations
-		$tree->parse();
+		$tree->update_stats($forums);
 
 		Fsb::$db->destroy_cache('forums_');
 	}

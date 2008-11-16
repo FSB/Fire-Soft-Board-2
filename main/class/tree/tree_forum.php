@@ -15,143 +15,122 @@
 */
 class Tree_forum extends Tree
 {
-	private $data = array();
-
-	/*
-	** Constructeur
-	*/
 	public function __construct()
 	{
-		// On cree un arbre des forums
-		$sql = 'SELECT f_id, f_parent
-				FROM ' . SQL_PREFIX . 'forums
-				ORDER BY f_left';
-		$result = Fsb::$db->query($sql, 'forums_');
-		$current_id = NULL;
-		while ($row = Fsb::$db->row($result))
+		foreach (get_forums() AS $f)
 		{
-			$this->add_item($row['f_id'], (!$row['f_parent']) ? NULL : $row['f_parent'], array());
+			$this->add_item($f['f_id'], $f['f_parent'], array(
+				'f_total_topic' =>		$f['f_total_topic'],
+				'f_total_post' =>		$f['f_total_post'],
+				'f_last_p_id' =>		$f['f_last_p_id'],
+				'f_last_t_id' =>		$f['f_last_t_id'],
+				'f_last_p_time' =>		$f['f_last_p_time'],
+				'f_last_u_id' =>		$f['f_last_u_id'],
+				'f_last_p_nickname' =>	$f['f_last_p_nickname'],
+				'f_last_t_title' =>		$f['f_last_t_title'],
+			));
 		}
-		Fsb::$db->free($result);
-
-		if (!isset($tmp[$current_id]))
+	}
+	
+	public function update_stats($forums)
+	{
+		// Le forum, ainsi que ses parents, doivent être resynchronisés
+		$update = $forums;
+		foreach ($forums AS $f_id)
 		{
-			$tmp[$current_id] = array();
+			$update = array_merge($update, $this->getByID($f_id)->parents);
 		}
 
-		// On recupere les donnees des forums
-		$sql = 'SELECT f_id, COUNT(*) AS f_total_topic, SUM(t_total_post) AS f_total_post, MAX(t_last_p_time) AS f_last_p_time, MAX(t_last_p_id) AS f_last_p_id
-				FROM ' . SQL_PREFIX . 'topics
-				GROUP BY f_id';
+		// On recupere les dernieres informations des forums
+		$sql = 'SELECT f.f_id, t.t_id, t.t_title, t.t_last_p_id, t.t_last_p_time, t.t_last_u_id, t.t_last_p_nickname
+				FROM ' . SQL_PREFIX . 'forums f
+				LEFT JOIN ' . SQL_PREFIX . 'topics t
+					ON f.f_id = t.f_id
+					AND t.t_id = (
+						SELECT t2.t_id
+						FROM ' . SQL_PREFIX . 'topics t2
+						WHERE t2.f_id = f.f_id
+						ORDER BY t2.t_last_p_time DESC
+						LIMIT 1
+					)
+				WHERE 1 = 1
+					' . (($update) ? ' AND f.f_id IN (' . implode(', ', $update) . ') ' : '');
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$this->data[$row['f_id']] = array(
-				'f_total_topic' =>		0,
-				'f_total_post' =>		0,
-				'f_last_p_id' =>		0,
-				'f_last_t_id' =>		0,
-				'f_last_t_title' =>		'',
-				'f_last_p_nickname' =>	'',
-				'f_last_u_id' =>		0,
-				'f_last_p_time' =>		0,
-			);
-			$this->data[$row['f_id']] = array_merge($this->data[$row['f_id']], $row);
+			$this->merge_item($row['f_id'], array(
+				'f_last_p_id' =>		$row['t_last_p_id'],
+				'f_last_t_id' =>		$row['t_id'],
+				'f_last_p_time' =>		$row['t_last_p_time'],
+				'f_last_u_id' =>		$row['t_last_u_id'],
+				'f_last_p_nickname' =>	$row['t_last_p_nickname'],
+				'f_last_t_title' =>		$row['t_title'],
+			));
 		}
 		Fsb::$db->free($result);
-	}
-
-	/*
-	** Rempli les informations sur un forum
-	** -----
-	** $f_id ::		ID du forum
-	** $data ::		Donnees du forum
-	*/
-	public function fill($f_id, $data = array())
-	{
-		if (!isset($this->data[$f_id]))
+		
+		// On recupere le total de sujets / messages des forums
+		$sql = 'SELECT f.f_id, COUNT(t.t_id) AS f_total_topic, SUM(t.t_total_post) AS f_total_post
+				FROM ' . SQL_PREFIX . 'forums f
+				LEFT JOIN ' . SQL_PREFIX . 'topics t
+					ON f.f_id = t.f_id
+				GROUP BY f.f_id';
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
 		{
-			$this->data[$f_id] = array(
-				'f_total_topic' =>		0,
-				'f_total_post' =>		0,
-				'f_last_p_id' =>		0,
-				'f_last_t_id' =>		0,
-				'f_last_t_title' =>		'',
-				'f_last_p_nickname' =>	'',
-				'f_last_u_id' =>		0,
-				'f_last_p_time' =>		0,
-			);
+			$this->merge_item($row['f_id'], array(
+				'f_total_topic' =>	$row['f_total_topic'],
+				'f_total_post' =>	$row['f_total_post'],
+			));
 		}
-		$this->data[$f_id]['is_filled'] = TRUE;
-		$this->data[$f_id] = array_merge($this->data[$f_id], $data);
-	}
+		Fsb::$db->free($result);
 
-	/*
-	** Parse l'arbre des forums de facon a regrouper les informations en amont du premier forum.
-	** Ainsi si par exemple un forum A a 10 messages a son actif, et que son fils B a 15 messages,
-	** une fois cette methode appelee le forum A aura 25 messages.
-	*/
-	public function parse()
-	{
-		foreach ($this->document AS $f_id => $childs)
-		{
-			$this->_parse($this->document, $f_id);
-		}
+		$this->resync_stats($this->document);
 
-		foreach ($this->data AS $f_id => $data)
+		// Mise a jour des donnees
+		if (!$update)
 		{
-			if (isset($data['is_filled']))
+			foreach (get_forums() AS $f)
 			{
-				unset($data['f_id'], $data['is_filled']);
+				$update[] = $f['f_id'];
+			}
+		}
+		
+		foreach ($update AS $f_id)
+		{
+			if ($f_id != 0 && $data = $this->getByID($f_id)->data)
+			{
 				Fsb::$db->update('forums', $data, 'WHERE f_id = ' . $f_id);
 			}
 		}
 	}
-
-	private function _parse(&$node, $id)
+	
+	public function merge_item($id, $data)
 	{
-		foreach ($node AS $f_id => $childs)
+		$data = array_merge($this->getByID($id)->data, $data);
+		$this->update_item($id, $data);
+	}
+	
+	public function resync_stats(&$node)
+	{
+		foreach ($node->children AS $id => $child)
 		{
-			$this->_parse($childs->children(), $f_id);
-
-			if (!isset($this->data[$f_id]))
+			$this->resync_stats($child);
+			if ($node->id == 0)
 			{
-				$this->data[$f_id] = array(
-					'f_total_topic' =>		0,
-					'f_total_post' =>		0,
-					'f_last_p_id' =>		0,
-					'f_last_t_id' =>		0,
-					'f_last_t_title' =>		'',
-					'f_last_p_nickname' =>	'',
-					'f_last_u_id' =>		0,
-					'f_last_p_time' =>		0,
-				);
+				continue;
 			}
 
-			if (!isset($this->data[$id]))
+			$node->data['f_total_post'] += $child->data['f_total_post'];
+			$node->data['f_total_topic'] += $child->data['f_total_topic'];
+			if ($node->data['f_last_p_time'] < $child->data['f_last_p_time'])
 			{
-				$this->data[$id] = array(
-					'f_total_topic' =>		0,
-					'f_total_post' =>		0,
-					'f_last_p_id' =>		0,
-					'f_last_t_id' =>		0,
-					'f_last_t_title' =>		'',
-					'f_last_p_nickname' =>	'',
-					'f_last_u_id' =>		0,
-					'f_last_p_time' =>		0,
-				);
-			}
-
-			$this->data[$id]['f_total_topic'] +=	$this->data[$f_id]['f_total_topic'];
-			$this->data[$id]['f_total_post'] +=		$this->data[$f_id]['f_total_post'];
-			if ($this->data[$id]['f_last_p_time'] < $this->data[$f_id]['f_last_p_time'])
-			{
-				$this->data[$id]['f_last_p_id'] =		$this->data[$f_id]['f_last_p_id'];
-				$this->data[$id]['f_last_t_id'] =		$this->data[$f_id]['f_last_t_id'];
-				$this->data[$id]['f_last_t_title'] =	$this->data[$f_id]['f_last_t_title'];
-				$this->data[$id]['f_last_p_nickname'] =	$this->data[$f_id]['f_last_p_nickname'];
-				$this->data[$id]['f_last_u_id'] =		$this->data[$f_id]['f_last_u_id'];
-				$this->data[$id]['f_last_p_time'] =		max($this->data[$id]['f_last_p_time'], $this->data[$f_id]['f_last_p_time']);
+				$node->data['f_last_t_id'] = $child->data['f_last_t_id'];
+				$node->data['f_last_p_id'] = $child->data['f_last_p_id'];
+				$node->data['f_last_p_time'] = $child->data['f_last_p_time'];
+				$node->data['f_last_p_nickname'] = $child->data['f_last_p_nickname'];
+				$node->data['f_last_t_title'] = $child->data['f_last_t_title'];
+				$node->data['f_last_u_id'] = $child->data['f_last_u_id'];
 			}
 		}
 	}
