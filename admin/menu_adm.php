@@ -14,7 +14,14 @@
  */
 class Fsb_frame_child extends Fsb_admin_frame
 {
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	
 	public $name;
 
 	/**

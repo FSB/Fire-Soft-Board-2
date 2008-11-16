@@ -13,26 +13,58 @@
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du champ personnel
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Module chargé dans la frame
+	 *
+	 * @var string
+	 */
 	public $module;
 	
-	// Donnees du formulaire
+	/**
+	 * Donnees du formulaire
+	 * 
+	 * @var array
+	 */
 	public $data = array();
 
-	// Type HTML choisi
+	/**
+	 * Type HTML choisi
+	 * 
+	 * @var 
+	 */
 	public $type;
 
-	// Type de page
+	/**
+	 * Type de page
+	 *
+	 * @var int
+	 */
 	public $fields_type = PROFIL_FIELDS_PERSONAL;
 
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -71,9 +103,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 	
-	/*
-	** Affiche le listing des champs existants, avec les boutons ajouter, editer, etc ...
-	*/
+	/**
+	 * Affiche le listing des champs existants, avec les boutons ajouter, editer, etc ...
+	 */
 	public function main_form_pf()
 	{		
 		Fsb::$tpl->set_switch('fields_list');
@@ -102,9 +134,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 	
-	/*
-	** Formulaire d'ajout / edition de champs personels
-	*/
+	/**
+	 * Formulaire d'ajout / edition de champs personels
+	 */
 	public function add_edit_form_pf()
 	{		
 		if ($this->errstr)
@@ -181,9 +213,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 	
-	/*
-	** Verification des donnees du formulaire
-	*/
+	/**
+	 * Verification des donnees du formulaire
+	 */
 	public function check_form_pf()
 	{
 		$this->data = Profil_fields_admin::validate($this->type, $this->errstr);
@@ -193,9 +225,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 	
-	/*
-	** Soumet le formulaire
-	*/
+	/**
+	 * Soumet le formulaire
+	 */
 	public function submit_form_pf()
 	{
 		if ($this->mode == 'edit')
@@ -212,9 +244,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_pf_well_' . $this->mode, 'index.' . PHPEXT . '?p=users_profile_fields&amp;module=' . $this->module, 'users_' . $this->module);
 	}
 	
-	/*
-	** Supprime un champ personel
-	*/
+	/**
+	 * Supprime un champ personel
+	 */
 	public function delete_pf()
 	{
 		// On recupere le nom du champ, pour le log
@@ -246,9 +278,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=users_profile_fields&module=' . $this->module);
 	}
 	
-	/*
-	** Deplace un champ personel
-	*/
+	/**
+	 * Deplace un champ personel
+	 */
 	public function move_pf()
 	{
 		Profil_fields_admin::move($this->id, (($this->mode == 'up') ? -1 : 1), $this->fields_type);
