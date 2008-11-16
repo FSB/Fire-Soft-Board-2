@@ -9,17 +9,17 @@
  */
 
 /*
-** Permet de gerer l'acces aux pages de l'administration, ainsi que 
-** leur positionement
-*/
+ * Permet de gerer l'acces aux pages de l'administration, ainsi que 
+ * leur positionement
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	public $mode;
 	public $name;
 
 	/*
-	** Constructeur
-	*/
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode = Http::request('mode');
@@ -43,8 +43,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Affiche le menu et les options disponibles
-	*/
+	 * Affiche le menu et les options disponibles
+	 */
 	public function page_default_menu()
 	{
 		Fsb::$tpl->set_file('adm_menu_edit.html');
@@ -90,8 +90,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Deplace une categorie dans le menu
-	*/
+	 * Deplace une categorie dans le menu
+	 */
 	public function page_menu_move_cat()
 	{
 		$move = ($this->mode == 'up_cat') ? -1 : 1;
@@ -100,8 +100,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Deplace un lien dans le menu
-	*/
+	 * Deplace un lien dans le menu
+	 */
 	public function page_menu_move_link()
 	{
 		$move = ($this->mode == 'up_link') ? -1 : 1;
@@ -110,8 +110,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Sauvegarde les modifications des donnees du menu
-	*/
+	 * Sauvegarde les modifications des donnees du menu
+	 */
 	public function page_menu_submit()
 	{
 		foreach (Fsb::$menu->data AS $key => $value)
