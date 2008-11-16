@@ -13,33 +13,33 @@ define('ROOT', '../');
 define('IN_ADM', TRUE);
 include(ROOT . 'main/start.' . PHPEXT);
 
-/*
+/**
  * Gestion de la pseudo frame pour l'administration
  */
 class Fsb_admin_frame extends Fsb_model
 {
-	/*
+	/**
 	 * Page de la frame
 	 * 
 	 * @var string
 	 */
 	public $page = 'index_adm';
 
-	/*
+	/**
 	 * Autorisation pour voir la page
 	 * 
 	 * @var int
 	 */
 	public $auth = FONDATOR;
 
-	/*
+	/**
 	 * Categorie de la page
 	 * 
 	 * @var int
 	 */
 	public $cat = NULL;
 
-	/*
+	/**
 	 * Recupere la page de la pseudo frame
 	 */
 	public static function frame_request_page()
@@ -85,7 +85,7 @@ class Fsb_admin_frame extends Fsb_model
 		return (array($inc_page, $inc_auth, $inc_cat));
 	}
 
-	/*
+	/**
 	 * Constructeur
 	 * 
 	 * @param string $page page de la frame
@@ -104,7 +104,7 @@ class Fsb_admin_frame extends Fsb_model
 		$this->frame_footer();
 	}
 
-	/*
+	/**
 	 * Cree le header (entete) de l'administration
 	 */
 	public function frame_header()
@@ -161,7 +161,7 @@ class Fsb_admin_frame extends Fsb_model
 		));
 	}
 
-	/*
+	/**
 	 * Cree le footer (pied de page) de l'administration
 	 */
 	public function frame_footer()

@@ -8,9 +8,9 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Banissement des utilisateurs
-*/
+/**
+ * Banissement des utilisateurs
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	// Arguments de la page
@@ -18,9 +18,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $order;
 	public $direction;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -48,9 +48,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Page par defaut pour le bannissement
-	*/
+	/**
+	 * Page par defaut pour le bannissement
+	 */
 	public function page_ban_default()
 	{
 		// suppression des bans expires
@@ -90,9 +90,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_show_banish();
 	}
 
-	/*
-	** Affiche ligne par les ligne tout ce qui a ete banni
-	*/
+	/**
+	 * Affiche ligne par les ligne tout ce qui a ete banni
+	 */
 	public function page_show_banish()
 	{
 		$sql = 'SELECT *
@@ -114,10 +114,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Banni un login, une IP ou une adresse email. Delogue tous les membres
-	** qui corresponedent au bannissement.
-	*/
+	/**
+	 * Banni un login, une IP ou une adresse email. Delogue tous les membres
+	 * qui corresponedent au bannissement.
+	 */
 	public function page_add_ban()
 	{
 		$type =			Http::request('ban_type', 'post');
@@ -134,9 +134,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_ban_well_add','index.' . PHPEXT . '?p=users_ban', 'users_ban');
 	}
 
-	/*
-	** Supprime des bannissements
-	*/
+	/**
+	 * Supprime des bannissements
+	 */
 	public function page_delete_ban()
 	{
 		$action = (array) Http::request('action', 'post');

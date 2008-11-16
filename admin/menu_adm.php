@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
+/**
  * Permet de gerer l'acces aux pages de l'administration, ainsi que 
  * leur positionement
  */
@@ -17,7 +17,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $mode;
 	public $name;
 
-	/*
+	/**
 	 * Constructeur
 	 */
 	public function main()
@@ -42,7 +42,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
+	/**
 	 * Affiche le menu et les options disponibles
 	 */
 	public function page_default_menu()
@@ -89,7 +89,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
+	/**
 	 * Deplace une categorie dans le menu
 	 */
 	public function page_menu_move_cat()
@@ -99,7 +99,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=menu_adm');
 	}
 
-	/*
+	/**
 	 * Deplace un lien dans le menu
 	 */
 	public function page_menu_move_link()
@@ -109,7 +109,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=menu_adm');
 	}
 
-	/*
+	/**
 	 * Sauvegarde les modifications des donnees du menu
 	 */
 	public function page_menu_submit()

@@ -16,7 +16,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 {
 	public $mode;
 
-	/*
+	/**
 	 * Constructeur
 	 */
 	public function main()
@@ -33,7 +33,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
+	/**
 	 * Page par defaut sur l'administration du forum
 	 */
 	public function page_default_administration()
@@ -330,7 +330,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
+	/**
 	 * Page de verification de la version
 	 */
 	public function page_check_version()
@@ -354,7 +354,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
+	/**
 	 * Page de verification de la version
 	 */
 	public function refresh_menu()
@@ -363,7 +363,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_well_refresh', 'index.' . PHPEXT, 'index_adm');
 	}
 
-	/*
+	/**
 	 * Page de verification de la version
 	 */
 	public function page_activate_users()
