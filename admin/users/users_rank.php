@@ -13,13 +13,23 @@
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la frame
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du rang
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -40,9 +50,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Page par defaut d'affichage des rangs
-	*/
+	/**
+	 * Page par defaut d'affichage des rangs
+	 */
 	public function page_default_rank()
 	{		
 		Fsb::$tpl->set_switch('ranks_list');
@@ -73,9 +83,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Page permettant d'editer / ajouter un rang
-	*/
+	/**
+	 * Page permettant d'editer / ajouter un rang
+	 */
 	public function page_add_edit_rank()
 	{		
 		if ($this->mode == 'edit')
@@ -126,9 +136,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition de rangs
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition de rangs
+	 */
 	public function page_submit_rank()
 	{
 		$rank_name =		trim(Http::request('rank_name', 'post'));
@@ -175,9 +185,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_rank_well_' . $this->mode, 'index.' . PHPEXT . '?p=users_rank', 'users_rank');
 	}
 
-	/*
-	** Page de suppression des rangs
-	*/
+	/**
+	 * Page de suppression des rangs
+	 */
 	public function page_delete_rank()
 	{
 		// Nom du rang

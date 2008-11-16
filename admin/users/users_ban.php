@@ -13,9 +13,25 @@
  */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la frame
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Champ utilisé pour trier les bans
+	 *
+	 * @var string
+	 */
 	public $order;
+	
+	/**
+	 * Sens dans lequel les bans sont affichés (ASC ou DESC)
+	 *
+	 * @var unknown_type
+	 */
 	public $direction;
 
 	/**

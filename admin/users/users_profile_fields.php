@@ -14,7 +14,7 @@
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	/**
-	 * Mode de la page
+	 * Mode de la frame
 	 *
 	 * @var string
 	 */
