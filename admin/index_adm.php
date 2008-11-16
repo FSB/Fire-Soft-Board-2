@@ -9,16 +9,16 @@
  */
 
 /*
-** Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est a jour, les derniers logs,
-** les comptes en attente d'activation.
-*/
+ * Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est a jour, les derniers logs,
+ * les comptes en attente d'activation.
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	public $mode;
 
 	/*
-	** Constructeur
-	*/
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode = Http::request('mode');
@@ -34,8 +34,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page par defaut sur l'administration du forum
-	*/
+	 * Page par defaut sur l'administration du forum
+	 */
 	public function page_default_administration()
 	{
 		Fsb::$tpl->set_file('adm_index.html');
@@ -331,8 +331,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Page de verification de la version
-	*/
+	 * Page de verification de la version
+	 */
 	public function page_check_version()
 	{
 		if (!$content = Http::get_file_on_server(FSB_REQUEST_SERVER, FSB_REQUEST_VERSION, 10))
@@ -355,8 +355,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Rafraichi le menu
-	*/
+	 * Page de verification de la version
+	 */
 	public function refresh_menu()
 	{
 		Fsb::$menu->refresh_menu();
@@ -364,8 +364,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 	/*
-	** Active un compte de membre inactif
-	*/
+	 * Page de verification de la version
+	 */
 	public function page_activate_users()
 	{
 		$id = intval(Http::request('id'));

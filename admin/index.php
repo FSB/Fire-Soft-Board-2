@@ -20,16 +20,22 @@ class Fsb_admin_frame extends Fsb_model
 {
 	/*
 	 * Page de la frame
+	 * 
+	 * @var string
 	 */
 	public $page = 'index_adm';
 
 	/*
 	 * Autorisation pour voir la page
+	 * 
+	 * @var int
 	 */
 	public $auth = FONDATOR;
 
 	/*
 	 * Categorie de la page
+	 * 
+	 * @var int
 	 */
 	public $cat = NULL;
 
@@ -81,6 +87,10 @@ class Fsb_admin_frame extends Fsb_model
 
 	/*
 	 * Constructeur
+	 * 
+	 * @param string $page page de la frame
+	 * @param int $auth autorisation pour voir la page
+	 * @param int $cat categorie de la page
 	 */
 	public function __construct($page, $auth, $cat)
 	{
