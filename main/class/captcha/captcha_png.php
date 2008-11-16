@@ -1,14 +1,12 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/captcha/captcha_png.php
-** | Begin :	16/05/2007
-** | Last :		17/07/2007
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 /**
  * Extension de la classe Captcha, generant directement des fichiers PNG basiques sans GD

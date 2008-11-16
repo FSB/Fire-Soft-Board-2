@@ -1,14 +1,12 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/class_group.php
-** | Begin :	11/07/2007
-** | Last :		25/12/2007
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 /**
  * Methodes permettants de gerer les groupes du forum (ajout, validation, suppression, etc..)

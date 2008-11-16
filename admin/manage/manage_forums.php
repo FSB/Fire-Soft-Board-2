@@ -1,14 +1,12 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/admin/manage/manage_forums.php
-** | Begin :	04/04/2005
-** | Last :		20/01/2008
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 /*
 ** Page de gestion des categories / forums

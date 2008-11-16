@@ -1,14 +1,12 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :			~/main/start.php
-** | Begin :		02/04/2005
-** | Last :			07/01/2008
-** | User :			Genova
-** | Project :		Fire-Soft-Board 2 - Copyright FSB group
-** | License :		GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 // Mettre l'error_reporting sur E_ALL uniquement pour activer le mode DEBUG
 error_reporting(E_ALL);

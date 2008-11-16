@@ -1,13 +1,11 @@
-/*
-** +---------------------------------------------------+
-** | Name :		~/tpl/WhiteSummer/opera.css
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** |
-** | Vous pouvez modifier, réutiliser et redistribuer
-** | ce fichier à condition de laisser cet entète.
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 /* Affichage des legendes */
 legend

@@ -1,30 +1,39 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/parser/parser_wysiwyg.php
-** | Begin :	16/07/2007
-** | Last :		23/02/2008
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
-/*
-** Gestion de l'encodage / decodage des informations pour le WYSIWYG
-*/
+/**
+ * Gestion de l'encodage / decodage des messages pour le WYSIWYG
+ */
 class Parser_wysiwyg extends Fsb_model
 {
-	// Pour le parseur WYSIWYG (status dans la pile)
+	/**
+	 * Tag HTML ouvert
+	 */
 	const TAG_OPEN = 1;
+	
+	/**
+	 * Tag HTML ferme
+	 */
 	const TAG_CLOSE = 2;
+	
+	/**
+	 * Texte entre deux tags HTML
+	 */
 	const TEXT = 3;
 
-	/*
-	** Parse des FSBcode uniquement affichables sur le WYSIWYG
-	** -----
-	** $str ::		Chaine de caracteres a parser
-	*/
+	/**
+	 * Parse des FSBcode uniquement affichables sur le WYSIWYG
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	public static function decode($str)
 	{
 		$str = htmlspecialchars($str);
@@ -38,11 +47,12 @@ class Parser_wysiwyg extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Parse une chaine de caractere HTML pour la transformer en FSBcode
-	** -----
-	** $str ::		Chaine a parser
-	*/
+	/**
+	 * Parse une chaine de caractere HTML pour la transformer en FSBcode
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	public static function encode($str)
 	{
 		//echo "<xmp>$str</xmp><hr />";

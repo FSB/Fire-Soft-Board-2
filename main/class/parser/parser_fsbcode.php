@@ -1,33 +1,51 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/parser/parser_fsbcode.php
-** | Begin :	16/07/2007
-** | Last :		23/02/2008
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
-/*
-** Parseur FSBcode
-*/
+/**
+ * Parseur de FSBcode
+ */
 class Parser_fsbcode extends Fsb_model
 {
-	// Mise en cache des FSBcode
+	/**
+	 * Garde en cache les donnees sur les FSBcode
+	 *
+	 * @var array
+	 */
 	private static $cache_fsbcode = array();
 
-	// Si TRUE, on n'affiche que les FSBcode visibles par le WYSIWYG
+	/**
+	 * Determine si on affiche ou non uniquement les FSBcode visibles dans le WYSIWYG
+	 *
+	 * @var bool
+	 */
 	public $only_wysiwyg = FALSE;
 
-	// Parse des images ?
+	/**
+	 * Si on doit parser les images
+	 *
+	 * @var bool
+	 */
 	public $parse_img = TRUE;
 
-	// Parse des \0 en \n ?
+	/**
+	 * Si on doit parser les caracteres \0 en \n
+	 * 
+	 * @var bool
+	 */
 	public $parse_eof = TRUE;
 
-	// Parse d'une signature ?
+	/**
+	 * S'il s'agit d'une signature
+	 *
+	 * @var bool
+	 */
 	public $is_signature = FALSE;
 	
 	/**
@@ -37,7 +55,11 @@ class Parser_fsbcode extends Fsb_model
 	 */
 	public $info;
 
-	// Variables predefinies qu'on peut potentiellement parser
+	/**
+	 * Variables predefinies qu'on peut potentiellement parser
+	 * 
+	 * @var array
+	 */
 	private $static_vars = array(
 		'{USER_NICKNAME}' =>	'p_nickname',
 		'{USER_ID}' =>			'u_id',
@@ -45,12 +67,13 @@ class Parser_fsbcode extends Fsb_model
 		'{FORUM_ID}' =>			'f_id',
 	);
 
-	/*
-	** Lance le parsing des FSBcode a partir des informations contenues dans la table fsb2_fsbcode
-	** -----
-	** $str ::	Chaine de caracteres a parser
-	** $info ::	Tableau d'informations (variables predefinies)
-	*/
+	/**
+	 * Parse les FSBcode a partir des informations de la table fsb2_fsbcode
+	 *
+	 * @param string $str Chaine a parser
+	 * @param array $info Variables d'environement du message
+	 * @return string
+	 */
 	public function parse($str, $info = array())
 	{
 		$this->info = $info;
@@ -126,14 +149,15 @@ class Parser_fsbcode extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Parse les FSBcode a partir d'une information de recherche et de remplacement.
-	** -----
-	** $str ::		Chaine a parser
-	** $search ::	Recherche de FSBcode
-	** $replace ::	Remplacement du FSBcode
-	** $info ::		Tableau d'informations (variables predefinies)
-	*/
+	/**
+	 * Parse les FSBcode a partir d'une information de recherche et de remplacement.
+	 *
+	 * @param string $str Chaine a parser
+	 * @param string $search Recherche de FSBcode
+	 * @param string $replace Remplacement du FSBcode
+	 * @param array $info Variables d'environement
+	 * @return string
+	 */
 	private function parse_fsbcode_patterns($str, $search, $replace, $info = array())
 	{
 		// Creation d'un pattern a partir de la chaine de recherche
@@ -170,9 +194,12 @@ class Parser_fsbcode extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Parse les FSBcode QUOTE
-	*/
+	/**
+	 * Parse du FSBcode QUOTE
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	private function generate_quote($m)
 	{
 		$arg = $m[2];
@@ -227,9 +254,12 @@ class Parser_fsbcode extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les FSBcode CODE
-	*/
+	/**
+	 * Parse du FSBcode CODE
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_code($m)
 	{
 		$arg = $m[2];
@@ -271,9 +301,12 @@ class Parser_fsbcode extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les FSBcode URL
-	*/
+	/**
+	 * Parse du FSBcode URL
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_url($m)
 	{
 		$arg = $m[2];
@@ -303,9 +336,12 @@ class Parser_fsbcode extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les FSBcode MAIL
-	*/
+	/**
+	 * Parse du FSBcode MAIL
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_mail($m)
 	{
 		$arg = $m[2];
@@ -332,9 +368,12 @@ class Parser_fsbcode extends Fsb_model
 		return (sprintf(Fsb::$session->getStyle('fsbcode', 'url'), 'mailto:' . trim($arg), '', $content));
 	}
 
-	/*
-	** Parse les FSBcode ATTACH
-	*/
+	/**
+	 * Parse du FSBcode ATTACH
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_attach($m)
 	{
 		$arg = $m[2];
@@ -369,9 +408,12 @@ class Parser_fsbcode extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les FSBcode LIST
-	*/
+	/**
+	 * Parse du FSBcode LIST
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_list($m)
 	{
 		$arg = $m[2];
@@ -413,9 +455,12 @@ class Parser_fsbcode extends Fsb_model
 		}
 	}
 
-	/*
-	** Parse les FSBcode IMG
-	*/
+	/**
+	 * Parse du FSBcode IMG
+	 *
+	 * @param array $m Informations du FSBcode
+	 * @return string
+	 */
 	public function generate_img($m)
 	{
 		$arg = $m[2];
@@ -461,12 +506,13 @@ class Parser_fsbcode extends Fsb_model
 		return ('<div class="image"><img src="' . trim($content) . '" ' . $attr_str . ' /></div>');
 	}
 
-	/*
-	** Inhibe les FSBcode en remplacant leurs balises par un equivalent HTML.
-	** Remplace les balises des smileys courament utilisees par un equivalent.
-	** -----
-	** $str ::		Chaine de caractere a parser.
-	*/
+	/**
+	 * Inhibe les FSBcode en remplacant leurs balises par un equivalent HTML.
+	 * Remplace les balises des smileys courament utilisees par un equivalent.
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	private function block_fsbcode($str)
 	{
 		$str = str_replace(array(':', '[', ']', ')', '('), array('&#58;', '&#91;', '&#93;', '&#41;', '&#40;'), $str);

@@ -1,44 +1,62 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/parser/parser.php
-** | Begin :	13/03/2005
-** | Last :		10/02/2008
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
+/**
+ * Parser de messages
+ */
 class Parser extends Fsb_model
 {
-	// Parse des FSBcode ?
+	/**
+	 * Si les FSBcode doivent etre parses
+	 *
+	 * @var bool
+	 */
 	public $parse_fsbcode = TRUE;
 
-	// Parse des images ?
+	/**
+	 * Si les images doivent etre parsees
+	 *
+	 * @var bool
+	 */
 	public $parse_img = TRUE;
 
-	// Parse du HTML ?
+	/**
+	 * Si le HTML doit etre parses
+	 *
+	 * @var bool
+	 */
 	public $parse_html = FALSE;
 
-	// Parse d'une signature ?
+	/**
+	 * Si les signatures doivent etre parsees
+	 *
+	 * @var bool
+	 */
 	public $is_signature = FALSE;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur, verifie si les FSBcode / images doivent etre parses en fonction de la configuration
+	 */
 	public function __construct()
 	{
 		$this->parse_fsbcode =	(Fsb::$session->data['u_activate_fscode'] & 2) ? TRUE : FALSE;
 		$this->parse_img =		(Fsb::$session->data['u_activate_img'] & 2) ? TRUE : FALSE;
 	}
 
-	/*
-	** Parse du texte
-	** -----
-	** $str ::			Chaine de caractere a parser.
-	** $info ::			Tableau d'informations (variables predefinies)
-	*/
+	/**
+	 * Parse un message
+	 *
+	 * @param string $str Contenu du message
+	 * @param array $info Variables d'environement pour le message
+	 * @return string Message parse
+	 */
 	public function message($str, $info = array())
 	{
 		// Prise en compte du HTML ?
@@ -92,13 +110,14 @@ class Parser extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Parse un message qui depend d'une MAP XML
-	** -----
-	** $str ::			Chaine du message
-	** $map_name ::		Nom de la MAP
-	** $info ::			Tableau d'informations (variables predefinies)
-	*/
+	/**
+	 * Parse un message qui depend d'une MAP XML
+	 *
+	 * @param string $str Contenu du message
+	 * @param string $map_name Nom de la MAP a utiliser
+	 * @param array $info Variables d'environement pour le message
+	 * @return string Message parse
+	 */
 	public function mapped_message($str, $map_name, $info = array())
 	{
 		$str = Map::parse_message($str, $map_name);
@@ -106,11 +125,12 @@ class Parser extends Fsb_model
 		return ($this->message($str, $info));
 	}
 
-	/*
-	** Parse un titre de sujet
-	** -----
-	** $str ::		Chaine a parser
-	*/
+	/**
+	 * Parse le titre d'un sujet
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	public function title($str)
 	{
 		$str = htmlspecialchars(self::censor($str));
@@ -118,11 +138,13 @@ class Parser extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Parse des signatures
-	** -----
-	** $str ::		Texte de la signature
-	*/
+	/**
+	 * Parse une signature
+	 *
+	 * @param string $str
+	 * @param array $info Variables d'environement pour le message
+	 * @return string
+	 */
 	public function sig($str, $info = array())
 	{
 		$old_parse_fsbcode = $this->parse_fsbcode;
@@ -141,12 +163,13 @@ class Parser extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Remplace les raccourcis dans smileys par leur equivalent en image.
-	** -----
-	** $str ::		Chaine de caractere a parser.
-	** $set_path :: Chemin absolue ?
-	*/
+	/**
+	 * Remplace les raccourcis de smilies par leur equivalent en image.
+	 *
+	 * @param string $str Chaine a parser
+	 * @param bool $set_path Si on utilise le chemin absolu
+	 * @return string
+	 */
 	public static function smilies($str, $set_path = FALSE)
 	{
 		static $origin = array(0 => array(), 1 => array()), $replace = array(0 => array(), 1 => array()), $flag = array(0 => FALSE, 1 => FALSE), $smilies = NULL;
@@ -181,11 +204,12 @@ class Parser extends Fsb_model
 		return (substr($str, 1, -1));
 	}
 
-	/*
-	** Remplace les mots censures par leurs equivalents
-	** -----
-	** $str ::		Chaine de caractere a parser.
-	*/
+	/**
+	 * Remplace les mots censures
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	public static function censor($str)
 	{
 		static $origin = array(), $replace = array(), $flag = FALSE;
@@ -220,11 +244,12 @@ class Parser extends Fsb_model
 		return ($str);	
 	}
 
-	/*
-	** Parse les URL et les mails automatiquement.
-	** -----
-	** $str ::		Chaine de caractere a parser.
-	*/
+	/**
+	 * Parse les URL et les emails de facon a les rendre clickable
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	public static function auto_url($str)
 	{
 		$fsbcode = new Parser_fsbcode();
@@ -234,11 +259,12 @@ class Parser extends Fsb_model
 		return (substr($str, 1, -1));
 	}
 
-	/*
-	** Filtre applique sur chaque champ avant l'envoie d'un message
-	** -----
-	** $str ::		Contenu du champ
-	*/
+	/**
+	 * Filtre applique sur chaque champ avant l'envoie d'un message
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	public function prefilter($str)
 	{
 		foreach (get_class_methods('Parser_prefilter') AS $method)

@@ -1,13 +1,12 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/lang/fr/lg_install.php
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** |
-** | Ce fichier est un fichier langue généré automatiquement
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
 return (array (
   'install_welcome' => 'Merci d\'avoir choisi FSB (Fire Soft Board) comme solution de forums. Nous allons procéder étape par étape à l\'installation de votre forum. En cas de problème vous trouverez du support (gratuit) sur notre site officiel: <a href="http://www.fire-soft-board.com">http://www.fire-soft-board.com</a>',

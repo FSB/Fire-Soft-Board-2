@@ -1,37 +1,71 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/notify/notify.php
-** | Begin :	16/11/2006
-** | Last :		02/10/2007
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
-/*
-** Gestion d'envoie de messages de notification avec gestion d'une liste d'envoie en differe. La methode put() ajoute des messages a cette liste, l'envoie
-** de message se faisant via la methode send_enqueue(). La methode simple send() envoie instantanement le message.
-** Les protocoles supportes sont les protocoles mail/smtp, jabber et MSN.
-*/
+/**
+ * Gestion d'envoie de messages de notification en differe.
+ * Mail / SMTP supportés, MSN et Jabber sont mis de côtés pour le moment et ne fonctionnent pas correctement.
+ */
 class Notify extends Fsb_model
 {
-	// Nombre maximum d'essaie de renvoie d'une notification si elle echoue
+	/**
+	 * Nombre maximum d'essaie de renvoie d'une notification si elle echoue
+	 */
 	const MAX_TRY = 3;
 
+	/**
+	 * Methode d'envoie de notification
+	 *
+	 * @var int
+	 */
 	private $method =	NOTIFY_MAIL;
+	
+	/**
+	 * Liste des destinataires
+	 *
+	 * @var array
+	 */
 	private $bcc =		array();
+	
+	/**
+	 * Sujet de la notification
+	 *
+	 * @var string
+	 */
 	private $subject =	'';
+	
+	/**
+	 * Contenu de la notification
+	 *
+	 * @var string
+	 */
 	private $body =		'';
+	
+	/**
+	 * Variables a parser pour le message de notification
+	 *
+	 * @var string
+	 */
 	private $vars =		array();
+	
+	/**
+	 * Methodes d'envoie de notification
+	 *
+	 * @var array
+	 */
 	private $ext =		array(NOTIFY_MAIL => TRUE, NOTIFY_MSN => TRUE, NOTIFY_JABBER => TRUE);
 
-	/*
-	** Constructeur
-	** -----
-	** $method ::		Choix de la methode de notification
-	*/
+	/**
+	 * Constructeur, determine la methode de notification
+	 *
+	 * @param int $method Choix de la methode de notification
+	 */
 	public function __construct($method = NOTIFY_MAIL)
 	{
 		if (!Fsb::$cfg->get('jabber_notify_enabled') || !function_exists('fsockopen'))
@@ -45,22 +79,22 @@ class Notify extends Fsb_model
 		}
 		$this->method = (isset($this->ext[$method])) ? $method : NOTIFY_MAIL;
 	}
-	
-	/*
-	** Ajout de destinataires
-	** -----
-	** $addr ::	Adresse du destinataire
-	*/
+
+	/**
+	 * Ajout de destinataires
+	 *
+	 * @param string $addr Adresse du destinataire
+	 */
 	public function add_bcc($addr)
 	{
 		$this->bcc[] = $addr;
 	}
-	
-	/*
-	** Selection du template pour le contenu du message
-	** -----
-	** $template ::		Chemin vers le template
-	*/
+
+	/**
+	 * Selection du template pour le contenu du message
+	 *
+	 * @param string $template Chemin vers le template
+	 */
 	public function set_template($template)
 	{
 		// On regarde si une modification du template existe
@@ -78,22 +112,22 @@ class Notify extends Fsb_model
 		// Recuperation du contenu du template
 		$this->body = file_get_contents($template);
 	}
-	
-	/*
-	** Ajout de variables de templates
-	** -----
-	** $vararray ::		Liste de variables de templates
-	*/
-	public function set_vars($vararray)
+
+	/**
+	 * Ajout de variables de template
+	 *
+	 * @param array $vars Liste des variables de template
+	 */
+	public function set_vars($vars)
 	{
-		$this->vars = array_merge($this->vars, $vararray);
+		$this->vars = array_merge($this->vars, $vars);
 	}
-	
-	/*
-	** Sujet du message
-	** -----
-	** $subject ::		Sujet
-	*/
+
+	/**
+	 * Assigne le sujet de la notification
+	 *
+	 * @param string $subject
+	 */
 	public function set_subject($subject)
 	{
 		if (!$subject)
@@ -103,9 +137,9 @@ class Notify extends Fsb_model
 		$this->subject = $subject;
 	}
 	
-	/*
-	** Fusion du texte avec les variables de templates
-	*/
+	/**
+	 * Parse le contenu du message avec les variables de template
+	 */
 	public function parse_body()
 	{
 		foreach ($this->vars AS $key => $value)
@@ -127,11 +161,12 @@ class Notify extends Fsb_model
 		}
 	}
 
-	/*
-	** Envoie du message
-	** -----
-	** $parse_body ::	TRUE si on doit parser le texte a partir des variables de templates
-	*/
+	/**
+	 * Envoie le message
+	 *
+	 * @param bool $parse_body TRUE si on doit parser le texte a partir des variables de templates
+	 * @return bool Succes ou non de l'envoie du message
+	 */
 	public function send($parse_body = TRUE)
 	{
 		if ($parse_body)
@@ -209,9 +244,9 @@ class Notify extends Fsb_model
 		return ($result);
 	}
 	
-	/*
-	** Ajout du message a la liste des messages en attentes
-	*/
+	/**
+	 * Ajout du message a la liste des notifications
+	 */
 	public function put()
 	{
 		$this->parse_body();
@@ -226,9 +261,9 @@ class Notify extends Fsb_model
 		Fsb::$db->destroy_cache('notify_');
 	}
 	
-	/*
-	** Remise a zero des informations
-	*/
+	/**
+	 * Remise a zero des informations
+	 */
 	public function reset()
 	{
 		$this->method = NOTIFY_MAIL;
@@ -238,9 +273,9 @@ class Notify extends Fsb_model
 		$this->vars = array();
 	}
 	
-	/*
-	** Envoie tous les messages en attente
-	*/
+	/**
+	 * Envoie toutes les notifications en attente
+	 */
 	public function send_queue()
 	{
 		$sql = 'SELECT *

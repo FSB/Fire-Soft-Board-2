@@ -1,28 +1,37 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/main/class/parser/parser_prefilter.php
-** | Begin :	10/10/2007
-** | Last :		10/10/2007
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
+/**
+ * Methodes appeles juste avant l'insertion du message en base de donnee.
+ * Les methodes commencant par filer_*() seront appeles automatiquement.
+ */
 class Parser_prefilter extends Fsb_model
 {
-	/*
-	** Transformation des URL locales en mettant le nom du sujet / forum
-	** -----
-	** $str ::		Chaine de caractere
-	*/
+	/**
+	 * Transformation des URL locales en mettant le nom du sujet / forum
+	 *
+	 * @param unknown_type $str Chaine a parser
+	 * @return string
+	 */
 	public static function filter_forum_url($str)
 	{
 		$str = preg_replace_callback('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.)([^ \"\t\n\r<]{3,}))))/i', array('self', '_filter_forum_url'), $str);
 		return ($str);
 	}
 
+	/**
+	 * Callback pour filter_forum_url()
+	 *
+	 * @param array $m
+	 * @return string
+	 */
 	public function _filter_forum_url($m)
 	{
 		$path = preg_quote(Fsb::$cfg->get('fsb_path'), '#');
