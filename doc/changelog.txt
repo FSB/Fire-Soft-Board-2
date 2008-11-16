@@ -79,6 +79,7 @@
 - Fix de la taille de l'avatar un peu partout
 - Fix d'un bug sur la protection des variables à cause de la directive register_globals
 - Fix de la validation de membres dans un groupe
+- Fix de la synchronisation des forums
 
 
 ===== 2.0.0 - 25 décembre 2007 =====

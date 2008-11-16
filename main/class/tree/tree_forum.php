@@ -10,11 +10,14 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Permet de manipuler les forums / sous forums comme un arbre
-*/
+/**
+ * Representation des forums sous forme d'arbre
+ */
 class Tree_forum extends Tree
 {
+	/**
+	 * Constructeur, construit l'arbre des forums
+	 */
 	public function __construct()
 	{
 		foreach (get_forums() AS $f)
@@ -32,7 +35,12 @@ class Tree_forum extends Tree
 		}
 	}
 	
-	public function update_stats($forums)
+	/**
+	 * Met a jour les informations en cache pour les forums de l'arbre
+	 *
+	 * @param array $forums Liste des forums a mettre a jour
+	 */
+	public function update_stats($forums = array())
 	{
 		// Le forum, ainsi que ses parents, doivent être resynchronisés
 		$update = $forums;
@@ -105,13 +113,24 @@ class Tree_forum extends Tree
 		}
 	}
 	
+	/**
+	 * Ajoute des informations au forum en gardant les anciennes
+	 *
+	 * @param int $id ID du forum
+	 * @param array $data Informations a ajouter
+	 */
 	public function merge_item($id, $data)
 	{
 		$data = array_merge($this->getByID($id)->data, $data);
 		$this->update_item($id, $data);
 	}
 	
-	public function resync_stats(&$node)
+	/**
+	 * Recalcul les informations des forums
+	 *
+	 * @param Tree_node $node
+	 */
+	private function resync_stats(&$node)
 	{
 		foreach ($node->children AS $id => $child)
 		{

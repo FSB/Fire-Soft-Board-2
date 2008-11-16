@@ -10,17 +10,32 @@
 ** +---------------------------------------------------+
 */
 
-/*
-** Genere un arbre a partir d'une liste d'ID et de parents
-*/
+/**
+ * Generation et gestion d'un arbre de donnees
+ */
 class Tree extends Fsb_model
 {
+	/**
+	 * Pointe sur l'element parent de l'arbre
+	 *
+	 * @var Tree_node
+	 */
 	public $document = null;
+	
+	/**
+	 * Contient les differentes branches de l'arbre
+	 *
+	 * @var array
+	 */
 	protected $data = array();
 
-	/*
-	** Ajoute un item a l'arbre
-	*/
+	/**
+	 * Ajoute un element a l'arbre
+	 *
+	 * @param int $id ID de l'element
+	 * @param int $parent ID du parent de l'element
+	 * @param mixed $data Informations sur l'element
+	 */
 	public function add_item($id, $parent, $data = null)
 	{
 		if (!isset($this->data[$id]))
@@ -50,16 +65,34 @@ class Tree extends Fsb_model
 		}
 	}
 	
+	/**
+	 * Ecrase les informations de l'element par des nouvelles
+	 *
+	 * @param int $id ID de l'element
+	 * @param mixed $data Nouvelles informations
+	 */
 	public function update_item($id, $data = null)
 	{
 		$this->data[$id]->data = $data;
 	}
 	
+	/**
+	 * Retourne un element dont l'ID est connue
+	 *
+	 * @param int $id ID de l'element
+	 * @return Tree_node
+	 */
 	public function getByID($id)
 	{
 		return (isset($this->data[$id]) ? $this->data[$id] : null);
 	}
 	
+	/**
+	 * Affiche une representation de l'arbre, pour le debug
+	 *
+	 * @param Tree_node $node
+	 * @param int $level
+	 */
 	public function debug($node = null, $level = 0)
 	{
 		if ($node === null)
@@ -75,19 +108,61 @@ class Tree extends Fsb_model
 	}
 }
 
+/**
+ * Feuille de l'arbre
+ */
 class Tree_node extends Fsb_model
 {
+	/**
+	 * Informations sur la feuille
+	 *
+	 * @var mixed
+	 */
 	public $data;
+	
+	/**
+	 * ID de la feuille
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Liste des enfants
+	 *
+	 * @var array
+	 */
 	public $children = array();
+	
+	/**
+	 * Liste d'ID des parents
+	 *
+	 * @var array
+	 */
 	public $parents = array();
+	
+	/**
+	 * Pointe sur le parent
+	 *
+	 * @var Tree_node
+	 */
 	public $parent;
 
-	public function __construct($data)
+	/**
+	 * Constructeur, assigne les informations a la feuille
+	 *
+	 * @param mixed $data
+	 */
+	public function __construct($data = null)
 	{
 		$this->data = $data;
 	}
 	
+	/**
+	 * Calcul les parents de la feuille
+	 *
+	 * @return array
+	 */
 	public function getParents()
 	{
 		$parents = array();
@@ -108,6 +183,5 @@ class Tree_node extends Fsb_model
 		return ($parents);
 	}
 }
-	
 
 /* EOF */
