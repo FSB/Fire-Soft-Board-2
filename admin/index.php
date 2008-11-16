@@ -14,22 +14,28 @@ define('IN_ADM', TRUE);
 include(ROOT . 'main/start.' . PHPEXT);
 
 /*
-** Gestion de la pseudo frame pour l'administration
-*/
+ * Gestion de la pseudo frame pour l'administration
+ */
 class Fsb_admin_frame extends Fsb_model
 {
-	// Page de la frame
+	/*
+	 * Page de la frame
+	 */
 	public $page = 'index_adm';
 
-	// Autorisation pour voir la page
+	/*
+	 * Autorisation pour voir la page
+	 */
 	public $auth = FONDATOR;
 
-	// Categorie de la page
+	/*
+	 * Categorie de la page
+	 */
 	public $cat = NULL;
 
 	/*
-	** Recupere la page de la pseudo frame
-	*/
+	 * Recupere la page de la pseudo frame
+	 */
 	public static function frame_request_page()
 	{
 		// Construction du menu administratif
@@ -74,8 +80,8 @@ class Fsb_admin_frame extends Fsb_model
 	}
 
 	/*
-	** Constructeur
-	*/
+	 * Constructeur
+	 */
 	public function __construct($page, $auth, $cat)
 	{
 		$this->page = $page;
@@ -89,8 +95,8 @@ class Fsb_admin_frame extends Fsb_model
 	}
 
 	/*
-	** Cree le header (entete) de l'administration
-	*/
+	 * Cree le header (entete) de l'administration
+	 */
 	public function frame_header()
 	{
 		// Gestion UTF-8 pour les serveurs qui font n'importe quoi
@@ -146,8 +152,8 @@ class Fsb_admin_frame extends Fsb_model
 	}
 
 	/*
-	** Cree le footer (pied de page) de l'administration
-	*/
+	 * Cree le footer (pied de page) de l'administration
+	 */
 	public function frame_footer()
 	{
 		Fsb::$debug->end = microtime(true);
