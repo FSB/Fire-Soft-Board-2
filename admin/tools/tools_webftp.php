@@ -8,14 +8,18 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page generant un webftp.
-** Il est possible d'acceder directement aux fichiers du forum afin de les supprimer / editer, ou bien d'en uploader
-** de nouveaux. On peut trier les fichiers, changer les droits, etc ...
-*/
+/**
+ * Page generant un webftp.
+ * Il est possible d'acceder directement aux fichiers du forum afin de les supprimer / editer, ou bien d'en uploader
+ * de nouveaux. On peut trier les fichiers, changer les droits, etc ...
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Fichiers recuperes dans un tableau
+	/**
+	 * Fichiers recuperes dans un tableau
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
 	// Arguments de la page
@@ -25,12 +29,16 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public $order;
 	public $order_direction;
 	
-	// Les fichiers editables
+	/**
+	 * Les fichiers editables
+	 *
+	 * @var array
+	 */
 	public $edit_file = array('php', 'php3', 'php4', 'php5', 'htm', 'html', 'tpl', 'txt', 'css', 'js', 'xml', 'rss', 'htaccess');
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// On recupere les arguments de la page
@@ -84,9 +92,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 	
-	/*
-	** Affiche les fichiers du repertoire courant
-	*/
+	/**
+	 * Affiche les fichiers du repertoire courant
+	 */
 	public function webftp_list_file()
 	{		
 		Fsb::$tpl->set_switch('webftp_list');
@@ -179,10 +187,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 	
-	/*
-	** Converti des permissions (octal) en permissions symboliques (rwx)
-	** http://fr.php.net/manual/fr/function.fileperms.php
-	*/
+	/**
+	 * Converti des permissions (octal) en permissions symboliques (rwx)
+	 * http://fr.php.net/manual/fr/function.fileperms.php
+	 *
+	 * @param int $perms permissions en octal
+	 * @return string permission symbolique
+	 */
 	public function get_perms($perms)
 	{
 		if (($perms & 0xC000) == 0xC000)
@@ -250,10 +261,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($info);
 	}
 	
-	/*
-	** Callback usort()
-	** Tri le tableau de fichiers
-	*/
+	/**
+	 * Callback usort()
+	 * Tri le tableau de fichiers
+	 *
+	 * @param array $a Fichier A
+	 * @param array $b Fichier B
+	 * @return int 
+	 */
 	public function order_file($a, $b)
 	{
 		if ($this->order_direction == 'desc')
@@ -292,9 +307,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$upload->store(ROOT . $this->dir);
 	}
 	
-	/*
-	** Chmod un ou plusieurs fichiers
-	*/
+	/**
+	 * Chmod un ou plusieurs fichiers
+	 */
 	public function chmod_file()
 	{
 		// Instance de la classe File
@@ -323,9 +338,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=tools_webftp&dir=' . $this->dir);
 	}
 	
-	/*
-	** Page d'edition d'un fichier
-	*/
+	/**
+	 * Page d'edition d'un fichier
+	 */
 	public function edit_file()
 	{
 		$ext = get_file_data($this->filename, 'extension');
@@ -345,9 +360,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Sauvegarde les modifications dans le fichier lors de l'edition
-	*/
+	/**
+	 * Sauvegarde les modifications dans le fichier lors de l'edition
+	 */
 	public function submit_edit_file()
 	{
 		// Instance de la classe File
@@ -360,9 +375,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_webftp_well_edit', 'index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . $this->dir, 'tools_webftp');
 	}
 	
-	/*
-	** Page de suppression d'un fichier (ou d'un dossier)
-	*/
+	/**
+	 * Page de suppression d'un fichier (ou d'un dossier)
+	 */
 	public function page_delete_file()
 	{
 		if (check_confirm())
@@ -382,9 +397,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 	
-	/*
-	** Supprimer recursivement un dossier si besoin
-	*/
+	/**
+	 * Supprimer recursivement un dossier si besoin
+	 *
+	 * @param string $file Fichier à supprimer
+	 */
 	public function delete_file($file)
 	{
 		$tmp = basename($file);
@@ -410,9 +427,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 	
-	/*
-	** Renvoie le type de fichier pour la petite icone le symbolisant
-	*/
+	/**
+	 * Renvoie le type de fichier pour la petite icone le symbolisant
+	 *
+	 * @param string $ext Extension du fichier
+	 * @return string Type du fichier
+	 */
 	public function get_type_img($ext)
 	{
 		switch (strtolower($ext))
@@ -442,9 +462,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche le contenu d'un fichier PHP
-	*/
+	/**
+	 * Affiche le contenu d'un fichier PHP
+	 */
 	public function page_php_highlight()
 	{
 		$phpfile = Http::request('phpfile');
@@ -455,9 +475,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		exit;
 	}
 
-	/*
-	** Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
-	*/
+	/**
+	 * Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
+	 */
 	public function page_codepress()
 	{
 		$ext = get_file_data($this->filename, 'extension');
