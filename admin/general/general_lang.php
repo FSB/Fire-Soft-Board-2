@@ -8,22 +8,56 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page de gestion des langues
-*/
+/**
+ * Page de gestion des langues
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Langue
+	 *
+	 * @var string
+	 */
 	public $language;
+	
+	/**
+	 * Interval definissant le nombre de variables a afficher par page
+	 *
+	 * @var int
+	 */
 	public $interval;
+	
+	/**
+	 * Page courante
+	 *
+	 * @var string
+	 */
 	public $page;
+	
+	/**
+	 * Mot clé de la recherche
+	 *
+	 * @var string
+	 */
 	public $search;
+	
+	/**
+	 * Type de la recherche
+	 *
+	 * @var string
+	 */
 	public $search_type;
+	
+	/**
+	 * Module de la page
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// On recupere le language
@@ -88,9 +122,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Page de defaut de gestion des langues
-	*/
+	/**
+	 * Page de defaut de gestion des langues
+	 */
 	public function page_default_lang()
 	{
 		Fsb::$tpl->set_switch('lang_list');
@@ -109,9 +143,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_print_lang();
 	}
 
-	/*
-	** Affiche toutes les clefs de langues disponible pour ce fichier
-	*/
+	/**
+	 * Affiche toutes les clefs de langues disponible pour ce fichier
+	 */
 	public function page_print_lang()
 	{
 		// On charge les langues
@@ -157,9 +191,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Retourne les clefs de langues de la base de donnee
-	*/
+	/**
+	 * Retourne les clefs de langues de la base de donnee
+	 *
+	 * @return array Clefs de langues
+	 */
 	public function get_cache_lang()
 	{
 		$sql = 'SELECT lang_key, lang_value
@@ -175,9 +211,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($data);
 	}
 
-	/*
-	** Filtre le tableau de recherche avec le mot recherche
-	*/
+	/**
+	 * Filtre le tableau de recherche avec le mot recherche
+	 *
+	 * @param array $lang Tableau de langue
+	 */
 	public function page_search_word(&$lang)
 	{
 		foreach ($lang AS $key => $value)
@@ -189,9 +227,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Recupere les variables de langue de la langue donnee
-	*/
+	/**
+	 * Recupere les variables de langue de la langue donnee
+	 *
+	 * @return array Variable de langue
+	 */
 	public function page_load_lang()
 	{
 		$lang = array();
@@ -218,9 +258,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($lang);
 	}
 
-	/*
-	** Page de soumission des langues, on les ajoute dans le cache
-	*/
+	/**
+	 * Page de soumission des langues, on les ajoute dans le cache
+	 */
 	public function page_submit_lang()
 	{
 		$tmp_lg = $this->page_load_lang($this->language);
@@ -260,9 +300,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_lang_well_submit', 'index.' . PHPEXT . '?p=general_lang', 'general_lang');
 	}
 
-	/*
-	** Ajoute une clef de langue
-	*/
+	/**
+	 * Ajoute une clef de langue
+	 */
 	public function submit_add()
 	{
 		$key = Http::request('add_key', 'post');
@@ -285,9 +325,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Retabli les variables de langue par defaut en vidant le cache
-	*/
+	/**
+	 * Retabli les variables de langue par defaut en vidant le cache
+	 */
 	public function page_refresh_lang()
 	{
 		if (check_confirm())
@@ -310,9 +350,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Upload une archive de langue et tente de la decompresser
-	*/
+	/**
+	 * Upload une archive de langue et tente de la decompresser
+	 */
 	public function page_install_lang()
 	{
 		if (!$lang_name = Http::request('upload_lang', 'post'))
@@ -347,9 +387,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_lang_install_success', 'index.' . PHPEXT . '?p=general_lang', 'general_lang');
 	}
 
-	/*
-	** Exporte une langue et lance le telechargement
-	*/
+	/**
+	 * Exporte une langue et lance le telechargement
+	 */
 	public function page_export_lang()
 	{
 		$ext = trim(Http::request('export_lang_ext'));
@@ -378,9 +418,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::download('fsb_lang_' . $this->language . '.' . $ext, $content);
 	}
 
-	/*
-	** Affiche la liste des Emails pour la langue
-	*/
+	/**
+	 * Affiche la liste des Emails pour la langue
+	 */
 	public function page_list_mail()
 	{
 		Fsb::$tpl->set_switch('lang_mail');
@@ -414,9 +454,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		closedir($fd);
 	}
 
-	/*
-	** Modification du texte des Emails
-	*/
+	/**
+	 * Modification du texte des Emails
+	 */
 	public function submit_mail()
 	{
 		$email_default = (array) Http::request('email_default', 'post');
@@ -459,17 +499,20 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_lang_well_submit', 'index.' . PHPEXT . '?p=general_lang&amp;module=mail&amp;language=' . $this->language, 'general_lang');
 	}
 
-	/*
-	** Uniformise les retours a la ligne
-	*/
+	/**
+	 * Uniformise les retours a la ligne
+	 *
+	 * @param string $str Chaine de caractere
+	 * @return string Chaine de caractere
+	 */
 	public function ln($str)
 	{
 		return (str_replace(array("\r\n", "\r"), array("\n", "\n"), $str));
 	}
 
-	/*
-	** Affichage des clefs de langue de la FAQ
-	*/
+	/**
+	 * Affichage des clefs de langue de la FAQ
+	 */
 	public function page_list_faq()
 	{
 		// Chargement de la FAQ
@@ -522,9 +565,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Enregistre les modifications de la FAQ
-	*/
+	/**
+	 * Enregistre les modifications de la FAQ
+	 */
 	public function submit_faq()
 	{
 		// Chargement de la FAQ
@@ -579,9 +622,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_lang_well_submit', 'index.' . PHPEXT . '?p=general_lang&amp;module=faq&amp;language=' . $this->language, 'general_lang');
 	}
 
-	/*
-	** Ajoute une FAQ
-	*/
+	/**
+	 * Ajoute une FAQ
+	 */
 	public function submit_faq_add()
 	{
 		$section =	Http::request('faq_section', 'post');

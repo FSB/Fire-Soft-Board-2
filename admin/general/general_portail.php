@@ -8,17 +8,35 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page permettant de deplacer, cacher / afficher les modules du portail
-*/
+/**
+ * Page permettant de deplacer, cacher / afficher les modules du portail
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
-	public $activ, $module, $move;
+	/**
+	 * Activation/Désactivation du module
+	 *
+	 * @var string
+	 */
+	public $activ;
+	
+	/**
+	 * Module du portail
+	 *
+	 * @var int
+	 */
+	public $module;
+	
+	/**
+	 * Déplacement du module
+	 *
+	 * @var string
+	 */
+	public $move;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		Fsb::$session->load_lang('lg_forum_portail');
@@ -47,9 +65,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->show_module();
 	}
 
-	/*
-	** Affiche les modules
-	*/
+	/**
+	 * Affiche les modules
+	 */
 	public function show_module()
 	{
 		Fsb::$tpl->set_switch('portail_list');
@@ -111,9 +129,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Deplacement d'un module
-	*/
+	/**
+	 * Deplacement d'un module
+	 */
 	public function move_module()
 	{
 		// Donnees courantes du module
@@ -190,9 +208,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Activation / Desactivation d'un module
-	*/
+	/**
+	 * Activation / Desactivation d'un module
+	 */
 	public function activ_module()
 	{
 		// Donnees courantes du module
@@ -214,9 +232,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Configuration du portail
-	*/
+	/**
+	 * Configuration du portail
+	 */
 	public function show_config()
 	{		
 		if (Http::request('config'))
@@ -249,9 +267,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 	
-	/*
-	** Traitement des information du formulaire de configuration soumis
-	*/
+	/**
+	 * Traitement des information du formulaire de configuration soumis
+	 */
 	public function update_config()
 	{
 		$tmp = array();

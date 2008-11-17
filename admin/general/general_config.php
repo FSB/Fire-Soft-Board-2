@@ -8,25 +8,38 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Fichier permetant de gerer la configuration generale du forum.
-** Chaque ligne du tableau de configuration est geree dans la table
-** fsb2_config_handler
-*/
+/**
+ * Fichier permetant de gerer la configuration generale du forum.
+ * Chaque ligne du tableau de configuration est geree dans la table
+ * fsb2_config_handler
+ *
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Arguments de la page
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Tableau de configuration
+	/**
+	 * Tableau de configuration
+	 *
+	 * @var array
+	 */
 	public $config_data = array();
 
-	// Objet de configuration dynamique
+	/**
+	 * Objet de configuration dynamique
+	 *
+	 * @var Config_edit
+	 */
 	public $config;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// On inclu la classe de configuration dynamique
@@ -80,9 +93,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page par defaut de la gestion des autorisations sur le FORUM
-	*/
+	/**
+	 * Affiche la page par defaut de la gestion des autorisations sur le FORUM
+	 */
 	public function page_default_config()
 	{
 		Fsb::$tpl->set_vars(array(
@@ -107,9 +120,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Traitement des information du formulaire de configuration soumis
-	*/
+	/**
+	 * Traitement des information du formulaire de configuration soumis
+	 */
 	public function page_submit_config()
 	{
 		$data = array();
@@ -139,25 +152,31 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_config_well_submit', 'index.' . PHPEXT . '?p=general_config&amp;module=' . $this->module, 'general_config');
 	}
 
-	/*
-	** Recupere le quota d'upload par membre
-	*/
+	/**
+	 * Recupere le quota d'upload par membre
+	 *
+	 * @return int quota d'upload par membre
+	 */
 	public function get_upload_quota()
 	{
 		return (Http::request('upload_quota', 'post') * Http::request('upload_quota_list', 'post'));
 	}
 
-	/*
-	** Recupere le quota d'upload par fichier
-	*/
+	/**
+	 * Recupere le quota d'upload par fichier
+	 *
+	 * @return int quota d'upload par fichier
+	 */
 	public function get_upload_max_filesize()
 	{
 		return (Http::request('upload_max_filesize', 'post') * Http::request('upload_max_filesize_list', 'post'));
 	}
 
-	/*
-	** Recupere la taille maximale de l'avatar
-	*/
+	/**
+	 * Recupere la taille maximale de l'avatar
+	 *
+	 * @return int Taille maximal de l'avatar
+	 */
 	public function get_avatar_weight()
 	{
 		return (Http::request('avatar_weight', 'post') * Http::request('avatar_weight_list', 'post'));

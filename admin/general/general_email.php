@@ -8,21 +8,42 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet d'envoyer un Email de masse a un groupe
-*/
+/**
+ * Permet d'envoyer un Email de masse a un groupe
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
+	/**
+	 * Erreurs rencontrees lors de l'envoie
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
+	
+	/**
+	 * Donnee du mail
+	 *
+	 * @var array
+	 */
 	public $data = array();
 
-	// Maximum de membres par Email
-	private $total = 0;
+	/**
+	 * Maximum de membres par Email
+	 *
+	 * @var int
+	 */
 	public $max_user_per_email = 100;
+	
+	/**
+	 * Nombre de mail envoye
+	 * 
+	 * @var int
+	 */
+	private $total = 0;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->data = array(
@@ -44,9 +65,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->form_email();
 	}
 
-	/*
-	** Formulaire d'envoie de l'Email
-	*/
+	/**
+	 * Formulaire d'envoie de l'Email
+	 */
 	public function form_email()
 	{
 		if ($this->errstr)
@@ -69,9 +90,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 */
 	public function check_form()
 	{
 		if (empty($this->data['content']))
@@ -126,9 +147,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Envoie d'Email aux membres / groupes concernes
-	*/
+	/**
+	 * Envoie d'Email aux membres / groupes concernes
+	 */
 	public function send_email()
 	{
 		@set_time_limit(0);
@@ -182,12 +203,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Log::add(Log::EMAIL, 'mass', $this->data['content']);
 		Display::message(($result_email) ? 'adm_email_send_well' : 'adm_email_send_bad', 'index.' . PHPEXT . '?p=general_email', 'general_email');
 	}
-
-	/*
-	** Envoie de l'Email en plusieurs parties
-	** -----
-	** $result_email ::		Succes d'envoie de l'Email
-	*/
+	
+	/**
+	 * Envoie de l'Email en plusieurs parties
+	 *
+	 * @param bool $result_email Succes d'envoie de l'Email
+	 */
 	public function send_email_part(&$result_email)
 	{
 		foreach ($this->data['idx'] AS $mail_lang => $mail_list)

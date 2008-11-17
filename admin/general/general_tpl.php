@@ -8,19 +8,51 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page de gestion des themes (fichiers templates, CSS, images ...)
-*/
+/**
+ * Page de gestion des themes (fichiers templates, CSS, images ...)
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Nom du TPL
+	 *
+	 * @var string
+	 */
 	public $tpl_name;
+	
+	/**
+	 * Fichier TPL
+	 *
+	 * @var string
+	 */
 	public $file;
+	
+	/**
+	 * Nom de la class CSS
+	 *
+	 * @var string
+	 */
 	public $class_name;
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @var string
+	 */
 	public $img_name;
-
-	// Initialisation des styles
+	
+	/**
+	 * Propriete du style
+	 *
+	 * @var array
+	 */
 	public $style = array(
 		'border_color' =>			'',
 		'border_type' =>			'',
@@ -40,6 +72,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'font_size_unit' =>			'px',
 	);
 
+	/**
+	 * Declaration des styles existants
+	 *
+	 * @var array
+	 */
 	public $style_exists = array(
 		'border-color',
 		'border-style',
@@ -54,12 +91,16 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'font-size',
 	);
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =		Http::request('mode');
@@ -123,9 +164,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Page par defaut de la gestion des themes
-	*/
+	/**
+	 * Page par defaut de la gestion des themes
+	 */
 	public function page_default_tpl()
 	{
 		Fsb::$tpl->set_switch('tpl_list');
@@ -140,9 +181,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_put_tpl();
 	}
 
-	/*
-	** Affiche les themes disponibles
-	*/
+	/**
+	 * Affiche les themes disponibles
+	 */
 	public function page_put_tpl()
 	{
 		// Utilisation du theme
@@ -182,9 +223,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la liste des fichiers templates du theme
-	*/
+	/**
+	 * Affiche la liste des fichiers templates du theme
+	 */
 	public function page_show_tpl()
 	{
 		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
@@ -269,9 +310,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Edite un fichier du theme
-	*/
+	/**
+	 * Edite un fichier du theme
+	 */
 	public function page_edit_tpl()
 	{
 		// Navigation
@@ -303,9 +344,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
-	*/
+	/**
+	 * Charge le contenu d'un fichier pour l'afficher d'editeur Codepress
+	 */
 	public function page_codepress()
 	{
 		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
@@ -322,9 +363,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Sauvegarde mes modifications effectuees sur un fichier template
-	*/
+	/**
+	 * Sauvegarde mes modifications effectuees sur un fichier template
+	 */
 	public function page_submit_edit()
 	{
 		$file = File::factory(Http::request('use_ftp', 'post'));
@@ -336,9 +377,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_tpl_well_edit', 'index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_tpl&amp;tpl_name=' . $this->tpl_name, 'general_tpl2');
 	}
 
-	/*
-	** Met en cache un fichier template
-	*/
+	/**
+	 * Met en cache un fichier template
+	 */
 	public function page_cache_tpl()
 	{
 		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
@@ -370,9 +411,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_tpl_well_' . $this->mode, 'index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_tpl&amp;tpl_name=' . $this->tpl_name, 'general_tpl2');
 	}
 
-	/*
-	** Affiche les classes disponibles dans la css main.css du theme
-	*/
+	/**
+	 * Affiche les classes disponibles dans la css main.css du theme
+	 */
 	public function page_show_tpl_css()
 	{
 		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
@@ -421,9 +462,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page d'edition d'une classe de la feuille de style
-	*/
+	/**
+	 * Affiche la page d'edition d'une classe de la feuille de style
+	 */
 	public function page_edit_tpl_css()
 	{
 		$id = intval(Http::request('id'));
@@ -469,9 +510,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$list_class_ary[] = $class['name'];
 		}
 		
-		/*
-		** Previsualisation de la CSS ?
-		*/
+		// Previsualisation de la CSS ?
 		if ($preview_css)
 		{
 			if ($edit_css_type == 'complex')
@@ -576,9 +615,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Recupere dans un tableau de donnees valide les proprietes de la classe
-	*/
+	/**
+	 * Recupere dans un tableau de donnees valide les proprietes de la classe
+	 *
+	 * @param mixed $class_data Donnees de la class CSS
+	 * @param string $content Contenu du fichier CSS
+	 * @return array Propriete CSS
+	 */
 	public function page_check_css_style($class_data, $content = NULL)
 	{
 		$css = new Css();
@@ -699,9 +742,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($p);
 	}
 
-	/*
-	** Soumet les modifications de la CSS
-	*/
+	/**
+	 * Soumet les modifications de la CSS
+	 */
 	public function page_submit_edit_css()
 	{
 		$edit_css_type = Http::request('edit_css_type_submit', 'post');
@@ -735,9 +778,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_css_well_edit', 'index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_css&amp;tpl_name=' . $this->tpl_name, 'general_tpl2');
 	}
 
-	/*
-	** Renvoie le contenu de la classe en fonction des choix du mode simple
-	*/
+	/**
+	 * Renvoie le contenu de la classe en fonction des choix du mode simple
+	 *
+	 * @return string Contenue du fichier CSS
+	 */
 	public function page_get_css_content()
 	{
 		foreach ($this->style AS $key => $value)
@@ -804,9 +849,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$content .= "font-size: ${font_size}${font_size_unit};" . EOF;
 		}
 		
-		/*
-		** Ajout des autres styles
-		*/
+		// Ajout des autres styles
 		foreach ($_POST AS $key => $value)
 		{
 			if (preg_match('/^other_(.*?)$/i', $key, $match) && strlen($value))
@@ -818,9 +861,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($content);
 	}
 
-	/*
-	** Upload un template et tente de le decompresser
-	*/
+	/**
+	 * Upload un template et tente de le decompresser
+	 */
 	public function page_install_tpl()
 	{
 		// Upload du theme sur le serveur
@@ -845,9 +888,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_tpl_install_success', 'index.' . PHPEXT . '?p=general_tpl', 'general_tpl');
 	}
 
-	/*
-	** Exporte un theme et lance le telechargement
-	*/
+	/**
+	 * Exporte un theme et lance le telechargement
+	 */
 	public function page_export_tpl()
 	{
 		$ext =		trim(Http::request('export_tpl_ext'));
@@ -862,9 +905,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::download($tpl_name . '.' . $ext, $content);
 	}
 
-	/*
-	** Affiche la liste des images du theme
-	*/
+	/**
+	 * Affiche la liste des images du theme
+	 */
 	public function page_show_tpl_img()
 	{
 		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
@@ -905,9 +948,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page d'edition d'une image
-	*/
+	/**
+	 * Affiche la page d'edition d'une image
+	 */
 	public function page_edit_tpl_img()
 	{
 		// Navigation
@@ -942,9 +985,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Modifie les donnees d'une image
-	*/
+	/**
+	 * Modifie les donnees d'une image
+	 */
 	public function page_submit_edit_img()
 	{
 		$link_img = Http::request('link_img', 'post');
@@ -986,9 +1029,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_img_well_edit', 'index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_img&amp;tpl_name=' . $this->tpl_name, 'general_tpl2');
 	}
 
-	/*
-	** Affiche la liste des derniers themes
-	*/
+	/**
+	 * Affiche la liste des derniers themes
+	 */
 	public function page_tpl_news()
 	{
 		Fsb::$tpl->set_switch('tpl_streaming');
@@ -1034,9 +1077,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Installe le theme a partir du site officiel
-	*/
+	/**
+	 * Installe le theme a partir du site officiel
+	 */
 	public function page_install_from_news()
 	{
 		$url = key(Http::request('install_news_tpl', 'post'));
@@ -1064,9 +1107,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Afficher les differences entre deux themes
-	*/
+	/**
+	 * Afficher les differences entre deux themes
+	 */
 	public function page_show_diff()
 	{
 		Fsb::$tpl->set_switch('tpl_diff');
@@ -1271,9 +1314,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Generateur de CSS simplifie
-	*/
+	/**
+	 * Generateur de CSS simplifie
+	 */
 	public function page_css_generator()
 	{
 		if (Http::request('submit_css_generator', 'post'))

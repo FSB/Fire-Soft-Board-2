@@ -17,20 +17,79 @@
 */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
-	public $auth_model, $mode, $id, $mode_type, $this_id, $module;
+	/**
+	 * Model d'autorisation
+	 *
+	 * @var unknown_type
+	 */
+	public $auth_model;
+	
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
+	public $mode;
+	
+	/**
+	 * Identifiant du forum/groupe/membre
+	 *
+	 * @var int
+	 */
+	public $id;
+	
+	/**
+	 * Type d'edition des autorisations
+	 *
+	 * @var string
+	 */
+	public $mode_type;
+	
+	/**
+	 * Identifiant
+	 *
+	 * @var int
+	 */
+	public $this_id;
+	
+	/**
+	 * Module de la page
+	 *
+	 * @var string
+	 */
+	public $module;
 
-	// Status du membre (droits des membres)
+	/**
+	 * Status du membre (droits des membres)
+	 *
+	 * @var int
+	 */
 	public $users_status = VISITOR;
+	
+	/**
+	 * Pseudonyme du membre
+	 *
+	 * @var string
+	 */
 	public $nickname;
+	
+	/**
+	 * Identifiant du membre
+	 *
+	 * @var int
+	 */
 	public $u_id;
 
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =		Http::request('mode');
@@ -119,9 +178,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 	
-	/*
-	** Recupere le groupe unique du membre selectione
-	*/
+	/**
+	 * Recupere le groupe unique du membre selectione
+	 */
 	public function get_auths_users_group()
 	{
 		if (($nickname = trim(Http::request('auth_nickname', 'post'))) || $this->this_id)
@@ -153,9 +212,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page par defaut de la gestion des autorisations des forums
-	*/
+	/**
+	 * Affiche la page par defaut de la gestion des autorisations des forums
+	 */
 	public function page_default_forums_auths()
 	{
 		Fsb::$tpl->set_switch('auths_select');
@@ -168,9 +227,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page par defaut de la gestion des autorisations des groupes
-	*/
+	/**
+	 * Affiche la page par defaut de la gestion des autorisations des groupes
+	 */
 	public function page_default_groups_auths()
 	{
 		Fsb::$tpl->set_switch('auths_select');
@@ -183,9 +242,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page par defaut de gestion des autorisations du membre
-	*/
+	/**
+	 * Affiche la page par defaut de gestion des autorisations du membre
+	 */
 	public function page_default_users_auths()
 	{
 		Fsb::$tpl->set_switch('auths_select_user');
@@ -197,9 +256,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Page de gestion des droits des forums
-	*/
+	/**
+	 * Page de gestion des droits des forums
+	 */
 	public function page_view_forums_auths()
 	{
 		// ID du forum a charger (peut etre issu d'un model)
@@ -234,9 +293,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_view_auths($result, 'forums', $list_mode_ary);
 	}
 
-	/*
-	** Page de gestion des droits des groupes
-	*/
+	/**
+	 * Page de gestion des droits des groupes
+	 */
 	public function page_view_groups_auths()
 	{
 		// ID du groupe a charger (peut etre issu d'un model)
@@ -268,9 +327,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_view_auths($result, 'groups', $list_mode_ary);
 	}
 
-	/*
-	** Page de gestion des droits des membres
-	*/
+	/**
+	 * Page de gestion des droits des membres
+	 */
 	public function page_view_users_auths()
 	{
 		// Requete de selection des droits
@@ -294,9 +353,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_view_auths($result, 'users', $list_mode_ary);
 	}
 
-	/*
-	** Affichage du formulaire avec les listes deroulantes (les trois types)
-	*/
+	/**
+	 * Affichage du formulaire avec les listes deroulantes (les trois types)
+	 *
+	 * @param resource $result Resultat de la requete SQL
+	 * @param string $type 
+	 * @param array $list_mode_ary Liste des modes
+	 */
 	public function page_view_auths($result, $type, $list_mode_ary)
 	{
 		// Liste des modes pour la page
@@ -555,9 +618,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Lance la routine de modification de droit
-	*/
+	/**
+	 * Lance la routine de modification de droit
+	 */
 	public function page_change_auths()
 	{
 		$ary_group = array(
@@ -825,9 +888,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_auth_well_add', 'index.' . PHPEXT . '?p=manage_auths&amp;module=' . $this->module . '&amp;this_id=' . (($this->module == 'users') ? $this->u_id : $this->this_id), 'manage_auths');
 	}
 
-	/*
-	** Modification du status du membre
-	*/
+	/**
+	 * Modification du status du membre
+	 */
 	public function submit_users_status()
 	{
 		// ID du membre en fonction de son groupe unique
@@ -861,9 +924,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=manage_auths&module=users&this_id=' . $user_id);
 	}
 
-	/*
-	** Page affichant les autres droits (non lies aux forums)
-	*/
+	/**
+	 * Page affichant les autres droits (non lies aux forums)
+	 */
 	public function show_others_auths()
 	{
 		if (Http::request('submit', 'post'))
@@ -907,9 +970,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Soumission des autres droits
-	*/
+	/**
+	 * Soumission des autres droits
+	 */
 	public function submit_others_auths()
 	{
 		// On recupere les droits
@@ -934,9 +997,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_auths_submit_others', 'index.' . PHPEXT . '?p=manage_auths&amp;module=others', 'manage_auths');
 	}
 
-	/*
-	** Affiche la page par defaut de verification des droits
-	*/
+	/**
+	 * Affiche la page par defaut de verification des droits
+	 */
 	public function show_check_auths()
 	{
 		// Si un groupe a ete selectionne
