@@ -937,7 +937,7 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 
 		// On genere la liste des forums
-		$this->generate_forum_list_by_tree($tree->document);
+		$this->generate_forum_list_by_tree($tree->document->children);
 	}
 
 	/*
@@ -947,7 +947,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		foreach ($children AS $child)
 		{
-			if ($child->get('f_parent') > 0 || $child->children())
+			if ($child->get('f_parent') > 0 || $child->children)
 			{
 				Fsb::$tpl->set_blocks('f', array(
 					'ID' =>			$child->get('f_id'),
@@ -958,7 +958,7 @@ class Fsb_frame_child extends Fsb_frame
 					'CHILDREN' =>	implode(', ', $child->allChildren()),
 				));
 
-				$this->generate_forum_list_by_tree($child->children());
+				$this->generate_forum_list_by_tree($child->children);
 			}
 		}
 	}

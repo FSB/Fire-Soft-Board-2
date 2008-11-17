@@ -180,6 +180,33 @@ class Tree_node extends Fsb_model
 
 		return ($parents);
 	}
+	
+	/**
+	 * Recupere une information
+	 *
+	 * @param string $key
+	 * @return unknown mixed
+	 */
+	public function get($key)
+	{
+		return ((isset($this->data[$key])) ? $this->data[$key] : null);
+	}
+	
+	/**
+	 * Recupere toutes les ID des enfants
+	 *
+	 * @return array
+	 */
+	public function allChildren()
+	{
+		$list = $this->children;
+		$return = array_keys($list);
+		foreach ($list AS $child)
+		{
+			$return = array_merge($return, $child->allChildren());
+		}
+		return ($return);
+	}
 }
 
 /* EOF */
