@@ -8,30 +8,35 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet une gestion d'abres par representation intervallaire. Cette representation se base sur le tutorial
-** de SQLpro, disponible a cette adresse : http://sqlpro.developpez.com/cours/arborescence/.
-**
-** Si vous souhaitez implementer une table gerant la representation intervallaire, vous devez disposer
-** des champs suivants :
-**	(int) f_id ::			ID de la feuille
-**	(int) f_cat_id ::		ID du parent le plus haut (categorie)
-**	(int) f_level ::		Niveau actuel dans l'arbre
-**	(int) f_parent ::		ID du parent
-**	(int) f_left ::			Borne gauche
-**	(int) f_right			Borne droite
-*/
+/**
+ * Permet une gestion d'abres par representation intervallaire.
+ * 
+ * Si vous souhaitez implementer une table gerant la representation intervallaire, vous devez disposer
+ * des champs suivants :
+ *	(int) f_id ::			ID de la feuille
+ *	(int) f_cat_id ::		ID du parent le plus haut (categorie)
+ *	(int) f_level ::		Niveau actuel dans l'arbre
+ *	(int) f_parent ::		ID du parent
+ *	(int) f_left ::			Borne gauche
+ *	(int) f_right			Borne droite
+ * 
+ * @link http://sqlpro.developpez.com/cours/arborescence/
+ */
 class Sql_interval extends Fsb_model
 {
-	// Interval de deplacement des feuilles temporaires
+	/**
+	 * Interval de deplacement des feuilles temporaires
+	 */
 	const MOVE = 1000000;
 
-	/*
-	** Ajoute un element dans l'arbre
-	** -----
-	** $parent ::		Element parent
-	** $data ::		Donnees
-	*/
+	/**
+	 * Ajoute un element dans l'arbre
+	 *
+	 * @param int $parent Element parent
+	 * @param array $data Informations a inserer dans la table
+	 * @param string $table Table concernee
+	 * @return int ID de l'element cree
+	 */
 	public static function put($parent, $data, $table = 'forums')
 	{		
 		// On recupere la bordure droite du parent
@@ -85,14 +90,16 @@ class Sql_interval extends Fsb_model
 		
 		return ($last_id);
 	}
-	
-	/*
-	** Met a jour un element de l'interval
-	** -----
-	** $f_id ::	ID de la feuille courante
-	** $parent ::	Parent de la feuille
-	** $data ::	Donnees de la feuille
-	*/
+
+	/**
+	 * Met a jour un element de l'interval
+	 *
+	 * @param int $f_id ID de la feuille courante
+	 * @param int $parent Parent de la feuille
+	 * @param array $data Donnees de la feuille
+	 * @param string $table Table concernee
+	 * @return bool True si le parent a ete modifie
+	 */
 	public static function update($f_id, $parent, $data, $table = 'forums')
 	{
 		// On demare une transaction SQL
@@ -170,12 +177,13 @@ class Sql_interval extends Fsb_model
 
 		return (($parent != $current['f_parent']) ? TRUE : FALSE);
 	}
-	
-	/*
-	** Supprime une feuille de l'arbre
-	** -----
-	** $f_id ::	ID de la feuille
-	*/
+
+	/**
+	 * Supprime une feuille de l'arbre
+	 *
+	 * @param int $f_id ID de la feuille
+	 * @param string $table Forum concerne
+	 */
 	public static function delete($f_id, $table = 'forums')
 	{
 		// Donnees de la feuille
@@ -200,12 +208,13 @@ class Sql_interval extends Fsb_model
 		}
 	}
 	
-	/*
-	** Deplace une feuille
-	** -----
-	** $f_id ::		ID de la feuille
-	** $direction ::	Direction du deplacement (left, right)
-	*/
+	/**
+	 * Deplace une feuille
+	 *
+	 * @param int $f_id ID de la feuille
+	 * @param string $direction Direction du deplacement (left, right)
+	 * @param string $table Table concernee
+	 */
 	public static function move($f_id, $direction, $table = 'forums')
 	{
 		if ($direction == 'left')
@@ -259,14 +268,16 @@ class Sql_interval extends Fsb_model
 			}
 		}
 	}
-	
-	/*
-	** Retourne la liste des enfants
-	** -----
-	** $f_id ::		ID de la feuille
-	** $include ::	Definit si on inclu le forum actuel dans le resultat
-	** $cache ::	Mise en cache ?
-	*/
+
+	/**
+	 * Retourne la liste des enfants
+	 *
+	 * @param int $f_id ID de la feuille
+	 * @param bool $include Definit si on inclu le forum actuel dans le resultat
+	 * @param string $cache Mise en cache ?
+	 * @param string $table Table concernee
+	 * @return array
+	 */
 	public static function get_childs($f_id, $include = TRUE, $cache = NULL, $table = 'forums')
 	{
 		if (!is_array($f_id))
@@ -295,14 +306,16 @@ class Sql_interval extends Fsb_model
 
 		return (array_unique($childs));
 	}
-	
-	/*
-	** Retourne la liste des parents
-	** -----
-	** $f_id ::		ID de la feuille
-	** $include ::	Definit si on inclu le forum actuel dans le resultat
-	** $cache ::	Mise en cache ?
-	*/
+
+	/**
+	 * Retourne la liste des parents
+	 *
+	 * @param int $f_id ID de la feuille
+	 * @param bool $include Definit si on inclu le forum actuel dans le resultat
+	 * @param string $cache Mise en cache ?
+	 * @param string $table Table concernee
+	 * @return array
+	 */
 	public static function get_parents($f_id, $include = TRUE, $cache = NULL, $table = 'forums')
 	{
 		if (!is_array($f_id))
@@ -331,12 +344,13 @@ class Sql_interval extends Fsb_model
 		
 		return (array_unique($parents));
 	}
-	
-	/*
-	** Affiche une representation de l'arbre
-	** -----
-	** $field ::	Champ contenant le nom de la feuille actuelle
-	*/
+
+	/**
+	 * Affiche une representation de l'arbre pour le debug
+	 *
+	 * @param string $field Champ contenant le nom de la feuille actuelle
+	 * @param string $table Table concernee
+	 */
 	public static function debug($field = 'f_name', $table = 'forums')
 	{		
 		echo '<pre>';

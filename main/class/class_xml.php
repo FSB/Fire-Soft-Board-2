@@ -8,36 +8,46 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Parseur XML, qui va creer un arbre dont les nodes seront des objets Xml_element
-*/
+/**
+ * Parseur XML
+ */
 class Xml extends Fsb_model
 {
-	// Contenu du code XML a parser
+	/**
+	 * Contenu du code XML a parser
+	 * 
+	 * @var string
+	 */
 	private $content;
 
-	// Racine de l'arbre XML
+	/**
+	 * Pointe sur la racine
+	 *
+	 * @var Xml_element
+	 */
 	public $document;
 
-	// Pile utilisee par le parseur
+	/**
+	 * Pile utilisee par le parseur
+	 *
+	 * @var array
+	 */
 	private $stack = array();
 
-	public $titi = 'Salut';
-
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->document = new Xml_element();
 	}
 
-	/*
-	** Charge le contenu d'un fichier XML
-	** -----
-	** $filename ::		Fichier XML a charger
-	** $use_cache ::	Utilisation du cache
-	*/
+	/**
+	 * Charge le contenu d'un fichier XML
+	 *
+	 * @param string $filename Fichier XML a charger
+	 * @param bool $use_cache Utilisation du cache
+	 */
 	public function load_file($filename, $use_cache = TRUE)
 	{
 		if (!file_exists($filename))
@@ -65,11 +75,11 @@ class Xml extends Fsb_model
 		}
 	}
 
-	/*
-	** Charge du code XML
-	** -----
-	** $content ::		Contenu XML
-	*/
+	/**
+	 * Charge du code XML
+	 *
+	 * @param string $content Contenu XML
+	 */
 	public function load_content($content)
 	{
 		$this->document = new Xml_element();
@@ -77,9 +87,9 @@ class Xml extends Fsb_model
 		$this->parse();
 	}
 
-	/*
-	** Parse du contenu XML
-	*/
+	/**
+	 * Parse du code XML
+	 */
 	public function parse()
 	{
 		$xml = new Xml_regexp_parser();
@@ -94,9 +104,12 @@ class Xml extends Fsb_model
 		}
 	}
 
-	/*
-	** Callback appele lors de l'ouverture d'un tag
-	*/
+	/**
+	 * Callback appele lors de l'ouverture d'un tag
+	 *
+	 * @param string $tag Nom du tag
+	 * @param array $attr Liste des attributs
+	 */
 	public function open_tag($tag, $attr)
 	{
 		// Deplacement vers la reference de l'element
@@ -130,17 +143,21 @@ class Xml extends Fsb_model
 		array_push($this->stack, $tag);
 	}
 
-	/*
-	** Callback appele lors de la fermeture d'un tag
-	*/
+	/**
+	 * Callback appele lors de la fermeture d'un tag
+	 *
+	 * @param string $tag Nom du tag
+	 */
 	public function close_tag($tag)
 	{
 		array_pop($this->stack);
 	}
 
-	/*
-	** Callback appele lors de la capture de texte entre les tags
-	*/
+	/**
+	 * Callback appele lors de la capture de texte entre les tags
+	 *
+	 * @param string $text Texte capture
+	 */
 	public function value_tag($text)
 	{
 		$ref = &$this->document;
@@ -157,16 +174,21 @@ class Xml extends Fsb_model
 	}
 }
 
-/*
-** Represente une node de l'arbre XML
-*/
+/**
+ * Represente une node de l'arbre XML
+ */
 class Xml_element extends Fsb_model
 {
+	/**
+	 * Informations sur la node
+	 *
+	 * @var array
+	 */
 	public $__data = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->__data['name'] = 'newElement';
@@ -175,11 +197,12 @@ class Xml_element extends Fsb_model
 		$this->__data['depth'] = 0;
 	}
 
-	/*
-	** Cree un nouvel element
-	** -----
-	** $name ::		Nom du tag du nouvel element
-	*/
+	/**
+	 * Cree un nouvel element XML
+	 *
+	 * @param string $name Nom du tag du nouvel element
+	 * @return Xml_element
+	 */
 	public function createElement($name = 'newElement')
 	{
 		$new = new Xml_element();
@@ -189,79 +212,85 @@ class Xml_element extends Fsb_model
 		return ($new);
 	}
 
-	/*
-	** Retourne la liste des attributs
-	*/
+	/**
+	 * Retourne la liste des attributs
+	 *
+	 * @return array
+	 */
 	public function attribute()
 	{
 		return ($this->__data['attr']);
 	}
 
-	/*
-	** Cree ou met a jour un attribut
-	** -----
-	** $name ::		Nom de l'attribut
-	** $value ::	Valeur de l'attribut
-	*/
+	/**
+	 * Cree ou met a jour un attribut
+	 *
+	 * @param string $name Nom de l'attribut
+	 * @param string $value Valeur de l'attribut
+	 */
 	public function setAttribute($name, $value)
 	{
 		$this->__data['attr'][$name] = $value;
 	}
 
-	/*
-	** Retourne TRUE si l'attribut existe, sinon FALSE
-	** -----
-	** $name ::		Nom de l'attribut
-	*/
+	/**
+	 * Verifie si un attribut existe
+	 *
+	 * @param string $name Nom de l'attribute
+	 * @return bool
+	 */
 	public function attributeExists($name)
 	{
-		return ((isset($this->__data['attr'][$name])) ? TRUE : FALSE);
+		return (isset($this->__data['attr'][$name]));
 	}
 
-	/*
-	** Retourne la valeur d'un attribut
-	** -----
-	** $name ::		Nom de l'attribut
-	*/
+	/**
+	 * Retourne la valeur d'un attribut
+	 *
+	 * @param string $name Nom de l'attribut
+	 * @return string
+	 */
 	public function getAttribute($name)
 	{
 		return (($this->attributeExists($name)) ? $this->__data['attr'][$name] : NULL);
 	}
 
-	/*
-	** Supprime un attribut
-	** -----
-	** $name ::		Nom de l'attribut
-	*/
+	/**
+	 * Supprime un attribut
+	 *
+	 * @param string $name Nom de l'attribut
+	 */
 	public function deleteAttribute($name)
 	{
 		unset($this->__data['attr'][$name]);
 	}
 
-	/*
-	** Modifie le nom du tag
-	** -----
-	** $name ::		Nom du tag
-	*/
+	/**
+	 * Modifie le nom du tag
+	 *
+	 * @param string $name Nom du tag
+	 */
 	public function setTagName($name)
 	{
 		$this->__data['name'] = $name;
 	}
 
-	/*
-	** Retourne le nom du tag
-	*/
+	/**
+	 * Retourne le nom du tag
+	 *
+	 * @return string
+	 */
 	public function getTagName()
 	{
 		return ($this->__data['name']);
 	}
 
-	/*
-	** Modifie la valeur du tag
-	** -----
-	** $value ::			Chaine de caractere
-	** $htmlspecialchars ::	Transforme les entites HTML
-	*/
+	/**
+	 * Modifie le texte contenu dans le tag
+	 *
+	 * @param string $value
+	 * @param bool $htmlspecialchars Transforme les entites HTML
+	 */
 	public function setData($value, $htmlspecialchars = TRUE)
 	{
 		if ($htmlspecialchars)
@@ -271,20 +300,22 @@ class Xml_element extends Fsb_model
 		$this->__data['value'] = $value;
 	}
 
-	/*
-	** Retourne la valeur du tag
-	*/
+	/**
+	 * Retourne la valeur du tag
+	 *
+	 * @return string
+	 */
 	public function getData()
 	{
 		return (String::unhtmlspecialchars($this->__data['value']));
 	}
 
-	/*
-	** Ajoute un enfant
-	** -----
-	** $node ::		Objet Xml_element
-	** $pos ::		Position ou ajouter la node
-	*/
+	/**
+	 * Ajoute un enfant
+	 *
+	 * @param Xml_element $node
+	 * @param int $pos Position ou ajouter la node
+	 */
 	public function appendChild($node, $pos = 0)
 	{
 		$name = $node->getTagName();
@@ -304,12 +335,12 @@ class Xml_element extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute un enfant a partir de XML
-	** -----
-	** $string ::	Chaine XML
-	** $pos ::		Position ou ajouter la node
-	*/
+	/**
+	 * Ajoute un enfant a partir de XML
+	 *
+	 * @param string $string Chaine XML
+	 * @param int $pos Position ou ajouter la node
+	 */
 	public function AppendXmlChild($string, $pos = 0)
 	{
 		$xml = new Xml;
@@ -317,13 +348,15 @@ class Xml_element extends Fsb_model
 		$this->appendChild($xml->document, $pos);
 	}
 
-	/*
-	** Retourne la liste des enfants organisee de cette facon :
-	**		array(
-	**			'enfant1' => array(Xml_element, Xml_element, ...),
-	**			'enfant2' => array(Xml_element, Xml_element, ...)
-	**		)
-	*/
+	/**
+	 * Retourne la liste des enfants organisee de cette facon :
+	 *		array(
+	 *			'enfant1' => array(Xml_element, Xml_element, ...),
+	 *			'enfant2' => array(Xml_element, Xml_element, ...)
+	 *		)
+	 *
+	 * @return array
+	 */
 	public function children()
 	{
 		$children = array();
@@ -338,10 +371,12 @@ class Xml_element extends Fsb_model
 		return ($children);
 	}
 
-	/*
-	** Retourne la liste des enfants organisee de cette facon :
-	**		array(Xml_element, Xml_element, Xml_element, Xml_element, ...)
-	*/
+	/**
+	 * Retourne la liste des enfants organisee de cette facon :
+	 *		array(Xml_element, Xml_element, Xml_element, Xml_element, ...)
+	 *
+	 * @return array
+	 */
 	public function listChildren()
 	{
 		$children = array();
@@ -359,29 +394,32 @@ class Xml_element extends Fsb_model
 		return ($children);
 	}
 
-	/*
-	** Retourne TRUE si l'enfant existe
-	** -----
-	** $name ::		Nom de l'enfant
-	*/
+	/**
+	 * Verifie si l'enfant existe
+	 *
+	 * @param string $name Nom de l'enfant
+	 * @return bool
+	 */
 	public function childExists($name)
 	{
-		return ((isset($this->$name)) ? TRUE : FALSE);
+		return (isset($this->$name));
 	}
 
-	/*
-	** Retourne TRUE si l'element a des enfants
-	*/
+	/**
+	 * Verifie si l'element a des enfants
+	 *
+	 * @return bool
+	 */
 	public function hasChildren()
 	{
 		return ((count($this->children())) ? TRUE : FALSE);
 	}
 
-	/*
-	** Supprime les enfants
-	** -----
-	** $name ::		Nom de l'enfant
-	*/
+	/**
+	 * Supprime les enfants
+	 *
+	 * @param string $name Nom de l'enfant a supprimer
+	 */
 	public function deleteChildren($name)
 	{
 		if ($this->childExists($name))
@@ -390,17 +428,17 @@ class Xml_element extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime un enfant particulier
-	** -----
-	** $name ::		Nom de l'enfant
-	** $pos ::		Position de l'enfant
-	*/
+	/**
+	 * Supprime un enfant particulier
+	 *
+	 * @param string $name Nom de l'enfant
+	 * @param int $pos Position de l'enfant
+	 */
 	public function deleteChild($name, $pos = 0)
 	{
 		if (!$this->childExists($name))
 		{
-			return (NULL);
+			return ;
 		}
 
 		$new = array();
@@ -414,13 +452,13 @@ class Xml_element extends Fsb_model
 		$this->$name = $new;
 	}
 
-	/*
-	** Deplace un enfant en fonction de ses pairs
-	** -----
-	** $name ::		Nom de l'enfant
-	** $pos ::		Position de l'enfant
-	** $move ::		Entier determinant de combien de "case" on deplace l'enfant dans l'arbre
-	*/
+	/**
+	 * Deplace un enfant en fonction de ses pairs
+	 *
+	 * @param string $name Nom de l'enfant
+	 * @param int $pos Position de l'enfant
+	 * @param int $move Determine de combien de "case" on deplace l'enfant dans l'arbre
+	 */
 	public function moveChild($name, $pos, $move = 0)
 	{
 		if ($move == 0 || !$this->childExists($name))
@@ -437,11 +475,12 @@ class Xml_element extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne le dernier enfant
-	** -----
-	** $name ::	Nom de l'enfant
-	*/
+	/**
+	 * Retourne le dernier enfant
+	 *
+	 * @param string $name Nom de l'enfant
+	 * @return Xml_element 
+	 */
 	public function &lastChild($name)
 	{
 		if (!$this->childExists($name))
@@ -453,11 +492,12 @@ class Xml_element extends Fsb_model
 		return ($ref);
 	}
 
-	/*
-	** Recherche une node a partir de son chemin
-	** -----
-	** $path ::		Chemin vers la node
-	*/
+	/**
+	 * Recherche une node a partir de son chemin
+	 *
+	 * @param string $path Chemin vers la node
+	 * @return Xml_element
+	 */
 	public function &getElementByPath($path)
 	{
 		$split = explode('/', trim($path, '/'));
@@ -477,9 +517,11 @@ class Xml_element extends Fsb_model
 		return ($ref);
 	}
 
-	/*
-	** Retourne l'arbre sous format XML
-	*/
+	/**
+	 * Retourne l'arbre sous forme de chaine de caractere XML
+	 *
+	 * @return string
+	 */
 	public function asXML()
 	{
 		$xml = str_repeat("\t", $this->__data['depth']) . '<' . $this->getTagName();
@@ -508,11 +550,12 @@ class Xml_element extends Fsb_model
 		return ($xml);
 	}
 
-	/*
-	** Retourne l'arbre sous format XML avec l'entete
-	** -----
-	** $charset ::		Encodage du fichier
-	*/
+	/**
+	 * Retourne l'arbre sous forme de chaine de caractere XML avec l'entete
+	 *
+	 * @param string $charset
+	 * @return string
+	 */
 	public function asValidXML($charset = 'UTF-8')
 	{
 		$xml = '<?xml version="1.0" encoding="' . $charset . '" standalone="no"?>' . "\n";
@@ -520,38 +563,62 @@ class Xml_element extends Fsb_model
 		return ($xml);
 	}
 
-	/*
-	** Si un enfant n'existe pas, on retourne un array() vide
-	*/
+	/**
+	 * Si un enfant n'existe pas, on retourne un array() vide
+	 *
+	 * @param string $property
+	 * @return array
+	 */
 	public function __get($property)
 	{
 		return (array());
 	}
 }
 
-/*
-** Analyseur XML fait maison, afin d'eviter certains problemes lies a l'encodage des caracteres
-*/
+/**
+ * Analyseur XML fait maison, afin d'eviter certains problemes lies a l'encodage des caracteres
+ */
 class Xml_regexp_parser extends Fsb_model
 {
-	// En faisant pointer cette propriete sur un objet, les handler seront appeles en tant que methode de cet objet
+	/**
+	 * En faisant pointer cette propriete sur un objet, les handler seront appeles en tant que methode de cet objet
+	 */
 	public $obj = NULL;
 
-	// Fonction / methode appelee lors de l'ouverture d'un tag
+	/**
+	 * Fonction / methode appelee lors de l'ouverture d'un tag
+	 *
+	 * @var string
+	 */
 	public $open_handler = NULL;
 
-	// Fonction / methode appelee lors de la fermeture d'un tag
+	/**
+	 * Fonction / methode appelee lors de la fermeture d'un tag
+	 *
+	 * @var string
+	 */
 	public $close_handler = NULL;
 
-	// Fonction / methode appelee lors de la fermeture d'un tag, avec la valeur de celui ci
+	/**
+	 * Fonction / methode appelee lors de la fermeture d'un tag, avec la valeur de celui ci
+	 *
+	 * @var string
+	 */
 	public $value_handler = NULL;
 
-	// Erreur lors du parsing
+	/**
+	 * Erreur lors du parsing
+	 *
+	 * @var string
+	 */
 	public $errstr = NULL;
 
-	/*
-	** Parse la chaine de caractere XML
-	*/
+	/**
+	 * Parse la chaine de caractere XML
+	 *
+	 * @param string $str Chaine a parser
+	 * @return bool
+	 */
 	public function parse($str)
 	{
 		// Parse du header XML

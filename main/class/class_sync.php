@@ -8,25 +8,36 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-
-
-/*
-** Permet de syncroniser des informations mises en cache sur le forum
-*/
+/**
+ * Permet de syncroniser des informations mises en cache sur le forum
+ */
 class Sync extends Fsb_model
 {
-	// Signaux
+	/**
+	 * Signal pour rafraichir toutes les sessions
+	 */
 	const SESSION = 2;
+	
+	/**
+	 * Signal pour rafraichir la session d'un membre
+	 */
 	const USER = 4;
+	
+	/**
+	 * Signal pour rafraichir le total de messages abusifs
+	 */
 	const ABUSE = 8;
+	
+	/**
+	 * Signal pour rafraichir le total de messages a approuver
+	 */
 	const APPROVE = 16;
 
-	/*
-	** Met a jour les informations sur le dernier message des forums
-	** -----
-	** $forums ::	Tableau d'ID de forums dont on veut recalculer ces informations
-	**				Si le tableau est vide, on le calcul pour l'ensemble des forums.
-	*/
+	/**
+	 * Met a jour les informations sur le dernier message des forums
+	 *
+	 * @param array $forums Liste des forums. Si vide, on prend tous les forums.
+	 */
 	public static function forums($forums = array())
 	{
 		$tree = new Tree_forum();
@@ -35,12 +46,11 @@ class Sync extends Fsb_model
 		Fsb::$db->destroy_cache('forums_');
 	}
 
-	/*
-	** Met a jour les informations sur le dernier message dans les sujets, et sur le total de messages du sujet
-	** -----
-	** $topics ::		Tableau prenant en clef les ID de sujets, et en valeurs le nombres 
-	**					de messages a decrementer du total.
-	*/
+	/**
+	 * Met a jour les informations sur le dernier message dans les sujets, et sur le total de messages du sujet
+	 *
+	 * @param array $topics Liste des topics. Si vide, on prend tous les topics.
+	 */
 	public static function topics($topics = array())
 	{
 		// On met a jour le dernier posteur du sujet, et on decremente le nombre total de message du sujet si besoin
@@ -67,12 +77,11 @@ class Sync extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Met a jour les informations sur les derniers messages lus
-	** -----
-	** $topics ::		Liste des sujets qu'on veut mettre a jour.
-	**					Si le tableau est vide, on met a jour tous les sujets.
-	*/
+	/**
+	 * Met a jour les informations sur les derniers messages lus
+	 *
+	 * @param array $topics Liste des topics. Si vide, on prend tous les topics.
+	 */
 	public static function topics_read($topics = array())
 	{
 		$sql = 'UPDATE ' . SQL_PREFIX . 'topics_read tr
@@ -85,9 +94,9 @@ class Sync extends Fsb_model
 		Fsb::$db->query($sql);
 	}
 
-	/*
-	** Met a jour le total de messages sur le forum
-	*/
+	/**
+	 * Met a jour le total de messages sur le forum
+	 */
 	public static function total_posts()
 	{
 		$sql = 'SELECT COUNT(*) AS total
@@ -97,9 +106,9 @@ class Sync extends Fsb_model
 		Fsb::$cfg->update('total_posts', $total);
 	}
 
-	/*
-	** Met a jour le total de sujets sur le forum
-	*/
+	/**
+	 * Met a jour le total de sujets sur le forum
+	 */
 	public static function total_topics()
 	{
 		$sql = 'SELECT COUNT(*) AS total
@@ -109,12 +118,12 @@ class Sync extends Fsb_model
 		Fsb::$cfg->update('total_topics', $total);
 	}
 
-	/*
-	** Met a jour un champ signal pour mettre a jour le cache
-	** -----
-	** $signal_id ::		Contante du signal. Il est possible d'envoyers plusieurs signaux en utilisant le "OR" binaire.
-	** $arg ::				Un argument potentiel a la fonction (ID de membre, etc ...)
-	*/
+	/**
+	 * Met a jour un champ signal pour mettre a jour le cache
+	 *
+	 * @param int $signal_id Il est possible d'envoyers plusieurs signaux en utilisant le "OR" binaire.
+	 * @param mixed $arg
+	 */
 	function signal($signal_id, $arg = NULL)
 	{
 		// Mise a jour de la session

@@ -8,34 +8,114 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet l'upload de fichiers
-*/
+/**
+ * Permet l'upload de fichiers
+ */
 class Upload extends Fsb_model
 {
-	// Nom du champ de formulaire d'upload
+	/**
+	 * Nom du champ de formulaire d'upload
+	 *
+	 * @var string
+	 */
 	protected $name;
 
-	// Informations sur le fichier uploade
+	/**
+	 * Chemin temporaire du fichier
+	 *
+	 * @var string
+	 */
 	protected $tmp_path;
+	
+	/**
+	 * Taille du fichier
+	 *
+	 * @var int
+	 */
 	public $filesize;
+	
+	/**
+	 * Nom du fichier
+	 *
+	 * @var string
+	 */
 	public $filename;
+
+	/**
+	 * Nom du fichier sans le repertoire
+	 *
+	 * @var string
+	 */
 	public $basename;
+	
+	/**
+	 * Extension du fichier
+	 *
+	 * @var string
+	 */
 	public $extension;
+	
+	/**
+	 * Type mime du fichier
+	 *
+	 * @var string
+	 */
 	public $mimetype;
 
-	// Renommer le fichier
+	/**
+	 * Si le fichier doit etre renomme (preciser son nom)
+	 *
+	 * @var string
+	 */
 	public $rename_basename = NULL;
+	
+	/**
+	 * Si l'extension du fichier doit etre renommee (preciser son nom)
+	 *
+	 * @var string
+	 */
 	public $rename_extension = NULL;
 
-	// Informations sur l'image
+	/**
+	 * Largeur de l'image
+	 *
+	 * @var int
+	 */
 	public $width;
+	
+	/**
+	 * Hauteur de l'image
+	 *
+	 * @var int
+	 */
 	public $height;
+	
+	/**
+	 * Type de l'image
+	 *
+	 * @var int
+	 */
 	public $type;
 
-	// Types d'images autorisees
+	/**
+	 * Si seules les images sont autorisees
+	 *
+	 * @var bool
+	 */
 	protected $only_img = FALSE;
+	
+	/**
+	 * S'il s'agit d'une image
+	 *
+	 * @var bool
+	 */
 	public $is_img = FALSE;
+	
+	/**
+	 * Extensions des images supportees
+	 *
+	 * @var array
+	 */
 	public static $img = array(
 		'gif',
 		'jpg',
@@ -43,6 +123,12 @@ class Upload extends Fsb_model
 		'bmp',
 		'png',
 	);
+	
+	/**
+	 * Liste des types d'image supportes
+	 *
+	 * @var array
+	 */
 	public static $imgtype = array(
 		IMAGETYPE_GIF,
 		IMAGETYPE_JPEG,
@@ -51,14 +137,18 @@ class Upload extends Fsb_model
 		IMAGETYPE_PNG,
 	);
 
-	// Extensions autorisees
+	/**
+	 * Extensions autorisees
+	 *
+	 * @var array
+	 */
 	protected $allowed_ext = array();
 
-	/*
-	** Constructeur
-	** -----
-	** $name ::		Nom du champ du formulaire d'upload
-	*/
+	/**
+	 * Constructeur, verifie le fichier uploade
+	 *
+	 * @param string $name Nom du champ du formulaire d'upload
+	 */
 	public function __construct($name)
 	{
 		$this->name = $name;
@@ -112,11 +202,11 @@ class Upload extends Fsb_model
 		$this->extension =	get_file_data($this->filename, 'extension');
 	}
 
-	/*
-	** Ajoute une ou plusieurs extensions autorisees
-	** -----
-	** $ext ::		Extension ou tableau d'extensions. TRUE pour tout autoriser
-	*/
+	/**
+	 * Ajoute une ou plusieurs extensions autorisees
+	 *
+	 * @param string|array|bool $ext Liste des extensions a autoriser. True pour tout autoriser
+	 */
 	public function allow_ext($ext)
 	{
 		if ($ext === TRUE)
@@ -133,11 +223,11 @@ class Upload extends Fsb_model
 		}
 	}
 
-	/*
-	** N'autorise que les images
-	** -----
-	** $bool ::		TRUE pour n'autoriser que les images
-	*/
+	/**
+	 * N'autorise que les images
+	 *
+	 * @param bool $bool True pour n'autoriser que les images
+	 */
 	public function only_img($bool = TRUE)
 	{
 		$this->allow_ext(self::$img);
@@ -151,13 +241,14 @@ class Upload extends Fsb_model
 		}
 	}
 
-	/*
-	** Verification des dimensions de l'image
-	** -----
-	** $width ::	Largeur max de l'image
-	** $height ::	Hauteur max de l'image
-	** $filesize ::	Taille max de l'image (en octet)
-	*/
+	/**
+	 * Verification des dimensions de l'image
+	 *
+	 * @param int $width Largeur max de l'image
+	 * @param int $height Hauteur max de l'image
+	 * @param int $filesize Taille max de l'image (en octet)
+	 * @return bool
+	 */
 	public function check_img_size($width, $height, $filesize)
 	{
 		if (($width > 0 && $this->width > $width) || ($height > 0 && $this->height > $height) || ($filesize > 0 && $this->filesize > $filesize))
@@ -167,33 +258,33 @@ class Upload extends Fsb_model
 		return (TRUE);
 	}
 
-	/*
-	** Renomme la partie avant l'extension du fichier
-	** -----
-	** $new ::		Nouveau nom
-	*/
+	/**
+	 * Renomme la partie avant l'extension du fichier
+	 *
+	 * @param string $new Nouveau nom
+	 */
 	public function rename_filename($new)
 	{
 		$this->rename_basename = $new;
 	}
 
-	/*
-	** Renomme l'extension
-	** -----
-	** $new ::		Nouveau nom
-	*/
+	/**
+	 * Renomme l'extension
+	 *
+	 * @param string $new Nouveau nom
+	 */
 	public function rename_extension($new)
 	{
 		$this->rename_extension = $new;
 	}
 
-	/*
-	** Upload et sauve l'image sur le forum
-	** -----
-	** $path ::		Dossier de destination
-	** $erase ::	Si TRUE, on ecrase le fichier de destination s'il a le meme nom
-	**				Si FALSE, on renomme le fichier
-	*/
+	/**
+	 * Upload et sauve l'image sur le forum
+	 *
+	 * @param string $path Dossier de destination
+	 * @param bool $erase Si true ecrase le fichier, si false renomme le fichier s'il existe
+	 * @return string Nom du fichier
+	 */
 	public function store($path, $erase = FALSE)
 	{
 		// Verification de l'extension
@@ -236,12 +327,13 @@ class Upload extends Fsb_model
 		return ($this->filename);
 	}
 
-	/*
-	** Upload de fichier joint pour le forum
-	** -----
-	** $user_id ::		ID du membre
-	** $upload_auth ::	Droit sur le fichier
-	*/
+	/**
+	 * Upload de fichier joint pour le forum
+	 *
+	 * @param int $user_id ID du membre
+	 * @param int $upload_auth Droit sur le fichier
+	 * @return int ID du fichier joint
+	 */
 	public function attach_file($user_id, $upload_auth)
 	{
 		// On recupere la taille prise par tous les fichiers uploade du membre, afin de determine le quota restant

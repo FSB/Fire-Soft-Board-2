@@ -13,16 +13,19 @@
 */
 class String extends Fsb_model
 {
-	// Correspond aux offset generes par les fonctions preg_*() avec le flag PREG_OFFSET_CAPTURE
+	/**
+	 * Correspond aux offset generes par les fonctions preg_*() avec le flag PREG_OFFSET_CAPTURE
+	 */
 	const CHAR = 0;
 	const OFFSET = 1;
 
-	/*
-	** Ajoute un espace dans les mots trop long
-	** -----
-	** $str ::		Chaine a traiter
-	** $length ::	Longueur maximale de chaque mot
-	*/
+	/**
+	 * Ajoute un espace dans les mots trop long
+	 *
+	 * @param string $str Chaine a traiter
+	 * @param int $length Longueur maximale de chaque mot
+	 * @return string
+	 */
 	public static function truncate($str, $length)
 	{
 		$merge = array();
@@ -37,33 +40,37 @@ class String extends Fsb_model
 		return (implode(' ', $merge));
 	}
 
-	/*
-	** Convertit une chaine UTF8 en minuscule
-	** -----
-	** $str ::		Chaine a convertir
-	*/
+	/**
+	 * Convertit une chaine UTF8 en minuscule
+	 *
+	 * @param string $str Chaine a convertir
+	 * @return string
+	 */
 	public static function strtolower($str)
 	{
 		return (strtr($str, $GLOBALS['UTF8_UPPER_TO_LOWER']));
 	}
 
-	/*
-	** Convertit une chaine UTF8 en majuscule
-	** -----
-	** $str ::		Chaine a convertir
-	*/
+	/**
+	 * Convertit une chaine UTF8 en majuscule
+	 *
+	 * @param string $str Chaine a convertir
+	 * @return string
+	 */
 	public static function strtoupper($str)
 	{
 		return (strtr($str, $GLOBALS['UTF8_LOWER_TO_UPPER']));
 	}
 
-	/*
-	** Substr gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
-	** -----
-	** $str ::		Chaine de caractere
-	** $start ::	Offset de depart pour la tronquature
-	** $length ::	Longueur du texte a tronquer
-	*/
+	/**
+	 * Substr gerant l'UTF-8, fonction reprise de SPIP
+	 * @link http://www.spip.net
+	 * 
+	 * @param string $str Chaine de caractere
+	 * @param int $start Offset de depart pour la tronquature
+	 * @param int $length Longueur du texte a tronquer
+	 * @return string
+	 */
 	public static function substr($str, $start = 0, $length = NULL)
 	{
 		if (Fsb::$session->lang('charset') != 'UTF-8')
@@ -90,13 +97,15 @@ class String extends Fsb_model
 		return ($fct($str, $start));
 	}
 
-	/*
-	** Substr gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
-	** -----
-	** $str ::		Chaine de caractere
-	** $start ::	Offset de depart pour la tronquature
-	** $length ::	Longueur du texte a tronquer
-	*/
+	/**
+	 * Substr gerant l'UTF-8, fonction reprise de SPIP
+	 * @link http://www.spip.net
+	 * 
+	 * @param string $str Chaine de caractere
+	 * @param int $start Offset de depart pour la tronquature
+	 * @param int $length Longueur du texte a tronquer
+	 * @return string
+	 */
 	public static function substr_manual($str, $start, $length = 0)
 	{
 		if ($length === 0)
@@ -143,11 +152,13 @@ class String extends Fsb_model
 		}
 	}
 
-	/*
-	** Strlen gerant l'UTF-8, fonction reprise de SPIP (http://www.spip.net)
-	** -----
-	** $str ::		Chaine de caractere
-	*/
+	/**
+	 * Strlen gerant l'UTF-8, fonction reprise de SPIP
+	 * @link http://www.spip.net
+	 * 
+	 * @param string $str Chaine de caractere
+	 * @return string
+	 */
 	public static function strlen($str)
 	{
 		if (Fsb::$session->lang('charset') != 'UTF-8')
@@ -163,24 +174,26 @@ class String extends Fsb_model
 		return (strlen(preg_replace('#[\x80-\xBF]#S', '', $str))); 
 	}
 
-	/*
-	** Converti en entites HTML des donnees qui ont ete encodees par escape() en javascript.
-	** Cette fonction est indispensable dans votre traitement AJAX cote PHP, car les fonctions
-	** PHP ne reconnaissent pas les caracteres unicode encodees de la forme %uxxxx.
-	** -----
-	** $str ::		Chaine de caractere a decoder
-	*/
+	/**
+	 * Converti en entites HTML des donnees qui ont ete encodees par escape() en javascript.
+	 * Cette fonction est indispensable dans votre traitement AJAX cote PHP, car les fonctions
+	 * PHP ne reconnaissent pas les caracteres unicode encodees de la forme %uxxxx.
+	 *
+	 * @param string $str Chaine de caractere a decoder
+	 * @return string
+	 */
 	public static function fsb_utf8_decode($str)
 	{
 		return (preg_replace('#%u([[:alnum:]]{4})#i', '&#x\\1;', $str));
 	}
 
-	/*
-	** Ajoute des zeros manquants en debut de chaine, tant que $str est inferieur a $total
-	** -----
-	** $str ::		Chaine initiale
-	** $total ::	Nombre de caracteres totaux que devra comporter la chaine a la fin
-	*/
+	/**
+	 * Ajoute des zeros manquants en debut de chaine, tant que $str est inferieur a $total
+	 *
+	 * @param string $str Chaine initiale
+	 * @param int $total Nombre de caracteres totaux que devra comporter la chaine a la fin
+	 * @return string
+	 */
 	public static function add_zero($str, $total)
 	{
 		while (strlen($str) < $total)
@@ -190,23 +203,25 @@ class String extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Inverse d'htmlspecialchars()
-	** -----
-	** $str ::		Chaine de caractere
-	*/
+	/**
+	 * Inverse d'htmlspecialchars()
+	 *
+	 * @param string $str Chaine de caractere
+	 * @return string
+	 */
 	public static function unhtmlspecialchars($str)
 	{
 		return (str_replace(array('&lt;', '&gt;', '&amp;', '&quot;'), array('<', '>', '&', '"'), $str));
 	}
 
-	/*
-	** Encode une chaine de caractere en caracteres hexadecimaux visibles par
-	** le navigateur, afin d'offrir une protection contre la lecture de donnees dans
-	** la source de la page (anti spam)
-	** ----
-	** $str ::		Chaine de caractere a encoder
-	*/
+	/**
+	 * Encode une chaine de caractere en caracteres hexadecimaux visibles par
+	 * le navigateur, afin d'offrir une protection contre la lecture de donnees dans
+	 * la source de la page (anti spam)
+	 *
+	 * @param string $str Chaine de caractere a encoder
+	 * @return string
+	 */
 	public static function no_spam($str)
 	{
 		$new = '';
@@ -218,24 +233,25 @@ class String extends Fsb_model
 		return ($new);
 	}
 
-	/*
-	** Renvoie TRUE si $word match $pattern
-	** -----
-	** $pattern ::		Chaine de caractere acceptant * comme caractere special
-	** $word ::			Chaine verifiant le pattern
-	*/
+	/**
+	 * Verifie si un mot match un pattern simple avec des *
+	 *
+	 * @param string $pattern Chaine de caractere acceptant * comme caractere special
+	 * @param string $word Chaine verifiant le pattern
+	 * @return bool
+	 */
 	public static function is_matching($pattern, $word)
 	{
 		return ((preg_match('/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/i', $word)) ? TRUE : FALSE);
 	}
 
-
-	/*
-	** Fonction recursive qui verifie si un caractere est echappe par un \
-	** -----
-	** $pos ::		Position du caractere dans la chaine
-	** $str ::		Chaine de caractere
-	*/
+	/**
+	 * Fonction recursive qui verifie si un caractere est echappe
+	 *
+	 * @param unknown_type $pos Position du caractere dans la chaine
+	 * @param unknown_type $str Chaine de caractere
+	 * @return bool
+	 */
 	public static function is_escaped($pos, &$str)
 	{
 		if (($pos - 1) >= 0 && $str[$pos - 1] != '\\')
@@ -253,13 +269,14 @@ class String extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Decoupe une chaine de caractere en plusieurs sous chaine dans un tableau, en fonction de delimiteurs.
-	** Les chaines comprises dans des quote ne sont pas decoupees.
-	** -----
-	** $del ::	Delimiteur (ou tableau de delimiteur)
-	** $str ::	Chaine a decouper
-	*/
+	/**
+	 * Decoupe une chaine de caractere en plusieurs sous chaine dans un tableau, en fonction de delimiteurs.
+	 * Les chaines comprises dans des quote ne sont pas decoupees.
+	 *
+	 * @param string[array $del Delimiteur (ou tableau de delimiteur)
+	 * @param string $str Chaine a decouper
+	 * @return array
+	 */
 	public static function split($del, $str)
 	{
 		if (!is_array($del))
@@ -333,23 +350,25 @@ class String extends Fsb_model
 		return ($return);
 	}
 
-	/*
-	** Utilise ou non un pluriel si une valeur est superieur a 1
-	** -----
-	** $str ::		Chaine de langue, une version avec un 's' final doit exister
-	** $int ::		Valeur numerique
-	** $distinct ::	Distingue 1 et 0 en ajoutant ou non un sufixe _none
-	*/
+	/**
+	 * Utilise ou non un pluriel si une valeur est superieur a 1
+	 *
+	 * @param string $str Clef de langue, une version avec un 's' final doit exister
+	 * @param int $int Valeur numerique
+	 * @param bool $distinct Distingue 1 et 0 en ajoutant ou non un sufixe _none
+	 * @return string
+	 */
 	public static function plural($str, $int, $distinct = FALSE)
 	{
 		return (Fsb::$session->lang($str . (($int > 1) ? 's' : (($distinct && $int == 0) ? '_none' : ''))));
 	}
 
-	/*
-	** Affiche correctement une clef de langue ({LG_KEY} va utiliser une clef de langue "key")
-	** -----
-	** $str ::		Texte a parser
-	*/
+	/**
+	 * Affiche correctement une clef de langue ({LG_KEY} va utiliser une clef de langue "key")
+	 *
+	 * @param string $str Texte a parser
+	 * @return string
+	 */
 	public static function parse_lang($str)
 	{
 		$str = preg_replace('#\{LG_([a-zA-Z0-9_]*?)\}#e', 'Fsb::$session->lang(strtolower(\'$1\'))', $str);
@@ -357,22 +376,24 @@ class String extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Formatage des grands nombre suivant la langue
-	** -----
-	** $nb ::	Nombre a formater
-	** $dec ::	Nombre de decimales
-	*/
+	/**
+	 * Formatage des grands nombre suivant la langue
+	 *
+	 * @param int $nb Nombre a formater
+	 * @param int $dec Nombre de decimales
+	 * @return string
+	 */
 	public static function number_format($nb, $dec = 0)
 	{
 		return (number_format($nb, $dec, Fsb::$session->lang('nb_format_dec'), Fsb::$session->lang('nb_format_thousands')));
 	}
 
-	/*
-	** Rend les sites webs clickables
-	** -----
-	** $str ::		Chaine a parser
-	*/
+	/**
+	 * Rend les sites webs clickables
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	public static function parse_website($str)
 	{
 		$str = preg_replace('/(?<=^|[\s])((((http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/)([^ \"\t\n\r<]{3,}))))/i', '<a href="\\1">\\1</a>', $str);
@@ -380,11 +401,12 @@ class String extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Rend les Emails clickables
-	** -----
-	** $str ::		Chaine a parser
-	*/
+	/**
+	 * Rend les Emails clickables
+	 *
+	 * @param string $str Chaine a parser
+	 * @return string
+	 */
 	public static function parse_email($str)
 	{
 		$fsbcode = new Parser_fsbcode();
