@@ -8,18 +8,18 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Liste les modules a installer, et permet de les installer directement sur le forum via
-** la classe Module
-*/
+/**
+ * Liste les modules a installer, et permet de les installer directement sur le forum via
+ * la classe Module
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	// Arguments de la page
 	public $mode, $mod_path, $module;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =		Http::request('mode');
@@ -60,9 +60,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la liste des modules pour l'installation
-	*/
+	/**
+	 * Affiche la liste des modules pour l'installation
+	 */
 	public function page_mods_install()
 	{
 		// On recupere les MODS deja installes pour ne pas les afficher dans la liste
@@ -120,9 +120,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		closedir($fd);
 	}
 
-	/*
-	** Affiche la liste des modules installes
-	*/
+	/**
+	 * Affiche la liste des modules installes
+	 */
 	public function page_mods_mods()
 	{
 		// On recupere sur le serveur www.fire-soft-board.com la liste des MODS et leur version pour verifier les mises a jour
@@ -180,9 +180,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la page du formulaire d'execution de modules
-	*/
+	/**
+	 * Affiche la page du formulaire d'execution de modules
+	 */
 	public function page_mods_functions()
 	{
 		Fsb::$tpl->set_switch('mods_activation');
@@ -207,9 +207,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la liste des backups du repertoire ~/mods/save/
-	*/
+	/**
+	 * Affiche la liste des backups du repertoire ~/mods/save/
+	 */
 	public function page_mods_backup()
 	{
 		Fsb::$tpl->set_switch('mods_backup');
@@ -252,9 +252,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Soumission du formulaire d'activation des fonctions
-	*/
+	/**
+	 * Soumission du formulaire d'activation des fonctions
+	 */
 	public function page_submit_activation()
 	{		
 		foreach ($_POST AS $key => $value)
@@ -271,9 +271,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_activation_well_submit', 'index.' . PHPEXT . '?p=mods_manager', 'modules_activation');
 	}
 
-	/*
-	** Page permettant d'installer le MOD
-	*/
+	/**
+	 * Page permettant d'installer le MOD
+	 */
 	public function page_install_mod()
 	{
 		if (!is_dir(ROOT . 'mods/' . $this->mod_path))
@@ -345,9 +345,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Lance l'installation du module
-	*/
+	/**
+	 * Lance l'installation du module
+	 */
 	public function page_submit_install()
 	{
 		$module = new Module();
@@ -427,11 +427,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->cache->garbage_colector(0);
 	}
 
-	/*
-	** Affiche les erreurs du module
-	** -----
-	** $module ::		Objet module
-	*/
+	/**
+	 * Affiche les erreurs du module
+	 *
+	 * @param Module $module MOdule
+	 */
 	public function module_log_error(&$module)
 	{
 		Fsb::$tpl->set_switch('mods_error');
@@ -455,9 +455,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Page de désinstallation d'un MOD
-	*/
+	/**
+	 * Page de désinstallation d'un MOD
+	 */
 	public function page_uninstall_mod()
 	{
 		if (!is_dir(ROOT . 'mods/' . $this->mod_path))
@@ -524,9 +524,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Soumission du formulaire d'activation des mods
-	*/
+	/**
+	 * Soumission du formulaire d'activation des mods
+	 */
 	public function page_submit_mods()
 	{		
 		$action = (array) Http::request('action', 'post');
@@ -547,9 +547,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_activation_well_submit', 'index.' . PHPEXT . '?p=mods_manager&amp;module=mods', 'modules_activation');
 	}
 
-	/*
-	** Restauration d'un backup
-	*/
+	/**
+	 * Restauration d'un backup
+	 */
 	public function restore_backup()
 	{
 		$restore = trim(Http::request('restore'));
@@ -600,9 +600,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche les MODS disponible sur le serveur FSB
-	*/
+	/**
+	 * Affiche les MODS disponible sur le serveur FSB
+	 */
 	public function page_mods_streaming()
 	{
 		Fsb::$tpl->set_switch('mods_streaming');
@@ -712,9 +712,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Upload le MOD et le decompresse
-	*/
+	/**
+	 * Upload le MOD et le decompresse
+	 */
 	public function install_mods_stream()
 	{
 		$url = urldecode(Http::request('url'));
@@ -746,9 +746,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Upload et decompresse un MOD
-	*/
+	/**
+	 * Upload et decompresse un MOD
+	 */
 	public function submit_upload_mod()
 	{
 		// Upload du MOD sur le serveur
@@ -778,11 +778,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=mods_manager&module=install&mode=install&mod_path=' . get_file_data($mod_name, 'filename'));
 	}
 
-	/*
-	** Compte le nombre de fichiers dans un repertoire
-	** -----
-	** $dir ::		Repertoire a verifier
-	*/
+	/**
+	 * Compte le nombre de fichiers dans un repertoire
+	 *
+	 * @param string $dir Repertoire a verifier
+	 * @return int Nombre de fichier dans le repertoire
+	 */
 	public function count_file_in_directory($dir)
 	{
 		$count = 0;
