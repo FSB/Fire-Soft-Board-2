@@ -8,18 +8,28 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion des FSBcode sur le forum
-*/
+/**
+ * Gestion des FSBcode sur le forum
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la frame
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du FSBcode
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeurs
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -42,9 +52,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page de gestion des FSBcodes
-	*/
+	/**
+	 * Affiche la page de gestion des FSBcodes
+	 */
 	public function page_default_fsbcode()
 	{
 		Fsb::$tpl->set_switch('fsbcode_list');
@@ -73,9 +83,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer des FSBcode
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer des FSBcode
+	 */
 	public function page_add_edit_fsbcode()
 	{
 		if ($this->mode == 'edit')
@@ -127,9 +137,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition des mots a censurer
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition des mots a censurer
+	 */
 	public function query_add_edit_fsbcode()
 	{
 		$data = array(
@@ -185,9 +195,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_fsbcode_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_fsbcode', 'posts_fsbcode');
 	}
 
-	/*
-	** Suppression d'un FSBcode
-	*/
+	/**
+	 * Suppression d'un FSBcode
+	 */
 	public function page_delete_fsbcode()
 	{
 		if (check_confirm())
@@ -238,9 +248,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_censor_well_delete', 'index.' . PHPEXT . '?p=posts_censor', 'posts_censor');
 	}
 
-	/*
-	** Deplace un FSBcode avec un autre
-	*/
+	/**
+	 * Deplace un FSBcode avec un autre
+	 */
 	public function page_move_fsbcode()
 	{
 		$move = ($this->mode == 'up') ? -1 : 1;

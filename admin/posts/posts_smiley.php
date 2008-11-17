@@ -8,17 +8,28 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion des smilies
-*/
+/**
+ * Gestion des smilies
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
+	/**
+	 * Mode de la frame
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du smilie
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -51,9 +62,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page de gestion des smileys
-	*/
+	/**
+	 * Affiche la page de gestion des smileys
+	 */
 	public function page_default_smiley()
 	{
 		Fsb::$tpl->set_switch('smileys_list');
@@ -104,9 +115,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer les smileys
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer les smileys
+	 */
 	public function page_add_edit_smiley()
 	{
 		if ($this->mode == 'edit')
@@ -157,9 +168,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition des smileys
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition des smileys
+	 */
 	public function query_add_edit_smiley()
 	{
 		$s_tag =	Http::request('s_tag', 'post');
@@ -245,9 +256,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_smiley_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_smiley', 'posts_smiley');
 	}
 
-	/*
-	** Page de suppression d'un smiley
-	*/
+	/**
+	 * Page de suppression d'un smiley
+	 */
 	public function page_delete_smiley()
 	{
 		if ($this->id > 0)
@@ -273,9 +284,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_smiley_well_delete', 'index.' . PHPEXT . '?p=posts_smiley', 'posts_smiley');
 	}
 
-	/*
-	** Deplace un smiley avec un autre
-	*/
+	/**
+	 * Deplace un smiley avec un autre
+	 */
 	public function page_move_smiley()
 	{
 		$move = ($this->mode == 'up') ? -1 : 1;
@@ -312,9 +323,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=posts_smiley');
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer une categorie de smiley
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer une categorie de smiley
+	 */
 	public function page_add_edit_cat()
 	{
 		// Edition
@@ -346,9 +357,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Soumission du formulaire d'ajout de categorie
-	*/
+	/**
+	 * Soumission du formulaire d'ajout de categorie
+	 */
 	public function query_add_edit_cat()
 	{
 		$cat_name = trim(Http::request('cat_name', 'post'));
@@ -377,9 +388,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Deplace une categorie de smiley
-	*/
+	/**
+	 * Deplace une categorie de smiley
+	 */
 	public function page_move_cat()
 	{
 		$move = ($this->mode == 'up_cat') ? -1 : 1;
@@ -415,9 +426,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=posts_smiley');
 	}
 
-	/*
-	** Page de suppression d'un smiley
-	*/
+	/**
+	 * Page de suppression d'un smiley
+	 */
 	public function page_delete_cat()
 	{
 		if (check_confirm())
@@ -462,9 +473,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter un pack de smileys
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter un pack de smileys
+	 */
 	public function page_pack_smiley()
 	{
 		Fsb::$tpl->set_switch('smileys_import');
@@ -473,9 +484,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout de pack de smileys
-	*/
+	/**
+	 * Valide le formulaire d'ajout de pack de smileys
+	 */
 	public function query_pack_smiley()
 	{
 		$errstr = array();
@@ -577,9 +588,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_smiley_well_pack', 'index.' . PHPEXT . '?p=posts_smiley', 'posts_smiley');
 	}
 
-	/*
-	** Affiche l'exportation de packs de smilies
-	*/
+	/**
+	 * Affiche l'exportation de packs de smilies
+	 */
 	public function page_pack_export_smiley()
 	{
 		// Liste des categories de smilies
@@ -600,9 +611,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Exportation de smilies
-	*/
+	/**
+	 * Exportation de smilies
+	 */
 	public function query_pack_export()
 	{
 		$pack_name =	trim(Http::request('pack_name', 'post'));
