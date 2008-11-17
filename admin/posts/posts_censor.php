@@ -8,18 +8,28 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion de la censure dans les messages
-*/
+/**
+ * Gestion de la censure dans les messages
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Mode de la frame
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du mot censuré
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeurs
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -40,9 +50,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page de gestion de la censure
-	*/
+	/**
+	 * Affiche la page de gestion de la censure
+	 */
 	public function page_default_censor()
 	{
 		Fsb::$tpl->set_switch('censor_list');
@@ -67,9 +77,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer des mots a censurer
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer des mots a censurer
+	 */
 	public function page_add_edit_censor()
 	{
 		if ($this->mode == 'edit')
@@ -108,9 +118,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition des mots a censurer
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition des mots a censurer
+	 */
 	public function query_add_edit_censor()
 	{
 		$cs_word =		trim(Http::request('cs_word', 'post'));
@@ -150,9 +160,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_censor_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_censor', 'posts_censor');
 	}
 
-	/*
-	** Page de suppression d'un mot censure
-	*/
+	/**
+	 * Page de suppression d'un mot censure
+	 */
 	public function page_delete_censor()
 	{
 		if ($this->id)

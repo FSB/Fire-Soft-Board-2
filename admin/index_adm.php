@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
+/**
  * Affiche l'index de l'administration contenant la liste des membres en ligne, si le forum est a jour, les derniers logs,
  * les comptes en attente d'activation.
  */
