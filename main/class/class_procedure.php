@@ -8,18 +8,30 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Parse et execute des procedures de moderation (dans un langage de scripting tres basique)
-*/
+/**
+ * Parse et execute des procedures de moderation (decrites par du XML)
+ */
 class Procedure extends Fsb_model
 {
-	// Ligne en cours
+	/**
+	 * Numero de l'instruction en cours
+	 *
+	 * @var int
+	 */
 	private $line_number = 1;
 
-	// Contient les variables en cours
+	/**
+	 * Variables definies
+	 *
+	 * @var array
+	 */
 	private $vars = array();
 
-	// Contient la liste des fonctions avec les parametres obligatoires
+	/**
+	 * Contient la liste des instructions avec les parametres obligatoires
+	 *
+	 * @var array
+	 */
 	private $fcts = array(
 		'var' =>			array('varname', 'value'),
 		'input' =>			array('explain', 'default'),
@@ -38,20 +50,20 @@ class Procedure extends Fsb_model
 		'watch_topic' =>	array('topicID' => 'intval', 'watch'),
 	);
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->set_var('this', array());
 	}
 
-	/*
-	** Definit une variable
-	** -----
-	** $name ::		Nom de la variable
-	** $value ::	Valeur
-	*/
+	/**
+	 * Assigne une variable
+	 *
+	 * @param string $name Nom de la variable
+	 * @param string $value Valeur de la variable
+	 */
 	public function set_var($name, $value = NULL)
 	{
 		$split = explode('.', $name);
@@ -68,11 +80,11 @@ class Procedure extends Fsb_model
 		$ref[$split[$i]] = $value;
 	}
 
-	/*
-	** Parse et execute une procedure de moderation
-	** -----
-	** $code ::		Code a executer
-	*/
+	/**
+	 * Parse et execute une procedure de moderation
+	 *
+	 * @param string $code Code XML a parser
+	 */
 	public function parse($code)
 	{
 		// Chargement des variables
@@ -122,11 +134,12 @@ class Procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Remplace les variables dans la chaine de caractere
-	** -----
-	** $str ::		Chaine contenant potentiellement des variables
-	*/
+	/**
+	 * Remplace les variables dans la chaine de caractere
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	private function parse_vars($str)
 	{
 		preg_match_all('#\{([a-zA-Z0-9_\.]+)\}#i', $str, $match);
@@ -149,19 +162,22 @@ class Procedure extends Fsb_model
 		return ($str);
 	}
 
-	/*
-	** Affiche une erreur
-	** -----
-	** $errstr ::		Erreur recensee
-	*/
+	/**
+	 * Affiche une erreur
+	 *
+	 * @param string $errstr
+	 */
 	private function error($errstr)
 	{
 		die('<b>FSB Fatal error : <i>' . $errstr . '</i> a la ligne ' . $this->line_number . ' de la procedure<br />');
 	}
 
-	/*
-	** Met les variables en champs caches
-	*/
+	/**
+	 * Met les variables en champs caches
+	 *
+	 * @param array $node Liste de variables a sauver
+	 * @param string $varname
+	 */
 	private function save_vars(&$node, $varname = '')
 	{
 		foreach ($node AS $k => $v)
@@ -180,9 +196,12 @@ class Procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Met les variables GP en champs caches
-	*/
+	/**
+	 * Met les variables GP en champs caches
+	 *
+	 * @param array $var
+	 * @param string $varname
+	 */
 	private function save_gp_vars(&$var, $varname = '')
 	{
 		foreach ($var AS $k => $v)
@@ -201,12 +220,13 @@ class Procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Appel une methode des procedures de moderation
-	** -----
-	** $method ::		Nom de la methode
-	** $argv ::			Arguments
-	*/
+	/**
+	 * Appel une methode des procedures de moderation
+	 *
+	 * @param string $method Nom de la methode
+	 * @param array $argv Arguments
+	 * @return mixed
+	 */
 	private function call_method($method, $argv)
 	{
 		// Existance de la methode
@@ -244,11 +264,12 @@ class Procedure extends Fsb_model
 		return ($this->$call($argv));
 	}
 
-	/*
-	** Transforme un pseudonyme en ID
-	** -----
-	** $str ::		Chaine a verifier
-	*/
+	/**
+	 * Transforme un pseudonyme en ID
+	 *
+	 * @param string $str
+	 * @return string
+	 */
 	private function nickname_to_id($str)
 	{
 		if (!is_numeric($str))
@@ -265,17 +286,21 @@ class Procedure extends Fsb_model
 	// Fonctions utilisables dans les procedures
 	//
 
-	/*
-	** Assigne une variable
-	*/
+	/**
+	 * Assigne une variable
+	 *
+	 * @param array $argv
+	 */
 	private function process_var($argv)
 	{
 		$this->set_var($argv['varname'], $argv['value']);
 	}
 
-	/*
-	** Affiche un formulaire et recupere la valeur de la variable
-	*/
+	/**
+	 * Affiche un formulaire et recupere la valeur de la variable
+	 *
+	 * @param array $argv
+	 */
 	private function process_input($argv)
 	{
 		$identifier = 'submit_process_input_' . $this->line_number;
@@ -308,25 +333,31 @@ class Procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Verrouille un sujet
-	*/
+	/**
+	 * Verrouille un sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_lock($argv)
 	{
 		Moderation::lock_topic($argv['topicID'], LOCK);
 	}
 
-	/*
-	** Deverrouille un sujet
-	*/
+	/**
+	 * Deverrouille un sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_unlock($argv)
 	{
 		Moderation::lock_topic($argv['topicID'], UNLOCK);
 	}
 
-	/*
-	** Envoie un message prive
-	*/
+	/**
+	 * Envoie un message prive
+	 *
+	 * @param array $argv
+	 */
 	private function process_send_mp($argv)
 	{
 		$argv['fromID'] =	$this->nickname_to_id($argv['fromID']);
@@ -335,9 +366,11 @@ class Procedure extends Fsb_model
 		Send::send_mp($argv['fromID'], $argv['toID'], $argv['title'], $argv['content']);
 	}
 
-	/*
-	** Redirige
-	*/
+	/**
+	 * Redirige
+	 *
+	 * @param array $argv
+	 */
 	private function process_redirect($argv)
 	{
 		// On log l'action de moderation, car la procedure fini la
@@ -346,9 +379,11 @@ class Procedure extends Fsb_model
 		Http::redirect($argv['url']);
 	}
 
-	/*
-	** Ajoute un message au sujet
-	*/
+	/**
+	 * Ajoute un message au sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_send_post($argv)
 	{
 		// Donnees du sujet
@@ -383,9 +418,11 @@ class Procedure extends Fsb_model
 		), FALSE);
 	}
 
-	/*
-	** Deplace un sujet
-	*/
+	/**
+	 * Deplace un sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_move($argv)
 	{
 		// Donnees du sujet
@@ -397,17 +434,21 @@ class Procedure extends Fsb_model
 		Moderation::move_topics($argv['topicID'], $topic_data['f_id'], $argv['forumID'], ($argv['trace'] == 'true') ? TRUE : FALSE);
 	}
 
-	/*
-	** Banissement
-	*/
+	/**
+	 * Banissement
+	 *
+	 * @param array $argv
+	 */
 	private function process_ban($argv)
 	{
 		Moderation::ban($argv['banType'], $argv['banContent'], $argv['reason'], $argv['banLength'], FALSE);
 	}
 
-	/*
-	** Donne un avertissement
-	*/
+	/**
+	 * Donne un avertissement
+	 *
+	 * @param array $argv
+	 */
 	private function process_warn($argv)
 	{
 		$argv['warnType'] = ($argv['warnType'] != 'less') ? 'more' : $argv['warnType'];
@@ -429,25 +470,31 @@ class Procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime un message
-	*/
+	/**
+	 * Supprime un message
+	 *
+	 * @param array $argv
+	 */
 	private function process_delete_post($argv)
 	{
 		Moderation::delete_posts('p_id = ' . $argv['postID']);
 	}
 
-	/*
-	** Supprime un sujet
-	*/
+	/**
+	 * Supprime un sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_delete_topic($argv)
 	{
 		Moderation::delete_topics('t_id = ' . $argv['topicID']);
 	}
 
-	/*
-	** Recupere les informations sur un utilisateur
-	*/
+	/**
+	 * Recupere les informations sur un utilisateur
+	 *
+	 * @param array $argv
+	 */
 	private function process_userdata($argv)
 	{
 		$where = '';
@@ -475,17 +522,21 @@ class Procedure extends Fsb_model
 		return ((isset($argv['return'])) ? $return[$argv['return']] : $return);
 	}
 
-	/*
-	** Recupere le contenu d'une variable globale PHP
-	*/
+	/**
+	 * Recupere le contenu d'une variable globale PHP
+	 *
+	 * @param array $argv
+	 */
 	private function process_global()
 	{
 		return ($GLOBALS[$argv['varname']]);
 	}
 
-	/*
-	** Surveille un sujet
-	*/
+	/**
+	 * Surveille un sujet
+	 *
+	 * @param array $argv
+	 */
 	private function process_watch_topic($argv)
 	{
 		if ($argv['watch'] == 'true')

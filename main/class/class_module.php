@@ -8,56 +8,96 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
+/**
+ * Installeur de modules a partir de fichier de definition XML
+ */
 class Module extends Fsb_model
 {
-	// Objet Xml
+	/**
+	 * @var Xml
+	 */
 	public $xml;
 
-	// Ressource sur les donnees actuelles de l'instruction d'installation
+	/**
+	 * Pointe sur la ligne courante durant l'installation d'un module
+	 *
+	 * @var Xml
+	 */
 	private $handler = NULL;
 
-	// Configuration de la classe
+	/**
+	 * Configuration de la classe
+	 *
+	 * @var array
+	 */
 	private $config = array();
 
-	// Log d'erreur
+	/**
+	 * Erreurs rencontrees
+	 *
+	 * @var array
+	 */
 	public $log_error = array();
 
-	// Contenu du fichier
+	/**
+	 * Contenu du fichier actuellement ouvert
+	 *
+	 * @var string
+	 */
 	private $file_content = '';
 
-	// Code a trouver
+	/**
+	 * Chaine a chercher dans le fichier
+	 *
+	 * @var string
+	 */
 	private $find_code = '';
 
-	// Fichier actuellement ouvert
+	/**
+	 * Descripteur du fichier ouvert
+	 *
+	 * @var resource
+	 */
 	private $file_open = NULL;
 
-	// Gestion de la duplication
-	private $duplicat;
-
-	// Objet File
+	/**
+	 * @var File
+	 */
 	public $file;
 
-	// Fichier n'existe pas
+	/**
+	 * Ce fichier n'existe pas
+	 */
 	const MOD_ERROR_FILE_NOT_FOUND = 1;
 
-	// Code non trouve dans le fichier
+	/**
+	 * Code source non trouve dans le fichier
+	 */
 	const MOD_ERROR_CODE_NOT_FOUND = 2;
 
-	// Fichier non accessible en ecriture
+	/**
+	 * Fichier non accessible en ecriture
+	 */
 	const MOD_ERROR_PERMISSION_DENIED = 3;
 
-	// Erreur SQL
+	/**
+	 * Erreur SQL
+	 */
 	const MOD_ERROR_SQL = 4;
 
-	// Repertoire non accessible en ecriture
+	/**
+	 * Repertoire non accessible en ecriture
+	 */
 	const MOD_ERROR_DIR_NOT_WRITABLE = 5;
 
-	// Instruction inconnue
+	/**
+	 * Instruction inconnue
+	 */
 	const MOD_ERROR_UNKNOWN_INSTRUCTION = 6;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur, met la configuration par defaut
+	 */
 	public function __construct()
 	{
 		$this->set_config(array(
@@ -69,13 +109,12 @@ class Module extends Fsb_model
 		));
 	}
 
-	/*
-	** Assigne une configuration a la classe.
-	** -----
-	** $data ::		Si $data est un tableau, on l'ajoute entierement a la configuration.
-	**					Sinon, on se sert de $data comme clef et de $value comme valeur.
-	** $value ::	Valeur de $data si celui ci n'est pas un tableau.
-	*/
+	/**
+	 * Change la configuration de la classe
+	 *
+	 * @param string|array $data
+	 * @param mixed $value
+	 */
 	public function set_config($data, $value = '')
 	{
 		if (is_array($data))
@@ -91,33 +130,33 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne la valeur d'un element de configuration
-	** -----
-	** $key ::	Clef de configuration
-	*/
+	/**
+	 * Lit une configuration de la classe
+	 *
+	 * @param string $key Clef de configuration
+	 * @return string Valeur de la configuration
+	 */
 	public function get_config($key)
 	{
 		return ((isset($this->config[$key])) ? $this->config[$key] : NULL);
 	}
 
-	/*
-	** Cree l'objet $file pour manipuler les fichiers
-	** -----
-	** $use_ftp ::		Definit si on utilise une connexion FTP
-	*/
+	/**
+	 * Cree l'objet de manipulation des fichiers
+	 *
+	 * @param bool $use_ftp Definit si on utilise une connexion FTP
+	 */
 	public function file_system($use_ftp)
 	{
-		// Instance de la classe File
 		$this->file = File::factory($use_ftp);
 	}
 
-	/*
-	** Charge un fichier template
-	** -----
-	** $template_name ::		Chemin vers le fichier tempkate a charger. Il peut s'agir d'un code XML
-	** $load_type ::			'file' si $template_name est un fichier, 'code' si c'est du code XML
-	*/
+	/**
+	 * Charge un fichier template
+	 *
+	 * @param string $template_name Chemin vers le fichier template a charger. Il peut s'agir d'un code XML
+	 * @param string $load_type 'file' si $template_name est un fichier, 'code' si c'est du code XML
+	 */
 	public function load_template($template_name, $load_type = 'file')
 	{
 		$this->xml = new Xml();
@@ -167,11 +206,11 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Duplique un contenu autant de fois qu'il y a de dossier dans le repertoire concerne
-	** -----
-	** $list_node ::		Liste des nodes a dupliquer
-	*/
+	/**
+	 * Duplique un contenu autant de fois qu'il y a de dossier dans le repertoire concerne
+	 *
+	 * @param array $list_node Liste des nodes a dupliquer
+	 */
 	private function duplicat_content(&$list_node)
 	{
 		// On recupere tout d'abord le dossier a dupliquer
@@ -212,9 +251,9 @@ class Module extends Fsb_model
 		$list_node = array();
 	}
 
-	/*
-	** Installe le MOD
-	*/
+	/**
+	 * Lance la procedure d'installation du MOD
+	 */
 	public function install()
 	{
 		foreach ($this->xml->document->instruction[0]->line AS $this->handler)
@@ -236,9 +275,9 @@ class Module extends Fsb_model
 	// ========== METHODES D'INSTALLATION DU MOD ==========
 	//
 
-	/*
-	** Ouvre un fichier
-	*/
+	/**
+	 * Instruction d'ouverture de fichier
+	 */
 	private function subparse_open()
 	{
 		if ($this->file_open)
@@ -259,9 +298,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Cherche le code dans un fichier
-	*/
+	/**
+	 * Instruction de recherche de code dans le fichier
+	 */
 	private function subparse_find()
 	{
 		if ($this->file_open)
@@ -274,9 +313,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Remplace le code trouve par le nouveau code
-	*/
+	/**
+	 * Instruction de remplacement de code
+	 */
 	private function subparse_replace()
 	{
 		if ($this->file_open)
@@ -286,9 +325,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute le code avant
-	*/
+	/**
+	 * Instruction d'ajout de code (avant)
+	 */
 	private function subparse_before()
 	{
 		if ($this->file_open)
@@ -298,9 +337,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute le code apres
-	*/
+	/**
+	 * Instruction d'ajout de code (apres)
+	 */
 	private function subparse_after()
 	{
 		if ($this->file_open)
@@ -310,9 +349,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Ajoute le code apres
-	*/
+	/**
+	 * Instruction d'ajout de code (dans la ligne apres)
+	 */
 	private function subparse_afterline()
 	{
 		if ($this->file_open)
@@ -322,9 +361,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime le code
-	*/
+	/**
+	 * Instruction de suppression du code
+	 */
 	private function subparse_delete()
 	{
 		if ($this->file_open)
@@ -333,9 +372,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Execute les requetes SQL du MOD
-	*/
+	/**
+	 * Instruction d'execution de requetes SQL
+	 */
 	private function subparse_sql()
 	{
 		if ($this->get_config('install'))
@@ -356,9 +395,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Copie des fichiers depuis le MOD vers le forum
-	*/
+	/**
+	 * Instruction de copie de fichiers du module vers le forum
+	 */
 	private function subparse_copy()
 	{
 		if ($this->handler->childExists('file'))
@@ -410,9 +449,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Execute un fichier / du code PHP
-	*/
+	/**
+	 * Instruction d'execution de code PHP
+	 */
 	private function subparse_exec()
 	{
 		if ($this->get_config('install'))
@@ -437,9 +476,9 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Termine le MOD
-	*/
+	/**
+	 * Instruction signalant la fin de l'installation
+	 */
 	private function subparse_end()
 	{
 		// Un dernier fichier a ecrire ?
@@ -453,9 +492,13 @@ class Module extends Fsb_model
 	// ========== METHODES ANEXES ==========
 	//
 
-	/*
-	** Ajoute une erreur
-	*/
+	/**
+	 * Log une erreur rencontree durant l'installation
+	 *
+	 * @param int $errno Code de l'erreur
+	 * @param string $errstr Description de l'erreur
+	 * @param string $errstr2 Argument suplémentaire de desvription de l'erreur
+	 */
 	private function error($errno, $errstr, $errstr2 = NULL)
 	{
 		$this->log_error[] = array(
@@ -466,12 +509,12 @@ class Module extends Fsb_model
 		);
 	}
 
-	/*
-	** Copie le contenu d'un repertoire vers un autre
-	** -----
-	** $dir_from ::		Repertoire de provenance
-	** $dir_to ::		Repertoire de destination
-	*/
+	/**
+	 * Copie le contenu d'un repertoire vers un autre
+	 *
+	 * @param string $dir_from Repertoire de provenance
+	 * @param string $dir_to Repertoire de destination
+	 */
 	private function copy_dir($dir_from, $dir_to)
 	{
 		$fd = opendir($dir_from);
@@ -492,12 +535,13 @@ class Module extends Fsb_model
 		closedir($fd);
 	}
 
-	/*
-	** Copie un fichier vers sa destination, en creant les repertoire non existants
-	** -----
-	** $from ::		Fichier de provenance
-	** $to ::		Fichier de destination
-	*/
+	/**
+	 * Copie un fichier vers sa destination, en creant les repertoire non existants
+	 *
+	 * @param string $from Fichier de provenance
+	 * @param string $to Fichier de destination
+	 * @return bool
+	 */
 	private function copy_file($from, $to)
 	{
 		$exp_to = explode('/', dirname($to));
@@ -530,9 +574,10 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Ecrit le code dans le fichier
-	*/
+	/**
+	 * Ecrit le code dans le fichier
+	 *
+	 */
 	private function close_file()
 	{
 		$filename = substr($this->file_open, strlen(ROOT));
@@ -562,10 +607,11 @@ class Module extends Fsb_model
 		}
 	}
 
-	/*
-	** Renvoie la liste des fichiers qui vont etre modifies
-	** par un open lors de l'installation du MOD
-	*/
+	/**
+	 * Renvoie la liste des fichiers qui vont etre modifies lors de l'installation du MOD
+	 *
+	 * @return array
+	 */
 	public function get_updated_files()
 	{
 		$files = array();
@@ -580,13 +626,13 @@ class Module extends Fsb_model
 		return ($files);
 	}
 
-	/*
-	** Sauvegarde les fichiers que le MOD va modifier dans un dossier
-	** -----
-	** $dir ::		Repertoire de destination
-	** $ext ::		Type de compression pour les fichiers sauves (.tar, .tar.gz, .tar.bz2 ou .zip)
-	** $files ::	Tableau contenant les fichiers a sauver
-	*/
+	/**
+	 * Sauvegarde les fichiers que le MOD va modifier dans un dossier
+	 *
+	 * @param string $dir Repertoire de destination
+	 * @param string $ext Type de compression pour les fichiers sauves (.tar, .tar.gz, .tar.bz2 ou .zip)
+	 * @param array $files Liste des fichiers a sauver
+	 */
 	public function save_files($dir, $ext = 'zip', $files = NULL)
 	{
 		if ($files == NULL)
@@ -631,13 +677,14 @@ class Module extends Fsb_model
 		$this->file->unlink('mod.log');
 	}
 
-	/*
-	** Remplace le code cherché en protégeant les variables de remplacements dans les regexp
-	** -----
-	** $content ::		Contenu du fichier
-	** $find ::			Code cherché
-	** $replace ::		Code de remplacement
-	*/
+	/**
+	 * Remplace le code cherché en protégeant les variables de remplacements dans les regexp
+	 *
+	 * @param string $content Contenu du fichier
+	 * @param string $find Code cherché
+	 * @param string $replace Code de remplacement
+	 * @return string
+	 */
 	private function replace_code($content, $find, $replace)
 	{
 		$replace = preg_replace('#\$([0-9]+)#', '__FSB_MOD_INSTALLER1__\\1', $replace);
@@ -649,11 +696,12 @@ class Module extends Fsb_model
 		return ($content);
 	}
 
-	/*
-	** Convertit un mot clef en un mot universel pour la classe
-	** -----
-	** $function ::		Mot clef a convertir
-	*/
+	/**
+	 * Convertit un mot clef en un mot comprehensible pour la classe
+	 *
+	 * @param string $keyword Mot clef a convertir
+	 * @return string
+	 */
 	public function convert_to_valid_function($keyword)
 	{
 		switch (strtolower($keyword))
