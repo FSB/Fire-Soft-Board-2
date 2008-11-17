@@ -8,26 +8,25 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Classe permettant l'insertion de messages, sujets, messages prives dans la base
-** de donnee du forum
-*/
+/**
+ * Classe permettant l'envoie de messages, sujets, MP, etc.
+ */
 class Send extends Fsb_model
 {
 	//
 	// Methodes liees a l'envoie de messages prives
 	//
 
-	/*
-	** Envoie un message prive
-	** -----
-	** $from_id ::			ID de l'expediteur
-	** $to_id ::			ID du recepteur (possibilite de passer un tableau d'ID)
-	** $title ::			Titre du message prive
-	** $content ::			Contenu du message prive
-	** $parent ::			ID du parent de ce MP s'il s'agit d'une reponse
-	** $is_xml ::			Si le message est deja au format XML
-	*/
+	/**
+	 * Envoie un message prive
+	 *
+	 * @param int $from_id ID de l'expediteur
+	 * @param int $to_id ID du recepteur (possibilite de passer un tableau d'ID)
+	 * @param string $title Titre du message prive
+	 * @param string $content Contenu du message prive
+	 * @param int $parent ID du parent de ce MP s'il s'agit d'une reponse
+	 * @param bool $is_xml Si le message est deja au format XML
+	 */
 	public static function send_mp($from_id, $to_id, $title, $content, $parent = 0, $is_xml = FALSE)
 	{
 		// On met au format XML ?
@@ -45,7 +44,7 @@ class Send extends Fsb_model
 
 		if (!$to_id)
 		{
-			return (FALSE);
+			return ;
 		}
 
 		// Liste des recepteurs
@@ -200,13 +199,13 @@ class Send extends Fsb_model
 		}
 	}
 
-	/*
-	** Edite un message prive
-	** -----
-	** $id ::		ID du message
-	** $title ::	Titre du mesage
-	** $content ::	Contenu du message
-	*/
+	/**
+	 * Edite un message prive
+	 *
+	 * @param int $id ID du message
+	 * @param string $title Titre du mesage
+	 * @param string $content Contenu du message
+	 */
 	public static function edit_mp($id, $title, $content)
 	{
 		Fsb::$db->update('mp', array(
@@ -218,17 +217,18 @@ class Send extends Fsb_model
 	//
 	// Methodes liees a l'envoie de messages / sujets sur le forum
 	//
-	
-	/*
-	** Creer un nouveau sujet, retourne l'ID de celui ci
-	** -----
-	** $forum_id ::		ID du forum ou est poste le sujet
-	** $user_id ::		ID du posteur du topic
-	** $title ::		Titre du sujet
-	** $map_name ::		Nom de la MAP pour le sujet
-	** $type ::			Type du sujet
-	** $args ::			Tableau d'argument suplementaire
-	*/
+
+	/**
+	 * Creer un nouveau sujet, retourne l'ID de celui ci
+	 *
+	 * @param int $forum_id ID du forum ou est poste le sujet
+	 * @param int $user_id ID du posteur du topic
+	 * @param string $title Titre du sujet
+	 * @param string $map_name Nom de la MAP pour le sujet
+	 * @param int $type Type du sujet
+	 * @param array $args Tableau d'argument suplementaire
+	 * @return int ID du sujet cree
+	 */
 	public static function send_topic($forum_id, $user_id, $title, $map_name, $type, $args = array())
 	{
 		Fsb::$db->insert('topics', array_merge(array(
@@ -244,20 +244,21 @@ class Send extends Fsb_model
 		), $args));
 		return (Fsb::$db->last_id());
 	}
-	
-	/*
-	** Poste un message et retourne l'ID du message cree
-	** -----
-	** $user_id ::			ID du posteur du message
-	** $topic_id ::			ID du sujet
-	** $forum_id ::			ID du forum
-	** $content ::			Message
-	** $nickname ::			Pseudonyme du posteur
-	** $approve ::			TRUE si le message doit etre approuve
-	** $post_map ::			MAP du message
-	** $ary_content ::		Donnees suplementaires
-	** $is_first_post ::	Defini s'il s'agit du premier message du sujet ou non
-	*/
+
+	/**
+	 * Poste un message et retourne l'ID du message cree
+	 *
+	 * @param int $user_id ID du posteur du message
+	 * @param int $topic_id ID du sujet
+	 * @param int $forum_id ID du forum
+	 * @param string $content Message
+	 * @param string $nickname Pseudonyme du posteur
+	 * @param bool $approve TRUE si le message doit etre approuve
+	 * @param string $post_map MAP du message
+	 * @param array $ary_content Donnees suplementaires
+	 * @param bool $is_first_post Defini s'il s'agit du premier message du sujet ou non
+	 * @return int ID du message cree
+	 */
 	public static function send_post($user_id, $topic_id, $forum_id, $content, $nickname, $approve, $post_map, $ary_content, $is_first_post = FALSE)
 	{
 		// Donnees du forum
@@ -390,14 +391,14 @@ class Send extends Fsb_model
 		return ($post_id);
 	}
 
-	/*
-	** Met a jour le contenu d'un message
-	** -----
-	** $post_id ::		ID du message
-	** $content ::		Contenu du message
-	** $user_id ::		ID du membre ayant mis a jour le message
-	** $args ::			Arguments aditionels
-	*/
+	/**
+	 * Met a jour le contenu d'un message
+	 *
+	 * @param int $post_id ID du message
+	 * @param string $content Contenu du message
+	 * @param int $user_id ID du membre ayant mis a jour le message
+	 * @param array $args Arguments aditionels
+	 */
 	public static function edit_post($post_id, $content, $user_id, $args = array())
 	{
 		Fsb::$db->update('posts', array(
@@ -430,15 +431,15 @@ class Send extends Fsb_model
 		}
 	}
 
-	/*
-	** Envoie une notification aux membres surveillant le sujet.
-	** L'algorithme de cette fonction est inspire de celui du forum phpBB 2.0.x
-	** -----
-	** $t_id ::			ID du sujet
-	** $p_id ::			ID du message
-	** $u_id ::			ID du membre
-	** $t_title ::		Titre du sujet
-	*/
+	/**
+	 * Envoie une notification aux membres surveillant le sujet.
+	 * L'algorithme de cette fonction est inspire de celui du forum phpBB 2.0.x
+	 *
+	 * @param int $t_id ID du sujet
+	 * @param int $p_id ID du message
+	 * @param int $u_id ID du membre
+	 * @param string $t_title Titre du sujet
+	 */
 	public static function topic_notification($t_id, $p_id, $u_id, $t_title)
 	{
 		$sql_notification = array();
@@ -506,15 +507,16 @@ class Send extends Fsb_model
 	// Methodes liees a l'envoie d'evenement pour le calendrier
 	//
 
-	/*
-	** Ajoute un evenement dans le calendrier
-	** -----
-	** $title ::			Titre
-	** $content ::			Message
-	** $timestamp_begin ::	Timestamp unix de depart
-	** $timestamp_end ::	Timestamp unix de fin
-	** $print ::			Afficher pour tous ou bien juste pour le membre
-	*/
+	/**
+	 * Ajoute un evenement dans le calendrier
+	 *
+	 * @param string $title Titre
+	 * @param string $content Message
+	 * @param int $timestamp_begin Timestamp unix de depart
+	 * @param int $timestamp_end Timestamp unix de fin
+	 * @param bool $print Afficher pour tous ou bien juste pour le membre
+	 * @return int ID de l'evenement
+	 */
 	public static function calendar_add_event($title, $content, $timestamp_begin, $timestamp_end, $print)
 	{
 		Fsb::$db->insert('calendar', array(
@@ -531,16 +533,16 @@ class Send extends Fsb_model
 		return (Fsb::$db->last_id());
 	}
 
-	/*
-	** Edit un evenement dans le calendrier
-	** -----
-	** $id ::				ID de l'evenement
-	** $title ::			Titre
-	** $content ::			Message
-	** $timestamp_begin ::	Timestamp unix de depart
-	** $timestamp_end ::	Timestamp unix de fin
-	** $print ::			Afficher pour tous ou bien juste pour le membre
-	*/
+	/**
+	 * Edit un evenement dans le calendrier
+	 *
+	 * @param int $id ID de l'evenement
+	 * @param string $title Titre
+	 * @param string $content Message
+	 * @param int $timestamp_begin Timestamp unix de depart
+	 * @param unknown_type $timestamp_end Timestamp unix de fin
+	 * @param int $print Afficher pour tous ou bien juste pour le membre
+	 */
 	public static function calendar_edit_event($id, $title, $content, $timestamp_begin, $timestamp_end, $print)
 	{
 		Fsb::$db->update('calendar', array(

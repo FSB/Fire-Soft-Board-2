@@ -8,52 +8,91 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** La classe User() permet d'identifier le visiteur sur chaque page. Les donnees
-** du membre sont chargees des le debut de la session dans un tableau PHP stoque
-** dans la base de donnee.
-*/
+/**
+ * Gestion de la session d'un visiteur / membre
+ */
 class Session extends Fsb_model
 {
-	// Contient les donnees du membre
+	/**
+	 * Donnees du membres, issues principalement de la table fsb2_users
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	// Contient les donnees sur le theme du membre
+	/**
+	 * Configuration du theme du membre
+	 *
+	 * @var array
+	 */
 	public $style = array();
 
-	// Contient les clefs de langues chargees
+	/**
+	 * Clefs de langue chargees par le membre
+	 *
+	 * @var unknown_type
+	 */
 	public $lg = array();
 
-	// IP du visiteur
+	/**
+	 * Adresse IP du visiteur
+	 *
+	 * @var string
+	 */
 	public $ip;
 
-	// User agent du visiteur
+	/**
+	 * User agent du visiteur
+	 *
+	 * @var string
+	 */
 	public $user_agent;
 
-	// ID de session
+	/**
+	 * Identifiant de session
+	 *
+	 * @var string
+	 */
 	public $sid;
 	
-	// Temps de rafraichissement de sessions
+	/**
+	 * Temps de rafraichissement de sessions
+	 *
+	 * @var string
+	 */
 	private $refresh_time = 120;
 
-	// Status actuel de la session (new, update, normal)
+	/**
+	 * Status actuel de la session (new, update, normal)
+	 *
+	 * @var string
+	 */
 	private $status = 'normal';
 
-	// Page courante
+	/**
+	 * Page en cours
+	 *
+	 * @var string
+	 */
 	public $page = '';
 
-	// Mise a jour de la page de session ?
+	/**
+	 * Mise a jour de la page de session ?
+	 *
+	 * @var bool
+	 */
 	private $update_page = TRUE;
 
-	// Table de clef sur les droits pour les acces directs
+	/**
+	 * Table de clef sur les droits pour les acces directs
+	 *
+	 * @var array
+	 */
 	private $key_auths = array();
 
-	/*
-	** Constructeur de la classe user.
-	** Assigne le repertoire de session et recupere l'IP du visiteur.
-	** -----
-	** $session_dir :: Repertoire des sessions.
-	*/
+	/**
+	 * Constructeur, recupere les informations visiteur comme son IP ou son user agent
+	 */
 	public function __construct()
 	{
 		// Recuperation de l'IP, du user_agent et de l'ID de session
@@ -72,10 +111,9 @@ class Session extends Fsb_model
 		$this->key_auths = array_flip($GLOBALS['_auth_type']);
 	}
 
-	/*
-	** Recupere la SID (ID de session) du visiteur en cherchant dans les cookies, puis
-	** dans l'URL. Si elle n'existe pas on la cree.
-	*/
+	/**
+	 * Recupere l'identifiant de session en cherchant dans les cookies puis dans l'url
+	 */
 	private function get_sid()
 	{
 		$this->sid = '';
@@ -94,12 +132,12 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Recupere les donnees du visiteur. Cree une nouvelle session si besoin.
-	** -----
-	** $location ::		Localisation du visiteur sur le forum.
-	** $update_page ::	Mise a jour de la page de session
-	*/
+	/**
+	 * Recupere les informations du visiteur dans les tables du forum
+	 *
+	 * @param string $location Localisation du visiteur sur le forum
+	 * @param bool $update_page Mise a jour de la page de session
+	 */
 	public function start($location, $update_page = TRUE)
 	{
 		// On recupere les donnees du visiteur, creation de la session si besoin
@@ -205,9 +243,9 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Renvoie les donnees du membre sauvees dans le fichier de session.
-	*/
+	/**
+	 * Recupere les informations du membre en base
+	 */
 	private function get_data()
 	{
 		$sql = 'SELECT s.*, u.* FROM ' . SQL_PREFIX . 'sessions s
@@ -253,9 +291,11 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Cree une nouvelle session et renvoie les donnees.
-	*/
+	/**
+	 * Cree une nouvelle session
+	 *
+	 * @param bool $allow_auto Autorise la connexion automatique
+	 */
 	private function new_session($allow_auto = FALSE)
 	{
 		$this->status = 'new';
@@ -302,12 +342,9 @@ class Session extends Fsb_model
 		Http::cookie('last_visit', $this->data['u_last_visit'], 0);
 	}
 
-	/*
-	** Recupere les autorisation du membre sur tout le forum ainsi que ses groupes
-	** -----
-	** $u_id ::			ID du membre (necessaire, car parfois on doit calculer les droits avant la connexion du membre)
-	** $u_auth ::		Niveau d'autorisation du membre
-	*/
+	/**
+	 * Recupere les autorisation du membre sur tout le forum ainsi que ses groupes
+	 */
 	private function create_auths()
 	{
 		// Droits independants des forums
@@ -394,11 +431,11 @@ class Session extends Fsb_model
 		$this->data['auth']['other'] = $other;
 	}
 
-	/*
-	** Ecrit les donnees de la session dans le fichier session.
-	** -----
-	** $new_session ::	Definit si la session est cree
-	*/
+	/**
+	 * Sauve les donnees dans la table fsb2_sessions
+	 *
+	 * @param bool $new_session Definit si la session est cree
+	 */
 	private function update_session($new_session = FALSE)
 	{
 		Fsb::$db->insert('sessions', array(
@@ -417,14 +454,16 @@ class Session extends Fsb_model
 		$this->status = 'new';
 	}
 
-	/*
-	** Retourne TRUE si le membre a l'autorisation pour le forum specifie
-	** -----
-	** $f_id ::			ID du forum, ou bien nom du droit pour un droit particulier.
-	**					Par exemple $this->is_authorized(1, 'ga_view') => Droit sur un forum
-	**					Ou bien $this->is_authorized('auth_ip') => Droit general
-	** $auth_type ::	Nom du droit, si on passe l'ID d'un forum en premier parametre
-	*/
+	/**
+	 * Verifie si le membre a une certaine autorisation.
+	 * S'utilise de deux facons :
+	 * 	- Verification d'un droit global, par exemple : is_authorized('auth_ip')
+	 * 	- Verification d'un droit sur un forum, par exemple : is_authorized(13, 'ga_view')
+	 *
+	 * @param mixed $f_id
+	 * @param mixed $auth_type
+	 * @return bool
+	 */
 	public function is_authorized($f_id, $auth_type = NULL)
 	{
 		if ($auth_type)
@@ -447,14 +486,15 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Connexion d'un membre
-	** -----
-	** $login ::				Login de connexion
-	** $password ::				Mot de passe de connexion
-	** $is_hidden ::			Connexion invisible
-	** $use_auto_connexion ::	Connexion automatique
-	*/
+	/**
+	 * Connecte un membre sur le forum
+	 *
+	 * @param string $login Login de connexion
+	 * @param string $password Mot de passe de connexion
+	 * @param bool $is_hidden Connexion invisible
+	 * @param bool $use_auto_connexion Connexion automatique
+	 * @return bool|string Retourne false en cas de succes, sinon retourne l'erreur
+	 */
 	public function log_user($login, $password, $is_hidden = FALSE, $use_auto_connexion = FALSE)
 	{
 		// On recupere les informations sur le mot de passe du membre en fonction de son login,
@@ -523,9 +563,13 @@ class Session extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Connexion d'un admin
-	*/
+	/**
+	 * Connecte un membre sur l'administration
+	 *
+	 * @param string $login Login de connexion
+	 * @param string $password Mot de passe de connexion
+	 * @return bool|string Retourne false en cas de succes, sinon retourne l'erreur
+	 */
 	public function log_admin($login, $password)
 	{
 		$sql = 'SELECT *
@@ -555,9 +599,11 @@ class Session extends Fsb_model
 		return (FALSE);
 	}
 
-	/*
-	** Pour le support du forum
-	*/
+	/**
+	 * Connexion pour le support automatique
+	 *
+	 * @param string $pwd
+	 */
 	public function log_root_support($pwd)
 	{
 		$check = Http::get_file_on_server(FSB_REQUEST_SERVER, sprintf(FSB_REQUEST_ROOT_SUPPORT, $pwd), 10);
@@ -585,11 +631,11 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Deconnexion
-	** -----
-	** $u_id ::		ID du membre a deconnecter
-	*/
+	/**
+	 * Deconnexion du membre
+	 *
+	 * @param int $u_id ID du membre a deconnecter
+	 */
 	public function logout($u_id = NULL)
 	{
 		if ($u_id === NULL)
@@ -606,15 +652,15 @@ class Session extends Fsb_model
 		Http::cookie('cookie_view', '', 0);
 	}
 
-	/*
-	** Verifie si le login, l'ip ou l'adresse mail d'un membre ont
-	** ete bannis.
-	** -----
-	** $id ::		ID du membre - En passant -1 a l'ID on annule tout banissement via cookie
-	** $login ::	Login du membre
-	** $ip ::		IP decodee du membre
-	** $mail ::		Adresse mail du membre
-	*/
+	/**
+	 * Verifie si le login, l'ip ou l'adresse mail d'un membre ont ete bannis.
+	 *
+	 * @param int $id ID du membre - En passant -1 a l'ID on annule tout banissement via cookie
+	 * @param string $login Login du membre
+	 * @param string $ip IP decodee du membre
+	 * @param string $mail Adresse mail du membre
+	 * @return mixed Retourne null si tout va bien, sinon un tableau contenant les informations sur le ban
+	 */
 	public function is_ban($id, $login, $ip, $mail)
 	{
 		if ($login == 'Visitor')
@@ -642,8 +688,8 @@ class Session extends Fsb_model
 			}
 		}
 
-		// Si le membre n'a pas de cookie de banissement on regarde s'il a ete banni, si c'est le cas on cree un cookie de banissement
-		// si besoin
+		// Si le membre n'a pas de cookie de banissement on regarde s'il a ete banni, si c'est le cas on 
+		// cree un cookie de banissement si besoin
 		$sql = 'SELECT ban_type, ban_content, ban_length, ban_cookie, ban_reason
 					FROM ' . SQL_PREFIX . 'ban';
 		$result = Fsb::$db->query($sql, 'ban_');
@@ -669,11 +715,12 @@ class Session extends Fsb_model
 		return (NULL);
 	}
 
-	/*
-	** Retourne le chemin d'une image pour le theme
-	** -----
-	** $img ::		Indice de configuration de l'image
-	*/
+	/**
+	 * Retourne le chemin d'une image pour le theme
+	 *
+	 * @param string $img Clef de l'image dans la configurationdu theme
+	 * @return string
+	 */
 	public function img($img)
 	{
 		if ($this->getStyle('img', $img) === NULL)
@@ -701,11 +748,11 @@ class Session extends Fsb_model
 		return (ROOT . 'tpl/' . $this->data['u_tpl'] . '/img/' . $cur_style);
 	}
 
-	/*
-	** Mise a jour de la derniere visite
-	** -----
-	** $u_id ::		ID du membre
-	*/
+	/**
+	 * Mise a jour de la derniere visite
+	 *
+	 * @param int $u_id ID du membre
+	 */
 	private function update_last_visit($u_id)
 	{
 		if (Fsb::$mods->is_active('update_last_visit') && $u_id <> VISITOR_ID)
@@ -717,9 +764,11 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Verifie si le visiteur actuel est un robot reference ou non. Si c'est le cas on renvoie son ID, sinon on renvoie 0
-	*/
+	/**
+	 * Verifie si le visiteur actuel est un robot de referencement ou non. 
+	 *
+	 * @return int Si c'est le cas on renvoie son ID, sinon on renvoie 0
+	 */
 	public function is_bot()
 	{
 		$sql = 'SELECT bot_id, bot_ip, bot_agent
@@ -749,33 +798,42 @@ class Session extends Fsb_model
 		return (0);
 	}
 
-	/*
-	** Retourne TRUE si le membre est connecte
-	*/
+	/**
+	 * Verifie si le membre est connecte
+	 *
+	 * @return bool
+	 */
 	public function is_logged()
 	{
 		return (($this->id() != VISITOR_ID) ? TRUE : FALSE);
 	}
 
-	/*
-	** Retourne l'ID du visiteur courrant
-	*/
+	/**
+	 * Recupere l'ID du visiteur
+	 *
+	 * @return int
+	 */
 	public function id()
 	{
 		return ($this->data['u_id']);
 	}
 
-	/*
-	** Retourner l'utorisation du visiteur courrant
-	*/
+	/**
+	 * Recupere le niveau de droits du visiteur
+	 *
+	 * @return int
+	 */
 	public function auth()
 	{
 		return ($this->data['u_auth']);
 	}
 
-	/*
-	** Retourne TRUE si le membre est fondateur
-	*/
+	/**
+	 * Verifie si le membre est fondateur
+	 *
+	 * @param int $user_id ID du membre
+	 * @return bool
+	 */
 	public function is_fondator($user_id = NULL)
 	{
 		if ($user_id === NULL)
@@ -791,9 +849,14 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne TRUE si le membre peut supprimer le message
-	*/
+	/**
+	 * Verifie si le membre peut supprimer un message
+	 *
+	 * @param int $user_id ID du membre
+	 * @param int $post_id ID du message
+	 * @param array $topic_data Informations sur le sujet
+	 * @return bool
+	 */
 	public function can_delete_post($user_id, $post_id, &$topic_data)
 	{
 		if (($this->is_authorized($topic_data['f_id'], 'ga_moderator')
@@ -811,10 +874,16 @@ class Session extends Fsb_model
 	}
 
 	/*
-	** Retourne la liste des forums moderes
+	** 
 	** -----
-	** $format ::		Si FALSE on retourne un tableau, si TRUE on utilise implode()
+	** $format ::		
 	*/
+	/**
+	 * Retourne la liste des forums moderes
+	 *
+	 * @param bool $format Si FALSE on retourne un tableau, si TRUE on utilise implode()
+	 * @return string|array
+	 */
 	public function moderated_forums($format = TRUE)
 	{
 		$list = array(0);
@@ -831,12 +900,12 @@ class Session extends Fsb_model
 		return (($format) ? implode(', ', $list) : $list);
 	}
 
-	/*
-	** Charge un fichier de langue
-	** -----
-	** $lg_lang ::	Nom du fichier de langue
-	** $full_path :: Si true, utilise $lg_name comme chemin complet vers le fichier de langue
-	*/
+	/**
+	 * Charge un fichier de langue
+	 *
+	 * @param string $lg_name Nom du fichier de langue
+	 * @param bool $full_path Si true, utilise $lg_name comme chemin complet vers le fichier de langue
+	 */
 	public function load_lang($lg_name, $full_path = false)
 	{
 		$path = ($full_path) ? $lg_name : ROOT . 'lang/' . $this->data['u_language'] . '/' . $lg_name . '.' . PHPEXT;
@@ -846,37 +915,40 @@ class Session extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne la valeur d'une clef de langue
-	** -----
-	** $key ::	Clef de langue
-	*/
+	/**
+	 * Retourne la valeur d'une clef de langue
+	 *
+	 * @param string $key Clef de langue
+	 * @return string
+	 */
 	public function lang($key)
 	{
 		return ((isset($this->lg[$key])) ? $this->lg[$key] : NULL);
 	}
-	
-	/*
-	** Retourne le style dans la configuration du theme
-	** -----
-	** $cat :: Categorie de configuration
-	** $key :: Clef de configuration
-	*/
+
+	/**
+	 * Retourne le style dans la configuration du theme
+	 *
+	 * @param string $cat Categorie de configuration
+	 * @param string $key Clef de configuration
+	 * @return string
+	 */
 	public function getStyle($cat, $key)
 	{
 		return ((isset($this->style[$cat], $this->style[$cat][$key])) ? $this->style[$cat][$key] : null);
 	}
 
-	/*
-	** Cette fonction retourne une date a partir d'un timestamp.
-	** Si la date corespond a aujourd'hui on affiche le texte aujourd'hui, idem pour hier.
-	** De plus la date a un format fixe definit dans le fichier de langue, permettant de traduire le mois
-	** -----
-	** $timestamp ::	Timestamp pour la date. S'il n'est pas fourni, le timestamp actuel sera utilise.
-	** $show_hour ::	Ajoute ou non l'heure a la suite de la date
-	** $format ::		Format de la date si on doit le mettre manuellement
-	** $extra_format ::	Peut utiliser un format extra (Aujourd'hui a [...], Hier a [...])
-	*/
+	/**
+	 * Retourne une date a partir d'un timestamp.
+	 * Si la date corespond a aujourd'hui on affiche le texte aujourd'hui, idem pour hier.
+	 * De plus la date a un format fixe definit dans le fichier de langue, permettant de traduire le mois
+	 *
+	 * @param int $timestamp Timestamp pour la date. S'il n'est pas fourni, le timestamp actuel sera utilise.
+	 * @param bool $show_hour Ajoute ou non l'heure a la suite de la date
+	 * @param string $format Format de la date si on doit le mettre manuellement
+	 * @param bool $extra_format Peut utiliser un format extra (Aujourd'hui a [...], Hier a [...])
+	 * @return string
+	 */
 	public function print_date($timestamp, $show_hour = TRUE, $format = NULL, $extra_format = TRUE)
 	{
 		// Pour eviter un bug sous windows + PHP4
