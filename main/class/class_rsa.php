@@ -8,42 +8,56 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Implementation de l'algorithme de chiffrage RSA
-** Inspire du package PEAR Crypt_RSA http://pear.php.net/package/Crypt_RSA et 
-** du tutorial http://cryptez.ifrance.com/histo3.htm
-*/
+/**
+ * Implementation de l'algorithme de chiffrage RSA
+ * 
+ * @link http://pear.php.net/package/Crypt_RSA
+ * @link http://cryptez.ifrance.com/histo3.htm
+ */
 class Rsa extends Fsb_model
 {
-	// Objet Rsa_bcmath
+	/**
+	 * @var Rsa_bcmath
+	 */
 	private $math;
 
-	// Cles publiques et privees
+	/**
+	 * Clef publique
+	 *
+	 * @var Rsa_key
+	 */
 	public $public_key = NULL;
+	
+	/**
+	 * Clef privee
+	 *
+	 * @var Rsa_key
+	 */
 	public $private_key = NULL;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->math = new Rsa_bcmath();
 	}
 
-	/*
-	** Determine si on peut utiliser le cryptage RSA (si la librairie bcmath est activee)
-	** A appeler en statique.
-	*/
+	/**
+	 * Determine si on peut utiliser le cryptage RSA (si la librairie bcmath est activee)
+	 *
+	 * @return bool
+	 */
 	public static function can_use()
 	{
-		return ((extension_loaded('bcmath')) ? TRUE : FALSE);
+		return (extension_loaded('bcmath'));
 	}
 
-	/*
-	** Generation des clefs privees et publiques
-	** -----
-	** $keysize ::	Taille des clefs
-	*/
+	/**
+	 * Generation des clefs privees et publiques
+	 *
+	 * @param int $keysize Taille des clefs
+	 */
 	public function generate_keys($keysize = 20)
 	{
 		// Generation d'un nombre arbitraire E (valeur 65537)
@@ -73,9 +87,9 @@ class Rsa extends Fsb_model
 		$this->private_key = new Rsa_key($n, $d, 'private');
 	}
 
-	/*
-	** Regenere les clefs pour les stocket dans la base de donnee du forum
-	*/
+	/**
+	 * Regenere les clefs dans la base de donnee du forum
+	 */
 	public function regenerate_keys()
 	{
 		$this->generate_keys();
@@ -83,13 +97,14 @@ class Rsa extends Fsb_model
 		Fsb::$cfg->update('rsa_private_key', $this->private_key->to_string());
 	}
 
-	/*
-	** Crypte une chaine de caractere
-	** La version Javascript de cette fonction (disponible dans ~/main/javascript/rsa.js) est utilisee
-	** pour coder les informations, cote client.
-	** -----
-	** $str ::	Chaine a crypter
-	*/
+	/**
+	 * Crypte une chaine de caractere.
+	 * La version Javascript de cette fonction (disponible dans ~/main/javascript/rsa.js) est utilisee
+	 * pour coder les informations, cote client.
+	 *
+	 * @param string $str Chaine a crypter
+	 * @return string
+	 */
     public function encrypt($str)
     {
         if (!Rsa_key::is_valid($this->public_key))
@@ -118,11 +133,12 @@ class Rsa extends Fsb_model
         return (base64_encode($enc_data));
     }
 
-	/*
-	** Decrypte une chaine de caractere
-	** -----
-	** $str ::		Chaine a decrypter
-	*/
+	/**
+	 * Decrypte une chaine de caractere
+	 *
+	 * @param string $str Chaine a decrypter
+	 * @return string
+	 */
     public function decrypt($str)
     {
 		$str = base64_decode($str);
@@ -158,18 +174,22 @@ class Rsa extends Fsb_model
     }
 }
 
-/*
-** Clef RSA
-*/
+/**
+ * Clef RSA
+ */
 class Rsa_key extends Fsb_model
 {
 	public $mod;
 	public $exp;
 	public $type;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param int $mod
+	 * @param int $exp
+	 * @param int $type
+	 */
 	public function __construct($mod, $exp, $type)
 	{
 		$this->mod = $mod;
@@ -177,9 +197,11 @@ class Rsa_key extends Fsb_model
 		$this->type = $type;
 	}
 
-	/*
-	** Conversion objet -> chaine de caractere
-	*/
+	/**
+	 * Conversion objet -> chaine de caractere
+	 *
+	 * @return string
+	 */
 	public function to_string()
 	{
 		return (base64_encode(serialize(array(
@@ -189,11 +211,12 @@ class Rsa_key extends Fsb_model
 		))));
 	}
 
-	/*
-	** Conversion chaine de caractere -> objet
-	** -----
-	** $string ::	Chaine de caractere a convertir
-	*/
+	/**
+	 * Conversion chaine de caractere -> objet
+	 *
+	 * @param string $string
+	 * @return Rsa_key
+	 */
 	public static function &from_string($string)
 	{
 		$data = @unserialize(base64_decode($string));
@@ -207,11 +230,12 @@ class Rsa_key extends Fsb_model
 		return ($instance);
 	}
 
-	/*
-	** Verifie la validite d'une clef
-	** -----
-	** $key ::	Clef a verifier
-	*/
+	/**
+	 * Verifie la validite d'une clef
+	 *
+	 * @param Rsa_key $key
+	 * @return bool
+	 */
 	public function is_valid($key)
 	{
 		return ((is_object($key) && strtolower(get_class($key)) === strtolower(__CLASS__)) ? TRUE : FALSE);

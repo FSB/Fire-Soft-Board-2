@@ -8,20 +8,20 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion des expressions regulieres principales du forum
-*/
+/**
+ * Gestion des expressions regulieres principales du forum
+ */
 class Regexp extends Fsb_model
 {
-	/*
-	** Retourne une expression reguliere a partir d'une variable predefinie.
-	** Par exemple EMAIL retournera l'expression reguliere pour un Email.
-	** -----
-	** $varname ::		Nom de la variable predefinie
-	** $limit ::		Definit si on retourne l'expression avec les delimiteurs ^ ... $
-	** $options ::		Si des options sont passees, on ajoute les delimiteurs ` a la regexp,
-	**					ainsi que les options.
-	*/
+	/**
+	 * Retourne une expression reguliere a partir d'une variable predefinie.
+	 * Par exemple EMAIL retournera l'expression reguliere pour un Email.
+	 *
+	 * @param string $varname Nom de la variable predefinie
+	 * @param bool $limit Definit si on retourne l'expression avec les delimiteurs ^ ... $
+	 * @param string $options Si des options sont passees, on ajoute les delimiteurs ` a la regexp, ainsi que les options.
+	 * @return string Expression reguliere
+	 */
 	public static function pattern($varname, $limit = FALSE, $options = NULL)
 	{
 		if (preg_match('#\{[A-Z]*?\}#', $varname))
