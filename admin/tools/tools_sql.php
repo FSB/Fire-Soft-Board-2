@@ -8,23 +8,35 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestionaire de base de donnee
-*/
+/**
+ * Gestionaire de base de donnee
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Module du gestionaire sur lequel on se trouve
+	/**
+	 * Module du gestionaire sur lequel on se trouve
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Table selectionnee
+	/**
+	 * Table selectionnee
+	 *
+	 * @var string
+	 */
 	public $table;
 
-	// Page courante
+	/**
+	 * Page courante
+	 *
+	 * @var int
+	 */
 	public $page;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->module =		htmlspecialchars(Http::request('module'));
@@ -67,9 +79,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Liste les tables du forum
-	*/
+	/**
+	 * Liste les tables du forum
+	 */
 	public function show_index()
 	{
 		foreach (Fsb::$db->list_tables() AS $table)
@@ -82,9 +94,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Formulaire d'execution de requete
-	*/
+	/**
+	 * Formulaire d'execution de requete
+	 */
 	public function show_sql()
 	{
 		$query =		Http::request('query');
@@ -146,9 +158,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche les donnees de la table
-	*/
+	/**
+	 * Affiche les donnees de la table
+	 */
 	public function show_data()
 	{
 		if ($this->table)
@@ -179,9 +191,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la structure de la table
-	*/
+	/**
+	 * Affiche la structure de la table
+	 */
 	public function show_struct()
 	{
 		if ($this->table)
@@ -197,9 +209,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche le gestionaire d'export de table
-	*/
+	/**
+	 * Affiche le gestionaire d'export de table
+	 */
 	public function show_export()
 	{
 		// Backup lance
@@ -231,9 +243,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche le gestionaire de cache SQL
-	*/
+	/**
+	 * Affiche le gestionaire de cache SQL
+	 */
 	public function show_cache()
 	{
 		// Suppression de fichiers du cache
@@ -278,9 +290,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Optimisation des tables
-	*/
+	/**
+	 * Optimisation des tables
+	 */
 	public function optimise_table()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -299,9 +311,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=tools_sql');
 	}
 
-	/*
-	** Suppression de tables
-	*/
+	/**
+	 * Suppression de tables
+	 */
 	public function delete_table()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -325,9 +337,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Vidage de tables
-	*/
+	/**
+	 * Vidage de tables
+	 */
 	public function truncate_table()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -350,14 +362,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_truncate'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_truncate' => TRUE));
 		}
 	}
-
-	/*
-	** Affiche le resultat d'une requete renvcoyant un resultat dans un tableau HTML
-	** -----
-	** $ary ::			Tableau contenant toutes les lignes de resultat d'une requete
-	** $limit_begin ::	Definit un point de depart pour l'affichage
-	** $limit_end ::	Definit une limite pour l'affichage
-	*/
+	
+	/**
+	 * Affiche le resultat d'une requete renvcoyant un resultat dans un tableau HTML
+	 *
+	 * @param array $ary Tableau contenant toutes les lignes de resultat d'une requete
+	 * @param int $limit_begin Definit un point de depart pour l'affichage
+	 * @param int $limit_end Definit une limite pour l'affichage
+	 */
 	public function show_query_array($ary, $limit_begin = NULL, $limit_end = NULL)
 	{
 		$colspan = 0;

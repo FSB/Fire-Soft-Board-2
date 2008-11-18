@@ -22,11 +22,39 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public $data = array();
 	
-	// Arguments de la page
+	/**
+	 * Dossier courant
+	 *
+	 * @var string
+	 */
 	public $dir;
+	
+	/**
+	 * Nom du fichier courant
+	 *
+	 * @var string
+	 */
 	public $filename;
+	
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Classement des fichiers
+	 *
+	 * @var string
+	 */
 	public $order;
+	
+	/**
+	 * Sens du classement des fichiers
+	 *
+	 * @var string
+	 */
 	public $order_direction;
 	
 	/**

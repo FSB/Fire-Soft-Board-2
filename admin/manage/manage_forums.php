@@ -8,27 +8,49 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page de gestion des categories / forums
-*/
+/**
+ * Page de gestion des categories / forums
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Identifiant du forum
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// Liste des forums
+	/**
+	 * Liste des forums
+	 *
+	 * @var array
+	 */
 	public $forums = array();
 	
-	// Donnees envoyees par formulaire lors de la creation de forums
+	/**
+	 * Donnees envoyees par formulaire lors de la creation de forums
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -66,9 +88,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page par defaut de la gestion des forums
-	*/
+	/**
+	 * Affiche la page par defaut de la gestion des forums
+	 */
 	public function page_default_forum()
 	{
 		Fsb::$tpl->set_switch('forums_management');
@@ -92,11 +114,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la categorie
-	** -----
-	** $cat ::		Categorie a afficher
-	*/
+	/**
+	 * Affiche la categorie
+	 *
+	 * @param array $cat Categorie a afficher
+	 */
 	public function page_put_categories(&$cat)
 	{
 		Fsb::$tpl->set_blocks('cat', array(
@@ -111,12 +133,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche recursivement les forums et ses sous forums,
-	** pour une categorie donnee.
-	** -----
-	** $forum ::	Forum a afficher
-	*/
+	/**
+	 * Affiche recursivement les forums et ses sous forums,
+	 * pour une categorie donnee.
+	 *
+	 * @param array $forum Forum a afficher
+	 */
 	public function page_put_forums(&$forum)
 	{
 		// Type de forum
@@ -156,9 +178,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer des forums
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer des forums
+	 */
 	public function page_add_edit_forum()
 	{
 		if (Http::request('submit', 'post'))
@@ -299,9 +321,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition de forums
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition de forums
+	 */
 	public function query_add_edit_forum()
 	{
 		$this->data['f_map_default'] =			Http::request('f_map_default', 'post');
@@ -361,10 +383,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Deplace un forum avec un autre en prenant en compte le niveau sur lequel il
-	** est. (Le niveau etant ce a quoi il est attache).
-	*/
+	/**
+	 * Deplace un forum avec un autre en prenant en compte le niveau sur lequel il
+	 * est. (Le niveau etant ce a quoi il est attache).
+	 */
 	public function page_move_forum()
 	{
 		$move = ($this->mode == 'moveup_f') ? 'left' : 'right';
@@ -374,9 +396,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=manage_forums');
 	}
 
-	/*
-	** Page de suppression d'un forum / categorie
-	*/
+	/**
+	 * Page de suppression d'un forum / categorie
+	 */
 	public function page_delete_forum()
 	{
 		if (check_confirm())
@@ -405,9 +427,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer des categories
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer des categories
+	 */
 	public function page_add_edit_categorie()
 	{
 		if (Http::request('submit', 'post'))
@@ -445,13 +467,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_forums&mode=' . $this->mode . '&id=' . $this->id),
 		));
 	}
-
-	/*
-	** Valide le formulaire d'ajout / edition de forums
-	** -----
-	** $errstr ::	Chaine de caractere contenant les erreurs recensees durant
-	**				la validation du formulaire.
-	*/
+	
+	/**
+	 * Valide le formulaire d'ajout / edition de forums
+	 *
+	 * @param array $errstr Chaine de caractere contenant les erreurs recensees durant
+	 *				la validation du formulaire.
+	 */
 	public function query_add_edit_categorie(&$errstr)
 	{
 		$c_name = Http::request('c_name', 'post');
@@ -488,9 +510,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Deplace une categorie avec une autre
-	*/
+	/**
+	 * Deplace une categorie avec une autre
+	 */
 	public function page_move_cat()
 	{
 		$move = ($this->mode == 'moveup_c') ? 'left' : 'right';
@@ -500,9 +522,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=manage_forums');
 	}
 
-	/*
-	** Supprime tous les forums / categories coches
-	*/
+	/**
+	 * Supprime tous les forums / categories coches
+	 */
 	public function page_delete_all()
 	{
 		$action = Http::request('action', 'post');
@@ -531,9 +553,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Change le status des forums / categories sellectionnees
-	*/
+	/**
+	 * Change le status des forums / categories sellectionnees
+	 */
 	public function page_status_all()
 	{
 		$action = Http::request('action', 'post');
@@ -559,9 +581,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message(Fsb::$session->lang('adm_well_' . $this->mode), 'index.' . PHPEXT . '?p=manage_forums', 'manage_forums');
 	}
 
-	/*
-	** Gestion d'operations sur les forums
-	*/
+	/**
+	 * Gestion d'operations sur les forums
+	 */
 	public function page_operation()
 	{
 		Fsb::$tpl->set_switch('forums_operation');
@@ -572,9 +594,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Deplacement de sujets vers un forum cible
-	*/
+	/**
+	 * Deplacement de sujets vers un forum cible
+	 */
 	public function operation_move()
 	{
 		$to_id = intval(Http::request('move_target', 'post'));

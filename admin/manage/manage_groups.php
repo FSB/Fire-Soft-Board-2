@@ -8,27 +8,49 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion, ajout, edition, suppression de groupes
-*/
+/**
+ * Gestion, ajout, edition, suppression de groupes
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Identifiant du groupe
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	// Modules
+	/**
+	 * Modules
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Donnees du formulaire
+	/**
+	 * Donnees du formulaire
+	 *
+	 * @var array
+	 */
 	public $data = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->id =		intval(Http::request('id'));
@@ -65,9 +87,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la page par defaut de gestion des groupes
-	*/
+	/**
+	 * Affiche la page par defaut de gestion des groupes
+	 */
 	public function page_default_groups()
 	{
 		Fsb::$tpl->set_switch('groups_management');
@@ -106,9 +128,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche la page permettant d'ajouter / editer des groupes
-	*/
+	/**
+	 * Affiche la page permettant d'ajouter / editer des groupes
+	 */
 	public function page_add_edit_groups()
 	{
 		$lg_add_edit = ($this->mode == 'edit') ? Fsb::$session->lang('adm_group_edit') : Fsb::$session->lang('adm_group_add');
@@ -204,9 +226,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Valide le formulaire d'ajout / edition de groupes
-	*/
+	/**
+	 * Valide le formulaire d'ajout / edition de groupes
+	 */
 	public function query_add_edit_groups()
 	{
 		$this->data['g_name'] =			Http::request('g_name', 'post');
@@ -305,9 +327,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_group_submit_' . $this->mode, 'index.' . PHPEXT . '?p=manage_groups', 'manage_groups');
 	}
 
-	/*
-	** Page de suppression d'un groupe
-	*/
+	/**
+	 * Page de suppression d'un groupe
+	 */
 	public function page_delete_groups()
 	{
 		if (check_confirm())
@@ -338,9 +360,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page listant les groupes du forum avec leur caracteristiques
-	*/
+	/**
+	 * Affiche la page listant les groupes du forum avec leur caracteristiques
+	 */
 	public function page_default_groups_users()
 	{
 		// Recherche d'un membre ?

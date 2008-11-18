@@ -8,12 +8,16 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche les options d'optimisation du forum
-*/
+/**
+ * Affiche les options d'optimisation du forum
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Liste des dossiers a chmod
+	/**
+	 * Liste des dossiers a chmod
+	 *
+	 * @var array
+	 */
 	public $chmod = array(
 		'cache_sql' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
 		'cache_tpl' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
@@ -25,15 +29,23 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'upload' =>		array('path' => 'upload/', 'chmod' => 0777),	
 	);
 
-	// Nombre de messages a indexer par appel de la procedure d'indexation de la recherche
+	/**
+	 * Nombre de messages a indexer par appel de la procedure d'indexation de la recherche
+	 *
+	 * @var int
+	 */
 	public $index_posts = 500;
 
-	// Module
+	/**
+	 * Module
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$call = new Call($this);
@@ -61,9 +73,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche la procedure pour le chmod
-	*/
+	/**
+	 * Affiche la procedure pour le chmod
+	 */
 	public function show_chmod()
 	{
 		Fsb::$tpl->set_switch('optimize_chmod');
@@ -88,9 +100,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche le formulaire pour la recherche
-	*/
+	/**
+	 * Affiche le formulaire pour la recherche
+	 */
 	public function show_search()
 	{
 		Fsb::$tpl->set_switch('optimize_search');
@@ -107,9 +119,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Procedure de CHMOD du forum
-	*/
+	/**
+	 * Procedure de CHMOD du forum
+	 */
 	public function chmod_forum()
 	{
 		// Instance de la classe File
@@ -130,9 +142,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('optimize_chmod_well', 'index.' . PHPEXT . '?p=tools_optimize&amp;module=chmod', 'tools_optimize');
 	}
 
-	/*
-	** Reconstruction des index pour la recherche fulltext_fsb
-	*/
+	/**
+	 * Reconstruction des index pour la recherche fulltext_fsb
+	 */
 	public function rebuild_search_table()
 	{
 		$search = new Search_fulltext_fsb();
@@ -212,9 +224,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche les procedures programmees du forum
-	*/
+	/**
+	 * Affiche les procedures programmees du forum
+	 */
 	public function show_process()
 	{
 		Fsb::$tpl->set_switch('optimize_process');
@@ -237,9 +249,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Met a jour, execute les procedures
-	*/
+	/**
+	 * Met a jour, execute les procedures
+	 */
 	public function submit_process()
 	{
 		$process_step =		array_map('floatval', (array) Http::request('process_step', 'post'));
@@ -273,17 +285,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('optimize_process_submit', 'index.' . PHPEXT . '?p=tools_optimize&amp;module=process', 'tools_optimize');
 	}
 
-	/*
-	** Formulaire de remplacement de mots
-	*/
+	/**
+	 * Formulaire de remplacement de mots
+	 */
 	public function show_replace()
 	{
 		Fsb::$tpl->set_switch('optimize_replace');
 	}
 
-	/*
-	** Remplacement des mots
-	*/
+	/**
+	 * Remplacement des mots
+	 */
 	public function submit_replace()
 	{
 		$from = Http::request('replace_from', 'post');

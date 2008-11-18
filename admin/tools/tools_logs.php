@@ -8,20 +8,44 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche les logs
-*/
+/**
+ * Affiche les logs
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Module
+	 *
+	 * @var string
+	 */
 	public $module;
+	
+	/**
+	 * Action
+	 *
+	 * @var string
+	 */
 	public $action;
+	
+	/**
+	 * Page courante
+	 *
+	 * @var int
+	 */
 	public $page;
 
-	// Logs par page
+	/**
+	 * Logs par page
+	 *
+	 * @var int
+	 */
 	public $per_page = 50;
 
-	// Equivalence des logs
+	/**
+	 * Equivalence des logs
+	 *
+	 * @var array
+	 */
 	var $logs = array(
 		'admin' =>	Log::ADMIN,
 		'modo' =>	Log::MODO,
@@ -30,9 +54,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'user' =>	Log::USER,
 	);
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->action = Http::request('action');
@@ -57,9 +81,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->page_default_logs();
 	}
 
-	/*
-	** Liste les donnees recensees dans le log
-	*/
+	/**
+	 * Liste les donnees recensees dans le log
+	 */
 	public function page_default_logs()
 	{
 		// Si on regarde les logs d'erreur, on affiche en plus les lignes / fichier
@@ -99,10 +123,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Supprime des lignes du fichier log. Un log "suppression" sera automatiquement
-	** rajouter dans l'administration.
-	*/
+	/**
+	 * Supprime des lignes du fichier log. Un log "suppression" sera automatiquement
+	 * rajouter dans l'administration.
+	 */
 	public function page_delete_log_error()
 	{
 		if (count($this->action))

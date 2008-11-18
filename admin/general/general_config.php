@@ -183,12 +183,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 }
 
-/*
-** Affiche un champ texte et une liste de taille pour entrer la taille d'un fichier
-** -----
-** $name ::		Nom des champs
-** $value ::	Valeur par defaut
-*/
+/**
+ * Affiche un champ texte et une liste de taille pour entrer la taille d'un fichier
+ * 
+ * @param string $name Nom des champs
+ * @param int $value Valeur par defaut
+ * @return string
+ */
 function input_filesize($name, $value)
 {
 	if ($value >= 1048576)

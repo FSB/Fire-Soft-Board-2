@@ -8,13 +8,13 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page de gestion des droits des forums, groupes et membres
-** Tous les droits sont geres a l'aide de groupes, la seule difference entre la gestion
-** des droits des forums et des groupes est que l'affichage se fait en fonction d'un des
-** deux parametres. Les droits des membres se raprochent de droits d'un groupe unique en
-** fonction de forums.
-*/
+/**
+ * Page de gestion des droits des forums, groupes et membres
+ * Tous les droits sont geres a l'aide de groupes, la seule difference entre la gestion
+ * des droits des forums et des groupes est que l'affichage se fait en fonction d'un des
+ * deux parametres. Les droits des membres se raprochent de droits d'un groupe unique en
+ * fonction de forums.
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	/**

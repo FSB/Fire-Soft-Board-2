@@ -14,8 +14,26 @@
  */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
-	public $mode, $mod_path, $module;
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
+	public $mode;
+	
+	/**
+	 * Emplacement du module
+	 *
+	 * @var string
+	 */
+	public $mod_path;
+	
+	/**
+	 * Module
+	 *
+	 * @var string
+	 */
+	public $module;
 
 	/**
 	 * Constructeur

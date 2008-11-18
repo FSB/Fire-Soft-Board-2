@@ -8,9 +8,9 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion des rangs
-*/
+/**
+ * Gestion des rangs
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
 	/**

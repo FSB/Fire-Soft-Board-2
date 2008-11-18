@@ -8,27 +8,75 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Gestion des membres
-*/
+/**
+ * Gestion des membres
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
-	// Arguments de la page
+	/**
+	 * Module
+	 */
 	public $module;
+	
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Trie des membres
+	 *
+	 * @var string
+	 */
 	public $order = 'u_joined';
+	
+	/**
+	 * Sens
+	 *
+	 * @var string
+	 */
 	public $direction = 'desc';
+	
+	/**
+	 * Nombre de membre par page
+	 *
+	 * @var int
+	 */
 	public $limit = 50;
+	
+	/**
+	 * Page
+	 *
+	 * @var int
+	 */
 	public $page = 1;
+	
+	/**
+	 * Condition de la recherche
+	 *
+	 * @var string
+	 */
 	public $like = '';
+	
+	/**
+	 * Utilisateur recherche
+	 *
+	 * @var string
+	 */
 	public $search_user = '';
 
-	// Liste des operateurs
+	/**
+	 * Liste des operateurs
+	 *
+	 * @var array
+	 */
 	public $operators = array('<', '<=', '=', '>', '>=');
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode =			Http::request('mode');
@@ -86,9 +134,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche une liste des membres
-	*/
+	/**
+	 * Affiche une liste des membres
+	 */
 	public function page_list_users()
 	{
 		Fsb::$tpl->set_switch('users_list');
@@ -137,22 +185,23 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ACTION' =>			$this->user_list_url($this->order, $this->direction),
 		));
 	}
-
-	/*
-	** Url pour la page
-	** -----
-	** $order ::		Ordre
-	** $direction ::	Classement (asc / desc)
-	*/
+	
+	/**
+	 * Url pour la page
+	 *
+	 * @param int $order Ordre
+	 * @param string $direction Classement (asc / desc)
+	 * @return string
+	 */
 	public function user_list_url($order, $direction)
 	{
 		$query = '&amp;order=' . $order . '&amp;direction=' . $direction . '&amp;page=' . $this->page . '&amp;search_user=' . $this->search_user;
 		return (sid('index.' . PHPEXT . '?p=manage_users&amp;module=list' . $query));
 	}
 
-	/*
-	** Formulaire d'ajout de membres
-	*/
+	/**
+	 * Formulaire d'ajout de membres
+	 */
 	public function page_add_users()
 	{
 		Fsb::$tpl->set_switch('users_add');
@@ -161,9 +210,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Ajout d'un utilisateur
-	*/
+	/**
+	 * Ajout d'un utilisateur
+	 */
 	public function submit_add()
 	{
 		$data = array(
@@ -221,9 +270,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
 	}
 
-	/*
-	** Formulaire de suppression de membres
-	*/
+	/**
+	 * Formulaire de suppression de membres
+	 */
 	public function page_prune_users()
 	{
 		// Liste des jours, mois et annees
@@ -281,9 +330,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Soumet le formulaire de delestage des membres
-	*/
+	/**
+	 * Soumet le formulaire de delestage des membres
+	 */
 	public function submit_prune()
 	{
 		if (check_confirm())
@@ -478,9 +527,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 	}
 
-	/*
-	** Affiche la page de gestion des galleries d'avatars
-	*/
+	/**
+	 * Affiche la page de gestion des galleries d'avatars
+	 */
 	public function page_gallery()
 	{
 		Fsb::$tpl->set_switch('users_gallery');
@@ -505,9 +554,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		closedir($fd);
 	}
 
-	/*
-	** Formulaire d'ajout de gallerie
-	*/
+	/**
+	 * Formulaire d'ajout de gallerie
+	 */
 	public function page_add_gallery()
 	{
 		Fsb::$tpl->set_switch('users_gallery_add');
@@ -519,9 +568,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Soumet le formulaire d'ajout de galleries
-	*/
+	/**
+	 * Soumet le formulaire d'ajout de galleries
+	 */
 	public function submit_gallery()
 	{
 		$gallery_name = trim(Http::request('gallery_name', 'post'));
@@ -554,9 +603,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Display::message('adm_users_gallery_well_' . $this->mode, 'index.' . PHPEXT . '?p=manage_users&amp;module=gallery', 'manage_users');
 	}
 
-	/*
-	** Suppression d'une gallerie
-	*/
+	/**
+	 * Suppression d'une gallerie
+	 */
 	public function page_delete_gallery()
 	{
 		$dir = urldecode(Http::request('dir'));
@@ -577,9 +626,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=manage_users&module=gallery');
 	}
 
-	/*
-	** Affiche le contenu d'une gallerie
-	*/
+	/**
+	 * Affiche le contenu d'une gallerie
+	 */
 	public function page_show_gallery()
 	{
 		$dir = urldecode(Http::request('dir'));
@@ -610,9 +659,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		closedir($fd);
 	}
 
-	/*
-	** Affiche le formulaire d'ajout d'avatar
-	*/
+	/**
+	 * Affiche le formulaire d'ajout d'avatar
+	 */
 	public function page_add_avatar()
 	{
 		$file = urldecode(Http::request('file'));
@@ -623,9 +672,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Soumet le formulaire d'ajout d'avatar
-	*/
+	/**
+	 * Soumet le formulaire d'ajout d'avatar
+	 */
 	public function submit_avatar()
 	{
 		$file = urldecode(Http::request('file'));
@@ -638,9 +687,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Http::redirect('index.' . PHPEXT . '?p=manage_users&module=gallery&mode=show&dir=' . urlencode($file));
 	}
 
-	/*
-	** Supprime l'avatar
-	*/
+	/**
+	 * Supprime l'avatar
+	 */
 	public function page_delete_avatar()
 	{
 		$file = urldecode(Http::request('file'));

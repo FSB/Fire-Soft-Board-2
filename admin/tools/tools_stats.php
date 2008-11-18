@@ -8,20 +8,25 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page affichant les statistiques du forum
-**
-** FSB utilise le puissant framework Artichow pour les graphiques en GD. Vous pouvez trouver
-** davantage de documentation et d'informations sur le site officiel de ce framework :
-**		http://www.artichow.org/
-*/
+/**
+ * Page affichant les statistiques du forum
+ *
+ * FSB utilise le puissant framework Artichow pour les graphiques en GD. Vous pouvez trouver
+ * davantage de documentation et d'informations sur le site officiel de ce framework :
+ *		http://www.artichow.org/
+ */
 class Fsb_frame_child extends Fsb_admin_frame
 {
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode = '';
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->mode = Http::request('mode');
@@ -47,9 +52,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche les statistiques textuelles du forum
-	*/
+	/**
+	 * Affiche les statistiques textuelles du forum
+	 */
 	public function show_text_stats()
 	{
 		$stats_users =	$this->get_simple_stats('total_users');
@@ -90,9 +95,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Affiche le phpinfo()
-	*/
+	/**
+	 * Affiche le phpinfo()
+	 */
 	public function show_phpinfo()
 	{
 		// Fonction temporaire de callback
@@ -125,11 +130,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 	}
 
-	/*
-	** Renvoie des statistiques (nombre de sujets, moyenne par jour, etc ...)
-	** -----
-	** $key ::		Cle dans la table de configuration
-	*/
+	/**
+	 * Renvoie des statistiques (nombre de sujets, moyenne par jour, etc ...)
+	 * 
+	 * @param string $key Cle dans la table de configuration
+	 * @result array Statistique de FSB
+	 */
 	public function get_simple_stats($key)
 	{
 		$stat = array();
@@ -139,12 +145,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($stat);
 	}
 
-	/*
-	** Renvoie des statistiques sur les images contenue dans un repertoire : leur nombre
-	** et la place totale prise.
-	** -----
-	** $dir ::		Repertoire dont on veut les donnees
-	*/
+	/**
+	 * Renvoie des statistiques sur les images contenue dans un repertoire : leur nombre
+	 * et la place totale prise.
+	 * 
+	 * @param string $dir Repertoire dont on veut les donnees
+	 * @result array Statistique de l'espace disque utilise par fsb2
+	 */
 	public function get_memory_stats($dir)
 	{
 		$stat = array('total' => 0, 'size' => 0);
@@ -161,9 +168,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		return ($stat);
 	}
 
-	/*
-	** Renvoie le type de base de donnee, sa version, sa taille et son nombre de tables
-	*/
+	/**
+	 * Renvoie le type de base de donnee, sa version, sa taille et son nombre de tables
+	 *
+	 * @return array Statistique de la base de donnee
+	 */
 	public function get_sql_stats()
 	{		
 		$db_size = 0;
@@ -233,9 +242,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 	}
 
 
-	/*
-	** Affiche les statistiques graphiques du forum
-	*/
+	/**
+	 * Affiche les statistiques graphiques du forum
+	 */
 	public function show_gd_stats()
 	{
 		Fsb::$tpl->set_switch('stats_gd');
@@ -244,9 +253,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->show_stat_image('users', Fsb::$session->lang('adm_stats_forums_users'));
 	}
 
-	/*
-	** Affiche une image de statistiques
-	*/
+	/**
+	 * Affiche une image de statistiques
+	 *
+	 * @param string $img_type Type de l'image
+	 * @param string $legend Legende de l'image
+	 */
 	public function show_stat_image($img_type, $legend)
 	{
 		// Calcul du timestamp dans une annee
