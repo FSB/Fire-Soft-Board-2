@@ -8,10 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Genere une image aleatoire pour le code de confirmation visuel.
-** Ce code est ensuite sauve dans la session du membre et verifie lors du traitement du formulaire d'inscription.
-*/
+/**
+ * Genere une image aleatoire pour le code de confirmation visuel.
+ * Ce code est ensuite sauve dans la session du membre et verifie lors du traitement du formulaire d'inscription.
+ */
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');

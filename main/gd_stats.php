@@ -8,10 +8,9 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la progression du nombre de messages par periode
-** Utilisation du framework Artichow (www.artichow.org)
-*/
+/**
+ * Affiche des statistiques du forum
+ */
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');

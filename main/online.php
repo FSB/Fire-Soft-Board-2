@@ -8,9 +8,9 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche les membres en ligne sur le forum, ainsi que quelques statistiques
-*/
+/**
+ * Affiche les membres en ligne sur le forum, ainsi que quelques statistiques
+ */
 
 // Protection de la page
 if (strpos($_SERVER['PHP_SELF'], 'online.') !== FALSE)

@@ -8,11 +8,11 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Un print_r() directement formate
-** -----
-** $array ::	Tableau
-*/
+/**
+ * print_r() next gen pour le debug
+ *
+ * @param array $array
+ */
 function printr($array)
 {
 	echo '<xmp>';
@@ -20,12 +20,13 @@ function printr($array)
 	echo '</xmp>';
 }
 
-/*
-** Ajoute l'ID de session a l'url
-** -----
-** $url ::		URL a modifier
-** $force ::	Si TRUE, on force l'ajout de la SID dans l'URL
-*/
+/**
+ * Ajoute l'ID de session a l'url
+ *
+ * @param string $url URL a modifier
+ * @param bool $force Si TRUE, on force l'ajout de la SID dans l'URL
+ * @return string URL modifiee
+ */
 function sid($url, $force = FALSE)
 {
 	$use_rewriting = (Fsb::$mods) ? Fsb::$mods->is_active('url_rewriting') : FALSE;
@@ -47,9 +48,11 @@ function sid($url, $force = FALSE)
 	return ($url);
 }
 
-/*
-** Verification de la confirmation. Retourne TRUE si tout est ok.
-*/
+/**
+ * Verifie lors d'une confirmation sur le bouton "oui" a ete choisi
+ *
+ * @return bool
+ */
 function check_confirm()
 {
 	$fsb_check_sid = Http::request('fsb_check_sid', 'post');
@@ -60,11 +63,12 @@ function check_confirm()
 	return (TRUE);
 }
 
-/*
-** Verifie la validite d'un code entre pour une image de confirmation visuelle
-** -----
-** $code ::		Code entre
-*/
+/**
+ * Verifie la validite d'un code pour un captcha
+ *
+ * @param string $code
+ * @return bool
+ */
 function check_captcha($code)
 {
 	$current_code = Fsb::$session->data['s_visual_code'];
@@ -77,12 +81,13 @@ function check_captcha($code)
 	return ((strtolower($code) === strtolower($current_code)) ? TRUE : FALSE);
 }
 
-/*
-** Renvoie le chemin depuis la racine du forum
-** -----
-** $path ::		Chemin complet (avec __FILE__ par exemple)
-** $dir_name ::	Nom du repertoire a la racine
-*/
+/**
+ * Retourne le chemin depuis la racine du forum
+ *
+ * @param string $path Chemin complet (avec __FILE__ par exemple)
+ * @param string $dir_name Nom du repertoire a la racine
+ * @return string
+ */
 function fsb_basename($path, $dir_name)
 {
 	// On recupere le bon repertoire si le chemin total a ete passe en argument
@@ -106,22 +111,24 @@ function fsb_basename($path, $dir_name)
 	return (($begin) ? implode($delimiter, $new) : basename($path));
 }
 
-/*
-** Retourne la chaine de caractere a afficher pour retourner sur une page via un clic
-** -----
-** $url ::		URL sans la SID
-** $name ::		Nom de la page (pour la variable de langue)
-*/
+/**
+ * Retourne la chaine de caractere a afficher pour retourner sur une page via un clic
+ *
+ * @param string $url
+ * @param string $name Nom de la page (pour la variable de langue)
+ * @return string
+ */
 function return_to($url, $name)
 {
 	return ('<br /><br />' . sprintf(Fsb::$session->lang('return_to_' . $name), sid($url)));
 }
 
-/*
-** Converti une taille en octet dans une unite plus grande si possible
-** -----
-** $size ::		Taille en octet
-*/
+/**
+ * Converti une taille en octet dans une unite plus grande si possible
+ *
+ * @param int $size Taille en octet
+ * @return string
+ */
 function convert_size($size)
 {
 	if ($size >= 1048576)
@@ -138,12 +145,13 @@ function convert_size($size)
 	}
 }
 
-/*
-** Converti un format de taille des variables de configuration de PHP en octet
-**    http://fr2.php.net/manual/fr/function.ini-get.php
-** -----
-** $ini_size ::		Taille
-*/
+/**
+ * Converti un format de taille des variables de configuration de PHP en octet
+ * @link http://fr2.php.net/manual/fr/function.ini-get.php
+ *
+ * @param string $ini_size Taille issue d'une configuration PHP
+ * @return int
+ */
 function ini_get_bytes($ini_size)
 {
 	$ini_size = trim($ini_size);
@@ -161,13 +169,14 @@ function ini_get_bytes($ini_size)
 	return ($ini_size);
 }
 
-/*
-** Selectionne une ligne de tableau multi dimensionel en fonction de la valeur d'une clef
-** -----
-** $ary ::		Tableau a fouiller
-** $field ::	Nom de la clef
-** $value ::	Valeur de la clef
-*/
+/**
+ * Selectionne une ligne de tableau multi dimensionel en fonction de la valeur d'une clef
+ *
+ * @param array $ary Tableau a fouiller
+ * @param string $field Nom de la clef
+ * @param string $value Valeur de la clef
+ * @return string
+ */
 function array_select(&$ary, $field, $value)
 {
 	foreach ($ary AS $v)
@@ -180,12 +189,13 @@ function array_select(&$ary, $field, $value)
 	return (NULL);
 }
 
-/*
-** Ecrit des donnees dans un fichier.
-** -----
-** $filename ::		Nom du fichier
-** $code ::			Donnees a ecrire
-*/
+/**
+ * Ecrit des donnees dans un fichier
+ *
+ * @param string $filename Nom du fichier
+ * @param string $code Donnees a ecrire
+ * @return bool
+ */
 function fsb_write($filename, $code)
 {
 	$fd = @fopen($filename, 'w');
@@ -201,10 +211,13 @@ function fsb_write($filename, $code)
 	return (TRUE);
 }
 
-/*
-** Agit comme la fonction array_map() de PHP, mais recusivement sur tous les
-** sous tableaux.
-*/
+/**
+ * Agit comme la fonction array_map() de PHP, mais recusivement sur tous les sous tableaux
+ *
+ * @param string $callback
+ * @param array $ary
+ * @return array
+ */
 function array_map_recursive($callback, $ary)
 {
 	foreach ($ary AS $key => $value)
@@ -221,12 +234,13 @@ function array_map_recursive($callback, $ary)
 	return ($ary);
 }
 
-/*
-** Renvoie tous les forums dans un tableau
-** -----
-** $where ::		Clause WHERE de selection des forums
-** $use_cache ::	Definit si on utilise le cache pour la requete
-*/
+/**
+ * Renvoie tous les forums dans un tableau
+ *
+ * @param string $where Clause WHERE de selection des forums
+ * @param bool $use_cache Definit si on utilise le cache pour la requete
+ * @return array 
+ */
 function get_forums($where = '', $use_cache = TRUE)
 {
 	$sql = 'SELECT *
@@ -238,12 +252,13 @@ function get_forums($where = '', $use_cache = TRUE)
 	return ($data);
 }
 
-/*
-** Retourne TRUE s'il s'agit de la derniere version comparee
-** -----
-** $current_version ::	Version actuelle de ce script
-** $last_version ::		Derniere version connue pour le script
-*/
+/**
+ * Retourne TRUE s'il s'agit de la derniere version comparee
+ *
+ * @param string $current_version Version actuelle de ce script
+ * @param string $last_version Derniere version connue pour le script
+ * @return bool
+ */
 function is_last_version($current_version, $last_version)
 {
 	if (!preg_match('#^([0-9]+)\.([0-9]+)\.([0-9]+)(\.(RC([0-9]+)))?([a-z])?$#', $current_version, $m_current))
@@ -283,9 +298,13 @@ function is_last_version($current_version, $last_version)
 	return (TRUE);
 }
 
-/*
-** Retourne les donnees d'un fichier (extension ou bien corps)
-*/
+/**
+ * Retourne les donnees d'un fichier (extension ou bien corps)
+ *
+ * @param string $filename
+ * @param string $type 'extension' ou 'filename'
+ * @return string
+ */
 function get_file_data($filename, $type)
 {
 	$tmp = explode('.', basename($filename));
@@ -302,11 +321,15 @@ function get_file_data($filename, $type)
 	}
 }
 
-/*
-** Un preg_replace() qui remplace tous les elements de la chaine, meme les elements imbriques
-** -----
-** $args :	Voir les arguments de preg_replace sur php.net
-*/
+/**
+ * Un preg_replace() qui remplace tous les elements de la chaine, meme les elements imbriques
+ *
+ * @param string $pattern
+ * @param string $replace
+ * @param string $str
+ * @param int $limit
+ * @return string
+ */
 function preg_replace_multiple($pattern, $replace, $str, $limit = -1)
 {
 	while (preg_match($pattern, $str))
@@ -316,16 +339,17 @@ function preg_replace_multiple($pattern, $replace, $str, $limit = -1)
 	return ($str);
 }
 
-/*
-** Retourne un tableau contenant un boolean signalant si un sujet est lu, et une chaine de caractere
-** de type t_id=xx ou p_id=yy#yy a place a la fin de l'URL pointant vers le dernier message d'un sujet
-** -----
-** $p_id ::			ID du dernier message
-** $p_time ::		Date du dernier message
-** $t_id ::			ID du sujet
-** $last_time ::	Date du dernier message lu du sujet
-** $last_id ::		ID du dernier message lu du sujet
-*/
+/**
+ * Retourne un tableau contenant un boolean signalant si un sujet est lu, et une chaine de caractere
+ * de type t_id=xx ou p_id=yy#yy a place a la fin de l'URL pointant vers le dernier message d'un sujet
+ *
+ * @param int $p_id ID du dernier message
+ * @param int $p_time Date du dernier message
+ * @param int $t_id ID du sujet
+ * @param int $last_time Date du dernier message lu du sujet
+ * @param int $last_id ID du dernier message lu du sujet
+ * @return array
+ */
 function check_read_post($p_id, $p_time, $t_id, $last_time, $last_id)
 {
 	if ((Fsb::$session->is_logged() && (!$last_time || $last_time < $p_time) && $p_time > Fsb::$session->data['u_last_read']))

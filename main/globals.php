@@ -8,10 +8,6 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Variables globales
-*/
-
 // Liste des droits
 $GLOBALS['_auth_type'] = array(
 	'ga_view',

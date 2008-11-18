@@ -17,9 +17,11 @@ if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
 	exit;
 }
 
-/*
-** Methode magique permettant le chargement dynamique de classes
-*/
+/**
+ * Methode magique permettant le chargement dynamique de classes
+ *
+ * @param string $classname
+ */
 function __autoload($classname)
 {
 	$classname = strtolower($classname);
@@ -72,11 +74,11 @@ class Fsb extends Fsb_model
 	public static $tpl;
 }
 
-/*
-** Inclus un fichier dans le dossier main/ de facon inteligente
-** -----
-** $file ::		Nom du fichier
-*/
+/**
+ * Inclus un fichier dans le dossier main/ de facon inteligente
+ *
+ * @param string $filename Nom du fichier
+ */
 function fsb_import($filename)
 {
 	static $store;
