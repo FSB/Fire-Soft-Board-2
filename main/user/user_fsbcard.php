@@ -8,17 +8,21 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur permettant l'import / export de FSBcards
-*/
+/**
+ * Module d'utilisateur permettant l'import / export de FSBcards
+ */
 class Page_user_fsbcard extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		if (Http::request('submit_export', 'post'))
@@ -32,9 +36,9 @@ class Page_user_fsbcard extends Fsb_model
 		$this->show_form();
 	}
 
-	/*
-	** Affiche le formulaire d'import / export de FSBcard
-	*/
+	/**
+	 * Affiche le formulaire d'import / export de FSBcard
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_file('user/user_fsbcard.html');
@@ -43,9 +47,9 @@ class Page_user_fsbcard extends Fsb_model
 		));
 	}
 
-	/*
-	** Export de la FSBcard
-	*/
+	/**
+	 * Export de la FSBcard
+	 */
 	public function submit_export()
 	{
 		$fsbcard = new Fsbcard();
@@ -192,9 +196,9 @@ class Page_user_fsbcard extends Fsb_model
 		exit;
 	}
 
-	/*
-	** Import du profil
-	*/
+	/**
+	 * Import du profil
+	 */
 	public function submit_import()
 	{
 		if (empty($_FILES['upload_fsbcard']['name']))
@@ -216,13 +220,14 @@ class Page_user_fsbcard extends Fsb_model
 		Log::user(Fsb::$session->id(), 'import_fsbcard');
 		Display::message('user_fsbcard_import_ok', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=fsbcard', 'forum_profil');
 	}
-
-	/*
-	** Import de la FSBcard
-	** -----
-	** $u_id ::		ID de l'utilisateur
-	** $content ::	Contenu de la FSBcard
-	*/
+	
+	/**
+	 * Import de la FSBcard
+	 *
+	 * @param int $u_id ID de l'utilisateur
+	 * @param string $content Contenu de la FSBcard
+	 * @return array
+	 */
 	public static function import_fsbcard($u_id, $content)
 	{
 		$fsbcard = new Fsbcard();

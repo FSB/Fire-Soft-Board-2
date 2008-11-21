@@ -11,20 +11,36 @@
 // On affiche le module si le membre a le droit d'uploader des fichiers
 if (Fsb::$mods->is_active('upload') && Fsb::$session->is_authorized('upload_file'))
 {
+	/**
+	 * On affiche le module ?
+	 * 
+	 * @var bool
+	 */
 	$show_this_module = TRUE;
 }
 
-/*
-** Module d'utilisateur redirigeant vers son propre profil public
-*/
+/**
+ * Module d'utilisateur redirigeant vers son propre profil public
+ */
 class Page_user_upload extends Fsb_model
 {
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Identifiant du fichier uploader
+	 *
+	 * @var unknown_type
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->mode = Http::request('mode');
@@ -51,9 +67,9 @@ class Page_user_upload extends Fsb_model
 		));
 	}
 
-	/*
-	** Liste les fichiers joints du membre
-	*/
+	/**
+	 * Liste les fichiers joints du membre
+	 */
 	public function show_files()
 	{
 		// On recupere l'ordre et la direction d'affichage des fichiers
@@ -110,9 +126,9 @@ class Page_user_upload extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Edition d'un fichier
-	*/
+	/**
+	 * Edition d'un fichier
+	 */
 	public function edit_file()
 	{
 		Fsb::$tpl->set_file('user/user_upload.html');
@@ -152,9 +168,9 @@ class Page_user_upload extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumission de l'edition d'un fichier
-	*/
+	/**
+	 * Soumission de l'edition d'un fichier
+	 */
 	public function submit_edit_file()
 	{
 		$sql = 'SELECT upload_id
@@ -176,9 +192,9 @@ class Page_user_upload extends Fsb_model
 		Display::message('user_upload_well_edit', ROOT . 'index.' . PHPEXT . '?p=profile&module=upload', 'forum_profil');
 	}
 
-	/*
-	** Suppression d'un fichier
-	*/
+	/**
+	 * Suppression d'un fichier
+	 */
 	public function delete_file()
 	{
 		$id = intval(Http::request('id'));
@@ -218,13 +234,14 @@ class Page_user_upload extends Fsb_model
 		}
 	}
 
-	/*
-	** Retourne l'URL correcte pour trier selon un critere
-	** -----
-	** $name ::			Critere de tri
-	** $order ::		Ordre actuel
-	** $direction ::	Direction actuelle
-	*/
+	/**
+	 * Retourne l'URL correcte pour trier selon un critere
+	 *
+	 * @param string $name Critere de tri
+	 * @param string $order Ordre actuel
+	 * @param string $direction Direction actuelle
+	 * @return string URL
+	 */
 	public function check_order($name, $order, $direction)
 	{
 		return (sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=upload&amp;order=' . $name . '&amp;direction=' . (($order == $name && $direction == 'ASC') ? 'DESC' : 'ASC')));

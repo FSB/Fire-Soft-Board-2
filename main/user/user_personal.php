@@ -8,32 +8,56 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module ?
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur permettant de modifier ses donnees personelles
-*/
+/**
+ * Module d'utilisateur permettant de modifier ses donnees personelles
+ */
 class Page_user_personal extends Fsb_model
 {
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	// Les champs qu'on peut recuperer dans le formulaire
+	/**
+	 * Les champs qu'on peut recuperer dans le formulaire
+	 *
+	 * @var array
+	 */
 	public $post_data = array();
 
-	// Donnees du profil personel
+	/**
+	 * Donnees du profil personel
+	 *
+	 * @var array
+	 */
 	public $data = array();
 
-	// Defini si l'utilisateur peut modifier son profil personel
+	/**
+	 * Defini si l'utilisateur peut modifier son profil personel
+	 *
+	 * @var bool
+	 */
 	public $can_edit_nickname = FALSE;
 	
-	// Objet Profil_fields
+	/**
+	 * Champs du profil
+	 *
+	 * @var Profil_fields
+	 */
 	public $profil_fields;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		// l'utilisateur peut il editer son pseudonyme ?
@@ -51,10 +75,10 @@ class Page_user_personal extends Fsb_model
 		$this->personal_form();
 	}
 
-	/*
-	** Recupere dans $this->data les donnees du membre, si le formulaire a ete
-	** soumis on prend les valeurs postees
-	*/
+	/**
+	 * Recupere dans $this->data les donnees du membre, si le formulaire a ete
+	 * soumis on prend les valeurs postees
+	 */
 	public function get_data()
 	{
 		$this->post_data = array(
@@ -82,9 +106,9 @@ class Page_user_personal extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche le formulaire d'editer les donnees personnelles
-	*/
+	/**
+	 * Affiche le formulaire d'editer les donnees personnelles
+	 */
 	public function personal_form()
 	{
 		if ($this->can_edit_nickname)
@@ -175,9 +199,11 @@ class Page_user_personal extends Fsb_model
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id());
 	}
 
-	/*
-	** Retourne un identifiant de ressource sur la requete de recuperation des rangs du membre
-	*/
+	/**
+	 * Retourne un identifiant de ressource sur la requete de recuperation des rangs du membre
+	 *
+	 * @return Ressource
+	 */
 	public function get_user_ranks()
 	{
 		$sql = 'SELECT r.rank_id, r.rank_name
@@ -191,9 +217,9 @@ class Page_user_personal extends Fsb_model
 		return (Fsb::$db->query($sql));
 	}
 
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 */
 	public function check_form()
 	{
 		$this->errstr = array();
@@ -278,9 +304,9 @@ class Page_user_personal extends Fsb_model
 		}
 	}
 
-	/*
-	** Enregistre les donnees du formulaire dans la base de donnee
-	*/
+	/**
+	 * Enregistre les donnees du formulaire dans la base de donnee
+	 */
 	public function submit_form()
 	{
 		// Mise a jour de la table fsb2_users

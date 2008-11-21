@@ -11,23 +11,36 @@
 // On affiche le module si les signatures sont activees
 if (Fsb::$cfg->get('activate_sig'))
 {
+	/**
+	 * On affiche le module ?
+	 * 
+	 * @var bool
+	 */
 	$show_this_module = TRUE;
 }
 
-/*
-** Module d'utilisateur permettant au membre de modifier sa signature
-*/
+/**
+ * Module d'utilisateur permettant au membre de modifier sa signature
+ */
 class Page_user_sig extends Fsb_model
 {
-	// Erreurs
+	/**
+	 *  Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	// Signature
+	/**
+	 * Signature
+	 *
+	 * @var string
+	 */
 	public $sig;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		if (Http::request('submit', 'post'))
@@ -52,9 +65,9 @@ class Page_user_sig extends Fsb_model
 		$this->sig_form();
 	}
 
-	/*
-	** Affiche le formulaire de modification de la signature
-	*/
+	/**
+	 * Affiche le formulaire de modification de la signature
+	 */
 	public function sig_form()
 	{
 		if ($this->errstr)
@@ -98,9 +111,9 @@ class Page_user_sig extends Fsb_model
 		));
 	}
 	
-	/*
-	** Affiche un cadre montrant le resultat reel de la signature
-	*/
+	/**
+	 * Affiche un cadre montrant le resultat reel de la signature
+	 */
 	public function preview_sig()
 	{
 		$parser = new Parser();
@@ -125,9 +138,9 @@ class Page_user_sig extends Fsb_model
 		));
 	}
 
-	/*
-	** Verifie la signature (nombre de lignes, caracteres, etc ...)
-	*/
+	/**
+	 * Verifie la signature (nombre de lignes, caracteres, etc ...)
+	 */
 	public function check_form()
 	{
 		$this->sig = trim(Http::request('sig', 'post'));
@@ -147,9 +160,9 @@ class Page_user_sig extends Fsb_model
 		}
 	}
 
-	/*
-	** Enregistre la signature
-	*/
+	/**
+	 * Enregistre la signature
+	 */
 	public function submit_form()
 	{
 		Fsb::$db->update('users', array(

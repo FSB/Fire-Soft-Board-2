@@ -8,17 +8,21 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur redirigeant vers son propre profil public
-*/
+/**
+ * Module d'utilisateur redirigeant vers son propre profil public
+ */
 class Page_user_viewprofile extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=userprofile&id=' . Fsb::$session->id());

@@ -8,17 +8,21 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur affichant les differents groupes
-*/
+/**
+ * Module d'utilisateur affichant les differents groupes
+ */
 class Page_user_groups extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		if (Http::request('submit', 'post'))
@@ -28,9 +32,9 @@ class Page_user_groups extends Fsb_model
 		$this->show_form();
 	}
 
-	/*
-	** Formulaire de la liste des groupes
-	*/
+	/**
+	 * Formulaire de la liste des groupes
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_file('user/user_groups.html');
@@ -94,9 +98,9 @@ class Page_user_groups extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumet le groupe par defaut
-	*/
+	/**
+	 * Soumet le groupe par defaut
+	 */
 	public function submit_default_group()
 	{
 		$default_group = intval(Http::request('default_group', 'post'));

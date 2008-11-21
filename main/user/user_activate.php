@@ -8,31 +8,39 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur permettant au membre d'activer / desactiver certaines donees du forum (avatar, signature,
-** images, E-mails, etc ...). Tous les champs sont precedes du prefixe u_activate_ y compris dans la table
-** fsb2_users.
-**
-** Rapide information, sur cette page on utilise soit des valeurs boolean quand il n y a que des choix yes / no
-** comme par exemple TRUE ou FALSE, mais lorsqu'il y a davantage de choix on utilise des masques binaires, par exemple :
-**	$var = 2 | 4;
-**	if ($var & 2) echo 'ok2';
-**	if ($var & 4) echo 'ok4';
-**	if ($var & 8) echo 'ok8';
-** ne va afficher que "ok2ok4", si on veut afficher uniquement "ok2ok8" par exemple on fait :
-**	$var = 2 | 8;
-*/
+/**
+ * Module d'utilisateur permettant au membre d'activer / desactiver certaines donees du forum (avatar, signature,
+ * images, E-mails, etc ...). Tous les champs sont precedes du prefixe u_activate_ y compris dans la table
+ * fsb2_users.
+ *
+ * Rapide information, sur cette page on utilise soit des valeurs boolean quand il n y a que des choix yes / no
+ * comme par exemple TRUE ou FALSE, mais lorsqu'il y a davantage de choix on utilise des masques binaires, par exemple :
+ *	$var = 2 | 4;
+ *	if ($var & 2) echo 'ok2';
+ *	if ($var & 4) echo 'ok4';
+ *	if ($var & 8) echo 'ok8';
+ * ne va afficher que "ok2ok4", si on veut afficher uniquement "ok2ok8" par exemple on fait :
+ *	$var = 2 | 8;
+ */
 class Page_user_activate extends Fsb_model
 {
-	// Tableau contenant toutes les donnees utiles pour les activations
+	/**
+	 * Tableau contenant toutes les donnees utiles pour les activations
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{	
 		// On declare tous les champs d'activation
@@ -181,9 +189,9 @@ class Page_user_activate extends Fsb_model
 		$this->activate_form();
 	}
 	
-	/*
-	** Affiche le formulaire d'activation
-	*/
+	/**
+	 * Affiche le formulaire d'activation
+	 */
 	public function activate_form()
 	{		
 		Fsb::$tpl->set_file('user/user_activate.html');
@@ -212,9 +220,9 @@ class Page_user_activate extends Fsb_model
 		}
 	}
 	
-	/*
-	** Soumet le formulaire
-	*/
+	/**
+	 * Soumet le formulaire
+	 */
 	public function submit_form()
 	{
 		$update = array();

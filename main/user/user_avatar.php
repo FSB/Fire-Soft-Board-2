@@ -8,42 +8,109 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
-/*
-** Module d'utilisateur permettant d'avoir un avatar de differentes facons :
-**	- Par upload depuis le PC
-**	- Par upload depuis une image distante (necessite la librairie GD)
-**	- Par lien depuis une URL distante
-**	- En choisissant un avatar depuis la gallerie du forum
-*/
+/**
+ * Module d'utilisateur permettant d'avoir un avatar de differentes facons :
+ *	- Par upload depuis le PC
+ *	- Par upload depuis une image distante (necessite la librairie GD)
+ *	- Par lien depuis une URL distante
+ *	- En choisissant un avatar depuis la gallerie du forum
+ */
 class Page_user_avatar extends Fsb_model
 {
-	// Definit si l'utilisateur peut utiliser ou non un avatar
+	/**
+	 * Definit si l'utilisateur peut utiliser ou non un avatar
+	 *
+	 * @var bool
+	 */
 	public $can_use_avatar = FALSE;
+	
+	/**
+	 * Définit si l'utilisateur peut uploader un avatar
+	 *
+	 * @var bool
+	 */
 	public $can_upload_avatar = FALSE;
+	
+	/**
+	 * Définit si la gallerie d'avatar est activé
+	 *
+	 * @var bool
+	 */
 	public $can_use_gallery = FALSE;
+	
+	/**
+	 * Définit si deux utilisateurs peuvent avoir le même avatar
+	 *
+	 * @var bool
+	 */
 	public $can_have_same_avatar = FALSE;
 
-	// Doit redimensionner ?
+	/**
+	 * Doit redimensionner ?
+	 *
+	 * @var bool
+	 */
 	public $need_resize = FALSE;
 
-	// Gallerie d'avatar sellectionnee
+	/**
+	 * Gallerie d'avatar sellectionnee
+	 *
+	 * @var string
+	 */
 	public $gallery = '';
+	
+	/**
+	 * Nombre d'avatar par ligne
+	 *
+	 * @var int
+	 */
 	public $avatar_per_line = 3;
 
+	/**
+	 * Lien vers l'avatar
+	 *
+	 * @var string
+	 */
 	public $value_avatar_link = '';
+	
+	/**
+	 * Avatar uploader
+	 *
+	 * @var string
+	 */
 	public $value_avatar_upload = '';
+	
+	/**
+	 * Lien de l'avatar à uploader
+	 *
+	 * @var string
+	 */
 	public $value_avatar_link_upload = '';
+	
+	/**
+	 * Avater sélectionner dans la gallerie
+	 *
+	 * @var string
+	 */
 	public $value_avatar_gallery = '';
 
-	// Erreur
+	/**
+	 * Erreurs
+	 * 
+	 * @var array
+	 */
 	public $errstr = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		// On verifie si le membre peut utiliser un avatar
@@ -76,9 +143,9 @@ class Page_user_avatar extends Fsb_model
 		$this->avatar_form();
 	}
 
-	/*
-	** Affiche le formulaire permettant de choisir son avatar
-	*/
+	/**
+	 * Affiche le formulaire permettant de choisir son avatar
+	 */
 	public function avatar_form()
 	{
 		if (count($this->errstr))
@@ -134,12 +201,12 @@ class Page_user_avatar extends Fsb_model
 			closedir($fd);
 		}
 	}
-
-	/*
-	** Affiche la gallerie d'avatar
-	** -----
-	** $name ::		Nom de la gallerie a afficher
-	*/
+	
+	/**
+	 * Affiche la gallerie d'avatar
+	 *
+	 * @param string $name Nom de la gallerie a afficher
+	 */
 	public function show_gallery($name)
 	{
 		// Si deux membres ne peuvent pas avoir le meme avatar dans la gallerie, alors
@@ -179,9 +246,9 @@ class Page_user_avatar extends Fsb_model
 		closedir($fd);
 	}
 
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 */
 	public function check_form()
 	{
 		if (!$this->can_use_avatar)
@@ -276,9 +343,9 @@ class Page_user_avatar extends Fsb_model
 		}
 	}
 	
-	/*
-	** Traite et soumet les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Traite et soumet les donnees envoyees par le formulaire
+	 */
 	public function submit_form()
 	{
 		$this->delete_matches_file(AVATAR_PATH, md5(Fsb::$session->id()));
@@ -363,9 +430,9 @@ class Page_user_avatar extends Fsb_model
 		Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=avatar', 'forum_profil');
 	}
 
-	/*
-	** Supprime l'avatar courant du membre
-	*/
+	/**
+	 * Supprime l'avatar courant du membre
+	 */
 	public function delete_avatar()
 	{		
 		if (Fsb::$session->data['u_avatar_method'] == AVATAR_METHOD_UPLOAD)
@@ -381,14 +448,14 @@ class Page_user_avatar extends Fsb_model
 		Log::user(Fsb::$session->id(), 'delete_avatar');
 		Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=avatar', 'forum_profil');
 	}
-
-	/*
-	** Supprime tous les fichiers dont le nom est $match (quelque soit l'extension)
-	** dans le dossier $dir.
-	** -----
-	** $match ::		Nom de fichier
-	** $dir ::			Repetoire a traiter
-	*/
+	
+	/**
+	 * Supprime tous les fichiers dont le nom est $match (quelque soit l'extension)
+	 * dans le dossier $dir.
+	 *
+	 * @param string $dir Repetoire a traiter
+	 * @param string $match Nom de fichier
+	 */
 	public function delete_matches_file($dir, $match)
 	{
 		$fd = opendir($dir);

@@ -8,39 +8,96 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// On affiche le module
+/**
+ * On affiche le module
+ * 
+ * @var bool
+ */
 $show_this_module = TRUE;
 
 // Necessite le fichier de langue lg_forum_register.php pour le test du mot de passe
 Fsb::$session->load_lang('lg_forum_register');
 
-/*
-** Module d'utilisateur permettant au membre de modifier son login et son mot de passe
-** Notez qu'il faut connaitre obligatoirement le login et le mot de passe pour avoir le droit de
-** changer un des deux (ou meme les deux).
-*/
+/**
+ * Module d'utilisateur permettant au membre de modifier son login et son mot de passe
+ * Notez qu'il faut connaitre obligatoirement le login et le mot de passe pour avoir le droit de
+ * changer un des deux (ou meme les deux).
+ */
 class Page_user_password extends Fsb_model
 {
-	// Donnees du formulaire
+	/**
+	 * Ancien pseudonyme
+	 *
+	 * @var string
+	 */
 	public $old_login;
+	
+	/**
+	 * Ancien mot de passe
+	 *
+	 * @var string
+	 */
 	public $old_password;
+	
+	/**
+	 * Nouveau Pseudonyme
+	 *
+	 * @var string
+	 */
 	public $new_login;
+	
+	/**
+	 * Nouveau mot de passe
+	 *
+	 * @var string
+	 */
 	public $new_password;
+	
+	/**
+	 * Confirmation du mot de passe
+	 *
+	 * @var string
+	 */
 	public $new_password_confirm;
+	
+	/**
+	 * Nouvelle adresse Email
+	 *
+	 * @var string
+	 */
 	public $new_email;
 
+	/**
+	 * Donnée du mot de passe
+	 *
+	 * @var string
+	 */
 	public $pwd_data;
 
-	// Mise a jour de l'adresse Email ?
+	/**
+	 * Mise a jour de l'adresse Email ?
+	 *
+	 * @var bool
+	 */
 	public $update_email = FALSE;
+	
+	/**
+	 * Peut-yon changer l'adresse Email ?
+	 *
+	 * @var bool
+	 */
 	public $can_update_email = FALSE;
 	
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		$this->old_login =				trim(Http::request('old_login', 'post'));
@@ -70,9 +127,9 @@ class Page_user_password extends Fsb_model
 		$this->password_form();
 	}
 	
-	/*
-	** Affiche le formulaire de modification de mot de passe
-	*/
+	/**
+	 * Affiche le formulaire de modification de mot de passe
+	 */
 	public function password_form()
 	{		
 		if (count($this->errstr))
@@ -97,9 +154,9 @@ class Page_user_password extends Fsb_model
 		));
 	}
 	
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 */
 	public function check_form()
 	{
 		$this->update_email = ($this->new_email && strtolower($this->new_email) != strtolower(Fsb::$session->data['u_email'])) ? TRUE : FALSE;
@@ -151,9 +208,9 @@ class Page_user_password extends Fsb_model
 		}
 	}
 	
-	/*
-	** Soumet les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Soumet les donnees envoyees par le formulaire
+	 */
 	public function submit_form()
 	{		
 		// Nouveau login
@@ -237,9 +294,9 @@ class Page_user_password extends Fsb_model
 		Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=password', 'forum_profil');
 	}
 
-	/*
-	** Evalue la robustesse du mot de passe
-	*/
+	/**
+	 * Evalue la robustesse du mot de passe
+	 */
 	public function test_password()
 	{
 		if (!$this->new_password)
