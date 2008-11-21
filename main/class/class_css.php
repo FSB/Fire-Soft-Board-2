@@ -18,12 +18,6 @@ class Css extends Fsb_model
 	 *
 	 * @var array
 	 */
-	
-	/**
-	 * Enter description here...
-	 *
-	 * @var unknown_type
-	 */
 	public $data = array();
 
 	/**
@@ -233,9 +227,9 @@ class Css extends Fsb_model
 	/**
 	 * Assigne une propriete a la classe
 	 *
-	 * @param unknown_type $data Donnees de la classe
-	 * @param unknown_type $key Nom de la propriete
-	 * @param unknown_type $value Valeur de la propriete
+	 * @param array $data Donnees de la classe
+	 * @param string $key Nom de la propriete
+	 * @param string $value Valeur de la propriete
 	 */
 	public function set_property(&$data, $key, $value)
 	{
