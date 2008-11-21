@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Module de portail permettant de gerer une newsletter
-*/
+/**
+ * Module de portail permettant de gerer une newsletter
+ */
 class Page_portail_newsletter extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$mode = Http::request('mode');
@@ -54,9 +54,9 @@ class Page_portail_newsletter extends Fsb_model
 		));
 	}
 
-	/*
-	** Envoie l'email
-	*/
+	/**
+	 * Envoie l'email
+	 */
 	public function send_email()
 	{
 		// On recupere la liste des membres souscrits a la newsletter

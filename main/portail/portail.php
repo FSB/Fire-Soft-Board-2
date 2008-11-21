@@ -8,24 +8,31 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Fonction appelee dans les templates pour inclure dynamiquement des fichiers templates
-*/
+/**
+ * Fonction appelee dans les templates pour inclure dynamiquement des fichiers templates
+ *
+ * @param string $filename Nom du fichier tpl à inclure
+ */
 function include_portail_module($filename)
 {
 	Fsb::$tpl->include_tpl($filename);
 }
 
-/*
-** Module de portail permettant d'afficher quelques suggestions pour l'utilisateurs
-*/
+/**
+ * Module de portail permettant d'afficher quelques suggestions pour l'utilisateurs
+ */
 class Portail extends Fsb_model
 {
+	/**
+	 * Configuration du portail
+	 *
+	 * @var array
+	 */
 	public $portail_config = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function __construct()
 	{
 		Fsb::$session->load_lang('lg_forum_portail');
@@ -42,11 +49,12 @@ class Portail extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche un module
-	** -----
-	** $name ::		Nom du module
-	*/
+	/**
+	 * Affiche un module
+	 *
+	 * @param string $name Nom du module
+	 * @return bool Retourne TRUE si le module a bien ete afficher, false sinon
+	 */
 	public function output_module($name)
 	{
 		if (!file_exists(ROOT . 'main/portail/portail_' . $name . '.' . PHPEXT))
@@ -62,9 +70,9 @@ class Portail extends Fsb_model
 		return (TRUE);
 	}
 
-	/*
-	** Affiche tous les modules
-	*/
+	/**
+	 * Affiche tous les modules
+	 */
 	public function output_all()
 	{
 		Fsb::$tpl->set_file('forum/forum_portail.html');

@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Module de portail permettant d'afficher les premies messages de votre forum news
-*/
+/**
+ * Module de portail permettant d'afficher les premies messages de votre forum news
+ */
 class Page_portail_news extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// Instance de la classe Post() pour parser les messages

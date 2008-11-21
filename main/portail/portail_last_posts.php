@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Module de portail affichant les X derniers sujets du forum
-*/
+/**
+ * Module de portail affichant les X derniers sujets du forum
+ */
 class Page_portail_last_posts extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// On recupere les forums que le membre peut lire

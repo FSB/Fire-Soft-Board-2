@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Module de portail permettant de faire des recherches rapides
-*/
+/**
+ * Module de portail permettant de faire des recherches rapides
+ */
 class Page_portail_search extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		if (Http::request('pm_submit_search', 'post'))
@@ -38,9 +38,9 @@ class Page_portail_search extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumet la recherche en redirigeant vers la bonne page
-	*/
+	/**
+	 * Soumet la recherche en redirigeant vers la bonne page
+	 */
 	public function submit_search()
 	{
 		// On recupere si possible la langue pour le moteur

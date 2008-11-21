@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Module de portail permettant d'afficher quelques suggestions pour l'utilisateurs
-*/
+/**
+ * Module de portail permettant d'afficher quelques suggestions pour l'utilisateurs
+ */
 class Page_portail_home extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$suggestion = '';
