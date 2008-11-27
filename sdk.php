@@ -387,8 +387,7 @@ class Fsb_sdk extends Fsb_model
 		// Requete de recuperation des sujets
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'topics
-				WHERE 1 = 1'
-				. (($forums) ? ' AND f_id IN (' . implode(', ', $forums) . ') ' : '')
+				WHERE 1AND f_id IN (' . implode(', ', $forums) . ') '
 				. (($order) ? ' ORDER BY ' . $order : '')
 				. (($total > 0) ? ' LIMIT ' . $total : '');
 		$result = Fsb::$db->query($sql);
@@ -470,8 +469,7 @@ class Fsb_sdk extends Fsb_model
 					ON t.t_id = p.t_id
 				INNER JOIN ' . SQL_PREFIX . 'users u
 					ON p.u_id = u.u_id
-				WHERE 1 = 1'
-				. (($forums) ? ' AND p.f_id IN (' . implode(', ', $forums) . ') ' : '')
+				WHERE p.f_id IN (' . implode(', ', $forums) . ') '
 				. (($gbt) ? ' GROUP BY p.t_id' : '')
 				. (($order) ? ' ORDER BY ' . $order : '')
 				. (($total > 0) ? ' LIMIT ' . $total : '');
@@ -1359,6 +1357,7 @@ class Fsb_sdk extends Fsb_model
 			$forums = array_intersect($forums, Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read')));
 		}
 
+		$forums[] = 0;
 		return ($forums);
 	}
 

@@ -242,9 +242,22 @@ class Fsb_frame extends Fsb_model
 		$get_url = '&amp;redirect=' . $this->frame_page;
 		foreach ($_GET AS $key => $value)
 		{
-			if (!in_array($key, array('p', 'sid', 'redirect')) && preg_match('#^[a-z0-9_\-]*?$#i', $value))
+			if (!in_array($key, array('p', 'sid', 'redirect')))
 			{
-				$get_url .= '&amp;' . $key . '=' . $value;
+				if (is_array($value))
+				{
+					foreach ($value AS $subvalue)
+					{
+						if (preg_match('#^[a-z0-9_\-]*?$#i', $subvalue))
+						{
+							$get_url .= '&amp;' . $key . '[]=' . $subvalue;
+						}
+					}
+				}
+				else if (preg_match('#^[a-z0-9_\-]*?$#i', $value))
+				{
+					$get_url .= '&amp;' . $key . '=' . $value;
+				}
 			}
 		}
 
