@@ -39,7 +39,7 @@ function delete_thumbs($path)
 	$fd = opendir($path);
 	while ($file = readdir($fd))
 	{
-		if ($file != '.' && $file != '..')
+		if ($file != '.' && $file != '..' && $file != '.svn')
 		{
 			if (is_dir($path . $file))
 			{
@@ -73,7 +73,7 @@ function set_index_html($path)
 	$fd = opendir($path);
 	while ($file = readdir($fd))
 	{
-		if ($file != '.' && $file != '..')
+		if ($file != '.' && $file != '..' && $file != '.svn')
 		{
 			if (is_dir($path . $file))
 			{
