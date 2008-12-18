@@ -121,6 +121,13 @@ class Parser_wysiwyg extends Fsb_model
 					$attr = array();
 					if (is_array($tokens[3][$i]))
 					{
+						// Merci IE pour ton code XHTML si propre ...
+						if (preg_match('#size=([0-9]+?)#i', $tokens[3][$i][0], $m))
+						{
+							$attr['size'] = $m[1];
+							$tokens[3][$i] = preg_replace('#size=([0-9]+?)#i', '', $tokens[3][$i][0]);
+						}
+
 						preg_match_all('#\s([a-zA-Z_]+?)="([^"]*?)"#', $tokens[3][$i][0], $m);
 						$count_attr = count($m[0]);
 						for ($j = 0; $j < $count_attr; $j++)
@@ -128,6 +135,10 @@ class Parser_wysiwyg extends Fsb_model
 							$attr[strtolower($m[1][$j])] = $m[2][$j];
 						}
 					}
+					
+
+					
+					
 
 					// Ici on empile les balises qui seront ajoute a $stack
 					$s = array();

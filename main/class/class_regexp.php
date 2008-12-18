@@ -40,7 +40,7 @@ class Regexp extends Fsb_model
 			break;
 
 			case 'SIZE' :
-				$pattern = '(8|10|16|20|24)';
+				$pattern = '([0-9]{1,2})';
 			break;
 
 			case 'ALIGN' :
