@@ -44,10 +44,10 @@ class Html extends Fsb_model
 	 * @param int $total Nombre de page
 	 * @param string $url URL de redirection de la pagination, sans sid()
 	 * @param int $page_info Ajoute des informations a la pagination : page suivante, precedente, premiere page, etc ...
-	 * @param bool $simple_style Si TRUE, utilise du style simple
+	 * @param bool $simple_style Si true, utilise du style simple
 	 * @return string
 	 */
-	public static function pagination($cur, $total, $url, $page_info = PAGINATION_ALL, $simple_style = FALSE)
+	public static function pagination($cur, $total, $url, $page_info = PAGINATION_ALL, $simple_style = false)
 	{
 		// Style de la pagination
 		$default_style = ($simple_style) ? 'topic' : 'url';
@@ -125,7 +125,7 @@ class Html extends Fsb_model
 	 * @param string $option_html Options facultatives
 	 * @return string
 	 */
-	public static function list_forums($forums, $value, $name, $choose_cat = TRUE, $script = '', $all_select = FALSE, $option_html = '')
+	public static function list_forums($forums, $value, $name, $choose_cat = true, $script = '', $all_select = false, $option_html = '')
 	{
 		// Calcul des forums ?
 		if (!$forums)
@@ -133,23 +133,23 @@ class Html extends Fsb_model
 			$forums = get_forums();
 		}
 
-		$first_cat = TRUE;
+		$first_cat = true;
 		$list = '<select name="' . $name . '" ' . $script . '>' . $option_html;
 		$code_cat = '';
-		$have_forum = FALSE;
+		$have_forum = false;
 		foreach ($forums AS $forum)
 		{
 			if ($forum['f_parent'] == 0)
 			{
 				// Categorie
-				$have_forum = FALSE;
+				$have_forum = false;
 				if ($choose_cat)
 				{
 					$add = '';
 					if ($code_cat && defined('IN_ADM'))
 					{
 						$add = $code_cat;
-						$first_cat = FALSE;
+						$first_cat = false;
 					}
 
 					$select = ($all_select || $value == $forum['f_id'] || (is_array($value) && in_array($forum['f_id'], $value))) ? 'selected="selected"' : '';
@@ -164,8 +164,8 @@ class Html extends Fsb_model
 			{
 				if (Fsb::$session->is_authorized($forum['f_id'], 'ga_view') || defined('IN_ADM'))
 				{
-					$have_forum = TRUE;
-					$first_cat = FALSE;
+					$have_forum = true;
+					$first_cat = false;
 					if ($code_cat)
 					{
 						$list .= $code_cat;
@@ -198,7 +198,7 @@ class Html extends Fsb_model
 	 * @param unknown_type $redirect Si on est en mode redirection
 	 * @return string
 	 */
-	public static function jumpbox($redirect = FALSE)
+	public static function jumpbox($redirect = false)
 	{
 		if ($redirect)
 		{
@@ -221,7 +221,7 @@ class Html extends Fsb_model
 			$html .= '<option value="?p=userlist&amp;g_id=' . GROUP_SPECIAL_USER . '">' . Fsb::$session->lang('jumpbox_userlist') . '</option>';
 			$html .= '<option value="?p=profile&amp;module=personal">' . Fsb::$session->lang('jumpbox_profile') . '</option>';
 			$html .= '</optgroup>';
-			return (Html::list_forums(get_forums(), '', 'jumpbox', FALSE, 'onchange="location.href = (isNaN(this.value)) ? this.value : \'index.php?p=forum&amp;f_id=\' + this.value"', FALSE, $html));
+			return (Html::list_forums(get_forums(), '', 'jumpbox', false, 'onchange="location.href = (isNaN(this.value)) ? this.value : \'index.php?p=forum&amp;f_id=\' + this.value"', false, $html));
 		}
 	}
 	
@@ -254,7 +254,7 @@ class Html extends Fsb_model
 					$list .= '<optgroup label="' . $optgroup['lang'] . '">';
 					foreach ($optgroup['options'] AS $option_value => $option_lang)
 					{
-						$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? TRUE : FALSE;
+						$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? true : false;
 						
 						$list .= '<option value="' . $option_value . '" ' . (($selected) ? 'selected="selected"' : '') . '>' . $option_lang . '</option>';
 					}
@@ -266,7 +266,7 @@ class Html extends Fsb_model
 			{
 				foreach ($values AS $option_value => $option_lang)
 				{
-					$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? TRUE : FALSE;
+					$selected = ((is_array($default) && in_array($option_value, $default)) || $option_value == $default) ? true : false;
 					
 					$list .= '<option value="' . $option_value . '" ' . (($selected) ? 'selected="selected"' : '') . '>' . $option_lang . '</option>';
 				}
@@ -284,12 +284,12 @@ class Html extends Fsb_model
 	 * @param string $value Valeur par defaut de la liste
 	 * @param string $dir Chemin du repertoire a lister
 	 * @param array $allowed_ext Contient les extensions autorisees. Laisser vide pour tout autoriser
-	 * @param bool $only_dir Autorise uniquement les dossiers si TRUE
+	 * @param bool $only_dir Autorise uniquement les dossiers si true
 	 * @param string $first Rajouter un element en debut de liste
 	 * @param string $code Pour rajouter des atributs ou du code javascript dans le <select>
 	 * @return string
 	 */
-	public static function list_dir($name, $value, $dir, $allowed_ext = array(), $only_dir = FALSE, $first = '', $code = '')
+	public static function list_dir($name, $value, $dir, $allowed_ext = array(), $only_dir = false, $first = '', $code = '')
 	{
 		$count = count($allowed_ext);
 		if (!$fd = @opendir($dir))
@@ -388,11 +388,11 @@ class Html extends Fsb_model
 	 * @param string $add_option Options HTML a ajouter
 	 * @return string
 	 */
-	public static function list_groups($list_name, $type_group, $value, $multiple = FALSE, $exept = array(), $erase_sql = NULL, $add_html = '', $add_option = '')
+	public static function list_groups($list_name, $type_group, $value, $multiple = false, $exept = array(), $erase_sql = null, $add_html = '', $add_option = '')
 	{
-		static $groups = NULL;
+		static $groups = null;
 
-		if ($groups === NULL || $erase_sql !== NULL)
+		if (is_null($groups) || !is_null($erase_sql))
 		{
 			// Construction de la requete en fonction des flags
 			$sql_and = '';
@@ -413,7 +413,7 @@ class Html extends Fsb_model
 			}
 
 			// Liste des groupes
-			if ($erase_sql === NULL)
+			if (is_null($erase_sql))
 			{
 				$sql = 'SELECT g_id, g_name, g_type, g_hidden
 						FROM ' . SQL_PREFIX . 'groups
@@ -430,13 +430,13 @@ class Html extends Fsb_model
 		}
 
 		$list = '<select name="' . $list_name . '" ' . (($multiple) ? 'multiple="multiple" size="5"' : '') . ' ' . $add_html . '>' . $add_option;
-		$show_special = $show_normal = FALSE;
+		$show_special = $show_normal = false;
 		foreach ($groups AS $row)
 		{
 			if ($type_group & GROUP_SPECIAL && !$show_special && $row['g_type'] == GROUP_SPECIAL)
 			{
 				$list .= '<optgroup label="' . Fsb::$session->lang('list_group_special') . '">';
-				$show_special = TRUE;
+				$show_special = true;
 			}
 			else if ($type_group & GROUP_NORMAL && !$show_normal && $row['g_type'] == GROUP_NORMAL)
 			{
@@ -451,7 +451,7 @@ class Html extends Fsb_model
 				}
 				
 				$list .= '<optgroup label="' . Fsb::$session->lang('list_group_normal') . '">';
-				$show_normal = TRUE;
+				$show_normal = true;
 			}
 
 			$selected = ((!$multiple && $value == $row['g_id']) || ($multiple && in_array($row['g_id'], $value))) ? 'selected="selected"' : '';
@@ -544,7 +544,7 @@ class Html extends Fsb_model
 		{
 			return (array($m[1], String::unhtmlspecialchars($m[2])));
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -557,7 +557,7 @@ class Html extends Fsb_model
 	{
 		if (!$errstr)
 		{
-			return (NULL);
+			return (null);
 		}
 
 		if (!is_array($errstr))

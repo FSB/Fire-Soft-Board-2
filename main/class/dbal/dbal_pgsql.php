@@ -25,10 +25,10 @@ class Dbal_pgsql extends Dbal
 	/**
 	 * @see Dbal::factory()
 	 */
-	public function  __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
+	public function  __construct($server, $login, $pass, $db, $port = null, $use_cache = true)
 	{
 		$this->use_cache = $use_cache;
-		$this->id = NULL;
+		$this->id = null;
 		$str = "user=$login password=$pass dbname=$db ";
 		if ($port)
 		{
@@ -37,7 +37,7 @@ class Dbal_pgsql extends Dbal
 
 		if (!$this->id = @pg_connect($str))
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		if (!$this->id)
@@ -46,16 +46,16 @@ class Dbal_pgsql extends Dbal
 		}
 
 		// Ce que peut faire PostgreSQL
-		$this->can_use_explain = FALSE;
-		$this->can_use_replace = FALSE;
-		$this->can_use_multi_insert = TRUE;
-		$this->can_use_truncate = TRUE;
+		$this->can_use_explain = false;
+		$this->can_use_replace = false;
+		$this->can_use_multi_insert = true;
+		$this->can_use_truncate = true;
 	}
 
 	/**
 	 * @see Dbal::_query()
 	 */
-	public function _query($sql, $buffer = TRUE)
+	public function _query($sql, $buffer = true)
 	{
 		// Gestion des limites de requetes
 		preg_match('/^(.*?)\sLIMIT ([0-9]+)(,\s?([0-9]+))?\s*$/si', $sql, $match);
@@ -101,7 +101,7 @@ class Dbal_pgsql extends Dbal
 				$flag = PGSQL_BOTH;
 			break;
 		}
-		return (pg_fetch_array($result, NULL, $flag));
+		return (pg_fetch_array($result, null, $flag));
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Dbal_pgsql extends Dbal
 	/**
 	 * @see Dbal::field_type()
 	 */
-	public function field_type($result, $field, $table = NULL)
+	public function field_type($result, $field, $table = null)
 	{
 		return (pg_field_type($result, (is_int($field)) ? $field : pg_field_num($result, $field)));
 	}
@@ -167,7 +167,7 @@ class Dbal_pgsql extends Dbal
 	/**
 	 * @see Dbal::get_field_type()
 	 */
-	public function get_field_type($result, $field, $table = NULL)
+	public function get_field_type($result, $field, $table = null)
 	{
 		$field_type = $this->field_type($result, $field);
 		if (!$field_type)
@@ -192,7 +192,7 @@ class Dbal_pgsql extends Dbal
 	/**
 	 * @see Dbal::list_tables()
 	 */
-	public function list_tables($limit = TRUE)
+	public function list_tables($limit = true)
 	{
 		$tables = array();
 		$sql = 'SELECT tablename FROM pg_tables
@@ -253,7 +253,7 @@ class Dbal_pgsql extends Dbal
 				{
 					$this->simple_query('BEGIN');
 				}
-				$this->in_transaction = TRUE;
+				$this->in_transaction = true;
 			break;
 
 			case 'commit' :
@@ -261,7 +261,7 @@ class Dbal_pgsql extends Dbal
 				{
 					$this->simple_query('COMMIT');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 
 			case 'rollback' :
@@ -269,7 +269,7 @@ class Dbal_pgsql extends Dbal
 				{
 					$this->simple_query('ROLLBACK');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 		}
 	}

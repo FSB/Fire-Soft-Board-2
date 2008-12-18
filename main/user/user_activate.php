@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur permettant au membre d'activer / desactiver certaines donees du forum (avatar, signature,
@@ -21,7 +21,7 @@ $show_this_module = TRUE;
  * fsb2_users.
  *
  * Rapide information, sur cette page on utilise soit des valeurs boolean quand il n y a que des choix yes / no
- * comme par exemple TRUE ou FALSE, mais lorsqu'il y a davantage de choix on utilise des masques binaires, par exemple :
+ * comme par exemple true ou false, mais lorsqu'il y a davantage de choix on utilise des masques binaires, par exemple :
  *	$var = 2 | 4;
  *	if ($var & 2) echo 'ok2';
  *	if ($var & 4) echo 'ok4';
@@ -46,7 +46,7 @@ class Page_user_activate extends Fsb_model
 		// On declare tous les champs d'activation
 		$this->data = array(
 			'email' => array(
-				'br' =>		TRUE,
+				'br' =>		true,
 				'type' =>	'radio',
 				'value' =>	'binary', 
 				'args' =>	array(
@@ -57,7 +57,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'auto_notification' => array(
-				'br' =>		TRUE,
+				'br' =>		true,
 				'type' =>	'radio',
 				'value' =>	'boolean',
 				'args' =>	array(
@@ -69,7 +69,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'mp_notification' => array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' => 'boolean',
 				'args' =>	array(
@@ -79,7 +79,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'hidden' =>	array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' =>	'boolean',
 				'args' =>	array(
@@ -89,7 +89,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'avatar' =>	array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' => 'boolean',
 				'args' =>	array(
@@ -99,7 +99,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'sig' => array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' => 'boolean',
 				'args' =>	array(
@@ -109,7 +109,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'fscode' => array(
-				'br' => TRUE,
+				'br' => true,
 				'type' => 'checkbox',
 				'value' => 'binary',
 				'args' => array(
@@ -119,7 +119,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'img' => array(
-				'br' =>		TRUE,
+				'br' =>		true,
 				'type' =>	'checkbox',
 				'value' =>	'binary',
 				'args' =>	array(
@@ -129,7 +129,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'wysiwyg' => array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' =>	'boolean',
 				'args' =>	array(
@@ -139,7 +139,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'ajax' => array(
-				'br' =>		FALSE,
+				'br' =>		false,
 				'type' =>	'radio',
 				'value' =>	'boolean',
 				'args' =>	array(
@@ -149,7 +149,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'redirection' => array(
-				'br' =>		TRUE,
+				'br' =>		true,
 				'type' =>	'radio',
 				'value' =>	'binary',
 				'args' =>	array(
@@ -160,7 +160,7 @@ class Page_user_activate extends Fsb_model
 			),
 
 			'userlist' =>	array(
-				'br' =>		TRUE,
+				'br' =>		true,
 				'type' =>	'radio',
 				'value' =>	'boolean',
 				'args' =>	array(
@@ -204,7 +204,7 @@ class Page_user_activate extends Fsb_model
 			Fsb::$tpl->set_blocks('activate', array(
 				'NAME' =>		'u_activate_' . $key,
 				'LANG' =>		(Fsb::$session->lang('user_activate_' . $key)) ? Fsb::$session->lang('user_activate_' . $key) : $key,
-				'EXPLAIN' =>	(Fsb::$session->lang('user_activate_' . $key . '_explain')) ? Fsb::$session->lang('user_activate_' . $key . '_explain') : NULL,
+				'EXPLAIN' =>	(Fsb::$session->lang('user_activate_' . $key . '_explain')) ? Fsb::$session->lang('user_activate_' . $key . '_explain') : null,
 				'BR' =>			$value['br'],
 				'TYPE' =>		$value['type'],
 			));
@@ -214,7 +214,7 @@ class Page_user_activate extends Fsb_model
 				Fsb::$tpl->set_blocks('activate.form', array(
 					'VALUE' =>		$form_value,
 					'LANG' =>		$form_lang,
-					'CHECKED' =>	(($value['value'] == 'boolean' && Fsb::$session->data['u_activate_' . $key] == $form_value) || ($value['value'] == 'binary' && (Fsb::$session->data['u_activate_' . $key] & $form_value))) ? TRUE : FALSE,
+					'CHECKED' =>	(($value['value'] == 'boolean' && Fsb::$session->data['u_activate_' . $key] == $form_value) || ($value['value'] == 'binary' && (Fsb::$session->data['u_activate_' . $key] & $form_value))) ? true : false,
 				));
 			}
 		}

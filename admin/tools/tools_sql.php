@@ -333,7 +333,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_delete'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_delete' => TRUE));
+			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_delete'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_delete' => true));
 		}
 	}
 
@@ -359,7 +359,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_truncate'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_truncate' => TRUE));
+			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_truncate'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_truncate' => true));
 		}
 	}
 	
@@ -370,7 +370,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 * @param int $limit_begin Definit un point de depart pour l'affichage
 	 * @param int $limit_end Definit une limite pour l'affichage
 	 */
-	public function show_query_array($ary, $limit_begin = NULL, $limit_end = NULL)
+	public function show_query_array($ary, $limit_begin = null, $limit_end = null)
 	{
 		$colspan = 0;
 		$count = count($ary);
@@ -388,7 +388,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 			}
 
-			if ($limit_begin === NULL || ($i >= $limit_begin && $i < ($limit_begin + $limit_end)))
+			if (is_null($limit_begin) || ($i >= $limit_begin && $i < ($limit_begin + $limit_end)))
 			{
 				Fsb::$tpl->set_blocks('line', array());
 				foreach ($ary[$i] AS $key => $value)

@@ -95,7 +95,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('logs_list');
 
 		// Lecture des logs de la page
-		$logs = Log::read($this->logs[$this->module], $this->per_page, ($this->page - 1) * $this->per_page, '', ($this->module == 'user') ? TRUE : FALSE);
+		$logs = Log::read($this->logs[$this->module], $this->per_page, ($this->page - 1) * $this->per_page, '', ($this->module == 'user') ? true : false);
 
 		// Afficher la pagination ?
 		if ($logs['total'] / $this->per_page > 1)

@@ -10,7 +10,7 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '');
-define('FORUM', TRUE);
+define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
 /*
@@ -22,7 +22,7 @@ class Fsb_frame extends Fsb_model
 	protected $frame_page = 'index';
 
 	// Activation du GET automatique dans le lien de connexion
-	protected $frame_get_url = TRUE;
+	protected $frame_get_url = true;
 
 	/*
 	** Recupere la page demandee pour la pseudo frame
@@ -38,7 +38,7 @@ class Fsb_frame extends Fsb_model
 		// Si on est sur la page de connexion, on ne peut pas desactiver le forum
 		if (in_array($page, array('login', 'logout')))
 		{
-			define('CANT_DISABLE_BOARD', TRUE);
+			define('CANT_DISABLE_BOARD', true);
 		}
 		return ($page);
 	}
@@ -68,7 +68,7 @@ class Fsb_frame extends Fsb_model
 		{
 			return ;
 		}
-		define('HEADER_EXISTS', TRUE);
+		define('HEADER_EXISTS', true);
 
 		// Gestion UTF-8 pour les serveurs qui font n'importe quoi
 		Http::header('Content-Type', 'text/html; charset=UTF-8');
@@ -77,7 +77,7 @@ class Fsb_frame extends Fsb_model
 		Http::check_gzip();
 
 		// Session du membre
-		Fsb::$session->start('lg_forum_' . $this->frame_page, Http::request('frame') ? FALSE : TRUE);
+		Fsb::$session->start('lg_forum_' . $this->frame_page, Http::request('frame') ? false : true);
 
 		// Support du forum
 		if (Fsb::$mods->is_active('root_support') && $root_support = Http::request('root_support'))
@@ -88,8 +88,8 @@ class Fsb_frame extends Fsb_model
 		// Acces a la page de debugage interdite au membre
 		if (Fsb::$session->auth() < MODOSUP)
 		{
-			Fsb::$debug->debug_query = FALSE;
-			Fsb::$debug->show_output = TRUE;
+			Fsb::$debug->debug_query = false;
+			Fsb::$debug->show_output = true;
 		}
 
 		// On empeche la mise en cache des pages.
@@ -107,15 +107,15 @@ class Fsb_frame extends Fsb_model
 			Display::message('cant_prefetch_page');
 		}
 
-		// Si le membre a recu un nouveau message prive on repasse le flag a FALSE
+		// Si le membre a recu un nouveau message prive on repasse le flag a false
 		if (Fsb::$session->data['u_new_mp'])
 		{
 			Fsb::$db->update('users', array(
-				'u_new_mp' =>	FALSE,
+				'u_new_mp' =>	false,
 			), 'WHERE u_id = ' . Fsb::$session->id());
 
 			Fsb::$tpl->set_vars(array(
-				'HAVE_NEW_MP' =>		TRUE,
+				'HAVE_NEW_MP' =>		true,
 				'POPUP_CONTENT' =>		addslashes(sprintf(Fsb::$session->lang('mp_new_popup'), Fsb::$session->data['u_total_mp'])),
 				'U_REDIRECT_INBOX' =>	sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox'),
 			));
@@ -335,17 +335,17 @@ class Fsb_frame extends Fsb_model
 		$dst = date('I');
 		if (Fsb::$cfg->get('current_utc_dst') != $dst)
 		{
-			Fsb::$cfg->update('current_utc_dst', $dst, FALSE);
+			Fsb::$cfg->update('current_utc_dst', $dst, false);
 			Fsb::$cfg->update('default_utc_dst', $dst);
 			Fsb::$db->update('users', array(
 				'u_utc_dst' =>	$dst,
 			), 'WHERE u_utc_dst <> ' . $dst);
 		}
 
-		Fsb::$debug->end = microtime(true);
+		Fsb::$debug->end = microtime( true );
 		Fsb::$tpl->set_vars( array(
 			'U_LOGIN' =>			sid(ROOT . 'index.' . PHPEXT . '?p=login' . $get_url),
-			'U_LOGOUT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=logout', TRUE),
+			'U_LOGOUT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=logout', true),
 			'SITE_NAME' => 			htmlspecialchars(Fsb::$cfg->get('forum_name')),
 			'SITE_DESCRIPTION' =>	Fsb::$cfg->get('forum_description'),
 			'TAG_TITLE' =>			strip_tags($tag_title),

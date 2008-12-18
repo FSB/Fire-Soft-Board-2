@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur permettant d'avoir un avatar de differentes facons :
@@ -29,35 +29,35 @@ class Page_user_avatar extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $can_use_avatar = FALSE;
+	public $can_use_avatar = false;
 	
 	/**
 	 * Définit si l'utilisateur peut uploader un avatar
 	 *
 	 * @var bool
 	 */
-	public $can_upload_avatar = FALSE;
+	public $can_upload_avatar = false;
 	
 	/**
 	 * Définit si la gallerie d'avatar est activé
 	 *
 	 * @var bool
 	 */
-	public $can_use_gallery = FALSE;
+	public $can_use_gallery = false;
 	
 	/**
 	 * Définit si deux utilisateurs peuvent avoir le même avatar
 	 *
 	 * @var bool
 	 */
-	public $can_have_same_avatar = FALSE;
+	public $can_have_same_avatar = false;
 
 	/**
 	 * Doit redimensionner ?
 	 *
 	 * @var bool
 	 */
-	public $need_resize = FALSE;
+	public $need_resize = false;
 
 	/**
 	 * Gallerie d'avatar sellectionnee
@@ -114,14 +114,14 @@ class Page_user_avatar extends Fsb_model
 	public function __construct()
 	{
 		// On verifie si le membre peut utiliser un avatar
-		$this->can_use_avatar =			(Fsb::$session->data['u_can_use_avatar'] && Fsb::$cfg->get('avatar_can_use')) ? TRUE : FALSE;
-		$this->can_upload_avatar =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_upload')) ? TRUE : FALSE;
-		$this->can_use_gallery =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_use_gallery')) ? TRUE : FALSE;
-		$this->can_have_same_avatar =	($this->can_use_avatar && Fsb::$cfg->get('avatar_can_same')) ? TRUE : FALSE;
+		$this->can_use_avatar =			(Fsb::$session->data['u_can_use_avatar'] && Fsb::$cfg->get('avatar_can_use')) ? true : false;
+		$this->can_upload_avatar =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_upload')) ? true : false;
+		$this->can_use_gallery =		($this->can_use_avatar && Fsb::$cfg->get('avatar_can_use_gallery')) ? true : false;
+		$this->can_have_same_avatar =	($this->can_use_avatar && Fsb::$cfg->get('avatar_can_same')) ? true : false;
 	
 		if (!$this->can_use_gallery)
 		{
-			$this->gallery = NULL;
+			$this->gallery = null;
 		}
 		else if (is_dir(AVATAR_PATH . 'gallery'))
 		{
@@ -182,7 +182,7 @@ class Page_user_avatar extends Fsb_model
 			'U_AVATAR' =>			$u_avatar,
 			'AVATAR_EXPLAIN' =>		sprintf(Fsb::$session->lang('user_avatar_explain'), Fsb::$cfg->get('avatar_width'), Fsb::$cfg->get('avatar_height'), convert_size(Fsb::$cfg->get('avatar_weight'))),
 			'CONTENT' =>			Html::make_errstr($this->errstr),
-			'LIST_GALLERY' =>		Html::list_dir('gallery', $this->gallery, AVATAR_PATH . 'gallery/', array(), TRUE, '<option value="0">---</option>', 'onchange="location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=avatar&amp;gallery=\' + this.value') . '"'),
+			'LIST_GALLERY' =>		Html::list_dir('gallery', $this->gallery, AVATAR_PATH . 'gallery/', array(), true, '<option value="0">---</option>', 'onchange="location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=avatar&amp;gallery=\' + this.value') . '"'),
 			'PER_LINE' =>			$this->avatar_per_line,
 		));
 
@@ -237,7 +237,7 @@ class Page_user_avatar extends Fsb_model
 			if ($file[0] != '.' && in_array($ext, $allowed_ext))
 			{
 				Fsb::$tpl->set_blocks('avatar', array(
-					'IS_SELECTED' =>	(in_array($this->gallery . '/' . $file, $block_avatar)) ? TRUE : FALSE,
+					'IS_SELECTED' =>	(in_array($this->gallery . '/' . $file, $block_avatar)) ? true : false,
 					'IMG_NAME' =>		$this->gallery . '/' . $file,
 					'IMG' =>			AVATAR_PATH . 'gallery/' . $this->gallery . '/' . $file,
 				));
@@ -323,7 +323,7 @@ class Page_user_avatar extends Fsb_model
 			{
 				if ($gd->loaded)
 				{
-					$this->need_resize = TRUE;
+					$this->need_resize = true;
 					return ;
 				}
 				else

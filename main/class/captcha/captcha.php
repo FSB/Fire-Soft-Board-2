@@ -157,7 +157,7 @@ abstract class Captcha extends Fsb_model
 	 * 
 	 * @var bool
 	 */
-	protected $str_created = FALSE;
+	protected $str_created = false;
 
 	/**
 	 * Explications a afficher au pied de l'image
@@ -217,7 +217,7 @@ abstract class Captcha extends Fsb_model
 	public function create_str()
 	{
 		$this->set_str($this->random_str());
-		$this->str_created = TRUE;
+		$this->str_created = true;
 	}
 
 	/**
@@ -251,9 +251,9 @@ abstract class Captcha extends Fsb_model
 	 *
 	 * @param string $str Chaine par defaut
 	 */
-	protected function fill_data($str = NULL)
+	protected function fill_data($str = null)
 	{
-		if ($str === NULL)
+		if (is_null($str))
 		{
 			$str = $this->str;
 		}
@@ -284,7 +284,7 @@ abstract class Captcha extends Fsb_model
 			// Couleur
 			if (!isset($this->data[$i]['fontcolor']))
 			{
-				$this->data[$i]['fontcolor'] = NULL;
+				$this->data[$i]['fontcolor'] = null;
 			}
 		}
 	}
@@ -367,7 +367,7 @@ abstract class Captcha extends Fsb_model
 			if (($check_color[$this->color_level][1] == '<' && $color < $check_color[$this->color_level][0]) 
 				|| ($check_color[$this->color_level][1] == '>' && $color > $check_color[$this->color_level][0]))
 			{
-				$ok = TRUE;
+				$ok = true;
 			}
 		}
 		while (!$ok);
@@ -453,7 +453,7 @@ abstract class Captcha extends Fsb_model
 				$secret_word .= $letter;
 				$secret_word_data[$k++] = array(
 					'letter' =>		$letter,
-					'true' =>		($j) ? FALSE : TRUE,
+					'true' =>		($j) ? false : true,
 				);
 				$letter = $this->caracters{rand(0, strlen($this->caracters) - 1)};
 				$j++;

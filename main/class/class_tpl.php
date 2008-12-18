@@ -25,7 +25,7 @@ class Tpl extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $use_cache = TRUE;
+	public $use_cache = true;
 
 	/**
 	 * Contient toutes les informations dynamiques du template : variables, switchs et blocks
@@ -98,7 +98,7 @@ class Tpl extends Fsb_model
 	public function prepare_file($alias = 'main')
 	{
 		$this->data[$alias] = array(
-			'file' =>		NULL,
+			'file' =>		null,
 			'var' =>		array(),
 			'block' =>		array(),
 			'switch' =>		array(),
@@ -158,11 +158,11 @@ class Tpl extends Fsb_model
 			{
 				if (file_exists($config_tpl_dir . 'lang/' . Fsb::$session->data['u_language'] . '.php'))
 				{
-					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$session->data['u_language'] . '.php', true);
+					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$session->data['u_language'] . '.php',  true );
 				}
 				else if (file_exists($config_tpl_dir . 'lang/' . Fsb::$cfg->get('default_lang') . '.php'))
 				{
-					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$cfg->get('default_lang') . '.php', true);
+					Fsb::$session->load_lang($config_tpl_dir . 'lang/' . Fsb::$cfg->get('default_lang') . '.php',  true );
 				}
 			}
 		}
@@ -180,14 +180,14 @@ class Tpl extends Fsb_model
 	 * @param array $ary Liste des variables de templates avec en clef leur noms
 	 * @param unknown_type $alias Alias tu template
 	 */
-	public function set_vars($ary, $alias = NULL)
+	public function set_vars($ary, $alias = null)
 	{
 		if (!is_array($ary))
 		{
 			trigger_error('Tpl->set_vars :: Le premier argument doit etre un tableau', FSB_ERROR);
 		}
 
-		$current_alias = (($alias == NULL) ? $this->stack[$this->current_stack] : $alias);
+		$current_alias = (($alias == null) ? $this->stack[$this->current_stack] : $alias);
 		$this->data[$current_alias]['var'] = array_merge($this->data[$current_alias]['var'], $ary);
 	}
 
@@ -198,9 +198,9 @@ class Tpl extends Fsb_model
 	 * @param array $ary Variables pour ce block
 	 * @param string $alias Alias du template
 	 */
-	public function set_blocks($block, $ary = array(), $alias = NULL)
+	public function set_blocks($block, $ary = array(), $alias = null)
 	{
-		$current_alias = ($alias == NULL) ? $this->stack[$this->current_stack] : $alias;
+		$current_alias = ($alias == null) ? $this->stack[$this->current_stack] : $alias;
 		$explode = explode('.', $block);
 		$count = count($explode) - 1;
 
@@ -227,16 +227,16 @@ class Tpl extends Fsb_model
 		// LAST_ROW est une variable definissant s'il s'agit de la derniere ligne
 		//
 		$ary['ITERATOR'] = count($tmp[$explode[$i]]);
-		$ary['LAST_ROW'] = TRUE;
+		$ary['LAST_ROW'] = true;
 		if ($total = count($tmp[$explode[$i]]))
 		{
 			$ary['SIZEOF'] = &$tmp[$explode[$i]][0]['SIZEOF'];
-			$ary['FIRST_ROW'] = FALSE;
-			$tmp[$explode[$i]][$total - 1]['LAST_ROW'] = FALSE;
+			$ary['FIRST_ROW'] = false;
+			$tmp[$explode[$i]][$total - 1]['LAST_ROW'] = false;
 		}
 		else
 		{
-			$ary['FIRST_ROW'] = TRUE;
+			$ary['FIRST_ROW'] = true;
 		}
 		$tmp[$explode[$i]][] = $ary;
 		$tmp[$explode[$i]][0]['SIZEOF'] = $total + 1;
@@ -255,9 +255,9 @@ class Tpl extends Fsb_model
 	 * @param array $ary Variables pour le block
 	 * @param string $alias Alias du template
 	 */
-	public function update_blocks($block, $pos, $ary, $alias = NULL)
+	public function update_blocks($block, $pos, $ary, $alias = null)
 	{
-		$current_alias = ($alias == NULL) ? $this->stack[$this->current_stack] : $alias;
+		$current_alias = ($alias == null) ? $this->stack[$this->current_stack] : $alias;
 		$explode = explode('.', $block);
 		$count = count($explode) - 1;
 
@@ -298,9 +298,9 @@ class Tpl extends Fsb_model
 	 * @param string $name Nom du switch
 	 * @param string $alias Alias du template
 	 */
-	public function set_switch($name, $alias = NULL)
+	public function set_switch($name, $alias = null)
 	{
-		$this->data[(($alias == NULL) ? $this->stack[$this->current_stack] : $alias)]['switch'][$name] = TRUE;
+		$this->data[(($alias == null) ? $this->stack[$this->current_stack] : $alias)]['switch'][$name] = true;
 	}
 
 	/**
@@ -309,9 +309,9 @@ class Tpl extends Fsb_model
 	 * @param string $name Nom du switch
 	 * @param string $alias Alias du template
 	 */
-	public function unset_switch($name, $alias = NULL)
+	public function unset_switch($name, $alias = null)
 	{
-		unset($this->data[(($alias == NULL) ? $this->stack[$this->current_stack] : $alias)]['switch'][$name]);
+		unset($this->data[(($alias == null) ? $this->stack[$this->current_stack] : $alias)]['switch'][$name]);
 	}
 
 
@@ -321,7 +321,7 @@ class Tpl extends Fsb_model
 	 * @param string $alias Alias du template
 	 * @param string $keep_alias Si l'alias doit etre conserve ou change
 	 */
-	public function parse($alias = 'main', $keep_alias = FALSE)
+	public function parse($alias = 'main', $keep_alias = false)
 	{
 		if (!isset($this->data[$alias]))
 		{
@@ -374,7 +374,7 @@ class Tpl extends Fsb_model
 	public function get_current_var($str)
 	{
 		$str_block = '';
-		eval('$value = ' . $this->block2code($str, $str_block, TRUE) . ';');
+		eval('$value = ' . $this->block2code($str, $str_block, true) . ';');
 		return ($value);
 	}
 
@@ -384,9 +384,9 @@ class Tpl extends Fsb_model
 	 * @param string $alias Alias du template a compiler
 	 * @param string $content Contenu par defaut
 	 */
-	public function compile($alias = 'main', $content = NULL)
+	public function compile($alias = 'main', $content = null)
 	{
-		if ($content == NULL)
+		if ($content == null)
 		{
 			// Lecture du contenu du fichier
 			$filename = $this->data[$alias]['file'];
@@ -488,7 +488,7 @@ class Tpl extends Fsb_model
 		$block = $match[2];
 
 		$str_block = '';
-		$str = $this->block2code($block, $str_block, TRUE);
+		$str = $this->block2code($block, $str_block, true);
 		
 		if ($else == 'else')
 		{
@@ -509,7 +509,7 @@ class Tpl extends Fsb_model
 	 */
 	private function compile_block_scripting_vars($match)
 	{
-		$match[4] = TRUE;
+		$match[4] = true;
 		return ($this->compile_block_vars($match));
 	}
 
@@ -523,10 +523,10 @@ class Tpl extends Fsb_model
 	{
 		$block = substr($match[1], 0, -1);
 		$var = $match[3];
-		$scripting = (isset($match[4])) ? TRUE : FALSE;
+		$scripting = (isset($match[4])) ? true : false;
 
 		$str_block = '';
-		$str = $this->block2code($block, $str_block, FALSE) . "['$var']";
+		$str = $this->block2code($block, $str_block, false) . "['$var']";
 		if (!$scripting)
 		{
 			$code = "<?php echo @$str; ?>";
@@ -581,7 +581,7 @@ class Tpl extends Fsb_model
 	public function include_tpl($tpl_name)
 	{
 		$this->set_file($tpl_name, "tmp_$tpl_name");
-		$this->parse("tmp_$tpl_name", TRUE);
+		$this->parse("tmp_$tpl_name", true);
 	}
 
 	/**
@@ -668,7 +668,7 @@ class Tpl extends Fsb_model
  */
 function tpl_switch_exists($switch_name)
 {
-	return ((@Fsb::$tpl->data[Fsb::$tpl->alias]['switch'][$switch_name]) ? TRUE : FALSE);
+	return ((@Fsb::$tpl->data[Fsb::$tpl->alias]['switch'][$switch_name]) ? true : false);
 }
 
 /* EOF */

@@ -42,7 +42,7 @@ function prune_bad_data()
 			FROM ' . SQL_PREFIX . 'topics t
 			LEFT JOIN ' . SQL_PREFIX . 'posts p
 				ON t.t_first_p_id = p.p_id
-			WHERE p.p_id IS NULL';
+			WHERE p.p_id IS null';
 	$result = Fsb::$db->query($sql);
 	$idx = array();
 	while ($row = Fsb::$db->row($result))
@@ -63,7 +63,7 @@ function prune_bad_data()
 			FROM ' . SQL_PREFIX . 'posts p
 			LEFT JOIN ' . SQL_PREFIX . 'topics t
 				ON p.t_id = t.t_id
-			WHERE t.t_id IS NULL';
+			WHERE t.t_id IS null';
 	$result = Fsb::$db->query($sql);
 	$idx = array();
 	while ($row = Fsb::$db->row($result))

@@ -102,7 +102,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$lg_add_edit = Fsb::$session->lang('adm_censor_add');
 			$cs_word = '';
 			$cs_replace = '';
-			$cs_regexp = FALSE;
+			$cs_regexp = false;
 		}
 
 		Fsb::$tpl->set_switch('censor_add');

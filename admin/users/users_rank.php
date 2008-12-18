@@ -112,7 +112,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$rank_name = '';
 			$rank_img = '0';
 			$rank_quota = 0;
-			$rank_special = FALSE;
+			$rank_special = false;
 			$style_type = '';
 			$style_content = '';
 		}
@@ -130,7 +130,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'RANK_STYLE_CONTENT' =>		$style_content,
 			'RANK_STYLE_TYPE' =>		$style_type,
 		
-			'LIST_RANK' =>				Html::list_dir('rank_img', $rank_img, RANK_PATH, Upload::$img, FALSE, '<option value="0">-----</option>', 'id="select_rank_image" onchange="show_rank_image()"'),
+			'LIST_RANK' =>				Html::list_dir('rank_img', $rank_img, RANK_PATH, Upload::$img, false, '<option value="0">-----</option>', 'id="select_rank_image" onchange="show_rank_image()"'),
 			
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=users_rank&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
 		));

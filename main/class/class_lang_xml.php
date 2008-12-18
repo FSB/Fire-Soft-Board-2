@@ -203,7 +203,7 @@ class Lang_xml extends Fsb_model
 	public function import($path)
 	{
 		// Instance de la classe File
-		$file_builder = File::factory(FALSE);
+		$file_builder = File::factory(false);
 		$file_builder->connexion('', '', '', '', ROOT);
 
 		// On recupere le charset
@@ -215,7 +215,7 @@ class Lang_xml extends Fsb_model
 
 		// Instance de la classe Xml
 		$xml = new Xml();
-		$xml->load_file(ROOT . $path, FALSE);
+		$xml->load_file(ROOT . $path, false);
 
 		// On recupere le nom de la langue
 		$language = $xml->document->name[0]->getData();
@@ -300,11 +300,11 @@ class Lang_xml extends Fsb_model
 					// Pour la FAQ on ajoute un bout de code
 					if ($faq_data)
 					{
-						$content .= '$GLOBALS[\'faq_data\'] = ' . var_export($faq_data, TRUE) . ";\n\n";
+						$content .= '$GLOBALS[\'faq_data\'] = ' . var_export($faq_data, true) . ";\n\n";
 						$faq_data = array();
 					}
 
-					$content .= 'return (' . var_export($lg_data, TRUE) . ");\n\n";
+					$content .= 'return (' . var_export($lg_data, true) . ");\n\n";
 					$content .= "\n/* EOF */";
 					$file_builder->write($root . $filename . '.' . PHPEXT, $content);
 

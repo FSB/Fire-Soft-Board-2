@@ -53,7 +53,7 @@ class Password extends Fsb_model
 	 * @param bool $use_salt Si on concatene un grain au mot de passe
 	 * @return string
 	 */
-	public static function hash($password, $algorithm, $use_salt = TRUE)
+	public static function hash($password, $algorithm, $use_salt = true)
 	{
 		if (!$algorithm)
 		{
@@ -98,7 +98,7 @@ class Password extends Fsb_model
 		
 		do
 		{
-			$key = sha1($prefix . rand(0, time()) . microtime(true));
+			$key = sha1($prefix . rand(0, time()) . microtime( true ));
 			$sql = 'SELECT u_id
 					FROM ' . SQL_PREFIX . 'users_password
 					WHERE u_autologin_key = \'' . Fsb::$db->escape($key) . '\'';
@@ -220,9 +220,9 @@ class Password extends Fsb_model
 	{
 		if ($char >= 'a' && $char <= 'z')
 		{
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 	
 	/**
@@ -235,9 +235,9 @@ class Password extends Fsb_model
 	{
 		if ($char >= 'A' && $char <= 'Z')
 		{
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -250,9 +250,9 @@ class Password extends Fsb_model
 	{
 		if ($char >= '0' && $char <= '9')
 		{
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 }
 

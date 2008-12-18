@@ -11,7 +11,7 @@
 // On affiche ce module si la fonction est activee, et que l'utilisateur peut valider les evenements
 if (Fsb::$mods->is_active('calendar') && Fsb::$session->is_authorized('approve_event'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -67,7 +67,7 @@ class Page_modo_calendar extends Fsb_model
 				'c_id' =>			$row['c_id'],
 			);
 
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 			Fsb::$tpl->set_blocks('event', array(
 				'TITLE' =>		htmlspecialchars($row['c_title']),
 				'BEGIN' =>		Fsb::$session->print_date($row['c_begin']),

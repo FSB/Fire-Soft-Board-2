@@ -63,11 +63,11 @@ class Sql_interval extends Fsb_model
 		
 		// On decale les bordures
 		Fsb::$db->update($table, array(
-			'f_left' =>	array('f_left + 2', 'is_field' => TRUE),
+			'f_left' =>	array('f_left + 2', 'is_field' => true),
 		), 'WHERE f_left >= ' . $parent_data['f_right']);
 		
 		Fsb::$db->update($table, array(
-			'f_right' =>	array('f_right + 2', 'is_field' => TRUE),
+			'f_right' =>	array('f_right + 2', 'is_field' => true),
 		), 'WHERE f_right >= ' . $parent_data['f_right']);
 		
 		// Insertion du nouvel element
@@ -126,8 +126,8 @@ class Sql_interval extends Fsb_model
 			// On decale les bornes de la feuille actuelle de Sql_interval::MOVE, afin de le placer en zone
 			// temporaire et de ne pas entrer en conflit.
 			Fsb::$db->update($table, array(
-				'f_left' =>	array('f_left + ' . Sql_interval::MOVE, 'is_field' => TRUE),
-				'f_right' =>	array('f_right + ' . Sql_interval::MOVE, 'is_field' => TRUE),
+				'f_left' =>	array('f_left + ' . Sql_interval::MOVE, 'is_field' => true),
+				'f_right' =>	array('f_right + ' . Sql_interval::MOVE, 'is_field' => true),
 			), 'WHERE f_left >= ' . $current['f_left'] . ' AND f_right <= ' . $current['f_right']);
 
 			// Si on deplace le noeud vers la gauche ..
@@ -136,11 +136,11 @@ class Sql_interval extends Fsb_model
 				// On decale les feuilles situees entre la borne droite du parent - 1, et
 				// la borne gauche de la feuille deplacee.
 				Fsb::$db->update($table, array(
-					'f_left' =>	array('f_left + ' . $interval, 'is_field' => TRUE),
+					'f_left' =>	array('f_left + ' . $interval, 'is_field' => true),
 				), 'WHERE f_left > ' . ($parent_data['f_right'] - 1) . ' AND f_left < ' . $current['f_left']);
 				
 				Fsb::$db->update($table, array(
-					'f_right' =>	array('f_right + ' . $interval, 'is_field' => TRUE),
+					'f_right' =>	array('f_right + ' . $interval, 'is_field' => true),
 				), 'WHERE f_right > ' . ($parent_data['f_right'] - 1) . ' AND f_right < ' . $current['f_left']);
 				$new_interval = Sql_interval::MOVE + (($current['f_left'] - $parent_data['f_right']));
 			}
@@ -150,20 +150,20 @@ class Sql_interval extends Fsb_model
 				// On decale les feuilles situees entre la borne droite du parent - 1, et
 				// la borne gauche de la feuille deplacee.
 				Fsb::$db->update($table, array(
-					'f_left' =>	array('f_left - ' . $interval, 'is_field' => TRUE),
+					'f_left' =>	array('f_left - ' . $interval, 'is_field' => true),
 				), 'WHERE f_left > ' . $current['f_right'] . ' AND f_left < ' . $parent_data['f_right']);
 				
 				Fsb::$db->update($table, array(
-					'f_right' =>	array('f_right - ' . $interval, 'is_field' => TRUE),
+					'f_right' =>	array('f_right - ' . $interval, 'is_field' => true),
 				), 'WHERE f_right > ' . $current['f_right'] . ' AND f_right < ' . $parent_data['f_right']);
 				$new_interval = Sql_interval::MOVE - (($parent_data['f_right'] - 1 - $current['f_right']));
 			}
 
 			// On modifie l'interval et les donnees des feuilles deplacees
 			Fsb::$db->update($table, array(
-				'f_left' =>	array('f_left - ' . $new_interval, 'is_field' => TRUE),
-				'f_right' =>	array('f_right - ' . $new_interval, 'is_field' => TRUE),
-				'f_level' =>	array('f_level - ' . ($current['f_level'] - $parent_data['f_level'] - 1), 'is_field' => TRUE),
+				'f_left' =>	array('f_left - ' . $new_interval, 'is_field' => true),
+				'f_right' =>	array('f_right - ' . $new_interval, 'is_field' => true),
+				'f_level' =>	array('f_level - ' . ($current['f_level'] - $parent_data['f_level'] - 1), 'is_field' => true),
 				'f_cat_id' =>	$parent_data['f_cat_id'],
 			), 'WHERE f_left > ' . Sql_interval::MOVE);
 			$data['f_parent'] = $parent;
@@ -175,7 +175,7 @@ class Sql_interval extends Fsb_model
 		// On termine la transaction
 		Fsb::$db->transaction('commit');
 
-		return (($parent != $current['f_parent']) ? TRUE : FALSE);
+		return (($parent != $current['f_parent']) ? true : false);
 	}
 
 	/**
@@ -199,11 +199,11 @@ class Sql_interval extends Fsb_model
 			
 			// On redecale les bornes correctement
 			Fsb::$db->update($table, array(
-				'f_left' =>	array('f_left - ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => TRUE),
+				'f_left' =>	array('f_left - ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => true),
 			), 'WHERE f_left >= ' . $current['f_left']);
 			
 			Fsb::$db->update($table, array(
-				'f_right' =>	array('f_right - ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => TRUE),
+				'f_right' =>	array('f_right - ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => true),
 			), 'WHERE f_right >= ' . $current['f_right']);
 		}
 	}
@@ -250,20 +250,20 @@ class Sql_interval extends Fsb_model
 			{
 				// On decale la feuille actuelle en zone temporaire
 				Fsb::$db->update($table, array(
-					'f_left' =>		array('f_left + ' . Sql_interval::MOVE, 'is_field' => TRUE),
-					'f_right' =>	array('f_right + ' . Sql_interval::MOVE, 'is_field' => TRUE),
+					'f_left' =>		array('f_left + ' . Sql_interval::MOVE, 'is_field' => true),
+					'f_right' =>	array('f_right + ' . Sql_interval::MOVE, 'is_field' => true),
 				), 'WHERE f_left >= ' . $current['f_left'] . ' AND f_right <= ' . $current['f_right']);
 				
 				// On decale la feuille d'echange
 				Fsb::$db->update($table, array(
-					'f_left' =>		array('f_left ' . $swap_operator . ' ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => TRUE),
-					'f_right' =>	array('f_right ' . $swap_operator . ' ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => TRUE),
+					'f_left' =>		array('f_left ' . $swap_operator . ' ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => true),
+					'f_right' =>	array('f_right ' . $swap_operator . ' ' . ($current['f_right'] - $current['f_left'] + 1), 'is_field' => true),
 				), 'WHERE f_left >= ' . $swap['f_left'] . ' AND f_right <= ' . $swap['f_right']);
 				
 				// On replace la feuille courante dans sa nouvelle position
 				Fsb::$db->update($table, array(
-					'f_left' =>		array('f_left - ' . (Sql_interval::MOVE - (($swap['f_right'] - $swap['f_left'] + 1) * $current_sign)), 'is_field' => TRUE),
-					'f_right' =>	array('f_right - ' . (Sql_interval::MOVE - (($swap['f_right'] - $swap['f_left'] + 1) * $current_sign)), 'is_field' => TRUE),
+					'f_left' =>		array('f_left - ' . (Sql_interval::MOVE - (($swap['f_right'] - $swap['f_left'] + 1) * $current_sign)), 'is_field' => true),
+					'f_right' =>	array('f_right - ' . (Sql_interval::MOVE - (($swap['f_right'] - $swap['f_left'] + 1) * $current_sign)), 'is_field' => true),
 				), 'WHERE f_left > ' . Sql_interval::MOVE);
 			}
 		}
@@ -278,7 +278,7 @@ class Sql_interval extends Fsb_model
 	 * @param string $table Table concernee
 	 * @return array
 	 */
-	public static function get_childs($f_id, $include = TRUE, $cache = NULL, $table = 'forums')
+	public static function get_childs($f_id, $include = true, $cache = null, $table = 'forums')
 	{
 		if (!is_array($f_id))
 		{
@@ -316,7 +316,7 @@ class Sql_interval extends Fsb_model
 	 * @param string $table Table concernee
 	 * @return array
 	 */
-	public static function get_parents($f_id, $include = TRUE, $cache = NULL, $table = 'forums')
+	public static function get_parents($f_id, $include = true, $cache = null, $table = 'forums')
 	{
 		if (!is_array($f_id))
 		{

@@ -26,12 +26,12 @@ class Profil_fields_forum extends Profil_fields
 	 * @param int $field_type Type du champ de profil
 	 * @param string $field_name Nom du champ
 	 * @param int $u_id ID du membre, si elle est renseignee on recupere les informations dans sa table
-	 * @param bool $register_page TRUE si on est sur la page d'inscription
+	 * @param bool $register_page true si on est sur la page d'inscription
 	 */
-	public static function form($field_type, $field_name, $u_id = NULL, $register_page = FALSE)
+	public static function form($field_type, $field_name, $u_id = null, $register_page = false)
 	{
 		$data = array();
-		if ($u_id !== NULL)
+		if (!is_null($u_id))
 		{
 			// Donnees du membre
 			$sql = 'SELECT *
@@ -98,7 +98,7 @@ class Profil_fields_forum extends Profil_fields
 						Fsb::$tpl->set_blocks('field.list', array(
 							'VALUE' =>		htmlspecialchars($key),
 							'LANG' =>		$value,
-							'IS_SELECT' =>	($row['pf_html_type'] == self::MULTIPLE && in_array($key, $default_value)) ? TRUE : FALSE,
+							'IS_SELECT' =>	($row['pf_html_type'] == self::MULTIPLE && in_array($key, $default_value)) ? true : false,
 						));
 					}
 				break;
@@ -123,10 +123,10 @@ class Profil_fields_forum extends Profil_fields
 	 * @param string $field_name Nom du champ de profil
 	 * @param array $errstr Logs d'erreurs
 	 * @param int $u_id Si l'ID du membre est renseignee, on insere les donnees dans la base
-	 * @param bool $register_page TRUE si on est sur la page d'inscription
+	 * @param bool $register_page true si on est sur la page d'inscription
 	 * @return array Informations sur les champs 
 	 */
-	public static function validate($field_type, $field_name, &$errstr, $u_id = NULL, $register_page = FALSE)
+	public static function validate($field_type, $field_name, &$errstr, $u_id = null, $register_page = false)
 	{
 		// Liste des champs personalises
 		$sql = 'SELECT *
@@ -153,7 +153,7 @@ class Profil_fields_forum extends Profil_fields
 				$errstr[] = sprintf(Fsb::$session->lang('user_error_personal_textarea'), $info['maxlength'], String::parse_lang($row['pf_lang']), strlen($post_data[$key]));
 			}
 
-			if (is_array($errstr) && isset($info['regexp']) && trim($row['pf_regexp']) && !preg_match(Regexp::pattern($row['pf_regexp'], TRUE, 'i'), $post_data[$key]) && trim($post_data[$key]))
+			if (is_array($errstr) && isset($info['regexp']) && trim($row['pf_regexp']) && !preg_match(Regexp::pattern($row['pf_regexp'], true, 'i'), $post_data[$key]) && trim($post_data[$key]))
 			{
 				$errstr[] = sprintf(Fsb::$session->lang('user_error_personal_field'), $row['pf_lang']);
 			}
@@ -161,9 +161,9 @@ class Profil_fields_forum extends Profil_fields
 		Fsb::$db->free($result);
 
 		// Insertion dans la base de donnee, si aucune erreur
-		if ($u_id !== NULL && !$errstr && $post_data)
+		if (!is_null($u_id) && !$errstr && $post_data)
 		{
-			$post_data['u_id'] = array($u_id, TRUE);
+			$post_data['u_id'] = array($u_id, true);
 			Fsb::$db->insert('users_' . $field_name, $post_data, 'REPLACE');
 		}
 
@@ -194,7 +194,7 @@ class Profil_fields_forum extends Profil_fields
 			}
 
 			// On recupere la valeur du champ
-			$value = NULL;
+			$value = null;
 			if (isset($user_data[$field_name . '_' . $row['pf_id']]))
 			{
 				if ($user_data[$field_name . '_' . $row['pf_id']] || in_array($row['pf_html_type'], array(self::RADIO, self::SELECT, self::MULTIPLE)))
@@ -203,7 +203,7 @@ class Profil_fields_forum extends Profil_fields
 				}
 			}
 
-			if ($value !== NULL)
+			if (!is_null($value))
 			{
 				switch ($row['pf_html_type'])
 				{

@@ -17,7 +17,7 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', './');
-define('FORUM', TRUE);
+define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
 // Gestion UTF-8 pour les serveurs qui font n'importe quoi
@@ -26,7 +26,7 @@ Http::header('Content-Type', 'text/html; charset=UTF-8');
 // Pas de mise en cache
 Http::no_cache();
 
-Fsb::$session->start('', FALSE);
+Fsb::$session->start('', false);
 
 // Creation des evenements AJAX
 $ajax = new Ajax();
@@ -56,7 +56,7 @@ function ajax_check_email($email)
 	if ($email)
 	{
 		// Pas de verification DNS en AJAX, sinon la reponse est trop lente
-		if (!User::email_valid($email, FALSE))
+		if (!User::email_valid($email, false))
 		{
 			return ('invalid');
 		}
@@ -69,7 +69,7 @@ function ajax_check_email($email)
 			return ('valid');
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -91,7 +91,7 @@ function ajax_check_login($login)
 			return ('valid');
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -116,7 +116,7 @@ function ajax_check_nickname($nickname)
 		{
 			return ('used');
 		}
-		else if (($chars_error = User::nickname_valid($nickname)) !== TRUE)
+		else if (($chars_error = User::nickname_valid($nickname)) !== true)
 		{
 			return ($chars_error);
 		}
@@ -125,7 +125,7 @@ function ajax_check_nickname($nickname)
 			return ('valid');
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -153,7 +153,7 @@ function ajax_check_password($password)
 			return ('strong');
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -173,17 +173,17 @@ function ajax_edit_post($id)
 			WHERE p.p_id = ' . $id;
 	if (!$data = Fsb::$db->request($sql))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	if (!(Fsb::$session->is_authorized($data['f_id'], 'ga_edit') && Fsb::$session->id() == $data['u_id'] && $data['t_status'] == UNLOCK && $data['f_status'] == UNLOCK || Fsb::$session->is_authorized($data['f_id'], 'ga_moderator')))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	if ($data['p_map'] != 'classic')
 	{
-		return (NULL);
+		return (null);
 	}
 
 	$xml = new Xml;
@@ -214,24 +214,24 @@ function ajax_submit_post($id)
 			WHERE p.p_id = ' . $id;
 	if (!$data = Fsb::$db->request($sql))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	if (!(Fsb::$session->is_authorized($data['f_id'], 'ga_edit') && Fsb::$session->id() == $data['u_id'] && $data['t_status'] == UNLOCK && $data['f_status'] == UNLOCK || Fsb::$session->is_authorized($data['f_id'], 'ga_moderator')))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	// Edition du message
 	$_POST['post_map_description'] = str_replace('&#43;', '+', Http::request('post_map_description', 'post'));
-	$content = Map::build_map_content('classic', FALSE);
+	$content = Map::build_map_content('classic', false);
 
 	// Titre du sujet
 	$post_title = str_replace('&#43;', '+', Http::request('t_title', 'post'));
 
 	// Soumission du message
 	Send::edit_post($id, $content, Fsb::$session->id(), array(
-		'update_topic' =>	($data['t_first_p_id'] == $id) ? TRUE : FALSE,
+		'update_topic' =>	($data['t_first_p_id'] == $id) ? true : false,
 		't_title' =>		$post_title,
 		't_type' =>			$data['t_type'],
 		't_description' =>	$data['t_description'],
@@ -246,7 +246,7 @@ function ajax_submit_post($id)
 
 	// On regarde si on peut parser les FSBcode et les images dans le texte
 	$parser = new Parser();
-	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? true : false;
 
 	// Informations passees au parseur de message
 	$parser_info = array(
@@ -266,7 +266,7 @@ function ajax_submit_post($id)
 	$xml->document->appendChild($item);
 
 	$item = $xml->document->createElement('title');
-	$item->setData(Parser::title($post_title), FALSE);
+	$item->setData(Parser::title($post_title), false);
 	$xml->document->appendChild($item);
 
 	return ($xml->document->asValidXML());
@@ -289,17 +289,17 @@ function ajax_show_post($id)
 			WHERE p.p_id = ' . $id;
 	if (!$data = Fsb::$db->request($sql))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	if (!Fsb::$session->is_authorized($data['f_id'], 'ga_moderator') && $data['u_id'] != Fsb::$session->id())
 	{
-		return (NULL);
+		return (null);
 	}
 
 	// On regarde si on peut parser les FSBcode et les images dans le texte
 	$parser = new Parser();
-	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+	$parser->parse_html =		(Fsb::$cfg->get('activate_html') && $data['u_auth'] >= MODOSUP) ? true : false;
 
 	// Informations passees au parseur de message
 	$parser_info = array(
@@ -334,7 +334,7 @@ function ajax_quote_post($id)
 			WHERE p_id = ' . $id;
 	if (!$data = Fsb::$db->request($sql))
 	{
-		return (NULL);
+		return (null);
 	}
 
 	// Recuperation des donnees de la MAP et du message
@@ -349,7 +349,7 @@ function ajax_quote_post($id)
 
 	$content = '';
 	$xml = new Xml();
-	$xml->load_file(MAPS_PATH . $data['p_map'] . '.xml', TRUE);
+	$xml->load_file(MAPS_PATH . $data['p_map'] . '.xml', true);
 	foreach ($xml->document->body[0]->line AS $line)
 	{
 		$value = $post_data[$line->getAttribute('name')];
@@ -371,7 +371,7 @@ function ajax_quote_post($id)
 	// Generation de l'affichage
 	$xml = new Xml();
 	$xml->document->setTagName('content');
-	$xml->document->setData($content, FALSE);
+	$xml->document->setData($content, false);
 
 	return ($xml->document->asValidXML());
 }
@@ -394,7 +394,7 @@ function ajax_quote_mp($id)
 	$data = Fsb::$db->row($result);
 	if (!$data)
 	{
-		return (NULL);
+		return (null);
 	}
 	Fsb::$db->free($result);
 
@@ -446,7 +446,7 @@ function ajax_search_user($nickname)
 			return ($str);
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -459,7 +459,7 @@ function ajax_editor_text()
 	if (Fsb::$session->is_logged())
 	{
 		Fsb::$db->update('users', array(
-			'u_activate_wysiwyg' =>		TRUE,
+			'u_activate_wysiwyg' =>		true,
 		), 'WHERE u_id = ' . Fsb::$session->id());
 	}
 
@@ -477,7 +477,7 @@ function ajax_editor_wysiwyg()
 	if (Fsb::$session->is_logged())
 	{
 		Fsb::$db->update('users', array(
-			'u_activate_wysiwyg' =>		FALSE,
+			'u_activate_wysiwyg' =>		false,
 		), 'WHERE u_id = ' . Fsb::$session->id());
 	}
 

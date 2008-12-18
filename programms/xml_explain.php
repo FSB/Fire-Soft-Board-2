@@ -16,7 +16,7 @@ die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefic
 
 error_reporting(E_ALL);
 
-$id = (isset($_GET['id'])) ? $_GET['id'] : NULL;
+$id = (isset($_GET['id'])) ? $_GET['id'] : null;
 $data = array(
 	'map' =>		'../doc/maps.txt',
 	'mod' =>		'../doc/mods.txt',
@@ -190,12 +190,12 @@ class Xml_explain
 					$not_implemented = false;
 					if (strpos($info, '(!)') !== false)
 					{
-						$not_implemented = true;
+						$not_implemented =  true ;
 					}
 
 					$left .= '<li><a href="#row_' . $i . '">' . (($not_implemented) ? '! ' : '') . $tag . '</a></li>';
 
-					$open = true;
+					$open =  true ;
 					$right .= '<div class="container"><div id="row_' . $i . '" style="margin-left: ' . ($level * 30) . 'px" class="explain"><h2>&lt;' . $tag . (($end) ? ' /' : '') . '&gt;' . (($not_implemented) ? ' <span class="not_implemented">Non implemente</span>' : '') . '</h2>';
 					if ($contain)
 					{
@@ -234,7 +234,7 @@ class Xml_explain
 				$not_implemented = false;
 				if (strpos($attr, '(!)') !== false)
 				{
-					$not_implemented = true;
+					$not_implemented =  true ;
 					$attr = str_replace('(!)', '', $attr);
 				}
 				$str .= '<li><b>' . (($not_implemented) ? '(<span class="not_implemented">Non implemente</span>) ' : '') . $attr . ' ' . $value . '</b> : ' . htmlspecialchars($desc) . '</li>';

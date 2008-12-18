@@ -15,7 +15,7 @@
 ** supprimer le .HTACCESS du dossier upload).
 **
 ** Il est possible de limiter le telechargement des fichiers a certaines IP, en verifiant le REFERER
-** du client. Pour cela il faut passer la propriete $this->check_referer sur TRUE, et il faut ajout les
+** du client. Pour cela il faut passer la propriete $this->check_referer sur true, et il faut ajout les
 ** listes d'IP dans la proriete $this->ip. Par exemple :
 **		public $ip_allow = array('127.0.0.1', '127.0.0.*', etc...);
 ** On peut aussi interdire des IP, par exemple :
@@ -27,12 +27,12 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = FALSE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = false;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
-	// A mettre sur TRUE pour la verification des IP
-	public $check_referer = FALSE;
+	// A mettre sur true pour la verification des IP
+	public $check_referer = false;
 
 	// Liste des IP autorisees
 	public $ip_allow = array('127.0.0.1');
@@ -74,19 +74,19 @@ class Fsb_frame_child extends Fsb_frame
 		if (!isset($_GET['nocount']))
 		{
 			Fsb::$db->update('upload', array(
-				'upload_total' =>	array('upload_total + 1', 'is_field' => TRUE),
+				'upload_total' =>	array('upload_total + 1', 'is_field' => true),
 			), 'WHERE upload_id = ' . $id);
 
 			// S'il s'agit d'une image, on force son telechargement. Pour des raisons de compatibilite
 			// avec les anciennes version, on se base sur un timestamp.
-			if (strpos($row['upload_mimetype'], 'image/') !== FALSE && $row['upload_time'] > 1197386270)
+			if (strpos($row['upload_mimetype'], 'image/') !== false && $row['upload_time'] > 1197386270)
 			{
 				$row['upload_mimetype'] = 'application/octetstream';
 			}
 		}
 
 		// On impose le type mime application/octetstream pour les fichiers qui ne sont pas des images
-		if (strpos($row['upload_mimetype'], 'image/') === FALSE || $row['upload_mimetype'] == 'application/octet-stream')
+		if (strpos($row['upload_mimetype'], 'image/') === false || $row['upload_mimetype'] == 'application/octet-stream')
 		{
 			$row['upload_mimetype'] = 'application/octetstream';
 		}
@@ -100,7 +100,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function check_ip()
 	{
-		$referer = (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) ? @parse_url($_SERVER['HTTP_REFERER']) : NULL;
+		$referer = (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) ? @parse_url($_SERVER['HTTP_REFERER']) : null;
 		if (!$referer)
 		{
 			Display::message('not_allowed_to_download');
@@ -127,7 +127,7 @@ class Fsb_frame_child extends Fsb_frame
 			// On verifie si l'IP est autorisee
 			if ($this->ip_allow)
 			{
-				$allow = FALSE;
+				$allow = false;
 				foreach ($list_ip AS $ip)
 				{
 					if ($ip)
@@ -136,7 +136,7 @@ class Fsb_frame_child extends Fsb_frame
 						{
 							if (String::is_matching($allowed_ip, $ip))
 							{
-								$allow = TRUE;
+								$allow = true;
 								break 2;
 							}
 						}

@@ -11,7 +11,7 @@
 // On affiche ce module si le membre a le droit d'editer des utilisateurs
 if (Fsb::$session->is_authorized('auth_edit_user'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -28,7 +28,7 @@ class Page_modo_user extends Fsb_model
 	public $userdata = array();
 
 	// Peut faire de la grosse moderation ?
-	public $edit_extra = FALSE;
+	public $edit_extra = false;
 
 	/*
 	** Constructeur
@@ -217,7 +217,7 @@ class Page_modo_user extends Fsb_model
 			$update_array['u_nickname'] = $this->data['new_nickname'];
 
 			// On renomme le membre
-			User::rename($this->id, $update_array['u_nickname'], FALSE);
+			User::rename($this->id, $update_array['u_nickname'], false);
 		}
 
 		if ($this->edit_extra)
@@ -267,7 +267,7 @@ class Page_modo_user extends Fsb_model
 			}
 
 			// Activation du membre
-			if (Http::request('u_activated', 'post') !== NULL && $this->userdata['u_auth'] < ADMIN)
+			if (!is_null(Http::request('u_activated', 'post')) && $this->userdata['u_auth'] < ADMIN)
 			{
 				$update_array['u_activated'] = intval(Http::request('u_activated', 'post'));
 
@@ -345,7 +345,7 @@ class Page_modo_user extends Fsb_model
 		{
 			Display::confirmation(Fsb::$session->lang('modo_user_delete_confirm'), 'index.' . PHPEXT . '?p=modo&amp;module=user', array(
 				'id' =>				$this->id,
-				'submit_user' =>	TRUE,
+				'submit_user' =>	true,
 				'delete_type' =>	$delete_type,
 				'ban_username' =>	Http::request('ban_username'),
 				'ban_email' =>		Http::request('ban_email'),
@@ -360,13 +360,13 @@ class Page_modo_user extends Fsb_model
 	{
 		if (Http::request('ban_username'))
 		{
-			Moderation::ban('login', $this->userdata['u_nickname'], '', 0, FALSE);
+			Moderation::ban('login', $this->userdata['u_nickname'], '', 0, false);
 			Log::add(Log::ADMIN, 'ban_log_add_login', $this->userdata['u_nickname']);
 		}
 
 		if (Http::request('ban_email'))
 		{
-			Moderation::ban('mail', $this->userdata['u_email'], '', 0, FALSE);
+			Moderation::ban('mail', $this->userdata['u_email'], '', 0, false);
 			Log::add(Log::ADMIN, 'ban_log_add_mail', $this->userdata['u_email']);
 		}
 	}

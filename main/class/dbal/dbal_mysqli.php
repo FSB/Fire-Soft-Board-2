@@ -22,30 +22,30 @@ class Dbal_mysqli extends Dbal
 	/**
 	 * @see Dbal::factory()
 	 */
-	public function __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
+	public function __construct($server, $login, $pass, $db, $port = null, $use_cache = true)
 	{
 		$this->use_cache = $use_cache;
 		$this->mysqli = new mysqli($server, $login, $pass, $db, $port);
-		$port = (!trim($port)) ? NULL : $port;
+		$port = (!trim($port)) ? null : $port;
 
 		if (mysqli_connect_errno())
 		{
-			$this->id = NULL;
+			$this->id = null;
 			return ;
 		}
-		$this->id = TRUE;
+		$this->id = true;
 
 		// Ce que peut faire MySQL
-		$this->can_use_explain = TRUE;
-		$this->can_use_replace = TRUE;
-		$this->can_use_multi_insert = TRUE;
-		$this->can_use_truncate = TRUE;
+		$this->can_use_explain = true;
+		$this->can_use_replace = true;
+		$this->can_use_multi_insert = true;
+		$this->can_use_truncate = true;
 	}
 
 	/**
 	 * @see Dbal::_query()
 	 */
-	public function _query($sql, $buffer = TRUE)
+	public function _query($sql, $buffer = true)
 	{
 		if (!$result = $this->mysqli->query($sql))
 		{
@@ -119,7 +119,7 @@ class Dbal_mysqli extends Dbal
 	/**
 	 * @see Dbal::field_type()
 	 */
-	public function field_type($result, $field, $table = NULL)
+	public function field_type($result, $field, $table = null)
 	{
 		if (!isset($this->cache_field_type[$table]))
 		{
@@ -135,7 +135,7 @@ class Dbal_mysqli extends Dbal
 	/**
 	 * @see Dbal::get_field_type()
 	 */
-	public function get_field_type($result, $field, $table = NULL)
+	public function get_field_type($result, $field, $table = null)
 	{
 		$field_type = $this->field_type($result, $field, $table);
 		if (!$field_type)
@@ -158,7 +158,7 @@ class Dbal_mysqli extends Dbal
 	/**
 	 * @see Dbal::list_tables()
 	 */
-	public function list_tables($limit = TRUE)
+	public function list_tables($limit = true)
 	{
 		$tables = array();
 		$sql = 'SHOW TABLES';
@@ -216,9 +216,9 @@ class Dbal_mysqli extends Dbal
 			case 'begin' :
 				if (!$this->in_transaction)
 				{
-					$this->mysqli->autocommit(FALSE);
+					$this->mysqli->autocommit(false);
 				}
-				$this->in_transaction = TRUE;
+				$this->in_transaction = true;
 			break;
 
 			case 'commit' :
@@ -226,7 +226,7 @@ class Dbal_mysqli extends Dbal
 				{
 					$this->mysqli->commit();
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 
 			case 'rollback' :
@@ -234,7 +234,7 @@ class Dbal_mysqli extends Dbal
 				{
 					$this->mysqli->rollback();
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 		}
 	}

@@ -50,7 +50,7 @@ class Page_portail_news extends Fsb_model
 				);
 
 				// Parse du message
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 				$text = $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 
 				Fsb::$tpl->set_blocks('news', array(
@@ -60,7 +60,7 @@ class Page_portail_news extends Fsb_model
 					'NB_COMMENTS' =>		sprintf(String::plural('pm_total_comment', $row['t_total_post'] - 1), $row['t_total_post'] - 1), 
 					'POST_AT' =>			Fsb::$session->print_date($row['p_time']),
 					'CAN_REPLY' =>			((Fsb::$session->is_authorized($row['f_id'], 'ga_answer_' . $GLOBALS['_topic_type'][$row['t_type']])
-			&& (($row['t_status'] != LOCK && $row['f_status'] != LOCK) || Fsb::$session->is_authorized($row['f_id'], 'ga_moderator')))) ? TRUE : FALSE,
+			&& (($row['t_status'] != LOCK && $row['f_status'] != LOCK) || Fsb::$session->is_authorized($row['f_id'], 'ga_moderator')))) ? true : false,
 
 					'U_COMMENT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=reply&amp;id=' . $row['t_id']),
 				));

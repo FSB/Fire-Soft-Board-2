@@ -107,11 +107,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$separator = FALSE;
+			$separator = false;
 			if (!isset($have_separator) && $row['g_type'] != GROUP_SPECIAL)
 			{
-				$separator = TRUE;
-				$have_separator = TRUE;
+				$separator = true;
+				$have_separator = true;
 			}
 
 			Fsb::$tpl->set_blocks('group', array(
@@ -122,7 +122,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'SEPARATOR' =>		$separator,
 
 				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=edit&amp;id=' . $row['g_id']),
-				'U_DELETE' =>		($row['g_type'] != GROUP_SPECIAL) ? sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=delete&amp;id=' . $row['g_id']) : NULL,
+				'U_DELETE' =>		($row['g_type'] != GROUP_SPECIAL) ? sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=delete&amp;id=' . $row['g_id']) : null,
 			));
 		}
 		Fsb::$db->free($result);
@@ -172,9 +172,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['g_desc'] = '';
 			$this->data['g_modo'] = '';
 			$this->data['g_color'] = '';
-			$this->data['g_hidden'] = FALSE;
-			$this->data['g_open'] = FALSE;
-			$this->data['g_online'] = TRUE;
+			$this->data['g_hidden'] = false;
+			$this->data['g_open'] = false;
+			$this->data['g_online'] = true;
 			$this->data['g_rank'] = 0;
 			$this->data['g_type'] = GROUP_NORMAL;
 		}
@@ -216,7 +216,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'STYLE_TYPE_NONE' =>	(!$getstyle) ? 'checked="checked"' : '',
 			'STYLE_TYPE_COLOR' =>	($style_type == 'style') ? 'checked="checked"' : '',
 			'STYLE_TYPE_CLASS' =>	($style_type == 'class') ? 'checked="checked"' : '',
-			'GROUP_VISIBLE' =>		($this->data['g_hidden'] != GROUP_HIDDEN) ? TRUE : FALSE,
+			'GROUP_VISIBLE' =>		($this->data['g_hidden'] != GROUP_HIDDEN) ? true : false,
 			'GROUP_OPEN' =>			$this->data['g_open'],
 			'GROUP_ONLINE' =>		$this->data['g_online'],
 			'ERRSTR' =>				Html::make_errstr($this->errstr),
@@ -367,7 +367,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		// Recherche d'un membre ?
 		$errstr = '';
-		$search_data = NULL;
+		$search_data = null;
 		if (($nickname = Http::request('search_user', 'post')) && Http::request('submit_search_user', 'post'))
 		{
 			$sql = 'SELECT u_id

@@ -117,13 +117,13 @@ class Display extends Fsb_model
 				// Message d'information
 				Fsb::$tpl->set_file('error_handler.html');
 				Fsb::$tpl->set_vars(array(
-					'HANDLER_USE_FOOTER' =>	TRUE,
+					'HANDLER_USE_FOOTER' =>	true,
 					'CONTENT' =>			(Fsb::$session->lang($errstr)) ? Fsb::$session->lang($errstr) : $errstr,
 				));
 
-				$GLOBALS['_show_page_header_nav'] = TRUE;
-				$GLOBALS['_show_page_footer_nav'] = FALSE;
-				$GLOBALS['_show_page_stats'] = FALSE;
+				$GLOBALS['_show_page_header_nav'] = true;
+				$GLOBALS['_show_page_footer_nav'] = false;
+				$GLOBALS['_show_page_stats'] = false;
 
 				if (Fsb::$frame)
 				{
@@ -332,7 +332,7 @@ class Display extends Fsb_model
 			'FTP_LOGIN' =>		$ftp_login,
 			'FTP_PORT' =>		$ftp_port,
 			'FTP_PATH' =>		$ftp_path,
-			'FTP_REMIND' =>		(is_array($cookie)) ? TRUE : FALSE,
+			'FTP_REMIND' =>		(is_array($cookie)) ? true : false,
 
 			'U_ACTION' =>		sid(((defined('FORUM')) ? ROOT : '') . 'index.' . PHPEXT . '?' . htmlspecialchars($_SERVER['QUERY_STRING'])),
 		));
@@ -344,12 +344,12 @@ class Display extends Fsb_model
 	/**
 	 * Genere l'affichage des FSBcodes
 	 *
-	 * @param bool $in_sig TRUE si on est dans l'edition de signature
+	 * @param bool $in_sig true si on est dans l'edition de signature
 	 * @param string $where Clause WHERE alternative
 	 */
-	public static function fsbcode($in_sig = FALSE, $where = NULL)
+	public static function fsbcode($in_sig = false, $where = null)
 	{
-		if ($where === NULL)
+		if (is_null($where))
 		{
 			$where = 'WHERE fsbcode_activated' . (($in_sig) ? '_sig' : '') . ' = 1 AND fsbcode_menu = 1';
 		}
@@ -401,7 +401,7 @@ class Display extends Fsb_model
 					'LANG' =>		(Fsb::$session->lang('fsbcode_' . $code)) ? Fsb::$session->lang('fsbcode_' . $code) : $code,
 				));
 
-				$style = NULL;
+				$style = null;
 				foreach (explode("\n", $list) AS $i => $line)
 				{
 					$line = trim($line);
@@ -434,10 +434,10 @@ class Display extends Fsb_model
 						ON sc.cat_id = s.smiley_cat
 					ORDER BY sc.cat_order, s.smiley_order';
 		$result = Fsb::$db->query($sql, 'smilies_');
-		$last = NULL;
+		$last = null;
 		while ($row = Fsb::$db->row($result))
 		{
-			if ($last === NULL || $row['cat_id'] != $last['cat_id'])
+			if (is_null($last) || $row['cat_id'] != $last['cat_id'])
 			{
 				Fsb::$tpl->set_blocks('smiley_cat', array(
 					'CAT_ID' =>		$row['cat_id'],
@@ -445,7 +445,7 @@ class Display extends Fsb_model
 				));
 			}
 
-			if ($row['smiley_id'] !== NULL)
+			if (!is_null($row['smiley_id']))
 			{
 				Fsb::$tpl->set_blocks('smiley_cat.smiley', array(
 					'URL' =>		substr(SMILEY_PATH, strlen(ROOT)) . addslashes($row['smiley_name']),
@@ -485,7 +485,7 @@ class Display extends Fsb_model
 						's_forum_access' =>		Fsb::$session->data['s_forum_access'] . ((Fsb::$session->data['s_forum_access']) ? ',' : '') . $f_id,
 					), 'WHERE s_sid = \'' . Fsb::$db->escape(Fsb::$session->sid) . '\'');
 
-					return (TRUE);
+					return (true);
 				}
 
 				// Mot de passe incorect ...
@@ -498,12 +498,12 @@ class Display extends Fsb_model
 				'U_ACTION' =>		sid($action),
 			));
 
-			return (FALSE);
+			return (false);
 		}
 		else
 		{
 			// Acces autorise
-			return (TRUE);
+			return (true);
 		}
 	}
 
@@ -522,7 +522,7 @@ class Display extends Fsb_model
 		{
 			Fsb::$tpl->set_blocks('module_header', array(
 				'WIDTH' =>			$width,
-				'SELECTED' =>		($module == $current_module) ? TRUE : FALSE,
+				'SELECTED' =>		($module == $current_module) ? true : false,
 				'URL' =>			sid($url . '&amp;module=' . $module),
 				'NAME' =>			Fsb::$session->lang($prefix_lang . $module),
 			));
@@ -546,7 +546,7 @@ class Display extends Fsb_model
 		{
 			Fsb::$tpl->set_switch('show_menu_panel');
 			Fsb::$tpl->set_blocks('module', array(
-				'IS_SELECT' =>	($box == $box_name) ? TRUE : FALSE,
+				'IS_SELECT' =>	($box == $box_name) ? true : false,
 				'NAME' =>		Fsb::$session->lang('mp_box_' . $box_name),
 				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $box_name),
 			));

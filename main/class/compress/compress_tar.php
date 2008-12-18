@@ -50,7 +50,7 @@ class Compress_tar extends Fsb_model
 	public function __construct($file, $type = '')
 	{
 		$type = (!$type) ? $file : $type;
-		$this->isgz = (strpos($type, '.tar.gz') !== false || strpos($type, '.tgz') !== false) ? true : false;
+		$this->isgz = (strpos($type, '.tar.gz') !== false || strpos($type, '.tgz') !== false) ?  true  : false;
 
 		$this->file = &$file;
 	}
@@ -122,7 +122,7 @@ class Compress_tar extends Fsb_model
 
 		$data = file_get_contents(ROOT . $name);
 		$stat = stat(ROOT . $name);
-		$this->wrote = true;
+		$this->wrote =  true ;
 
 		$typeflag = ($is_dir) ? '5' : '';
 

@@ -57,7 +57,7 @@ class Tree extends Fsb_model
 		
 		$this->data[$id]->parents = $this->data[$id]->getParents();
 		
-		if ($this->document === null)
+		if (is_null($this->document))
 		{
 			$this->document = &$this->data[$parent];
 		}
@@ -72,6 +72,18 @@ class Tree extends Fsb_model
 	public function update_item($id, $data = null)
 	{
 		$this->data[$id]->data = $data;
+	}
+	
+	/**
+	 * Ajoute des informations au forum en gardant les anciennes
+	 *
+	 * @param int $id ID du forum
+	 * @param array $data Informations a ajouter
+	 */
+	public function merge_item($id, $data)
+	{
+		$data = array_merge($this->getByID($id)->data, $data);
+		$this->update_item($id, $data);
 	}
 	
 	/**
@@ -91,17 +103,23 @@ class Tree extends Fsb_model
 	 * @param Tree_node $node
 	 * @param int $level
 	 */
-	public function debug($node = null, $level = 0)
+	public function debug($node = null, $level = 0, $data = array())
 	{
-		if ($node === null)
+		if (is_null($node))
 		{
 			$node = $this->document;
 		}
 		
-		echo str_repeat('---', $level) . ' [' . $node->id . ']<br />';
+		echo str_repeat('---', $level) . ' [' . $node->id . ']';
+		foreach ((array) $data AS $k)
+		{
+			echo '[' . $k . '=' . $node->get($k) . ']';
+		}
+		echo '<br />';
+
 		foreach ($node->children AS $child)
 		{
-			$this->debug($child, $level + 1);
+			$this->debug($child, $level + 1, $data);
 		}
 	}
 }
@@ -167,7 +185,7 @@ class Tree_node extends Fsb_model
 		if ($this->parent)
 		{
 			$p = $this->parent;
-			while (true)
+			while ( true )
 			{
 				$parents[] = $p->id;
 				if (!$p->parent)
@@ -182,10 +200,20 @@ class Tree_node extends Fsb_model
 	}
 	
 	/**
+	 * Assigne une information
+	 *
+	 * @param string $key
+	 */
+	public function set($key, $value)
+	{
+		$this->data[$key] = $value;
+	}
+	
+	/**
 	 * Recupere une information
 	 *
 	 * @param string $key
-	 * @return unknown mixed
+	 * @return mixed
 	 */
 	public function get($key)
 	{

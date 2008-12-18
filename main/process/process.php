@@ -15,10 +15,10 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../../');
-define('FORUM', TRUE);
+define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
-$register_shutdown = (function_exists('register_shutdown_function')) ? TRUE : FALSE;
+$register_shutdown = (function_exists('register_shutdown_function')) ? true : false;
 
 $sql = 'SELECT *
 		FROM ' . SQL_PREFIX . 'process';
@@ -32,7 +32,7 @@ while ($row = Fsb::$db->row($result))
 		$update_id[] = $row['process_id'];
 
 		// On execute la fonction
-		$use_register_shutdown = TRUE;
+		$use_register_shutdown = true;
 		fsb_import('process_' . $function);
 		if ($register_shutdown && $use_register_shutdown)
 		{

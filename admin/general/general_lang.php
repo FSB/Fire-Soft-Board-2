@@ -62,7 +62,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		// On recupere le language
 		$this->language = Http::request('language');
-		if ($this->language == NULL || !is_dir(ROOT . 'lang/' . $this->language))
+		if ($this->language == null || !is_dir(ROOT . 'lang/' . $this->language))
 		{
 			$this->language = Fsb::$cfg->get('default_lang');
 		}
@@ -135,7 +135,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'SEARCH' =>			$this->search,
 			'SEARCH_TYPE_K' =>	($this->search_type == 'key') ? 'checked="checked"' : '',
 			'SEARCH_TYPE_V' =>	($this->search_type == 'value') ? 'checked="checked"' : '',
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=general_lang'),
 		));
@@ -277,10 +277,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 				else if (!isset($tmp_lg[$match[1]]) || $tmp_lg[$match[1]] != stripslashes($value))
 				{
 					Fsb::$db->insert('langs', array(
-						'lang_name' =>		array($this->language, TRUE),
-						'lang_key' =>		array($match[1], TRUE),
+						'lang_name' =>		array($this->language, true),
+						'lang_key' =>		array($match[1], true),
 						'lang_value' =>		$value,
-					), 'REPLACE', TRUE);
+					), 'REPLACE', true);
 				}
 			}
 		}
@@ -310,8 +310,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		if ($key)
 		{
 			Fsb::$db->insert('langs', array(
-				'lang_name' =>		array($this->language, TRUE),
-				'lang_key' =>		array($key, TRUE),
+				'lang_name' =>		array($this->language, true),
+				'lang_key' =>		array($key, true),
 				'lang_value' =>		Http::request('add_value', 'post'),
 			), 'REPLACE');
 			Fsb::$db->destroy_cache('langs_');
@@ -346,7 +346,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('adm_lang_refresh_confirm'), 'index.' . PHPEXT . '?p=general_lang', array('submit_refresh' => TRUE));
+			Display::confirmation(Fsb::$session->lang('adm_lang_refresh_confirm'), 'index.' . PHPEXT . '?p=general_lang', array('submit_refresh' => true));
 		}
 	}
 
@@ -402,7 +402,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				// On recupere le fichier compresse
 				$compress = new Compress('.' . $ext);
 				$compress->add_file('lang/' . $this->language . '/', 'lang/');
-				$content = $compress->write(TRUE);
+				$content = $compress->write(true);
 			break;
 
 			case 'xml' :
@@ -426,7 +426,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('lang_mail');
 		Fsb::$tpl->set_vars(array(
 			'LIST_LANG' =>		Html::list_langs('language', $this->language),
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 		));
 
 		// Liste des Emails pour la langue
@@ -598,20 +598,20 @@ class Fsb_frame_child extends Fsb_admin_frame
 				{
 					$key = '_fsb_faq_[' . $section_name . '][' . $item_name . '][question]';
 					Fsb::$db->insert('langs', array(
-						'lang_name' =>		array($this->language, TRUE),
-						'lang_key' =>		array($key, TRUE),
+						'lang_name' =>		array($this->language, true),
+						'lang_key' =>		array($key, true),
 						'lang_value' =>		$item['question'],
-					), 'REPLACE', TRUE);
+					), 'REPLACE', true);
 				}
 
 				if (!isset($GLOBALS['faq_data'][$section_name][$item_name]['answer']) || $this->ln($item['answer']) != $this->ln($GLOBALS['faq_data'][$section_name][$item_name]['answer']))
 				{
 					$key = '_fsb_faq_[' . $section_name . '][' . $item_name . '][answer]';
 					Fsb::$db->insert('langs', array(
-						'lang_name' =>		array($this->language, TRUE),
-						'lang_key' =>		array($key, TRUE),
+						'lang_name' =>		array($this->language, true),
+						'lang_key' =>		array($key, true),
 						'lang_value' =>		$item['answer'],
-					), 'REPLACE', TRUE);
+					), 'REPLACE', true);
 				}
 			}
 		}
@@ -635,14 +635,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 		if ($question)
 		{
 			Fsb::$db->insert('langs', array(
-				'lang_name' =>		array($this->language, TRUE),
-				'lang_key' =>		array('_fsb_faq_[' . $section . '][' . $hash . '][question]', TRUE),
+				'lang_name' =>		array($this->language, true),
+				'lang_key' =>		array('_fsb_faq_[' . $section . '][' . $hash . '][question]', true),
 				'lang_value' =>		$question,
 			), 'REPLACE');
 
 			Fsb::$db->insert('langs', array(
-				'lang_name' =>		array($this->language, TRUE),
-				'lang_key' =>		array('_fsb_faq_[' . $section . '][' . $hash . '][answer]', TRUE),
+				'lang_name' =>		array($this->language, true),
+				'lang_key' =>		array('_fsb_faq_[' . $section . '][' . $hash . '][answer]', true),
 				'lang_value' =>		$answer,
 			), 'REPLACE');
 			Fsb::$db->destroy_cache('langs_');

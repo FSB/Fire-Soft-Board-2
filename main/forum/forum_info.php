@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	public function main()
 	{
@@ -34,7 +34,7 @@ class Fsb_frame_child extends Fsb_frame
 		foreach ($list AS $item)
 		{
 			Fsb::$tpl->set_blocks('module', array(
-				'IS_SELECT' =>	($this->module == $item) ? TRUE : FALSE,
+				'IS_SELECT' =>	($this->module == $item) ? true : false,
 				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=info&amp;module=' . $item),
 				'NAME' =>		Fsb::$session->lang('info_module_' . $item),
 			));
@@ -136,7 +136,7 @@ class Fsb_frame_child extends Fsb_frame
 					AND u_id <> ' . VISITOR_ID . '
 				ORDER BY u_auth DESC, u_nickname';
 		$result = Fsb::$db->query($sql);
-		$a = NULL;
+		$a = null;
 		while ($row = Fsb::$db->row($result))
 		{
 			if ($a !== $row['u_auth'])

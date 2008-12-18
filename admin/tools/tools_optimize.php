@@ -94,7 +94,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		// Variables
 		Fsb::$tpl->set_vars(array(
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=tools_optimize&amp;module=chmod'),
 		));
@@ -192,10 +192,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			while ($row = Fsb::$db->row($result))
 			{
 				// Indexation des messages
-				$search->index($row['p_id'], preg_replace('#<[^>]*?>#si', ' ', $row['p_text']), FALSE);
+				$search->index($row['p_id'], preg_replace('#<[^>]*?>#si', ' ', $row['p_text']), false);
 
 				// Indexation des titres
-				$search->index($row['p_id'], $row['t_title'], TRUE);
+				$search->index($row['p_id'], $row['t_title'], true);
 			}
 			Fsb::$db->free($result);
 
@@ -211,7 +211,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			if (($current_post + $this->index_posts) < Fsb::$cfg->get('total_posts'))
 			{
-				Display::message(sprintf(Fsb::$session->lang('optimize_search_percent'), $percent), 'index.' . PHPEXT . '?p=tools_optimize&amp;module=search&amp;submit_search=true&amp;current_post=' . ($current_post + $this->index_posts), 'optimize_search');
+				Display::message(sprintf(Fsb::$session->lang('optimize_search_percent'), $percent), 'index.' . PHPEXT . '?p=tools_optimize&amp;module=search&amp;submit_search= true &amp;current_post=' . ($current_post + $this->index_posts), 'optimize_search');
 			}
 			else
 			{
@@ -240,7 +240,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_blocks('process', array(
 				'ID' =>			$row['process_id'],
 				'NAME' =>		Fsb::$session->lang('optimize_process_' . $row['process_function']),
-				'EXPLAIN' =>	(Fsb::$session->lang('optimize_process_' . $row['process_function'] . '_explain')) ? Fsb::$session->lang('optimize_process_' . $row['process_function'] . '_explain') : NULL,
+				'EXPLAIN' =>	(Fsb::$session->lang('optimize_process_' . $row['process_function'] . '_explain')) ? Fsb::$session->lang('optimize_process_' . $row['process_function'] . '_explain') : null,
 				'VALUE' =>		$row['process_step_timestamp'] / ONE_DAY,
 				'LAST_DATE' =>	Fsb::$session->print_date($row['process_last_timestamp']),
 				'NEXT_DATE' =>	Fsb::$session->print_date($row['process_last_timestamp'] + $row['process_step_timestamp']),

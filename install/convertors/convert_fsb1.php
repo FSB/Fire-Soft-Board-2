@@ -29,7 +29,7 @@ class Convert_fsb1 extends Convert
 	public static function forum_type(){return (self::$static_forum_type);}
 
 	// UTF-8 active sur le forum ?
-	protected $use_utf8 = FALSE;
+	protected $use_utf8 = false;
 
 	// Configuration additionelle
 	protected $additional_conf = array(
@@ -53,15 +53,15 @@ class Convert_fsb1 extends Convert
 			switch ($table)
 			{
 				case 'groupes' :
-					$this->fsb1_mods['groups'] = TRUE;
+					$this->fsb1_mods['groups'] = true;
 				break;
 
 				case 'mps' :
-					$this->fsb1_mods['mps'] = TRUE;
+					$this->fsb1_mods['mps'] = true;
 				break;
 
 				case 'sondage' :
-					$this->fsb1_mods['polls'] = TRUE;
+					$this->fsb1_mods['polls'] = true;
 				break;
 			}
 		}
@@ -69,7 +69,7 @@ class Convert_fsb1 extends Convert
 
 		if (file_exists(ROOT . $this->config('forum_path') . 'cache/fichier_rang.php'))
 		{
-			$this->fsb1_mods['ranks'] = TRUE;
+			$this->fsb1_mods['ranks'] = true;
 		}
 	}
 
@@ -171,7 +171,7 @@ class Convert_fsb1 extends Convert
 	protected function convert_users($offset, $step, $state)
 	{
 		$return = array();
-		$fondator_exists = FALSE;
+		$fondator_exists = false;
 
 		$sql = 'SELECT m.*, COUNT(s.sujet_id) AS total_sujet
 				FROM ' . $this->config('sql_prefix') . 'membres m
@@ -198,7 +198,7 @@ class Convert_fsb1 extends Convert
 			// Le membre avec l'ID 1 est fondateur s'il est admin. Sinon on prendra le premier admin.
 			if ($row['membre_aut'] >= 3 && ($row['membre_id'] == 1 || !$fondator_exists))
 			{
-				$fondator_exists = TRUE;
+				$fondator_exists = true;
 				$row['u_auth'] = FONDATOR;
 			}
 
@@ -367,10 +367,10 @@ class Convert_fsb1 extends Convert
 					'f_total_post' =>		$f['forum_nb_message'],
 					'f_total_topic' =>		$f['forum_nb_sujet'],
 					'f_last_p_id' =>		(isset($f['dernier_message_id'])) ? $f['dernier_message_id'] : '',
-					'f_global_announce' =>	TRUE,
+					'f_global_announce' =>	true,
 					'f_cat_id' =>			$index_cat_id[$f['forum_id']],
 					'f_map_default' =>		'classic',
-					'f_map_first_post' =>	TRUE,
+					'f_map_first_post' =>	true,
 					'f_type' =>				FORUM_TYPE_NORMAL,
 					'f_parent' =>			$parent,
 				));
@@ -392,7 +392,7 @@ class Convert_fsb1 extends Convert
 	** Doit retourner un tableau multidimensionel contenant :
 	** - Au premier niveau en clef, l'ID d'un forum
 	** - Au second niveau en clef, l'ID d'un groupe
-	** - Au troisieme niveau, les clefs des droits avec TRUE / FALSE
+	** - Au troisieme niveau, les clefs des droits avec true / false
 	** En clair, ce tableau permet de determiner les droits pour chaque groupe pour chaque forum.
 	** Une abscence de forum ou de groupe signifie aucun droit.
 	*/
@@ -579,7 +579,7 @@ class Convert_fsb1 extends Convert
 				't_type' =>				($row['sujet_type'] == 0) ? 1 : 2,
 				't_status' =>			($row['sujet_status']) ? UNLOCK : LOCK,
 				't_map' =>				'classic',
-				't_map_first_post' =>	TRUE,
+				't_map_first_post' =>	true,
 			);
 
 			$return[] = $data;
@@ -606,29 +606,43 @@ class Convert_fsb1 extends Convert
 	{
 		$return = array();
 
-		$sql = 'SELECT *
+		$idx = array();
+		$sql = 'SELECT message_id
 				FROM ' . $this->config('sql_prefix') . 'messages
 				ORDER BY message_id
 				LIMIT ' . $offset . ',' . $step;
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$data = array(
-				'p_id' =>		$row['message_id'],
-				't_id' =>		$row['sujet_id'],
-				'f_id' =>		$row['forum_id'],
-				'u_id' =>		$this->fsb1_user_id($row['membre_id']),
-				'p_nickname' => $row['pseudo_posteur'],
-				'p_text' =>		$this->fsb1_parse_message($row['message_texte']),
-				'p_time' =>		$row['message_temps'],
-				'u_ip' =>		long2ip($row['message_ip']),
-				'p_map' =>		'classic',
-				'p_approve' =>	IS_APPROVED,
-			);
-
-			$return[] = $data;
+			$idx[] = $row['message_id'];
 		}
 		Fsb::$db->free($result);
+		
+		if ($idx)
+		{
+			$sql = 'SELECT *
+					FROM ' . $this->config('sql_prefix') . 'messages
+					WHERE message_id IN (' . implode(',', $idx) . ')';
+			$result = Fsb::$db->query($sql);
+			while ($row = Fsb::$db->row($result))
+			{
+				$data = array(
+					'p_id' =>		$row['message_id'],
+					't_id' =>		$row['sujet_id'],
+					'f_id' =>		$row['forum_id'],
+					'u_id' =>		$this->fsb1_user_id($row['membre_id']),
+					'p_nickname' => $row['pseudo_posteur'],
+					'p_text' =>		$this->fsb1_parse_message($row['message_texte']),
+					'p_time' =>		$row['message_temps'],
+					'u_ip' =>		long2ip($row['message_ip']),
+					'p_map' =>		'classic',
+					'p_approve' =>	IS_APPROVED,
+				);
+	
+				$return[] = $data;
+			}
+			Fsb::$db->free($result);
+		}
 
 		return ($return);
 	}

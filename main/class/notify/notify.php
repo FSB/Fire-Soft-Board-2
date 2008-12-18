@@ -59,7 +59,7 @@ class Notify extends Fsb_model
 	 *
 	 * @var array
 	 */
-	private $ext =		array(NOTIFY_MAIL => TRUE, NOTIFY_MSN => TRUE, NOTIFY_JABBER => TRUE);
+	private $ext =		array(NOTIFY_MAIL => true, NOTIFY_MSN => true, NOTIFY_JABBER => true);
 
 	/**
 	 * Constructeur, determine la methode de notification
@@ -164,16 +164,16 @@ class Notify extends Fsb_model
 	/**
 	 * Envoie le message
 	 *
-	 * @param bool $parse_body TRUE si on doit parser le texte a partir des variables de templates
+	 * @param bool $parse_body true si on doit parser le texte a partir des variables de templates
 	 * @return bool Succes ou non de l'envoie du message
 	 */
-	public function send($parse_body = TRUE)
+	public function send($parse_body = true)
 	{
 		if ($parse_body)
 		{
 			$this->parse_body();
 		}
-		$result = FALSE;
+		$result = false;
 		
 		// Envoie par Email via la classe PHPmailer ...
 		if ($this->method == NOTIFY_MAIL)
@@ -205,12 +205,12 @@ class Notify extends Fsb_model
 			$jabber->password = Fsb::$cfg->get('jabber_notify_password');
 			if ($jabber->Connect() && $jabber->SendAuth())
 			{
-				$jabber->SendPresence(NULL, NULL, "online");
+				$jabber->SendPresence(null, null, "online");
 
 				// Envoie du message
 				foreach ($this->bcc AS $bcc)
 				{
-					$result = $jabber->SendMessage($bcc, 'normal', NULL, array(
+					$result = $jabber->SendMessage($bcc, 'normal', null, array(
 						'body' =>	$this->body,
 					)); 
 				}
@@ -218,7 +218,7 @@ class Notify extends Fsb_model
 			}
 			else
 			{
-				$result = FALSE;
+				$result = false;
 			}
 		}
 
@@ -296,7 +296,7 @@ class Notify extends Fsb_model
 				$this->subject = $row['notify_subject'];
 				$this->body = $row['notify_body'];
 				$this->bcc = explode("\n", $row['notify_bcc']);
-				$return = $this->send(FALSE);
+				$return = $this->send(false);
 				$this->reset();
 
 				// En cas d'echec du message on le reinsere dans la base de donnee
@@ -311,7 +311,7 @@ class Notify extends Fsb_model
 							unset($row[$k]);
 						}
 					}
-					Fsb::$db->insert('notify', $row, 'INSERT', TRUE);
+					Fsb::$db->insert('notify', $row, 'INSERT', true);
 
 				}
 			}

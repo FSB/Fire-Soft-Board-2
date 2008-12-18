@@ -24,12 +24,12 @@ function printr($array)
  * Ajoute l'ID de session a l'url
  *
  * @param string $url URL a modifier
- * @param bool $force Si TRUE, on force l'ajout de la SID dans l'URL
+ * @param bool $force Si true, on force l'ajout de la SID dans l'URL
  * @return string URL modifiee
  */
-function sid($url, $force = FALSE)
+function sid($url, $force = false)
 {
-	$use_rewriting = (Fsb::$mods) ? Fsb::$mods->is_active('url_rewriting') : FALSE;
+	$use_rewriting = (Fsb::$mods) ? Fsb::$mods->is_active('url_rewriting') : false;
 	if ($force || (!defined('SESSION_METHOD_COOKIE') && Fsb::$session->sid && (!$use_rewriting || Fsb::$session->is_logged())))
 	{
 		$add_end = '';
@@ -58,9 +58,9 @@ function check_confirm()
 	$fsb_check_sid = Http::request('fsb_check_sid', 'post');
 	if ($fsb_check_sid !== Fsb::$session->sid || !Http::request('confirm_yes', 'post'))
 	{
-		return (FALSE);
+		return (false);
 	}
-	return (TRUE);
+	return (true);
 }
 
 /**
@@ -72,13 +72,13 @@ function check_confirm()
 function check_captcha($code)
 {
 	$current_code = Fsb::$session->data['s_visual_code'];
-	if (!$current_code || strpos($current_code, ':') === FALSE)
+	if (!$current_code || strpos($current_code, ':') === false)
 	{
-		return (FALSE);
+		return (false);
 	}
 	$current_code = substr($current_code, 2);
 
-	return ((strtolower($code) === strtolower($current_code)) ? TRUE : FALSE);
+	return ((strtolower($code) === strtolower($current_code)) ? true : false);
 }
 
 /**
@@ -97,11 +97,11 @@ function fsb_basename($path, $dir_name)
 	$ary = explode($delimiter, $path);
 	$count = count($ary);
 	$new = array();
-	for ($i = 0, $begin = FALSE; $i < $count; $i++)
+	for ($i = 0, $begin = false; $i < $count; $i++)
 	{
 		if (!$begin && $ary[$i] == $dir_name)
 		{
-			$begin = TRUE;
+			$begin = true;
 		}
 		else if ($begin)
 		{
@@ -186,7 +186,7 @@ function array_select(&$ary, $field, $value)
 			return ($v);
 		}
 	}
-	return (NULL);
+	return (null);
 }
 
 /**
@@ -201,14 +201,14 @@ function fsb_write($filename, $code)
 	$fd = @fopen($filename, 'w');
 	if (!$fd)
 	{
-		return (FALSE);
+		return (false);
 	}
 	flock($fd, LOCK_EX);
 	fwrite($fd, $code);
 	flock($fd, LOCK_UN);
 	fclose($fd);
 	@chmod($filename, 0666);
-	return (TRUE);
+	return (true);
 }
 
 /**
@@ -241,19 +241,19 @@ function array_map_recursive($callback, $ary)
  * @param bool $use_cache Definit si on utilise le cache pour la requete
  * @return array 
  */
-function get_forums($where = '', $use_cache = TRUE)
+function get_forums($where = '', $use_cache = true)
 {
 	$sql = 'SELECT *
 		FROM ' . SQL_PREFIX . 'forums 
 		' . $where . ' 
 		ORDER BY f_left';
-	$result = Fsb::$db->query($sql, ($use_cache) ? 'forums_' : NULL);
+	$result = Fsb::$db->query($sql, ($use_cache) ? 'forums_' : null);
 	$data = Fsb::$db->rows($result);
 	return ($data);
 }
 
 /**
- * Retourne TRUE s'il s'agit de la derniere version comparee
+ * Retourne true s'il s'agit de la derniere version comparee
  *
  * @param string $current_version Version actuelle de ce script
  * @param string $last_version Derniere version connue pour le script
@@ -263,12 +263,12 @@ function is_last_version($current_version, $last_version)
 {
 	if (!preg_match('#^([0-9]+)\.([0-9]+)\.([0-9]+)(\.(RC([0-9]+)))?([a-z])?$#', $current_version, $m_current))
 	{
-		return (FALSE);
+		return (false);
 	}
 
 	if (!preg_match('#^([0-9]+)\.([0-9]+)\.([0-9]+)(\.(RC([0-9]+)))?([a-z])?$#', $last_version, $m_last))
 	{
-		return (FALSE);
+		return (false);
 	}
 
 	// Comparaison des versions majeures, mineures et des revisions
@@ -276,7 +276,7 @@ function is_last_version($current_version, $last_version)
 	{
 		if ($m_current[$i] != $m_last[$i])
 		{
-			return (($m_current[$i] < $m_last[$i]) ? FALSE : TRUE);
+			return (($m_current[$i] < $m_last[$i]) ? false : true);
 		}
 	}
 
@@ -285,17 +285,17 @@ function is_last_version($current_version, $last_version)
 	$rc_last = (isset($m_last[6])) ? $m_last[6] : '';
 	if (($rc_current || $rc_last) && $rc_current != $rc_last)
 	{
-		return ((!$rc_current || ($rc_last && $rc_current >= $rc_last)) ? TRUE : FALSE);
+		return ((!$rc_current || ($rc_last && $rc_current >= $rc_last)) ? true : false);
 	}
 
 	$minor_current = (isset($m_current[7])) ? $m_current[7] : '';
 	$minor_last = (isset($m_last[7])) ? $m_last[7] : '';
 	if ($minor_current || $minor_last)
 	{
-		return ((!$minor_current || $minor_last > $minor_current) ? FALSE : TRUE);
+		return ((!$minor_current || $minor_last > $minor_current) ? false : true);
 	}
 
-	return (TRUE);
+	return (true);
 }
 
 /**
@@ -354,12 +354,12 @@ function check_read_post($p_id, $p_time, $t_id, $last_time, $last_id)
 {
 	if ((Fsb::$session->is_logged() && (!$last_time || $last_time < $p_time) && $p_time > Fsb::$session->data['u_last_read']))
 	{
-		$is_read = FALSE;
+		$is_read = false;
 		$last_url = ($last_time) ? 'p_id=' . $last_id . '#p' . $last_id : 't_id=' . $t_id;
 	}
 	else
 	{
-		$is_read = TRUE;
+		$is_read = true;
 		$last_url = 'p_id=' . $p_id . '#p' . $p_id;
 	}
 

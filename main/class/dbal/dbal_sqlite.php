@@ -20,10 +20,10 @@ class Dbal_sqlite extends Dbal
 	/**
 	 * @see Dbal::factory()
 	 */
-	public function __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
+	public function __construct($server, $login, $pass, $db, $port = null, $use_cache = true)
 	{
 		$this->use_cache = $use_cache;
-		$this->id = NULL;
+		$this->id = null;
 		$errstr = '';
 		if (!$this->id = @sqlite_open(ROOT . 'main/class/dbal/sqlite/' . $db . '.sqlite' . ((trim($port)) ? ':' . $port : ''), 0666, $errstr))
 		{
@@ -34,17 +34,17 @@ class Dbal_sqlite extends Dbal
 		$this->simple_query('PRAGMA short_column_names = 1');
 
 		// Ce que peut faire SQLite
-		$this->can_use_explain = FALSE;
-		$this->can_use_replace = FALSE;
-		$this->can_use_multi_insert = FALSE;
-		$this->can_use_truncate = FALSE;
+		$this->can_use_explain = false;
+		$this->can_use_replace = false;
+		$this->can_use_multi_insert = false;
+		$this->can_use_truncate = false;
 		return ($this->id);
 	}
 
 	/**
 	 * @see Dbal::_query()
 	 */
-	public function _query($sql, $buffer = TRUE)
+	public function _query($sql, $buffer = true)
 	{
 		$result = (($buffer) ? @sqlite_query($this->id, $sql) : @sqlite_unbuffered_query($this->id, $sql));
 		if (!$result && sqlite_last_error($this->id) != 0)
@@ -80,7 +80,7 @@ class Dbal_sqlite extends Dbal
 	 */
 	public function _free($result)
 	{
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -118,7 +118,7 @@ class Dbal_sqlite extends Dbal
 	/**
 	 * @see Dbal::field_type()
 	 */
-	public function field_type($result, $field, $table = NULL)
+	public function field_type($result, $field, $table = null)
 	{
 		if (!isset($this->cache_field_type[$table]))
 		{
@@ -147,7 +147,7 @@ class Dbal_sqlite extends Dbal
 	/**
 	 * @see Dbal::get_field_type()
 	 */
-	public function get_field_type($result, $field, $table = NULL)
+	public function get_field_type($result, $field, $table = null)
 	{
 		return ('string');
 	}
@@ -155,7 +155,7 @@ class Dbal_sqlite extends Dbal
 	/**
 	 * @see Dbal::list_tables()
 	 */
-	public function list_tables($limit = TRUE)
+	public function list_tables($limit = true)
 	{
 		$tables = array();
 		$sql = 'SELECT name AS tablename
@@ -218,7 +218,7 @@ class Dbal_sqlite extends Dbal
 				{
 					$this->simple_query('BEGIN TRANSACTION');
 				}
-				$this->in_transaction = TRUE;
+				$this->in_transaction = true;
 			break;
 
 			case 'commit' :
@@ -226,7 +226,7 @@ class Dbal_sqlite extends Dbal
 				{
 					$this->simple_query('COMMIT TRANSACTION');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 
 			case 'rollback' :
@@ -234,7 +234,7 @@ class Dbal_sqlite extends Dbal
 				{
 					$this->simple_query('ROLLBACK TRANSACTION');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 		}
 	}
@@ -292,13 +292,13 @@ class Dbal_sqlite extends Dbal
 		switch ($action)
 		{
 			case 'ADD' :
-				$is_temporary = TRUE;
+				$is_temporary = true;
 				$name = $tablename . '__tmp';
 				$fields = implode(', ', $cols) . ', \'\' AS ' . $arg . '';
 			break;
 
 			case 'DROP' :
-				$is_temporary = TRUE;
+				$is_temporary = true;
 				$name = $tablename . '__tmp';
 
 				// Suppression du champ
@@ -309,7 +309,7 @@ class Dbal_sqlite extends Dbal
 			break;
 
 			case 'RENAME' :
-				$is_temporary = FALSE;
+				$is_temporary = false;
 				$name = $arg;
 				$fields = '*';
 			break;

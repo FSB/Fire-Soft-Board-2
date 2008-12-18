@@ -162,7 +162,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_blocks('user', array(
 				'ID' =>				$row['u_id'],
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
-				'JOINED' =>			Fsb::$session->print_date($row['u_joined'], FALSE),
+				'JOINED' =>			Fsb::$session->print_date($row['u_joined'], false),
 				'POSTS' =>			sprintf(String::plural('adm_users_post', $row['u_total_post']), $row['u_total_post']),
 				'TOPICS' =>			sprintf(String::plural('adm_users_topic', $row['u_total_topic']), $row['u_total_topic']),
 				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=user&amp;id=' . $row['u_id']),
@@ -251,7 +251,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// Verification de l'email
-		if (!User::email_valid($data['u_email'], FALSE))
+		if (!User::email_valid($data['u_email'], false))
 		{
 			Display::message('adm_users_add_error_email');
 		}
@@ -351,7 +351,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				case 'desactivate' :
 					// Desactivation des membres
 					Fsb::$db->update('users', array(
-						'u_activated' =>	FALSE,
+						'u_activated' =>	false,
 					), 'WHERE u_id IN (' . implode(', ', $action) . ')');
 
 					$sql = 'DELETE FROM ' . SQL_PREFIX . 'sessions
@@ -507,7 +507,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				{
 					$action[] = $row['u_id'];
 					$nicks .= (($nicks) ? ', ' : '') . htmlspecialchars($row['u_nickname']);
-					$exists[$row['u_id']] = TRUE;
+					$exists[$row['u_id']] = true;
 				}
 			}
 			Fsb::$db->free($result);
@@ -520,7 +520,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			Display::confirmation(sprintf(Fsb::$session->lang('adm_users_prune_confirm'), $nicks), 'index.' . PHPEXT . '?p=manage_users', array(
 				'module' =>			$this->module,
-				'submit_prune' =>	TRUE,
+				'submit_prune' =>	true,
 				'delete_type' =>	$delete_type,
 				'action' =>			$action
 			));
@@ -563,7 +563,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'ADD_GALLERY' =>	Fsb::$session->lang('adm_users_gallery_' . $this->mode),
 			'GALLERY_NAME' =>	htmlspecialchars(urldecode(Http::request('dir'))),
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=manage_users&amp;module=gallery&amp;mode=' . $this->mode . '&amp;dir=' . Http::request('dir')),
 		));
 	}

@@ -125,7 +125,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('use_fsockopen', '1');
 
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_description', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'default_tpl', 'put_html_code', 'Html::list_dir(''default_tpl'', $this->cfg[''default_tpl''], ROOT . ''tpl/'', array(), TRUE)', '');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'default_tpl', 'put_html_code', 'Html::list_dir(''default_tpl'', $this->cfg[''default_tpl''], ROOT . ''tpl/'', array(), true)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'override_tpl', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'default_lang', 'put_html_code', 'Html::list_langs(''default_lang'', $this->cfg[''default_lang''])', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'override_lang', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', '');
@@ -155,7 +155,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_default', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_host', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_login', 'put_text', 'array(''size'' => 35)', '');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_password', 'put_text', 'array(''size'' => 35, ''password'' => TRUE)', '');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_password', 'put_text', 'array(''size'' => 35, ''password'' => true)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_port', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_path', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'network', 'use_fsockopen', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
@@ -290,7 +290,7 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 1, '', '', 0);
 
-INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', FALSE)', 'unsigned int');
+INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', false)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('last_posts', 'nb_messages', '5', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'nb_news', '3', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 

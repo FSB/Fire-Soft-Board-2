@@ -68,7 +68,7 @@ class File_socket extends File
 		{
 			return (File::FILE_CANT_CHDIR);
 		}
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class File_socket extends File
 	{
 		$this->_send("TYPE I");
 		$socket = $this->_open_connexion();
-		$this->_send("STOR $dst", FALSE);
+		$this->_send("STOR $dst", false);
 
 		// On envoie le fichier sur le reseau
 		if ($socket)
@@ -121,7 +121,7 @@ class File_socket extends File
 		}
 
 		$this->_close_connexion($socket);
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -162,7 +162,7 @@ class File_socket extends File
 
 		if (!preg_match('#^[1-3]#', $str))
 		{
-			return (FALSE);
+			return (false);
 		}
 		return ($str);
 	}
@@ -170,14 +170,14 @@ class File_socket extends File
 	/**
 	 * Ecrit sur la socket
 	 */
-	protected function _send($command, $check = TRUE)
+	protected function _send($command, $check = true)
 	{
 		fwrite($this->sock, $command . "\r\n");
 		if ($check && !$this->_read())
 		{
-			return (FALSE);
+			return (false);
 		}
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class File_socket extends File
 	 */
 	protected function _open_connexion()
 	{
-		$this->_send("PASV", FALSE);
+		$this->_send("PASV", false);
 		if (!$read = $this->_read())
 		{
 			return (File::FILE_CANT_CONNECT_SERVER);
@@ -207,7 +207,7 @@ class File_socket extends File
 		$errstr = '';
 		if (!$socket = fsockopen($ip, $port, $errno, $errstr, 15))
 		{
-			return (FALSE);
+			return (false);
 		}
 		return ($socket);
 	}
@@ -228,7 +228,7 @@ class File_socket extends File
 	 */
 	protected function _close()
 	{
-		$this->_send("QUIT", FALSE);
+		$this->_send("QUIT", false);
 		@fclose($this->sock);
 	}
 }

@@ -29,7 +29,7 @@ class Moderation extends Fsb_model
 		$total_posts = 0;
 		while ($row = Fsb::$db->row($result))
 		{
-			$posts[$row['p_id']] = TRUE;
+			$posts[$row['p_id']] = true;
 
 			// Seul les messages approuves ont des statistiques changeantes, on ne prend donc pas en compte
 			// les messages non approuves
@@ -98,7 +98,7 @@ class Moderation extends Fsb_model
 				$result = Fsb::$db->query($sql);
 				while ($row = Fsb::$db->row($result))
 				{
-					$posts[$row['p_id']] = TRUE;
+					$posts[$row['p_id']] = true;
 					$users[$row['u_id']] = (!isset($users[$row['u_id']])) ? 1 : $users[$row['u_id']] + 1;
 				}
 				Fsb::$db->free($result);
@@ -115,8 +115,8 @@ class Moderation extends Fsb_model
 		foreach ($users AS $u_id => $total)
 		{
 			Fsb::$db->update('users', array(
-				'u_total_post' =>	array('u_total_post - ' . $total, 'is_field' => TRUE),
-				'u_total_topic' =>	array('u_total_topic ' . ((isset($users_topics[$u_id])) ? '- ' . $users_topics[$u_id] : ''), 'is_field' => TRUE),
+				'u_total_post' =>	array('u_total_post - ' . $total, 'is_field' => true),
+				'u_total_topic' =>	array('u_total_topic ' . ((isset($users_topics[$u_id])) ? '- ' . $users_topics[$u_id] : ''), 'is_field' => true),
 			), 'WHERE u_id = ' . $u_id);
 		}
 
@@ -379,7 +379,7 @@ class Moderation extends Fsb_model
 
 		// Mise a jour de l'ancien sujet
 		Fsb::$db->update('topics', array(
-			't_total_post' =>		array('(t_total_post - ' . $count_action . ')', 'is_field' => TRUE),
+			't_total_post' =>		array('(t_total_post - ' . $count_action . ')', 'is_field' => true),
 			't_last_p_id' =>		$new_last_post['p_id'],
 			't_last_p_time' =>		$new_last_post['p_time'],
 			't_last_p_nickname' =>	$new_last_post['p_nickname'],
@@ -437,7 +437,7 @@ class Moderation extends Fsb_model
 		$total_posts = 0;
 		while ($row = Fsb::$db->row($result))
 		{
-			$forums[$row['f_id']] = TRUE;
+			$forums[$row['f_id']] = true;
 			$total_posts += $row['t_total_post'];
 		}
 		Fsb::$db->free($result);
@@ -471,7 +471,7 @@ class Moderation extends Fsb_model
 
 		// Mise a jour du compteur de message du sujet, et du dernier message
 		Fsb::$db->update('topics', array(
-			't_total_post' =>		array('t_total_post + ' . $total_posts, 'is_field' => TRUE),
+			't_total_post' =>		array('t_total_post + ' . $total_posts, 'is_field' => true),
 			't_last_p_id' =>		$last['p_id'],
 			't_last_u_id' =>		$last['u_id'],
 			't_last_p_time' =>		$last['p_time'],
@@ -547,7 +547,7 @@ class Moderation extends Fsb_model
 	 * @param int $status Status du sujet
 	 * @param int $f_id ID du forum (protection facultative)
 	 */
-	public static function lock_topic($id, $status, $f_id = NULL)
+	public static function lock_topic($id, $status, $f_id = null)
 	{
 		if (is_array($id))
 		{
@@ -561,7 +561,7 @@ class Moderation extends Fsb_model
 
 		Fsb::$db->update('topics', array(
 			't_status' =>		$status,
-		), 'WHERE t_id IN (' . $id . ') ' . (($f_id !== NULL) ? 'AND f_id = ' . $f_id : ''));
+		), 'WHERE t_id IN (' . $id . ') ' . ((!is_null($f_id)) ? 'AND f_id = ' . $f_id : ''));
 	}
 
 	/**
@@ -586,7 +586,7 @@ class Moderation extends Fsb_model
 		Fsb::$db->transaction('begin');
 
 		// Nouveau sujet ?
-		$is_new_topic = ($data['t_first_p_id'] == $p_id) ? TRUE : FALSE;
+		$is_new_topic = ($data['t_first_p_id'] == $p_id) ? true : false;
 
 		if ($is_new_topic)
 		{
@@ -604,7 +604,7 @@ class Moderation extends Fsb_model
 
 		// Mise a jour du sujet
 		Fsb::$db->update('topics', array(
-			't_total_post' =>		array('t_total_post + ' . ((!$is_new_topic) ? '1' : '0'), 'is_field' => TRUE),
+			't_total_post' =>		array('t_total_post + ' . ((!$is_new_topic) ? '1' : '0'), 'is_field' => true),
 			't_approve' =>			IS_APPROVED,
 		), 'WHERE t_id = ' . $data['t_id']);
 
@@ -615,8 +615,8 @@ class Moderation extends Fsb_model
 
 		// Mise a jour du membre
 		Fsb::$db->update('users', array(
-			'u_total_post' =>		array('u_total_post + 1', 'is_field' => TRUE),
-			'u_total_topic' =>		array('u_total_topic + ' . (($is_new_topic) ? '1' : '0'), 'is_field' => TRUE),
+			'u_total_post' =>		array('u_total_post + 1', 'is_field' => true),
+			'u_total_topic' =>		array('u_total_topic + ' . (($is_new_topic) ? '1' : '0'), 'is_field' => true),
 		), 'WHERE u_id = ' . $data['u_id']);
 
 		Sync::signal(Sync::APPROVE);
@@ -759,7 +759,7 @@ class Moderation extends Fsb_model
 					}
 					$operator = ($mode == 'more') ? '+' : '-';
 
-					${'user_warn_' . $restriction} = (${'u_warn_' . $restriction} >= CURRENT_TIME) ? array('u_warn_' . $restriction . ' ' . $operator . ' ' . $time, 'is_field' => TRUE) : CURRENT_TIME + $time;
+					${'user_warn_' . $restriction} = (${'u_warn_' . $restriction} >= CURRENT_TIME) ? array('u_warn_' . $restriction . ' ' . $operator . ' ' . $time, 'is_field' => true) : CURRENT_TIME + $time;
 					${'insert_' . $restriction} = $operator . strval($time);
 				}
 			}
@@ -780,7 +780,7 @@ class Moderation extends Fsb_model
 		Fsb::$db->update('users', array(
 			'u_warn_post' =>		$user_warn_post,
 			'u_warn_read' =>		$user_warn_read,
-			'u_total_warning' =>	array('u_total_warning ' . (($mode == 'more') ? '+' : '-') . ' 1', 'is_field' => TRUE),
+			'u_total_warning' =>	array('u_total_warning ' . (($mode == 'more') ? '+' : '-') . ' 1', 'is_field' => true),
 		), 'WHERE u_id = ' . $user_id);
 	}
 }

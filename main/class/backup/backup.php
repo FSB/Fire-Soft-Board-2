@@ -25,7 +25,7 @@ abstract class Backup extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $multi_insert = FALSE;
+	public $multi_insert = false;
 
 	/**
 	 * Methode utilisee pour le dump des donnees
@@ -176,7 +176,7 @@ abstract class Backup extends Fsb_model
 	 * @param array $save_table Les tables a sauvegarder
 	 * @param bool $comment Ajoute un commentaire en debut de table
 	 */
-	public function dump_mysql($type, $save_table, $comment = TRUE)
+	public function dump_mysql($type, $save_table, $comment = true)
 	{
 		if (is_array($save_table))
 		{
@@ -227,7 +227,7 @@ abstract class Backup extends Fsb_model
 	 * @param array $save_table Les tables a sauvegarder
 	 * @param bool $comment Ajoute un commentaire en debut de table
 	 */
-	public function dump_pgsql($type, $save_table, $comment = TRUE)
+	public function dump_pgsql($type, $save_table, $comment = true)
 	{
 		if ($type & self::STRUCT)
 		{
@@ -243,7 +243,7 @@ abstract class Backup extends Fsb_model
 					$this->write("\n#\n# Structure de la table PostgreSQL `$tablename`\n#\n");
 				}
 
-				$this->write($this->pgsql_get_create_table($tablename, "\n", FALSE));
+				$this->write($this->pgsql_get_create_table($tablename, "\n", false));
 			}
 
 			if ($type & self::DATA)
@@ -258,7 +258,7 @@ abstract class Backup extends Fsb_model
 	 *
 	 * @param string $table Nom de la table pour la creation du shema
 	 * @param string $crlf Caractere de retour a la ligne
-	 * @param bool $drop TRUE pour inserer des ennonces DROP avant la creation des tables
+	 * @param bool $drop true pour inserer des ennonces DROP avant la creation des tables
 	 * @return string Schema de la table
 	 */
 	private function pgsql_get_create_table($table, $crlf, $drop)
@@ -330,7 +330,7 @@ abstract class Backup extends Fsb_model
 
 			if ($row['notnull'] == 't')
 			{
-				$schema_create .= ' NOT NULL';
+				$schema_create .= ' NOT null';
 			}
 
 			$schema_create .= ",$crlf";
@@ -460,7 +460,7 @@ abstract class Backup extends Fsb_model
 	 * @param array $save_table Les tables a sauvegarder
 	 * @param bool $comment Ajoute un commentaire en debut de table
 	 */
-	public function dump_sqlite($type, $save_table, $comment = TRUE)
+	public function dump_sqlite($type, $save_table, $comment = true)
 	{
 		$content = '';
 		foreach ($save_table AS $tablename)
@@ -502,15 +502,15 @@ abstract class Backup extends Fsb_model
 	 * @param bool $multi_insert Gestion des multi insertions
 	 * @param array $exept Contient la liste des champs a ne pas prendre en compte
 	 */
-	public function dump_database($tablename, $sgbd_name, $comment = TRUE, $multi_insert = FALSE, $exept = array())
+	public function dump_database($tablename, $sgbd_name, $comment = true, $multi_insert = false, $exept = array())
 	{
-		// Si la SGBD ne supporte pas les multi insertions on force le parametre a FALSE
+		// Si la SGBD ne supporte pas les multi insertions on force le parametre a false
 		if (!Fsb::$db->can_use_multi_insert)
 		{
-			$multi_insert = FALSE;
+			$multi_insert = false;
 		}
 
-		$get_fields = FALSE;
+		$get_fields = false;
 		$fields_type = array();
 		$content = '';
 		if ($comment)
@@ -567,7 +567,7 @@ abstract class Backup extends Fsb_model
 				$this->write(";\n");
 			}
 
-			$get_fields = TRUE;
+			$get_fields = true;
 		}
 
 		if ($multi_insert)

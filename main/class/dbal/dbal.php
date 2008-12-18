@@ -18,7 +18,7 @@ abstract class Dbal extends Fsb_model
 	 *
 	 * @var resource
 	 */
-	protected $id = NULL;
+	protected $id = null;
 	
 	/**
 	 * Nombre de requetes executees sur la page
@@ -39,28 +39,28 @@ abstract class Dbal extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $can_use_explain = FALSE;
+	public $can_use_explain = false;
 
 	/**
 	 * Peut utiliser les requetes REPLACE
 	 *
 	 * @var bool
 	 */
-	public $can_use_replace = FALSE;
+	public $can_use_replace = false;
 
 	/**
 	 * Peut utiliser les multi-insertions
 	 *
 	 * @var bool
 	 */
-	public $can_use_multi_insert = FALSE;
+	public $can_use_multi_insert = false;
 
 	/**
 	 * Peut utiliser des requetes TRUNCATE
 	 *
 	 * @var bool
 	 */
-	public $can_use_truncate = FALSE;
+	public $can_use_truncate = false;
 
 	/**
 	 * Contient les requetes en cache
@@ -102,12 +102,12 @@ abstract class Dbal extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	protected $in_transaction = FALSE;
+	protected $in_transaction = false;
 
 	/**
 	 * @var Cache
 	 */
-	public $cache = NULL;
+	public $cache = null;
 	
 	/**
 	 * Prefixe SQL pour les noms de table
@@ -123,7 +123,7 @@ abstract class Dbal extends Fsb_model
 	 * @param bool $buffer Mise en bufferisation de la requete
 	 * @return resource Resultat de la requete
 	 */
-	abstract public function _query($sql, $buffer = TRUE);
+	abstract public function _query($sql, $buffer = true);
 	
 	/**
 	 * Execute une simple requete directement
@@ -177,7 +177,7 @@ abstract class Dbal extends Fsb_model
 	 * @param string $table Nom de la table du champ
 	 * @return string Type du champ
 	 */
-	abstract public function field_type($result, $field, $table = NULL);
+	abstract public function field_type($result, $field, $table = null);
 	
 	/**
 	 * Recupere si le champ est une chaine ou un entier
@@ -187,15 +187,15 @@ abstract class Dbal extends Fsb_model
 	 * @param string $table Nom de la table du champ
 	 * @return string int ou string
 	 */
-	abstract public function get_field_type($result, $field, $table = NULL);
+	abstract public function get_field_type($result, $field, $table = null);
 
 	/**
 	 * Recupere la liste des tables du forum
 	 *
-	 * @param bool $limit si FALSE, recupere l'ensemble des tables de la base de donnee
+	 * @param bool $limit si false, recupere l'ensemble des tables de la base de donnee
 	 * @return array
 	 */
-	abstract public function list_tables($limit = TRUE);
+	abstract public function list_tables($limit = true);
 	
 	/**
 	 * Lance la requete de multi-insertion
@@ -259,13 +259,13 @@ abstract class Dbal extends Fsb_model
 	 * @param bool $use_cache Utilisation du cache
 	 * @return Dbal
 	 */
-	public static function factory($sql_server = NULL, $sql_login = NULL, $sql_pass = NULL, $sql_db = NULL, $sql_port = NULL, $use_cache = TRUE)
+	public static function factory($sql_server = null, $sql_login = null, $sql_pass = null, $sql_db = null, $sql_port = null, $use_cache = true)
 	{
-		$sql_server =	($sql_server === NULL) ? SQL_SERVER : $sql_server;
-		$sql_login =	($sql_login === NULL) ? SQL_LOGIN : $sql_login;
-		$sql_pass =		($sql_pass === NULL) ? SQL_PASS : $sql_pass;
-		$sql_db =		($sql_db === NULL) ? SQL_DB : $sql_db;
-		$sql_port =		($sql_port === NULL) ? SQL_PORT : $sql_port;
+		$sql_server =	(is_null($sql_server)) ? SQL_SERVER : $sql_server;
+		$sql_login =	(is_null($sql_login)) ? SQL_LOGIN : $sql_login;
+		$sql_pass =		(is_null($sql_pass)) ? SQL_PASS : $sql_pass;
+		$sql_db =		(is_null($sql_db)) ? SQL_DB : $sql_db;
+		$sql_port =		(is_null($sql_port)) ? SQL_PORT : $sql_port;
 
 		$classname = 'Dbal_' . SQL_DBAL;
 		$instance = new $classname($sql_server, $sql_login, $sql_pass, $sql_db, $sql_port, $use_cache);
@@ -280,14 +280,14 @@ abstract class Dbal extends Fsb_model
 	 * @param string $cache_prefix Si cet argument est passe la requete est mise en cache avec comme prefixe le chaine donnee
 	 * @return resource Pointe sur le resultat de la requete
 	 */
-	public function query($sql, $cache_prefix = NULL)
+	public function query($sql, $cache_prefix = null)
 	{
 		if (!$this->use_cache)
 		{
-			$cache_prefix = NULL;
+			$cache_prefix = null;
 		}
 		// Instance du cache
-		else if ($this->cache === NULL)
+		else if (is_null($this->cache))
 		{
 			$this->cache = Cache::factory('sql');
 		}
@@ -298,7 +298,7 @@ abstract class Dbal extends Fsb_model
 		// DEBUG
 		if (Fsb::$debug->debug_query)
 		{
-			$result_explain = NULL;
+			$result_explain = null;
 			$start_query = 0;
 			$this->debug_query($sql, $result_explain, $start_query);
 		}
@@ -318,7 +318,7 @@ abstract class Dbal extends Fsb_model
 		}
 		else
 		{
-			$buffer = (preg_match('#^(SELECT|SHOW)#i', trim($sql))) ? TRUE : FALSE;
+			$buffer = (preg_match('#^(SELECT|SHOW)#i', trim($sql))) ? true : false;
 			$result = $this->_query($sql, $buffer);
 			$this->count++;
 			if ($cache_prefix)
@@ -350,18 +350,18 @@ abstract class Dbal extends Fsb_model
 	 * @param string $table Nom de la table
 	 * @param array $ary Tableau contenant en clef les champs de la requete et en valeur les valeurs pour la requete
 	 * @param string $insert INSERT ou REPLACE
-	 * @param bool $multi_insert TRUE pour une insertion multiple, a utiliser avec la methode Dbal::query_multi_insert()
+	 * @param bool $multi_insert true pour une insertion multiple, a utiliser avec la methode Dbal::query_multi_insert()
 	 * @return resource
 	 */
-	public function insert($table, $ary, $insert = 'INSERT', $multi_insert = FALSE)
+	public function insert($table, $ary, $insert = 'INSERT', $multi_insert = false)
 	{
 		if ($insert == 'REPLACE' && !$this->can_use_replace)
 		{
 			$where_str = 'WHERE ';
 			foreach ($ary AS $key => $value)
 			{
-				// Si le champ est un index ($value[1] vaut TRUE)
-				if (is_array($value) && $value[1] == TRUE)
+				// Si le champ est un index ($value[1] vaut true)
+				if (is_array($value) && $value[1] == true)
 				{
 					$index_field = $key;
 					$value = $value[0];
@@ -437,10 +437,10 @@ abstract class Dbal extends Fsb_model
 		$sql = 'UPDATE ' . $this->sql_prefix . $table . ' SET ';
 		foreach ($ary AS $key => $value)
 		{
-			$is_field = FALSE;
+			$is_field = false;
 			if (is_array($value))
 			{
-				$is_field = (isset($value['is_field']) && $value['is_field']) ? TRUE : FALSE;
+				$is_field = (isset($value['is_field']) && $value['is_field']) ? true : false;
 				$value = $value[0];
 			}
 			
@@ -490,7 +490,7 @@ abstract class Dbal extends Fsb_model
 			{
 				return ($this->cache_query[$result][$this->iterator_query[$result]++]);
 			}
-			return (NULL);
+			return (null);
 		}
 		else
 		{
@@ -506,7 +506,7 @@ abstract class Dbal extends Fsb_model
 	 * @param string $field_name Le tableau sera associe aux valeurs de ce champ si le parametre est passe
 	 * @return array
 	 */
-	public function rows($result, $function = 'assoc', $field_name = NULL)
+	public function rows($result, $function = 'assoc', $field_name = null)
 	{
 		$data = array();
 		while ($tmp = $this->row($result, $function))
@@ -566,7 +566,7 @@ abstract class Dbal extends Fsb_model
 
 		if (!$row)
 		{
-			return (NULL);
+			return (null);
 		}
 
 		if (is_array($fields))
@@ -604,7 +604,7 @@ abstract class Dbal extends Fsb_model
 	 *
 	 * @param string $prefix Prefixe des requetes a detruire
 	 */
-	public function destroy_cache($prefix = NULL)
+	public function destroy_cache($prefix = null)
 	{
 		if ($this->cache)
 		{
@@ -635,7 +635,7 @@ abstract class Dbal extends Fsb_model
 
 		unset($this->cache_field_type, $this->cache_query, $this->iterator_query);
 		$this->_close();
-		$this->id = NULL;
+		$this->id = null;
 	}
 
 	/**
@@ -671,19 +671,19 @@ abstract class Dbal extends Fsb_model
 			}
 			else
 			{
-				$result = TRUE;
+				$result = true;
 			}
 
-			$start_query = microtime(true);
+			$start_query = microtime( true );
 		}
 		else
 		{
-			$is_cache = (is_int($result) && isset($this->cache_query[$result])) ? TRUE : FALSE;
-			$total_time = substr(microtime(true) - $start_query, 0, 10);
+			$is_cache = (is_int($result) && isset($this->cache_query[$result])) ? true : false;
+			$total_time = substr(microtime( true ) - $start_query, 0, 10);
 			$this->debug_str .= '<table cellspacing="0" cellpadding="3" style="width: 100%; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000;"><tr><th style="background-color: #EEEEEE; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">Requete numero ' . ($this->count) . '</th></tr><tr><td style="background-color: #EEEEFF; border: 1px ' . (($is_cache) ? 'dashed' : 'solid') . ' #000000; border-width: 0px 0px 1px 0px">' . htmlspecialchars($sql) . '</td></tr>';
 			if ($result_explain && $this->can_use_explain)
 			{
-				$print_fields = FALSE;
+				$print_fields = false;
 				while ($row = $this->row($result_explain))
 				{
 					if (!$print_fields)
@@ -694,7 +694,7 @@ abstract class Dbal extends Fsb_model
 							$this->debug_str .= '<td align="center">' . $field . '</td>';
 						}
 						$this->debug_str .= '</tr>';
-						$print_fields = TRUE;
+						$print_fields = true;
 					}
 
 					$this->debug_str .= '<tr>';

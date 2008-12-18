@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 // Necessite le fichier de langue lg_forum_register.php pour le test du mot de passe
 Fsb::$session->load_lang('lg_forum_register');
@@ -79,14 +79,14 @@ class Page_user_password extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $update_email = FALSE;
+	public $update_email = false;
 	
 	/**
 	 * Peut-yon changer l'adresse Email ?
 	 *
 	 * @var bool
 	 */
-	public $can_update_email = FALSE;
+	public $can_update_email = false;
 	
 	/**
 	 * Erreurs
@@ -109,7 +109,7 @@ class Page_user_password extends Fsb_model
 
 		if ((Fsb::$cfg->get('register_type') == 'confirm' || Fsb::$cfg->get('register_type') == 'admin' || Fsb::$cfg->get('register_type') == 'both') && Fsb::$session->auth() < MODOSUP)
 		{
-			$this->can_update_email = TRUE;
+			$this->can_update_email = true;
 		}
 
 		if (Http::request('test_password', 'post'))
@@ -159,7 +159,7 @@ class Page_user_password extends Fsb_model
 	 */
 	public function check_form()
 	{
-		$this->update_email = ($this->new_email && strtolower($this->new_email) != strtolower(Fsb::$session->data['u_email'])) ? TRUE : FALSE;
+		$this->update_email = ($this->new_email && strtolower($this->new_email) != strtolower(Fsb::$session->data['u_email'])) ? true : false;
 
 		// Il faut entrer son login et son mot de passe actuel
 		if (!$this->old_login)
@@ -229,7 +229,7 @@ class Page_user_password extends Fsb_model
 
 		// Si une nouvelle adresse Email est entree, et que la configuration necessite une validation, on desactive le compte et on envoie
 		// un Email avec un nouveau code de validation.
-		$logout = FALSE;
+		$logout = false;
 		if ($this->update_email && $this->can_update_email)
 		{
 			$confirm_hash = md5(rand(0, time()));
@@ -250,10 +250,10 @@ class Page_user_password extends Fsb_model
 			// On ne fait le controle de validation que si l'Email a pu etre envoye
 			if ($result)
 			{
-				$update_array['u_activated'] =		FALSE;
+				$update_array['u_activated'] =		false;
 				$update_array['u_confirm_hash'] =	$confirm_hash;
 				$update_array['u_email'] =			$this->new_email;
-				$logout =							TRUE;
+				$logout =							true;
 
 				Log::user(Fsb::$session->id(), 'update_email');
 			}

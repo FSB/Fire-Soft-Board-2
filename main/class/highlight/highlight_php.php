@@ -46,7 +46,7 @@ class Highlight_php extends Highlight
 	 *
 	 * @var bool
 	 */
-	private static $init = FALSE;
+	private static $init = false;
 
 	/**
 	 * Constructeur, initialise une seule fois la classe
@@ -57,7 +57,7 @@ class Highlight_php extends Highlight
 		{
 			return ;
 		}
-		self::$init = TRUE;
+		self::$init = true;
 
 		// Fichier de configuration
 		$file_content = file_get_contents(ROOT . 'main/class/highlight/keywords/highlight_php.txt');
@@ -95,7 +95,7 @@ class Highlight_php extends Highlight
 		$len = strlen($str);
 
 		$result = '';
-		$word_open = FALSE;
+		$word_open = false;
 		for ($i = 0; $i < $len; $i++)
 		{
 			$c = $str[$i];
@@ -143,7 +143,7 @@ class Highlight_php extends Highlight
 			else if ($c == '$' && !String::is_escaped($i, $str))
 			{
 				// Gestion des variables
-				$aco_open = FALSE;
+				$aco_open = false;
 				$i++;
 				$tmp = '';
 				while ($i < $len)
@@ -151,7 +151,7 @@ class Highlight_php extends Highlight
 					$c = $str[$i];
 					if ($c == '{' && !$aco_open)
 					{
-						$aco_open = TRUE;
+						$aco_open = true;
 					}
 					else if (($c == '}' && $aco_open) || (!$aco_open && !preg_match('#[a-zA-Z0-9_]#i', $c)))
 					{
@@ -163,7 +163,7 @@ class Highlight_php extends Highlight
 							$i++;
 						}
 						$result .= $this->close_style();
-						$aco_open = FALSE;
+						$aco_open = false;
 						break;
 					}
 					$tmp .= $this->escape_special_char($c);

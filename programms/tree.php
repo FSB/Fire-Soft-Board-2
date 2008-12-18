@@ -111,7 +111,7 @@ function check_color($dir, $ret = false)
 	return ('#ffffff');
 }
 
-$c = check_color('', true);
+$c = check_color('',  true );
 foreach ($c AS $dir => $color)
 {
 	echo '<span style="padding: 5px 10px 5px 10px; font-weight: bold; background-color: ' . $color . '; border: 1px solid #000000">' . $dir . '</span> &nbsp; ';

@@ -17,9 +17,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Mode de la page
 	public $mode;
@@ -46,8 +46,8 @@ class Fsb_frame_child extends Fsb_frame
 	public $module;
 
 	// Recherche independante
-	public $where = NULL;
-	public $count = NULL;
+	public $where = null;
+	public $count = null;
 
 	/*
 	** Constructeur
@@ -175,7 +175,7 @@ class Fsb_frame_child extends Fsb_frame
 		$cache = Cache::factory('search', 'sql', 'cache_hash = \'' . Fsb::$db->escape(Fsb::$session->sid) . '\'');
 
 		// Cache de recherche ?
-		$cache_result = FALSE;
+		$cache_result = false;
 		$this->mode = 'result';
 		if (!Http::request('submit') && $cache->exists(Fsb::$session->sid))
 		{
@@ -203,8 +203,8 @@ class Fsb_frame_child extends Fsb_frame
 				Display::message('search_in_empty');
 			}
 
-			$this->search->search_in_post =		(isset($this->in['post'])) ? TRUE : FALSE;
-			$this->search->search_in_title =	(isset($this->in['title'])) ? TRUE : FALSE;
+			$this->search->search_in_post =		(isset($this->in['post'])) ? true : false;
+			$this->search->search_in_title =	(isset($this->in['title'])) ? true : false;
 			$this->search->search_link =		strtolower(Http::request('keywords_link', 'post'));
 
 			$this->idx = $this->search->launch($this->keywords, $this->author, $this->forums, $this->topic, $this->date);
@@ -223,7 +223,7 @@ class Fsb_frame_child extends Fsb_frame
 	** -----
 	** $nickname ::		Pseudonyme de l'auteur
 	*/
-	public function search_author($nickname = NULL)
+	public function search_author($nickname = null)
 	{
 		if ($this->id == VISITOR_ID)
 		{
@@ -278,7 +278,7 @@ class Fsb_frame_child extends Fsb_frame
 	** -----
 	** $nickname ::		Pseudonyme de l'auteur
 	*/
-	public function search_author_topic($nickname = NULL)
+	public function search_author_topic($nickname = null)
 	{
 		if ($this->id == VISITOR_ID)
 		{
@@ -378,7 +378,7 @@ class Fsb_frame_child extends Fsb_frame
 		foreach ($unread_array AS $m)
 		{
 			Fsb::$tpl->set_blocks('module', array(
-				'IS_SELECT' =>	($this->module == $m) ? TRUE : FALSE,
+				'IS_SELECT' =>	($this->module == $m) ? true : false,
 				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=newposts&amp;module=' . $m),
 				'NAME' =>		Fsb::$session->lang('search_unread_module_' . $m),
 			));
@@ -394,7 +394,7 @@ class Fsb_frame_child extends Fsb_frame
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
 					ON t.t_id = tr.t_id
 						AND tr.u_id = ' . intval(Fsb::$session->id()) . '
-				WHERE (tr.tr_last_time IS NULL OR tr.tr_last_time < t.t_last_p_time)
+				WHERE (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
 					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'];
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
@@ -533,7 +533,7 @@ class Fsb_frame_child extends Fsb_frame
 					$parser = new Parser();
 
 					// Nombre de message
-					if ($this->count === NULL)
+					if (is_null($this->count))
 					{
 						$sql = 'SELECT COUNT(*) AS total
 								FROM ' . SQL_PREFIX . 'posts p
@@ -605,7 +605,7 @@ class Fsb_frame_child extends Fsb_frame
 						);
 
 						// parse du message
-						$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+						$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 						$text = $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 						$post_title = Parser::title($row['t_title']);
 
@@ -691,7 +691,7 @@ class Fsb_frame_child extends Fsb_frame
 							ORDER BY f.f_left, t.' . $this->order . ' ' . $this->direction . '
 							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('topic_per_page')) . ', ' . Fsb::$cfg->get('topic_per_page');
 					$result = Fsb::$db->query($sql);
-					$forum_id = NULL;
+					$forum_id = null;
 					while ($row = Fsb::$db->row($result))
 					{
 						if ($forum_id != $row['f_id'])
@@ -708,7 +708,7 @@ class Fsb_frame_child extends Fsb_frame
 
 						// Pagination du sujet
 						$total_topic_page = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
-						$topic_pagination = ($total_topic_page > 1) ? Html::pagination(0, $total_topic_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], NULL, TRUE) : FALSE;
+						$topic_pagination = ($total_topic_page > 1) ? Html::pagination(0, $total_topic_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 
 						// Sujet lu ?
 						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
@@ -735,7 +735,7 @@ class Fsb_frame_child extends Fsb_frame
 							'FIRST_DATE' =>		Fsb::$session->print_date($row['t_time']),
 							'DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
 							'PAGINATION' =>		$topic_pagination,
-							'UNREAD' =>			($is_read) ? FALSE : TRUE,
+							'UNREAD' =>			($is_read) ? false : true,
 
 							'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
 							'U_LOGIN' =>		sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $row['t_last_u_id']),
@@ -756,7 +756,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($this->idx || $this->where)
 				{
 					// Calcul du nombre de sujets
-					if ($this->count === NULL)
+					if (is_null($this->count))
 					{
 						switch (SQL_DBAL)
 						{
@@ -820,7 +820,7 @@ class Fsb_frame_child extends Fsb_frame
 
 						// Pagination du sujet
 						$total_page_topic = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
-						$topic_pagination = ($total_page_topic > 1) ? Html::pagination(0, $total_page_topic, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], NULL, TRUE) : FALSE;
+						$topic_pagination = ($total_page_topic > 1) ? Html::pagination(0, $total_page_topic, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 					
 						// Image du sujet
 						if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')
@@ -846,7 +846,7 @@ class Fsb_frame_child extends Fsb_frame
 							'FIRST_DATE' =>		Fsb::$session->print_date($row['t_time']),
 							'DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
 							'PAGINATION' =>		$topic_pagination,
-							'UNREAD' =>			($is_read) ? FALSE : TRUE,
+							'UNREAD' =>			($is_read) ? false : true,
 
 							'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
 							'U_CAT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . $row['cat_id']),
@@ -916,7 +916,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		// Construction un arbre des forums
 		$tree = new Tree();
-		$tree->add_item(0, NULL, array(
+		$tree->add_item(0, null, array(
 			'f_id' =>		0,
 			'f_level' =>	-1,
 			'f_name' =>		Fsb::$session->lang('search_all'),
@@ -954,7 +954,7 @@ class Fsb_frame_child extends Fsb_frame
 					'NAME' =>		$child->get('f_name'),
 					'STYLE' =>		($child->get('f_color') != 'class="forum"') ? $child->get('f_color') : '',
 					'PADDING' =>	str_repeat('&nbsp;&nbsp; &nbsp; &nbsp; ', $child->get('f_level') + 1),
-					'IS_CAT' =>		($child->get('f_parent') == 0) ? TRUE : FALSE,
+					'IS_CAT' =>		($child->get('f_parent') == 0) ? true : false,
 					'CHILDREN' =>	implode(', ', $child->allChildren()),
 				));
 

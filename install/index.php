@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 
 define('PHPEXT', substr(strrchr($_SERVER['PHP_SELF'],'.'), 1));
 define('ROOT', '../');
-define('DEBUG', TRUE);
+define('DEBUG', true);
 
 if (version_compare(phpversion(), '5.0.0', '<'))
 {

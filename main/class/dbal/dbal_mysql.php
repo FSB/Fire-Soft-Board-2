@@ -16,7 +16,7 @@ class Dbal_mysql extends Dbal
 	/**
 	 * @see Dbal::factory()
 	 */
-	public function __construct($server, $login, $pass, $db, $port = NULL, $use_cache = TRUE)
+	public function __construct($server, $login, $pass, $db, $port = null, $use_cache = true)
 	{
 		if ($port)
 		{
@@ -24,15 +24,15 @@ class Dbal_mysql extends Dbal
 		}
 
 		$this->use_cache = $use_cache;
-		$this->id = NULL;
+		$this->id = null;
 		if (!$this->id = @mysql_connect($server, $login, $pass))
 		{
-			$this->id = NULL;
+			$this->id = null;
 		}
 
 		if ($this->id && !@mysql_select_db($db, $this->id))
 		{
-			$this->id = NULL;
+			$this->id = null;
 		}
 
 		if (!$this->id)
@@ -41,16 +41,16 @@ class Dbal_mysql extends Dbal
 		}
 
 		// Ce que peut faire MySQL
-		$this->can_use_explain = TRUE;
-		$this->can_use_replace = TRUE;
-		$this->can_use_multi_insert = TRUE;
-		$this->can_use_truncate = TRUE;
+		$this->can_use_explain = true;
+		$this->can_use_replace = true;
+		$this->can_use_multi_insert = true;
+		$this->can_use_truncate = true;
 	}
 
 	/**
 	 * @see Dbal::_query()
 	 */
-	public function _query($sql, $buffer = TRUE)
+	public function _query($sql, $buffer = true)
 	{
 		if (!$result = (($buffer) ? @mysql_query($sql, $this->id) : @mysql_unbuffered_query($sql, $this->id)))
 		{
@@ -124,7 +124,7 @@ class Dbal_mysql extends Dbal
 	/**
 	 * @see Dbal::field_type()
 	 */
-	public function field_type($result, $field, $table = NULL)
+	public function field_type($result, $field, $table = null)
 	{
 		if (is_int($field) || !$table)
 		{
@@ -153,7 +153,7 @@ class Dbal_mysql extends Dbal
 	/**
 	 * @see Dbal::get_field_type()
 	 */
-	public function get_field_type($result, $field, $table = NULL)
+	public function get_field_type($result, $field, $table = null)
 	{
 		$field_type = $this->field_type($result, $field, $table);
 		if (!$field_type)
@@ -177,7 +177,7 @@ class Dbal_mysql extends Dbal
 	/**
 	 * @see Dbal::list_tables()
 	 */
-	public function list_tables($limit = TRUE)
+	public function list_tables($limit = true)
 	{
 		$tables = array();
 		$sql = 'SHOW TABLES';
@@ -241,7 +241,7 @@ class Dbal_mysql extends Dbal
 				{
 					$this->simple_query('BEGIN');
 				}
-				$this->in_transaction = TRUE;
+				$this->in_transaction = true;
 			break;
 
 			case 'commit' :
@@ -249,7 +249,7 @@ class Dbal_mysql extends Dbal
 				{
 					$this->simple_query('COMMIT');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 
 			case 'rollback' :
@@ -257,7 +257,7 @@ class Dbal_mysql extends Dbal
 				{
 					$this->simple_query('ROLLBACK');
 				}
-				$this->in_transaction = FALSE;
+				$this->in_transaction = false;
 			break;
 		}
 	}

@@ -73,7 +73,7 @@ class Compress extends Fsb_model
 	 * @param string $filename Fichier archive
 	 * @param File $file
 	 */
-	public function __construct($filename, $file = NULL)
+	public function __construct($filename, $file = null)
 	{
 		$this->file = $file;
 		if (!$this->file)
@@ -149,10 +149,10 @@ class Compress extends Fsb_model
 	/**
 	 * Genere l'archive
 	 *
-	 * @param bool $return Si TRUE, ecrit le fichier, si FALSE, retourne le contenu
-	 * @return mixed Contenu du fichier si $return vaut TRUE
+	 * @param bool $return Si true, ecrit le fichier, si false, retourne le contenu
+	 * @return mixed Contenu du fichier si $return vaut true
 	 */
-	public function write($return = FALSE)
+	public function write($return = false)
 	{
 		// Contenu de l'archive
 		switch ($this->method)

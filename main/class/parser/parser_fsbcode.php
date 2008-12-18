@@ -25,28 +25,28 @@ class Parser_fsbcode extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $only_wysiwyg = FALSE;
+	public $only_wysiwyg = false;
 
 	/**
 	 * Si on doit parser les images
 	 *
 	 * @var bool
 	 */
-	public $parse_img = TRUE;
+	public $parse_img = true;
 
 	/**
 	 * Si on doit parser les caracteres \0 en \n
 	 * 
 	 * @var bool
 	 */
-	public $parse_eof = TRUE;
+	public $parse_eof = true;
 
 	/**
 	 * S'il s'agit d'une signature
 	 *
 	 * @var bool
 	 */
-	public $is_signature = FALSE;
+	public $is_signature = false;
 	
 	/**
 	 * Tableau d'informations (variables predefinies)
@@ -219,14 +219,14 @@ class Parser_fsbcode extends Fsb_model
 		// Avec arguments
 		else
 		{
-			if (strpos($arg, ',t=') !== FALSE || strpos($arg, ',id=') !== FALSE)
+			if (strpos($arg, ',t=') !== false || strpos($arg, ',id=') !== false)
 			{
 				$split = explode(',', $arg);
 				$timestamp = '';
 				$link = '%s';
 				foreach ($split AS $data)
 				{
-					if (strpos($data, '=') !== FALSE)
+					if (strpos($data, '=') !== false)
 					{
 						list($k, $v) = explode('=', $data);
 						switch ($k)
@@ -351,7 +351,7 @@ class Parser_fsbcode extends Fsb_model
 		if (!$arg)
 		{
 			$arg = $content;
-			$is_content_mail = true;
+			$is_content_mail =  true ;
 		}
 
 		if (!preg_match('#^[a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4}$#i', $arg))
@@ -473,7 +473,7 @@ class Parser_fsbcode extends Fsb_model
 
 		$attr_ary = array('alt', 'height', 'title', 'width', 'float');
 
-		$alt_exists = FALSE;
+		$alt_exists = false;
 		$attr_str = '';
 
 		// On recupere les atributs
@@ -491,7 +491,7 @@ class Parser_fsbcode extends Fsb_model
 				{
 					if ($name == 'alt')
 					{
-						$alt_exists = TRUE;
+						$alt_exists = true;
 					}
 					$attr_str .= $name . '="' . $value . '" ';
 				}

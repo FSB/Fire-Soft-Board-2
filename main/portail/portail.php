@@ -53,13 +53,13 @@ class Portail extends Fsb_model
 	 * Affiche un module
 	 *
 	 * @param string $name Nom du module
-	 * @return bool Retourne TRUE si le module a bien ete afficher, false sinon
+	 * @return bool Retourne true si le module a bien ete afficher, false sinon
 	 */
 	public function output_module($name)
 	{
 		if (!file_exists(ROOT . 'main/portail/portail_' . $name . '.' . PHPEXT))
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		include(ROOT . 'main/portail/portail_' . $name . '.' . PHPEXT);
@@ -67,7 +67,7 @@ class Portail extends Fsb_model
 		$tmp = new $class_name();
 		$tmp->_set('portail_config', $this->portail_config);
 		$tmp->main();
-		return (TRUE);
+		return (true);
 	}
 
 	/**

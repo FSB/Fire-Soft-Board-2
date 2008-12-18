@@ -11,7 +11,7 @@
 // On affiche ce module si le membre a l'autorisation de donner des avertissements
 if (Fsb::$session->is_authorized('warn_user'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -85,14 +85,14 @@ class Page_modo_warn extends Fsb_model
 			if (!$this->data = Fsb::$db->row($result))
 			{
 				Fsb::$tpl->set_switch('nickname_error');
-				return (FALSE);
+				return (false);
 			}
 
 			$this->id = $this->data['u_id'];
 			$this->nickname = $this->data['u_nickname'];
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/*
@@ -288,11 +288,11 @@ class Page_modo_warn extends Fsb_model
 	}
 
 	/*
-	** Retourne TRUE si on peut donner / retirer un avertissement suivant le mode
+	** Retourne true si on peut donner / retirer un avertissement suivant le mode
 	*/
 	public function can_warn()
 	{
-		return (($this->mode == 'more' && $this->data['u_total_warning'] == 5) || ($this->mode == 'less' && $this->data['u_total_warning'] == 0) ? FALSE : TRUE);
+		return (($this->mode == 'more' && $this->data['u_total_warning'] == 5) || ($this->mode == 'less' && $this->data['u_total_warning'] == 0) ? false : true);
 	}
 }
 

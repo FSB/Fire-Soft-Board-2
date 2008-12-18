@@ -112,18 +112,6 @@ class Tree_forum extends Tree
 	}
 	
 	/**
-	 * Ajoute des informations au forum en gardant les anciennes
-	 *
-	 * @param int $id ID du forum
-	 * @param array $data Informations a ajouter
-	 */
-	public function merge_item($id, $data)
-	{
-		$data = array_merge($this->getByID($id)->data, $data);
-		$this->update_item($id, $data);
-	}
-	
-	/**
 	 * Recalcul les informations des forums
 	 *
 	 * @param Tree_node $node

@@ -45,13 +45,15 @@ class Convert
 	const STATE_END = 8;
 
 	// Rafraichissement offset ?
-	protected $refresh_offset = FALSE;
+	protected $refresh_offset = false;
 
 	/*
 	** Constructeur
 	*/
 	public function __construct($converter)
 	{
+		@set_time_limit(0);
+
 		// Informations sur la page
 		$this->page = Http::request('p');
 		$this->offset = intval(Http::request('offset'));
@@ -129,7 +131,7 @@ class Convert
 	*/
 	protected function config($key)
 	{
-		return ((isset($this->config[$key])) ? $this->config[$key] : NULL);
+		return ((isset($this->config[$key])) ? $this->config[$key] : null);
 	}
 
 	/*
@@ -160,7 +162,7 @@ class Convert
 	*/
 	private function database_connexion()
 	{
-		Fsb::$db = Dbal::factory($this->config('sql_server'), $this->config('sql_login'), $this->config('sql_password'), $this->config('sql_dbname'), $this->config('sql_port'), FALSE);
+		Fsb::$db = Dbal::factory($this->config('sql_server'), $this->config('sql_login'), $this->config('sql_password'), $this->config('sql_dbname'), $this->config('sql_port'), false);
 		if (!Fsb::$db->_get_id())
 		{
 			$this->error(Fsb::$session->lang('convert_sql_connexion_error'));
@@ -174,7 +176,7 @@ class Convert
 	{
 		if (!defined('CONVERTER_PAGE_HEADER'))
 		{
-			define('CONVERTER_PAGE_HEADER', TRUE);
+			define('CONVERTER_PAGE_HEADER', true);
 		}
 
 		Fsb::$tpl->set_file('convert.html');
@@ -190,7 +192,7 @@ class Convert
 			Fsb::$tpl->set_blocks('menu', array(
 				'URL' =>		$this->url . $menu,
 				'NAME' =>		Fsb::$session->lang('convert_menu_' . $menu),
-				'SELECTED' =>	($this->page == $menu) ? TRUE : FALSE,
+				'SELECTED' =>	($this->page == $menu) ? true : false,
 			));
 		}
 	}
@@ -210,13 +212,13 @@ class Convert
 				Fsb::$tpl->set_vars(array(
 					'NEXT_PAGE' =>		$this->url . $next_page,
 					'REFRESH_URL' =>	$this->url . $next_page,
-					'REFRESH_AUTO' =>	($this->config('output') != self::OUTPUT_PRINT) ? TRUE : FALSE,
+					'REFRESH_AUTO' =>	($this->config('output') != self::OUTPUT_PRINT) ? true : false,
 				));
 			}
 			else
 			{
 				Fsb::$tpl->set_vars(array(
-					'CONVERT_DONE' =>		TRUE,
+					'CONVERT_DONE' =>		true,
 				));
 			}
 		}
@@ -253,11 +255,11 @@ class Convert
 	*/
 	protected function refresh_with_offset($total)
 	{
-		$this->refresh_offset = TRUE;
+		$this->refresh_offset = true;
 
 		Fsb::$tpl->set_vars(array(
 			'REFRESH_URL' =>	$this->url . $this->page . '&amp;offset=' . $this->offset,
-			'REFRESH_AUTO' =>	($this->config('output') != self::OUTPUT_PRINT) ? TRUE : FALSE,
+			'REFRESH_AUTO' =>	($this->config('output') != self::OUTPUT_PRINT) ? true : false,
 			'PROGRESS' =>		sprintf(Fsb::$session->lang('convert_progress'), $this->offset, $total, round($this->offset * 100 / $total, 2)),
 		));
 	}
@@ -419,13 +421,13 @@ class Convert
 		$def = array(
 			'u_language' =>				'fr',
 			'u_tpl' =>					'WhiteSummer',
-			'u_activated' =>			TRUE,
+			'u_activated' =>			true,
 			'u_birthday' =>				'00/00/00',
-			'u_activate_avatar' =>		TRUE,
+			'u_activate_avatar' =>		true,
 			'u_activate_fscode' =>		6,
 			'u_activate_email' =>		4,
-			'u_activate_hidden' =>		FALSE,
-			'u_activate_sig' =>			TRUE,
+			'u_activate_hidden' =>		false,
+			'u_activate_sig' =>			true,
 			'u_activate_img' =>			6,
 		);
 
@@ -449,7 +451,7 @@ class Convert
 
 			// Insertion dans les groupes speciaux
 			$queries[] = 'INSERT INTO ' . SQL_PREFIX . 'groups_users VALUES (' . GROUP_SPECIAL_USER . ', ' . $data['u_id'] . ', ' . GROUP_USER . ')';
-			$group_special_id = NULL;
+			$group_special_id = null;
 			switch ($data['u_auth'])
 			{
 				case MODO :
@@ -816,8 +818,8 @@ class Convert
 		$dirs = $this->convert_copy();
 
 		$copy = array(
-			'ranks' =>		RANK_PATH,
-			'avatars' =>	AVATAR_PATH,
+			'ranks' =>		ROOT . 'images/ranks/',
+			'avatars' =>	ROOT . 'images/avatars/',
 		);
 
 		foreach ($copy AS $type => $dst)
@@ -851,7 +853,7 @@ class Convert_tree_forums extends Tree
 {
 	public function __construct()
 	{
-		$this->add_item(0, NULL, array());
+		$this->add_item(0, null, array());
 	}
 
 	/*
@@ -861,28 +863,30 @@ class Convert_tree_forums extends Tree
 	{
 		parent::add_item($id, $parent, $data);
 
-		$this->stack[$id]->data['f_level'] = count($this->stack[$id]->parents);
+		$this->merge_item($id, array(
+			'f_level' =>	count($this->getByID($id)->getParents())
+		));
 	}
 
 	/*
 	** Ajoute les champs f_left et f_right aux forums
 	*/
-	public function create_interval($node = NULL, &$f_left = 0)
+	public function create_interval($node = null, &$f_left = 0)
 	{
 		if (!$node)
 		{
-			$node = $this->document[0]->children;
+			$node = $this->document;
 		}
-
-		foreach ($node AS $child)
+		
+		foreach ($node->children AS $child)
 		{
 			$f_left++;
 			$child->set('f_left', $f_left);
 			$child->set('f_right', $f_left + (2 * count($child->allChildren()) + 1));
 
-			if ($child->children())
+			if ($child->children)
 			{
-				$this->create_interval($child->children(), $f_left);
+				$this->create_interval($child, $f_left);
 			}
 
 			$f_left++;
@@ -892,44 +896,24 @@ class Convert_tree_forums extends Tree
 	/*
 	** Retourne un tableau simple contenant les forums, au lieu d'un arbre
 	*/
-	public function plain_data($node = NULL)
+	public function plain_data($node = null)
 	{
 		if (!$node)
 		{
-			$node = $this->document[0]->children;
+			$node = $this->document->children[0];
 		}
 
 		$return = array();
-		foreach ($node AS $child)
+		foreach ($node->children AS $child)
 		{
 			$return[$child->get('f_id')] = $child->data;
-			if ($child->children())
+			if ($child->children)
 			{
-				$return = array_merge($return, $this->plain_data($child->children()));
+				$return = array_merge($return, $this->plain_data($child));
 			}
 		}
 
 		return ($return);
-	}
-
-	/*
-	** Affichage des forums pour debugage
-	*/
-	public function debug($node = NULL)
-	{
-		if (!$node)
-		{
-			$node = $this->document[0]->children;
-		}
-
-		foreach ($node AS $child)
-		{
-			echo str_repeat('&nbsp; &nbsp;', count($child->parents)) . ' [' . $child->get('f_left') . '] ' . $child->get('f_name') . ' [' . $child->get('f_right') . ']' . '<br />';
-			if ($child->children())
-			{
-				$this->debug($child->children());
-			}
-		}
 	}
 }
 

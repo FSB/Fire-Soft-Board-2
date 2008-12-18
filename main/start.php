@@ -12,7 +12,7 @@
 error_reporting(E_ALL);
 
 // Protection de la page
-if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
+if (strpos($_SERVER['PHP_SELF'], 'start.') !== false)
 {
 	exit;
 }
@@ -102,7 +102,7 @@ function fsb_import($filename)
 		{
 			include_once(ROOT . 'main/' . $filename . '.' . PHPEXT);
 		}
-		$store[$filename] = TRUE;
+		$store[$filename] = true;
 	}
 }
 
@@ -152,7 +152,7 @@ Fsb::$debug->request_vars();
 
 // Instance de la classe Sql
 Fsb::$db = Dbal::factory();
-if (Fsb::$db->_get_id() === NULL)
+if (is_null(Fsb::$db->_get_id()))
 {
 	trigger_error('Impossible de se connecter a la base de donnee : ' . Fsb::$db->sql_error() . '<hr />Unable to connect to the database : ' . Fsb::$db->sql_error(), FSB_ERROR);
 }

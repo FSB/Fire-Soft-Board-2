@@ -48,7 +48,7 @@ class Xml extends Fsb_model
 	 * @param string $filename Fichier XML a charger
 	 * @param bool $use_cache Utilisation du cache
 	 */
-	public function load_file($filename, $use_cache = TRUE)
+	public function load_file($filename, $use_cache = true)
 	{
 		if (!file_exists($filename))
 		{
@@ -192,7 +192,7 @@ class Xml_element extends Fsb_model
 	public function __construct()
 	{
 		$this->__data['name'] = 'newElement';
-		$this->__data['value'] = NULL;
+		$this->__data['value'] = null;
 		$this->__data['attr'] = array();
 		$this->__data['depth'] = 0;
 	}
@@ -252,7 +252,7 @@ class Xml_element extends Fsb_model
 	 */
 	public function getAttribute($name)
 	{
-		return (($this->attributeExists($name)) ? $this->__data['attr'][$name] : NULL);
+		return (($this->attributeExists($name)) ? $this->__data['attr'][$name] : null);
 	}
 
 	/**
@@ -291,7 +291,7 @@ class Xml_element extends Fsb_model
 	 * @param string $value
 	 * @param bool $htmlspecialchars Transforme les entites HTML
 	 */
-	public function setData($value, $htmlspecialchars = TRUE)
+	public function setData($value, $htmlspecialchars = true)
 	{
 		if ($htmlspecialchars)
 		{
@@ -412,7 +412,7 @@ class Xml_element extends Fsb_model
 	 */
 	public function hasChildren()
 	{
-		return ((count($this->children())) ? TRUE : FALSE);
+		return ((count($this->children())) ? true : false);
 	}
 
 	/**
@@ -485,7 +485,7 @@ class Xml_element extends Fsb_model
 	{
 		if (!$this->childExists($name))
 		{
-			return (NULL);
+			return (null);
 		}
 		$ref = &$this->$name;
 		$ref = &$ref[count($ref) - 1];
@@ -506,7 +506,7 @@ class Xml_element extends Fsb_model
 		{
 			if (!$ref->childExists($item))
 			{
-				$null = NULL;
+				$null = null;
 				$ref = &$null;
 				return ($ref);
 			}
@@ -583,35 +583,35 @@ class Xml_regexp_parser extends Fsb_model
 	/**
 	 * En faisant pointer cette propriete sur un objet, les handler seront appeles en tant que methode de cet objet
 	 */
-	public $obj = NULL;
+	public $obj = null;
 
 	/**
 	 * Fonction / methode appelee lors de l'ouverture d'un tag
 	 *
 	 * @var string
 	 */
-	public $open_handler = NULL;
+	public $open_handler = null;
 
 	/**
 	 * Fonction / methode appelee lors de la fermeture d'un tag
 	 *
 	 * @var string
 	 */
-	public $close_handler = NULL;
+	public $close_handler = null;
 
 	/**
 	 * Fonction / methode appelee lors de la fermeture d'un tag, avec la valeur de celui ci
 	 *
 	 * @var string
 	 */
-	public $value_handler = NULL;
+	public $value_handler = null;
 
 	/**
 	 * Erreur lors du parsing
 	 *
 	 * @var string
 	 */
-	public $errstr = NULL;
+	public $errstr = null;
 
 	/**
 	 * Parse la chaine de caractere XML
@@ -628,7 +628,7 @@ class Xml_regexp_parser extends Fsb_model
 		}
 
 		$stack = array();
-		$in_cdata = FALSE;
+		$in_cdata = false;
 		$last_offset = 0;
 		$value = '';
 
@@ -679,7 +679,7 @@ class Xml_regexp_parser extends Fsb_model
 				// Debut de CDATA ?
 				if ($m[6][$i] && $m[6][$i][0])
 				{
-					$in_cdata = TRUE;
+					$in_cdata = true;
 				}
 			}
 
@@ -692,7 +692,7 @@ class Xml_regexp_parser extends Fsb_model
 				if (substr($value, -2) == ']>')
 				{
 					$value = substr($value, 0, -3);
-					$in_cdata = FALSE;
+					$in_cdata = false;
 				}
 
 				// On ne prend pas en compte les tags dans un CDATA
@@ -706,7 +706,7 @@ class Xml_regexp_parser extends Fsb_model
 				if ($check != $tag)
 				{
 					$this->errstr = 'XML error : tag &lt;' . $check . '&gt; is different of &lt;' . $tag . '&gt;';
-					return (FALSE);
+					return (false);
 				}
 
 				// Appel des handlers pour la fermeture des tags, et leur valeur
@@ -732,7 +732,7 @@ class Xml_regexp_parser extends Fsb_model
 			$last_offset = $current_offset;
 		}
 
-		return (TRUE);
+		return (true);
 	}
 }
 /* EOF */

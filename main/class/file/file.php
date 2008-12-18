@@ -140,7 +140,7 @@ abstract class File extends Fsb_model
 	public function connexion($server, $login, $password, $port, $path)
 	{
 		$result = $this->_connexion($server, $login, $password, $port, $path);
-		if ($result === TRUE)
+		if ($result === true)
 		{
 			return ;
 		}
@@ -176,7 +176,7 @@ abstract class File extends Fsb_model
 	 * @param int $mode Mode du chmod
 	 * @param bool $debug Debugage du CHMOD ?
 	 */
-	public function chmod($file, $mode, $debug = TRUE)
+	public function chmod($file, $mode, $debug = true)
 	{
 		$result = $this->_chmod($this->root_path . $file, $mode);
 		if (!$result && $debug)
@@ -200,7 +200,7 @@ abstract class File extends Fsb_model
 		// On ecrit le fichier
 		if (!is_writable($this->local_path . 'upload'))
 		{
-			$this->chmod('upload/', 0777, FALSE);
+			$this->chmod('upload/', 0777, false);
 		}
 
 		$fd = fopen($this->local_path . $tmp, 'w');
@@ -219,7 +219,7 @@ abstract class File extends Fsb_model
 		// On supprime le fichier cree une fois le transfert effectue
 		@unlink($this->local_path . $tmp);
 
-		return (TRUE);
+		return (true);
 	}
 
 	/**

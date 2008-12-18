@@ -16,9 +16,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	// Boite
 	public $box;
@@ -120,7 +120,7 @@ class Fsb_frame_child extends Fsb_frame
 				if (Fsb::$session->data['u_new_mp'])
 				{
 					Fsb::$tpl->set_vars(array(
-						'HAVE_NEW_MP' =>	FALSE,
+						'HAVE_NEW_MP' =>	false,
 					));
 				}
 				$check_max = 'inbox';
@@ -219,7 +219,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_blocks('mp', array(
 				'ID' =>			$row['mp_id'],
 				'NAME' =>		htmlspecialchars($row['mp_title']),
-				'IMG_READ' =>	($row['mp_read']) ? TRUE : FALSE,
+				'IMG_READ' =>	($row['mp_read']) ? true : false,
 				'NICKNAME' =>	Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>		Fsb::$session->print_date($row['mp_time']),
 
@@ -332,7 +332,7 @@ class Fsb_frame_child extends Fsb_frame
 		
 		// On genere les variables de template
 		Fsb::$tpl->set_vars(array(
-			'AUTO_ANSWER_ACTIV' =>	(Fsb::$session->data['u_mp_auto_answer_activ']) ? true : false,
+			'AUTO_ANSWER_ACTIV' =>	(Fsb::$session->data['u_mp_auto_answer_activ']) ?  true  : false,
 			'AUTO_ANSWER_MESSAGE' =>	htmlspecialchars(Fsb::$session->data['u_mp_auto_answer_message']),
 			'COUNT_BLACKLIST' =>		$count_blacklist,
 			'LIST_BLACKLIST' =>			Html::make_list('blacklist[]', array(), $list_blacklist, array(
@@ -504,7 +504,7 @@ class Fsb_frame_child extends Fsb_frame
 				$user_key = 'mp_to';
 				$user_key2 = 'mp_from';
 				$mp_savebox = '';
-				$okbox = TRUE;
+				$okbox = true;
 				$type = MP_INBOX;
 				$type2 = MP_OUTBOX;
 				Fsb::$tpl->set_switch('can_savebox');
@@ -516,14 +516,14 @@ class Fsb_frame_child extends Fsb_frame
 				$mp_savebox = '';
 				$type = MP_OUTBOX;
 				$type2 = MP_INBOX;
-				$okbox = FALSE;
+				$okbox = false;
 				Fsb::$tpl->set_switch('can_savebox');
 			break;
 
 			case MP_SAVE_INBOX :
 				$user_key = 'mp_to';
 				$user_key2 = 'mp_from';
-				$okbox = TRUE;
+				$okbox = true;
 				$mp_savebox = 'OR (mp.mp_type = ' . MP_SAVE_INBOX . ' AND mp.' . $user_key . ' = ' . Fsb::$session->id() . ')';
 				$type = MP_INBOX;
 				$type2 = MP_OUTBOX;
@@ -532,7 +532,7 @@ class Fsb_frame_child extends Fsb_frame
 			case MP_SAVE_OUTBOX :
 				$user_key = 'mp_from';
 				$user_key2 = 'mp_to';
-				$okbox = FALSE;
+				$okbox = false;
 				$mp_savebox = 'OR (mp.mp_type = ' . MP_SAVE_OUTBOX . ' AND mp.' . $user_key . ' = ' . Fsb::$session->id() . ')';
 				$type = MP_OUTBOX;
 				$type2 = MP_INBOX;
@@ -584,12 +584,12 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_vars(array(
 			'MP_ID' =>			$this->id,
 			'MP_TITLE' =>		htmlspecialchars($this->mp_data['mp_title']),
-			'MP_CAN_REPLY' =>	($this->box != 'outbox' && $this->box != 'save_outbox' && $this->mp_data['mp_from'] != VISITOR_ID) ? TRUE : FALSE,
+			'MP_CAN_REPLY' =>	($this->box != 'outbox' && $this->box != 'save_outbox' && $this->mp_data['mp_from'] != VISITOR_ID) ? true : false,
 			'PAGINATION' =>		(ceil($total_posts / $per_page) > 1) ? Html::pagination($this->page, $total_posts / $per_page, ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box . '&amp;id=' . $this->id) : '',
 			
 			'U_MP_NEW' =>		sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=mp'),
 			'U_MP_REPLY' =>		sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=mp&amp;id=' . $this->id),
-			'U_MP_QUOTE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=mp&amp;quote=true&amp;id=' . $this->id),
+			'U_MP_QUOTE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=mp&amp;quote= true &amp;id=' . $this->id),
 		));
 
 		// On affiche le contenu du MP, avec les messages enfants
@@ -605,7 +605,7 @@ class Fsb_frame_child extends Fsb_frame
 				ORDER BY mp.mp_time DESC, mp.mp_id ASC
 				LIMIT ' . (($this->page - 1) * $per_page) . ', ' . $per_page;
 		$result = Fsb::$db->query($sql);
-		$show_parent = FALSE;
+		$show_parent = false;
 		while ($row = Fsb::$db->row($result))
 		{
 			// Corrige un bug affichant deux fois le parent lorsqu'on s'auto envoie un MP
@@ -615,14 +615,14 @@ class Fsb_frame_child extends Fsb_frame
 				{
 					continue;
 				}
-				$show_parent = TRUE;
+				$show_parent = true;
 			}
 
 			// Avatar du membre
 			$u_avatar = User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_can_use_avatar']);
 
 			// Parse du HTML ?
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			// Informations passees au parseur de message
 			$parser_info = array(
@@ -636,7 +636,7 @@ class Fsb_frame_child extends Fsb_frame
 				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic', $parser_info),
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['mp_time']),
-				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
+				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : null,
 
 				'U_EDIT_MP' =>		($row['mp_read'] == MP_UNREAD) ? sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit_mp&amp;id=' . $row['mp_id']) : '',
 				'U_AVATAR' =>		$u_avatar,
@@ -715,7 +715,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('mp_delete_confirm'), ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box, array('action' => $action, 'submit_delete' => TRUE));
+			Display::confirmation(Fsb::$session->lang('mp_delete_confirm'), ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box, array('action' => $action, 'submit_delete' => true));
 		}
 	}
 }

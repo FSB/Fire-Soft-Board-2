@@ -16,6 +16,8 @@
 ** de code par exemple.
 */
 
+set_time_limit(0);
+
 function array_map_recursive($callback, $ary)
 {
 	foreach ($ary AS $key => $value)
@@ -37,8 +39,8 @@ function clean_gpc()
 	// On supprime toutes les variables crees par la directive register_globals
 	// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 	$gpc = array('_GET', '_POST', '_COOKIE');
-	$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
-	$register_globals = (ini_get('register_globals')) ? TRUE : FALSE;
+	$magic_quote = (get_magic_quotes_gpc()) ? true : false;
+	$register_globals = (ini_get('register_globals')) ? true : false;
 
 	if ($register_globals || $magic_quote)
 	{
@@ -73,7 +75,7 @@ function search_in_file($word, $dir, $ext, $casse, $regexp, $replace)
 	$fd = opendir($dir);
 	while ($file = readdir($fd))
 	{
-		if ($file[0] != '.' && $file != 'config.php' && $file != 'cache')
+		if ($file[0] != '.' && $file != 'config.php')
 		{
 			if (is_dir($dir . $file))
 			{
@@ -86,14 +88,14 @@ function search_in_file($word, $dir, $ext, $casse, $regexp, $replace)
 					$content_file = file_get_contents($dir . $file);
 					$content = file($dir . $file);
 					$count = count($content);
-					$print = FALSE;
+					$print = false;
 					for ($i = 0; $i < $count; $i++)
 					{
 						if (preg_match('#' . (($regexp) ? str_replace('#', '\#', $word) : preg_quote($word, '#')) . '#' . (($casse) ? 'i' : ''), $content[$i]))
 						{
 							if (!$print)
 							{
-								$print = TRUE;
+								$print = true;
 								echo '<b><u>Fichier : ' . $dir . $file . '</u></b><br />';
 							}
 							echo '<pre>&nbsp;&nbsp;<b>' . $i . '</b>&nbsp;&nbsp;' . trim(preg_replace('#(' . (($regexp) ? str_replace('#', '\#', htmlspecialchars($word)) : preg_quote(htmlspecialchars($word), '#')) . ')#' . (($casse) ? 'i' : ''), '<b>\\1</b>', htmlspecialchars($content[$i]))) . '</pre>';

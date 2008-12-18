@@ -64,7 +64,7 @@ class Procedure extends Fsb_model
 	 * @param string $name Nom de la variable
 	 * @param string $value Valeur de la variable
 	 */
-	public function set_var($name, $value = NULL)
+	public function set_var($name, $value = null)
 	{
 		$split = explode('.', $name);
 		$count = count($split) - 1;
@@ -415,7 +415,7 @@ class Procedure extends Fsb_model
 
 		Send::send_post($argv['fromID'], $argv['topicID'], $topic_data['f_id'], $message->document->asValidXML(), $user_data['u_nickname'], IS_APPROVED, 'classic', array(
 			't_title' =>	$topic_data['t_title'],
-		), FALSE);
+		), false);
 	}
 
 	/**
@@ -431,7 +431,7 @@ class Procedure extends Fsb_model
 				WHERE t_id = ' . $argv['topicID'];
 		$topic_data = Fsb::$db->request($sql);
 
-		Moderation::move_topics($argv['topicID'], $topic_data['f_id'], $argv['forumID'], ($argv['trace'] == 'true') ? TRUE : FALSE);
+		Moderation::move_topics($argv['topicID'], $topic_data['f_id'], $argv['forumID'], ($argv['trace'] == 'true') ? true : false);
 	}
 
 	/**
@@ -441,7 +441,7 @@ class Procedure extends Fsb_model
 	 */
 	private function process_ban($argv)
 	{
-		Moderation::ban($argv['banType'], $argv['banContent'], $argv['reason'], $argv['banLength'], FALSE);
+		Moderation::ban($argv['banType'], $argv['banContent'], $argv['reason'], $argv['banLength'], false);
 	}
 
 	/**
@@ -463,8 +463,8 @@ class Procedure extends Fsb_model
 			if (($argv['warnType'] == 'more' && $to['u_total_warning'] < 5) || ($argv['warnType'] == 'less' && $to['u_total_warning'] > 0))
 			{
 				Moderation::warn_user($argv['warnType'], $argv['warnUserID'], $to['u_id'], $argv['reason'], $to['u_warn_post'], $to['u_warn_read'], array(
-					'post_check' =>		FALSE,
-					'read_check' =>		FALSE,
+					'post_check' =>		false,
+					'read_check' =>		false,
 				));
 			}
 		}
@@ -542,8 +542,8 @@ class Procedure extends Fsb_model
 		if ($argv['watch'] == 'true')
 		{
 			Fsb::$db->insert('topics_notification', array(
-				't_id' =>		array($argv['topicID'], TRUE),
-				'u_id' =>		array(Fsb::$session->id(), TRUE),
+				't_id' =>		array($argv['topicID'], true),
+				'u_id' =>		array(Fsb::$session->id(), true),
 				'tn_status' =>	IS_NOT_NOTIFIED,
 			), 'REPLACE');
 		}

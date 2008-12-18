@@ -14,15 +14,15 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	public $mode, $id, $page;
 	public $topic_per_page = 100;
 	public $post_per_page = 30;
 	public $nav = array();
-	public $is_low_page = TRUE;
+	public $is_low_page = true;
 
 	public function main()
 	{
@@ -102,7 +102,7 @@ class Fsb_frame_child extends Fsb_frame
 
 						'U_CAT' =>	sid(ROOT . 'index.' . PHPEXT . '?p=low&amp;mode=index&amp;id=' . $last_cat['f_id']),
 					));
-					$last_cat = NULL;
+					$last_cat = null;
 				}
 
 				Fsb::$tpl->set_blocks('cat.forum', array(
@@ -163,7 +163,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			case FORUM_TYPE_INDIRECT_URL :
 				Fsb::$db->update('forums', array(
-					'f_location_view' =>	array('(f_location_view + 1)', 'is_field' => TRUE),
+					'f_location_view' =>	array('(f_location_view + 1)', 'is_field' => true),
 				), 'WHERE f_id = ' . $this->id);
 				Http::redirect($data['f_location']);
 			break;
@@ -229,7 +229,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			Fsb::$tpl->set_blocks('topic', array(
 				'TITLE' =>			Parser::title($row['t_title']),
-				'IS_ANNOUNCE' =>	($row['t_type'] <= 1) ? TRUE : FALSE,
+				'IS_ANNOUNCE' =>	($row['t_type'] <= 1) ? true : false,
 				'TOTAL' =>			sprintf(String::plural('low_answer', $row['t_total_post'] - 1), $row['t_total_post'] - 1),
 
 				'U_TOPIC' =>	sid(ROOT . 'index.' . PHPEXT . '?p=low&amp;mode=topic&amp;id=' . $row['t_id']),
@@ -329,7 +329,7 @@ class Fsb_frame_child extends Fsb_frame
 				't_id' =>			$row['t_id'],
 			);
 
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 			Fsb::$tpl->set_blocks('post', array(
 				'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 				'NICKNAME' =>		htmlspecialchars($row['p_nickname']),
@@ -346,8 +346,8 @@ class Fsb_frame_child extends Fsb_frame
 			if (!$data['tr_last_time'] || $data['tr_last_time'] < $data['t_last_p_time'])
 			{
 				Fsb::$db->insert('topics_read', array(
-					'u_id' =>			array(Fsb::$session->id(), TRUE),
-					't_id' =>			array($data['t_id'], TRUE),
+					'u_id' =>			array(Fsb::$session->id(), true),
+					't_id' =>			array($data['t_id'], true),
 					'p_id' =>			$data['t_last_p_id'],
 					'tr_last_time' =>	$data['t_last_p_time'],
 				), 'REPLACE');
@@ -363,7 +363,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		
 		// Visions du sujet
-		$update_total_view = TRUE;
+		$update_total_view = true;
 		if (Fsb::$mods->is_active('cookie_view'))
 		{
 			// Page deja visitee durant la session ?
@@ -371,7 +371,7 @@ class Fsb_frame_child extends Fsb_frame
 			if ($cookie_view)
 			{
 				$cookie_view = @unserialize($cookie_view);
-				$update_total_view = (is_array($cookie_view) && in_array($data['t_id'], $cookie_view)) ? FALSE : TRUE;
+				$update_total_view = (is_array($cookie_view) && in_array($data['t_id'], $cookie_view)) ? false : true;
 			}
 
 			if ($update_total_view)
@@ -389,7 +389,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($update_total_view)
 		{
 			Fsb::$db->update('topics', array(
-				't_total_view' =>	array('(t_total_view + 1)', 'is_field' => TRUE),
+				't_total_view' =>	array('(t_total_view + 1)', 'is_field' => true),
 			), 'WHERE t_id = ' . $data['t_id']);
 		}
 	}

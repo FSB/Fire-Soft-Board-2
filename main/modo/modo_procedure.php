@@ -11,7 +11,7 @@
 // On affiche ce module si le membre a l'autorisation de creer des procedures
 if (Fsb::$session->is_authorized('procedure'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -47,7 +47,7 @@ class Page_modo_procedure extends Fsb_model
 		'move' => array(
 			'argv' =>	array(
 				'topicID' =>			array('select_text', 15, '{this.topic_id}', 15),
-				'forumID' =>			array('select_forum_id', FALSE),
+				'forumID' =>			array('select_forum_id', false),
 				'trace' =>				'select_boolean',
 			),
 		),
@@ -751,7 +751,7 @@ class Page_modo_procedure extends Fsb_model
 	/*
 	** Selection d'un forum
 	*/
-	public function method_select_forum_id($name, $s, $choose_cat = FALSE)
+	public function method_select_forum_id($name, $s, $choose_cat = false)
 	{
 		return (Html::list_forums(get_forums(), $s, $name, $choose_cat));
 	}

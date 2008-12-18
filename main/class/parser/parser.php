@@ -18,36 +18,36 @@ class Parser extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $parse_fsbcode = TRUE;
+	public $parse_fsbcode = true;
 
 	/**
 	 * Si les images doivent etre parsees
 	 *
 	 * @var bool
 	 */
-	public $parse_img = TRUE;
+	public $parse_img = true;
 
 	/**
 	 * Si le HTML doit etre parses
 	 *
 	 * @var bool
 	 */
-	public $parse_html = FALSE;
+	public $parse_html = false;
 
 	/**
 	 * Si les signatures doivent etre parsees
 	 *
 	 * @var bool
 	 */
-	public $is_signature = FALSE;
+	public $is_signature = false;
 
 	/**
 	 * Constructeur, verifie si les FSBcode / images doivent etre parses en fonction de la configuration
 	 */
 	public function __construct()
 	{
-		$this->parse_fsbcode =	(Fsb::$session->data['u_activate_fscode'] & 2) ? TRUE : FALSE;
-		$this->parse_img =		(Fsb::$session->data['u_activate_img'] & 2) ? TRUE : FALSE;
+		$this->parse_fsbcode =	(Fsb::$session->data['u_activate_fscode'] & 2) ? true : false;
+		$this->parse_img =		(Fsb::$session->data['u_activate_img'] & 2) ? true : false;
 	}
 
 	/**
@@ -82,7 +82,7 @@ class Parser extends Fsb_model
 			$fsbcode = new Parser_fsbcode();
 			$fsbcode->parse_img = $this->parse_img;
 			$fsbcode->is_signature = $this->is_signature;
-			$fsbcode->parse_eof = FALSE;
+			$fsbcode->parse_eof = false;
 			$str = $fsbcode->parse($str, $info);
 		}
 		else
@@ -149,14 +149,14 @@ class Parser extends Fsb_model
 	{
 		$old_parse_fsbcode = $this->parse_fsbcode;
 		$old_parse_img = $this->parse_img;
-		$this->parse_fsbcode = (Fsb::$session->data['u_activate_fscode'] & 4) ? TRUE : FALSE;
-		$this->parse_img = (Fsb::$session->data['u_activate_img'] & 4) ? TRUE : FALSE;
-		$this->is_signature = TRUE;
+		$this->parse_fsbcode = (Fsb::$session->data['u_activate_fscode'] & 4) ? true : false;
+		$this->parse_img = (Fsb::$session->data['u_activate_img'] & 4) ? true : false;
+		$this->is_signature = true;
 
 		$str = htmlspecialchars($str);
 		$str = $this->message($str, $info);
 
-		$this->is_signature = FALSE;
+		$this->is_signature = false;
 		$this->parse_fsbcode = $old_parse_fsbcode;
 		$this->parse_img = $old_parse_img;
 
@@ -170,25 +170,25 @@ class Parser extends Fsb_model
 	 * @param bool $set_path Si on utilise le chemin absolu
 	 * @return string
 	 */
-	public static function smilies($str, $set_path = FALSE)
+	public static function smilies($str, $set_path = false)
 	{
-		static $origin = array(0 => array(), 1 => array()), $replace = array(0 => array(), 1 => array()), $flag = array(0 => FALSE, 1 => FALSE), $smilies = NULL;
+		static $origin = array(0 => array(), 1 => array()), $replace = array(0 => array(), 1 => array()), $flag = array(0 => false, 1 => false), $smilies = null;
 
 		// Chargement unique des smilies
-		if ($smilies === NULL)
+		if (is_null($smilies))
 		{
 			$sql = 'SELECT smiley_id, smiley_tag, smiley_name
 						FROM ' . SQL_PREFIX . 'smilies
 						ORDER BY LENGTH(smiley_tag) DESC';
 			$result = Fsb::$db->query($sql, 'smilies_');
 			$smilies = Fsb::$db->rows($result);
-			$load_flag = TRUE;
+			$load_flag = true;
 		}
 
 		$set_path = intval($set_path);
 		if (!$flag[$set_path])
 		{
-			$smiley_dir = ($set_path && strpos('http://', SMILEY_PATH) === FALSE) ? Fsb::$cfg->get('fsb_path') . '/' . substr(SMILEY_PATH, strlen(ROOT)) : SMILEY_PATH;
+			$smiley_dir = ($set_path && strpos('http://', SMILEY_PATH) === false) ? Fsb::$cfg->get('fsb_path') . '/' . substr(SMILEY_PATH, strlen(ROOT)) : SMILEY_PATH;
 			foreach ($smilies AS $smiley)
 			{
 				if ($smiley['smiley_tag'])
@@ -212,7 +212,7 @@ class Parser extends Fsb_model
 	 */
 	public static function censor($str)
 	{
-		static $origin = array(), $replace = array(), $flag = FALSE;
+		static $origin = array(), $replace = array(), $flag = false;
 
 		if (!$flag)
 		{
@@ -237,7 +237,7 @@ class Parser extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			$flag = TRUE;
+			$flag = true;
 		}
 
 		$str = preg_replace($origin, $replace, $str);

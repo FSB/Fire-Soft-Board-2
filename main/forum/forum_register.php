@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Module de la page
 	public $module;
@@ -38,10 +38,10 @@ class Fsb_frame_child extends Fsb_frame
 	public $img_mode = 'generate';
 
 	// Peut utiliser la confirmation visuelle
-	public $use_visual_confirmation = FALSE;
+	public $use_visual_confirmation = false;
 
 	// Utilisation du chiffrage RSA ?
-	public $use_rsa = FALSE;
+	public $use_rsa = false;
 
 	// Longueur max du pseudonyme
 	public $max_nickname_length = 20;
@@ -52,12 +52,12 @@ class Fsb_frame_child extends Fsb_frame
 	public function main()
 	{
 		// Chiffrage RSA ?
-		$this->use_rsa = (Fsb::$mods->is_active('rsa') && Rsa::can_use()) ? TRUE : FALSE;
+		$this->use_rsa = (Fsb::$mods->is_active('rsa') && Rsa::can_use()) ? true : false;
 
 		// On verifie si l'extension GD2 est utilisable pour la confirmation visuelle
 		if (Fsb::$mods->is_active('visual_confirmation'))
 		{
-			$this->use_visual_confirmation = TRUE;
+			$this->use_visual_confirmation = true;
 		}
 
 		// Les membres connectes ne sont pas admis sur cette page
@@ -134,7 +134,7 @@ class Fsb_frame_child extends Fsb_frame
 		foreach ($register_array AS $module)
 		{
 			Fsb::$tpl->set_blocks('module', array(
-				'IS_SELECT' =>	($this->module == $module) ? TRUE : FALSE,
+				'IS_SELECT' =>	($this->module == $module) ? true : false,
 				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=register&amp;module=' . $module),
 				'NAME' =>		Fsb::$session->lang('register_menu_' . $module),
 			));
@@ -152,17 +152,17 @@ class Fsb_frame_child extends Fsb_frame
 	public function post_data()
 	{
 		$this->post_data = array(
-			array('str' => 'accept_rules', 'insert' => FALSE),
-			array('str' => 'u_login', 'insert' => TRUE),
-			array('str' => 'u_login_rsa', 'insert' => FALSE),
-			array('str' => 'u_nickname', 'insert' => TRUE),
-			array('str' => 'u_password', 'insert' => TRUE),
-			array('str' => 'u_password_rsa', 'insert' => FALSE),
-			array('str' => 'u_password_confirm', 'insert' => FALSE),
-			array('str' => 'u_password_confirm_rsa', 'insert' => FALSE),
-			array('str' => 'u_email', 'insert' => TRUE),
-			array('str' => 'u_email_rsa', 'insert' => FALSE),
-			array('str' => 'u_visual_code', 'insert' => FALSE),
+			array('str' => 'accept_rules', 'insert' => false),
+			array('str' => 'u_login', 'insert' => true),
+			array('str' => 'u_login_rsa', 'insert' => false),
+			array('str' => 'u_nickname', 'insert' => true),
+			array('str' => 'u_password', 'insert' => true),
+			array('str' => 'u_password_rsa', 'insert' => false),
+			array('str' => 'u_password_confirm', 'insert' => false),
+			array('str' => 'u_password_confirm_rsa', 'insert' => false),
+			array('str' => 'u_email', 'insert' => true),
+			array('str' => 'u_email_rsa', 'insert' => false),
+			array('str' => 'u_visual_code', 'insert' => false),
 		);
 		
 		foreach ($this->post_data AS $value)
@@ -175,7 +175,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$rsa = new Rsa();
 			$rsa->private_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_private_key'));
-			if ($rsa->private_key === NULL)
+			if (is_null($rsa->private_key))
 			{
 				$rsa->regenerate_keys();
 			}
@@ -211,7 +211,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$rsa = new Rsa();
 			$rsa->public_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_public_key'));
-			if ($rsa->public_key === NULL)
+			if (is_null($rsa->public_key))
 			{
 				$rsa->regenerate_keys();
 			}
@@ -242,12 +242,12 @@ class Fsb_frame_child extends Fsb_frame
 			
 			// Merci a Fladnag (http://www.developpez.net/forums/profile.php?mode=viewprofile&u=33459) pour son aide sur
 			// le cache des images.
-			'CONFIRMATION_IMG' =>	sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=' . $this->img_mode . '&amp;frame=true&amp;uniqid=' . $uniqid),
-			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame=true&amp;uniqid=' . $uniqid),
+			'CONFIRMATION_IMG' =>	sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=' . $this->img_mode . '&amp;frame= true &amp;uniqid=' . $uniqid),
+			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame= true &amp;uniqid=' . $uniqid),
 		));
 
 		// Champs personals crees par l'administrateur
-		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), TRUE);
+		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), true);
 
 		Fsb::$tpl->set_switch('form');
 	}
@@ -340,7 +340,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Pseudonyme valide ?
-		if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== TRUE)
+		if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== true)
 		{
 			$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 		}
@@ -404,7 +404,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->img_mode = 'keep';
 		}
 
-		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, NULL, TRUE);
+		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, null, true);
 	}
 	
 	/*
@@ -495,7 +495,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($result)
 				{
 					Fsb::$db->update('users', array(
-						'u_activated' =>	FALSE,
+						'u_activated' =>	false,
 						'u_confirm_hash' =>	$confirm_hash,
 					), 'WHERE u_id = ' . $u_id);
 				}
@@ -503,13 +503,13 @@ class Fsb_frame_child extends Fsb_frame
 
 			case 'admin' :
 				Fsb::$db->update('users', array(
-					'u_activated' =>	FALSE,
+					'u_activated' =>	false,
 					'u_confirm_hash' =>	'.',
 				), 'WHERE u_id = ' . $u_id);
 
 				unset($mail);
 				User::confirm_administrator($u_id, $this->data['u_nickname'], $this->data['u_email'], Fsb::$session->ip);
-				$result = TRUE;
+				$result = true;
 			break;
 		}
 
@@ -547,12 +547,12 @@ class Fsb_frame_child extends Fsb_frame
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=register&amp;module=fsbcard'),
 			'ACCEPT_RULES' =>		(($this->data['accept_rules']) ? 'checked="checked"' : ''),
 			'CODE_CONFIRMATION' =>	($this->img_mode == 'keep') ? $this->data['u_visual_code'] : '',
-			'CONFIRMATION_IMG' =>	sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=' . $this->img_mode . '&amp;frame=true&amp;uniqid=' . $uniqid),
-			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame=true&amp;uniqid=' . $uniqid),
+			'CONFIRMATION_IMG' =>	sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=' . $this->img_mode . '&amp;frame= true &amp;uniqid=' . $uniqid),
+			'REFRESH_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=refresh&amp;frame= true &amp;uniqid=' . $uniqid),
 		));
 
 		// Champs personals crees par l'administrateur
-		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), TRUE);
+		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), true);
 	}
 
 	/*
@@ -585,7 +585,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->errstr[] = Fsb::$session->lang('register_need_fsbcard');
 		}
 
-		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, NULL, TRUE);
+		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, null, true);
 	}
 
 	/*
@@ -638,10 +638,10 @@ class Fsb_frame_child extends Fsb_frame
 			list($this->data['u_password'], $hash) =	$fsbcard->get_password();
 
 			// Verification de l'integrite de la FSBcard
-			if ($this->data['u_login'] === NULL || $this->data['u_nickname'] === NULL || $this->data['u_password'] === NULL || $this->data['u_email'] === NULL)
+			if (is_null($this->data['u_login']) || is_null($this->data['u_nickname']) || is_null($this->data['u_password']) || is_null($this->data['u_email']))
 			{
 				$this->errstr[] = Fsb::$session->lang('register_fsbcard_invalid');
-				return (FALSE);
+				return (false);
 			}
 
 			// Verification de la taille du pseudonyme
@@ -655,7 +655,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 
 			// Pseudonyme valide ?
-			if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== TRUE)
+			if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== true)
 			{
 				$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 			}
@@ -701,7 +701,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->errstr[] = Fsb::$session->lang('register_fsbcard_invalid');
 		}
 
-		return (($this->errstr) ? FALSE : TRUE);
+		return (($this->errstr) ? false : true);
 	}
 }
 

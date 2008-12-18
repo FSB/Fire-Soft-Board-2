@@ -15,8 +15,8 @@ die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefic
 */
 
 $gpc = array('_GET', '_POST', '_COOKIE');
-$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
-$register_globals = (ini_get('register_globals')) ? TRUE : FALSE;
+$magic_quote = (get_magic_quotes_gpc()) ? true : false;
+$register_globals = (ini_get('register_globals')) ? true : false;
 
 if ($register_globals || $magic_quote)
 {
@@ -41,17 +41,17 @@ function is_escaped($pos, $str)
 {
 	if (($pos - 1) >= 0 && $str[$pos - 1] != '\\')
 	{
-		return (FALSE);
+		return (false);
 	}
 	else if (($pos - 1) >= 0 && ($pos - 2) >= 0 && $str[$pos - 1] == '\\' && $str[$pos - 2] != '\\')
 	{
-		return (TRUE);
+		return (true);
 	}
 	else if (($pos - 1) >= 0 && ($pos - 2) >= 0 && $str[$pos - 1] == '\\' && $str[$pos - 2] == '\\')
 	{
 		return (is_escaped($pos - 2, $str));
 	}
-	return (FALSE);
+	return (false);
 }
 
 function explode_query($delimiter, $str)
@@ -62,24 +62,24 @@ function explode_query($delimiter, $str)
 	}
 
 	$len = strlen($str);
-	for ($i = 0, $in_delimiter = TRUE, $quote_is_begin = FALSE, $tab = array(), $tmp = ''; $i < $len; $i++)
+	for ($i = 0, $in_delimiter = true, $quote_is_begin = false, $tab = array(), $tmp = ''; $i < $len; $i++)
 	{
 		if (!in_array($str[$i], $delimiter) || ($quote_is_begin && in_array($str[$i], $delimiter)))
 		{
 			if ($str[$i] == "'" && !is_escaped($i, $str) && !$quote_is_begin)
 			{
-				$quote_is_begin = TRUE;
+				$quote_is_begin = true;
 			}
 			else if ($str[$i] == "'" && !is_escaped($i, $str) && $quote_is_begin)
 			{
-				$quote_is_begin = FALSE;
+				$quote_is_begin = false;
 			}
 			$tmp .= $str[$i];
-			$in_delimiter = FALSE;
+			$in_delimiter = false;
 		}
 		else if (in_array($str[$i], $delimiter) && !$in_delimiter && !$quote_is_begin)
 		{
-			$in_delimiter = TRUE;
+			$in_delimiter = true;
 			$tmp = trim($tmp);
 			if (strlen($tmp) > 0)
 			{
@@ -125,11 +125,11 @@ if (isset($_POST['submit']))
 			{
 				case 'pgsql' :
 					// AUTO_INCREMENT ?
-					if (preg_match("#\n  ([a-zA-Z0-9_]*?) (int\(11\)|mediumint\(9\)|smallint\(5\)) NOT NULL auto_increment,#i", $table, $match))
+					if (preg_match("#\n  ([a-zA-Z0-9_]*?) (int\(11\)|mediumint\(9\)|smallint\(5\)) NOT null auto_increment,#i", $table, $match))
 					{
 						$new_query .= "CREATE SEQUENCE ${tablename}_seq;\n";
 						$field = $match[1];
-						$table = preg_replace("#\n  ([a-zA-Z0-9_]*?) (int\(11\)|mediumint\(9\)|smallint\(5\)) NOT NULL auto_increment,#i", "\n\\1 INT DEFAULT nextval('${tablename}_seq'),", $table);
+						$table = preg_replace("#\n  ([a-zA-Z0-9_]*?) (int\(11\)|mediumint\(9\)|smallint\(5\)) NOT null auto_increment,#i", "\n\\1 INT DEFAULT nextval('${tablename}_seq'),", $table);
 						$table = preg_replace('# not null#i', '', $table);
 						$setval .= "SELECT SETVAL('${tablename}_seq',(select case when max(${field})>0 then max(${field})+1 else 1 end from ${tablename}));\n";
 					}
@@ -170,18 +170,18 @@ if (isset($_POST['submit']))
 					}
 
 					// AUTO_INCREMENT ?
-					$auto_field = NULL;
+					$auto_field = null;
 					$index = '';
-					if (preg_match("#\n  ([a-zA-Z0-9_]*?) int\(11\) NOT NULL auto_increment,#i", $table, $match))
+					if (preg_match("#\n  ([a-zA-Z0-9_]*?) int\(11\) NOT null auto_increment,#i", $table, $match))
 					{
 						$field = $match[1];
-						$table = preg_replace("#\n  ([a-zA-Z0-9_]*?) int\(11\) NOT NULL auto_increment,#i", "\n  \\1 INTEGER PRIMARY KEY NOT NULL,", $table);
+						$table = preg_replace("#\n  ([a-zA-Z0-9_]*?) int\(11\) NOT null auto_increment,#i", "\n  \\1 INTEGER PRIMARY KEY NOT null,", $table);
 						$table = preg_replace('#,(\r)?\n  PRIMARY KEY\s*([a-zA-Z0-9_]*?)?\s*\(.*?\)#i', '', $table);
 					}
 					$table = preg_replace('#,(\r)?\n  UNIQUE\s*([a-zA-Z0-9_]*?)\s*\(.*?\)#i', '', $table);
-					$table = preg_replace("#INTEGER PRIMARY KEY NOT NULL#i", "{SQLITE_SAVE}", $table);
-					$table = preg_replace("# NOT NULL#i", "", $table);
-					$table = preg_replace("#\{SQLITE_SAVE\}#i", "INTEGER PRIMARY KEY NOT NULL", $table);
+					$table = preg_replace("#INTEGER PRIMARY KEY NOT null#i", "{SQLITE_SAVE}", $table);
+					$table = preg_replace("# NOT null#i", "", $table);
+					$table = preg_replace("#\{SQLITE_SAVE\}#i", "INTEGER PRIMARY KEY NOT null", $table);
 
 
 					// KEYS ?

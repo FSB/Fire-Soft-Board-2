@@ -71,14 +71,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		// On recupere les arguments de la page
 		$this->dir = htmlspecialchars(Http::request('dir'));
-		if ($this->dir == NULL)
+		if ($this->dir == null)
 		{
 			$this->dir = '';
 		}
 		$this->dir = str_replace('../', '', $this->dir);
 		
 		$this->filename = htmlspecialchars(Http::request('file'));
-		if ($this->filename != NULL)
+		if ($this->filename != null)
 		{
 			$ary = explode('.', $this->filename);
 			if (!file_exists(ROOT . $this->dir . $this->filename) || ($this->mode == 'edit' && !in_array($ary[count($ary) - 1], $this->edit_file)))
@@ -89,13 +89,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		
 		$this->order = htmlspecialchars(Http::request('order'));
-		if ($this->order == NULL)
+		if ($this->order == null)
 		{
 			$this->order = 'type';
 		}
 		
 		$this->order_direction = htmlspecialchars(Http::request('order_direction'));
-		if ($this->order_direction == NULL)
+		if ($this->order_direction == null)
 		{
 			$this->order_direction = 'asc';
 		}
@@ -128,7 +128,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('webftp_list');
 		Fsb::$tpl->set_vars(array(
 			'CURRENT_DIR' =>			stripslashes($this->dir),
-			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? true : false,
 
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . $this->dir),
 			'U_WEBFTP_NAME' =>		sid('index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . $this->dir . '&amp;order=name&amp;order_direction=' . (($this->order == 'name') ? (($this->order_direction == 'asc') ? 'desc' : 'asc') : 'asc')),
@@ -151,7 +151,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$is_dir = is_dir(ROOT . $this->dir . $file);
 				$this->data[] = array(
 					'name' =>		$file,
-					'type' =>		($is_dir) ? NULL : $ext,
+					'type' =>		($is_dir) ? null : $ext,
 					'size' =>		($is_dir) ? (($this->order_direction == 'asc') ? (pow(2, 32) - 1) : 0) : filesize(ROOT . $this->dir . $file),
 					'perms' =>		$this->get_perms(fileperms(ROOT . $this->dir . $file)),
 					'date' =>		filemtime(ROOT . $this->dir . $file),
@@ -173,8 +173,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'DATE' =>		'---',
 				'PERMS' =>		'---',
 				'IMG_TYPE' =>	'adm_tpl/img/dir.gif',
-				'CAN_EDIT' =>	FALSE,
-				'CAN_DELETE' =>	FALSE,
+				'CAN_EDIT' =>	false,
+				'CAN_DELETE' =>	false,
 				
 				'U_DIR' =>		sid('index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . (($key == 'back') ? dirname($this->dir) : '') . '/&amp;order=' . $this->order . '&amp;order_direction=' . $this->order_direction),
 			));
@@ -200,13 +200,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_blocks('file', array(
 				'ACTION_NAME' =>	$this->dir . $value['name'],
 				'NAME' =>			$value['name'],
-				'TYPE' =>			($value['type'] == NULL) ? Fsb::$session->lang('adm_webftp_dir') : sprintf(Fsb::$session->lang('adm_webftp_file'), strtoupper($value['type'])),
+				'TYPE' =>			($value['type'] == null) ? Fsb::$session->lang('adm_webftp_dir') : sprintf(Fsb::$session->lang('adm_webftp_file'), strtoupper($value['type'])),
 				'SIZE' =>			($value['is_dir']) ? '---' : convert_size($value['size']),
 				'PERMS' =>			$value['perms'],
 				'DATE' =>			date('d/m/Y H:i:s', $value['date']),
 				'IMG_TYPE' =>		(($value['is_dir']) ? 'adm_tpl/img/dir.gif' : 'adm_tpl/img/' . $this->get_type_img($value['type']) . '.gif'),
-				'CAN_EDIT' =>		(in_array($value['type'], $this->edit_file)) ? TRUE : FALSE,
-				'CAN_DELETE' =>		TRUE,
+				'CAN_EDIT' =>		(in_array($value['type'], $this->edit_file)) ? true : false,
+				'CAN_DELETE' =>		true,
 				
 				'U_DIR' =>			$u_dir,
 				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=tools_webftp&amp;mode=edit&amp;dir=' . $this->dir . '&amp;file=' . $value['name']),
@@ -331,7 +331,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function upload_file()
 	{
 		$upload = new Upload('upload_file');
-		$upload->allow_ext(TRUE);
+		$upload->allow_ext(true);
 		$upload->store(ROOT . $this->dir);
 	}
 	
@@ -381,7 +381,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'FILENAME' =>		sprintf(Fsb::$session->lang('adm_webftp_edit_file'), ROOT . $this->dir . $this->filename),
 			'CONTENT_FILE' =>	htmlspecialchars(file_get_contents(ROOT . $this->dir . $this->filename)),
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 			'U_CODEPRESS' =>	sid('index.' . PHPEXT . '?p=tools_webftp&amp;mode=codepress&amp;dir=' . $this->dir . '&amp;file=' . $this->filename),
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=tools_webftp&amp;dir=' . $this->dir . '&amp;file=' . $this->filename),

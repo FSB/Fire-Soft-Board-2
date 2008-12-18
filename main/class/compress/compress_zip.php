@@ -20,7 +20,7 @@ class Compress_zip extends Fsb_model
 	 * @param mixed $arg Argument pour la classe de decompression
 	 * @return SimpleUnzip|zipfile
 	 */
-	public static function factory($action, $arg = NULL)
+	public static function factory($action, $arg = null)
 	{
 		switch ($action)
 		{
@@ -493,7 +493,7 @@ class SimpleUnzip {
 			// Retrieving local file header information
 			$aP = unpack('v1VN/v1GPF/v1CM/v1FT/v1FD/V1CRC/V1CS/V1UCS/v1FNL', $vZ);
 			// Check if data is encrypted
-			$bE = ($aP['GPF'] && 0x0001) ? TRUE : FALSE;
+			$bE = ($aP['GPF'] && 0x0001) ? true : false;
 			$nF = $aP['FNL'];
 
 			// Special case : value block after the compressed data
@@ -573,7 +573,7 @@ class SimpleUnzip {
 // 2003-12-02 - HB >
 					if(! $aI['E']) {
 // 2003-12-02 - HB <
-						if($vZ === FALSE) {
+						if($vZ === false) {
 							$aI['E']  = 2;
 							$aI['EM'] = 'Decompression of data failed.';
 						}

@@ -67,7 +67,7 @@ enregistrera <span class="b">fichier.gif</span> dans un répertoire <span class="
 La méthode <span class="b">write()</span> peut prendre un argument, qui est soit <span class="b">false</span> soit <span class="b">true</span>.
 Par défaut il vaut <span class="b">false</span>. Si vous lui passez <span class="b">true</span>, le fichier de l'archive ne sera pas écrit, et le code créé 
 sera simplement retourné. Par exemple :
-<pre>$source = $compress->write(TRUE);
+<pre>$source = $compress->write(true);
 header("Pragma: no-cache");
 header("Content-Type: text/x-delimtext; name=\"fichier.zip\"");
 header("Content-disposition: attachment; filename=fichier.zip");

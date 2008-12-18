@@ -90,7 +90,7 @@ class Log extends Fsb_model
 			$argv[] = func_get_arg($i);
 		}
 
-		self::add_custom(self::USER, $key, $argv, NULL, NULL, $user);
+		self::add_custom(self::USER, $key, $argv, null, null, $user);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Log extends Fsb_model
 	 * @param string $file Fichier ou se deroule le log
 	 * @param int $user ID du membre implique
 	 */
-	public static function add_custom($type, $key, $argv = array(), $line = NULL, $file = NULL, $user = NULL)
+	public static function add_custom($type, $key, $argv = array(), $line = null, $file = null, $user = null)
 	{
 		$user_id = (Fsb::$session && isset(Fsb::$session->data['u_id'])) ? Fsb::$session->id() : VISITOR_ID;
 		$user_ip = (Fsb::$session) ? Fsb::$session->_get('ip') : @$_SERVER['REMOTE_ADDR'];
@@ -135,7 +135,7 @@ class Log extends Fsb_model
 	 * @param bool $get_user Recupere en plus les informations sur le membre
 	 * @return array
 	 */
-	public static function read($type, $limit = 100, $offset = 0, $and = '', $get_user = FALSE)
+	public static function read($type, $limit = 100, $offset = 0, $and = '', $get_user = false)
 	{
 		Fsb::$session->load_lang('lg_logs');
 

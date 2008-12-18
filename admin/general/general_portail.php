@@ -90,24 +90,24 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				if (($row['pm_position'] == 'middle' && !isset($print_pos['left'])) || ($row['pm_position'] == 'right' && !isset($print_pos['left'])))
 				{
-					$print_pos['left'] = TRUE;
+					$print_pos['left'] = true;
 					Fsb::$tpl->set_blocks('pos', array());
 				}
 
 				if ($row['pm_position'] == 'right' && !isset($print_pos['middle']))
 				{
-					$print_pos['middle'] = TRUE;
+					$print_pos['middle'] = true;
 					Fsb::$tpl->set_blocks('pos', array());
 				}
 
-				$print_pos[$row['pm_position']] = TRUE;
+				$print_pos[$row['pm_position']] = true;
 				Fsb::$tpl->set_blocks('pos', array());
 			}
 
 			Fsb::$tpl->set_blocks('pos.portail', array(
 				'NAME' =>			Fsb::$session->lang('pm_' . $row['pm_name']),
 				'ACTIV_IMG' =>		'adm_tpl/img/' . (($row['pm_activ']) ? 'on' : 'off') . '.gif',
-				'HAVE_CONFIG' =>	($row['config_exists']) ? TRUE : FALSE,
+				'HAVE_CONFIG' =>	($row['config_exists']) ? true : false,
 
 				'U_UP' =>			sid('index.' . PHPEXT . '?p=general_portail&amp;module=' . $row['pm_name'] . '&amp;move=up'),
 				'U_LEFT' =>			sid('index.' . PHPEXT . '?p=general_portail&amp;module=' . $row['pm_name'] . '&amp;move=left'),
@@ -198,7 +198,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 					// On met a jour les ordres des modules qui etaient sous le module deplace
 					Fsb::$db->update('portail_module', array(
-						'pm_order' =>		array('(pm_order - 1)', 'is_field' => TRUE),
+						'pm_order' =>		array('(pm_order - 1)', 'is_field' => true),
 					), 'WHERE pm_position = \'' . Fsb::$db->escape($current['pm_position']) . '\' AND pm_order > ' . intval($current['pm_order']));
 				break;
 			}
@@ -250,14 +250,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 					ORDER BY portail_name';
 			$result = Fsb::$db->query($sql, 'portail_config_');
 
-			$config_exists = FALSE;
+			$config_exists = false;
 			while ($row = Fsb::$db->row($result))
 			{
 				if (!$config_exists)
 				{
 					Fsb::$tpl->set_switch('show_config');
 					$config->set_cat(Fsb::$session->lang('pm_' . $this->module));
-					$config_exists = TRUE;
+					$config_exists = true;
 				}
 
 				$config->cfg[$row['portail_name']] = $row['portail_value'];

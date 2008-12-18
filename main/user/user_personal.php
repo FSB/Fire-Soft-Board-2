@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur permettant de modifier ses donnees personelles
@@ -46,7 +46,7 @@ class Page_user_personal extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $can_edit_nickname = FALSE;
+	public $can_edit_nickname = false;
 	
 	/**
 	 * Champs du profil
@@ -82,23 +82,23 @@ class Page_user_personal extends Fsb_model
 	public function get_data()
 	{
 		$this->post_data = array(
-			array('field' => 'u_nickname', 'insert' => TRUE),
-			array('field' => 'u_tpl', 'insert' => TRUE),
-			array('field' => 'u_language', 'insert' => TRUE),
-			array('field' => 'u_birthday', 'insert' => TRUE),
-			array('field' => 'u_birthday_day', 'insert' => FALSE),
-			array('field' => 'u_birthday_month', 'insert' => FALSE),
-			array('field' => 'u_birthday_year', 'insert' => FALSE),
-			array('field' => 'u_sexe', 'insert' => TRUE),
-			array('field' => 'u_rank_id', 'insert' => TRUE),
-			array('field' => 'u_utc', 'insert' => TRUE),
-			array('field' => 'u_utc_dst', 'insert' => TRUE),
+			array('field' => 'u_nickname', 'insert' => true),
+			array('field' => 'u_tpl', 'insert' => true),
+			array('field' => 'u_language', 'insert' => true),
+			array('field' => 'u_birthday', 'insert' => true),
+			array('field' => 'u_birthday_day', 'insert' => false),
+			array('field' => 'u_birthday_month', 'insert' => false),
+			array('field' => 'u_birthday_year', 'insert' => false),
+			array('field' => 'u_sexe', 'insert' => true),
+			array('field' => 'u_rank_id', 'insert' => true),
+			array('field' => 'u_utc', 'insert' => true),
+			array('field' => 'u_utc_dst', 'insert' => true),
 		);
 		
 		foreach ($this->post_data AS $value)
 		{
 			$this->data[$value['field']] = Http::request($value['field'], 'post');
-			if ($this->data[$value['field']] === NULL && $value['insert'])
+			if (is_null($this->data[$value['field']]) && $value['insert'])
 			{
 				$this->data[$value['field']] = Fsb::$session->data[$value['field']];
 			}
@@ -182,7 +182,7 @@ class Page_user_personal extends Fsb_model
 		Fsb::$tpl->set_vars(array(
 			'USER_NICKNAME' =>		htmlspecialchars($this->data['u_nickname']),
 			'LIST_RANKS' =>			Html::make_list('u_rank_id', Fsb::$session->data['u_rank_id'], $list_ranks, array('id' => 'u_rank_id')),
-			'LIST_TPL' =>			Html::list_dir('u_tpl', $this->data['u_tpl'], ROOT . 'tpl/', array(), TRUE, '', 'id="u_tpl_id"'),
+			'LIST_TPL' =>			Html::list_dir('u_tpl', $this->data['u_tpl'], ROOT . 'tpl/', array(), true, '', 'id="u_tpl_id"'),
 			'LIST_LANG' =>			Html::list_langs('u_language', $this->data['u_language']),
 			'LIST_UTC' =>			Html::list_utc('u_utc', Fsb::$session->data['u_utc'], 'utc'),
 			'LIST_UTC_DST' =>		Html::list_utc('u_utc_dst', Fsb::$session->data['u_utc_dst'], 'dst'),
@@ -237,7 +237,7 @@ class Page_user_personal extends Fsb_model
 		if (strtolower($this->data['u_nickname']) != strtolower(Fsb::$session->data['u_nickname']) && $this->can_edit_nickname)
 		{
 			// Pseudonyme valide ?
-			if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== TRUE)
+			if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== true)
 			{
 				$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
 			}
@@ -284,14 +284,14 @@ class Page_user_personal extends Fsb_model
 		if ($this->data['u_rank_id'])
 		{
 			$result = $this->get_user_ranks();
-			$exists = FALSE;
-			$rank_exists = FALSE;
+			$exists = false;
+			$rank_exists = false;
 			while ($row = Fsb::$db->row($result))
 			{
-				$rank_exists = TRUE;
+				$rank_exists = true;
 				if ($row['rank_id'] == $this->data['u_rank_id'])
 				{
-					$exists = TRUE;
+					$exists = true;
 					break;
 				}
 			}
@@ -328,7 +328,7 @@ class Page_user_personal extends Fsb_model
 		if ($this->data['u_nickname'] != Fsb::$session->data['u_nickname'] && $this->can_edit_nickname)
 		{
 			$update_array['u_nickname'] = $this->data['u_nickname'];
-			User::rename(Fsb::$session->id(), $update_array['u_nickname'], FALSE);
+			User::rename(Fsb::$session->id(), $update_array['u_nickname'], false);
 			Log::user(Fsb::$session->id(), 'update_nickname', Fsb::$session->data['u_nickname'], $update_array['u_nickname']);
 		}
 		else

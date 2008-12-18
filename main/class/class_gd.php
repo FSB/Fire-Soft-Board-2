@@ -18,14 +18,14 @@ class Gd extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $loaded = TRUE;
+	public $loaded = true;
 
 	/**
 	 * Constructeur, verifie si l'extension GD est chargee
 	 */
 	public function __construct()
 	{
-		$this->loaded = (PHP_EXTENSION_GD) ? TRUE : FALSE;
+		$this->loaded = (PHP_EXTENSION_GD) ? true : false;
 	}
 
 	/**
@@ -42,16 +42,16 @@ class Gd extends Fsb_model
 		$img_size = @getimagesize($path);
 		if (!$img_size)
 		{
-			return (FALSE);
+			return (false);
 		}
 		$file_height = $img_size[1];
 		$file_width = $img_size[0];
 
 		if ($file_width > $max_width || $file_height > $max_height)
 		{
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Gd extends Fsb_model
 		$img_size = @getimagesize($path);
 		if (!$img_size)
 		{
-			return (FALSE);
+			return (false);
 		}
 		$file_height = $img_size[1];
 		$file_width = $img_size[0];
@@ -77,7 +77,7 @@ class Gd extends Fsb_model
 		$ext = get_file_data($path, 'extension');
 		if (!in_array($ext, Upload::$img))
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		// Tout d'abord on calcul la nouvelle taille de limage
@@ -139,10 +139,10 @@ class Gd extends Fsb_model
 	 */
 	private function resize_alpha(&$src, $new_width, $new_height, $old_width, $old_height)
 	{
-		$thumb = imagecreatetruecolor($new_width, $new_height);
-		imagealphablending($thumb, FALSE);
+		$thumb = imagecreate true color($new_width, $new_height);
+		imagealphablending($thumb, false);
 		imagecopyresampled($thumb, $src, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height);
-		imagesavealpha($thumb, TRUE);
+		imagesavealpha($thumb, true);
 
 		return ($thumb);
 	}

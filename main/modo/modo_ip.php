@@ -11,7 +11,7 @@
 // On affiche ce module suivant l'autorisation du membre
 if (Fsb::$session->is_authorized('auth_ip'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -27,7 +27,7 @@ class Page_modo_ip extends Fsb_model
 
 	// ID du membre
 	public $u_id;
-	public $nickname = NULL;
+	public $nickname = null;
 
 	/*
 	** Constructeur
@@ -90,8 +90,8 @@ class Page_modo_ip extends Fsb_model
 	{
 		if ($this->u_id)
 		{
-			$show_user = TRUE;
-			$show_other = FALSE;
+			$show_user = true;
+			$show_other = false;
 
 			$sql = 'SELECT u_nickname
 					FROM ' . SQL_PREFIX . 'users
@@ -103,15 +103,15 @@ class Page_modo_ip extends Fsb_model
 		}
 		else if ($this->ip)
 		{
-			$show_user = FALSE;
-			$show_other = TRUE;
+			$show_user = false;
+			$show_other = true;
 			$p_nickname = '';
 			$this->ip = $this->ip;
 		}
 		else
 		{
-			$show_user = TRUE;
-			$show_other = TRUE;
+			$show_user = true;
+			$show_other = true;
 
 			// Donnees du message
 			$sql = 'SELECT u_id, u_ip, p_nickname

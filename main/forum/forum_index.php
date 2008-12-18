@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = TRUE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = true;
 
 	// Navigation
 	public $nav = array();
@@ -96,7 +96,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		Fsb::$tpl->set_file('forum/forum_index.html');
 		Fsb::$tpl->set_vars(array(
-			'IS_CAT' =>					($this->cat) ? TRUE : FALSE,
+			'IS_CAT' =>					($this->cat) ? true : false,
 
 			'U_MARKREAD_FORUMS' =>		sid(ROOT . 'index.' . PHPEXT . '?markread=true' . (($this->cat) ? '&amp;cat=' . $this->cat : '')),
 		));
@@ -106,16 +106,16 @@ class Fsb_frame_child extends Fsb_frame
 
 		// On recupere les forums, avec une jointure sur les messages lus pour voir si
 		// le dernier message a ete lu ou non
-		$result = Forum::query(($this->cat == NULL) ? '' : 'WHERE f.f_cat_id = ' . $this->cat);
+		$result = Forum::query(($this->cat == null) ? '' : 'WHERE f.f_cat_id = ' . $this->cat);
 
-		$can_display_subforum = FALSE;
+		$can_display_subforum = false;
 		while ($forum = Fsb::$db->row($result))
 		{
 			if ($forum['f_parent'] == 0)
 			{
 				$parent_id = $forum['f_id'];
 				$last_cat = $forum;
-				$can_display_subforum = FALSE;
+				$can_display_subforum = false;
 			}
 			else if (Fsb::$session->is_authorized($forum['f_id'], 'ga_view') && (Fsb::$cfg->get('display_subforums') || $forum['f_parent'] == $parent_id))
 			{
@@ -127,22 +127,22 @@ class Fsb_frame_child extends Fsb_frame
 						'NAME' =>		htmlspecialchars($last_cat['f_name']),
 						'U_CAT' =>		sid(ROOT . 'index.' . PHPEXT . '?cat=' . $last_cat['f_id']),
 					));
-					$last_cat = NULL;
+					$last_cat = null;
 				}
 
 				// Forum lu ou non lu ?
-				$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? FALSE : TRUE;
+				$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? false : true;
 
 				// On affiche le forum
 				Forum::display($forum, 'forum', 0, $is_read);
 				
-				$can_display_subforum = TRUE;
+				$can_display_subforum = true;
 				$sub_parent_id = $forum['f_id'];
 			}
 			else if ($can_display_subforum && Fsb::$session->is_authorized($forum['f_id'], 'ga_view') && !Fsb::$cfg->get('display_subforums') && $forum['f_parent'] == $sub_parent_id)
 			{
 				// Forum lu ou non lu ?
-				$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? FALSE : TRUE;
+				$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? false : true;
 
 				// On affiche le sous forum
 				Forum::display($forum, 'subforum', 0, $is_read);

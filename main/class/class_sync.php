@@ -71,7 +71,7 @@ class Sync extends Fsb_model
 				't_last_p_time' =>		$row['p_time'],
 				't_last_p_nickname' =>	$row['p_nickname'],
 				't_last_u_id' =>		$row['u_id'],
-				't_total_post' =>		array('t_total_post' . ((isset($topics[$row['t_id']])) ? ' - ' . $topics[$row['t_id']] : ''), 'is_field' => TRUE),
+				't_total_post' =>		array('t_total_post' . ((isset($topics[$row['t_id']])) ? ' - ' . $topics[$row['t_id']] : ''), 'is_field' => true),
 			), 'WHERE t_id = ' . $row['t_id']);
 		}
 		Fsb::$db->free($result);
@@ -124,7 +124,7 @@ class Sync extends Fsb_model
 	 * @param int $signal_id Il est possible d'envoyers plusieurs signaux en utilisant le "OR" binaire.
 	 * @param mixed $arg
 	 */
-	function signal($signal_id, $arg = NULL)
+	function signal($signal_id, $arg = null)
 	{
 		// Mise a jour de la session
 		if ($signal_id & self::SESSION)

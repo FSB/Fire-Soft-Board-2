@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Affiche l'index du panneau de moderation

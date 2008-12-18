@@ -103,7 +103,7 @@ abstract class Rss extends Fsb_model
 	 *
 	 * @param bool $print Si on affiche le flux ou si on le recupere
 	 */
-	public function close($print = TRUE)
+	public function close($print = true)
 	{
 		$this->_close();
 		$string = $this->xml->document->asValidXML();

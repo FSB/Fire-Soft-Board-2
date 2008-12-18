@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Module de moderation pour la fusion de sujets
@@ -122,7 +122,7 @@ class Page_modo_merge extends Fsb_model
 		Fsb::$tpl->set_switch('show_merge');
 		Fsb::$tpl->set_vars(array(
 			'FIND_TITLE' =>				htmlspecialchars($title),
-			'LIST_MERGE_FORUMS' =>		Html::list_forums(get_forums(), $forums, 'find_forums[]', FALSE, 'multiple="multiple" size="5"'),
+			'LIST_MERGE_FORUMS' =>		Html::list_forums(get_forums(), $forums, 'find_forums[]', false, 'multiple="multiple" size="5"'),
 
 			'U_ACTION' =>				sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=merge&amp;id=' . $this->id),
 		));

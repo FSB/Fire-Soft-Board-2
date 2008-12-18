@@ -47,29 +47,29 @@ class Profil_fields extends Fsb_model
 		self::TEXT =>		array(
 			'name' =>		'text',
 			'maxlength' =>	array('min' => 0, 'max' => 255),
-			'regexp' =>		TRUE,
-			'output' =>		TRUE,
+			'regexp' =>		true,
+			'output' =>		true,
 		),
 		self::TEXTAREA =>	array(
 			'name' =>		'textarea',
 			'maxlength' =>	array('min' => 0, 'max' => 65535),
-			'output' =>		TRUE,
+			'output' =>		true,
 		),
 		self::RADIO =>		array(
 			'name' =>		'radio',
-			'list' =>		TRUE,
-			'output' =>		TRUE,
+			'list' =>		true,
+			'output' =>		true,
 		),
 		self::SELECT =>		array(
 			'name' =>		'select',
-			'list' =>		TRUE,
-			'output' =>		TRUE,
+			'list' =>		true,
+			'output' =>		true,
 		),
 		self::MULTIPLE =>	array(
 			'name' =>		'multiple',
-			'list' =>		TRUE,
-			'height' =>		TRUE,
-			'output' =>		TRUE,
+			'list' =>		true,
+			'height' =>		true,
+			'output' =>		true,
 		),
 	);
 

@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Temps unix
 	public $current;
@@ -240,7 +240,7 @@ class Fsb_frame_child extends Fsb_frame
 		for ($i = 0; $i < $first_day_week_day; $i++)
 		{
 			Fsb::$tpl->set_blocks((($type == 'simple') ? 'sub.' : '') . 'day', array(
-				'FILL' =>	FALSE,
+				'FILL' =>	false,
 			));
 		}
 
@@ -266,9 +266,9 @@ class Fsb_frame_child extends Fsb_frame
 
 			Fsb::$tpl->set_blocks((($type == 'simple') ? 'sub.' : '') . 'day', array(
 				'NB' =>			$i,
-				'FILL' =>		TRUE,
-				'CURRENT' =>	($month == $todays_month && $year == $todays_year && $i == $todays_day) ? TRUE : FALSE,
-				'HAVE_EVENT' =>	($total_events) ? TRUE : FALSE,
+				'FILL' =>		true,
+				'CURRENT' =>	($month == $todays_month && $year == $todays_year && $i == $todays_day) ? true : false,
+				'HAVE_EVENT' =>	($total_events) ? true : false,
 				'U_EVENT' =>	($total_events) ? sid(ROOT . 'index.' . PHPEXT . '?p=calendar&amp;mode=event&amp;time=' . mktime(0, 0, 0, $month, $i, $year)) : '',
 				//'EVENT' =>		($event_exists > 0) ? (($event_exists > 1) ? sprintf(Fsb::$session->lang('calendar_total_events'), $event_exists) : htmlspecialchars($events[$month][$i][0]['lang'])) : '',
 			));
@@ -286,7 +286,7 @@ class Fsb_frame_child extends Fsb_frame
 						}
 
 						Fsb::$tpl->set_blocks('day.event', array(
-							'IS_BIRTHDAY' =>	($data['type'] == 'birthday') ? TRUE : FALSE,
+							'IS_BIRTHDAY' =>	($data['type'] == 'birthday') ? true : false,
 							'NAME' =>			htmlspecialchars($name),
 							'TITLE' =>			htmlspecialchars($realname),
 						));
@@ -294,12 +294,12 @@ class Fsb_frame_child extends Fsb_frame
 				}
 				else
 				{
-					$is_birthday = TRUE;
+					$is_birthday = true;
 					foreach ($events[$month][$i] AS $data)
 					{
 						if ($data['type'] != 'birthday')
 						{
-							$is_birthday = FALSE;
+							$is_birthday = false;
 							break;
 						}
 					}
@@ -320,7 +320,7 @@ class Fsb_frame_child extends Fsb_frame
 			for ($i = ($first_day_week_day + $total_day) % 7; $i < 7; $i++)
 			{
 				Fsb::$tpl->set_blocks((($type == 'simple') ? 'sub.' : '') . 'day', array(
-					'FILL' =>		FALSE,
+					'FILL' =>		false,
 				));
 			}
 		}
@@ -367,13 +367,13 @@ class Fsb_frame_child extends Fsb_frame
 					'c_id' =>			$row['c_id'],
 				);
 
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 				Fsb::$tpl->set_blocks('event', array(
 					'TITLE' =>			htmlspecialchars($row['c_title']),
 					'CONTENT' =>		$parser->mapped_message($row['c_content'], 'classic', $parser_info),
 					'BEGIN' =>			$begin,
 					'END' =>			$end,
-					'CAN_EDIT' =>		(($row['u_id'] == Fsb::$session->id() && Fsb::$session->is_logged()) || Fsb::$session->is_authorized('approve_event')) ? TRUE : FALSE,
+					'CAN_EDIT' =>		(($row['u_id'] == Fsb::$session->id() && Fsb::$session->is_logged()) || Fsb::$session->is_authorized('approve_event')) ? true : false,
 					'IS_APPROVED' =>	$row['c_approve'],
 					'BY' =>				Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 
@@ -410,9 +410,9 @@ class Fsb_frame_child extends Fsb_frame
 						'CONTENT' =>		sprintf(Fsb::$session->lang('calendar_birthday'), htmlspecialchars($row['u_nickname'])) . ' (' . $age . ')',
 						'BEGIN' =>			$begin,
 						'END' =>			$end,
-						'CAN_EDIT' =>		FALSE,
-						'APPROVE' =>		FALSE,
-						'IS_APPROVED' =>	TRUE,
+						'CAN_EDIT' =>		false,
+						'APPROVE' =>		false,
+						'IS_APPROVED' =>	true,
 						'BY' =>				Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 					));
 				}

@@ -14,12 +14,12 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	public $id;
-	public $use_captcha = TRUE;
+	public $use_captcha = true;
 
 	/*
 	** Constructeur
@@ -31,7 +31,7 @@ class Fsb_frame_child extends Fsb_frame
 			Http::redirect(ROOT . 'index.' . PHPEXT);
 		}
 
-		$this->use_captcha = TRUE;
+		$this->use_captcha = true;
 
 		// Uniquement accessible aux visiteurs
 		if (Fsb::$session->is_logged())
@@ -70,10 +70,10 @@ class Fsb_frame_child extends Fsb_frame
 				ORDER BY u_auth DESC, u_nickname';
 		$result = Fsb::$db->query($sql);
 		$list_admin = array();
-		$selected = NULL;
+		$selected = null;
 		while ($row = Fsb::$db->row($result))
 		{
-			if ($selected === NULL || $row['u_auth'] == FONDATOR)
+			if (is_null($selected) || $row['u_auth'] == FONDATOR)
 			{
 				$selected = array($row['u_id']);
 			}

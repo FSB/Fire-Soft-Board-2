@@ -28,7 +28,7 @@ class Cache_eaccelerator extends Cache
 	private $ttl = 86400;
 
 	/**
-	 * Identifiant unique pour différencier les types de cache
+	 * Identifiant unique pour diffï¿½rencier les types de cache
 	 *
 	 * @var int
 	 */
@@ -49,7 +49,7 @@ class Cache_eaccelerator extends Cache
 	public $cache_type = 'eAccelerator cache';
 
 	/**
-	 * Hash unique pour différencier les clefs
+	 * Hash unique pour diffï¿½rencier les clefs
 	 *
 	 * @var string
 	 */
@@ -77,7 +77,7 @@ class Cache_eaccelerator extends Cache
 	 */
 	public function exists($hash)
 	{
-			return ((eaccelerator_get($hash . $this->uniq_hash) !== NULL) ? TRUE : FALSE);
+			return ((!is_null(eaccelerator_get($hash . $this->uniq_hash))) ? true : false);
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Cache_eaccelerator extends Cache
 	/**
 	 * @see Cache::put()
 	 */
-	public function put($hash, $value, $comments = '', $timestamp = NULL)
+	public function put($hash, $value, $comments = '', $timestamp = null)
 	{
 		eaccelerator_put($hash . $this->uniq_hash, serialize($value), $this->ttl);
 
@@ -121,11 +121,11 @@ class Cache_eaccelerator extends Cache
 	/**
 	 * @see Cache::destroy()
 	 */
-	public function destroy($prefix = NULL)
+	public function destroy($prefix = null)
 	{
 		foreach ($this->stack AS $key => $bool)
 		{
-			if ($prefix === NULL || substr($key, 0, strlen($prefix)) == $prefix)
+			if (is_null($prefix) || substr($key, 0, strlen($prefix)) == $prefix)
 			{
 				eaccelerator_rm($key . $this->uniq_hash);
 				unset($this->stack[$key]);

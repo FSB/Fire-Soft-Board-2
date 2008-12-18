@@ -49,7 +49,7 @@ class Css extends Fsb_model
 	 * @param string $filename Nom du fichier, qui servira d'identifiant
 	 * @param string $parent Parent si le fichier actuel est importe
 	 */
-	public function load_content($content, $filename, $parent = NULL)
+	public function load_content($content, $filename, $parent = null)
 	{
 		// Suppression des commentaires inutiles
 		$content = preg_replace("#/\*.*?\*/(\r\n|\n)(\r\n|\n)#si", '', $content);
@@ -61,7 +61,7 @@ class Css extends Fsb_model
 		$p = &$this->data[$basename];
 
 		// Gestion des fichiers importes
-		if ($parent !== NULL)
+		if (!is_null($parent))
 		{
 			if (!isset($this->import[$parent]))
 			{
@@ -142,7 +142,7 @@ class Css extends Fsb_model
 	 * @param string $path Chemin ou regenerer les fichiers
 	 * @param string $file Nom du fichier a regenerer, si aucun fichier precise on les regenere tous
 	 */
-	public function write($path, $file = NULL)
+	public function write($path, $file = null)
 	{
 		if (!is_dir($path))
 		{
@@ -151,7 +151,7 @@ class Css extends Fsb_model
 
 		foreach ($this->data AS $filename => $data)
 		{
-			if ($file !== NULL && $file != $filename)
+			if (!is_null($file) && $file != $filename)
 			{
 				continue ;
 			}
@@ -221,7 +221,7 @@ class Css extends Fsb_model
 	 */
 	public function get_property($data, $key)
 	{
-		return ((isset($data['properties'][$key])) ? $data['properties'][$key] : NULL);
+		return ((isset($data['properties'][$key])) ? $data['properties'][$key] : null);
 	}
 
 	/**

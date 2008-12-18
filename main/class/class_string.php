@@ -71,7 +71,7 @@ class String extends Fsb_model
 	 * @param int $length Longueur du texte a tronquer
 	 * @return string
 	 */
-	public static function substr($str, $start = 0, $length = NULL)
+	public static function substr($str, $start = 0, $length = null)
 	{
 		if (Fsb::$session->lang('charset') != 'UTF-8')
 		{
@@ -242,7 +242,7 @@ class String extends Fsb_model
 	 */
 	public static function is_matching($pattern, $word)
 	{
-		return ((preg_match('/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/i', $word)) ? TRUE : FALSE);
+		return ((preg_match('/^' . str_replace('\*', '.*', preg_quote($pattern, '/')) . '$/i', $word)) ? true : false);
 	}
 
 	/**
@@ -256,17 +256,17 @@ class String extends Fsb_model
 	{
 		if (($pos - 1) >= 0 && $str[$pos - 1] != '\\')
 		{
-			return (FALSE);
+			return (false);
 		}
 		else if (($pos - 1) >= 0 && ($pos - 2) >= 0 && $str[$pos - 1] == '\\' && $str[$pos - 2] != '\\')
 		{
-			return (TRUE);
+			return (true);
 		}
 		else if (($pos - 1) >= 0 && ($pos - 2) >= 0 && $str[$pos - 1] == '\\' && $str[$pos - 2] == '\\')
 		{
 			return (self::is_escaped($pos - 2, $str));
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -358,7 +358,7 @@ class String extends Fsb_model
 	 * @param bool $distinct Distingue 1 et 0 en ajoutant ou non un sufixe _none
 	 * @return string
 	 */
-	public static function plural($str, $int, $distinct = FALSE)
+	public static function plural($str, $int, $distinct = false)
 	{
 		return (Fsb::$session->lang($str . (($int > 1) ? 's' : (($distinct && $int == 0) ? '_none' : ''))));
 	}

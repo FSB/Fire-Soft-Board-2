@@ -110,13 +110,13 @@ abstract class Highlight extends Fsb_model
 	{
 		$result = $c . $this->open_style($color);
 		$i++;
-		$close = FALSE;
+		$close = false;
 		while ($i < $len)
 		{
 			if ($str[$i] == $c && !String::is_escaped($i, $str))
 			{
 				$result .= $this->close_style() . $this->escape_special_char($str[$i]);
-				$close = TRUE;
+				$close = true;
 				break;
 			}
 			$result .= $this->escape_special_char($str[$i]);

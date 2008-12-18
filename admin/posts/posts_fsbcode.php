@@ -71,8 +71,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Fsb::$tpl->set_blocks('fsbcode', array(
 				'TAG' =>			'[' . $row['fsbcode_tag'] . ']',
-				'ACTIVATED' =>		($row['fsbcode_activated']) ? TRUE : FALSE,
-				'SIG_ACTIVATED' =>	($row['fsbcode_activated_sig']) ? TRUE : FALSE,
+				'ACTIVATED' =>		($row['fsbcode_activated']) ? true : false,
+				'SIG_ACTIVATED' =>	($row['fsbcode_activated_sig']) ? true : false,
 
 				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=edit&amp;id=' . $row['fsbcode_id']),
 				'U_DELETE' =>		sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=delete&amp;id=' . $row['fsbcode_id']),
@@ -108,9 +108,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'fsbcode_list' =>			'',
 				'fsbcode_description' =>	'',
 				'fsbcode_fct' =>			'',
-				'fsbcode_activated' =>		TRUE,
-				'fsbcode_activated_sig' =>	TRUE,
-				'fsbcode_menu' =>			TRUE,
+				'fsbcode_activated' =>		true,
+				'fsbcode_activated_sig' =>	true,
+				'fsbcode_menu' =>			true,
 			);
 		}
 
@@ -128,10 +128,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FSBCODE_LIST' =>			htmlspecialchars($data['fsbcode_list']),
 			'FSBCODE_IMG' =>			htmlspecialchars($data['fsbcode_img']),
 			'FSBCODE_DESCRIPTION' =>	htmlspecialchars($data['fsbcode_description']),
-			'FSBCODE_ACTIVATED' =>		($data['fsbcode_activated']) ? TRUE : FALSE,
-			'FSBCODE_ACTIVATED_SIG' =>	($data['fsbcode_activated_sig']) ? TRUE : FALSE,
+			'FSBCODE_ACTIVATED' =>		($data['fsbcode_activated']) ? true : false,
+			'FSBCODE_ACTIVATED_SIG' =>	($data['fsbcode_activated_sig']) ? true : false,
 			'FSBCODE_FCT' =>			$data['fsbcode_fct'],
-			'FSBCODE_MENU' =>			($data['fsbcode_menu']) ? TRUE : FALSE,
+			'FSBCODE_MENU' =>			($data['fsbcode_menu']) ? true : false,
 
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=posts_fsbcode&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
 		));
@@ -209,7 +209,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				// Mise a jour de l'ordre
 				Fsb::$db->update('fsbcode', array(
-					'fsbcode_order' =>	array('(fsbcode_order - 1)', 'is_field' => TRUE),
+					'fsbcode_order' =>	array('(fsbcode_order - 1)', 'is_field' => true),
 				), 'WHERE fsbcode_order > ' . $data['fsbcode_order']);
 
 				$sql = 'DELETE FROM ' . SQL_PREFIX . 'fsbcode

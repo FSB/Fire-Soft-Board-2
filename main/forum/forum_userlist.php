@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	// Tris par defaut
 	public $default_order = 'u_total_post';
@@ -30,7 +30,7 @@ class Fsb_frame_child extends Fsb_frame
 	public $id;
 	public $search_user;
 	public $group_data;
-	public $is_group_moderator = FALSE;
+	public $is_group_moderator = false;
 	public $like = 'in';
 	public $module = USERLIST_SIMPLE;
 	public $max_size = 60;
@@ -116,12 +116,12 @@ class Fsb_frame_child extends Fsb_frame
 		else if (Http::request('submit_add_user', 'post') && $this->is_group_moderator)
 		{
 			// Ajout de membre par un moderateur de groupe
-			$this->add_user(TRUE);
+			$this->add_user(true);
 		}
-		else if (Http::request('register_submit', 'post') && $this->group_data['gu_status'] === NULL)
+		else if (Http::request('register_submit', 'post') && is_null($this->group_data['gu_status']))
 		{
 			// Ajout de membre
-			$this->add_user(FALSE);
+			$this->add_user(false);
 		}
 		else
 		{
@@ -153,10 +153,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Le membre parcourant la page est il moderateur ?
-		$this->is_group_moderator = (($this->group_data['gu_status'] == GROUP_MODO || Fsb::$session->auth() >= MODOSUP) && $this->group_data['g_type'] != GROUP_SPECIAL) ? TRUE : FALSE;
+		$this->is_group_moderator = (($this->group_data['gu_status'] == GROUP_MODO || Fsb::$session->auth() >= MODOSUP) && $this->group_data['g_type'] != GROUP_SPECIAL) ? true : false;
 
 		// Le membre peut il voir ce groupe ?
-		if ($this->group_data['g_hidden'] == GROUP_HIDDEN && !$this->is_group_moderator && $this->group_data['gu_status'] === NULL)
+		if ($this->group_data['g_hidden'] == GROUP_HIDDEN && !$this->is_group_moderator && is_null($this->group_data['gu_status']))
 		{
 			Display::message('not_allowed');
 		}
@@ -210,7 +210,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($this->group_data['g_type'] == GROUP_NORMAL)
 		{
 			Fsb::$tpl->set_switch('group_information');
-			if ($this->group_data['g_open'] && $this->group_data['gu_status'] === NULL)
+			if ($this->group_data['g_open'] && is_null($this->group_data['gu_status']))
 			{
 				Fsb::$tpl->set_switch('group_register');
 			}
@@ -263,7 +263,7 @@ class Fsb_frame_child extends Fsb_frame
 			'LIST_SEARCH' =>			Html::make_list('like', $this->like, $list_like),
 			'LIST_ORDER' =>				Html::make_list('order', $this->order, $order_list),
 			'LIST_DIRECTION' =>			Html::make_list('direction', $this->direction, $direction_list),
-			'LIST_GROUP' =>				Html::list_groups('g_id', GROUP_NORMAL|GROUP_SPECIAL, $this->id, FALSE, array(GROUP_SPECIAL_VISITOR)),
+			'LIST_GROUP' =>				Html::list_groups('g_id', GROUP_NORMAL|GROUP_SPECIAL, $this->id, false, array(GROUP_SPECIAL_VISITOR)),
 			'USERLIST_MODULE' =>		$userlist_module,
 			'AVATAR_MAX_SIZE' =>		$this->max_size,
 
@@ -301,7 +301,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			if (!isset($type_array[$row['gu_status']]))
 			{
-				$type_array[$row['gu_status']] = TRUE;
+				$type_array[$row['gu_status']] = true;
 				$indent = 0;
 			}
 
@@ -319,7 +319,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 			else
 			{
-				$width = $height = NULL;
+				$width = $height = null;
 			}
 
 			// Age du membre
@@ -340,9 +340,9 @@ class Fsb_frame_child extends Fsb_frame
 				'ID' =>				$row['u_id'],
 				'INDENT' =>			$indent,
 				'RESULT' =>			(($this->page - 1) * $this->limit) + $i,
-				'CAT_SEPARATOR' =>	($indent == 0) ? Fsb::$session->lang('userlist_group_type_' . $row['gu_status']) : NULL,
+				'CAT_SEPARATOR' =>	($indent == 0) ? Fsb::$session->lang('userlist_group_type_' . $row['gu_status']) : null,
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
-				'DISABLED' =>		($row['gu_status'] == GROUP_MODO) ? TRUE : FALSE,
+				'DISABLED' =>		($row['gu_status'] == GROUP_MODO) ? true : false,
 				'AVATAR' =>			$avatar,
 				'AVATAR_WIDTH' =>	round($width),
 				'AVATAR_HEIGHT' =>	round($height),
@@ -351,7 +351,7 @@ class Fsb_frame_child extends Fsb_frame
 				'JOINED' =>			Fsb::$session->print_date($row['u_joined']),
 				'TOTAL_POSTS' =>	$row['u_total_post'],
 				'TOTAL_TOPICS' =>	$row['u_total_topic'],
-				'IS_ONLINE' =>		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE,
+				'IS_ONLINE' =>		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? true : false,
 				'LAST_VISIT' =>		$last_visit,
 				'GROUP_NAME' =>		($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
 				'GROUP_COLOR' =>	$row['g_color'],
@@ -446,7 +446,7 @@ class Fsb_frame_child extends Fsb_frame
 			if ($row = Fsb::$db->request($sql))
 			{
 				// Suppression des membres du groupe
-				Group::delete_users($action, $this->id, TRUE, TRUE);
+				Group::delete_users($action, $this->id, true, true);
 
 				// On supprime le rang des membres si le groupe en avait un
 				Fsb::$db->update('users', array(
@@ -512,7 +512,7 @@ class Fsb_frame_child extends Fsb_frame
 				// Validation des membres selectionnes
 				if ($row)
 				{
-					Group::delete_users($idx, $this->id, FALSE);
+					Group::delete_users($idx, $this->id, false);
 					Group::add_users($idx, $this->id, GROUP_USER);
 				}
 			}
@@ -524,7 +524,7 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Ajout d'un membre au groupe
 	** -----
-	** $admin ::		TRUE si le membre est ajoute au groupe par un moderateur
+	** $admin ::		true si le membre est ajoute au groupe par un moderateur
 	**					du groupe
 	*/
 	public function add_user($admin)
@@ -544,13 +544,13 @@ class Fsb_frame_child extends Fsb_frame
 				Display::message('user_not_exists');
 			}
 
-			if ($row['gu_status'] !== NULL)
+			if (!is_null($row['gu_status']))
 			{
 				Display::message('userlist_user_in_group');
 			}
 
 			// Ajout de l'utilisateur
-			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT, TRUE, FALSE, ($admin) ? TRUE : FALSE);
+			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT, true, false, ($admin) ? true : false);
 
 			// On donne un rang au membre s'il n'en avait pas
 			Fsb::$db->update('users', array(

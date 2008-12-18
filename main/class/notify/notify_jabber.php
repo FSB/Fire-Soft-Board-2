@@ -133,12 +133,12 @@ class Notify_jabber
 
 		$this->username				= "larry";
 		$this->password				= "curly";
-		$this->resource				= NULL;
+		$this->resource				= null;
 
-		$this->enable_logging		= FALSE;
+		$this->enable_logging		= false;
 		$this->log_array			= array();
 		$this->log_filename			= '';
-		$this->log_filehandler		= FALSE;
+		$this->log_filehandler		= false;
 
 		$this->packet_queue			= array();
 		$this->subscription_queue	= array();
@@ -146,7 +146,7 @@ class Notify_jabber
 		$this->iq_sleep_timer		= 1;
 		$this->delay_disconnect		= 1;
 
-		$this->returned_keep_alive	= TRUE;
+		$this->returned_keep_alive	= true;
 		$this->txnid				= 0;
 
 		$this->iq_version_name		= "Class.Jabber.PHP -- http://cjphp.netflint.net -- by Nathan 'Fritzy' Fritz, fritz@netflint.net";
@@ -190,19 +190,19 @@ class Notify_jabber
 
 			if ($this->_check_connected())
 			{
-				$this->connected = TRUE;	// Nathan Fritz
-				return TRUE;
+				$this->connected = true;	// Nathan Fritz
+				return true;
 			}
 			else
 			{
 				$this->AddToLog("ERROR: Connect() #1");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: Connect() #2");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -228,12 +228,12 @@ class Notify_jabber
 	{
 		$this->auth_id	= "auth_" . md5(time() . $_SERVER['REMOTE_ADDR']);
 
-		$this->resource	= ($this->resource != NULL) ? $this->resource : ("Class.Jabber.PHP " . md5($this->auth_id));
+		$this->resource	= ($this->resource != null) ? $this->resource : ("Class.Jabber.PHP " . md5($this->auth_id));
 		$this->jid		= "{$this->username}@{$this->server}/{$this->resource}";
 
 		// request available authentication methods
 		$payload	= "<username>{$this->username}</username>";
-		$packet		= $this->SendIq(NULL, 'get', $this->auth_id, "jabber:iq:auth", $payload);
+		$packet		= $this->SendIq(null, 'get', $this->auth_id, "jabber:iq:auth", $payload);
 
 		// was a result returned?
 		if ($this->GetInfoFromIqType($packet) == 'result' && $this->GetInfoFromIqId($packet) == $this->auth_id)
@@ -263,20 +263,20 @@ class Notify_jabber
 			// dude, you're fucked
 			{
 				$this->AddToLog("ERROR: SendAuth() #2 - No auth method available!");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			// no result returned
 			$this->AddToLog("ERROR: SendAuth() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function AccountRegistration($reg_email = NULL, $reg_name = NULL)
+	public function AccountRegistration($reg_email = null, $reg_name = null)
 	{
 		$packet = $this->SendIq($this->server, 'get', 'reg_01', 'jabber:iq:register');
 
@@ -346,12 +346,12 @@ class Notify_jabber
 		if ($this->CONNECTOR->WriteToSocket($xml))
 		{
 			$this->AddToLog("SEND: $xml");
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			$this->AddToLog('ERROR: SendPacket() #1');
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -384,12 +384,12 @@ class Notify_jabber
 			}
 		}
 
-		return TRUE;
+		return true;
 	}
 
 
 
-	public function StripJID($jid = NULL)
+	public function StripJID($jid = null)
 	{
 		preg_match("/(.*)\/(.*)/Ui", $jid, $temp);
 		return ($temp[1] != "") ? $temp[1] : $jid;
@@ -397,7 +397,7 @@ class Notify_jabber
 
 
 
-	public function SendMessage($to, $type = "normal", $id = NULL, $content = NULL, $payload = NULL)
+	public function SendMessage($to, $type = "normal", $id = null, $content = null, $payload = null)
 	{
 		if ($to && is_array($content))
 		{
@@ -427,24 +427,24 @@ class Notify_jabber
 
 			if ($this->SendPacket($xml))
 			{
-				return TRUE;
+				return true;
 			}
 			else
 			{
 				$this->AddToLog("ERROR: SendMessage() #1");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: SendMessage() #2");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function SendPresence($type = NULL, $to = NULL, $status = NULL, $show = NULL, $priority = NULL)
+	public function SendPresence($type = null, $to = null, $status = null, $show = null, $priority = null)
 	{
 		$xml = "<presence";
 		$xml .= ($to) ? " to='$to'" : '';
@@ -459,18 +459,18 @@ class Notify_jabber
 
 		if ($this->SendPacket($xml))
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			$this->AddToLog("ERROR: SendPresence() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function SendError($to, $id = NULL, $error_number, $error_message = NULL)
+	public function SendError($to, $id = null, $error_number, $error_message = null)
 	{
 		$xml = "<iq type='error' to='$to'";
 		$xml .= ($id) ? " id='$id'" : '';
@@ -489,7 +489,7 @@ class Notify_jabber
 	{
 		$roster_request_id = "roster_" . time();
 
-		$incoming_array = $this->SendIq(NULL, 'get', $roster_request_id, "jabber:iq:roster");
+		$incoming_array = $this->SendIq(null, 'get', $roster_request_id, "jabber:iq:roster");
 
 		if (is_array($incoming_array))
 		{
@@ -509,24 +509,24 @@ class Notify_jabber
 											);
 				}
 
-				return TRUE;
+				return true;
 			}
 			else
 			{
 				$this->AddToLog("ERROR: RosterUpdate() #1");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: RosterUpdate() #2");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function RosterAddUser($jid = NULL, $id = NULL, $name = NULL)
+	public function RosterAddUser($jid = null, $id = null, $name = null)
 	{
 		$id = ($id) ? $id : "adduser_" . time();
 
@@ -536,57 +536,57 @@ class Notify_jabber
 			$payload .= ($name) ? " name='" . htmlspecialchars($name) . "'" : '';
 			$payload .= "/>\n";
 
-			$packet = $this->SendIq(NULL, 'set', $id, "jabber:iq:roster", $payload);
+			$packet = $this->SendIq(null, 'set', $id, "jabber:iq:roster", $payload);
 
 			if ($this->GetInfoFromIqType($packet) == 'result')
 			{
 				$this->RosterUpdate();
-				return TRUE;
+				return true;
 			}
 			else
 			{
 				$this->AddToLog("ERROR: RosterAddUser() #2");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: RosterAddUser() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function RosterRemoveUser($jid = NULL, $id = NULL)
+	public function RosterRemoveUser($jid = null, $id = null)
 	{
 		$id = ($id) ? $id : 'deluser_' . time();
 
 		if ($jid && $id)
 		{
-			$packet = $this->SendIq(NULL, 'set', $id, "jabber:iq:roster", "<item jid='$jid' subscription='remove'/>");
+			$packet = $this->SendIq(null, 'set', $id, "jabber:iq:roster", "<item jid='$jid' subscription='remove'/>");
 
 			if ($this->GetInfoFromIqType($packet) == 'result')
 			{
 				$this->RosterUpdate();
-				return TRUE;
+				return true;
 			}
 			else
 			{
 				$this->AddToLog("ERROR: RosterRemoveUser() #2");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: RosterRemoveUser() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
 
 
-	public function RosterExistsJID($jid = NULL)
+	public function RosterExistsJID($jid = null)
 	{
 		if ($jid)
 		{
@@ -603,13 +603,13 @@ class Notify_jabber
 			else
 			{
 				$this->AddToLog("ERROR: RosterExistsJID() #2");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: RosterExistsJID() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -624,7 +624,7 @@ class Notify_jabber
 
 	public function GetFromQueueById($packet_type, $id)
 	{
-		$found_message = FALSE;
+		$found_message = false;
 
 		foreach ($this->packet_queue as $key => $value)
 		{
@@ -637,12 +637,12 @@ class Notify_jabber
 			}
 		}
 
-		return (is_array($found_message)) ? $found_message : FALSE;
+		return (is_array($found_message)) ? $found_message : false;
 	}
 
 
 
-	public function CallHandler($packet = NULL)
+	public function CallHandler($packet = null)
 	{
 		$packet_type	= $this->_get_packet_type($packet);
 
@@ -709,17 +709,17 @@ class Notify_jabber
 			if ($this->last_ping_time + 180 < time())
 			{
 				// Modified by Nathan Fritz
-				if ($this->returned_keep_alive == FALSE)
+				if ($this->returned_keep_alive == false)
 				{
-					$this->connected = FALSE;
+					$this->connected = false;
 					$this->AddToLog('EVENT: Disconnected');
 				}
-				if ($this->returned_keep_alive == TRUE)
+				if ($this->returned_keep_alive == true)
 				{
-					$this->connected = TRUE;
+					$this->connected = true;
 				}
 
-				$this->returned_keep_alive = FALSE;
+				$this->returned_keep_alive = false;
 				$this->keep_alive_id = 'keep_alive_' . time();
 				//$this->SendPacket("<iq id='{$this->keep_alive_id}'/>", 'CruiseControl');
 				$this->SendPacket("<iq type='get' from='" . $this->username . "@" . $this->server . "/" . $this->resource . "' to='" . $this->server . "' id='" . $this->keep_alive_id . "'><query xmlns='jabber:iq:time' /></iq>");
@@ -729,47 +729,47 @@ class Notify_jabber
 			}
 		}
 
-		return TRUE;
+		return true;
 	}
 
 
 
-	public function SubscriptionAcceptRequest($to = NULL)
+	public function SubscriptionAcceptRequest($to = null)
 	{
-		return ($to) ? $this->SendPresence("subscribed", $to) : FALSE;
+		return ($to) ? $this->SendPresence("subscribed", $to) : false;
 	}
 
 
 
-	public function SubscriptionDenyRequest($to = NULL)
+	public function SubscriptionDenyRequest($to = null)
 	{
-		return ($to) ? $this->SendPresence("unsubscribed", $to) : FALSE;
+		return ($to) ? $this->SendPresence("unsubscribed", $to) : false;
 	}
 
 
 
-	public function Subscribe($to = NULL)
+	public function Subscribe($to = null)
 	{
-		return ($to) ? $this->SendPresence("subscribe", $to) : FALSE;
+		return ($to) ? $this->SendPresence("subscribe", $to) : false;
 	}
 
 
 
-	public function Unsubscribe($to = NULL)
+	public function Unsubscribe($to = null)
 	{
-		return ($to) ? $this->SendPresence("unsubscribe", $to) : FALSE;
+		return ($to) ? $this->SendPresence("unsubscribe", $to) : false;
 	}
 
 
 
-	public function SendIq($to = NULL, $type = 'get', $id = NULL, $xmlns = NULL, $payload = NULL, $from = NULL)
+	public function SendIq($to = null, $type = 'get', $id = null, $xmlns = null, $payload = null, $from = null)
 	{
 		if (!preg_match("/^(get|set|result|error)$/", $type))
 		{
 			unset($type);
 
 			$this->AddToLog("ERROR: SendIq() #2 - type must be 'get', 'set', 'result' or 'error'");
-			return FALSE;
+			return false;
 		}
 		elseif ($id && $xmlns)
 		{
@@ -786,12 +786,12 @@ class Notify_jabber
 			sleep($this->iq_sleep_timer);
 			$this->Listen();
 
-			return (preg_match("/^(get|set)$/", $type)) ? $this->GetFromQueueById("iq", $id) : TRUE;
+			return (preg_match("/^(get|set)$/", $type)) ? $this->GetFromQueueById("iq", $id) : true;
 		}
 		else
 		{
 			$this->AddToLog("ERROR: SendIq() #1 - to, id and xmlns are mandatory");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -802,7 +802,7 @@ class Notify_jabber
 	public function TransportRegistrationDetails($transport)
 	{
 		$this->txnid++;
-		$packet = $this->SendIq($transport, 'get', "reg_{$this->txnid}", "jabber:iq:register", NULL, $this->jid);
+		$packet = $this->SendIq($transport, 'get', "reg_{$this->txnid}", "jabber:iq:register", null, $this->jid);
 
 		if ($packet)
 		{
@@ -831,7 +831,7 @@ class Notify_jabber
 	public function TransportRegistration($transport, $details)
 	{
 		$this->txnid++;
-		$packet = $this->SendIq($transport, 'get', "reg_{$this->txnid}", "jabber:iq:register", NULL, $this->jid);
+		$packet = $this->SendIq($transport, 'get', "reg_{$this->txnid}", "jabber:iq:register", null, $this->jid);
 
 		if ($packet)
 		{
@@ -876,7 +876,7 @@ class Notify_jabber
 
 
 
-	public function GetvCard($jid = NULL, $id = NULL)
+	public function GetvCard($jid = null, $id = null)
 	{
 		if (!$id)
 		{
@@ -898,7 +898,7 @@ class Notify_jabber
 		else
 		{
 			$this->AddToLog("ERROR: GetvCard() #1 - to and id are mandatory");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -951,17 +951,17 @@ class Notify_jabber
 					<hash>$zerok_hash</hash>
 					<resource>{$this->resource}</resource>";
 
-		$packet = $this->SendIq(NULL, 'set', $this->auth_id, "jabber:iq:auth", $payload);
+		$packet = $this->SendIq(null, 'set', $this->auth_id, "jabber:iq:auth", $payload);
 
 		// was a result returned?
 		if ($this->GetInfoFromIqType($packet) == 'result' && $this->GetInfoFromIqId($packet) == $this->auth_id)
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			$this->AddToLog("ERROR: _sendauth_0k() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -973,17 +973,17 @@ class Notify_jabber
 					<resource>{$this->resource}</resource>
 					<digest>" . bin2hex(mhash(MHASH_SHA1, $this->stream_id . $this->password)) . "</digest>";
 
-		$packet = $this->SendIq(NULL, 'set', $this->auth_id, "jabber:iq:auth", $payload);
+		$packet = $this->SendIq(null, 'set', $this->auth_id, "jabber:iq:auth", $payload);
 
 		// was a result returned?
 		if ($this->GetInfoFromIqType($packet) == 'result' && $this->GetInfoFromIqId($packet) == $this->auth_id)
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			$this->AddToLog("ERROR: _sendauth_digest() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -995,17 +995,17 @@ class Notify_jabber
 					<password>{$this->password}</password>
 					<resource>{$this->resource}</resource>";
 
-		$packet = $this->SendIq(NULL, 'set', $this->auth_id, "jabber:iq:auth", $payload);
+		$packet = $this->SendIq(null, 'set', $this->auth_id, "jabber:iq:auth", $payload);
 
 		// was a result returned?
 		if ($this->GetInfoFromIqType($packet) == 'result' && $this->GetInfoFromIqId($packet) == $this->auth_id)
 		{
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			$this->AddToLog("ERROR: _sendauth_plaintext() #1");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1051,19 +1051,19 @@ class Notify_jabber
 				}
 				else
 				{
-					return TRUE;
+					return true;
 				}
 			}
 			else
 			{
 				$this->AddToLog("ERROR: _check_connected() #1");
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
 			$this->AddToLog("ERROR: _check_connected() #2");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1074,7 +1074,7 @@ class Notify_jabber
 		if (!function_exists("stream_socket_enable_crypto"))
 		{
 			$this->AddToLog("WARNING: TLS is not available");
-			return TRUE;
+			return true;
 		}
 
 		$this->SendPacket("<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>\n");
@@ -1084,22 +1084,22 @@ class Notify_jabber
 		if (!is_array($incoming_array))
 		{
 			$this->AddToLog("ERROR: _starttls() #1");
-			return FALSE;
+			return false;
 		}
 
 		if ($incoming_array["proceed"]["@"]["xmlns"] != "urn:ietf:params:xml:ns:xmpp-tls")
 		{
 			$this->AddToLog("ERROR: _starttls() #2");
-			return FALSE;
+			return false;
 		}
 
 		$meta = stream_get_meta_data($this->CONNECTOR->active_socket);
 		socket_set_blocking($this->CONNECTOR->active_socket, 1);
-		if (!@stream_socket_enable_crypto($this->CONNECTOR->active_socket, TRUE, STREAM_CRYPTO_METHOD_TLS_CLIENT))
+		if (!@stream_socket_enable_crypto($this->CONNECTOR->active_socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT))
 		{
 			socket_set_blocking($this->CONNECTOR->active_socket, $meta["blocked"]);
 			$this->AddToLog("ERROR: _starttls() #3");
-			return FALSE;
+			return false;
 		}
 		socket_set_blocking($this->CONNECTOR->active_socket, $meta["blocked"]);
 
@@ -1110,15 +1110,15 @@ class Notify_jabber
 		if (!$this->_check_connected())
 		{
 			$this->AddToLog("ERROR: _starttls() #4");
-			return FALSE;
+			return false;
 		}
 
-		return TRUE;
+		return true;
 	}
 
 
 
-	public function _get_packet_type($packet = NULL)
+	public function _get_packet_type($packet = null)
 	{
 		if (is_array($packet))
 		{
@@ -1126,7 +1126,7 @@ class Notify_jabber
 			$packet_type = key($packet);
 		}
 
-		return ($packet_type) ? $packet_type : FALSE;
+		return ($packet_type) ? $packet_type : false;
 	}
 
 
@@ -1215,57 +1215,57 @@ class Notify_jabber
 
 
 
-	public function GetInfoFromMessageFrom($packet = NULL)
+	public function GetInfoFromMessageFrom($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['@']['from'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['@']['from'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageType($packet = NULL)
+	public function GetInfoFromMessageType($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['@']['type'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['@']['type'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageId($packet = NULL)
+	public function GetInfoFromMessageId($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['@']['id'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['@']['id'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageThread($packet = NULL)
+	public function GetInfoFromMessageThread($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['#']['thread'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['#']['thread'][0]['#'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageSubject($packet = NULL)
+	public function GetInfoFromMessageSubject($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['#']['subject'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['#']['subject'][0]['#'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageBody($packet = NULL)
+	public function GetInfoFromMessageBody($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['#']['body'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['#']['body'][0]['#'] : false;
 	}
 
-	public function GetInfoFromMessageXMLNS($packet = NULL)
+	public function GetInfoFromMessageXMLNS($packet = null)
 	{
-		return (is_array($packet)) ? $packet['message']['#']['x'] : FALSE;
+		return (is_array($packet)) ? $packet['message']['#']['x'] : false;
 	}
 
 
 
-	public function GetInfoFromMessageError($packet = NULL)
+	public function GetInfoFromMessageError($packet = null)
 	{
 		$error = preg_replace("/^\/$/", "", ($packet['message']['#']['error'][0]['@']['code'] . "/" . $packet['message']['#']['error'][0]['#']));
-		return (is_array($packet)) ? $error : FALSE;
+		return (is_array($packet)) ? $error : false;
 	}
 
 
@@ -1276,38 +1276,38 @@ class Notify_jabber
 
 
 
-	public function GetInfoFromIqFrom($packet = NULL)
+	public function GetInfoFromIqFrom($packet = null)
 	{
-		return (is_array($packet)) ? $packet['iq']['@']['from'] : FALSE;
+		return (is_array($packet)) ? $packet['iq']['@']['from'] : false;
 	}
 
 
 
-	public function GetInfoFromIqType($packet = NULL)
+	public function GetInfoFromIqType($packet = null)
 	{
-		return (is_array($packet)) ? $packet['iq']['@']['type'] : FALSE;
+		return (is_array($packet)) ? $packet['iq']['@']['type'] : false;
 	}
 
 
 
-	public function GetInfoFromIqId($packet = NULL)
+	public function GetInfoFromIqId($packet = null)
 	{
-		return (is_array($packet)) ? $packet['iq']['@']['id'] : FALSE;
+		return (is_array($packet)) ? $packet['iq']['@']['id'] : false;
 	}
 
 
 
-	public function GetInfoFromIqKey($packet = NULL)
+	public function GetInfoFromIqKey($packet = null)
 	{
-		return (is_array($packet)) ? $packet['iq']['#']['query'][0]['#']['key'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['iq']['#']['query'][0]['#']['key'][0]['#'] : false;
 	}
 
 
 
-	public function GetInfoFromIqError($packet = NULL)
+	public function GetInfoFromIqError($packet = null)
 	{
 		$error = preg_replace("/^\/$/", "", ($packet['iq']['#']['error'][0]['@']['code'] . "/" . $packet['iq']['#']['error'][0]['#']));
-		return (is_array($packet)) ? $error : FALSE;
+		return (is_array($packet)) ? $error : false;
 	}
 
 
@@ -1318,37 +1318,37 @@ class Notify_jabber
 
 
 
-	public function GetInfoFromPresenceFrom($packet = NULL)
+	public function GetInfoFromPresenceFrom($packet = null)
 	{
-		return (is_array($packet)) ? $packet['presence']['@']['from'] : FALSE;
+		return (is_array($packet)) ? $packet['presence']['@']['from'] : false;
 	}
 
 
 
-	public function GetInfoFromPresenceType($packet = NULL)
+	public function GetInfoFromPresenceType($packet = null)
 	{
-		return (is_array($packet)) ? $packet['presence']['@']['type'] : FALSE;
+		return (is_array($packet)) ? $packet['presence']['@']['type'] : false;
 	}
 
 
 
-	public function GetInfoFromPresenceStatus($packet = NULL)
+	public function GetInfoFromPresenceStatus($packet = null)
 	{
-		return (is_array($packet)) ? $packet['presence']['#']['status'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['presence']['#']['status'][0]['#'] : false;
 	}
 
 
 
-	public function GetInfoFromPresenceShow($packet = NULL)
+	public function GetInfoFromPresenceShow($packet = null)
 	{
-		return (is_array($packet)) ? $packet['presence']['#']['show'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['presence']['#']['show'][0]['#'] : false;
 	}
 
 
 
-	public function GetInfoFromPresencePriority($packet = NULL)
+	public function GetInfoFromPresencePriority($packet = null)
 	{
-		return (is_array($packet)) ? $packet['presence']['#']['priority'][0]['#'] : FALSE;
+		return (is_array($packet)) ? $packet['presence']['#']['priority'][0]['#'] : false;
 	}
 
 
@@ -1518,8 +1518,8 @@ class Notify_jabber
 	{
 		if ($this->keep_alive_id == $this->GetInfoFromIqId($packet))
 		{
-			$this->returned_keep_alive = TRUE;
-			$this->connected = TRUE;
+			$this->returned_keep_alive = true;
+			$this->connected = true;
 			$this->AddToLog('EVENT: Keep-Alive returned, connection alive.');
 		}
 		$type	= $this->GetInfoFromIqType($packet);
@@ -1574,8 +1574,8 @@ class Notify_jabber
 	{
 		if ($this->keep_alive_id == $this->GetInfoFromIqId($packet))
 		{
-			$this->returned_keep_alive = TRUE;
-			$this->connected = TRUE;
+			$this->returned_keep_alive = true;
+			$this->connected = true;
 			$this->AddToLog('EVENT: Keep-Alive returned, connection alive.');
 		}
 	}
@@ -1847,7 +1847,7 @@ class MakeXML extends Jabber
 
 
 
-	public function AddPacketDetails($string, $value = NULL)
+	public function AddPacketDetails($string, $value = null)
 	{
 		if (preg_match("/\(([0-9]*)\)$/i", $string))
 		{
@@ -1872,7 +1872,7 @@ class MakeXML extends Jabber
 
 
 
-	public function BuildPacket($array = NULL)
+	public function BuildPacket($array = null)
 	{
 
 		if (!$array)
@@ -1939,7 +1939,7 @@ class MakeXML extends Jabber
 				$newarray[$key] = $val;
 			}
 		}
-		return (is_array($newarray)) ? $newarray : FALSE;
+		return (is_array($newarray)) ? $newarray : false;
 	}
 }
 
@@ -1966,11 +1966,11 @@ class CJP_StandardConnector
 			socket_set_blocking($this->active_socket, 0);
 			socket_set_timeout($this->active_socket, 31536000);
 
-			return TRUE;
+			return true;
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -1985,7 +1985,7 @@ class CJP_StandardConnector
 
 	public function WriteToSocket($data)
 	{
-		if (FALSE)
+		if (false)
 		{
 			echo '>>> <pre>' . htmlspecialchars($data) . '</pre>';
 		}

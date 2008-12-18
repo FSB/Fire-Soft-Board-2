@@ -13,7 +13,7 @@
  */
 
 // Protection de la page
-if (strpos($_SERVER['PHP_SELF'], 'online.') !== FALSE)
+if (strpos($_SERVER['PHP_SELF'], 'online.') !== false)
 {
 	exit;
 }
@@ -78,7 +78,7 @@ if (Fsb::$session->is_authorized('online_box'))
 		while ($row = Fsb::$db->row($result))
 		{
 			// Bot ?
-			if (Fsb::$mods->is_active('bot_list') && $row['bot_id'] !== NULL)
+			if (Fsb::$mods->is_active('bot_list') && !is_null($row['bot_id']))
 			{
 				if (in_array($row['bot_id'], $bot_array))
 				{
@@ -88,7 +88,7 @@ if (Fsb::$session->is_authorized('online_box'))
 				$total_visitor++;
 
 				Fsb::$tpl->set_blocks('online', array(
-					'IS_HIDDEN' =>	FALSE,
+					'IS_HIDDEN' =>	false,
 					'NICKNAME' =>	sprintf(Fsb::$session->getStyle('other', 'nickname'), 'class="bot"', $row['bot_name'] . ' (bot)'),
 				));
 			}
@@ -224,13 +224,13 @@ if (Fsb::$session->is_authorized('online_box'))
 			$year = substr($row['u_birthday'], 6);
 			Fsb::$tpl->set_blocks('online_birthday', array(
 				'NICKNAME' =>	Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
-				'AGE' =>		($year != '0000') ? intval(date('Y', CURRENT_TIME) - substr($row['u_birthday'], 6)) : NULL,
+				'AGE' =>		($year != '0000') ? intval(date('Y', CURRENT_TIME) - substr($row['u_birthday'], 6)) : null,
 			));
 		}
 		Fsb::$db->free($result);
 
 		Fsb::$tpl->set_vars(array(
-			'USERS_BIRTHDAYS' =>		sprintf(String::plural('users_birthday', $total_birthday, TRUE), $total_birthday),
+			'USERS_BIRTHDAYS' =>		sprintf(String::plural('users_birthday', $total_birthday, true), $total_birthday),
 		));
 	}
 

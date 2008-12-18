@@ -23,14 +23,14 @@ class Forum extends Fsb_model
 	 * @param int $current_level Determine le niveau actuel au niveau de la hierarchie
 	 * @param bool $is_read Determine si le forum comporte des sujets non lus ou pas
 	 */
-	public static function display(&$forum, $type, $current_level, $is_read = TRUE)
+	public static function display(&$forum, $type, $current_level, $is_read = true)
 	{
 		// Decalage en cas d'affichage des forums en arbre
 		$width = (Fsb::$cfg->get('display_subforums')) ? 'padding-left: ' . ((20 * $forum['f_level']) - 13) . 'px' : '';
 
 		if ($type == 'subforum')
 		{
-			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
+			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread= true &amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread= true &amp;forum=' . $forum['f_id'];
 			
 			Fsb::$tpl->set_blocks('cat.forum.subforum', array(
 				'NAME' =>		Html::forumname($forum['f_name'], $forum['f_id'], $forum['f_color'], $forum['f_location']),
@@ -60,7 +60,7 @@ class Forum extends Fsb_model
 			$topic_title = Parser::title($forum['f_last_t_title']);
 			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : Parser::title(String::substr($forum['f_last_t_title'], 0, 20)) . '...';
 			
-			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread=true&amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread=true&amp;forum=' . $forum['f_id'];
+			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread= true &amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread= true &amp;forum=' . $forum['f_id'];
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TYPE' =>			$forum['f_type'],
@@ -69,14 +69,14 @@ class Forum extends Fsb_model
 				'WIDTH' =>			$width,
 				'NICKNAME' =>		Html::nickname($forum['f_last_p_nickname'], $forum['f_last_u_id'], $forum['u_color']),
 				'DATE' =>			Fsb::$session->print_date($forum['f_last_p_time']),
-				'HAVE_LAST' =>		($forum['f_last_p_id']) ? TRUE : FALSE,
+				'HAVE_LAST' =>		($forum['f_last_p_id']) ? true : false,
 				'TOTAL_POST' =>		sprintf(Fsb::$session->lang('forum_total_post' . (($forum['f_total_post'] > 1) ? 's' : '')), $forum['f_total_post']),
 				'TOTAL_TOPIC' =>	sprintf(Fsb::$session->lang('forum_total_topic' . (($forum['f_total_topic'] > 1) ? 's' : '')), $forum['f_total_topic']),
 				'TOPIC_TITLE' =>	$substr_topic_title,
 				'REAL_TITLE' =>		$topic_title,
 				'IS_READ' =>		$is_read,
 				'IS_LAST_READ' =>	$is_last_read,
-				'IS_LOCKED' =>		($forum['f_status'] == LOCK) ? TRUE : FALSE,
+				'IS_LOCKED' =>		($forum['f_status'] == LOCK) ? true : false,
 
 				'U_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum['f_id']),
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $forum['f_last_t_id']),
@@ -98,7 +98,7 @@ class Forum extends Fsb_model
 	 * @param string $type Peut prendre les valeurs all, cat, forum ou topic
 	 * @param int $id ID du forum, de la categorie ou du sujet
 	 */
-	public static function markread($type, $id = NULL)
+	public static function markread($type, $id = null)
 	{
 		if (!Fsb::$session->is_logged())
 		{
@@ -116,7 +116,7 @@ class Forum extends Fsb_model
 			case 'all' :
 				Fsb::$db->update('users', array(
 					'u_last_read' =>		CURRENT_TIME,
-					'u_last_read_flag' =>	TRUE,
+					'u_last_read_flag' =>	true,
 				), 'WHERE u_id = ' . Fsb::$session->id());
 			break;
 
@@ -187,7 +187,7 @@ class Forum extends Fsb_model
 				$select->where('t.t_id IN (' . $id . ') AND');
 			break;
 		}
-		$select->where('(tr.tr_last_time IS NULL OR tr.tr_last_time < t.t_last_p_time) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
+		$select->where('(tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
 
 		// On met a jour la table fsb2_topics_read
 		$result = $select->execute();
@@ -196,11 +196,11 @@ class Forum extends Fsb_model
 			if (!$row['tr_last_time'] || $row['tr_last_time'] < $row['t_last_p_time'])
 			{
 				Fsb::$db->insert('topics_read', array(
-					'u_id' =>			array(Fsb::$session->id(), TRUE),
-					't_id' =>			array($row['t_id'], TRUE),
+					'u_id' =>			array(Fsb::$session->id(), true),
+					't_id' =>			array($row['t_id'], true),
 					'p_id' =>			$row['t_last_p_id'],
 					'tr_last_time' =>	$row['t_last_p_time'],
-				), 'REPLACE', TRUE);
+				), 'REPLACE', true);
 			}
 		}
 		Fsb::$db->free($result);
@@ -245,7 +245,7 @@ class Forum extends Fsb_model
 						ON t.t_id = tr.t_id
 							AND tr.u_id = ' . Fsb::$session->id() . '
 					WHERE t.f_id = ' . $link . 'f_id
-						AND (tr.tr_last_time IS NULL OR tr.tr_last_time < t.t_last_p_time)
+						AND (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
 						AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] . '
 						AND t.t_approve = ' . IS_APPROVED . '
 				) AS total
@@ -278,12 +278,12 @@ class Forum extends Fsb_model
 		Fsb::$db->free($result);
 
 		// On regarde si un des forums visible est en non lu
-		$have_unread = FALSE;
+		$have_unread = false;
 		foreach (Forum::get_authorized(array('ga_view', 'ga_view_topics')) AS $f_access_id)
 		{
 			if (isset($forum_topic_read[$f_access_id]) && $forum_topic_read[$f_access_id] > 0)
 			{
-				$have_unread = TRUE;
+				$have_unread = true;
 				break;
 			}
 		}
@@ -294,14 +294,14 @@ class Forum extends Fsb_model
 			if ($have_unread && Fsb::$session->data['u_last_read_flag'])
 			{
 				Fsb::$db->update('users', array(
-					'u_last_read_flag' =>		FALSE,
+					'u_last_read_flag' =>		false,
 				), 'WHERE u_id = ' . Fsb::$session->id());
 			}
 			else if (!$have_unread && !Fsb::$session->data['u_last_read_flag'])
 			{
 				Fsb::$db->update('users', array(
 					'u_last_read' =>		CURRENT_TIME,
-					'u_last_read_flag' =>	TRUE,
+					'u_last_read_flag' =>	true,
 				), 'WHERE u_id = ' . Fsb::$session->id());
 			}
 		}
@@ -512,7 +512,7 @@ class Forum extends Fsb_model
 	 *
 	 * @param int $f_id ID de forum si on souhaite delester un forum particulier
 	 */
-	public static function auto_prune($f_id = NULL)
+	public static function auto_prune($f_id = null)
 	{
 		// On recupere les ID des sujets a delester
 		$sql_f_id = ($f_id) ? "f_id = $f_id AND " : '';
@@ -582,7 +582,7 @@ class Forum extends Fsb_model
 		{
 			$insert_array = $row;
 			$insert_array['f_id'] = $f_id;
-			Fsb::$db->insert('groups_auth', $insert_array, 'INSERT', TRUE);
+			Fsb::$db->insert('groups_auth', $insert_array, 'INSERT', true);
 		}
 		Fsb::$db->free($result);
 
@@ -595,13 +595,13 @@ class Forum extends Fsb_model
 	 * Recupere une liste des moderateurs pour chaque forum et les affiche
 	 *
 	 * @param int $f_id ID du forum en question
-	 * @param bool $limit Si $limit vaut TRUE il s'agira d'une recherche de moderateur sur ce forum la uniquement
+	 * @param bool $limit Si $limit vaut true il s'agira d'une recherche de moderateur sur ce forum la uniquement
 	 */
-	public static function get_moderators($f_id, $limit = FALSE)
+	public static function get_moderators($f_id, $limit = false)
 	{
-		static $modo_list = NULL;
+		static $modo_list = null;
 
-		if ($modo_list === NULL)
+		if (is_null($modo_list))
 		{
 			$modo_list = array();
 

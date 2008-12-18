@@ -50,7 +50,7 @@ class Highlight_sql extends Highlight
 		{
 			return ;
 		}
-		self::$init = TRUE;
+		self::$init = true;
 
 		// Configuration
 		$file_content = file_get_contents(ROOT . 'main/class/highlight/keywords/highlight_sql.txt');
@@ -107,7 +107,7 @@ class Highlight_sql extends Highlight
 	private function _sql_string($c, &$tmp)
 	{
 		$result = '';
-		$show_style = TRUE;
+		$show_style = true;
 		if (is_numeric($tmp))
 		{
 			$result .= $this->open_style('sc_sql_numeric');
@@ -126,7 +126,7 @@ class Highlight_sql extends Highlight
 		}
 		else
 		{
-			$show_style = FALSE;
+			$show_style = false;
 		}
 
 		$result .= $tmp;

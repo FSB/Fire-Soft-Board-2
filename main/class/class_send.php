@@ -27,7 +27,7 @@ class Send extends Fsb_model
 	 * @param int $parent ID du parent de ce MP s'il s'agit d'une reponse
 	 * @param bool $is_xml Si le message est deja au format XML
 	 */
-	public static function send_mp($from_id, $to_id, $title, $content, $parent = 0, $is_xml = FALSE)
+	public static function send_mp($from_id, $to_id, $title, $content, $parent = 0, $is_xml = false)
 	{
 		// On met au format XML ?
 		if (!$is_xml)
@@ -63,7 +63,7 @@ class Send extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$is_blacklist[$row['blacklist_to_id']] = TRUE;
+			$is_blacklist[$row['blacklist_to_id']] = true;
 		}
 		Fsb::$db->free($result);
 
@@ -111,8 +111,8 @@ class Send extends Fsb_model
 					'mp_time' =>		CURRENT_TIME,
 					'mp_parent' =>		$parent,
 					'u_ip' =>			Fsb::$session->ip,
-					'is_auto_answer' =>	TRUE,
-				), 'INSERT', TRUE);
+					'is_auto_answer' =>	true,
+				), 'INSERT', true);
 				$total_auto_answer++;
 			}
 		}
@@ -141,8 +141,8 @@ class Send extends Fsb_model
 						'mp_time' =>		CURRENT_TIME,
 						'mp_parent' =>		$parent,
 						'u_ip' =>			Fsb::$session->ip,
-						'is_auto_answer' =>	FALSE,
-					), 'INSERT', TRUE);
+						'is_auto_answer' =>	false,
+					), 'INSERT', true);
 				}
 			}
 		}
@@ -152,16 +152,16 @@ class Send extends Fsb_model
 
 		// On ajoute un message prive au nombre de messages du membre, sauf si blackliste
 		Fsb::$db->update('users', array(
-			'u_total_mp' =>		array('u_total_mp + 1', 'is_field' => TRUE),
-			'u_new_mp' =>		TRUE,
+			'u_total_mp' =>		array('u_total_mp + 1', 'is_field' => true),
+			'u_new_mp' =>		true,
 		), 'WHERE u_id IN (' . $list_id . ')' . (($is_blacklist) ? ' AND u_id NOT IN (' . implode(', ', array_keys($is_blacklist)) . ')' : ''));
 
 		// Si des messages de repondeurs ont ete envoyes, on le signale a l'expediteur
 		if ($total_auto_answer)
 		{
 			Fsb::$db->update('users', array(
-				'u_total_mp' =>		array('u_total_mp + ' . $total_auto_answer, 'is_field' => TRUE),
-				'u_new_mp' =>		TRUE,
+				'u_total_mp' =>		array('u_total_mp + ' . $total_auto_answer, 'is_field' => true),
+				'u_new_mp' =>		true,
 			), 'WHERE u_id = ' . $from_id);
 		}
 
@@ -253,13 +253,13 @@ class Send extends Fsb_model
 	 * @param int $forum_id ID du forum
 	 * @param string $content Message
 	 * @param string $nickname Pseudonyme du posteur
-	 * @param bool $approve TRUE si le message doit etre approuve
+	 * @param bool $approve true si le message doit etre approuve
 	 * @param string $post_map MAP du message
 	 * @param array $ary_content Donnees suplementaires
 	 * @param bool $is_first_post Defini s'il s'agit du premier message du sujet ou non
 	 * @return int ID du message cree
 	 */
-	public static function send_post($user_id, $topic_id, $forum_id, $content, $nickname, $approve, $post_map, $ary_content, $is_first_post = FALSE)
+	public static function send_post($user_id, $topic_id, $forum_id, $content, $nickname, $approve, $post_map, $ary_content, $is_first_post = false)
 	{
 		// Donnees du forum
 		$sql = 'SELECT f_left, f_right
@@ -293,12 +293,12 @@ class Send extends Fsb_model
 				't_last_p_time' =>		CURRENT_TIME,
 				't_last_u_id' =>		(int) $user_id,
 				't_last_p_nickname' =>	$nickname,
-				't_total_post' =>		array('(t_total_post + 1)', 'is_field' => TRUE),
+				't_total_post' =>		array('(t_total_post + 1)', 'is_field' => true),
 			);
 
 			// Mise a jour des donnees du forum
 			$forum_update_array = array(
-				'f_total_post' =>		array('(f_total_post + 1)', 'is_field' => TRUE),
+				'f_total_post' =>		array('(f_total_post + 1)', 'is_field' => true),
 				'f_last_p_id' =>		(int) $post_id,
 				'f_last_t_title' =>		$ary_content['t_title'],
 				'f_last_t_id' =>		$topic_id,
@@ -309,15 +309,15 @@ class Send extends Fsb_model
 
 			// mise a jour des donnees du membre
 			$user_update_array = array(
-				'u_total_post' =>	array('(u_total_post + 1)', 'is_field' => TRUE),
+				'u_total_post' =>	array('(u_total_post + 1)', 'is_field' => true),
 			);
 		
 			// S'il s'agit du premier message on lie le topic a celui ci, et on ajoute + 1 au total de sujets sur le forum
 			if ($is_first_post)
 			{
 				$update_array['t_first_p_id'] = $post_id;
-				$forum_update_array['f_total_topic'] = array('(f_total_topic + 1)', 'is_field' => TRUE);
-				$user_update_array['u_total_topic'] = array('(u_total_topic + 1)', 'is_field' => TRUE);
+				$forum_update_array['f_total_topic'] = array('(f_total_topic + 1)', 'is_field' => true);
+				$user_update_array['u_total_topic'] = array('(u_total_topic + 1)', 'is_field' => true);
 
 				// Mise a jour du nombre total de sujets
 				Fsb::$cfg->update('total_topics', Fsb::$cfg->get('total_topics') + 1);
@@ -342,8 +342,8 @@ class Send extends Fsb_model
 
 			// Le message est mis comme lu pour le membre.
 			Fsb::$db->insert('topics_read', array(
-				'u_id' =>			array((int) $user_id, TRUE),
-				't_id' =>			array((int) $topic_id, TRUE),
+				'u_id' =>			array((int) $user_id, true),
+				't_id' =>			array((int) $topic_id, true),
 				'p_id' =>			(int) $post_id,
 				'tr_last_time' =>	CURRENT_TIME,
 			), 'REPLACE');
@@ -358,7 +358,7 @@ class Send extends Fsb_model
 					't_last_p_time' =>		CURRENT_TIME,
 					't_last_u_id' =>		(int) $user_id,
 					't_last_p_nickname' =>	$nickname,
-					't_total_post' =>		array('(t_total_post + 1)', 'is_field' => TRUE),
+					't_total_post' =>		array('(t_total_post + 1)', 'is_field' => true),
 				), 'WHERE t_id = ' . intval($topic_id));
 			}
 
@@ -373,12 +373,12 @@ class Send extends Fsb_model
 		{
 			$search = new Search_fulltext_fsb();
 			$content = str_replace('<![CDATA[', '', $content);
-			$search->index($post_id, preg_replace('#<[^!][^>]*?>#si', ' ', $content), FALSE);
+			$search->index($post_id, preg_replace('#<[^!][^>]*?>#si', ' ', $content), false);
 
 			// Indexation du titre
 			if ($ary_content['t_title'])
 			{
-				$search->index($post_id, $ary_content['t_title'], TRUE);
+				$search->index($post_id, $ary_content['t_title'], true);
 			}
 		}
 
@@ -405,7 +405,7 @@ class Send extends Fsb_model
 			'p_text' =>			$content,
 			'p_edit_user_id' =>	(int) $user_id,
 			'p_edit_time' =>	CURRENT_TIME,
-			'p_edit_total' =>	array('(p_edit_total + 1)', 'is_field' => TRUE),
+			'p_edit_total' =>	array('(p_edit_total + 1)', 'is_field' => true),
 		), "WHERE p_id = $post_id");
 
 		if (isset($args['update_topic']) && $args['update_topic'])
@@ -426,8 +426,8 @@ class Send extends Fsb_model
 		{
 			$search = new Search_fulltext_fsb();
 			$search->delete_index($post_id);
-			$search->index($post_id, preg_replace('#<[^!][^>]*?>#si', ' ', $content), FALSE);
-			$search->index($post_id, $args['t_title'], TRUE);
+			$search->index($post_id, preg_replace('#<[^!][^>]*?>#si', ' ', $content), false);
+			$search->index($post_id, $args['t_title'], true);
 		}
 	}
 
@@ -526,7 +526,7 @@ class Send extends Fsb_model
 			'c_title' =>		$title,
 			'c_content' =>		$content,
 			'c_view' =>			(int) $print,
-			'c_approve' =>		(Fsb::$session->is_authorized('approve_event') || !$print) ? TRUE : FALSE,
+			'c_approve' =>		(Fsb::$session->is_authorized('approve_event') || !$print) ? true : false,
 		));
 		Fsb::$db->destroy_cache('calendar_');
 

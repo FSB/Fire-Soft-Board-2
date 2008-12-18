@@ -82,10 +82,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 					ON sc.cat_id = s.smiley_cat
 				ORDER BY sc.cat_order, s.smiley_order';
 		$result = Fsb::$db->query($sql, 'smilies_');
-		$last = NULL;
+		$last = null;
 		while ($row = Fsb::$db->row($result))
 		{
-			if ($last === NULL || $row['smiley_cat'] != $last)
+			if (is_null($last) || $row['smiley_cat'] != $last)
 			{
 				Fsb::$tpl->set_blocks('smiley_cat', array(
 					'CAT_NAME' =>		htmlspecialchars($row['cat_name']),
@@ -98,7 +98,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$last = $row['smiley_cat'];
 			}
 
-			if ($row['smiley_tag'] !== NULL)
+			if (!is_null($row['smiley_tag']))
 			{
 				Fsb::$tpl->set_blocks('smiley_cat.smiley', array(
 					'SMILEY_TAG' =>		htmlspecialchars($row['smiley_tag']),
@@ -154,7 +154,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		Fsb::$db->free($result);
 
-		$list_smiley = Html::list_dir('s_img', $s_img, SMILEY_PATH, Upload::$img, FALSE, '', 'id="select_smiley_image" onchange="show_smiley_image()"');
+		$list_smiley = Html::list_dir('s_img', $s_img, SMILEY_PATH, Upload::$img, false, '', 'id="select_smiley_image" onchange="show_smiley_image()"');
 
 		Fsb::$tpl->set_switch('smileys_add');
 		Fsb::$tpl->set_vars(array(
@@ -270,7 +270,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$smiley_order = Fsb::$db->get($sql, 'smiley_order');
 
 			Fsb::$db->update('smilies', array(
-				'smiley_order' =>	array('(smiley_order - 1)', 'is_field' => TRUE),
+				'smiley_order' =>	array('(smiley_order - 1)', 'is_field' => true),
 			), 'WHERE smiley_order > ' . $smiley_order);
 
 			// Suppression du smiley
@@ -446,7 +446,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 
 				Fsb::$db->update('smilies_cat', array(
-					'cat_order' =>	array('(cat_order - 1)', 'is_field' => TRUE),
+					'cat_order' =>	array('(cat_order - 1)', 'is_field' => true),
 				), 'WHERE cat_order > ' . $cat_order);
 
 				// Suppression de la categorie
@@ -519,14 +519,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$tags = Fsb::$db->rows($result, 'assoc', 'smiley_tag');
 
 				// On prepare les donnees pou la mise a jour de la bdd
-				$cat_id = NULL;
+				$cat_id = null;
 				$max = 1;
 				foreach ($lines as $line)
 				{
 					$line = trim($line);
 					if ($line)
 					{
-						if ($cat_id === NULL)
+						if (is_null($cat_id))
 						{
 							$sql = 'SELECT MAX(cat_order) AS max_order
 									FROM ' . SQL_PREFIX . 'smilies_cat';
@@ -556,7 +556,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 								'smiley_name' =>			$smiley_img,
 								'smiley_order' =>			$max,
 								'smiley_cat' =>				$cat_id,
-							), 'INSERT', TRUE);
+							), 'INSERT', true);
 							$max++;
 						}
 					}
@@ -661,7 +661,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$compress->file->unlink('upload/smiley.txt');
 
 			// On lance le telechargement
-			Http::download($pack_name . '.' . $pack_ext, $compress->write(TRUE));
+			Http::download($pack_name . '.' . $pack_ext, $compress->write(true));
 		}
 	}
 }

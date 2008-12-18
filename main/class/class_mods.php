@@ -43,7 +43,7 @@ class Mods extends Fsb_model
 	 */
 	private function load()
 	{
-		$tpl_exists = (is_object(Fsb::$tpl)) ? TRUE : FALSE;
+		$tpl_exists = (is_object(Fsb::$tpl)) ? true : false;
 
 		$sql = 'SELECT mod_name, mod_status, mod_type
 				FROM ' . SQL_PREFIX . 'mods';
@@ -74,7 +74,7 @@ class Mods extends Fsb_model
 	 */
 	public function exists($modname)
 	{
-		return ((isset($this->data[$modname])) ? TRUE : FALSE);
+		return ((isset($this->data[$modname])) ? true : false);
 	}
 
 	/**
@@ -85,14 +85,14 @@ class Mods extends Fsb_model
 	 */
 	public function is_active($modname)
 	{
-		return (($this->exists($modname) && $this->data[$modname]) ? TRUE : FALSE);
+		return (($this->exists($modname) && $this->data[$modname]) ? true : false);
 	}
 
 	/**
 	 * Change le status d'un MOD localement (pas sauve en base)
 	 *
 	 * @param string $modname Nom du MOD
-	 * @param bool $bool TRUE pour active, FALSE pour desactive
+	 * @param bool $bool true pour active, false pour desactive
 	 */
 	public function change_status($modname, $state)
 	{

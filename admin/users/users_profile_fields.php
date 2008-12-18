@@ -165,8 +165,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'pf_lang' =>		'',
 				'pf_regexp' =>		'',
 				'pf_groups' =>		array(),
-				'pf_topic' =>		FALSE,
-				'pf_register' =>	FALSE,
+				'pf_topic' =>		false,
+				'pf_register' =>	false,
 				'pf_maxlength' =>	50,
 				'pf_sizelist' =>	5,
 				'pf_output' =>		'',
@@ -202,12 +202,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'PF_LIST' =>			$this->data['pf_list'],
 			'PF_SIZELIST' =>		$this->data['pf_sizelist'],
 			'PF_OUTPUT' =>			htmlspecialchars($this->data['pf_output']),
-			'PF_TOPIC' =>			($this->data['pf_topic']) ? TRUE : FALSE,
-			'PF_REGISTER' =>		($this->data['pf_register']) ? TRUE : FALSE,
+			'PF_TOPIC' =>			($this->data['pf_topic']) ? true : false,
+			'PF_REGISTER' =>		($this->data['pf_register']) ? true : false,
 			'MAXLENGTH_EXPLAIN' =>	(isset($info['maxlength'])) ? sprintf(Fsb::$session->lang('adm_pf_maxlength_explain'), $info['maxlength']['min'] + 1, $info['maxlength']['max']) : '',
 			
 			'LIST_PERSONAL_TYPE' =>	$list_personal_type,
-			'LIST_GROUPS' =>		Html::list_groups('pf_groups[]', GROUP_SPECIAL |GROUP_NORMAL, $this->data['pf_groups'], TRUE),
+			'LIST_GROUPS' =>		Html::list_groups('pf_groups[]', GROUP_SPECIAL |GROUP_NORMAL, $this->data['pf_groups'], true),
 			
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=' . $this->mode . '&amp;id=' . $this->id . '&amp;type=' . $this->type . '&amp;module=' . $this->module),
 		));

@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur permettant de mettre au membre ses donnees pour le contacter

@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	// Navigation
 	public $nav = array();
@@ -41,7 +41,7 @@ class Fsb_frame_child extends Fsb_frame
 	public $print = '';
 
 	// Peut utiliser la reponse rapide
-	public $can_quick_reply = FALSE;
+	public $can_quick_reply = false;
 
 	/*
 	** Constructeur
@@ -62,7 +62,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Redirection de la jumpbox
 		if (Http::request('noscript_list_forums', 'post'))
 		{
-			Html::jumpbox(TRUE);
+			Html::jumpbox(true);
 		}
 
 		// Donnees du sujet
@@ -74,7 +74,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Si le membre est invite on desactive la notification
 		if (!Fsb::$session->is_logged())
 		{
-			Fsb::$mods->change_status('topic_notification', FALSE);
+			Fsb::$mods->change_status('topic_notification', false);
 		}
 
 		// Notification
@@ -172,7 +172,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($this->topic_data['f_password'] && !Display::forum_password($this->topic_data['f_id'], $this->topic_data['f_password'], ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']))
 		{
 			// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
-			return (FALSE);
+			return (false);
 		}
 
 		// Theme pour le forum ?
@@ -194,7 +194,7 @@ class Fsb_frame_child extends Fsb_frame
 			&& ($this->topic_data['t_map'] == 'classic' || $this->topic_data['t_map_first_post'] != MAP_ALL_POST) && Fsb::$session->is_logged()
 			&& $this->topic_data['f_status'] != LOCK && $this->topic_data['t_status'] != LOCK)
 		{
-			$this->can_quick_reply = TRUE;
+			$this->can_quick_reply = true;
 			Fsb::$tpl->set_switch('can_use_quick_reply');
 		}
 
@@ -216,7 +216,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->page = ($row['total_before'] > 0) ? ceil($row['total_before'] / Fsb::$cfg->get('post_per_page')) : 1;
 		}
 
-		return (TRUE);
+		return (true);
 	}
 
 	/*
@@ -227,16 +227,16 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_file('forum/forum_topic.html');
 
 		// En mode impression on change de modele de template
-		$extra_format = TRUE;
+		$extra_format = true;
 		if ($this->print && Fsb::$mods->is_active('print_topic'))
 		{
 			Fsb::$tpl->set_file('forum/forum_topic_print.html');
 
 			// La coloration syntaxique est inutile pour l'impression
-			Fsb::$mods->change_status('highlight_code', FALSE);
+			Fsb::$mods->change_status('highlight_code', false);
 
 			// On n'affiche pas le format extra pour les dates
-			$extra_format = FALSE;
+			$extra_format = false;
 		}
 
 		// Pagination
@@ -245,7 +245,7 @@ class Fsb_frame_child extends Fsb_frame
 		$parser = new Parser();
 
 		// Affichage du dernier message de la page precedente ?
-		$show_last_post = ($this->page > 1 && Fsb::$mods->is_active('previous_post')) ? TRUE : FALSE;
+		$show_last_post = ($this->page > 1 && Fsb::$mods->is_active('previous_post')) ? true : false;
 		$offset = ($show_last_post) ? 1 : 0;
 
 		// On commence par recuperer les ID des messages qui seront affiches
@@ -329,22 +329,22 @@ class Fsb_frame_child extends Fsb_frame
 			);
 
 			// On peut parser le HTML ?
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 			$content = $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 
 			Fsb::$tpl->set_blocks('post', $post_array['data'] += array(
 				'CONTENT' =>		$content,
-				'DATE' =>			Fsb::$session->print_date($row['p_time'], TRUE, NULL, $extra_format),
-				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
+				'DATE' =>			Fsb::$session->print_date($row['p_time'], true, null, $extra_format),
+				'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : null,
 				'ID' =>				$row['p_id'],
-				'HAVE_EDIT' =>		($row['p_edit_time'] > 0) ? TRUE : FALSE,
+				'HAVE_EDIT' =>		($row['p_edit_time'] > 0) ? true : false,
 				'EDIT_DATA' =>		$edit_str,
-				'CAN_EDIT' =>		(Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator') || (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_edit') && $row['u_id'] == Fsb::$session->id() && $this->topic_data['t_status'] == UNLOCK && $this->topic_data['f_status'] == UNLOCK)) ? TRUE : FALSE,
-				'CAN_QUICK_QUOTE' =>($this->can_quick_reply) ? TRUE : FALSE,
-				'CAN_QUICK_EDIT' =>	($row['p_map'] == 'classic') ? TRUE : FALSE,
-				'CAN_DELETE' =>		(Fsb::$session->can_delete_post($row['u_id'], $row['p_id'], $this->topic_data)) ? TRUE : FALSE,
-				'IS_FIRST_POST' =>	($row['p_id'] == $this->topic_data['t_first_p_id']) ? TRUE : FALSE,
-				'IS_READ' =>		($row['p_id'] <= $this->topic_data['last_unread_id']) ? TRUE : FALSE,
+				'CAN_EDIT' =>		(Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator') || (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_edit') && $row['u_id'] == Fsb::$session->id() && $this->topic_data['t_status'] == UNLOCK && $this->topic_data['f_status'] == UNLOCK)) ? true : false,
+				'CAN_QUICK_QUOTE' =>($this->can_quick_reply) ? true : false,
+				'CAN_QUICK_EDIT' =>	($row['p_map'] == 'classic') ? true : false,
+				'CAN_DELETE' =>		(Fsb::$session->can_delete_post($row['u_id'], $row['p_id'], $this->topic_data)) ? true : false,
+				'IS_FIRST_POST' =>	($row['p_id'] == $this->topic_data['t_first_p_id']) ? true : false,
+				'IS_READ' =>		($row['p_id'] <= $this->topic_data['last_unread_id']) ? true : false,
 
 				'U_LAST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id']) . '#p' . $row['p_id'],
 				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit&amp;id=' . $row['p_id']),
@@ -403,12 +403,12 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// On regarde si le membre peut creer des messages
-		$can_create_post = FALSE;
+		$can_create_post = false;
 		foreach ($GLOBALS['_topic_type'] AS $value)
 		{
 			if (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_create_' . $value))
 			{
-				$can_create_post = TRUE;
+				$can_create_post = true;
 				break;
 			}
 		}
@@ -425,11 +425,11 @@ class Fsb_frame_child extends Fsb_frame
 		Http::add_relation($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $this->topic_data['t_id']);
 
 		// Peut repondre au sujet ?
-		$can_reply = FALSE;
+		$can_reply = false;
 		if (Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_answer_' . $GLOBALS['_topic_type'][$this->topic_data['t_type']])
 			&& (($this->topic_data['t_status'] != LOCK && $this->topic_data['f_status'] != LOCK) || Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator')))
 		{
-			$can_reply = TRUE;
+			$can_reply = true;
 			Fsb::$tpl->set_switch('can_reply');
 		}
 
@@ -442,12 +442,12 @@ class Fsb_frame_child extends Fsb_frame
 			'NOTIFY' =>					$notify,
 			'PAGINATION' =>				$pagination,
 			'FORUM_RULES' =>			$parser->message($this->topic_data['f_rules']),
-			'IS_LOCKED' =>				($this->topic_data['t_status'] == LOCK) ? TRUE : FALSE,
+			'IS_LOCKED' =>				($this->topic_data['t_status'] == LOCK) ? true : false,
 			'JUMPBOX' =>				$jumpbox,
 			'TOPIC_NAME' =>				Parser::title($this->topic_data['t_title']),
-			'CAN_SEE_AVATAR' =>			(Fsb::$session->data['u_activate_avatar']) ? TRUE : FALSE,
-			'CAN_POST_NEW' =>			(!$can_create_post || ($this->topic_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator'))) ? FALSE : TRUE,
-			'USE_AJAX' =>				(Fsb::$session->data['u_activate_ajax']) ? TRUE : FALSE,
+			'CAN_SEE_AVATAR' =>			(Fsb::$session->data['u_activate_avatar']) ? true : false,
+			'CAN_POST_NEW' =>			(!$can_create_post || ($this->topic_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator'))) ? false : true,
+			'USE_AJAX' =>				(Fsb::$session->data['u_activate_ajax']) ? true : false,
 			'MAX_SIG_HEIGHT' =>			Fsb::$cfg->get('sig_max_height'),
 			'SHOW_LAST_POST' =>			$show_last_post,
 			'TOPIC_DESCRIPTION' =>		htmlspecialchars(String::truncate($this->topic_data['t_description'], 50)),
@@ -465,7 +465,7 @@ class Fsb_frame_child extends Fsb_frame
 			'U_LOCK_TOPIC' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=lock&amp;mode=lock&amp;id=' . $this->topic_data['t_id']),
 			'U_UNLOCK_TOPIC' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=lock&amp;mode=unlock&amp;id=' . $this->topic_data['t_id']),
 			'U_QUICK_REPLY_ACTION' =>	sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=reply&amp;id=' . $this->topic_data['t_id']),
-			'U_TOPIC_PRINT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;print=true&amp;t_id=' . $this->topic_data['t_id'] . '&amp;page=' . $this->page),
+			'U_TOPIC_PRINT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;print= true &amp;t_id=' . $this->topic_data['t_id'] . '&amp;page=' . $this->page),
 			'U_RSS' =>					sid(ROOT . 'index.' . PHPEXT . '?p=rss&amp;mode=topic&amp;id=' . $this->topic_data['t_id']),
 			'U_QUICKSEARCH' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;in=post&amp;print=post&amp;topic=' . $this->topic_data['t_id']),
 			'U_LOW_FORUM' =>			sid(ROOT . 'index.' . PHPEXT . '?p=low&amp;mode=topic&amp;id=' . $this->topic_data['t_id']),
@@ -528,29 +528,29 @@ class Fsb_frame_child extends Fsb_frame
 			'u_id' =>			$row['u_id'],
 			'p_nickname' =>		$row['p_nickname'],
 			'u_auth' =>			$row['u_auth'],
-			'is_sig' =>			TRUE,
+			'is_sig' =>			true,
 		);
 
 		$parser = new Parser();
 		$ary = array();
 		$ary['data'] = array(
-			'IS_VISITOR' =>			($row['u_id'] == VISITOR_ID) ? TRUE : FALSE,
-			'IS_ONLINE' =>			($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE,
+			'IS_VISITOR' =>			($row['u_id'] == VISITOR_ID) ? true : false,
+			'IS_ONLINE' =>			($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? true : false,
 			'NICKNAME' =>			Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']),
 			'SIG' =>				$parser->sig($row['u_signature'], $parser_info),
 			'RANK_NAME' =>			$rank['name'],
 			'RANK_IMG' =>			$rank['img'],
 			'RANK_STYLE' =>			$rank['style'],
-			'HAVE_RANK' =>			($rank) ? TRUE : FALSE,
-			'HAVE_SIG' =>			(Fsb::$cfg->get('activate_sig') && $row['u_can_use_sig'] && Fsb::$session->data['u_activate_sig'] && !empty($row['u_signature'])) ? TRUE : FALSE,
-			'AGE' =>				($age) ? sprintf(Fsb::$session->lang('topic_age_format'), $age) : NULL,
+			'HAVE_RANK' =>			($rank) ? true : false,
+			'HAVE_SIG' =>			(Fsb::$cfg->get('activate_sig') && $row['u_can_use_sig'] && Fsb::$session->data['u_activate_sig'] && !empty($row['u_signature'])) ? true : false,
+			'AGE' =>				($age) ? sprintf(Fsb::$session->lang('topic_age_format'), $age) : null,
 			'SEXE' =>				$sexe,
-			'JOINED' =>				Fsb::$session->print_date($row['u_joined'], FALSE),
+			'JOINED' =>				Fsb::$session->print_date($row['u_joined'], false),
 			'POSTS' =>				$row['u_total_post'],
 			'WARN_LENGTH1' =>		(!$row['u_total_warning']) ? 100 : 100 - ($row['u_total_warning'] * 20),
 			'WARN_LENGTH2' =>		(!$row['u_total_warning']) ? 0 : $row['u_total_warning'] * 20,
 			'USER_AVATAR' =>		sprintf(Fsb::$session->lang('user_avatar'), htmlspecialchars($row['p_nickname'])),
-			'CAN_WARN' =>			($row['u_auth'] >= MODOSUP) ? FALSE : TRUE,
+			'CAN_WARN' =>			($row['u_auth'] >= MODOSUP) ? false : true,
 			
 			'U_AVATAR' =>			$avatar,
 			'U_PROFILE' =>			sid(ROOT . 'index.' . PHPEXT . '?p=userprofile&amp;id=' . $row['u_id']),
@@ -588,8 +588,8 @@ class Fsb_frame_child extends Fsb_frame
 		else
 		{
 			Fsb::$db->insert('topics_notification', array(
-				't_id' =>		array($this->topic_data['t_id'], TRUE),
-				'u_id' =>		array(Fsb::$session->id(), TRUE),
+				't_id' =>		array($this->topic_data['t_id'], true),
+				'u_id' =>		array(Fsb::$session->id(), true),
 				'tn_status' =>	IS_NOT_NOTIFIED,
 			), 'REPLACE');
 		}
@@ -608,8 +608,8 @@ class Fsb_frame_child extends Fsb_frame
 			if (!$this->topic_data['tr_last_time'] || $this->topic_data['tr_last_time'] < $this->topic_data['t_last_p_time'])
 			{
 				Fsb::$db->insert('topics_read', array(
-					'u_id' =>			array(Fsb::$session->id(), TRUE),
-					't_id' =>			array($this->topic_data['t_id'], TRUE),
+					'u_id' =>			array(Fsb::$session->id(), true),
+					't_id' =>			array($this->topic_data['t_id'], true),
 					'p_id' =>			$this->topic_data['t_last_p_id'],
 					'tr_last_time' =>	$this->topic_data['t_last_p_time'],
 				), 'REPLACE');
@@ -624,7 +624,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 
-		$update_total_view = TRUE;
+		$update_total_view = true;
 		if (Fsb::$mods->is_active('cookie_view'))
 		{
 			// Page deja visitee durant la session ?
@@ -632,7 +632,7 @@ class Fsb_frame_child extends Fsb_frame
 			if ($cookie_view)
 			{
 				$cookie_view = @unserialize($cookie_view);
-				$update_total_view = (is_array($cookie_view) && in_array($this->topic_data['t_id'], $cookie_view)) ? FALSE : TRUE;
+				$update_total_view = (is_array($cookie_view) && in_array($this->topic_data['t_id'], $cookie_view)) ? false : true;
 			}
 
 			if ($update_total_view)
@@ -650,7 +650,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($update_total_view)
 		{
 			Fsb::$db->update('topics', array(
-				't_total_view' =>	array('(t_total_view + 1)', 'is_field' => TRUE),
+				't_total_view' =>	array('(t_total_view + 1)', 'is_field' => true),
 			), 'WHERE t_id = ' . $this->topic_data['t_id']);
 		}
 	}

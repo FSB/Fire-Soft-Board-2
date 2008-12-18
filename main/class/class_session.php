@@ -81,7 +81,7 @@ class Session extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	private $update_page = TRUE;
+	private $update_page = true;
 
 	/**
 	 * Table de clef sur les droits pour les acces directs
@@ -97,7 +97,7 @@ class Session extends Fsb_model
 	{
 		// Recuperation de l'IP, du user_agent et de l'ID de session
 		$this->ip = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
-		$this->user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : NULL;
+		$this->user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : null;
 		$this->get_sid();
 
 		// Recuperation de la page
@@ -119,7 +119,7 @@ class Session extends Fsb_model
 		$this->sid = '';
 		if ($this->sid = Http::getcookie('sid'))
 		{
-			define('SESSION_METHOD_COOKIE', TRUE);
+			define('SESSION_METHOD_COOKIE', true);
 		}
 		else if (!empty($_GET['sid']))
 		{
@@ -138,7 +138,7 @@ class Session extends Fsb_model
 	 * @param string $location Localisation du visiteur sur le forum
 	 * @param bool $update_page Mise a jour de la page de session
 	 */
-	public function start($location, $update_page = TRUE)
+	public function start($location, $update_page = true)
 	{
 		// On recupere les donnees du visiteur, creation de la session si besoin
 		$this->update_page = $update_page;
@@ -231,7 +231,7 @@ class Session extends Fsb_model
 		}
 
 		// A partir de maintenant on peut logguer les erreurs SQL
-		define('CAN_LOG_SQL_ERROR', TRUE);
+		define('CAN_LOG_SQL_ERROR', true);
 
 		// Forum desactive ?
 		if ((Fsb::$cfg->get('disable_board') == 'modo' && $this->auth() < MODO) || (Fsb::$cfg->get('disable_board') == 'admin' && $this->auth() < MODOSUP))
@@ -257,7 +257,7 @@ class Session extends Fsb_model
 
 		if (empty($data['s_cache']) || empty($data['u_id']))
 		{
-			return ($this->new_session(TRUE));
+			return ($this->new_session(true));
 		}
 		$cache_data = unserialize($data['s_cache']);
 		$this->data = array_merge($cache_data, $data);
@@ -282,7 +282,7 @@ class Session extends Fsb_model
 		if ((!isset($this->data['s_session_start_time']) || Fsb::$cfg->get('signal_session') > $this->data['s_session_start_time']) || ($this->data['s_signal_user'] > $this->data['s_session_start_time']))
 		{
 			$this->create_auths();
-			$this->update_session(TRUE);
+			$this->update_session(true);
 		}
 
 		if (!is_array($this->data))
@@ -296,7 +296,7 @@ class Session extends Fsb_model
 	 *
 	 * @param bool $allow_auto Autorise la connexion automatique
 	 */
-	private function new_session($allow_auto = FALSE)
+	private function new_session($allow_auto = false)
 	{
 		$this->status = 'new';
 
@@ -330,7 +330,7 @@ class Session extends Fsb_model
 		// Mise a jour de la session si le membre n'a pas ete banni
 		if (!$reason = $this->is_ban($this->id(), $this->data['u_nickname'], $this->ip, $this->data['u_email']))
 		{
-			$this->update_session(TRUE);
+			$this->update_session(true);
 		}
 		else
 		{
@@ -377,8 +377,8 @@ class Session extends Fsb_model
 
 		// Le membre subit une restriction ?
 		// TODO : A deplacer pour eviter les problemes de cache ?
-		$post_restriction = ($this->data['u_warn_post'] == 1 || $this->data['u_warn_post'] >= CURRENT_TIME) ? TRUE : FALSE;
-		$read_restriction = ($this->data['u_warn_read'] == 1 || $this->data['u_warn_read'] >= CURRENT_TIME) ? TRUE : FALSE;
+		$post_restriction = ($this->data['u_warn_post'] == 1 || $this->data['u_warn_post'] >= CURRENT_TIME) ? true : false;
+		$read_restriction = ($this->data['u_warn_read'] == 1 || $this->data['u_warn_read'] >= CURRENT_TIME) ? true : false;
 
 		// Permissions sur les forums
 		$sql = 'SELECT f.f_id AS real_f_id, f.f_password, f.f_name, ga.*
@@ -391,7 +391,7 @@ class Session extends Fsb_model
 		$this->data['auth'] = array();
 		while ($tmp = Fsb::$db->row($result))
 		{
-			$in_group = (in_array($tmp['g_id'], $this->data['groups'])) ? TRUE : FALSE;
+			$in_group = (in_array($tmp['g_id'], $this->data['groups'])) ? true : false;
 			foreach ($GLOBALS['_auth_type'] AS $key)
 			{
 				$value = $tmp[$key];
@@ -436,10 +436,10 @@ class Session extends Fsb_model
 	 *
 	 * @param bool $new_session Definit si la session est cree
 	 */
-	private function update_session($new_session = FALSE)
+	private function update_session($new_session = false)
 	{
 		Fsb::$db->insert('sessions', array(
-			's_sid' =>					array($this->sid, TRUE),
+			's_sid' =>					array($this->sid, true),
 			's_id' =>					$this->id(),
 			's_ip' =>					$this->ip,
 			's_user_agent' =>			$this->user_agent,
@@ -447,7 +447,7 @@ class Session extends Fsb_model
 			's_time' =>					CURRENT_TIME,
 			's_signal_user' =>			CURRENT_TIME,
 			's_session_start_time' =>	($new_session || !isset($this->data['s_session_start_time'])) ? CURRENT_TIME : $this->data['s_session_start_time'],
-			's_bot' =>					(isset($this->data['s_bot'])) ? $this->data['s_bot'] : FALSE,
+			's_bot' =>					(isset($this->data['s_bot'])) ? $this->data['s_bot'] : false,
 			's_cache' =>				serialize(array('auth' => $this->data['auth'], 'groups' => $this->data['groups'], 'groups_modo' => $this->data['groups_modo'])),
 			's_admin_logged' =>			(isset($this->data['s_admin_logged'])) ? $this->data['s_admin_logged'] : 0,
 		), 'REPLACE');
@@ -464,7 +464,7 @@ class Session extends Fsb_model
 	 * @param mixed $auth_type
 	 * @return bool
 	 */
-	public function is_authorized($f_id, $auth_type = NULL)
+	public function is_authorized($f_id, $auth_type = null)
 	{
 		if ($auth_type)
 		{
@@ -475,7 +475,7 @@ class Session extends Fsb_model
 			}
 			else
 			{
-				return (FALSE);
+				return (false);
 			}
 		}
 		else
@@ -495,7 +495,7 @@ class Session extends Fsb_model
 	 * @param bool $use_auto_connexion Connexion automatique
 	 * @return bool|string Retourne false en cas de succes, sinon retourne l'erreur
 	 */
-	public function log_user($login, $password, $is_hidden = FALSE, $use_auto_connexion = FALSE)
+	public function log_user($login, $password, $is_hidden = false, $use_auto_connexion = false)
 	{
 		// On recupere les informations sur le mot de passe du membre en fonction de son login,
 		// pour determiner ensuite si le mot de passe entre est correct
@@ -515,9 +515,9 @@ class Session extends Fsb_model
 		if (!$pwd_data['u_use_salt'])
 		{
 			Fsb::$db->update('users_password', array(
-				'u_password' =>		Password::hash($password, 'sha1', TRUE),
+				'u_password' =>		Password::hash($password, 'sha1', true),
 				'u_algorithm' =>	'sha1',
-				'u_use_salt' =>		TRUE,
+				'u_use_salt' =>		true,
 			), 'WHERE u_id = ' . $pwd_data['u_id']);
 		}
 
@@ -546,12 +546,12 @@ class Session extends Fsb_model
 		}
 
 		$this->create_auths($this->data);
-		$this->update_session(FALSE);
+		$this->update_session(false);
 		$this->update_last_visit($this->id());
 
 		// Connexion en invisible ?
 		Fsb::$db->update('users', array(
-			'u_activate_hidden' =>	($is_hidden && $this->is_authorized('log_hidden')) ? TRUE : FALSE,
+			'u_activate_hidden' =>	($is_hidden && $this->is_authorized('log_hidden')) ? true : false,
 		), 'WHERE u_id = ' . $this->id());
 
 		// Si le MOD affichant la derniere visite sur l'index est active on envoie un cookie contenant celle ci
@@ -560,7 +560,7 @@ class Session extends Fsb_model
 			Http::cookie('last_visit', $this->data['u_last_visit'], 0);
 		}
 
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -593,10 +593,10 @@ class Session extends Fsb_model
 		}
 
 		Fsb::$db->update('sessions', array(
-			's_admin_logged' =>		TRUE,
+			's_admin_logged' =>		true,
 		), 'WHERE s_id = ' . $this->id() . ' AND s_sid = \'' . $this->sid . '\' AND s_ip = \'' . $this->ip . '\'');
 
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -620,11 +620,11 @@ class Session extends Fsb_model
 			if ($this->data)
 			{
 				$this->create_auths($this->data);
-				$this->update_session(FALSE);
+				$this->update_session(false);
 				$this->update_last_visit($this->id());
 
 				Fsb::$db->update('sessions', array(
-					's_admin_logged' =>		TRUE,
+					's_admin_logged' =>		true,
 				), 'WHERE s_id = ' . $this->id() . ' AND s_sid = \'' . $this->sid . '\' AND s_ip = \'' . $this->ip . '\'');
 				Http::redirect('index.' . PHPEXT);
 			}
@@ -636,9 +636,9 @@ class Session extends Fsb_model
 	 *
 	 * @param int $u_id ID du membre a deconnecter
 	 */
-	public function logout($u_id = NULL)
+	public function logout($u_id = null)
 	{
-		if ($u_id === NULL)
+		if (is_null($u_id))
 		{
 			$u_id = $this->id();
 		}
@@ -671,7 +671,7 @@ class Session extends Fsb_model
 		// Administrateurs non affectes par le banissement
 		if ($this->auth() >= ADMIN)
 		{
-			return (NULL);
+			return (null);
 		}
 
 		// On verifie si le membre a un cookie de banissement
@@ -712,7 +712,7 @@ class Session extends Fsb_model
 			}
 		}
 		Fsb::$db->free($result);
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -723,9 +723,9 @@ class Session extends Fsb_model
 	 */
 	public function img($img)
 	{
-		if ($this->getStyle('img', $img) === NULL)
+		if (is_null($this->getStyle('img', $img)))
 		{
-			return (NULL);
+			return (null);
 		}
 
 		if (preg_match('#^https?://#i', $this->getStyle('img', $img)))
@@ -776,7 +776,7 @@ class Session extends Fsb_model
 		$result = Fsb::$db->query($sql, 'bot_');
 		while ($row = Fsb::$db->row($result))
 		{
-			if (strpos(strtolower($this->user_agent), strtolower($row['bot_agent'])) !== FALSE)
+			if (strpos(strtolower($this->user_agent), strtolower($row['bot_agent'])) !== false)
 			{
 				Fsb::$db->free($result);
 				return ($row['bot_id']);
@@ -805,7 +805,7 @@ class Session extends Fsb_model
 	 */
 	public function is_logged()
 	{
-		return (($this->id() != VISITOR_ID) ? TRUE : FALSE);
+		return (($this->id() != VISITOR_ID) ? true : false);
 	}
 
 	/**
@@ -834,18 +834,18 @@ class Session extends Fsb_model
 	 * @param int $user_id ID du membre
 	 * @return bool
 	 */
-	public function is_fondator($user_id = NULL)
+	public function is_fondator($user_id = null)
 	{
-		if ($user_id === NULL)
+		if (is_null($user_id))
 		{
-			return ((Fsb::$session->auth() == FONDATOR) ? TRUE : FALSE);
+			return ((Fsb::$session->auth() == FONDATOR) ? true : false);
 		}
 		else
 		{
 			$sql = 'SELECT u_auth
 					FROM ' . SQL_PREFIX . 'users
 					WHERE u_id = ' . $user_id;
-			return ((Fsb::$db->get($sql, 'u_auth') == FONDATOR) ? TRUE : FALSE);
+			return ((Fsb::$db->get($sql, 'u_auth') == FONDATOR) ? true : false);
 		}
 	}
 
@@ -868,9 +868,9 @@ class Session extends Fsb_model
 				|| ($post_id == $topic_data['t_first_p_id']
 				&& $topic_data['t_total_post'] == 1)))
 		{
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/*
@@ -881,10 +881,10 @@ class Session extends Fsb_model
 	/**
 	 * Retourne la liste des forums moderes
 	 *
-	 * @param bool $format Si FALSE on retourne un tableau, si TRUE on utilise implode()
+	 * @param bool $format Si false on retourne un tableau, si true on utilise implode()
 	 * @return string|array
 	 */
-	public function moderated_forums($format = TRUE)
+	public function moderated_forums($format = true)
 	{
 		$list = array(0);
 		foreach ($this->data['auth'] AS $k => $v)
@@ -904,7 +904,7 @@ class Session extends Fsb_model
 	 * Charge un fichier de langue
 	 *
 	 * @param string $lg_name Nom du fichier de langue
-	 * @param bool $full_path Si true, utilise $lg_name comme chemin complet vers le fichier de langue
+	 * @param bool $full_path Si  true , utilise $lg_name comme chemin complet vers le fichier de langue
 	 */
 	public function load_lang($lg_name, $full_path = false)
 	{
@@ -923,7 +923,7 @@ class Session extends Fsb_model
 	 */
 	public function lang($key)
 	{
-		return ((isset($this->lg[$key])) ? $this->lg[$key] : NULL);
+		return ((isset($this->lg[$key])) ? $this->lg[$key] : null);
 	}
 
 	/**
@@ -949,7 +949,7 @@ class Session extends Fsb_model
 	 * @param bool $extra_format Peut utiliser un format extra (Aujourd'hui a [...], Hier a [...])
 	 * @return string
 	 */
-	public function print_date($timestamp, $show_hour = TRUE, $format = NULL, $extra_format = TRUE)
+	public function print_date($timestamp, $show_hour = true, $format = null, $extra_format = true)
 	{
 		// Pour eviter un bug sous windows + PHP4
 		if (!$timestamp && OS_SERVER == 'windows')

@@ -99,7 +99,7 @@ class Diff extends Fsb_model
 	 * @param string $dst Second fichier
 	 * @param bool $use_cache Utilisation du cache
 	 */
-	public function load_file($src, $dst, $use_cache = FALSE)
+	public function load_file($src, $dst, $use_cache = false)
 	{
 		// Date de derniere modification des fichiers, utile pour savoir si on compte faire une remise en cache
 		$filemtime1 = filemtime($src);
@@ -113,16 +113,16 @@ class Diff extends Fsb_model
 			$cache_get = $cache->get($hash);
 			$this->entries = $cache_get['output'];
 
-			$cache_put = FALSE;
+			$cache_put = false;
 			if ($use_cache && ($filemtime1 != $cache_get['filemtime1'] || $filemtime2 != $cache_get['filemtime2']))
 			{
 				$this->entries = array();
-				$cache_put = TRUE;
+				$cache_put = true;
 			}
 		}
 		else
 		{
-			$cache_put = TRUE;
+			$cache_put = true;
 		}
 
 		// Mise en cache
@@ -326,9 +326,9 @@ class Diff extends Fsb_model
 	/**
 	 * Affiche le resultat du diff en dur
 	 *
-	 * @param bool $wrap Si TRUE, revient a la ligne en cas de ligne trop longue
+	 * @param bool $wrap Si true, revient a la ligne en cas de ligne trop longue
 	 */
-	public function output($wrap = TRUE)
+	public function output($wrap = true)
 	{
 		$style_equal = 'width: 50%; background-color: #F3F3F3;';
 		$style_drop = 'width: 50%; background-color: #CFF5B8;';

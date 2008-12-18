@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Module de moderation pour la division de sujet
@@ -82,7 +82,7 @@ class Page_modo_upload extends Fsb_model
 		Fsb::$tpl->set_file('modo/modo_upload.html');
 		Fsb::$tpl->set_switch('upload_index');
 		Fsb::$tpl->set_vars(array(
-			'PAGINATION' =>		($total_page > 1) ? Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=' . $order . '&amp;direction=' . $direction) : NULL,
+			'PAGINATION' =>		($total_page > 1) ? Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=' . $order . '&amp;direction=' . $direction) : null,
 	
 			'U_ORDER_FILENAME' =>	sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=upload_realname&amp;direction=' . (($order == 'upload_realname' && $direction == 'ASC') ? 'DESC' : 'ASC')),
 			'U_ORDER_FILESIZE' =>	sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=upload&amp;order=upload_filesize&amp;direction=' . (($order == 'upload_filesize' && $direction == 'ASC') ? 'DESC' : 'ASC')),
@@ -234,7 +234,7 @@ class Page_modo_upload extends Fsb_model
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('modo_upload_confirm_delete'), ROOT . 'index.' . PHPEXT . '?p=modo&module=upload', array('submit_delete' => TRUE, 'action' => $action));
+			Display::confirmation(Fsb::$session->lang('modo_upload_confirm_delete'), ROOT . 'index.' . PHPEXT . '?p=modo&module=upload', array('submit_delete' => true, 'action' => $action));
 		}
 	}
 }

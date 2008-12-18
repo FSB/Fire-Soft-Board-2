@@ -22,7 +22,7 @@ class Regexp extends Fsb_model
 	 * @param string $options Si des options sont passees, on ajoute les delimiteurs ` a la regexp, ainsi que les options.
 	 * @return string Expression reguliere
 	 */
-	public static function pattern($varname, $limit = FALSE, $options = NULL)
+	public static function pattern($varname, $limit = false, $options = null)
 	{
 		if (preg_match('#\{[A-Z]*?\}#', $varname))
 		{
@@ -68,7 +68,7 @@ class Regexp extends Fsb_model
 			break;
 
 			default :
-				if ($options !== NULL)
+				if (!is_null($options))
 				{
 					$varname = '`' . $varname . '`' . $options;
 				}
@@ -80,7 +80,7 @@ class Regexp extends Fsb_model
 			$pattern = '^' . $pattern . '$';
 		}
 
-		if ($options !== NULL)
+		if (!is_null($options))
 		{
 			$pattern = '`' . $pattern . '`' . $options;
 		}

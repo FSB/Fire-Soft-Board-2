@@ -172,8 +172,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_switch('tpl_list');
 
 		Fsb::$tpl->set_vars(array(
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
-			'LIST_TPL' =>		Html::list_dir('export_tpl_name', '', ROOT . 'tpl/', array(), TRUE),
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
+			'LIST_TPL' =>		Html::list_dir('export_tpl_name', '', ROOT . 'tpl/', array(), true),
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=general_tpl'),
 		));
@@ -228,7 +228,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_show_tpl()
 	{
-		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
+		if ($this->tpl_name == null || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
 		{
 			Display::message('adm_tpl_not_exists');
 		}
@@ -263,7 +263,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				if (preg_match('/\.html$/si', $file))
 				{
 					$list_tpl['_root'][] = array(
-						'cache' =>			($cache->exists(md5('tpl/' . $this->tpl_name . '/files/' . $file))) ? TRUE : FALSE,
+						'cache' =>			($cache->exists(md5('tpl/' . $this->tpl_name . '/files/' . $file))) ? true : false,
 						'filename' =>		$file,
 						'filesize' =>		convert_size(filesize(ROOT . 'tpl/' . $this->tpl_name . '/files/' . $file)),
 					);
@@ -276,7 +276,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						if ($file2[0] != '.' && $file2 != 'index.html' && preg_match('/\.html$/si', $file2))
 						{
 							$list_tpl[$file][] = array(
-								'cache' =>			($cache->exists(md5('tpl/' . $this->tpl_name . '/files/' . $file . '/' . $file2))) ? TRUE : FALSE,
+								'cache' =>			($cache->exists(md5('tpl/' . $this->tpl_name . '/files/' . $file . '/' . $file2))) ? true : false,
 								'filename' =>		$file . '/' . $file2,
 								'filesize' =>		convert_size(filesize(ROOT . 'tpl/' . $this->tpl_name . '/files/' . $file . '/' . $file2)),
 							);
@@ -336,8 +336,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		Fsb::$tpl->set_vars(array(
 			'L_EDIT_TITLE' =>		sprintf(Fsb::$session->lang('adm_tpl_edit_title'), $this->file),
-			'CONTENT' =>			htmlspecialchars(($content == NULL) ? file_get_contents(ROOT . 'tpl/' .$this->tpl_name . '/files/' . $this->file) : $content),
-			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'CONTENT' =>			htmlspecialchars(($content == null) ? file_get_contents(ROOT . 'tpl/' .$this->tpl_name . '/files/' . $this->file) : $content),
+			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? true : false,
 
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=general_tpl&amp;tpl_name=' . $this->tpl_name . '&amp;file=' . $this->file),
 			'U_CODEPRESS' =>		sid('index.' . PHPEXT . '?p=general_tpl&amp;mode=codepress&amp;tpl_name=' . $this->tpl_name . '&amp;file=' . $this->file),
@@ -349,7 +349,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_codepress()
 	{
-		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
+		if ($this->tpl_name == null || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
 		{
 			Display::message('adm_tpl_not_exists');
 		}
@@ -382,12 +382,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_cache_tpl()
 	{
-		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
+		if ($this->tpl_name == null || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
 		{
 			Display::message('adm_tpl_not_exists');
 		}
 
-		if ($this->file == NULL || !is_file(ROOT . 'tpl/' . $this->tpl_name . '/files/' . $this->file))
+		if ($this->file == null || !is_file(ROOT . 'tpl/' . $this->tpl_name . '/files/' . $this->file))
 		{
 			Display::message('adm_tpl_file_not_exists');
 		}
@@ -406,7 +406,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			$cache->delete($hash);
 		}
-		$this->file = NULL;
+		$this->file = null;
 
 		Display::message('adm_tpl_well_' . $this->mode, 'index.' . PHPEXT . '?p=general_tpl&amp;mode=edit_tpl&amp;tpl_name=' . $this->tpl_name, 'general_tpl2');
 	}
@@ -416,7 +416,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_show_tpl_css()
 	{
-		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
+		if ($this->tpl_name == null || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
 		{
 			Display::message('adm_tpl_not_exists');
 		}
@@ -498,7 +498,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$preview_css =		Http::request('preview_css', 'post');
 		$edit_css_type =	Http::request('edit_css_type');
-		if ($edit_css_type == NULL)
+		if ($edit_css_type == null)
 		{
 			$edit_css_type = 'simple';
 		}
@@ -576,7 +576,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'repeat-y' =>		Fsb::$session->lang('adm_css_repeat_y'),
 			);
 
-			$parse_style = $this->page_check_css_style($class_data, (Http::request('preview_css', 'post')) ? $preview_style : NULL);
+			$parse_style = $this->page_check_css_style($class_data, (Http::request('preview_css', 'post')) ? $preview_style : null);
 
 			Fsb::$tpl->set_switch('simple_mode');
 			Fsb::$tpl->set_vars(array(
@@ -592,7 +592,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'FONT_COLOR' =>				$this->style['font_color'],
 				'FONT_SIZE' =>				$this->style['font_size'],
 
-				'LIST_BACKGROUND_IMG' =>	Html::list_dir('background_img', $this->style['background_img'], ROOT . 'tpl/' . $this->tpl_name . '/img/', array('gif', 'jpg', 'jpeg'), FALSE, '<option value="0">' . Fsb::$session->lang('adm_css_no_img') . '</option>'),
+				'LIST_BACKGROUND_IMG' =>	Html::list_dir('background_img', $this->style['background_img'], ROOT . 'tpl/' . $this->tpl_name . '/img/', array('gif', 'jpg', 'jpeg'), false, '<option value="0">' . Fsb::$session->lang('adm_css_no_img') . '</option>'),
 				'LIST_REPEAT_IMG' =>		Html::make_list('repeat_img', $this->style['repeat_img'], $list_repeat),
 				'LIST_FONT_SIZE' =>			Html::make_list('font_size_unit', $this->style['font_size_unit'], $list_size),
 				'LIST_BORDER_WIDTH' =>		Html::make_list('border_width_unit', $this->style['border_width_unit'], $list_size),
@@ -622,11 +622,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 * @param string $content Contenu du fichier CSS
 	 * @return array Propriete CSS
 	 */
-	public function page_check_css_style($class_data, $content = NULL)
+	public function page_check_css_style($class_data, $content = null)
 	{
 		$css = new Css();
 		$css->load_file(ROOT . 'tpl/' . $this->tpl_name . '/' . $this->class_name);
-		if ($content != NULL)
+		if ($content != null)
 		{
 			$p = $css->parse_properties($content);
 		}
@@ -710,19 +710,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Texte gras
 		if (isset($p['font-weight']))
 		{
-			$this->style['bold'] = TRUE;
+			$this->style['bold'] = true;
 		}
 
 		// Texte souligne
 		if (isset($p['text-decoration']) && $p['text-decoration'] == 'underline')
 		{
-			$this->style['underline'] = TRUE;
+			$this->style['underline'] = true;
 		}
 
 		// Texte italique
 		if (isset($p['font-style']))
 		{
-			$this->style['italic'] = TRUE;
+			$this->style['italic'] = true;
 		}
 
 		// Couleur du texte
@@ -748,7 +748,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function page_submit_edit_css()
 	{
 		$edit_css_type = Http::request('edit_css_type_submit', 'post');
-		if ($edit_css_type == NULL)
+		if ($edit_css_type == null)
 		{
 			$edit_css_type = 'simple';
 		}
@@ -792,10 +792,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		$content = '';
-		$border_style_exists = FALSE;
+		$border_style_exists = false;
 		if ($border_width_up > 0 || $border_width_right > 0 || $border_width_down > 0 || $border_width_left > 0)
 		{
-			$border_style_exists = TRUE;
+			$border_style_exists = true;
 			$content .= "border-width: ${border_width_up}${border_width_unit} ${border_width_right}${border_width_unit} ${border_width_down}${border_width_unit} ${border_width_right}${border_width_unit};" . EOF;
 		}
 
@@ -899,7 +899,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// On recupere le fichier compresse
 		$compress = new Compress('.' . $ext);
 		$compress->add_file('tpl/' . $tpl_name . '/', 'tpl/');
-		$content = $compress->write(TRUE);
+		$content = $compress->write(true);
 
 		// On lance le telechargement sur le navigateur
 		Http::download($tpl_name . '.' . $ext, $content);
@@ -910,7 +910,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_show_tpl_img()
 	{
-		if ($this->tpl_name == NULL || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
+		if ($this->tpl_name == null || !is_dir(ROOT . 'tpl/' . $this->tpl_name))
 		{
 			Display::message('adm_tpl_not_exists');
 		}
@@ -1062,7 +1062,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					'WEBSITE' =>		$item->author[0]->website[0]->getData(),
 					'EMAIL' =>			$item->author[0]->email[0]->getData(),
 					'COPYRIGHT' =>		$item->author[0]->copyright[0]->getData(),
-					'TPL_EXISTS' =>		(is_dir(ROOT . 'tpl/' . $tpl_name)) ? TRUE : FALSE,
+					'TPL_EXISTS' =>		(is_dir(ROOT . 'tpl/' . $tpl_name)) ? true : false,
 
 					'U_DOWNLOAD' =>		$item->download[0]->direct[0]->getData(),
 					'U_INSTALL' =>		$item->download[0]->indirect[0]->getData(),
@@ -1071,7 +1071,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		Fsb::$tpl->set_vars(array(
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=general_tpl&amp;module=extern'),
 		));
@@ -1117,13 +1117,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$wrap = intval(Http::request('wrap', 'post'));
 		if (!$wrap)
 		{
-			$wrap = TRUE;
+			$wrap = true;
 		}
 
 		$filter = intval(Http::request('filter', 'post'));
 		if (!$filter)
 		{
-			$filter = FALSE;
+			$filter = false;
 		}
 
 		// Theme a "gauche"
@@ -1170,17 +1170,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				$filename = str_replace('../', './', $filename);
 				$diff = new Diff();
-				$diff->load_file(ROOT . 'tpl/' . $tpl_src . '/' . $filename, ROOT . 'tpl/' . $tpl_dst . '/' . $filename, TRUE);
+				$diff->load_file(ROOT . 'tpl/' . $tpl_src . '/' . $filename, ROOT . 'tpl/' . $tpl_dst . '/' . $filename, true);
 
 				// Afficher les fichiers uniquement si modification ?
 				if ($filter)
 				{
-					$diff_exists = FALSE;
+					$diff_exists = false;
 					foreach ($diff->entries AS $data)
 					{
 						if ($data['state'] != Diff::EQUAL)
 						{
-							$diff_exists = TRUE;
+							$diff_exists = true;
 							break;
 						}
 					}
@@ -1306,8 +1306,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		// Variables de templates
 		Fsb::$tpl->set_vars(array(
-			'LIST_TPL1' =>		Html::list_dir('tpl_src', substr($tpl_src, 0, -1), ROOT . 'tpl/', array(), TRUE),
-			'LIST_TPL2' =>		Html::list_dir('tpl_dst', substr($tpl_dst, 0, -1), ROOT . 'tpl/', array(), TRUE),
+			'LIST_TPL1' =>		Html::list_dir('tpl_src', substr($tpl_src, 0, -1), ROOT . 'tpl/', array(), true),
+			'LIST_TPL2' =>		Html::list_dir('tpl_dst', substr($tpl_dst, 0, -1), ROOT . 'tpl/', array(), true),
 			'LIST_FILES' =>		$list,
 			'AUTO_WRAP' =>		$wrap,
 			'FILTER' =>			$filter,

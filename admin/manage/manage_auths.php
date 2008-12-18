@@ -106,7 +106,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 
 		// On recupere le type de mode en fonction du cookie
-		if ($this->mode_type === NULL)
+		if (is_null($this->mode_type))
 		{
 			$this->mode_type = Http::getcookie('mode_type');
 			if (!in_array($this->mode_type, array(MODE_TYPE_EASY, MODE_TYPE_SIMPLE, MODE_TYPE_ADVANCED)))
@@ -203,10 +203,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 			else
 			{
-				$this->this_id = NULL;
+				$this->this_id = null;
 				$this->mode = '';
 				$this->nickname = trim(Http::request('auth_nickname', 'post'));
-				$this->u_id = NULL;
+				$this->u_id = null;
 				$this->errstr[] = Fsb::$session->lang('user_not_exists');
 			}
 		}
@@ -221,7 +221,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'L_DEFAULT_TITLE' =>	Fsb::$session->lang('adm_auths_module_forums'),
 			'L_DEFAULT_CHOOSE' =>	Fsb::$session->lang('adm_auths_choose_forum'),
-			'LIST_DEFAULT' =>		Html::list_forums(get_forums(), '', 'this_id', FALSE),
+			'LIST_DEFAULT' =>		Html::list_forums(get_forums(), '', 'this_id', false),
 
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_auths&amp;module=forums'),
 		));
@@ -249,7 +249,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		Fsb::$tpl->set_switch('auths_select_user');
 		Fsb::$tpl->set_vars(array(
-			'ERRSTR' =>				($this->errstr) ? Html::make_errstr($this->errstr) : NULL,
+			'ERRSTR' =>				($this->errstr) ? Html::make_errstr($this->errstr) : null,
 			'CURRENT_NICKNAME' =>	$this->nickname,
 
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=manage_auths&amp;module=users'),
@@ -286,8 +286,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'L_LIST_NAME' =>		Fsb::$session->lang('adm_auths_choose_forum'),
 			'L_ADM_AUTHS_MODEL' =>	Fsb::$session->lang('adm_auths_model_forum'),
 
-			'LIST_CHOOSE' =>		Html::list_forums($get_forums, $this->this_id, 'this_id', FALSE),
-			'LIST_MODEL' =>			Html::list_forums($get_forums, $this->auth_model, 'auth_model', FALSE),
+			'LIST_CHOOSE' =>		Html::list_forums($get_forums, $this->this_id, 'this_id', false),
+			'LIST_MODEL' =>			Html::list_forums($get_forums, $this->auth_model, 'auth_model', false),
 		));
 
 		$this->page_view_auths($result, 'forums', $list_mode_ary);
@@ -402,7 +402,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 			
 				$id_group = array();
-				$last_handler_id = NULL;
+				$last_handler_id = null;
 				while ($row = Fsb::$db->row($result))
 				{
 					if (!in_array($row['real_this_id'], $id_group))
@@ -448,8 +448,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 						{
 							$id =  $value . '_' . $row['real_this_id'];
 							$list = Html::make_list($id, $row[$value], array(
-								FALSE =>	Fsb::$session->lang('no'),
-								TRUE =>		Fsb::$session->lang('yes'),
+								false =>	Fsb::$session->lang('no'),
+								true =>		Fsb::$session->lang('yes'),
 							),
 							array(
 								'id' =>	$id,
@@ -488,7 +488,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					));
 				}
 
-				$last_handler_id = NULL;
+				$last_handler_id = null;
 				while ($row = Fsb::$db->row($result))
 				{
 					switch ($type)
@@ -658,9 +658,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 			break;
 		}
 
-		// Si on est sur un module 'users' et que la variable vaut TRUE, on changera peut etre a la
+		// Si on est sur un module 'users' et que la variable vaut true, on changera peut etre a la
 		// fin son status en tant que "moderateur"
-		$user_moderator = FALSE;
+		$user_moderator = false;
 
 		switch ($this->mode_type)
 		{
@@ -670,7 +670,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				//
 				$save_id = 0;
 				$insert_array = array();
-				$_POST['ga_nothing_0'] = FALSE;
+				$_POST['ga_nothing_0'] = false;
 				foreach ($_POST AS $key => $value)
 				{
 					if (preg_match('/^(ga_[a-zA-Z0-9_]+)_([0-9]+)$/', $key, $match))
@@ -694,8 +694,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 									break;
 								}
 
-								$insert_array['g_id'] = array($group_id, TRUE);
-								$insert_array['f_id'] = array($forum_id, TRUE);
+								$insert_array['g_id'] = array($group_id, true);
+								$insert_array['f_id'] = array($forum_id, true);
 								if ($yes_exists)
 								{
 									Fsb::$db->insert('groups_auth', $insert_array, 'REPLACE');
@@ -708,7 +708,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 									Fsb::$db->query($sql);
 								}
 							}
-							$yes_exists = FALSE;
+							$yes_exists = false;
 							$insert_array = array();
 							$save_id = $current_id;
 						}
@@ -716,13 +716,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 						// On regarde si le groupe / membre peut etre considere comme moderateur
 						if (($this->module == 'users' || $this->module == 'groups') && $match[1] == 'ga_moderator' && $value == 1)
 						{
-							$user_moderator = TRUE;
+							$user_moderator = true;
 						}
 			
 						$insert_array[$match[1]] = $value;
 						if ($value)
 						{
-							$yes_exists = TRUE;
+							$yes_exists = true;
 						}
 					}
 			
@@ -756,7 +756,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				foreach ($final_auth AS $current_id => $auth_selected)
 				{
 					$query_ary = array();
-					$delete = TRUE;
+					$delete = true;
 					foreach ($GLOBALS['_auth_type_format'] AS $cat_auth => $v)
 					{
 						$is_selected = 1;
@@ -768,14 +768,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 								// a uniquement des 0 on lance une requete DELETE a la fin
 								if ($is_selected == 1)
 								{
-									$delete = FALSE;
+									$delete = false;
 								}
 								$query_ary[$auth] = $is_selected;
 
 								// On regarde si le groupe / membre peut etre considere comme moderateur
 								if (($this->module == 'users' || $this->module == 'groups') && $auth == 'ga_moderator' && $is_selected)
 								{
-									$user_moderator = TRUE;
+									$user_moderator = true;
 								}
 							}
 
@@ -811,14 +811,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 						switch ($this->module)
 						{
 							case 'forums' :
-								$query_ary['g_id'] = array($current_id, TRUE);
-								$query_ary['f_id'] = array($this->id, TRUE);
+								$query_ary['g_id'] = array($current_id, true);
+								$query_ary['f_id'] = array($this->id, true);
 							break;
 
 							case 'groups' :
 							case 'users' :
-								$query_ary['g_id'] = array($this->id, TRUE);
-								$query_ary['f_id'] = array($current_id, TRUE);
+								$query_ary['g_id'] = array($this->id, true);
+								$query_ary['f_id'] = array($current_id, true);
 							break;
 						}
 						Fsb::$db->insert('groups_auth', $query_ary, 'REPLACE');
@@ -837,7 +837,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					{
 						foreach ($ary_group AS $g_auth => $g_id)
 						{
-							$auth_ary[$key][$g_auth] = ($value != -1 && $value <= $g_auth) ? TRUE : FALSE;
+							$auth_ary[$key][$g_auth] = ($value != -1 && $value <= $g_auth) ? true : false;
 						}
 					}
 				}
@@ -845,15 +845,15 @@ class Fsb_frame_child extends Fsb_admin_frame
 				foreach ($ary_group AS $g_auth => $g_id)
 				{
 					$insert_array = array();
-					$insert_array['g_id'] = array($g_id, TRUE);
-					$insert_array['f_id'] = array($this->id, TRUE);
-					$delete_line = TRUE;
+					$insert_array['g_id'] = array($g_id, true);
+					$insert_array['f_id'] = array($this->id, true);
+					$delete_line = true;
 					foreach ($auth_ary AS $auth_name => $ary)
 					{
 						$insert_array[$auth_name] = ($ary[$g_auth]) ? 1 : 0;
 						if ($ary[$g_auth])
 						{
-							$delete_line = FALSE;
+							$delete_line = false;
 						}
 					}
 					
@@ -904,17 +904,17 @@ class Fsb_frame_child extends Fsb_admin_frame
 			switch (Http::request('users_status', 'post'))
 			{
 				case MODOSUP :
-					Group::delete_users($user_id, GROUP_SPECIAL_ADMIN, FALSE);
+					Group::delete_users($user_id, GROUP_SPECIAL_ADMIN, false);
 					Group::add_users($user_id, GROUP_SPECIAL_MODOSUP, GROUP_USER);
 				break;
 
 				case ADMIN :
-					Group::delete_users($user_id, GROUP_SPECIAL_MODOSUP, FALSE);
+					Group::delete_users($user_id, GROUP_SPECIAL_MODOSUP, false);
 					Group::add_users($user_id, GROUP_SPECIAL_ADMIN, GROUP_USER);
 				break;
 
 				default :
-					Group::delete_users($user_id, GROUP_SPECIAL_MODOSUP, FALSE);
+					Group::delete_users($user_id, GROUP_SPECIAL_MODOSUP, false);
 					Group::delete_users($user_id, GROUP_SPECIAL_ADMIN);
 				break;
 			}
@@ -981,7 +981,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$result = Fsb::$db->query($sql, 'auths_');
 		while ($row = Fsb::$db->row($result))
 		{
-			if (Http::request($row['auth_name'], 'post') !== NULL && Http::request($row['auth_name'], 'post') != $row['auth_level'])
+			if (!is_null(Http::request($row['auth_name'], 'post')) && Http::request($row['auth_name'], 'post') != $row['auth_level'])
 			{
 				Fsb::$db->update('auths', array(
 					'auth_level' =>		intval(Http::request($row['auth_name'], 'post')),
@@ -1003,7 +1003,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	public function show_check_auths()
 	{
 		// Si un groupe a ete selectionne
-		$user_id = NULL;
+		$user_id = null;
 		$nickname = Http::request('check_nickname', 'post');
 		$group_id = intval(Http::request('g_id', 'post'));
 
@@ -1089,7 +1089,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$result = Fsb::$db->query($sql);
 			while ($tmp = Fsb::$db->row($result))
 			{
-				$in_group = (in_array($tmp['g_id'], $groups)) ? TRUE : FALSE;
+				$in_group = (in_array($tmp['g_id'], $groups)) ? true : false;
 				foreach ($tmp AS $key => $value)
 				{
 					if (preg_match('/^ga_/', $key))
@@ -1132,7 +1132,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				Fsb::$tpl->set_blocks('forum', array(
 					'NAME' =>	$row['f_name'],
-					'IS_CAT' =>	($row['f_level'] == 0) ? TRUE : FALSE,
+					'IS_CAT' =>	($row['f_level'] == 0) ? true : false,
 				));
 
 				foreach ($GLOBALS['_auth_type'] AS $name)

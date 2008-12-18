@@ -1129,7 +1129,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 ** Alterne l'image d'arrière plan des FSBcodes
 ** -----
 ** current ::		Objet de l'image
-** mode ::			TRUE si on est en hover, sinon FALSE
+** mode ::			true si on est en hover, sinon false
 ** template_path ::	Chemin du thème
 ** extended ::		En passant true on considère qu'il s'agit d'un FSBcode
 **						sans image (les images de background changent donc)

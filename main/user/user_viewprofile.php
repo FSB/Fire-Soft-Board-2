@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur redirigeant vers son propre profil public

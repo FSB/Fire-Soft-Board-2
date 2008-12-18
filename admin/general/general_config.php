@@ -56,7 +56,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				ORDER BY cfg_cat, cfg_subcat';
 		$result = Fsb::$db->query($sql, 'config_handler_');
 		$this->config_data = array();
-		$cat_exists = FALSE;
+		$cat_exists = false;
 		$module_list = array();
 		while ($row = Fsb::$db->row($result))
 		{
@@ -67,7 +67,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			if ($row['cfg_cat'] == $this->module)
 			{
-				$cat_exists = TRUE;
+				$cat_exists = true;
 			}
 
 			$subcat = ($row['cfg_subcat']) ? $row['cfg_subcat'] : $row['cfg_cat'];
@@ -105,7 +105,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		foreach ($this->config_data[$this->module] AS $key_cat => $value_cat)
 		{
 			// Ajout d'une categorie
-			$this->config->set_cat(Fsb::$session->lang('adm_config_' . $key_cat), (Fsb::$session->lang('adm_config_' . $key_cat . '_explain')) ? Fsb::$session->lang('adm_config_' . $key_cat . '_explain') : NULL);
+			$this->config->set_cat(Fsb::$session->lang('adm_config_' . $key_cat), (Fsb::$session->lang('adm_config_' . $key_cat . '_explain')) ? Fsb::$session->lang('adm_config_' . $key_cat . '_explain') : null);
 
 			if (is_array($value_cat))
 			{
@@ -144,7 +144,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Mise a jour dans la base de donnee
 		foreach ($data AS $k => $v)
 		{
-			Fsb::$cfg->update($k, $v, FALSE);
+			Fsb::$cfg->update($k, $v, false);
 		}
 		Fsb::$cfg->destroy_cache();
 

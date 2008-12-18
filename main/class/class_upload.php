@@ -67,14 +67,14 @@ class Upload extends Fsb_model
 	 *
 	 * @var string
 	 */
-	public $rename_basename = NULL;
+	public $rename_basename = null;
 	
 	/**
 	 * Si l'extension du fichier doit etre renommee (preciser son nom)
 	 *
 	 * @var string
 	 */
-	public $rename_extension = NULL;
+	public $rename_extension = null;
 
 	/**
 	 * Largeur de l'image
@@ -102,14 +102,14 @@ class Upload extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	protected $only_img = FALSE;
+	protected $only_img = false;
 	
 	/**
 	 * S'il s'agit d'une image
 	 *
 	 * @var bool
 	 */
-	public $is_img = FALSE;
+	public $is_img = false;
 	
 	/**
 	 * Extensions des images supportees
@@ -209,9 +209,9 @@ class Upload extends Fsb_model
 	 */
 	public function allow_ext($ext)
 	{
-		if ($ext === TRUE)
+		if ($ext === true)
 		{
-			$this->allowed_ext = TRUE;
+			$this->allowed_ext = true;
 		}
 		else if (is_array($ext))
 		{
@@ -228,7 +228,7 @@ class Upload extends Fsb_model
 	 *
 	 * @param bool $bool True pour n'autoriser que les images
 	 */
-	public function only_img($bool = TRUE)
+	public function only_img($bool = true)
 	{
 		$this->allow_ext(self::$img);
 		$this->only_img = $bool;
@@ -253,9 +253,9 @@ class Upload extends Fsb_model
 	{
 		if (($width > 0 && $this->width > $width) || ($height > 0 && $this->height > $height) || ($filesize > 0 && $this->filesize > $filesize))
 		{
-			return (FALSE);
+			return (false);
 		}
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -282,13 +282,13 @@ class Upload extends Fsb_model
 	 * Upload et sauve l'image sur le forum
 	 *
 	 * @param string $path Dossier de destination
-	 * @param bool $erase Si true ecrase le fichier, si false renomme le fichier s'il existe
+	 * @param bool $erase Si  true  ecrase le fichier, si false renomme le fichier s'il existe
 	 * @return string Nom du fichier
 	 */
-	public function store($path, $erase = FALSE)
+	public function store($path, $erase = false)
 	{
 		// Verification de l'extension
-		if ($this->allowed_ext !== TRUE && !in_array(strtolower($this->extension), $this->allowed_ext))
+		if ($this->allowed_ext !== true && !in_array(strtolower($this->extension), $this->allowed_ext))
 		{
 			Display::message(sprintf(Fsb::$session->lang('bad_extension'), $this->extension, implode(', ', $this->allowed_ext)));
 		}
@@ -378,7 +378,7 @@ class Upload extends Fsb_model
 		$img_data = @getimagesize(ROOT . 'upload/' . $filename);
 		if ($img_data && in_array($img_data[2], self::$imgtype))
 		{
-			$this->is_img = TRUE;
+			$this->is_img = true;
 			$this->mimetype = image_type_to_mime_type($img_data[2]);
 		}
 		else

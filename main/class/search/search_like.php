@@ -56,13 +56,13 @@ class Search_like extends Search
 			}
 
 			$select->where('AND (');
-			$flag = FALSE;
+			$flag = false;
 			foreach ($keywords_array AS $word)
 			{
 				if ($word)
 				{
 					$select->where((($flag) ? $this->search_link : '') . ' p_text ' . Fsb::$db->like() . ' \'%' . Fsb::$db->escape($word) . '%\'');
-					$flag = TRUE;
+					$flag = true;
 				}
 			}
 			$select->where(')');
@@ -99,13 +99,13 @@ class Search_like extends Search
 			}
 
 			$select->where('AND (');
-			$flag = FALSE;
+			$flag = false;
 			foreach ($keywords_array AS $word)
 			{
 				if ($word)
 				{
 					$select->where((($flag) ? $this->search_link : '') . ' t.t_title ' . Fsb::$db->like() . ' \'%' . Fsb::$db->escape($word) . '%\'');
-					$flag = TRUE;
+					$flag = true;
 				}
 			}
 			$select->where(')');

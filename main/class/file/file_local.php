@@ -27,7 +27,7 @@ class File_local extends File
 	{
 		$this->root_path = $path;
 		$this->local_path = $path;
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -65,11 +65,11 @@ class File_local extends File
 			$fd = fopen($dst, 'w');
 			if (!$fd)
 			{
-				return (FALSE);
+				return (false);
 			}
 			fwrite($fd, file_get_contents($src));
 			fclose($fd);
-			return (TRUE);
+			return (true);
 		}
 		return ($result);
 	}

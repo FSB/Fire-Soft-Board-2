@@ -29,7 +29,7 @@ class Config_file extends Fsb_model
 	 * @param bool $use_cache Activation ou non de la mise en cache du fichier
 	 * @return array Tableau de configuration
 	 */
-	public static function read($filename, $use_cache = TRUE)
+	public static function read($filename, $use_cache = true)
 	{
 		$hash = 'cfg_' . md5($filename);
 		$cache = Cache::factory('tpl');
@@ -41,7 +41,7 @@ class Config_file extends Fsb_model
 		{
 			$file = file($filename);
 			$return = array();
-			$cat = NULL;
+			$cat = null;
 			foreach ($file AS $line)
 			{
 				if (preg_match('#^\[([a-z0-9_]*?)\]$#i', trim($line), $m))
@@ -49,7 +49,7 @@ class Config_file extends Fsb_model
 					$cat = $m[1];
 					$return[$cat] = array();
 				}
-				else if ($cat !== NULL && preg_match('#^([a-z0-9_]*?) ?= ?(.*?)$#i', trim($line, "\r\n"), $m))
+				else if (!is_null($cat) && preg_match('#^([a-z0-9_]*?) ?= ?(.*?)$#i', trim($line, "\r\n"), $m))
 				{
 					$return[$cat][$m[1]] = $m[2];
 				}

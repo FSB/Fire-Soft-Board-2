@@ -56,7 +56,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// On affiche tous les comptes ?
-		$show_all = (Http::request('show_all')) ? TRUE : FALSE;
+		$show_all = (Http::request('show_all')) ? true : false;
 
 		// Liste des comptes en attente de validation
 		$sql = 'SELECT u_id, u_nickname, u_joined, u_register_ip
@@ -95,7 +95,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$logged = array('users' => array(), 'visitors' => array());
 		while ($row = Fsb::$db->row($result))
 		{
-			if ($row['bot_id'] !== NULL || $row['s_id'] == VISITOR_ID)
+			if (!is_null($row['bot_id']) || $row['s_id'] == VISITOR_ID)
 			{
 				if (in_array($row['s_ip'], $ip_array))
 				{
@@ -105,7 +105,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$type = 'visitors';
 
 				// Les bots ont leur propre couleur
-				if ($row['bot_id'] !== NULL)
+				if (!is_null($row['bot_id']))
 				{
 					$row['u_color'] = 'class="bot"';
 					$row['u_nickname'] = $row['bot_name'];
@@ -122,7 +122,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			}
 
 			// Position du membre sur le forum
-			$id = NULL;
+			$id = null;
 			$method = 'forums';
 			if (strpos($row['s_page'], 'admin/') !== false)
 			{
@@ -149,7 +149,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 							else
 							{
 								preg_match('#f_id=([0-9]+)#', $page, $match);
-								$id = (isset($match[1])) ? $match[1] : NULL;
+								$id = (isset($match[1])) ? $match[1] : null;
 							}
 							if ($id) $f_idx[] = $id;
 						break;
@@ -166,14 +166,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 							else if (preg_match('#t_id=([0-9]+)#', $page, $match))
 							{
 								$method = 'topics';
-								$id = (isset($match[1])) ? $match[1] : NULL;
+								$id = (isset($match[1])) ? $match[1] : null;
 								if ($id) $t_idx[] = $id;
 							}
 							else
 							{
 								$method = 'posts';
 								preg_match('#p_id=([0-9]+)#', $page, $match);
-								$id = (isset($match[1])) ? $match[1] : NULL;
+								$id = (isset($match[1])) ? $match[1] : null;
 								if ($id) $p_idx[] = $id;
 							}
 						break;
@@ -181,7 +181,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						case 'post' :
 							preg_match('#mode=([a-z_]+)#', $page, $mode);
 							preg_match('#id=([0-9]+)#', $page, $match);
-							$id = (isset($match[1])) ? $match[1] : NULL;
+							$id = (isset($match[1])) ? $match[1] : null;
 							switch ($mode[1])
 							{
 								case 'topic' :
@@ -303,8 +303,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				{
 					// On definit si on cherche la liste des forums dans $forums ou $topics
 					$m = $u['method'];
-					$data_exists = ($u['id'] && isset(${$m}[$u['id']])) ? TRUE : FALSE;
-					$topic_exists = ($data_exists && isset(${$m}[$u['id']]['t_title'])) ? TRUE : FALSE;
+					$data_exists = ($u['id'] && isset(${$m}[$u['id']])) ? true : false;
+					$topic_exists = ($data_exists && isset(${$m}[$u['id']]['t_title'])) ? true : false;
 
 					Fsb::$tpl->set_blocks('logged.u', array(
 						'NICKNAME' =>		$u['nickname'],
@@ -312,12 +312,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 						'IP' =>				$u['ip'],
 						'LOCATION' =>		$u['location'],
 						'URL' =>			$u['url'],
-						'CAT_NAME' =>		($data_exists) ? ${$m}[$u['id']]['cat_name'] : NULL,
-						'FORUM_NAME' =>		($data_exists) ? ${$m}[$u['id']]['f_name'] : NULL,
+						'CAT_NAME' =>		($data_exists) ? ${$m}[$u['id']]['cat_name'] : null,
+						'FORUM_NAME' =>		($data_exists) ? ${$m}[$u['id']]['f_name'] : null,
 						'TOPIC_NAME' =>		($topic_exists) ? Parser::title(${$m}[$u['id']]['t_title']) : '',
-						'U_CAT' =>			($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . ${$m}[$u['id']]['cat_id']) : NULL,
-						'U_FORUM' =>		($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . ${$m}[$u['id']]['f_id']) : NULL,
-						'U_TOPIC' =>		($topic_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . ${$m}[$u['id']]['t_id']) : NULL,
+						'U_CAT' =>			($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=index&amp;cat=' . ${$m}[$u['id']]['cat_id']) : null,
+						'U_FORUM' =>		($data_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . ${$m}[$u['id']]['f_id']) : null,
+						'U_TOPIC' =>		($topic_exists) ? sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . ${$m}[$u['id']]['t_id']) : null,
 						'U_IP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=ip&amp;ip=' . $u['ip']),
 					));
 				}
@@ -327,7 +327,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'FSB_SUPPORT' =>		'http://www.fire-soft-board.com',
 			'FSB_LANG_SUPPORT' =>	Fsb::$session->lang('fsb_lang_support'),
-			'NEW_VERSION' =>		(!is_last_version(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version'))) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : NULL,
+			'NEW_VERSION' =>		(!is_last_version(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version'))) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : null,
 			'SHOW_ALL' =>			$show_all,
 
 			'U_SHOW_ALL' =>			sid('index.' . PHPEXT . '?show_all=true'),

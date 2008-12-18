@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Module de moderation pour le deplacement de sujets
@@ -64,7 +64,7 @@ class Page_modo_move extends Fsb_model
 			{
 				Fsb::$tpl->set_switch('show_move');
 				Fsb::$tpl->set_vars(array(
-					'LIST_FORUM' =>		Html::list_forums(get_forums(), $topic_data['f_id'], 'move_forum', FALSE),
+					'LIST_FORUM' =>		Html::list_forums(get_forums(), $topic_data['f_id'], 'move_forum', false),
 				));
 			}
 			Fsb::$db->free($result);
@@ -74,7 +74,7 @@ class Page_modo_move extends Fsb_model
 			Fsb::$tpl->set_switch('show_move');
 			Fsb::$tpl->unset_switch('show_choose_id');
 			Fsb::$tpl->set_vars(array(
-				'LIST_FORUM' =>		Html::list_forums(get_forums(), $this->f_id, 'move_forum', FALSE),
+				'LIST_FORUM' =>		Html::list_forums(get_forums(), $this->f_id, 'move_forum', false),
 			));
 		}
 

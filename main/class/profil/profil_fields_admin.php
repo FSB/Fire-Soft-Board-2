@@ -72,7 +72,7 @@ class Profil_fields_admin extends Profil_fields
 			$errstr[] = sprintf(Fsb::$session->lang('adm_pf_bad_maxlength'), self::$type[$type]['maxlength']['min'], self::$type[$type]['maxlength']['max']);
 		}
 
-		if (isset(self::$type[$type]['regexp']) && @preg_match('#' . str_replace('#', '\#', $return['pf_regexp']) . '#i', 'foo') === FALSE)
+		if (isset(self::$type[$type]['regexp']) && @preg_match('#' . str_replace('#', '\#', $return['pf_regexp']) . '#i', 'foo') === false)
 		{
 			$errstr[] = Fsb::$session->lang('adm_pf_bad_regexp');
 		}
@@ -168,16 +168,16 @@ class Profil_fields_admin extends Profil_fields
 		switch ($type)
 		{
 			case self::TEXT :
-				$sql_alter .= ' VARCHAR(255) NOT NULL';
+				$sql_alter .= ' VARCHAR(255) NOT null';
 			break;
 			
 			case self::TEXTAREA :
-				$sql_alter .= ' TEXT NOT NULL';
+				$sql_alter .= ' TEXT NOT null';
 			break;
 			
 			case self::RADIO :
 			case self::SELECT :
-				$sql_alter .= ' TINYINT NOT NULL';
+				$sql_alter .= ' TINYINT NOT null';
 			break;
 			
 			case self::MULTIPLE :

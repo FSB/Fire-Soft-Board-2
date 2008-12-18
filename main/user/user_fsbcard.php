@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur permettant l'import / export de FSBcards
@@ -123,33 +123,33 @@ class Page_user_fsbcard extends Fsb_model
 			}
 
 			// Notification MP
-			$fsbcard->set_option('notifyMp', (Fsb::$session->data['u_activate_mp_notification']) ? TRUE : FALSE);
+			$fsbcard->set_option('notifyMp', (Fsb::$session->data['u_activate_mp_notification']) ? true : false);
 
 			// Connexion invisible
-			$fsbcard->set_option('sessionHidden', (Fsb::$session->data['u_activate_hidden']) ? TRUE : FALSE);
+			$fsbcard->set_option('sessionHidden', (Fsb::$session->data['u_activate_hidden']) ? true : false);
 
 			// Affichage de l'avatar dans les sujets
-			$fsbcard->set_option('displayAvatar', (Fsb::$session->data['u_activate_avatar']) ? TRUE : FALSE);
+			$fsbcard->set_option('displayAvatar', (Fsb::$session->data['u_activate_avatar']) ? true : false);
 
 			// Affichage de la signature dans les sujets
-			$fsbcard->set_option('displaySig', (Fsb::$session->data['u_activate_sig']) ? TRUE : FALSE);
+			$fsbcard->set_option('displaySig', (Fsb::$session->data['u_activate_sig']) ? true : false);
 
 			// WYSIWYG
-			$fsbcard->set_option('wysiwyg', (Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE);
+			$fsbcard->set_option('wysiwyg', (Fsb::$session->data['u_activate_wysiwyg']) ? true : false);
 
 			// Ajax
-			$fsbcard->set_option('ajax', (Fsb::$session->data['u_activate_ajax']) ? TRUE : FALSE);
+			$fsbcard->set_option('ajax', (Fsb::$session->data['u_activate_ajax']) ? true : false);
 
 			// Affichage FSBcode
 			$fsbcard->set_option('displayFsbcode', array(
-				'posts' =>	(Fsb::$session->data['u_activate_fscode'] & 2) ? TRUE : FALSE,
-				'sigs' =>	(Fsb::$session->data['u_activate_fscode'] & 4) ? TRUE : FALSE,
+				'posts' =>	(Fsb::$session->data['u_activate_fscode'] & 2) ? true : false,
+				'sigs' =>	(Fsb::$session->data['u_activate_fscode'] & 4) ? true : false,
 			));
 
 			// Affichage images
 			$fsbcard->set_option('displayImg', array(
-				'posts' =>	(Fsb::$session->data['u_activate_img'] & 2) ? TRUE : FALSE,
-				'sigs' =>	(Fsb::$session->data['u_activate_img'] & 4) ? TRUE : FALSE,
+				'posts' =>	(Fsb::$session->data['u_activate_img'] & 2) ? true : false,
+				'sigs' =>	(Fsb::$session->data['u_activate_img'] & 4) ? true : false,
 			));
 		}
 

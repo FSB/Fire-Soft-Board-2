@@ -40,9 +40,9 @@ class Parser_wysiwyg extends Fsb_model
 		$str = str_replace(array("\r\n", "\n", "[br]"), array("<br />", "<br />", "<br />"), $str);
 
 		$fsbcode = new Parser_fsbcode();
-		$fsbcode->only_wysiwyg = TRUE;
+		$fsbcode->only_wysiwyg = true;
 		$str = $fsbcode->parse($str);
-		$str = Parser::smilies($str, TRUE);
+		$str = Parser::smilies($str, true);
 
 		return ($str);
 	}

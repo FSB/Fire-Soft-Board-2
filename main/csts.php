@@ -13,11 +13,11 @@
 define('OS_SERVER', (preg_match('/^WIN/', PHP_OS)) ? 'windows' : 'unix');
 define('EOF', (OS_SERVER == 'windows') ? "\r\n" : "\n");
 define('OS_SLASH', (OS_SERVER == 'windows') ? "\\" : "/");
-define('IS_LOCALHOST', (isset($_SERVER['HTTP_HOST']) && (preg_match('#^localhost(:[0-9]+)?$#i', $_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ? TRUE : FALSE);
+define('IS_LOCALHOST', (isset($_SERVER['HTTP_HOST']) && (preg_match('#^localhost(:[0-9]+)?$#i', $_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ? true : false);
 
 // Extensions PHP importantes pour FSB2
-define('PHP_EXTENSION_GD', (extension_loaded('gd')) ? TRUE : FALSE);
-define('PHP_EXTENSION_MBSTRING', (extension_loaded('mbstring')) ? TRUE : FALSE);
+define('PHP_EXTENSION_GD', (extension_loaded('gd')) ? true : false);
+define('PHP_EXTENSION_MBSTRING', (extension_loaded('mbstring')) ? true : false);
 
 // Erreurs manuelles
 define('FSB_ERROR', E_USER_ERROR);

@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Contient les erreurs
 	public $errstr = array();
@@ -28,10 +28,10 @@ class Fsb_frame_child extends Fsb_frame
 	public $login_data = array();
 
 	// Connexion administration ?
-	public $adm_log = FALSE;
+	public $adm_log = false;
 
 	// Utilisation du chiffrage RSA ?
-	public $use_rsa = FALSE;
+	public $use_rsa = false;
 	
 	/*
 	** Constructeur
@@ -39,7 +39,7 @@ class Fsb_frame_child extends Fsb_frame
 	public function main()
 	{
 		// Pas de redirection automatique sur cette page
-		$this->frame_get_url = FALSE;
+		$this->frame_get_url = false;
 
 		$this->data = array(
 			'auto_connexion' =>	intval(Http::request('auto_connexion', 'post')),
@@ -51,10 +51,10 @@ class Fsb_frame_child extends Fsb_frame
 		);
 
 		// Connexion a l'administration ?
-		$this->adm_log = (Http::request('adm_log')) ? TRUE : FALSE;
+		$this->adm_log = (Http::request('adm_log')) ? true : false;
 
 		// Chiffrage RSA ?
-		$this->use_rsa = (Fsb::$mods->is_active('rsa') && Rsa::can_use()) ? TRUE : FALSE;
+		$this->use_rsa = (Fsb::$mods->is_active('rsa') && Rsa::can_use()) ? true : false;
 
 		if (Http::request('submit', 'post'))
 		{
@@ -109,7 +109,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$rsa = new Rsa();
 			$rsa->public_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_public_key'));
-			if ($rsa->public_key === NULL)
+			if (is_null($rsa->public_key))
 			{
 				$rsa->regenerate_keys();
 			}
@@ -146,7 +146,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$rsa = new Rsa();
 			$rsa->private_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_private_key'));
-			if ($rsa->private_key === NULL)
+			if (is_null($rsa->private_key))
 			{
 				$rsa->regenerate_keys();
 			}
@@ -161,7 +161,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else
 		{
-			// $result vaut FALSE si tout s'est bien passe, sinon il vaut la chaine de caractere de l'erreur
+			// $result vaut false si tout s'est bien passe, sinon il vaut la chaine de caractere de l'erreur
 			if ($this->adm_log)
 			{
 				$result = Fsb::$session->log_admin($this->data['u_login'], $this->data['u_password']);
@@ -233,7 +233,7 @@ class Fsb_frame_child extends Fsb_frame
 			'LOGIN' =>			htmlspecialchars($row['u_login']),
 			'NEW_PASSWORD' =>	$new_password,
 
-			'U_NEW_PASSWORD' =>	Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&activate=true&id=' . $row['u_id'] . '&new_password=' . Password::hash($new_password, $row['u_algorithm'], $row['u_use_salt']) . '&hash_old_password=' . $row['u_password'],
+			'U_NEW_PASSWORD' =>	Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&activate= true &id=' . $row['u_id'] . '&new_password=' . Password::hash($new_password, $row['u_algorithm'], $row['u_use_salt']) . '&hash_old_password=' . $row['u_password'],
 		));
 		$mail->Send();
 		$mail->SmtpClose();
@@ -252,7 +252,7 @@ class Fsb_frame_child extends Fsb_frame
 		$hash_old_password =	trim(Http::request('hash_old_password'));
 
 		// Desactivation du lien sur la page de connexion
-		$this->frame_get_url = FALSE;
+		$this->frame_get_url = false;
 
 		// On verifie les parametres
 		if (!$id || !$hash_old_password)
@@ -297,7 +297,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($userdata = Fsb::$db->row($result))
 		{
 			Fsb::$db->update('users', array(
-				'u_activated' =>	(Fsb::$cfg->get('register_type') == 'both') ? FALSE : TRUE,
+				'u_activated' =>	(Fsb::$cfg->get('register_type') == 'both') ? false : true,
 				'u_confirm_hash' =>	(Fsb::$cfg->get('register_type') == 'both') ? '.' : '',
 			), 'WHERE u_id = ' . $id);
 

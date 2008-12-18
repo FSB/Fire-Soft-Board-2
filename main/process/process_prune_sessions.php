@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-$GLOBALS['use_register_shutdown'] = FALSE;
+$GLOBALS['use_register_shutdown'] = false;
 
 /*
 ** Supprime les sessions perimees

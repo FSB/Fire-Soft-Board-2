@@ -40,7 +40,7 @@ class File_ftp extends File
 
 		// Connexion au serveur
 		$this->stream = ftp_connect($server, $port, 15);
-		if ($this->stream === FALSE)
+		if ($this->stream === false)
 		{
 			return (File::FILE_CANT_CONNECT_SERVER);
 		}
@@ -52,7 +52,7 @@ class File_ftp extends File
 		}
 
 		// On passe en mode passif (le client ecoute la connexion)
-		ftp_pasv($this->stream, TRUE);
+		ftp_pasv($this->stream, true);
 
 		$this->root_path = './';
 		$this->local_path = ROOT;
@@ -62,7 +62,7 @@ class File_ftp extends File
 		{
 			return (File::FILE_CANT_CHDIR);
 		}
-		return (TRUE);
+		return (true);
 	}
 
 	/**

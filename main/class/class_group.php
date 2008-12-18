@@ -145,10 +145,10 @@ class Group extends Fsb_model
 	 * @param int $group_id ID du groupe
 	 * @param int $state Status du membre dans le groupe (GROUP_MODO | GROUP_USER | GROUP_WAIT)
 	 * @param bool $update Mise a jour ou non des autorisations des membres
-	 * @param bool $is_single_groupe TRUE s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
-	 * @param bool $update_default TRUE si on souhaite mettre a jour le groupe par defaut
+	 * @param bool $is_single_groupe true s'il s'agit d'un membre unique, dans ce cas on ne met pas a jour le groupe par defaut
+	 * @param bool $update_default true si on souhaite mettre a jour le groupe par defaut
 	 */
-	public static function add_users($idx, $group_id, $state, $update = TRUE, $is_single_groupe = FALSE, $update_default = TRUE)
+	public static function add_users($idx, $group_id, $state, $update = true, $is_single_groupe = false, $update_default = true)
 	{
 		if (!is_array($idx))
 		{
@@ -169,10 +169,10 @@ class Group extends Fsb_model
 			}
 
 			Fsb::$db->insert('groups_users', array(
-				'g_id' =>		array($group_id, TRUE),
-				'u_id' =>		array($id, TRUE),
+				'g_id' =>		array($group_id, true),
+				'u_id' =>		array($id, true),
 				'gu_status' =>	$state,
-			), 'REPLACE', TRUE);
+			), 'REPLACE', true);
 		}
 		Fsb::$db->query_multi_insert();
 
@@ -199,7 +199,7 @@ class Group extends Fsb_model
 	 * @param bool $update Mise a jour ou non des autorisations des membres
 	 * @param bool $delete_modo Suppression des moderateurs du groupe ?
 	 */
-	public static function delete_users($idx, $group_id, $update = TRUE, $delete_modo = TRUE)
+	public static function delete_users($idx, $group_id, $update = true, $delete_modo = true)
 	{
 		if (!is_array($idx))
 		{
@@ -290,7 +290,7 @@ class Group extends Fsb_model
 		// Mise a jour des administrateurs, moderateurs globaux et moderateurs
 		foreach (array(ADMIN => GROUP_SPECIAL_ADMIN, MODOSUP => GROUP_SPECIAL_MODOSUP, MODO => GROUP_SPECIAL_MODO) AS $auth_level => $auth_group)
 		{
-			self::delete_users($idx, $auth_group, FALSE);
+			self::delete_users($idx, $auth_group, false);
 			if ($newlist[$auth_level])
 			{
 				Fsb::$db->update('users', array(
@@ -312,7 +312,7 @@ class Group extends Fsb_model
 					'u_default_group_id' =>	$auth_group,
 				), 'WHERE u_id IN (' . implode(', ', $newlist[$auth_level]) . ') ' . $modo_groups_sql . ' AND u_auth = ' . $auth_level);
 
-				self::add_users($newlist[$auth_level], $auth_group, GROUP_USER, FALSE);
+				self::add_users($newlist[$auth_level], $auth_group, GROUP_USER, false);
 			}
 		}
 
@@ -400,7 +400,7 @@ class Group extends Fsb_model
 	 */
 	public static function is_special_group($group_id)
 	{
-		return (in_array($group_id, array(GROUP_SPECIAL_USER, GROUP_SPECIAL_MODO, GROUP_SPECIAL_MODOSUP, GROUP_SPECIAL_ADMIN)) ? TRUE : FALSE);
+		return (in_array($group_id, array(GROUP_SPECIAL_USER, GROUP_SPECIAL_MODO, GROUP_SPECIAL_MODOSUP, GROUP_SPECIAL_ADMIN)) ? true : false);
 	}
 }
 /* EOF */

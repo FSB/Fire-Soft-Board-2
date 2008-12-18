@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	// Navigation
 	public $nav = array();
@@ -25,7 +25,7 @@ class Fsb_frame_child extends Fsb_frame
 	public $tag_title = '';
 
 	// Moderation du forum ?
-	public $moderation = FALSE;
+	public $moderation = false;
 
 	// ID du forum
 	public $id;
@@ -106,7 +106,7 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function forum_markread()
 	{
-		$markread_subforum = (Http::request('subforum')) ? TRUE : FALSE;
+		$markread_subforum = (Http::request('subforum')) ? true : false;
 		$idx = array();
 		if ($markread_subforum)
 		{
@@ -170,13 +170,13 @@ class Fsb_frame_child extends Fsb_frame
 		if ($this->forum_data['f_password'] && !Display::forum_password($this->id, $this->forum_data['f_password'], ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id))
 		{
 			// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
-			return (FALSE);
+			return (false);
 		}
 
 		// Moderation du forum ?
 		if (Http::request('moderation') && Fsb::$session->is_authorized($this->id, 'ga_moderator'))
 		{
-			$this->moderation = TRUE;
+			$this->moderation = true;
 		}
 
 		// Si ce n'est pas une sous categorie, on affiche les sujets
@@ -193,7 +193,7 @@ class Fsb_frame_child extends Fsb_frame
 			case FORUM_TYPE_INDIRECT_URL :
 				// Redirection vers le bon lien apres incrementation du nombre de vu
 				Fsb::$db->update('forums', array(
-					'f_location_view' =>	array('(f_location_view + 1)', 'is_field' => TRUE),
+					'f_location_view' =>	array('(f_location_view + 1)', 'is_field' => true),
 				), 'WHERE f_id = ' . $this->id);
 				Http::redirect($this->forum_data['f_location']);
 			break;
@@ -212,7 +212,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_template($set_tpl . '/files/', $set_tpl . '/cache/');
 		}
 
-		return (TRUE);
+		return (true);
 	}
 
 	/*
@@ -229,7 +229,7 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				if ($forum['f_id'] == $this->id)
 				{
-					$show_forum_data = TRUE;
+					$show_forum_data = true;
 					$forum_topic_read = array();
 					if (Fsb::$session->is_logged())
 					{
@@ -245,11 +245,11 @@ class Fsb_frame_child extends Fsb_frame
 							Fsb::$tpl->set_blocks('cat', array(
 								'NAME' =>		$this->forum_data['f_name'],
 							));
-							$show_forum_data = FALSE;
+							$show_forum_data = false;
 						}
 
 						// Forum lu ou non lu ?
-						$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? FALSE : TRUE;
+						$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? false : true;
 
 						// On affiche le forum
 						Forum::display($forum, 'forum', $this->forum_data['f_level'], $is_read);
@@ -257,7 +257,7 @@ class Fsb_frame_child extends Fsb_frame
 					else if (!Fsb::$cfg->get('display_subforums') && Fsb::$session->is_authorized($forum['f_parent'], 'ga_view'))
 					{
 						// Forum lu ou non lu ?
-						$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? FALSE : TRUE;
+						$is_read = (Fsb::$session->is_logged() && isset($forum_topic_read[$forum['f_id']]) && $forum_topic_read[$forum['f_id']] > 0) ? false : true;
 
 						// On affiche le sous forum
 						Forum::display($forum, 'subforum', $this->forum_data['f_level'], $is_read);
@@ -301,12 +301,12 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// On regarde si le membre peut creer des messages
-		$can_create_post = FALSE;
+		$can_create_post = false;
 		foreach ($GLOBALS['_topic_type'] AS $value)
 		{
 			if (Fsb::$session->is_authorized($this->id, 'ga_create_' . $value))
 			{
-				$can_create_post = TRUE;
+				$can_create_post = true;
 				break;
 			}
 		}
@@ -361,7 +361,7 @@ class Fsb_frame_child extends Fsb_frame
 			// On affiche le header du type de topic ?
 			if (!isset($cache_topic_type[$row['t_type']]))
 			{
-				$cache_topic_type[$row['t_type']] = TRUE;
+				$cache_topic_type[$row['t_type']] = true;
 				Fsb::$tpl->set_blocks('topic', array(
 					'LANG' =>	Fsb::$session->lang('topic_type_' . $GLOBALS['_topic_type'][$row['t_type']] . 's'),
 				));
@@ -371,7 +371,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			// Pagination du sujet
 			$total_page = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
-			$topic_pagination = ($total_page > 1) ? Html::pagination(0, $total_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], NULL, TRUE) : FALSE;
+			$topic_pagination = ($total_page > 1) ? Html::pagination(0, $total_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 
 			// Sujet lu ?
 			list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
@@ -438,14 +438,14 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_vars(array(
 			'L_TOPIC_LIST' =>		sprintf(Fsb::$session->lang('topic_list'), $this->forum_data['f_name']),
 			'PAGINATION' =>			Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id . $purl),
-			'CAN_POST_NEW' =>		(!$can_create_post || ($this->forum_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->id, 'ga_moderator'))) ? FALSE : TRUE,
+			'CAN_POST_NEW' =>		(!$can_create_post || ($this->forum_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->id, 'ga_moderator'))) ? false : true,
 			'FORUM_RULES' =>		$parser->message($this->forum_data['f_rules']),
 			'LIST_ORDER_TOPIC' =>	$list_order,
 			'LIST_DIR_TOPIC' =>		$list_direction,
 			'QUICKSEARCH_LANG' =>	Fsb::$session->lang('forum_search_in'),
 			
-			'U_FORUM_MARKREAD' =>	sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;markread=true&amp;f_id=' . $this->id),
-			'U_SUBFORUM_MARKREAD' =>sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;markread=true&amp;subforum=true&amp;f_id=' . $this->id),
+			'U_FORUM_MARKREAD' =>	sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;markread= true &amp;f_id=' . $this->id),
+			'U_SUBFORUM_MARKREAD' =>sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;markread= true &amp;subforum= true &amp;f_id=' . $this->id),
 			'U_TOPIC_NEW' =>		sid(ROOT . 'index.' . PHPEXT . '?p=' . $redirect_login . 'post&amp;mode=topic&amp;id=' . $this->id),
 			'U_MODERATE_FORUM' =>	sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id . '&amp;page=' . $this->page . (($this->moderation) ? '' : '&amp;moderation=true')),
 			'U_QUICKSEARCH' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;in[]=post&amp;in%5B%5D=title&amp;print=topic&amp;forums[]=' . $this->id),

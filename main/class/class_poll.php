@@ -175,13 +175,13 @@ class Poll extends Fsb_model
 		));
 
 		Fsb::$db->update('poll', array(
-			'poll_total_vote' =>	array('(poll_total_vote + ' . count($poll_result) . ')', 'is_field' => TRUE),
+			'poll_total_vote' =>	array('(poll_total_vote + ' . count($poll_result) . ')', 'is_field' => true),
 		), 'WHERE t_id = ' . $t_id);
 
 		foreach ($poll_result AS $value)
 		{
 			Fsb::$db->update('poll_options', array(
-				'poll_opt_total' =>	array('(poll_opt_total + 1)', 'is_field' => TRUE),
+				'poll_opt_total' =>	array('(poll_opt_total + 1)', 'is_field' => true),
 			), 'WHERE poll_opt_id = ' . intval($value) . ' AND t_id = ' . $t_id);
 		}
 
@@ -211,7 +211,7 @@ class Poll extends Fsb_model
 			Fsb::$db->insert('poll_options', array(
 				't_id' =>			$topic_id,
 				'poll_opt_name' =>	$value,
-			), 'INSERT', TRUE);
+			), 'INSERT', true);
 		}
 		Fsb::$db->query_multi_insert();
 	}
@@ -242,7 +242,7 @@ class Poll extends Fsb_model
 			Fsb::$db->insert('poll_options', array(
 				't_id' =>				$t_id,
 				'poll_opt_name' =>	$value,
-			), 'INSERT', TRUE);
+			), 'INSERT', true);
 		}
 		Fsb::$db->query_multi_insert();
 	}

@@ -17,8 +17,8 @@
 // On supprime toutes les variables crees par la directive register_globals
 // On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 $gpc = array('_GET', '_POST', '_COOKIE');
-$magic_quote = (get_magic_quotes_gpc()) ? TRUE : FALSE;
-$register_globals = (ini_get('register_globals')) ? TRUE : FALSE;
+$magic_quote = (get_magic_quotes_gpc()) ? true : false;
+$register_globals = (ini_get('register_globals')) ? true : false;
 
 if ($register_globals || $magic_quote)
 {

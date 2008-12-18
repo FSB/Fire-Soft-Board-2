@@ -76,7 +76,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// Liste des groupes
-		$list_groups = Html::list_groups('email_groups[]', GROUP_SPECIAL|GROUP_NORMAL, $this->data['groups'], TRUE, array(GROUP_SPECIAL_VISITOR));
+		$list_groups = Html::list_groups('email_groups[]', GROUP_SPECIAL|GROUP_NORMAL, $this->data['groups'], true, array(GROUP_SPECIAL_VISITOR));
 
 		Fsb::$tpl->set_switch('email_mass');
 		Fsb::$tpl->set_vars(array(
@@ -160,8 +160,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// On recupere les membres des groupes
-		$send_email = TRUE;
-		$result_email = TRUE;
+		$send_email = true;
+		$result_email = true;
 		$this->data['groups'] = array_map('intval', $this->data['groups']);
 		$sql = 'SELECT u.u_id, u.u_language, u.u_email
 				FROM ' . SQL_PREFIX . 'groups g
@@ -183,13 +183,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->total++;
 
 			// On limite le nombre de destinataires (100 par defaut) par Email en BCC
-			$send_email = FALSE;
+			$send_email = false;
 			if ($this->total == $this->max_user_per_email)
 			{
-				$result_email = TRUE;
+				$result_email = true;
 				$this->send_email_part($result_email);
 				$this->data['idx'] = array();
-				$send_email = TRUE;
+				$send_email = true;
 				$this->total = 0;
 			}
 		}

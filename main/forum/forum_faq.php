@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = TRUE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = true;
+	public $_show_page_stats = false;
 
 	// Arguments de la page
 	public $keyword = '';
@@ -70,11 +70,11 @@ class Fsb_frame_child extends Fsb_frame
 
 		// Affichage des sections
 		$list_section = array(
-			'forum' =>		TRUE,
-			'fsbcode' =>	TRUE,
-			'modo' =>		(Fsb::$session->auth() >= MODO) ? TRUE : FALSE,
-			'admin' =>		(Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE,
-			'info' =>		TRUE,
+			'forum' =>		true,
+			'fsbcode' =>	true,
+			'modo' =>		(Fsb::$session->auth() >= MODO) ? true : false,
+			'admin' =>		(Fsb::$session->auth() >= MODOSUP) ? true : false,
+			'info' =>		true,
 		);
 		
 		if (!$list_section[$this->section])
@@ -88,7 +88,7 @@ class Fsb_frame_child extends Fsb_frame
 			{
 				Fsb::$tpl->set_switch('show_menu_panel');
 				Fsb::$tpl->set_blocks('module', array(
-					'IS_SELECT' =>	($this->section == $key) ? TRUE : FALSE,
+					'IS_SELECT' =>	($this->section == $key) ? true : false,
 					'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=faq&amp;section=' . $key . '&amp;keyword=' . htmlspecialchars($this->keyword)),
 					'NAME' =>		Fsb::$session->lang('faq_section_' . $key),
 				));
@@ -117,12 +117,12 @@ class Fsb_frame_child extends Fsb_frame
 	*/
 	public function list_faq()
 	{		
-		$result_exists = FALSE;
+		$result_exists = false;
 		foreach ($this->faq_data[$this->section] AS $current_area => $data)
 		{
 			if (!count($this->result) || in_array($current_area, $this->result))
 			{
-				$result_exists = TRUE;
+				$result_exists = true;
 				Fsb::$tpl->set_blocks('area', array(
 					'NAME' =>		$data['question'],
 					'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=faq&amp;area=' . $current_area . '&amp;section=' . $this->section . '&amp;keyword=' . htmlspecialchars($this->keyword)),

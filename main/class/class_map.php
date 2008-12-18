@@ -33,7 +33,7 @@ class Map extends Fsb_model
 		$parser = new Parser();
 
 		// En cas d'edition on charge le XML du message
-		$show_form_value = FALSE;
+		$show_form_value = false;
 		if ($content)
 		{
 			$post_xml = new Xml();
@@ -44,12 +44,12 @@ class Map extends Fsb_model
 				$post_cache[$line->getAttribute('name')] = $line->getData();
 			}
 			unset($post_xml);
-			$show_form_value = TRUE;
+			$show_form_value = true;
 		}
 
 		// Instance de l'objet $xml
 		$xml = new Xml();
-		$xml->load_file(MAPS_PATH . $post_map . '.xml', TRUE);
+		$xml->load_file(MAPS_PATH . $post_map . '.xml', true);
 
 		// Titre de la MAP
 		Fsb::$tpl->set_vars(array(
@@ -77,7 +77,7 @@ class Map extends Fsb_model
 			$option = $line->option[0];
 
 			// Champ par defaut
-			$default = ($option->childExists('default')) ? $option->default[0]->getData() : NULL;
+			$default = ($option->childExists('default')) ? $option->default[0]->getData() : null;
 
 			// Valeur par defaut
 			if ($tmp_map)
@@ -125,9 +125,9 @@ class Map extends Fsb_model
 				case 'textarea' :
 					$block['ROWS'] = (Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) : (($option->childExists('rows')) ? $option->rows[0]->getData() : 10);
 					$block['COLS'] = (Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) : (($option->childExists('cols')) ? $option->cols[0]->getData() : 60);
-					$block['USE_WYSIWYG'] = (Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE;
-					$block['ONUPLOAD'] = ($onupload_set == $name) ? TRUE : FALSE;
-					$block['ONUPLOAD_APPEND'] = ($onupload_append == 'true') ? TRUE : FALSE;
+					$block['USE_WYSIWYG'] = (Fsb::$session->data['u_activate_wysiwyg']) ? true : false;
+					$block['ONUPLOAD'] = ($onupload_set == $name) ? true : false;
+					$block['ONUPLOAD_APPEND'] = ($onupload_append == 'true') ? true : false;
 
 					// On ajoute des fonctions javascript a charger au demarage de la page
 					Fsb::$tpl->set_blocks('onload', array(
@@ -153,20 +153,20 @@ class Map extends Fsb_model
 				break;
 
 				case 'radio' :
-					$block['DIRECTION'] = ($option->childExists('direction')) ? $option->direction[0]->getData() : NULL;
+					$block['DIRECTION'] = ($option->childExists('direction')) ? $option->direction[0]->getData() : null;
 					Fsb::$tpl->set_blocks('map', $block);
 
 					foreach ($option->list[0]->elem AS $elem)
 					{
 						Fsb::$tpl->set_blocks('map.radio', array(
-							'CHECKED' =>	($elem->getData() == $block['VALUE']) ? TRUE : FALSE,
+							'CHECKED' =>	($elem->getData() == $block['VALUE']) ? true : false,
 							'ELEM' =>		$elem->getData(),
 						));
 					}
 				break;
 
 				case 'checkbox' :
-					$block['DIRECTION'] = ($option->childExists('direction')) ? $option->direction[0]->getData() : NULL;
+					$block['DIRECTION'] = ($option->childExists('direction')) ? $option->direction[0]->getData() : null;
 					Fsb::$tpl->set_blocks('map', $block);
 
 					// En cas d'edition ou d'erreur
@@ -191,7 +191,7 @@ class Map extends Fsb_model
 					{
 						$value = $elem->getData();
 						Fsb::$tpl->set_blocks('map.checkbox', array(
-							'CHECKED' =>	(in_array($value, $ary_checkbox)) ? TRUE : FALSE,
+							'CHECKED' =>	(in_array($value, $ary_checkbox)) ? true : false,
 							'ELEM' =>		$value,
 						));
 					}
@@ -203,14 +203,14 @@ class Map extends Fsb_model
 					foreach ($option->list[0]->elem AS $elem)
 					{
 						Fsb::$tpl->set_blocks('map.list', array(
-							'SELECTED' =>	($elem->getData() == $block['VALUE']) ? TRUE : FALSE,
+							'SELECTED' =>	($elem->getData() == $block['VALUE']) ? true : false,
 							'ELEM' =>		$elem->getData(),
 						));
 					}
 				break;
 
 				case 'multilist' :
-					$block['SIZE'] = ($option->childExists('size')) ? $option->size[0]->getData() : NULL;
+					$block['SIZE'] = ($option->childExists('size')) ? $option->size[0]->getData() : null;
 					Fsb::$tpl->set_blocks('map', $block);
 
 					// En cas d'edition ou d'erreur
@@ -235,7 +235,7 @@ class Map extends Fsb_model
 					{
 						$value = $elem->getData();
 						Fsb::$tpl->set_blocks('map.multilist', array(
-							'SELECTED' =>	(in_array($value, $ary_multilist)) ? TRUE : FALSE,
+							'SELECTED' =>	(in_array($value, $ary_multilist)) ? true : false,
 							'ELEM' =>		$value,
 						));
 					}
@@ -252,13 +252,13 @@ class Map extends Fsb_model
 	 * @param bool $is_wysiwyg Si le contenu est passe par l'editeur wysiwyg (les balises HTML en trop sont supprimees)
 	 * @return string XML
 	 */
-	public static function build_map_content($map, $is_wysiwyg = FALSE)
+	public static function build_map_content($map, $is_wysiwyg = false)
 	{
 		$parser = new Parser();
 
 		// Instance de l'objet $xml
 		$xml = new Xml();
-		$xml->load_file(MAPS_PATH . $map . '.xml', TRUE);
+		$xml->load_file(MAPS_PATH . $map . '.xml', true);
 
 		$message = new Xml();
 		$message->document->setTagName('root');
@@ -332,7 +332,7 @@ class Map extends Fsb_model
 	public static function load_poll($map_name)
 	{
 		$xml = new Xml();
-		$xml->load_file(MAPS_PATH . $map_name . '.xml', TRUE);
+		$xml->load_file(MAPS_PATH . $map_name . '.xml', true);
 
 		$poll_data = array();
 		if ($xml->document->head[0]->childExists('poll'))
@@ -368,17 +368,17 @@ class Map extends Fsb_model
 		if (!isset(self::$cache_xml[$map_name]))
 		{
 			$xml = new Xml();
-			$xml->load_file(MAPS_PATH . $map_name . '.xml', TRUE);
+			$xml->load_file(MAPS_PATH . $map_name . '.xml', true);
 
 			self::$cache_xml[$map_name] = array(
 				'line' =>		array(),
-				'template' =>	($xml->document->head[0]->childExists('template')) ? $xml->document->head[0]->template[0]->getData() : NULL,
+				'template' =>	($xml->document->head[0]->childExists('template')) ? $xml->document->head[0]->template[0]->getData() : null,
 			);
 
 			foreach ($xml->document->body[0]->line AS $line)
 			{
 				self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['str'] = ($line->childExists('result')) ? $line->result[0]->getData() : '%s';
-				self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['ifempty'] = ($line->childExists('ifEmpty')) ? $line->ifEmpty[0]->getData() : NULL;
+				self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['ifempty'] = ($line->childExists('ifEmpty')) ? $line->ifEmpty[0]->getData() : null;
 			}
 		}
 
@@ -389,7 +389,7 @@ class Map extends Fsb_model
 		foreach ($xml->document->line AS $line)
 		{
 			$value = $line->getData();
-			if ($value || self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['ifempty'] === NULL)
+			if ($value || is_null(self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['ifempty']))
 			{
 				$sprintf = self::$cache_xml[$map_name]['line'][$line->getAttribute('name')]['str'];
 			}

@@ -16,7 +16,7 @@ if (Fsb::$mods->is_active('upload') && Fsb::$session->is_authorized('upload_file
 	 * 
 	 * @var bool
 	 */
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /**

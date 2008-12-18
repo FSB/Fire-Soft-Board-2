@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = FALSE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = false;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Parametres pour la page
 	public $mode;
@@ -102,7 +102,7 @@ class Fsb_frame_child extends Fsb_frame
 			}
 
 			$parser = new Parser();
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			$this->rss->open(
 				Parser::title($row['t_title']),
@@ -122,7 +122,7 @@ class Fsb_frame_child extends Fsb_frame
 					'f_id' =>			$row['f_id'],
 					't_id' =>			$row['t_id'],
 				);
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
@@ -197,7 +197,7 @@ class Fsb_frame_child extends Fsb_frame
 					'f_id' =>			$row['f_id'],
 					't_id' =>			$row['t_id'],
 				);
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
@@ -269,7 +269,7 @@ class Fsb_frame_child extends Fsb_frame
 					't_id' =>			$row['t_id'],
 				);
 
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
 					htmlspecialchars(($row['t_description']) ? $row['t_description'] : $parser->mapped_message($row['p_text'], $row['p_map'], $parser_info)),
@@ -317,7 +317,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($row = Fsb::$db->row($result))
 		{
 			$parser = new Parser();
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			$this->rss->open(
 				htmlspecialchars($row['u_nickname']),
@@ -329,7 +329,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			do
 			{
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 				$this->rss->add_entry(
 					Parser::title($row['t_title']),
 					htmlspecialchars($parser->mapped_message($row['p_text'], $row['p_map'])),

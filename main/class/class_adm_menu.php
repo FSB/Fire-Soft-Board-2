@@ -34,7 +34,7 @@ class Adm_menu extends Fsb_model
 	 *
 	 * @var array
 	 */
-	public $include = NULL;
+	public $include = null;
 
 	/**
 	 * Constructeur, charge le menu en memoire
@@ -91,7 +91,7 @@ class Adm_menu extends Fsb_model
 				Fsb::$tpl->set_blocks('cat_menu.menu', array(
 					'U_MENU' =>		sid('index.' . PHPEXT . '?p=' . $subary['page']),
 					'MENU' =>		$lg_page,
-					'IS_CURRENT' =>	(($subary['page'] == $current_page) ? TRUE : FALSE),
+					'IS_CURRENT' =>	(($subary['page'] == $current_page) ? true : false),
 					'ICON' =>		($subary['page_icon'] && file_exists(ROOT . 'admin/adm_tpl/img/icon/' . $subary['page_icon'])) ? ROOT . 'admin/adm_tpl/img/icon/' . $subary['page_icon'] : ROOT . 'admin/adm_tpl/img/icon/menu.png',
 				));
 			}
@@ -163,7 +163,7 @@ class Adm_menu extends Fsb_model
 						unset($value[$k]);
 					}
 				}
-				Fsb::$db->insert('menu_admin', $value, 'INSERT', TRUE);
+				Fsb::$db->insert('menu_admin', $value, 'INSERT', true);
 			}
 		}
 
@@ -183,7 +183,7 @@ class Adm_menu extends Fsb_model
 					$value['cat_order'] = $max_order;
 					$cats[$value['cat']] = $value['cat_order'];
 				}
-				Fsb::$db->insert('menu_admin', $value, 'INSERT', TRUE);
+				Fsb::$db->insert('menu_admin', $value, 'INSERT', true);
 			}
 		}
 		Fsb::$db->query_multi_insert();
@@ -195,7 +195,7 @@ class Adm_menu extends Fsb_model
 	 *
 	 * @param int $move -1 pour bouger vers le haut ou 1 vers le bas
 	 * @param string $name Nom de la categorie
-	 * @return bool TRUE si la categorie a pu bouger
+	 * @return bool true si la categorie a pu bouger
 	 */
 	public function move_cat($move, $name)
 	{
@@ -213,16 +213,16 @@ class Adm_menu extends Fsb_model
 		if ($cat)
 		{
 			Fsb::$db->update('menu_admin', array(
-				'cat_order' =>	array("(cat_order - $move)", 'is_field' => TRUE),
+				'cat_order' =>	array("(cat_order - $move)", 'is_field' => true),
 			), 'WHERE cat = \'' . Fsb::$db->escape($cat) . '\'');
 
 			Fsb::$db->update('menu_admin', array(
-				'cat_order' =>	array("(cat_order + $move)", 'is_field' => TRUE),
+				'cat_order' =>	array("(cat_order + $move)", 'is_field' => true),
 			), 'WHERE cat = \'' . Fsb::$db->escape($name) . '\'');
 			Fsb::$db->destroy_cache('menu_admin_');
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Adm_menu extends Fsb_model
 	 *
 	 * @param int $move -1 pour bouger vers le haut ou 1 vers le bas
 	 * @param string $name Nom du lien
-	 * @return bool TRUE si le lien a pu bouger
+	 * @return bool true si le lien a pu bouger
 	 */
 	public function move_link($move, $name)
 	{
@@ -251,16 +251,16 @@ class Adm_menu extends Fsb_model
 		if ($page)
 		{
 			Fsb::$db->update('menu_admin', array(
-				'page_order' =>	array("(page_order - $move)", 'is_field' => TRUE),
+				'page_order' =>	array("(page_order - $move)", 'is_field' => true),
 			), 'WHERE page = \'' . Fsb::$db->escape($page) . '\'');
 
 			Fsb::$db->update('menu_admin', array(
-				'page_order' =>	array("(page_order + $move)", 'is_field' => TRUE),
+				'page_order' =>	array("(page_order + $move)", 'is_field' => true),
 			), 'WHERE page = \'' . Fsb::$db->escape($name) . '\'');
 			Fsb::$db->destroy_cache('menu_admin_');
-			return (TRUE);
+			return (true);
 		}
-		return (FALSE);
+		return (false);
 	}
 }
 

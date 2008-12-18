@@ -21,7 +21,7 @@ class Cache_sql extends Cache
 	private $id = '';
 
 	/**
-	 * Contient les informations sauvées dans le cache SQL
+	 * Contient les informations sauvï¿½es dans le cache SQL
 	 *
 	 * @var array
 	 */
@@ -43,7 +43,7 @@ class Cache_sql extends Cache
 	public function __construct($id, $where = '')
 	{
 		$this->id = $id;
-		Fsb::$db->cache = TRUE;
+		Fsb::$db->cache = true;
 		$sql = 'SELECT cache_hash, cache_content, cache_time
 				FROM ' . SQL_PREFIX . 'cache
 				WHERE cache_type = \'' . $this->id . '\' '
@@ -54,11 +54,11 @@ class Cache_sql extends Cache
 			$this->data[$row['cache_hash']] = array(
 				'content' =>		$row['cache_content'],
 				'time' =>			$row['cache_time'],
-				'serialized' =>		TRUE,
+				'serialized' =>		true,
 			);
 		}
 		Fsb::$db->free($result);
-		Fsb::$db->cache = NULL;
+		Fsb::$db->cache = null;
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Cache_sql extends Cache
 	 */
 	public function exists($hash)
 	{
-			return ((isset($this->data[$hash])) ? TRUE : FALSE);
+			return ((isset($this->data[$hash])) ? true : false);
 	}
 
 	/**
@@ -76,13 +76,13 @@ class Cache_sql extends Cache
 	{
 		if (!$this->exists($hash))
 		{
-			return (NULL);
+			return (null);
 		}
 
 		if ($this->data[$hash]['serialized'])
 		{
 			$this->data[$hash]['content'] = @unserialize($this->data[$hash]['content']);
-			$this->data[$hash]['serialized'] = FALSE;
+			$this->data[$hash]['serialized'] = false;
 		}
 		return ($this->data[$hash]['content']);
 	}
@@ -90,13 +90,13 @@ class Cache_sql extends Cache
 	/**
 	 * @see Cache::put()
 	 */
-	public function put($hash, $value, $comments = '', $timestamp = NULL)
+	public function put($hash, $value, $comments = '', $timestamp = null)
 	{
 		Fsb::$db->insert('cache', array(
-			'cache_type' =>		array($this->id, TRUE),
-			'cache_hash' =>		array($hash, TRUE),
+			'cache_type' =>		array($this->id, true),
+			'cache_hash' =>		array($hash, true),
 			'cache_content' =>	serialize($value),
-			'cache_time' =>		($timestamp === NULL) ? CURRENT_TIME : $timestamp,
+			'cache_time' =>		(is_null($timestamp)) ? CURRENT_TIME : $timestamp,
 		), 'REPLACE');
 	}
 
@@ -111,14 +111,14 @@ class Cache_sql extends Cache
 	/**
 	 * @see Cache::delete()
 	 */
-	public function delete($hash, $delete_sql = TRUE)
+	public function delete($hash, $delete_sql = true)
 	{
 		if ($delete_sql)
 		{
 			$sql = 'DELETE FROM ' . SQL_PREFIX . 'cache
 					WHERE cache_type = \'' . $this->id . '\'
 						AND cache_hash = \'' . Fsb::$db->escape($hash) . '\'';
-			Fsb::$db->query($sql, FALSE);
+			Fsb::$db->query($sql, false);
 		}
 		unset($this->data[$hash]);
 	}
@@ -126,18 +126,18 @@ class Cache_sql extends Cache
 	/**
 	 * @see Cache::destroy()
 	 */
-	public function destroy($prefix = NULL)
+	public function destroy($prefix = null)
 	{
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'cache
 				WHERE cache_type = \'' . $this->id . '\''
-				. (($prefix !== NULL) ? ' AND cache_hash ' . Fsb::$db->like() . ' \'' . $prefix . '%\'' : '');
-		Fsb::$db->query($sql, FALSE);
+				. ((!is_null($prefix)) ? ' AND cache_hash ' . Fsb::$db->like() . ' \'' . $prefix . '%\'' : '');
+		Fsb::$db->query($sql, false);
 
 		foreach ($this->data AS $key => $value)
 		{
-			if ($prefix === NULL || substr($key, 0, strlen($prefix)) == $prefix)
+			if (is_null($prefix) || substr($key, 0, strlen($prefix)) == $prefix)
 			{
-				$this->delete($key, FALSE);
+				$this->delete($key, false);
 			}
 		}
 	}
@@ -150,7 +150,7 @@ class Cache_sql extends Cache
 		$sql = 'DELETE FROM ' . SQL_PREFIX . 'cache
 					WHERE cache_type = \'' . $this->id . '\'
 						AND cache_time < ' . (CURRENT_TIME - $time);
-		Fsb::$db->query($sql, FALSE);
+		Fsb::$db->query($sql, false);
 	}
 
 	/**

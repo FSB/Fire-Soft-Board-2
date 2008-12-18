@@ -86,7 +86,7 @@ class Notify_mail
 
     /**
      * Sets the Body of the message.  This can be either an HTML or text body.
-     * If HTML then run IsHTML(true).
+     * If HTML then run IsHTML( true ).
      * @var string
      */
     public $Body               = "";
@@ -187,7 +187,7 @@ class Notify_mail
 
     /**
      * Prevents the SMTP connection from being closed after each mail 
-     * sending.  If this is set to true then to close the connection 
+     * sending.  If this is set to  true  then to close the connection 
      * requires an explicit call to SmtpClose(). 
      * @var bool
      */
@@ -196,7 +196,7 @@ class Notify_mail
     /**#@+
      * @access private
      */
-    private $smtp            = NULL;
+    private $smtp            = null;
     private $to              = array();
     private $cc              = array();
     private $bcc             = array();
@@ -214,10 +214,10 @@ class Notify_mail
      * @access public
      * @return void
      */
-	public function __construct($to = NULL)
+	public function __construct($to = null)
 	{
 		// Mail en text/html par defaut
-		$this->IsHTML(TRUE);
+		$this->IsHTML(true);
 
 		// Encodage du mail
 		// $this->CharSet = Fsb::$session->lang('charset');
@@ -233,7 +233,7 @@ class Notify_mail
 		}
 
 		// Adresse du forum comme etant l'adresse de provenance
-		if ($to == NULL)
+		if ($to == null)
 		{
 			$to = Fsb::$cfg->get('forum_mail');
 		}
@@ -254,7 +254,7 @@ class Notify_mail
      * @return void
      */
     public function IsHTML($bool) {
-        if($bool == true)
+        if($bool ==  true )
             $this->ContentType = "text/html";
         else
             $this->ContentType = "text/plain";
@@ -403,7 +403,7 @@ class Notify_mail
             return false;
         }
 
-        return true;
+        return  true ;
     }
     
     /**
@@ -433,7 +433,7 @@ class Notify_mail
             return false;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
@@ -478,7 +478,7 @@ class Notify_mail
             return false;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
@@ -541,12 +541,12 @@ class Notify_mail
             $this->smtp->Reset();
             return false;
         }
-        if($this->SMTPKeepAlive == true)
+        if($this->SMTPKeepAlive ==  true )
             $this->smtp->Reset();
         else
             $this->SmtpClose();
 
-        return true;
+        return  true ;
     }
 
     /**
@@ -556,7 +556,7 @@ class Notify_mail
      * @return bool
      */
     private function SmtpConnect() {
-        if($this->smtp == NULL) { $this->smtp = new Notify_smtp(); }
+        if($this->smtp == null) { $this->smtp = new Notify_smtp(); }
 
         $this->smtp->do_debug = $this->SMTPDebug;
         $hosts = explode(";", Fsb::$cfg->get('smtp_host'));
@@ -590,7 +590,7 @@ class Notify_mail
                         $connection = false;
                     }
                 }
-                $connection = true;
+                $connection =  true ;
             }
             $index++;
         }
@@ -605,7 +605,7 @@ class Notify_mail
      * @return void
      */
     public function SmtpClose() {
-        if($this->smtp != NULL)
+        if($this->smtp != null)
         {
             if($this->smtp->Connected())
             {
@@ -1069,7 +1069,7 @@ class Notify_mail
         $this->attachment[$cur][6] = "attachment";
         $this->attachment[$cur][7] = 0;
 
-        return true;
+        return  true ;
     }
 
     /**
@@ -1224,7 +1224,7 @@ class Notify_mail
       } else {
         $encoding = 'Q';
         $encoded = $this->EncodeQ($str, $position);
-        $encoded = $this->WrapText($encoded, $maxlen, true);
+        $encoded = $this->WrapText($encoded, $maxlen,  true );
         $encoded = str_replace("=".$this->LE, "\n", trim($encoded));
       }
 
@@ -1252,7 +1252,7 @@ class Notify_mail
                   "'='.sprintf('%02X', ord('\\1')).'".$this->LE."'", $encoded);
 
         // Maximum line length of 76 characters before CRLF (74 + space + '=')
-        $encoded = $this->WrapText($encoded, 74, true);
+        $encoded = $this->WrapText($encoded, 74,  true );
 
         return $encoded;
     }
@@ -1305,7 +1305,7 @@ class Notify_mail
         $this->attachment[$cur][2] = $filename;
         $this->attachment[$cur][3] = $encoding;
         $this->attachment[$cur][4] = $type;
-        $this->attachment[$cur][5] = true; // isString
+        $this->attachment[$cur][5] =  true ; // isString
         $this->attachment[$cur][6] = "attachment";
         $this->attachment[$cur][7] = 0;
     }
@@ -1347,11 +1347,11 @@ class Notify_mail
         $this->attachment[$cur][6] = "inline";
         $this->attachment[$cur][7] = $cid;
     
-        return true;
+        return  true ;
     }
     
     /**
-     * Returns true if an inline attachment is present.
+     * Returns  true  if an inline attachment is present.
      * @access private
      * @return bool
      */
@@ -1361,7 +1361,7 @@ class Notify_mail
         {
             if($this->attachment[$i][6] == "inline")
             {
-                $result = true;
+                $result =  true ;
                 break;
             }
         }
@@ -1535,7 +1535,7 @@ class Notify_mail
     }
     
     /**
-     * Returns true if an error occurred.
+     * Returns  true  if an error occurred.
      * @return bool
      */
     public function IsError() {

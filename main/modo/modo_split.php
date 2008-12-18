@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Module de moderation pour la division de sujet
@@ -77,7 +77,7 @@ class Page_modo_split extends Fsb_model
 			Fsb::$tpl->set_switch('show_topic');
 			Fsb::$tpl->set_vars(array(
 				'TOPIC_NAME' =>		Parser::title($row['t_title']),
-				'LIST_FORUM' =>		Html::list_forums(get_forums(), $row['f_id'], 'split_forum', FALSE),
+				'LIST_FORUM' =>		Html::list_forums(get_forums(), $row['f_id'], 'split_forum', false),
 			));
 
 			// Messages
@@ -92,7 +92,7 @@ class Page_modo_split extends Fsb_model
 					't_id' =>			$row['t_id'],
 				);
 
-				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+				$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 				Fsb::$tpl->set_blocks('post', array(
 					'ID' =>			$row['p_id'],
 					'CONTENT' =>	$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),

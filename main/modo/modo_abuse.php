@@ -11,7 +11,7 @@
 // On affiche ce module si la fonction est activee
 if (Fsb::$mods->is_active('abuse'))
 {
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /*
@@ -113,10 +113,10 @@ class Page_modo_abuse extends Fsb_model
 				'TOPIC_TITLE' =>	$title,
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['pa_time']),
-				'IS_CLOSED' =>		($row['pa_status'] == IS_APPROVED) ? TRUE : FALSE,
+				'IS_CLOSED' =>		($row['pa_status'] == IS_APPROVED) ? true : false,
 				'FORUM' =>			Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
 				'TOTAL' =>			$row['total'],
-				'IS_MP' =>			($row['pa_mp_id']) ? TRUE : FALSE,
+				'IS_MP' =>			($row['pa_mp_id']) ? true : false,
 
 				'U_ABUSE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=abuse&amp;mode=show&amp;id=' . $row['pa_id']),
 			));
@@ -187,7 +187,7 @@ class Page_modo_abuse extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		if ($row = Fsb::$db->row($result))
 		{
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			// Informations passees au parseur de message
 			$parser_info = array(
@@ -205,11 +205,11 @@ class Page_modo_abuse extends Fsb_model
 				'MESSAGE_FORUM' =>		(!$mp_id) ? htmlspecialchars($row['f_name']) : '',
 				'MESSAGE_TOPIC' =>		Parser::title($row['title']),
 				'MESSAGE_DATE' =>		Fsb::$session->print_date($row['time']),
-				'MESSAGE_IP' =>			(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
+				'MESSAGE_IP' =>			(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : null,
 				'MESSAGE_AVATAR' =>		$avatar,
-				'IS_VALIDATE' =>		($row['pa_status'] == IS_APPROVED) ? TRUE : FALSE,
-				'IS_LOCKED' =>			(!$mp_id && $row['t_status'] == LOCK) ? TRUE : FALSE,
-				'IS_MP' =>				($mp_id) ? TRUE : FALSE,
+				'IS_VALIDATE' =>		($row['pa_status'] == IS_APPROVED) ? true : false,
+				'IS_LOCKED' =>			(!$mp_id && $row['t_status'] == LOCK) ? true : false,
+				'IS_MP' =>				($mp_id) ? true : false,
 
 				'U_FORUM' =>			(!$mp_id) ? sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $row['f_id']) : '',
 				'U_TOPIC' =>			(!$mp_id) ? sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']) : '',
@@ -228,7 +228,7 @@ class Page_modo_abuse extends Fsb_model
 
 			do
 			{
-				$parser->parse_html = FALSE;
+				$parser->parse_html = false;
 
 				// Informations passees au parseur de message
 				$parser_info = array(

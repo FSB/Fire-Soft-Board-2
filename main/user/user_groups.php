@@ -13,7 +13,7 @@
  * 
  * @var bool
  */
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /**
  * Module d'utilisateur affichant les differents groupes
@@ -86,7 +86,7 @@ class Page_user_groups extends Fsb_model
 					'NAME' =>		($group['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($group['g_name'])) ? Fsb::$session->lang($group['g_name']) : $group['g_name'],
 					'DESC' =>		$group['g_desc'],
 					'STYLE' =>		$group['g_color'],
-					'SHOW_RADIO' =>	($group_type != 'none') ? TRUE : FALSE,
+					'SHOW_RADIO' =>	($group_type != 'none') ? true : false,
 
 					'U_GROUP' =>	sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $group['g_id']),
 				));

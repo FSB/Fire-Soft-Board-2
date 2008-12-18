@@ -39,7 +39,7 @@ class User extends Fsb_model
 			'u_language' =>			Fsb::$cfg->get('default_lang'),
 			'u_birthday' =>			'00/00/0000',
 			'u_register_ip' =>		Fsb::$session->ip,
-			'u_activated' =>		TRUE,
+			'u_activated' =>		true,
 			'u_utc' =>				Fsb::$cfg->get('default_utc'),
 			'u_utc_dst' =>			Fsb::$cfg->get('default_utc_dst'),
 			'u_default_group_id' =>	GROUP_SPECIAL_USER,
@@ -59,9 +59,9 @@ class User extends Fsb_model
 		Fsb::$db->insert('users_password', array(
 			'u_id' =>			$last_id,
 			'u_login' =>		$login,
-			'u_password' =>		Password::hash($password, 'sha1', TRUE),
+			'u_password' =>		Password::hash($password, 'sha1', true),
 			'u_algorithm' =>	'sha1',
-			'u_use_salt' =>		TRUE,
+			'u_use_salt' =>		true,
 			'u_autologin_key' =>$autologin_key,
 		));
 
@@ -70,7 +70,7 @@ class User extends Fsb_model
 			'g_type' =>		GROUP_SINGLE,
 		));
 		$u_single_group_id = Fsb::$db->last_id();
-		Group::add_users($last_id, $u_single_group_id, GROUP_USER, TRUE, TRUE);
+		Group::add_users($last_id, $u_single_group_id, GROUP_USER, true, true);
 
 		// On met a jour la table user pour signaler le groupe unique sur ce membre
 		Fsb::$db->update('users', array(
@@ -81,10 +81,10 @@ class User extends Fsb_model
 		Group::add_users($last_id, GROUP_SPECIAL_USER, GROUP_USER);
 
 		// On met a jour le dernier membre inscrit dans la configuration
-		Fsb::$cfg->update('last_user_id', $last_id, FALSE);
-		Fsb::$cfg->update('last_user_login', $nickname, FALSE);
-		Fsb::$cfg->update('last_user_color', 'class="user"', FALSE);
-		Fsb::$cfg->update('total_users', Fsb::$cfg->get('total_users') + 1, FALSE);
+		Fsb::$cfg->update('last_user_id', $last_id, false);
+		Fsb::$cfg->update('last_user_login', $nickname, false);
+		Fsb::$cfg->update('last_user_color', 'class="user"', false);
+		Fsb::$cfg->update('total_users', Fsb::$cfg->get('total_users') + 1, false);
 		Fsb::$cfg->destroy_cache();
 		Fsb::$db->destroy_cache('users_birthday_');
 
@@ -171,11 +171,11 @@ class User extends Fsb_model
 		foreach ($delete_others_table AS $table => $where)
 		{
 			$sql = 'DELETE FROM ' . SQL_PREFIX . $table . ' ';
-			$first_row = TRUE;
+			$first_row = true;
 			foreach ($where AS $field => $value)
 			{
 				$sql .= (($first_row) ? 'WHERE ' : ' AND ') . $field . ' IN (' . $value . ') ';
-				$first_row = FALSE;
+				$first_row = false;
 			}
 			Fsb::$db->query($sql);
 		}
@@ -213,7 +213,7 @@ class User extends Fsb_model
 	 * @param string $new_nickname Nouveau pseudonyme
 	 * @param bool $update_users Flag definissant si la table users doit etre mise a jour
 	 */
-	public static function rename($u_id, $new_nickname, $update_users = TRUE)
+	public static function rename($u_id, $new_nickname, $update_users = true)
 	{
 		// Ne pas renommer les visiteurs
 		if ($u_id == VISITOR_ID)
@@ -284,7 +284,7 @@ class User extends Fsb_model
 	 * Verifie si les caracteres du pseudonyme sont autorises
 	 *
 	 * @param string $nickname Pseudonyme
-	 * @return bool|string Renvoie le niveau de caractere non autorise si cela echoue, sinon true
+	 * @return bool|string Renvoie le niveau de caractere non autorise si cela echoue, sinon  true 
 	 */
 	public static function nickname_valid($nickname)
 	{
@@ -296,7 +296,7 @@ class User extends Fsb_model
 
 		if (preg_match('#^' . $check[Fsb::$cfg->get('nickname_chars')] . '+$#', $nickname))
 		{
-			return (TRUE);
+			return (true);
 		}
 		return (Fsb::$cfg->get('nickname_chars'));
 	}
@@ -325,11 +325,11 @@ class User extends Fsb_model
 	 * @param bool $check_server Verifie le domaine de l'email
 	 * @return bool
 	 */
-	public static function email_valid($email, $check_server = TRUE)
+	public static function email_valid($email, $check_server = true)
 	{
 		if (IS_LOCALHOST && OS_SERVER == 'windows')
 		{
-			$check_server = FALSE;
+			$check_server = false;
 		}
 
 		if (preg_match('/^\w[-.\w]*@(\w[-._\w]*\.[a-zA-Z]{2,}.*)$/', $email, $match))
@@ -337,10 +337,10 @@ class User extends Fsb_model
 			// Les fonctions de verification de DNS ne tournent pas sous Windows
 			if (!$check_server || !Fsb::$cfg->get('check_email_dns'))
 			{
-				return (TRUE);
+				return (true);
 			}
 
-			$check = FALSE;
+			$check = false;
 			if (function_exists('checkdnsrr'))
 			{
 				$check = checkdnsrr($match[1] . '.', 'MX');
@@ -357,7 +357,7 @@ class User extends Fsb_model
 				{
 					if (substr($line, 0, strlen($match[1])) == $match[1])
 					{
-						$check = TRUE;
+						$check = true;
 						break;
 					}
 				}
@@ -373,7 +373,7 @@ class User extends Fsb_model
 
 			return ($check);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -385,7 +385,7 @@ class User extends Fsb_model
 	 */
 	public static function get_rank($total_post, $rank_id)
 	{
-		static $ranks = NULL;
+		static $ranks = null;
 
 		// On recupere les rangs par ordre decroissant (pour pouvoir recuperer le palier du membre)
 		// et on les gardes de facon statique pour eviter la requete aux prochains appels.
@@ -407,7 +407,7 @@ class User extends Fsb_model
 		else
 		{
 			// Rang par quota
-			$rank = NULL;
+			$rank = null;
 			foreach ($ranks AS $value)
 			{
 				if ($total_post >= $value['rank_quota'] && !$value['rank_special'])
@@ -421,7 +421,7 @@ class User extends Fsb_model
 		// Si aucun rang n'a ete trouve ...
 		if (!$rank)
 		{
-			return (NULL);
+			return (null);
 		}
 
 		// Sinon on retourne directement les informations du rang (nom, image et style)
@@ -440,11 +440,11 @@ class User extends Fsb_model
 	 * @param bool $check_mod Mettre a false si vous voulez que la fonction soit independante de la configuration
 	 * @return int
 	 */
-	public static function get_age($birthday, $check_mod = TRUE)
+	public static function get_age($birthday, $check_mod = true)
 	{
 		if (!$birthday)
 		{
-			return (NULL);
+			return (null);
 		}
 
 		if (!$check_mod || Fsb::$mods->is_active('user_birthday'))
@@ -452,7 +452,7 @@ class User extends Fsb_model
 			list($split_day, $split_month, $split_year) = explode('/', $birthday);
 			if (intval($split_day) == 0 || intval($split_month) == 0 || intval($split_year) == 0)
 			{
-				$age = NULL;
+				$age = null;
 			}
 			else
 			{
@@ -478,7 +478,7 @@ class User extends Fsb_model
 		}
 		else
 		{
-			$age = NULL;
+			$age = null;
 		}
 
 		return ($age);
@@ -491,9 +491,9 @@ class User extends Fsb_model
 	 * @param  bool $check_mod Mettre a false si vous voullez que la fonction soit independante de la configuration
 	 * @return string
 	 */
-	public static function get_sexe($sexe, $check_mod = TRUE)
+	public static function get_sexe($sexe, $check_mod = true)
 	{
-		$return = NULL;
+		$return = null;
 		if (!$check_mod || Fsb::$mods->is_active('user_sexe'))
 		{
 			switch ($sexe)
@@ -636,7 +636,7 @@ class User extends Fsb_model
 		if ($data = Fsb::$db->row($result))
 		{
 			Fsb::$db->update('users', array(
-				'u_activated' =>	TRUE,
+				'u_activated' =>	true,
 				'u_confirm_hash' =>	'',
 			), 'WHERE u_id = ' . $user_id . ' AND u_confirm_hash = \'.\' AND u_activated = 0');
 
@@ -653,10 +653,10 @@ class User extends Fsb_model
 			$mail->Send();
 			$mail->SmtpClose();
 
-			return (TRUE);
+			return (true);
 		}
 
-		return (FALSE);
+		return (false);
 	}
 }
 /* EOF */

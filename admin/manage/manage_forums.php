@@ -56,7 +56,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->mode =	Http::request('mode');
 		$this->id =		intval(Http::request('id'));
 
-		$this->forums = get_forums('', FALSE);
+		$this->forums = get_forums('', false);
 
 		$call = new Call($this);
 		$call->post(array(
@@ -236,7 +236,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['f_prune_topic_type'] = '';
 			$this->data['f_location'] =			'';
 			$this->data['f_password'] =			'';
-			$this->data['f_global_announce'] =	TRUE;
+			$this->data['f_global_announce'] =	true;
 			$this->data['f_map_default'] =		'classic';
 			$this->data['f_map_first_post'] =	MAP_FP_ONLY;
 			$this->data['f_rules'] =			'';
@@ -257,7 +257,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		if ($this->mode == 'add_f')
 		{
 			Fsb::$tpl->set_switch('add_default_auth');
-			$list_forum_auth = Html::list_forums($this->forums, $this->data['f_parent'], 'f_default_auth', FALSE, '', FALSE, '<option value="-1">' . Fsb::$session->lang('adm_forum_no_auth') . '</option>');
+			$list_forum_auth = Html::list_forums($this->forums, $this->data['f_parent'], 'f_default_auth', false, '', false, '<option value="-1">' . Fsb::$session->lang('adm_forum_no_auth') . '</option>');
 		}
 
 		// Liste des temps pour la duree du delestage
@@ -276,7 +276,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		));
 
 		// Liste des themes
-		$list_tpl = Html::list_dir('f_tpl', $this->data['f_tpl'], ROOT . 'tpl/', array(), TRUE, '<option value="0">' . Fsb::$session->lang('adm_forum_tpl_none') . '</option>');
+		$list_tpl = Html::list_dir('f_tpl', $this->data['f_tpl'], ROOT . 'tpl/', array(), true, '<option value="0">' . Fsb::$session->lang('adm_forum_tpl_none') . '</option>');
 
 		// Liste des MAPS
 		$list_map = array('0' => Fsb::$session->lang('adm_forum_map_none')) + Map::get_list();
@@ -289,16 +289,16 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FORUM_NAME' =>				htmlspecialchars($this->data['f_name']),
 			'FORUM_DESC' =>				htmlspecialchars($this->data['f_text']),
 			'FORUM_RULES' =>			htmlspecialchars($this->data['f_rules']),
-			'FORUM_STATUS' =>			($this->data['f_status'] == LOCK) ? TRUE : FALSE,
+			'FORUM_STATUS' =>			($this->data['f_status'] == LOCK) ? true : false,
 			'FORUM_TYPE' =>				$this->data['f_type'],
 			'FORUM_LOCATION' =>			htmlspecialchars($this->data['f_location']),
 			'FORUM_PASSWORD' =>			htmlspecialchars($this->data['f_password']),
-			'FORUM_GLOBAL_ANNOUNCE' =>	($this->data['f_global_announce']) ? TRUE : FALSE,
-			'FORUM_APPROVE' =>			($this->data['f_approve']) ? TRUE : FALSE,
+			'FORUM_GLOBAL_ANNOUNCE' =>	($this->data['f_global_announce']) ? true : false,
+			'FORUM_APPROVE' =>			($this->data['f_approve']) ? true : false,
 			'FORUM_PRUNE_TIME' =>		$this->data['f_prune_time'],
-			'FORUM_MAP_FP_ONLY' =>		($this->data['f_map_first_post'] == MAP_FP_ONLY) ? TRUE : FALSE,
-			'FORUM_MAP_ALL_POST' =>		($this->data['f_map_first_post'] == MAP_ALL_POST) ? TRUE : FALSE,
-			'FORUM_MAP_FREE' =>			($this->data['f_map_first_post'] == MAP_FREE) ? TRUE : FALSE,
+			'FORUM_MAP_FP_ONLY' =>		($this->data['f_map_first_post'] == MAP_FP_ONLY) ? true : false,
+			'FORUM_MAP_ALL_POST' =>		($this->data['f_map_first_post'] == MAP_ALL_POST) ? true : false,
+			'FORUM_MAP_FREE' =>			($this->data['f_map_first_post'] == MAP_FREE) ? true : false,
 			'STYLE' =>					htmlspecialchars($style_content),
 			'STYLE_TYPE_NONE' =>		(!$getstyle) ? 'checked="checked"' : '',
 			'STYLE_TYPE_COLOR' =>		($style_type == 'style') ? 'checked="checked"' : '',
@@ -404,7 +404,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		if (check_confirm())
 		{
 			$tmp = array_select($this->forums, 'f_id', $this->id);
-			if ($tmp != NULL)
+			if ($tmp != null)
 			{
 				$f_name = $tmp['f_name'];
 				Forum::delete($this->id);
@@ -588,7 +588,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		Fsb::$tpl->set_switch('forums_operation');
 		Fsb::$tpl->set_vars(array(
-			'LIST_FORUM_TARGET' =>		Html::list_forums($this->forums, $this->id, 'move_target', FALSE),
+			'LIST_FORUM_TARGET' =>		Html::list_forums($this->forums, $this->id, 'move_target', false),
 
 			'U_ACTION' =>				sid('index.' . PHPEXT . '?p=manage_forums&amp;mode=operation&amp;id=' . $this->id),
 		));
@@ -615,7 +615,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		if (check_confirm())
 		{
 			$tmp = array_select($this->forums, 'f_id', $this->id);
-			if ($tmp != NULL && array_select($this->forums, 'f_id', $to_id))
+			if ($tmp != null && array_select($this->forums, 'f_id', $to_id))
 			{
 				$sql = 'SELECT t_id
 						FROM ' . SQL_PREFIX . 'topics
@@ -628,7 +628,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				}
 				Fsb::$db->free($result);
 
-				Moderation::move_topics($idx, $this->id, $to_id, FALSE);
+				Moderation::move_topics($idx, $this->id, $to_id, false);
 
 				Log::add(Log::ADMIN, 'forum_log_operation_move', $tmp['f_name']);
 				Display::message('adm_forum_operation_move_well', 'index.' . PHPEXT . '?p=manage_forums', 'manage_forums');
@@ -644,7 +644,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 		else
 		{
-			Display::confirmation(Fsb::$session->lang('adm_forum_confirm_operation_move'), 'index.' . PHPEXT . '?p=manage_forums', array('mode' => $this->mode, 'id' => $this->id, 'move_target' => $to_id, 'submit_operation_move' => TRUE));
+			Display::confirmation(Fsb::$session->lang('adm_forum_confirm_operation_move'), 'index.' . PHPEXT . '?p=manage_forums', array('mode' => $this->mode, 'id' => $this->id, 'move_target' => $to_id, 'submit_operation_move' => true));
 		}
 	}
 }

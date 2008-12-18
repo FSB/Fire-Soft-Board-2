@@ -9,7 +9,7 @@
  */
 
 // On affiche ce module
-$show_this_module = TRUE;
+$show_this_module = true;
 
 /*
 ** Module d'utilisateur permettant au moderateur de voir les messages non approuves des forums qu'il modere.
@@ -71,7 +71,7 @@ class Page_modo_approve extends Fsb_model
 				'OWNER' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'FORUM' =>		Html::forumname($row['f_name'], $row['f_id'], $row['f_color']),
 				'DATE' =>		Fsb::$session->print_date($row['t_time']),
-				'IS_NEW' =>		($row['t_approve'] == IS_NOT_APPROVED) ? TRUE : FALSE,
+				'IS_NEW' =>		($row['t_approve'] == IS_NOT_APPROVED) ? true : false,
 
 				'U_TOPIC' =>	sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=approve&amp;mode=topic&amp;id=' . $row['t_id']),
 			));
@@ -101,7 +101,7 @@ class Page_modo_approve extends Fsb_model
 		{
 			Fsb::$tpl->set_vars(array(
 				'TOPIC_TITLE' =>	Parser::title($row['t_title']),
-				'IS_NEW' =>			($row['t_approve'] == IS_NOT_APPROVED) ? TRUE : FALSE,
+				'IS_NEW' =>			($row['t_approve'] == IS_NOT_APPROVED) ? true : false,
 
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
 			));
@@ -123,7 +123,7 @@ class Page_modo_approve extends Fsb_model
 					'DATE' =>			Fsb::$session->print_date($row['p_time']),
 					'CONTENT' =>		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info),
 					'AVATAR' =>			$avatar,
-					'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : NULL,
+					'IP' =>				(Fsb::$session->is_authorized('auth_ip')) ? $row['u_ip'] : null,
 
 					'U_IP' =>			sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=ip&amp;ip=' . $row['u_ip']),
 					'U_DELETE' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=delete&amp;id=' . $row['p_id']),

@@ -49,7 +49,7 @@ class Captcha_png extends Captcha
 	public function __construct()
 	{
 		$this->font_path = ROOT . 'main/class/captcha/fonts/';
-		$this->png = new Png($this->width, $this->height, TRUE);
+		$this->png = new Png($this->width, $this->height, true);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Captcha_png extends Captcha
 	 */
 	protected function write_char($size, $angle, $x, $y, $fontcolor, $font, $char)
 	{
-		if ($fontcolor === NULL)
+		if (is_null($fontcolor))
 		{
 			list($red, $green, $blue) = $this->generate_color();
 		}
@@ -80,7 +80,7 @@ class Captcha_png extends Captcha
 		{
 			list($red, $green, $blue) = $fontcolor;
 		}
-		$this->png->write($char, $x, $y - 20, $this->font_path . 'chars.txt', $size, Png_color::rgb($red, $green, $blue), TRUE, 5);
+		$this->png->write($char, $x, $y - 20, $this->font_path . 'chars.txt', $size, Png_color::rgb($red, $green, $blue), true, 5);
 	}
 
 	/**
@@ -134,7 +134,7 @@ class Png extends Image
 	 *
 	 * @var bool
 	 */
-	protected $truecolor = FALSE;
+	protected $ true color = false;
 
 	/**
 	 * Contenu de l'image (avec les headers)
@@ -155,12 +155,12 @@ class Png extends Image
 	 *
 	 * @param int $width Largeur de l'image
 	 * @param int $height Hauteur de l'image
-	 * @param bool $truecolor Mode vraies couleurs (si FALSE, on passe en niveau de gris)
+	 * @param bool $ true color Mode vraies couleurs (si false, on passe en niveau de gris)
 	 */
-	public function __construct($width, $height, $truecolor = TRUE)
+	public function __construct($width, $height, $ true color = true)
 	{
 		// Parametres
-		$this->truecolor = $truecolor;
+		$this-> true color = $ true color;
 		$this->width = $width;
 		$this->height = $height;
 
@@ -174,7 +174,7 @@ class Png extends Image
 	private function init()
 	{
 		$repeat = $this->width;
-		if ($this->truecolor)
+		if ($this-> true color)
 		{
 			$repeat *= 3;
 		}
@@ -195,7 +195,7 @@ class Png extends Image
 	 */
 	public function find_index($x, $y)
 	{
-		if (!$this->truecolor)
+		if (!$this-> true color)
 		{
 			return (($y * $this->width) + $x + $y);
 		}
@@ -220,7 +220,7 @@ class Png extends Image
 		}
 
 		$index = $this->find_index($x, $y);
-		if (!$this->truecolor)
+		if (!$this-> true color)
 		{
 			$this->image{$index} = $color;
 		}
@@ -242,7 +242,7 @@ class Png extends Image
 	public function colorat($x, $y)
 	{
 		$index = $this->find_index($x, $y);
-		if (!$this->truecolor)
+		if (!$this-> true color)
 		{
 			$color = array(
 				'red' =>	$this->image{$index},
@@ -264,10 +264,10 @@ class Png extends Image
 	/**
 	 * Fin du fichier PNG
 	 *
-	 * @param bool $print Si true, affiche l'image
+	 * @param bool $print Si  true , affiche l'image
 	 * @return string Contenu de l'image
 	 */
-	public function close($print = TRUE)
+	public function close($print = true)
 	{
 		$this->add_signature();
 		$this->add_ihdr();
@@ -323,7 +323,7 @@ class Png extends Image
 		$data .= pack('c', 8);
 
 		// Couleurs
-		$data .= pack('c', ($this->truecolor) ? 2 : 0);
+		$data .= pack('c', ($this-> true color) ? 2 : 0);
 
 		// Compression
 		$data .= pack('c', 0);
@@ -361,7 +361,7 @@ class Png extends Image
 			$length = ($this->width + 1) * $height;
 			if (extension_loaded('hash'))
 			{
-				$adler_hash = strrev(hash('adler32', $this->image, true));
+				$adler_hash = strrev(hash('adler32', $this->image,  true ));
 			}
 			else if (extension_loaded('mhash'))
 			{
@@ -648,10 +648,10 @@ abstract class Image extends Fsb_model
 		// Information sur le style
 		$border_color =		(isset($style['border-color'])) ? $style['border-color'] : Png_color::str('black');
 		$border_width =		(isset($style['border-width'])) ? $style['border-width'] : 1;
-		$background_color = (isset($style['background-color'])) ? $style['background-color'] : NULL;
+		$background_color = (isset($style['background-color'])) ? $style['background-color'] : null;
 
 		// Arriere plan ?
-		if ($background_color !== NULL)
+		if (!is_null($background_color))
 		{
 			$max_width = min($x + $width, $this->width);
 			$max_height = min($y + $height, $this->height);
@@ -738,7 +738,7 @@ abstract class Image extends Fsb_model
 	 * @param bool $italic Texte en italique
 	 * @param int $random_h Coefficient pour modifier aleatoirement la hauteur
 	 */
-	public function write($str, $x, $y, $font, $size, $color, $italic = FALSE, $random_h = 0)
+	public function write($str, $x, $y, $font, $size, $color, $italic = false, $random_h = 0)
 	{
 		// Informations sur la police
 		$str = strtoupper($str);
@@ -761,7 +761,7 @@ abstract class Image extends Fsb_model
 		}
 	}
 
-	private function _write($info, $x, $y, $pixel_size, $color, $italic = FALSE)
+	private function _write($info, $x, $y, $pixel_size, $color, $italic = false)
 	{
 		// Affichage du caractere
 		$offset_y = $y;

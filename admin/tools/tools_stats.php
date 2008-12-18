@@ -288,7 +288,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$year_end = date('Y', CURRENT_TIME);
 		}
 
-		$current = ($month_begin == $month_end && $year_begin == $year_end) ? TRUE : FALSE;
+		$current = ($month_begin == $month_end && $year_begin == $year_end) ? true : false;
 
 		// Liste des mois
 		$list_month = array();

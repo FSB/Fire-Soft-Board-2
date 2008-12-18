@@ -105,7 +105,7 @@ class Search_fulltext_fsb extends Search
 	 * @param string $content Contenu du message
 	 * @param bool $is_title Definit la valeur du champ is_title dans la table fsb2_search_match
 	 */
-	public function index($post_id, $content, $is_title = FALSE)
+	public function index($post_id, $content, $is_title = false)
 	{
 		// On recupere chaque mot du message
 		$split = preg_split('#[^\w]+#si', $content);
@@ -121,7 +121,7 @@ class Search_fulltext_fsb extends Search
 				if ($word && !isset($word_exist[$word]) && strlen($word) >= $this->min_len && strlen($word) <= $this->max_len && !is_numeric($word))
 				{
 					$words[] = $word;
-					$word_exist[$word] = TRUE;
+					$word_exist[$word] = true;
 				}
 				else
 				{
@@ -157,7 +157,7 @@ class Search_fulltext_fsb extends Search
 					{
 						Fsb::$db->insert('search_word', array(
 							'word_content' =>	$word,
-						),' INSERT', TRUE);
+						),' INSERT', true);
 					}
 				}
 				Fsb::$db->query_multi_insert();

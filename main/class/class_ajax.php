@@ -86,7 +86,7 @@ class Ajax extends Fsb_model
 			if (function_exists($this->events[$name]['callback']))
 			{
 				$return = call_user_func_array($this->events[$name]['callback'], $this->events[$name]['argv']);
-				if ($return !== NULL)
+				if (!is_null($return))
 				{
 					// Generation du Content-type
 					switch ($this->events[$name]['type'])

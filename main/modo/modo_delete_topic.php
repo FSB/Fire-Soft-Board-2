@@ -9,7 +9,7 @@
  */
 
 // On cache ce module
-$show_this_module = FALSE;
+$show_this_module = false;
 
 /*
 ** Module de moderation pour la suppression d'un sujet

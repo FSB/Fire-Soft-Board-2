@@ -39,7 +39,7 @@ class Notify_msn extends Fsb_model
 	public $password = '';
 
 	// Debugage
-	public $verbose = FALSE;
+	public $verbose = false;
 
 	/*
 	** Constructeur
@@ -69,7 +69,7 @@ class Notify_msn extends Fsb_model
 		$this->socket = @fsockopen($this->server, $this->port, $errno, $errstr, 5);
 		if (!$this->socket)
 		{
-			return (FALSE);
+			return (false);
 		}
 		
 		// Envoie de la version du protocole
@@ -78,7 +78,7 @@ class Notify_msn extends Fsb_model
 		// Reception de la version du protocole
 		if (!$this->read() || $this->buffer == 'VER 0 0')
 		{
-			return (FALSE);
+			return (false);
 		}
 		
 		// Envoie des informations sur le client
@@ -88,7 +88,7 @@ class Notify_msn extends Fsb_model
 		// Reponse du serveur ...
 		if (!$this->read())
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		// Initialisation de la connexion utilisateur
@@ -97,7 +97,7 @@ class Notify_msn extends Fsb_model
 		// Reponse du serveur ...
 		if (!$this->read())
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		// Demande de transfert vers une autre IP ?
@@ -114,7 +114,7 @@ class Notify_msn extends Fsb_model
 			$this->server = $new_ip;
 			$this->port = $new_port;
 			$this->connect();
-			return (TRUE);
+			return (true);
 		}
 
 		// Le serveur nous a accepte, et a envoyer une chaine d'authentification
@@ -123,7 +123,7 @@ class Notify_msn extends Fsb_model
 		// On recupere un ticket de connexion
 		if (!$ticket = $this->get_ticket($hash))
 		{
-			return (FALSE);
+			return (false);
 		}
 
 		// Authentification
@@ -136,7 +136,7 @@ class Notify_msn extends Fsb_model
 		// On zappe les reponses :p
 		while ($this->read());
 
-		return (TRUE);
+		return (true);
 	}
 	
 	/*
@@ -196,7 +196,7 @@ class Notify_msn extends Fsb_model
 		{
 			return ($match[1]);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/*
@@ -211,11 +211,11 @@ class Notify_msn extends Fsb_model
 
 		$errno = 0;
 		$errstr = '';
-		$state = FALSE;
+		$state = false;
 		$step = 0;
 		while (!feof($this->socket))
 		{
-			$this->read(FALSE);
+			$this->read(false);
 			if (!$this->buffer)
 			{
 				$step++;
@@ -228,7 +228,7 @@ class Notify_msn extends Fsb_model
 			// On est definitivement bloque .. Le message n'a pas pu etre envoye.
 			if ($step == 20000)
 			{
-				return (FALSE);
+				return (false);
 			}
 
 			switch (substr($this->buffer, 0, 3))
@@ -252,7 +252,7 @@ class Notify_msn extends Fsb_model
 					// Erreur de preparation du message
 					if ($stop_cycle == 10)
 					{
-						return (FALSE);
+						return (false);
 					}
 
 					// Connection au switchboard
@@ -278,7 +278,7 @@ class Notify_msn extends Fsb_model
 					$msn->close();
 					unset($msn);
 
-					$state = TRUE;
+					$state = true;
 				break 2;
 			}
 		}
@@ -313,7 +313,7 @@ class Notify_msn extends Fsb_model
 	/*
 	** Lecture du socket
 	*/
-	private function read($block_mode = TRUE)
+	private function read($block_mode = true)
 	{
 		// Mode non bloquant
 		stream_set_blocking($this->socket, $block_mode);
@@ -333,10 +333,10 @@ class Notify_msn extends Fsb_model
 		// Mode bloquant
 		if (!$block_mode)
 		{
-			stream_set_blocking($this->socket, TRUE);
+			stream_set_blocking($this->socket, true);
 		}
 
-		return (($this->buffer) ? TRUE : FALSE);
+		return (($this->buffer) ? true : false);
 	}
 }
 

@@ -13,14 +13,14 @@
 ** Chaque module sera pioche dans le repertoire ~/main/modo/
 **
 ** Chaque module doit contenir une variable globale a la page nommee "show_this_module" avec comme
-** valeur TRUE ou FALSE suivant si l'ont souhaite afficher le module dans le menu
+** valeur true ou false suivant si l'ont souhaite afficher le module dans le menu
 */
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Module sellectione pour la page
 	public $module;
@@ -82,15 +82,15 @@ class Fsb_frame_child extends Fsb_frame
 
 		foreach ($getlist AS $m)
 		{
-			$show_this_module = FALSE;
+			$show_this_module = false;
 			include(ROOT . 'main/modo/modo_' . $m . '.' . PHPEXT);
 			if (isset($show_this_module) && $show_this_module)
 			{
 				Fsb::$tpl->set_blocks('module', array(
-					'IS_SELECT' =>	($this->module == $m) ? TRUE : FALSE,
+					'IS_SELECT' =>	($this->module == $m) ? true : false,
 					'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=' . $m),
 					'NAME' =>		Fsb::$session->lang('modo_module_' . $m),
-					'INFO' =>		(isset($info_list[$m])) ? $info_list[$m] : NULL,
+					'INFO' =>		(isset($info_list[$m])) ? $info_list[$m] : null,
 				));
 
 				if ($this->module == $m)

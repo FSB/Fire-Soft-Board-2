@@ -15,9 +15,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Navigation
 	public $nav = array();
@@ -51,12 +51,12 @@ class Fsb_frame_child extends Fsb_frame
 	public $post_map;
 
 	// En mode preview
-	public $preview = FALSE;
+	public $preview = false;
 
 	// Utilisation du code de confirmation visuelle
-	public $use_captcha = FALSE;
+	public $use_captcha = false;
 
-	// TRUE et le message devra etre approuve
+	// true et le message devra etre approuve
 	public $approve = IS_APPROVED;
 
 	// Texte uploade
@@ -116,7 +116,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Captcha ?
 		if (Fsb::$mods->is_active('post_captcha') && !Fsb::$session->is_logged())
 		{
-			$this->use_captcha = TRUE;
+			$this->use_captcha = true;
 		}
 
 
@@ -131,7 +131,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		else if (Http::request('preview_post', 'post'))
 		{
-			$this->preview = TRUE;
+			$this->preview = true;
 		}
 
 		$this->show_post_form();
@@ -193,7 +193,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=reply&amp;id=' . $this->id))
 				{
 					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
-					return (FALSE);
+					return (false);
 				}
 
 				// On verifie si le message devra etre approuve
@@ -221,7 +221,7 @@ class Fsb_frame_child extends Fsb_frame
 					}
 					else
 					{
-						$this->quote = FALSE;
+						$this->quote = false;
 					}
 				}
 			break;
@@ -255,7 +255,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit&amp;id=' . $this->id))
 				{
 					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
-					return (FALSE);
+					return (false);
 				}
 
 				// Map du message
@@ -284,12 +284,12 @@ class Fsb_frame_child extends Fsb_frame
 				}
 
 				// On verifie si l'utilisateur peut poster au minimum un type de sujet (sinon erreur)
-				$can_post = FALSE;
+				$can_post = false;
 				foreach ($GLOBALS['_topic_type'] AS $value)
 				{
 					if (Fsb::$session->is_authorized($this->data['f_id'], 'ga_create_' . $value))
 					{
-						$can_post = TRUE;
+						$can_post = true;
 						break;
 					}
 				}
@@ -303,7 +303,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($this->data['f_password'] && !Display::forum_password($this->data['f_id'], $this->data['f_password'], ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=topic&amp;id=' . $this->id))
 				{
 					// L'acces est refuse, on affiche le formulaire du mot de passe et on doit donc quitter la classe
-					return (FALSE);
+					return (false);
 				}
 			break;
 
@@ -364,7 +364,7 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('forum_cant_post_is_locked');
 		}
 
-		return (TRUE);
+		return (true);
 	}
 	
 	/*
@@ -647,7 +647,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->description =	trim(Http::request('post_description', 'post'));
 
 			$parser = new Parser();
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? true : false;
 
 			// Informations passees au parseur de message
 			$parser_info = array(
@@ -756,7 +756,7 @@ class Fsb_frame_child extends Fsb_frame
 			'CAPTCHA_IMG' =>		sid(ROOT . 'main/visual_confirmation.' . PHPEXT . '?mode=post_captcha&amp;uniqd=' . md5(rand(1, time()))),
 			'HIDDEN' =>				Html::hidden('mp_parent', $this->mp_parent),
 			'UPLOAD_EXPLAIN' =>		sprintf(Fsb::$session->lang('post_max_filesize'), convert_size(Fsb::$cfg->get('upload_max_filesize')), implode(', ', explode(',', Fsb::$cfg->get('upload_extensions')))),
-			'CAN_QUICK_QUOTE' =>	($this->post_map == 'classic') ? TRUE : FALSE,
+			'CAN_QUICK_QUOTE' =>	($this->post_map == 'classic') ? true : false,
 			'LIST_UPLOAD_AUTH' =>	Html::make_list('upload_auth', Fsb::$session->data['auth']['other']['download_file'][1], $list_upload_auth),
 
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=' . $this->mode . '&amp;id=' . $this->id),
@@ -766,7 +766,7 @@ class Fsb_frame_child extends Fsb_frame
 	/*
 	** Revue des anciens messages du sujet
 	*/
-	public function topic_review($post_id = NULL)
+	public function topic_review($post_id = null)
 	{
 		Fsb::$tpl->set_switch('topic_review');
 
@@ -785,7 +785,7 @@ class Fsb_frame_child extends Fsb_frame
 		while ($row = Fsb::$db->row($result))
 		{
 			// Parse du HTML ?
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			// Informations passees au parseur de message
 			$parser_info = array(
@@ -843,7 +843,7 @@ class Fsb_frame_child extends Fsb_frame
 		while ($row = Fsb::$db->row($result))
 		{
 			// Parse du HTML ?
-			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 			// Informations passees au parseur de message
 			$parser_info = array(
@@ -877,7 +877,7 @@ class Fsb_frame_child extends Fsb_frame
 				if (Fsb::$session->is_authorized($this->data['f_id'], 'ga_create_' . $value) || ($this->mode == 'edit' && $this->data['t_type'] == $key))
 				{
 					Fsb::$tpl->set_blocks('topic_type', array(
-						'CHECKED' =>	(($this->mode == 'topic' && (($this->type !== NULL && $this->type == $key) || !isset($GLOBALS['_topic_type'][$key + 1]))) || ($this->mode == 'edit' && $this->data['t_type'] == $key)) ? TRUE : FALSE,
+						'CHECKED' =>	(($this->mode == 'topic' && ((!is_null($this->type) && $this->type == $key) || !isset($GLOBALS['_topic_type'][$key + 1]))) || ($this->mode == 'edit' && $this->data['t_type'] == $key)) ? true : false,
 						'VALUE' =>		$key,
 						'LANG' =>		Fsb::$session->lang('topic_type_' . $value),
 					));
@@ -1033,7 +1033,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Type de sujet
 		if ($this->mode == 'topic' || ($this->mode == 'edit' && $this->data['t_first_p_id'] == $this->data['p_id']))
 		{
-			if ($this->type === NULL)
+			if (is_null($this->type))
 			{
 				for ($i = count($GLOBALS['_topic_type']) - 1; $i >= 0; $i--)
 				{
@@ -1045,7 +1045,7 @@ class Fsb_frame_child extends Fsb_frame
 				}
 			}
 
-			if ($this->type === NULL)
+			if (is_null($this->type))
 			{
 				Display::message('not_allowed_reply');
 			}
@@ -1108,7 +1108,7 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			case 'mp' :
 				// On envoie le message prive
-				Send::send_mp(Fsb::$session->id(), $this->to_id, $this->title, $this->content, $this->mp_parent, TRUE);
+				Send::send_mp(Fsb::$session->id(), $this->to_id, $this->title, $this->content, $this->mp_parent, true);
 
 				Display::message('post_mp_well', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=inbox', 'forum_mp');
 			break;
@@ -1123,7 +1123,7 @@ class Fsb_frame_child extends Fsb_frame
 
 			case 'topic' :
 				// Sondage ?
-				$poll_exists = ($this->poll_name && $this->poll_values) ? TRUE : FALSE;
+				$poll_exists = ($this->poll_name && $this->poll_values) ? true : false;
 
 				// On poste le nouveau sujet
 				$topic_id = Send::send_topic($this->id, Fsb::$session->id(), $this->title, $this->post_map, $this->type, array(
@@ -1137,7 +1137,7 @@ class Fsb_frame_child extends Fsb_frame
 				Send::send_post(Fsb::$session->id(), $topic_id, $this->id, $this->content, $this->nickname, $this->approve, $this->post_map, array(
 					't_type' => (int) $this->type,
 					't_title' => $this->title,
-				), TRUE);
+				), true);
 
 				// Creation du sondage
 				if ($poll_exists)
@@ -1155,7 +1155,7 @@ class Fsb_frame_child extends Fsb_frame
 				// On poste une reponse dans le sujet
 				$post_id = Send::send_post(Fsb::$session->id(), $this->id, $this->data['f_id'], $this->content, $this->nickname, $this->approve, $this->post_map, array(
 					't_title' => $this->data['t_title'],
-				), FALSE);
+				), false);
 
 				// Surveillance automatique ?
 				$this->auto_notification($this->data['t_id']);
@@ -1169,7 +1169,7 @@ class Fsb_frame_child extends Fsb_frame
 				if ($this->data['p_id'] == $this->data['t_first_p_id'])
 				{
 					Send::edit_post($this->id, $this->content, Fsb::$session->id(), array(
-						'update_topic' =>	TRUE,
+						'update_topic' =>	true,
 						't_type' =>			(int) $this->type,
 						't_title' =>		$this->title,
 						't_id' =>			(int) $this->data['t_id'],
@@ -1261,7 +1261,7 @@ class Fsb_frame_child extends Fsb_frame
 					// Si le MP n'a pas ete trouve on ignore la reponse
 					if (!$this->mp_data)
 					{
-						$this->id = NULL;
+						$this->id = null;
 					}
 					else
 					{
@@ -1338,7 +1338,7 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		if (Fsb::$session->is_logged())
 		{
-			Fsb::$session->data['u_activate_wysiwyg'] = (Http::request('set_wysiwyg_on', 'post') !== NULL) ? TRUE : FALSE;
+			Fsb::$session->data['u_activate_wysiwyg'] = (!is_null(Http::request('set_wysiwyg_on', 'post'))) ? true : false;
 			Fsb::$db->update('users', array(
 				'u_activate_wysiwyg' =>		Fsb::$session->data['u_activate_wysiwyg'],
 			), 'WHERE u_id = ' . Fsb::$session->id());
@@ -1355,8 +1355,8 @@ class Fsb_frame_child extends Fsb_frame
 		if (Fsb::$session->data['u_activate_auto_notification'] & NOTIFICATION_AUTO)
 		{
 			Fsb::$db->insert('topics_notification', array(
-				'u_id' =>		array(Fsb::$session->id(), TRUE),
-				't_id' =>		array($topic_id, TRUE),
+				'u_id' =>		array(Fsb::$session->id(), true),
+				't_id' =>		array($topic_id, true),
 				'tn_status' =>	(Fsb::$session->data['u_activate_auto_notification'] & NOTIFICATION_EMAIL) ? IS_NOT_NOTIFIED : IS_NOTIFIED,
 			), 'REPLACE');
 		}
@@ -1384,7 +1384,7 @@ class Fsb_frame_child extends Fsb_frame
 				'REALNAME' =>	$row['upload_realname'],
 				'FILESIZE' =>	convert_size($row['upload_filesize']),
 				'TIME' =>		Fsb::$session->print_date($row['upload_time']),
-				'IS_IMG' =>		(strpos($row['upload_mimetype'], 'image/') !== FALSE) ? 'true' : 'false',
+				'IS_IMG' =>		(strpos($row['upload_mimetype'], 'image/') !== false) ? 'true' : 'false',
 				'PATH' =>		ROOT . 'index.' . PHPEXT . '?p=download&amp;nocount&amp;id=' . $row['upload_id'],
 			));
 		}

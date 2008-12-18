@@ -18,14 +18,14 @@ class Debug extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $can_debug = TRUE;
+	public $can_debug = true;
 	
 	/**
 	 * Debugage des requetes actif
 	 *
 	 * @var unknown_type
 	 */
-	public $debug_query = FALSE;
+	public $debug_query = false;
 	
 	/**
 	 * Donnees POST
@@ -39,7 +39,7 @@ class Debug extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $show_output = TRUE;
+	public $show_output = true;
 
 	/**
 	 * Cache des URL a generer
@@ -82,10 +82,10 @@ class Debug extends Fsb_model
 	public function __construct()
 	{
 		// Benchmark de depart
-		$this->start = microtime(true);
+		$this->start = microtime( true );
 
-		$this->can_debug = (!(error_reporting() ^ E_ALL)) ? TRUE : FALSE;
-		$this->debug_query = ($this->can_debug && isset($_GET['debug_query'])) ? TRUE : FALSE;
+		$this->can_debug = (!(error_reporting() ^ E_ALL)) ? true : false;
+		$this->debug_query = ($this->can_debug && isset($_GET['debug_query'])) ? true : false;
 
 		$this->show_output = !$this->debug_query;
 	}
@@ -121,7 +121,7 @@ class Debug extends Fsb_model
 			$request_uri = (isset($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
 			$request_uri .= '?' . $_SERVER['QUERY_STRING'];
 
-			$this->url_begin = str_replace('&', '&amp;', $request_uri) . ((strpos($request_uri, '?') != FALSE) ? '&amp;' : '?');
+			$this->url_begin = str_replace('&', '&amp;', $request_uri) . ((strpos($request_uri, '?') != false) ? '&amp;' : '?');
 			$this->url_end = '&amp;method=' . $request_method . (($request_method == 'POST') ? '&amp;post_ary=' . urlencode(serialize($_POST)) : '');
 		}
 
@@ -135,7 +135,7 @@ class Debug extends Fsb_model
 	 */
 	public function mark($name)
 	{
-		$this->data[] = array('name' => $name, 'time' => microtime(true));
+		$this->data[] = array('name' => $name, 'time' => microtime( true ));
 	}
 
 	/**
@@ -143,7 +143,7 @@ class Debug extends Fsb_model
 	 */
 	public function finish()
 	{
-		$this->end = microtime(true);
+		$this->end = microtime( true );
 		$total = $this->end - $this->start;
 
 		echo '
@@ -226,7 +226,7 @@ class Debug extends Fsb_model
 			}
 		}
 
-		return (NULL);
+		return (null);
 	}
 }
 

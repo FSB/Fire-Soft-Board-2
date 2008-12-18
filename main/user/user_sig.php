@@ -16,7 +16,7 @@ if (Fsb::$cfg->get('activate_sig'))
 	 * 
 	 * @var bool
 	 */
-	$show_this_module = TRUE;
+	$show_this_module = true;
 }
 
 /**
@@ -60,7 +60,7 @@ class Page_user_sig extends Fsb_model
 			}
 		}
 
-		Display::fsbcode(TRUE);
+		Display::fsbcode(true);
 		Display::smilies();
 		$this->sig_form();
 	}
@@ -96,7 +96,7 @@ class Page_user_sig extends Fsb_model
 			'MAX_LINE' =>			Fsb::$cfg->get('sig_max_line'),
 			'CONTENT' =>			Html::make_errstr($this->errstr),
 			'USER_SIG' =>			$value,
-			'USE_WYSIWYG' =>		(Fsb::$mods->is_active('wysiwyg') && Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE,
+			'USE_WYSIWYG' =>		(Fsb::$mods->is_active('wysiwyg') && Fsb::$session->data['u_activate_wysiwyg']) ? true : false,
 
 			'U_ACTION' =>			sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=sig'),
 		));
@@ -107,7 +107,7 @@ class Page_user_sig extends Fsb_model
 			'U_BOX_BGCOLOR' =>	sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=color&amp;map_name=sig&amp;color_type=bgcolor'),
 			'U_BOX_SMILIES' =>	sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=smilies&amp;map_name=sig'),
 			'POS_ITERATOR' =>	0,
-			'USE_WYSIWYG' =>	(Fsb::$session->data['u_activate_wysiwyg']) ? TRUE : FALSE,
+			'USE_WYSIWYG' =>	(Fsb::$session->data['u_activate_wysiwyg']) ? true : false,
 		));
 	}
 	
@@ -129,7 +129,7 @@ class Page_user_sig extends Fsb_model
 			'u_id' =>			Fsb::$session->id(),
 			'p_nickname' =>		Fsb::$session->data['u_nickname'],
 			'u_auth' =>			Fsb::$session->auth(),
-			'is_sig' =>			TRUE,
+			'is_sig' =>			true,
 		);
 
 		Fsb::$tpl->set_switch('preview');

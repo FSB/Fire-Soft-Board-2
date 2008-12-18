@@ -99,7 +99,7 @@
 
 if (!defined('FSB_SDK'))
 {
-	define('FSB_SDK', TRUE);
+	define('FSB_SDK', true);
 }
 
 if (!defined('ROOT'))
@@ -240,21 +240,21 @@ class Fsb_sdk extends Fsb_model
 	 * @param string $password Mot de passe de connexion
 	 * @param bool $is_hidden Connexion invisible
 	 * @param bool $use_auto_connexion Connexion automatique
-	 * @return bool TRUE si la connexion a reussie, sinon FALSE
+	 * @return bool true si la connexion a reussie, sinon false
 	 */
-	public function login($login, $password, $is_hidden = FALSE, $use_auto_connexion = FALSE)
+	public function login($login, $password, $is_hidden = false, $use_auto_connexion = false)
 	{
 		// Necessite le fichier de langue de la page de connexion
 		Fsb::$session->load_lang('lg_forum_login');
 
 		// Connexion
 		$return = Fsb::$session->log_user($login, $password, $is_hidden, $use_auto_connexion);
-		if ($return !== FALSE)
+		if ($return !== false)
 		{
 			$this->errstr = $return;
-			return (FALSE);
+			return (false);
 		}
-		return (TRUE);
+		return (true);
 	}
 
 	/**
@@ -322,7 +322,7 @@ class Fsb_sdk extends Fsb_model
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['u_nickname'],
 				'u_auth' =>			$row['u_auth'],
-				'is_sig' =>			TRUE,
+				'is_sig' =>			true,
 			);
 
 			// Informations sur le membre
@@ -332,8 +332,8 @@ class Fsb_sdk extends Fsb_model
 			$row['age'] =			($row['age']) ? sprintf(Fsb::$session->lang('topic_age_format'), $row['age']) : Fsb::$session->lang('topic_age_none');
 			$row['sexe'] =			User::get_sexe($row['u_sexe']);
 			$row['sexe'] =			($row['sexe'] != '') ? $row['sexe'] : Fsb::$session->lang('topic_sexe_none');
-			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], FALSE);
-			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE;
+			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], false);
+			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? true : false;
 			$row['nickname'] =		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']);
 			$row['u_signature'] =	$parser->sig($row['u_signature'], $parser_info);
 
@@ -450,10 +450,10 @@ class Fsb_sdk extends Fsb_model
 	 * @param string|array $forums Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte des droits bien sur)
 	 * @param int $total Total de messages a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les messages
 	 * @param string $order Ordre dans lequel trier les messages
-	 * @param bool $gbt (Group By Topics) si TRUE, on ne recherche qu'un message par sujet
+	 * @param bool $gbt (Group By Topics) si true, on ne recherche qu'un message par sujet
 	 * @return array
 	 */
-	public function get_posts($forums = '*', $total = 15, $order = 'p.p_time DESC', $gbt = TRUE)
+	public function get_posts($forums = '*', $total = 15, $order = 'p.p_time DESC', $gbt = true)
 	{
 		// Necessite le fichier de langue de la page des sujets
 		Fsb::$session->load_lang('lg_forum_topic');
@@ -476,14 +476,14 @@ class Fsb_sdk extends Fsb_model
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$parser->parse_html = FALSE;
+			$parser->parse_html = false;
 
 			// Informations passees au parseur de message
 			$parser_sig_info = array(
 				'u_id' =>			$row['u_id'],
 				'p_nickname' =>		$row['p_nickname'],
 				'u_auth' =>			$row['u_auth'],
-				'is_sig' =>			TRUE,
+				'is_sig' =>			true,
 			);
 
 			// Informations sur le posteur du message
@@ -493,8 +493,8 @@ class Fsb_sdk extends Fsb_model
 			$row['age'] =			($row['age']) ? sprintf(Fsb::$session->lang('topic_age_format'), $row['age']) : Fsb::$session->lang('topic_age_none');
 			$row['sexe'] =			User::get_sexe($row['u_sexe']);
 			$row['sexe'] =			($row['sexe'] != '') ? $row['sexe'] : Fsb::$session->lang('topic_sexe_none');
-			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], FALSE);
-			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? TRUE : FALSE;
+			$row['joined'] =		Fsb::$session->print_date($row['u_joined'], false);
+			$row['is_online'] =		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? true : false;
 			$row['nickname'] =		Html::nickname($row['p_nickname'], $row['u_id'], $row['u_color']);
 			$row['u_signature'] =	$parser->sig($row['u_signature'], $parser_sig_info);
 
@@ -508,10 +508,10 @@ class Fsb_sdk extends Fsb_model
 			);
 
 			// Informations sur le message
-			$parser->parse_html =	(Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+			$parser->parse_html =	(Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 			$row['p_text'] =		$parser->mapped_message($row['p_text'], $row['p_map'], $parser_info);
 			$row['p_timestamp'] =	$row['p_time'];
-			$row['p_time'] =		Fsb::$session->print_date($row['p_time'], TRUE, NULL, TRUE);
+			$row['p_time'] =		Fsb::$session->print_date($row['p_time'], true, null, true);
 			$posts[] = $row;
 		}
 		Fsb::$db->free($result);
@@ -533,16 +533,16 @@ class Fsb_sdk extends Fsb_model
 	 * @param string $description Description du sujet
 	 * @param int $type Type de sujet
 	 */
-	public function post_topic($title, $content, $forum_id, $user_id = NULL, $description = '', $type = NULL)
+	public function post_topic($title, $content, $forum_id, $user_id = null, $description = '', $type = null)
 	{
 		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
-		if ($user_id === NULL)
+		if (is_null($user_id))
 		{
 			$user_id = Fsb::$session->id();
 		}
 
 		// Par defaut on prend le dernier type pour les topics, donc le "sujet de base"
-		if ($type === NULL)
+		if (is_null($type))
 		{
 			$type = count($GLOBALS['_topic_type']) - 1;
 		}
@@ -561,7 +561,7 @@ class Fsb_sdk extends Fsb_model
 	 * @param string $content Contenu du message
 	 * @param int $user_id ID du membre postant le message
 	 */
-	public function post_reply($topic_id, $content, $user_id = NULL)
+	public function post_reply($topic_id, $content, $user_id = null)
 	{
 		// Formatage XML du message
 		$message = new Xml();
@@ -574,7 +574,7 @@ class Fsb_sdk extends Fsb_model
 		unset($message);
 
 		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
-		if ($user_id === NULL)
+		if (is_null($user_id))
 		{
 			$user_id = Fsb::$session->id();
 			$nickname = Fsb::$session->data['u_nickname'];
@@ -599,7 +599,7 @@ class Fsb_sdk extends Fsb_model
 			trigger_error('Fsb_sdk :: Le sujet avec l\'ID "' . $topic_id . '" n\'existe pas', FSB_ERROR);
 		}
 
-		$is_first_post = ($data['t_total_post'] == 0) ? TRUE : FALSE;
+		$is_first_post = ($data['t_total_post'] == 0) ? true : false;
 
 		Send::send_post($user_id, $topic_id, $data['f_id'], $content, $nickname, IS_APPROVED, 'classic', array(
 			't_title' =>		$data['t_title'],
@@ -614,15 +614,15 @@ class Fsb_sdk extends Fsb_model
 	 * @param int $to_id ID du destinataire
 	 * @param int $from_id ID de l'envoyeur
 	 */
-	public function post_mp($title, $content, $to_id, $from_id = NULL)
+	public function post_mp($title, $content, $to_id, $from_id = null)
 	{
 		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
-		if ($from_id === NULL)
+		if (is_null($from_id))
 		{
 			$from_id = Fsb::$session->id();
 		}
 
-		Send::send_mp($from_id, $to_id, $title, $content, 0, FALSE);
+		Send::send_mp($from_id, $to_id, $title, $content, 0, false);
 	}
 
 	/**
@@ -637,10 +637,10 @@ class Fsb_sdk extends Fsb_model
 	 * @param int $poll_max_vote Nombre d'option pour lesquelles un membre peut voter
 	 * @param string $description Description du sujet
 	 */
-	public function post_poll($poll_name, $poll_values, $title, $content, $forum_id, $user_id = NULL, $poll_max_vote = 1, $description = '')
+	public function post_poll($poll_name, $poll_values, $title, $content, $forum_id, $user_id = null, $poll_max_vote = 1, $description = '')
 	{
 		// Si l'ID du membre n'est pas donnee on prend celle du membre courrant
-		if ($user_id === NULL)
+		if (is_null($user_id))
 		{
 			$user_id = Fsb::$session->id();
 		}
@@ -658,7 +658,7 @@ class Fsb_sdk extends Fsb_model
 
 		$topic_id = Send::send_topic($forum_id, $user_id, $title, 'classic', count($GLOBALS['_topic_type']) - 1, array(
 			't_description' =>	$description,
-			't_poll' =>			TRUE,
+			't_poll' =>			true,
 		));
 
 		$this->post_reply($topic_id, $content, $user_id);
@@ -699,7 +699,7 @@ class Fsb_sdk extends Fsb_model
 		while ($row = Fsb::$db->row($result))
 		{
 			// Bot ?
-			if (Fsb::$mods->is_active('bot_list') && $row['bot_id'] !== NULL)
+			if (Fsb::$mods->is_active('bot_list') && !is_null($row['bot_id']))
 			{
 				if (in_array($row['bot_id'], $bot_array))
 				{
@@ -709,9 +709,9 @@ class Fsb_sdk extends Fsb_model
 				$total_visitor++;
 
 				$return['list'][] = array(
-					'is_hidden' =>	FALSE,
-					'id' =>			NULL,
-					'nickname' =>	NULL,
+					'is_hidden' =>	false,
+					'id' =>			null,
+					'nickname' =>	null,
 					'color' =>		'class="bot"',
 					'html' =>		sprintf(Fsb::$session->getStyle('other', 'nickname'), 'class="bot"', $row['bot_name'] . ' (bot)'),
 				);
@@ -868,7 +868,7 @@ class Fsb_sdk extends Fsb_model
 		Fsb::$db->free($result);
 
 		$return['total'] =		$total_birthday;
-		$return['total_lang'] =	sprintf(String::plural('users_birthday', $total_birthday, TRUE), $total_birthday);
+		$return['total_lang'] =	sprintf(String::plural('users_birthday', $total_birthday, true), $total_birthday);
 
 		return ($return);
 	}
@@ -905,7 +905,7 @@ class Fsb_sdk extends Fsb_model
 			{
 				if ($row['c_view'] == -1 || in_array($row['c_view'], Fsb::$session->data['groups']))
 				{
-					$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? TRUE : FALSE;
+					$parser->parse_html = (Fsb::$cfg->get('activate_html') && $row['u_auth'] >= MODOSUP) ? true : false;
 
 					$return['list'][] = array(
 						'content' =>	$parser->mapped_message($row['c_content'], 'classic'),
@@ -939,11 +939,11 @@ class Fsb_sdk extends Fsb_model
 	 * @param int $topic_id ID du sujet si on veut un sondage precis
 	 * @return array
 	 */
-	public function get_poll($name = 'fsbpoll', $order = 't.t_last_p_time DESC', $topic_id = NULL)
+	public function get_poll($name = 'fsbpoll', $order = 't.t_last_p_time DESC', $topic_id = null)
 	{
 		$return = array();
 
-		if ($topic_id === NULL)
+		if (is_null($topic_id))
 		{
 			$sql = 'SELECT t.t_id
 					FROM ' . SQL_PREFIX . 'topics t
@@ -980,7 +980,7 @@ class Fsb_sdk extends Fsb_model
 				'name' =>		$row['poll_name'],
 				'total_vote' =>	$row['poll_total_vote'],
 				'max_vote' =>	$row['poll_max_vote'],
-				'can_vote' =>	(!$row['poll_result_u_id'] && Fsb::$session->is_logged() && $row['t_status'] == UNLOCK && $row['f_status'] == UNLOCK) ? TRUE : FALSE,
+				'can_vote' =>	(!$row['poll_result_u_id'] && Fsb::$session->is_logged() && $row['t_status'] == UNLOCK && $row['f_status'] == UNLOCK) ? true : false,
 				'options' =>	array(),
 			);
 
@@ -1039,7 +1039,7 @@ class Fsb_sdk extends Fsb_model
 	 *
 	 * @param int $topic_id ID du sujet du sondage
 	 * @param string $name Nom pour le formulaire
-	 * @return bool Retourne FALSE en cas d'erreur
+	 * @return bool Retourne false en cas d'erreur
 	 */
 	public function submit_poll($topic_id, $name = 'fsbpoll')
 	{
@@ -1049,7 +1049,7 @@ class Fsb_sdk extends Fsb_model
 		if (!$this->is_logged())
 		{
 			$this->errstr = Fsb::$session->lang('not_allowed');
-			return (FALSE);
+			return (false);
 		}
 
 		// Donnees du sondage
@@ -1066,12 +1066,12 @@ class Fsb_sdk extends Fsb_model
 		if (!$row)
 		{
 			$this->errstr = Fsb::$session->lang('topic_poll_not_exists');
-			return (FALSE);
+			return (false);
 		}
 		else if ($row['poll_result_u_id'])
 		{
 			$this->errstr = Fsb::$session->lang('topic_has_submit_poll');
-			return (FALSE);
+			return (false);
 		}
 
 		// On recupere les votes
@@ -1086,14 +1086,14 @@ class Fsb_sdk extends Fsb_model
 		if (!$poll_result)
 		{
 			$this->errstr = Fsb::$session->lang('topic_poll_need_vote');
-			return (FALSE);
+			return (false);
 		}
 
 		// On verifie qu'il n'y ait pas trop de votes
 		if (count($poll_result) > $row['poll_max_vote'])
 		{
 			$this->errstr = sprintf(Fsb::$session->lang('topic_poll_too_much_vote'), $row['poll_max_vote']);
-			return (FALSE);
+			return (false);
 		}
 
 		// On met a jour le nombre de vote par option et on signale que le membre a vote
@@ -1103,17 +1103,17 @@ class Fsb_sdk extends Fsb_model
 		));
 
 		Fsb::$db->update('poll', array(
-			'poll_total_vote' =>	array('(poll_total_vote + ' . count($poll_result) . ')', 'is_field' => TRUE),
+			'poll_total_vote' =>	array('(poll_total_vote + ' . count($poll_result) . ')', 'is_field' => true),
 		), 'WHERE t_id = ' . $topic_id);
 
 		foreach ($poll_result AS $value)
 		{
 			Fsb::$db->update('poll_options', array(
-				'poll_opt_total' =>	array('(poll_opt_total + 1)', 'is_field' => TRUE),
+				'poll_opt_total' =>	array('(poll_opt_total + 1)', 'is_field' => true),
 			), 'WHERE poll_opt_id = ' . intval($value) . ' AND t_id = ' . $topic_id);
 		}
 
-		return (TRUE);
+		return (true);
 	}
 
 	//
@@ -1262,14 +1262,14 @@ class Fsb_sdk extends Fsb_model
 		$this->rsa = new Rsa();
 		$this->rsa->public_key =	Rsa_key::from_string(Fsb::$cfg->get('rsa_public_key'));
 		$this->rsa->private_key =	Rsa_key::from_string(Fsb::$cfg->get('rsa_private_key'));
-		if ($this->rsa->public_key === NULL || $this->rsa->private_key === NULL)
+		if (is_null($this->rsa->public_key) || is_null($this->rsa->private_key))
 		{
 			$this->rsa->regenerate_keys();
 		}
 
 		foreach (func_get_args() AS $arg)
 		{
-			$this->rsa_vars[$arg] = NULL;
+			$this->rsa_vars[$arg] = null;
 		}
 	}
 

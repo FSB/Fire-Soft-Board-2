@@ -66,7 +66,7 @@ class Captcha_gd extends Captcha
 	 */
 	protected function open_image()
 	{
-		$this->img = imagecreatetruecolor($this->width, $this->height + $this->extra_height);
+		$this->img = imagecreate true color($this->width, $this->height + $this->extra_height);
 		$background = $this->color($this->background_color);
 		imagefill($this->img, 0, 0, $background);
 	}
@@ -102,7 +102,7 @@ class Captcha_gd extends Captcha
 	 */
 	protected function write_char($size, $angle, $x, $vertical, $fontcolor, $font, $char)
 	{
-		if ($fontcolor === NULL)
+		if (is_null($fontcolor))
 		{
 			list($red, $green, $blue) = $this->generate_color();
 		}

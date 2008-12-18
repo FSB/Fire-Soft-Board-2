@@ -26,14 +26,14 @@ class Rsa extends Fsb_model
 	 *
 	 * @var Rsa_key
 	 */
-	public $public_key = NULL;
+	public $public_key = null;
 	
 	/**
 	 * Clef privee
 	 *
 	 * @var Rsa_key
 	 */
-	public $private_key = NULL;
+	public $private_key = null;
 
 	/**
 	 * Constructeur
@@ -220,9 +220,9 @@ class Rsa_key extends Fsb_model
 	public static function &from_string($string)
 	{
 		$data = @unserialize(base64_decode($string));
-		if ($data === FALSE)
+		if ($data === false)
 		{
-			$foo = NULL;
+			$foo = null;
 			$bar = &$foo;
 			return ($bar);
 		}
@@ -238,7 +238,7 @@ class Rsa_key extends Fsb_model
 	 */
 	public function is_valid($key)
 	{
-		return ((is_object($key) && strtolower(get_class($key)) === strtolower(__CLASS__)) ? TRUE : FALSE);
+		return ((is_object($key) && strtolower(get_class($key)) === strtolower(__CLASS__)) ? true : false);
 	}
 }
 
@@ -262,7 +262,7 @@ class Rsa_bcmath extends Fsb_model
 {
     /**
      * Performs Miller-Rabin primality test for number $num 
-     * with base $base. Returns true, if $num is strong pseudoprime
+     * with base $base. Returns  true , if $num is strong pseudoprime
      * by base $base. Else returns false.
      *
      * @param string $num
@@ -287,13 +287,13 @@ class Rsa_bcmath extends Fsb_model
         $tmp = $this->powmod($base, $tmp, $num);
         if (!bccomp($tmp, '1')) {
             // $num is probably prime
-            return true;
+            return  true ;
         }
 
         while ($zero_bits--) {
             if (!bccomp(bcadd($tmp, '1'), $num)) {
                 // $num is probably prime
-                return true;
+                return  true ;
             }
             $tmp = $this->powmod($tmp, '2', $num);
         }
@@ -401,7 +401,7 @@ class Rsa_bcmath extends Fsb_model
     }
 
     /**
-     * Tests $num on primality. Returns true, if $num is strong pseudoprime.
+     * Tests $num on primality. Returns  true , if $num is strong pseudoprime.
      * Else returns false.
      *
      * @param string $num
@@ -441,7 +441,7 @@ class Rsa_bcmath extends Fsb_model
         for ($i = 0; $i < $primes_cnt; $i++) {
             if (bccomp($num, $primes[$i]) <= 0) {
                 // number is prime
-                return true;
+                return  true ;
             }
             if (!bccomp(bcmod($num, $primes[$i]), '0')) {
                 // number divides by $primes[$i]
@@ -460,7 +460,7 @@ class Rsa_bcmath extends Fsb_model
             }
         }
         // $num is strong pseudoprime
-        return true;
+        return  true ;
     }
 
     /**
@@ -511,7 +511,7 @@ class Rsa_bcmath extends Fsb_model
     }
 
     /**
-     * Returns true, if $num is equal to one. Else returns false
+     * Returns  true , if $num is equal to one. Else returns false
      *
      * @param string $num
      * @return bool

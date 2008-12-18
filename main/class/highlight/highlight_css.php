@@ -18,7 +18,7 @@ class Highlight_css extends Highlight
 	 *
 	 * @var bool
 	 */
-	private static $init = FALSE;
+	private static $init = false;
 
 	/**
 	 * Constructeur, initialise une seule fois la classe
@@ -29,7 +29,7 @@ class Highlight_css extends Highlight
 		{
 			return ;
 		}
-		self::$init = TRUE;
+		self::$init = true;
 	}
 
 	/**
@@ -164,12 +164,12 @@ class Highlight_css extends Highlight
 			else
 			{
 				$result .= $this->open_style('sc_css_normal');
-				$in_block = FALSE;
+				$in_block = false;
 				while ($i < $len)
 				{
 					if ($str[$i] == '(')
 					{
-						$in_block = TRUE;
+						$in_block = true;
 					}
 					else if (($in_block && $str[$i] == ')') || (!preg_match('#[a-zA-Z0-9_]#i', $str[$i]) && !$in_block))
 					{

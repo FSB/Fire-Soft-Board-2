@@ -21,14 +21,14 @@ abstract class Search extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	public $search_in_post = TRUE;
+	public $search_in_post = true;
 	
 	/**
 	 * Recherche dans les titres
 	 *
 	 * @var bool
 	 */
-	public $search_in_title = TRUE;
+	public $search_in_title = true;
 
 	/**
 	 * Un seul doit matcher, ou tous les mots doivent matcher ?
@@ -110,7 +110,7 @@ abstract class Search extends Fsb_model
 	 * @param int $date Timestamp pour la recherche
 	 * @return array ID des messages trouves
 	 */
-	public function launch($keywords, $author_nickname, $list_forums, $topic_id = NULL, $date = 0)
+	public function launch($keywords, $author_nickname, $list_forums, $topic_id = null, $date = 0)
 	{
 		// Liens
 		$this->search_link = ($this->search_link == 'or') ? 'or' : 'and';
@@ -125,7 +125,7 @@ abstract class Search extends Fsb_model
 			if ($word && !isset($word_exist[$word]) && strlen($word) >= $this->min_len && strlen($word) <= $this->max_len)
 			{
 				$keyword_array[] = Fsb::$db->escape($word);
-				$word_exist[$word] = TRUE;
+				$word_exist[$word] = true;
 			}
 		}
 		unset($word_exist);

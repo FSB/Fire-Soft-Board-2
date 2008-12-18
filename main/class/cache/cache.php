@@ -37,7 +37,7 @@ abstract class Cache extends Fsb_model
 	 * @param string $comments Commentaires sur la donnee en cache
 	 * @param int $timestamp Timestamp de la mise en cache de l'information (par defaut la date actuelle)
 	 */
-	abstract public function put($hash, $value, $comments = '', $timestamp = NULL);
+	abstract public function put($hash, $value, $comments = '', $timestamp = null);
 	
 	/**
 	 * Recupere la date de mise en cache
@@ -59,7 +59,7 @@ abstract class Cache extends Fsb_model
 	 *
 	 * @param string $prefix Supprime les clefs commencant par ce prefixe
 	 */
-	abstract public function destroy($prefix = NULL);
+	abstract public function destroy($prefix = null);
 	
 	/**
 	 * Nettoie les donnees trop vielles en cache
@@ -80,7 +80,7 @@ abstract class Cache extends Fsb_model
 	 *
 	 * @var bool
 	 */
-	private static $clearstatcache = FALSE;
+	private static $clearstatcache = false;
 
 	/*
 	** Retourne une instance de la classe cache en fonction des donnees passees
@@ -102,7 +102,7 @@ abstract class Cache extends Fsb_model
 		if (!self::$clearstatcache)
 		{
 			clearstatcache();
-			self::$clearstatcache = TRUE;
+			self::$clearstatcache = true;
 		}
 
 		if ($type == 'auto')

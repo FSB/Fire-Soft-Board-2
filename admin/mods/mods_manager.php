@@ -100,7 +100,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$dir = ROOT . 'mods/';
 		Fsb::$tpl->set_vars(array(
 			'L_TITLE' =>		sprintf(Fsb::$session->lang('adm_mods_list'), $dir),
-			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>		(Fsb::$cfg->get('ftp_default')) ? true : false,
 		));
 
 		// On parcourt le dossier ~/mods/ pour lister les MODS a installer
@@ -176,7 +176,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
-			$uninstall = (file_exists(ROOT . 'mods/' . $row['mod_name'] . '/uninstall.xml')) ? TRUE : FALSE;
+			$uninstall = (file_exists(ROOT . 'mods/' . $row['mod_name'] . '/uninstall.xml')) ? true : false;
 			if ($uninstall)
 			{
 				Fsb::$tpl->set_switch('uninstall_mod');
@@ -187,8 +187,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'VERSION' =>		$row['mod_version'],
 				'DESCRIPTION' =>	$row['mod_description'],
 				'CHECK_NAME' =>		$row['mod_name'],
-				'NEW_VERSION' =>	(isset($mods_version[$row['mod_name']]) && !is_last_version($row['mod_version'], $mods_version[$row['mod_name']])) ? $mods_version[$row['mod_name']] : FALSE,
-				'CHECKED' =>		($row['mod_status']) ? TRUE : FALSE,
+				'NEW_VERSION' =>	(isset($mods_version[$row['mod_name']]) && !is_last_version($row['mod_version'], $mods_version[$row['mod_name']])) ? $mods_version[$row['mod_name']] : false,
+				'CHECKED' =>		($row['mod_status']) ? true : false,
 				'UNINSTALL' =>		($uninstall) ? sid('index.' . PHPEXT . '?p=mods_manager&amp;mode=uninstall&amp;mod_path=' . $row['mod_name'] . '&amp;module=install') : '',
 
 				'U_TEMPLATE' =>		'http://www.fire-soft-board.com/mods.php?mod_name=' . urlencode($row['mod_name']),
@@ -217,9 +217,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Fsb::$tpl->set_blocks('mod', array(
 				'MOD_NAME' =>		(Fsb::$session->lang('adm_activation_mod_' . $row['mod_name'])) ? Fsb::$session->lang('adm_activation_mod_' . $row['mod_name']) : $row['mod_name'],
-				'MOD_EXPLAIN' =>	(Fsb::$session->lang('adm_activation_mod_' . $row['mod_name'] . '_explain')) ? Fsb::$session->lang('adm_activation_mod_' . $row['mod_name'] . '_explain') : NULL,
+				'MOD_EXPLAIN' =>	(Fsb::$session->lang('adm_activation_mod_' . $row['mod_name'] . '_explain')) ? Fsb::$session->lang('adm_activation_mod_' . $row['mod_name'] . '_explain') : null,
 				'NAME' =>			$row['mod_name'],
-				'ACTIVATED' =>		($row['mod_status']) ? TRUE : FALSE,
+				'ACTIVATED' =>		($row['mod_status']) ? true : false,
 			));
 		}
 		Fsb::$db->free($result);
@@ -315,13 +315,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		// Requetes SQL ?
-		$have_query = FALSE;
+		$have_query = false;
 		foreach ($module->xml->document->instruction[0]->line AS $hd)
 		{
 			$method = $module->convert_to_valid_function($hd->getAttribute('name'));
 			if ($method == 'sql')
 			{
-				$have_query = TRUE;
+				$have_query = true;
 				break;
 			}
 		}
@@ -339,7 +339,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FILE_OPEN' =>			$file_open,
 			'FILE_JOINED' =>		$file_joined,
 			'SQL' =>				($have_query) ? Fsb::$session->lang('yes') : Fsb::$session->lang('no'),
-			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? TRUE : FALSE,
+			'USE_FTP' =>			(Fsb::$cfg->get('ftp_default')) ? true : false,
 			'UPDATE_EXPLAIN' =>		($is_update) ? sprintf(Fsb::$session->lang('adm_mods_is_update_explain'), $parent) : '',
 			
 			'U_ACTION' =>			sid('index.' . PHPEXT . '?p=mods_manager&amp;mod_path=' . $this->mod_path),
@@ -372,14 +372,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$module->file_system(Http::request('use_ftp'));
 		$module->set_config('mod_name', $this->mod_path);
 		$module->set_config('mod_path',			ROOT . 'mods/' . $this->mod_path . '/');
-		$module->set_config('install_duplicat', (Http::request('install_duplicat', 'post')) ? TRUE : FALSE);
-		$module->set_config('install_sql',		(Http::request('install_sql', 'post')) ? TRUE : FALSE);
-		$module->set_config('install_file',		(Http::request('install_file', 'post')) ? TRUE : FALSE);
+		$module->set_config('install_duplicat', (Http::request('install_duplicat', 'post')) ? true : false);
+		$module->set_config('install_sql',		(Http::request('install_sql', 'post')) ? true : false);
+		$module->set_config('install_file',		(Http::request('install_file', 'post')) ? true : false);
 
 		// Preinstallation du MOD
 		$module->load_template($module->get_config('mod_path') . 'install.xml');
 		$module->save_files('mods/save', Http::request('format_backup', 'post'));
-		$module->set_config('install', FALSE);
+		$module->set_config('install', false);
 		$module->install();
 
 		// Erreurs lors de la preinstallation ?
@@ -388,7 +388,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		// Installation finale
 		if (!count($module->log_error))
 		{
-			$module->set_config('install', TRUE);
+			$module->set_config('install', true);
 			$module->install();
 			$this->module_log_error($module);
 
@@ -415,7 +415,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 						'mod_email' =>			$email,
 						'mod_website' =>		$website,
 						'mod_type' =>			Mods::EXTERN,
-						'mod_status' =>			TRUE,
+						'mod_status' =>			true,
 					));
 				}
 				// Il s'agit d'une mise a jour
@@ -457,10 +457,10 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'L_TITLE' =>	($module->get_config('install')) ? Fsb::$session->lang('module_log_error') : Fsb::$session->lang('module_log_error_pre'),
 		));
 
-		$error_exists = FALSE;
+		$error_exists = false;
 		foreach ($module->log_error AS $value)
 		{
-			$error_exists = TRUE;
+			$error_exists = true;
 			Fsb::$tpl->set_blocks('row', array(
 				'ACTION' =>		$value['action'],
 				'ERROR' =>		sprintf(Fsb::$session->lang('module_error_' . $value['errno']), $value['errstr'], $value['errstr2']),
@@ -487,16 +487,16 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$module->file_system(Http::request('use_ftp'));
 		$module->set_config('mod_name',			$this->mod_path);
 		$module->set_config('mod_path',			ROOT . 'mods/' . $this->mod_path . '/');
-		$module->set_config('install_duplicat', TRUE);
-		$module->set_config('install_sql',		TRUE);
-		$module->set_config('install_file',		TRUE);
+		$module->set_config('install_duplicat', true);
+		$module->set_config('install_sql',		true);
+		$module->set_config('install_file',		true);
 		$module->load_template($module->get_config('mod_path') . 'uninstall.xml');
 
 		if (check_confirm())
 		{
 			// Pre-désinstallation
 			$module->save_files('mods/save', 'zip');
-			$module->set_config('install', FALSE);
+			$module->set_config('install', false);
 			$module->install();
 
 			// Erreurs lors de la pre-desinstallation ?
@@ -505,7 +505,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// Désinstallation finale
 			if (!count($module->log_error))
 			{
-				$module->set_config('install', TRUE);
+				$module->set_config('install', true);
 				$module->install();
 				$this->module_log_error($module);
 
@@ -578,7 +578,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$restore = str_replace(array('\\', '/'), array('_', '_'), $restore);
 
 			// Instance d'un objet File()
-			$file = File::factory((Fsb::$cfg->get('ftp_default') || Http::getcookie('ftp')) ? TRUE : FALSE);
+			$file = File::factory((Fsb::$cfg->get('ftp_default') || Http::getcookie('ftp')) ? true : false);
 
 			// S'il s'agit d'un dossier on recopie les fichiers
 			if ($restore[0] != '.' && is_dir(ROOT . 'mods/save/' . $restore))
@@ -666,7 +666,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					'MOD_CONTACT' =>			'mailto:' . $xml->document->author[0]->contact[0]->getData(),
 					'MOD_WEBSITE' =>			$xml->document->author[0]->website[0]->getData(),
 					'MOD_DESCRIPTION' =>		String::unhtmlspecialchars($xml->document->description[0]->getData()),
-					'MOD_EXISTS' =>				(Fsb::$mods->exists($xml->document->realname[0]->getData())) ? TRUE : FALSE,
+					'MOD_EXISTS' =>				(Fsb::$mods->exists($xml->document->realname[0]->getData())) ? true : false,
 
 					'U_DOWNLOAD_MOD' =>			$xml->document->download[0]->full[0]->getData(),
 					'U_ACTION' =>				sid('index.' . PHPEXT . '?p=mods_manager&amp;module=streaming&amp;url=' . urlencode($xml->document->download[0]->short[0]->getData()) . '&amp;mod_name=' . $mod_name),
@@ -774,7 +774,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			$upload = new Upload('upload_mod');
 			$upload->allow_ext(array('zip', 'tar', 'gz'));
-			$mod_name = $upload->store(ROOT . 'mods/', TRUE);
+			$mod_name = $upload->store(ROOT . 'mods/', true);
 
 			// Cette ligne permettra de mettre en champ cache le MOD si on utilise une connexion FTP
 			$_POST['upload_mod'] = $mod_name;

@@ -10,7 +10,7 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');
-define('IN_ADM', TRUE);
+define('IN_ADM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
 /**
@@ -37,7 +37,7 @@ class Fsb_admin_frame extends Fsb_model
 	 * 
 	 * @var int
 	 */
-	public $cat = NULL;
+	public $cat = null;
 
 	/**
 	 * Recupere la page de la pseudo frame
@@ -49,20 +49,20 @@ class Fsb_admin_frame extends Fsb_model
 		Fsb::$menu = new Adm_menu($page);
 
 		// Si la page n'existe pas il s'agit d'une page built-in de l'administration
-		if (Fsb::$menu->include == NULL)
+		if (Fsb::$menu->include == null)
 		{
 			switch ($page)
 			{
 				case "menu_adm" :
 					$inc_auth = FONDATOR;
 					$inc_page = 'menu_adm';
-					$inc_cat = NULL;
+					$inc_cat = null;
 				break;
 
 				default :
 					$inc_auth = MODOSUP;
 					$inc_page = 'index_adm';
-					$inc_cat = NULL;
+					$inc_cat = null;
 				break;
 			}
 		}
@@ -166,7 +166,7 @@ class Fsb_admin_frame extends Fsb_model
 	 */
 	public function frame_footer()
 	{
-		Fsb::$debug->end = microtime(true);
+		Fsb::$debug->end = microtime( true );
 
 		// Navigation ?
 		if (isset($this->nav) && $this->nav)
@@ -175,7 +175,7 @@ class Fsb_admin_frame extends Fsb_model
 			foreach ($this->nav AS $value)
 			{
 				Fsb::$tpl->set_blocks('nav', array(
-					'URL' =>	(isset($value['url'])) ? sid($value['url']) : FALSE,
+					'URL' =>	(isset($value['url'])) ? sid($value['url']) : false,
 					'NAME' =>	htmlspecialchars($value['name']),
 				));
 			}

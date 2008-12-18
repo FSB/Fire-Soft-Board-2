@@ -25,7 +25,7 @@ class Highlight_html extends Highlight
 	 *
 	 * @var bool
 	 */
-	private static $init = FALSE;
+	private static $init = false;
 
 	/**
 	 * Constructeur, initialise une seule fois la classe
@@ -36,7 +36,7 @@ class Highlight_html extends Highlight
 		{
 			return ;
 		}
-		self::$init = TRUE;
+		self::$init = true;
 
 		// Configuration
 		$file_content = file_get_contents(ROOT . 'main/class/highlight/keywords/highlight_html.txt');

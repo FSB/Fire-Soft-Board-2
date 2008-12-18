@@ -15,10 +15,10 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');
-define('FORUM', TRUE);
+define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
-Fsb::$session->start('', FALSE);
+Fsb::$session->start('', false);
 
 // Page accessible uniquement aux invites
 if (Fsb::$session->is_logged())
@@ -32,7 +32,7 @@ $captcha = Captcha::factory();
 // On recupere le mode de l'image, suivant ce mode on regenere ou non l'image (sachant que chaque regeneration d'image ajoute +1
 // dans le nombre de tentative)
 $mode = Http::request('mode');
-if ($mode == NULL)
+if ($mode == null)
 {
 	$mode = 'generate';
 }

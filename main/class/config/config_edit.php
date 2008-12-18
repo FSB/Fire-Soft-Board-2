@@ -59,7 +59,7 @@ class Config_edit extends Fsb_model
 	 * @param string $cat_name Nom de la categorie
 	 * @param string $explain Explication de la categorie
 	 */
-	public function set_cat($cat_name, $explain = NULL)
+	public function set_cat($cat_name, $explain = null)
 	{
 		Fsb::$tpl->set_blocks('cat', array(
 			'NAME' =>		$cat_name,
@@ -83,7 +83,7 @@ class Config_edit extends Fsb_model
 			if (!empty($args))
 			{
 				eval('$value = ' . $args . ';');
-				$arg = (!is_array($value)) ? '\'' . str_replace("'", "\'", $value) . '\'' : var_export($value, TRUE);
+				$arg = (!is_array($value)) ? '\'' . str_replace("'", "\'", $value) . '\'' : var_export($value, true);
 			}
 
 			// Arguments
@@ -153,7 +153,7 @@ class Config_edit extends Fsb_model
 		Fsb::$tpl->set_blocks('cat.line.put_boolean', array(
 			'L_ACTION' =>		Fsb::$session->lang($this->lang_prefix . $this->name),
 			'NAME' =>			$this->name,
-			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : NULL,
+			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : null,
 			'SEPARATOR' =>		(count((array) $this->args) > 2) ? '<br />' : '&nbsp;'
 		));
 
@@ -162,7 +162,7 @@ class Config_edit extends Fsb_model
 			Fsb::$tpl->set_blocks('cat.line.put_boolean.row', array(
 				'LANG' =>		((Fsb::$session->lang($lang)) ? Fsb::$session->lang($lang) : $lang),
 				'VALUE' =>		$value,
-				'CHECKED' =>	($this->cfg[$this->name] == $value) ? TRUE : FALSE,
+				'CHECKED' =>	($this->cfg[$this->name] == $value) ? true : false,
 			));
 		}
 	}
@@ -175,7 +175,7 @@ class Config_edit extends Fsb_model
 		Fsb::$tpl->set_blocks('cat.line.put_html_code', array(
 			'L_ACTION' =>		Fsb::$session->lang($this->lang_prefix . $this->name),
 			'CODE' =>			$this->args,
-			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : NULL,
+			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : null,
 		));
 	}
 
@@ -186,7 +186,7 @@ class Config_edit extends Fsb_model
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_text', array(
 			'L_ACTION' =>		Fsb::$session->lang($this->lang_prefix . $this->name),
-			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : NULL,
+			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : null,
 			'NAME' =>			$this->name,
 			'VALUE' =>			htmlspecialchars($this->cfg[$this->name]),
 			'TYPE' =>			($this->args && isset($this->args['password'])) ? 'password' : 'text',
@@ -211,7 +211,7 @@ class Config_edit extends Fsb_model
 	{
 		Fsb::$tpl->set_blocks('cat.line.put_textarea', array(
 			'L_ACTION' =>		Fsb::$session->lang($this->lang_prefix . $this->name),
-			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : NULL,
+			'EXPLAIN' =>		(Fsb::$session->lang($this->lang_prefix . $this->name . '_explain')) ? Fsb::$session->lang($this->lang_prefix . $this->name . '_explain') : null,
 			'NAME' =>			$this->name,
 			'VALUE' =>			htmlspecialchars($this->cfg[$this->name]),
 		));

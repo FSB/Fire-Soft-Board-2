@@ -18,7 +18,7 @@
 class Call extends Fsb_model
 {
 	private $obj;
-	private $break = FALSE;
+	private $break = false;
 
 	/**
 	 * Constructeur
@@ -63,7 +63,7 @@ class Call extends Fsb_model
 				{
 					$function = substr($value, 1);
 					$this->obj->$function();
-					return (TRUE);
+					return (true);
 				}
 				// Valeur de variable
 				else
@@ -82,7 +82,7 @@ class Call extends Fsb_model
 				}
 			}
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Call extends Fsb_model
 					else
 					{
 						$this->obj->$value();
-						$this->break = TRUE;
+						$this->break = true;
 						return ;
 					}
 				}

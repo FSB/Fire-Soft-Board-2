@@ -50,16 +50,16 @@ class Cache_ftp extends Cache
 		if (file_exists($this->path . $hash . '.' . PHPEXT))
 		{
 			$get = $this->get($hash);
-			if ($get === FALSE)
+			if (is_null($get))
 			{
-				return (FALSE);
+				return (false);
 			}
 
 			$this->store[$hash] = $get;
-			return (TRUE);
+			return (true);
 		}
 
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -78,13 +78,13 @@ class Cache_ftp extends Cache
 	/**
 	 * @see Cache::put()
 	 */
-	public function put($hash, $value, $comments = '', $timestamp = NULL)
+	public function put($hash, $value, $comments = '', $timestamp = null)
 	{
 		$export = str_replace(array('\\', "'"), array('\\\\', "\'"), serialize($value));
 		$fd = @fopen($this->path . $hash . '.' . PHPEXT, 'w');
 		fwrite($fd, "<?php\n/*\n$comments\n*/\n\$_cache_data = '" . $export . "';\nreturn(\$_cache_data);\n?>");
 		fclose($fd);
-		@touch($this->path . $hash . '.' . PHPEXT, ($timestamp === NULL) ? CURRENT_TIME : $timestamp);
+		@touch($this->path . $hash . '.' . PHPEXT, (is_null($timestamp)) ? CURRENT_TIME : $timestamp);
 		@chmod($this->path . $hash . '.' . PHPEXT, 0666);
 	}
 
@@ -110,12 +110,12 @@ class Cache_ftp extends Cache
 	/**
 	 * @see Cache::destroy()
 	 */
-	public function destroy($prefix = NULL)
+	public function destroy($prefix = null)
 	{
 		$fd = opendir($this->path);
 		while ($file = readdir($fd))
 		{
-			if ($file{0} != '.' && ($prefix === NULL || substr($file, 0, strlen($prefix)) == $prefix))
+			if ($file{0} != '.' && (is_null($prefix) || substr($file, 0, strlen($prefix)) == $prefix))
 			{
 				$this->delete(substr($file, 0, -4));
 			}

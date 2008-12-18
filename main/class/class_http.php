@@ -69,9 +69,9 @@ class Http extends Fsb_model
 	 * @param string $value Valeur
 	 * @param bool $replace Ecraser les precedentes valeurs
 	 */
-	public static function header($key, $value, $replace = NULL)
+	public static function header($key, $value, $replace = null)
 	{
-		if ($replace === NULL)
+		if (is_null($replace))
 		{
 			header($key . ': ' . $value);
 		}
@@ -118,7 +118,7 @@ class Http extends Fsb_model
 				return ($GLOBALS[$gl][$key]);
 			}
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Http extends Fsb_model
 	public static function getcookie($name)
 	{
 		$cookie_name = Fsb::$cfg->get('cookie_name') . $name;
-		return (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : NULL);
+		return (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : null);
 	}
 
 	/**
@@ -266,7 +266,7 @@ class Http extends Fsb_model
 		{
 			return ($content);
 		}
-		return (FALSE);
+		return (false);
 	}
 
 	/**
@@ -289,7 +289,7 @@ class Http extends Fsb_model
 	 */
 	public static function no_cache()
 	{
-		self::header('Cache-Control', 'post-check=0, pre-check=0', FALSE);
+		self::header('Cache-Control', 'post-check=0, pre-check=0', false);
 		self::header('Expires', '0');
 		self::header('Pragma', 'no-cache');
 	}

@@ -41,13 +41,13 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		$this->mode =	Http::request('mode');
 		$this->order =	Http::request('order');
-		if ($this->order == NULL)
+		if ($this->order == null)
 		{
 			$this->order = 'ban_length';
 		}
 
 		$this->direction = strtolower(Http::request('direction'));
-		if ($this->direction == NULL)
+		if ($this->direction == null)
 		{
 			$this->direction = 'asc';
 		}
@@ -124,7 +124,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'BAN_CONTENT' =>	$row['ban_content'],
 				'BAN_REASON' =>		$row['ban_reason'],
 				'BAN_EXPIRATION' =>	($row['ban_length'] > 0) ? Fsb::$session->print_date($row['ban_length']) : Fsb::$session->lang('unlimited'),
-				'HAS_EXPIRED' =>	($row['ban_length'] > 0 && $row['ban_length'] < CURRENT_TIME) ? TRUE : FALSE,
+				'HAS_EXPIRED' =>	($row['ban_length'] > 0 && $row['ban_length'] < CURRENT_TIME) ? true : false,
 			));
 		}
 		Fsb::$db->free($result);

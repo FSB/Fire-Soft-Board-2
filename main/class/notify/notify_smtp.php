@@ -137,12 +137,12 @@ class Notify_smtp
             echo "SMTP -> FROM SERVER:" . $this->CRLF . $announce;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
      * Performs SMTP authentication.  Must be run after running the
-     * Hello() method.  Returns true if successfully authenticated.
+     * Hello() method.  Returns  true  if successfully authenticated.
      * @access public
      * @return bool
      */
@@ -201,11 +201,11 @@ class Notify_smtp
             return false;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
-     * Returns true if connected to a server otherwise false
+     * Returns  true  if connected to a server otherwise false
      * @access private
      * @return bool
      */
@@ -222,7 +222,7 @@ class Notify_smtp
                 $this->Close();
                 return false;
             }
-            return true; # everything looks good
+            return  true ; # everything looks good
         }
         return false;
     }
@@ -323,7 +323,7 @@ class Notify_smtp
         $field = substr($lines[0],0,strpos($lines[0],":"));
         $in_headers = false;
         if(!empty($field) && !strstr($field," ")) {
-            $in_headers = true;
+            $in_headers =  true ;
         }
 
         $max_line_length = 998; # used below; set here for ease in change
@@ -382,7 +382,7 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
@@ -476,7 +476,7 @@ class Notify_smtp
                 return false;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
@@ -508,7 +508,7 @@ class Notify_smtp
 
         $this->helo_rply = $rply;
         
-        return true;
+        return  true ;
     }
 
     /**
@@ -566,7 +566,7 @@ class Notify_smtp
 
     /**
      * Starts a mail transaction from the email address specified in
-     * $from. Returns true if successful or false otherwise. If True
+     * $from. Returns  true  if successful or false otherwise. If True
      * the mail transaction is started and then one or more Recipient
      * commands may be called followed by a Data command.
      *
@@ -607,7 +607,7 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
@@ -649,12 +649,12 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
      * Sends the quit command to the server and then closes the socket
-     * if there is no error or the $close_on_error argument is true.
+     * if there is no error or the $close_on_error argument is  true .
      *
      * Implements from rfc 821: QUIT <CRLF>
      *
@@ -663,7 +663,7 @@ class Notify_smtp
      * @access public
      * @return bool
      */
-    public function Quit($close_on_error=true) {
+    public function Quit($close_on_error= true ) {
         $this->error = null; # so there is no confusion
 
         if(!$this->connected()) {
@@ -682,7 +682,7 @@ class Notify_smtp
             echo "SMTP -> FROM SERVER:" . $this->CRLF . $byemsg;
         }
 
-        $rval = true;
+        $rval =  true ;
         $e = null;
 
         $code = substr($byemsg,0,3);
@@ -707,7 +707,7 @@ class Notify_smtp
 
     /**
      * Sends the command RCPT to the SMTP server with the TO: argument of $to.
-     * Returns true if the recipient was accepted false if it was rejected.
+     * Returns  true  if the recipient was accepted false if it was rejected.
      *
      * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
      *
@@ -746,12 +746,12 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
      * Sends the RSET command to abort and transaction that is
-     * currently in progress. Returns true if successful false
+     * currently in progress. Returns  true  if successful false
      * otherwise.
      *
      * Implements rfc 821: RSET <CRLF>
@@ -791,12 +791,12 @@ class Notify_smtp
             return false;
         }
 
-        return true;
+        return  true ;
     }
 
     /**
      * Starts a mail transaction from the email address specified in
-     * $from. Returns true if successful or false otherwise. If True
+     * $from. Returns  true  if successful or false otherwise. If True
      * the mail transaction is started and then one or more Recipient
      * commands may be called followed by a Data command. This command
      * will send the message to the users terminal if they are logged
@@ -839,12 +839,12 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
      * Starts a mail transaction from the email address specified in
-     * $from. Returns true if successful or false otherwise. If True
+     * $from. Returns  true  if successful or false otherwise. If True
      * the mail transaction is started and then one or more Recipient
      * commands may be called followed by a Data command. This command
      * will send the message to the users terminal if they are logged
@@ -887,12 +887,12 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**
      * Starts a mail transaction from the email address specified in
-     * $from. Returns true if successful or false otherwise. If True
+     * $from. Returns  true  if successful or false otherwise. If True
      * the mail transaction is started and then one or more Recipient
      * commands may be called followed by a Data command. This command
      * will send the message to the users terminal if they are logged
@@ -935,7 +935,7 @@ class Notify_smtp
             }
             return false;
         }
-        return true;
+        return  true ;
     }
 
     /**

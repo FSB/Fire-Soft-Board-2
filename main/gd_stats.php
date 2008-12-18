@@ -14,10 +14,10 @@
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../');
-define('FORUM', TRUE);
+define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
-Fsb::$session->start('', FALSE);
+Fsb::$session->start('', false);
 
 // On recupere les variables dans l'URL
 $img_type =		Http::request('img');

@@ -14,9 +14,9 @@
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
-	public $_show_page_header_nav = TRUE;
-	public $_show_page_footer_nav = FALSE;
-	public $_show_page_stats = FALSE;
+	public $_show_page_header_nav = true;
+	public $_show_page_footer_nav = false;
+	public $_show_page_stats = false;
 
 	// Module courant
 	public $module;
@@ -101,7 +101,7 @@ class Fsb_frame_child extends Fsb_frame
 			foreach ($module_list AS $m => $url)
 			{
 				Fsb::$tpl->set_blocks('module', array(
-					'IS_SELECT' =>	($this->module == $m) ? TRUE : FALSE,
+					'IS_SELECT' =>	($this->module == $m) ? true : false,
 					'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=' . $url),
 					'NAME' =>		Fsb::$session->lang('userprofile_module_' . $m),
 				));
@@ -164,7 +164,7 @@ class Fsb_frame_child extends Fsb_frame
 			'u_id' =>			$this->data['u_id'],
 			'p_nickname' =>		$this->data['u_nickname'],
 			'u_auth' =>			$this->data['u_auth'],
-			'is_sig' =>			TRUE,
+			'is_sig' =>			true,
 		);
 
 		Fsb::$tpl->set_file('forum/forum_userprofile.html');
@@ -195,7 +195,7 @@ class Fsb_frame_child extends Fsb_frame
 			'ACTIV_FORUM_POST' =>		($this->data['activ_forum']) ? sprintf(String::plural('forum_total_post', $this->data['activ_forum']['total']), $this->data['activ_forum']['total']) : '',
 			'ACTIV_TOPIC' =>			($this->data['activ_topic']) ? $this->data['activ_topic']['t_title'] : '',
 			'ACTIV_TOPIC_POST' =>		($this->data['activ_topic']) ? sprintf(String::plural('forum_total_post', $this->data['activ_topic']['total']), $this->data['activ_topic']['total']) : '',
-			'IS_ONLINE' =>				($this->data['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$this->data['u_activate_hidden']) ? TRUE : FALSE,
+			'IS_ONLINE' =>				($this->data['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$this->data['u_activate_hidden']) ? true : false,
 
 			'U_SEARCH_POSTS' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=author&amp;id=' . $this->id),
 			'U_SEARCH_TOPICS' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=author_topic&amp;id=' . $this->id),
@@ -298,7 +298,7 @@ class Fsb_frame_child extends Fsb_frame
 					' . ((Fsb::$session->auth() < MODOSUP) ? 'AND g.g_hidden = 0' : '') . '
 				ORDER BY g_type, g_name';
 		$javascript = 'onchange="if (this.selectedIndex > 0) location.href=\'' . sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=') . '\' + this.value"';
-		return (Html::list_groups('list_groups', GROUP_NORMAL|GROUP_SPECIAL, '', FALSE, array(), $sql, $javascript, '<option>' . Fsb::$session->lang('userprofile_choose_group') . '</option>'));
+		return (Html::list_groups('list_groups', GROUP_NORMAL|GROUP_SPECIAL, '', false, array(), $sql, $javascript, '<option>' . Fsb::$session->lang('userprofile_choose_group') . '</option>'));
 	}
 
 	/*
@@ -326,7 +326,7 @@ class Fsb_frame_child extends Fsb_frame
 					' . (($groups) ? 'AND g.g_id NOT IN (' . implode(', ', $groups) . ')' : '') . '
 					' . ((Fsb::$session->auth() < MODOSUP) ? 'AND gu.gu_status = ' . GROUP_MODO : '') . '
 				ORDER BY g.g_type, g.g_name';
-		$html = Html::list_groups('g_id', GROUP_NORMAL, '', FALSE, array(), $sql);
+		$html = Html::list_groups('g_id', GROUP_NORMAL, '', false, array(), $sql);
 		if ($html)
 		{
 			Fsb::$tpl->set_switch('show_groups_modo');

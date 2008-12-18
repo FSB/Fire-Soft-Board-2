@@ -23,7 +23,7 @@ class Module extends Fsb_model
 	 *
 	 * @var Xml
 	 */
-	private $handler = NULL;
+	private $handler = null;
 
 	/**
 	 * Configuration de la classe
@@ -58,7 +58,7 @@ class Module extends Fsb_model
 	 *
 	 * @var resource
 	 */
-	private $file_open = NULL;
+	private $file_open = null;
 
 	/**
 	 * @var File
@@ -101,10 +101,10 @@ class Module extends Fsb_model
 	public function __construct()
 	{
 		$this->set_config(array(
-			'install_sql' => 		TRUE,
-			'install_duplicat' =>	TRUE,
-			'install_file' =>		TRUE,
-			'install' =>			FALSE,
+			'install_sql' => 		true,
+			'install_duplicat' =>	true,
+			'install_file' =>		true,
+			'install' =>			false,
 			'mod_path' =>			ROOT,
 		));
 	}
@@ -138,7 +138,7 @@ class Module extends Fsb_model
 	 */
 	public function get_config($key)
 	{
-		return ((isset($this->config[$key])) ? $this->config[$key] : NULL);
+		return ((isset($this->config[$key])) ? $this->config[$key] : null);
 	}
 
 	/**
@@ -175,7 +175,7 @@ class Module extends Fsb_model
 		// Gestion de la duplication pour la commande "ouvrir"
 		if ($this->get_config('install_duplicat'))
 		{
-			$duplicat = FALSE;
+			$duplicat = false;
 			$add_node = array();
 			foreach ($this->xml->document->instruction[0]->line AS $handler)
 			{
@@ -186,7 +186,7 @@ class Module extends Fsb_model
 					{
 						$this->duplicat_content($add_node);
 					}
-					$duplicat = TRUE;
+					$duplicat = true;
 				}
 				else if (!in_array($method, array('find', 'replace', 'after', 'before', 'delete')) || ($method == 'open' && !$handler->childExists('duplicat')))
 				{
@@ -194,7 +194,7 @@ class Module extends Fsb_model
 					{
 						$this->duplicat_content($add_node);
 					}
-					$duplicat = FALSE;
+					$duplicat = false;
 				}
 
 				// Si duplication, on ajoute des nodes a l'arbre XML
@@ -268,7 +268,7 @@ class Module extends Fsb_model
 		$this->subparse_end();
 
 		// remise a 0 des variables
-		$this->file_open = $this->file_content = $this->find_code = NULL;
+		$this->file_open = $this->file_content = $this->find_code = null;
 	}
 
 	//
@@ -289,7 +289,7 @@ class Module extends Fsb_model
 		if (!$this->get_config('install') && (!file_exists($this->file_open) || !is_readable($this->file_open)))
 		{
 			$this->error(self::MOD_ERROR_FILE_NOT_FOUND, $this->file_open);
-			$this->file_open = NULL;
+			$this->file_open = null;
 		}
 		else
 		{
@@ -405,7 +405,7 @@ class Module extends Fsb_model
 			foreach ($this->handler->file AS $file_handler)
 			{
 				$filename = $file_handler->filename[0]->getData();
-				$duplicat = ($file_handler->childExists('duplicat')) ? $file_handler->duplicat[0]->getData() : NULL;
+				$duplicat = ($file_handler->childExists('duplicat')) ? $file_handler->duplicat[0]->getData() : null;
 				$directory = $file_handler->childExists('directory');
 
 				if ($duplicat[strlen($duplicat) - 1] != '/')
@@ -457,7 +457,7 @@ class Module extends Fsb_model
 		if ($this->get_config('install'))
 		{
 			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), $this->handler->code[0]->getData());
-			$filename = ($this->handler->childExists('file')) ? $this->handler->file[0]->getData() : NULL;
+			$filename = ($this->handler->childExists('file')) ? $this->handler->file[0]->getData() : null;
 
 			if ($this->get_config('install_file'))
 			{
@@ -499,13 +499,13 @@ class Module extends Fsb_model
 	 * @param string $errstr Description de l'erreur
 	 * @param string $errstr2 Argument suplémentaire de desvription de l'erreur
 	 */
-	private function error($errno, $errstr, $errstr2 = NULL)
+	private function error($errno, $errstr, $errstr2 = null)
 	{
 		$this->log_error[] = array(
 			'errno' =>		$errno,
 			'errstr' =>		$errstr,
 			'errstr2' =>	$errstr2,
-			'action' =>		(is_object($this->handler)) ? $this->handler->getAttribute('name') : NULL,
+			'action' =>		(is_object($this->handler)) ? $this->handler->getAttribute('name') : null,
 		);
 	}
 
@@ -551,7 +551,7 @@ class Module extends Fsb_model
 			$path .= $dir . '/';
 			if (!is_dir($path))
 			{
-				$this->file->chmod(substr(dirname($path), 0, strlen(ROOT)), 0777, FALSE);
+				$this->file->chmod(substr(dirname($path), 0, strlen(ROOT)), 0777, false);
 				if ($this->get_config('install'))
 				{
 					$this->file->mkdir($path);
@@ -560,7 +560,7 @@ class Module extends Fsb_model
 				{
 					$this->error(self::MOD_ERROR_DIR_NOT_WRITABLE, dirname(ROOT . $path));
 				}
-				$this->file->chmod(substr(dirname($path), 0, strlen(ROOT)), 0755, FALSE);
+				$this->file->chmod(substr(dirname($path), 0, strlen(ROOT)), 0755, false);
 			}
 		}
 
@@ -589,20 +589,20 @@ class Module extends Fsb_model
 			}
 
 			$this->file->write($filename, $this->file_content);
-			$this->file_open = NULL;
+			$this->file_open = null;
 
-			$this->file->chmod($filename, 0644, FALSE);
+			$this->file->chmod($filename, 0644, false);
 		}
 		else
 		{
 			if (!is_writable($this->file_open))
 			{
-				$this->file->chmod($filename, 0666, FALSE);
+				$this->file->chmod($filename, 0666, false);
 				if (!is_writable($this->file_open))
 				{
 					$this->error(self::MOD_ERROR_PERMISSION_DENIED, $this->file_open);
 				}
-				$this->file->chmod($filename, 0644, FALSE);
+				$this->file->chmod($filename, 0644, false);
 			}
 		}
 	}
@@ -633,9 +633,9 @@ class Module extends Fsb_model
 	 * @param string $ext Type de compression pour les fichiers sauves (.tar, .tar.gz, .tar.bz2 ou .zip)
 	 * @param array $files Liste des fichiers a sauver
 	 */
-	public function save_files($dir, $ext = 'zip', $files = NULL)
+	public function save_files($dir, $ext = 'zip', $files = null)
 	{
-		if ($files == NULL)
+		if ($files == null)
 		{
 			$files = $this->get_updated_files();
 		}
@@ -662,7 +662,7 @@ class Module extends Fsb_model
 			break;
 
 			default :
-				$this->set_config('install', TRUE);
+				$this->set_config('install', true);
 				$save_dir = $dir . '/' . $filename . '/';
 				foreach ($files AS $file)
 				{
@@ -671,7 +671,7 @@ class Module extends Fsb_model
 						$this->copy_file($file, $save_dir . preg_replace('#^' . ROOT . '#', '', $file));
 					}
 				}
-				$this->set_config('install', FALSE);
+				$this->set_config('install', false);
 			break;
 		}
 		$this->file->unlink('mod.log');
@@ -769,7 +769,7 @@ class Module extends Fsb_model
 
 			default :
 				$this->error(self::MOD_ERROR_UNKNOWN_INSTRUCTION, $keyword);
-				return (NULL);
+				return (null);
 		}
 	}
 }

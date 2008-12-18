@@ -29,7 +29,7 @@ class Fsb_model
 		$str .= '<b>Properties :</b><ul style="margin: 0">';
 		foreach ($this AS $property => $value)
 		{
-			$str .= '<li><b>' . $property . '</b> = <pre style="display: inline">' . var_export($value, TRUE) . '</pre></li>';
+			$str .= '<li><b>' . $property . '</b> = <pre style="display: inline">' . var_export($value, true) . '</pre></li>';
 		}
 		$str .= '</ul>';
 		
@@ -89,7 +89,7 @@ class Fsb_model
 		{
 			return ($this->$property);
 		}
-		return (NULL);
+		return (null);
 	}
 }
 /* EOF */

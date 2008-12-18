@@ -179,7 +179,7 @@ class Fsbcard extends Fsb_model
 		{
 			return ($this->xml->document->personal[0]->template[0]->getData());
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -205,7 +205,7 @@ class Fsbcard extends Fsb_model
 		{
 			return ($this->xml->document->personal[0]->lang[0]->getData());
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -249,11 +249,11 @@ class Fsbcard extends Fsb_model
 			$split = explode('-', $birthday);
 			if (count($split) != 3)
 			{
-				return (array(NULL, NULL, NULL));
+				return (array(null, null, null));
 			}
 			return (array(String::add_zero($split[0], 2), String::add_zero($split[1], 2), String::add_zero($split[2], 4)));
 		}
-		return (array(NULL, NULL, NULL));
+		return (array(null, null, null));
 	}
 
 	/**
@@ -289,7 +289,7 @@ class Fsbcard extends Fsb_model
 			}
 			return ($sexe);
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -354,7 +354,7 @@ class Fsbcard extends Fsb_model
 
 			return (array($utc, $dst));
 		}
-		return (array(NULL, NULL));
+		return (array(null, null));
 	}
 
 	/**
@@ -380,7 +380,7 @@ class Fsbcard extends Fsb_model
 		{
 			return (String::unhtmlspecialchars($this->xml->document->sig[0]->getData()));
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -406,7 +406,7 @@ class Fsbcard extends Fsb_model
 		{
 			return ($this->xml->document->register[0]->login[0]->getData());
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -432,7 +432,7 @@ class Fsbcard extends Fsb_model
 		{
 			return ($this->xml->document->register[0]->nickname[0]->getData());
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -476,7 +476,7 @@ class Fsbcard extends Fsb_model
 			}
 			return (array($password, $hash));
 		}
-		return (array(NULL, 'none'));
+		return (array(null, 'none'));
 	}
 
 	/**
@@ -502,7 +502,7 @@ class Fsbcard extends Fsb_model
 		{
 			return ($this->xml->document->register[0]->email[0]->getData());
 		}
-		return (NULL);
+		return (null);
 	}
 
 	/**
@@ -519,7 +519,7 @@ class Fsbcard extends Fsb_model
 		}
 
 		$link = $string;
-		$content = NULL;
+		$content = null;
 		if ($method == 'content')
 		{
 			$link = Fsb::$cfg->get('fsb_path') . '/' . $link;
@@ -550,7 +550,7 @@ class Fsbcard extends Fsb_model
 	{
 		if ($this->xml->document->childExists('avatar'))
 		{
-			$link = $content = NULL;
+			$link = $content = null;
 			if ($this->xml->document->avatar[0]->childExists('link'))
 			{
 				$link = $this->xml->document->avatar[0]->link[0]->getData();
@@ -567,7 +567,7 @@ class Fsbcard extends Fsb_model
 			}
 			return (array($link, $content));
 		}
-		return (array(NULL, NULL));
+		return (array(null, null));
 	}
 
 	/**
@@ -580,7 +580,7 @@ class Fsbcard extends Fsb_model
 	{
 		if (!isset($this->options[$key]))
 		{
-			return (NULL);
+			return (null);
 		}
 
 		$item = $this->xml->document->options[0]->createElement($key);
@@ -611,7 +611,7 @@ class Fsbcard extends Fsb_model
 
 				if (is_bool($v))
 				{
-					$v = ($v === TRUE) ? 'true' : 'false';
+					$v = ($v === true) ? 'true' : 'false';
 				}
 
 				if (!in_array($v, $attributes[$k]))
@@ -625,7 +625,7 @@ class Fsbcard extends Fsb_model
 		{
 			if (is_bool($value))
 			{
-				$value = ($value === TRUE) ? 'true' : 'false';
+				$value = ($value === true) ? 'true' : 'false';
 			}
 
 			if (!in_array($value, $values))
@@ -648,7 +648,7 @@ class Fsbcard extends Fsb_model
 	{
 		if (!isset($this->options[$key]) || !$this->xml->document->options[0]->childExists($key))
 		{
-			return (NULL);
+			return (null);
 		}
 
 		// Valeurs et attributs pour cette option
@@ -662,16 +662,16 @@ class Fsbcard extends Fsb_model
 				$attr = $this->xml->document->options[0]->{$key}[0]->getAttribute($k);
 				if (!in_array($attr, $v))
 				{
-					$attr = NULL;
+					$attr = null;
 				}
 
 				if ($attr == 'true')
 				{
-					$attr = TRUE;
+					$attr = true;
 				}
 				else if ($attr == 'false')
 				{
-					$attr = FALSE;
+					$attr = false;
 				}
 				$return[$k] = $attr;
 			}
@@ -682,16 +682,16 @@ class Fsbcard extends Fsb_model
 			$return = $this->xml->document->options[0]->{$key}[0]->getData();
 			if (!in_array($return, $values))
 			{
-				return (NULL);
+				return (null);
 			}
 
 			if ($return == 'true')
 			{
-				$return = TRUE;
+				$return = true;
 			}
 			else if ($return == 'false')
 			{
-				$return = FALSE;
+				$return = false;
 			}
 			return ($return);
 		}

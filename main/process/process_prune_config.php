@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-$GLOBALS['use_register_shutdown'] = FALSE;
+$GLOBALS['use_register_shutdown'] = false;
 
 /*
 ** Recalcul des donnees en cache dans la configuration
@@ -27,9 +27,9 @@ function prune_config()
 					LIMIT 1';
 			$data = Fsb::$db->request($sql);
 
-			Fsb::$cfg->update('last_user_id', $data['u_id'], FALSE);
-			Fsb::$cfg->update('last_user_login', $data['u_nickname'], FALSE);
-			Fsb::$cfg->update('last_user_color', $data['u_color'], FALSE);
+			Fsb::$cfg->update('last_user_id', $data['u_id'], false);
+			Fsb::$cfg->update('last_user_login', $data['u_nickname'], false);
+			Fsb::$cfg->update('last_user_color', $data['u_color'], false);
 		}
 		else
 		{
@@ -43,7 +43,7 @@ function prune_config()
 				$total--;
 			}
 
-			Fsb::$cfg->update($value, $total, FALSE);
+			Fsb::$cfg->update($value, $total, false);
 		}
 	}
 	Fsb::$cfg->destroy_cache();
