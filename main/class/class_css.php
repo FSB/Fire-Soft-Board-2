@@ -170,16 +170,13 @@ class Css extends Fsb_model
 			}
 
 			// Header du fichier CSS
-			$header = "/*\n";
-			$header .= "** +---------------------------------------------------+\n";
-			$header .= "** | Name :	~/" . substr($path, strlen(ROOT)) . "${filename}\n";
-			$header .= "** | Project :	Fire-Soft-Board 2 - Copyright FSB group\n";
-			$header .= "** | License :	GPL v2.0\n";
-			$header .= "** |\n";
-			$header .= "** | Vous pouvez modifier, reutiliser et redistribuer\n";
-			$header .= "** | ce fichier a condition de laisser cet entete.\n";
-			$header .= "** +---------------------------------------------------+\n";
-			$header .= "*/\n\n";
+			$header = "/**\n";
+			$header .= " * Fire-Soft-Board version 2\n";
+			$header .= " * \n";
+			$header .= " * @package FSB2\n";
+			$header .= " * @author Genova <genova@fire-soft-board.com>\n";
+			$header .= " * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2\n";
+			$header .= " */\n\n";
 
 			// Import des autres fichiers
 			if (isset($this->import[$filename]))
