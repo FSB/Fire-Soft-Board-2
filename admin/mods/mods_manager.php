@@ -118,7 +118,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$parent =		($is_update) ? $module->xml->document->header[0]->isUpdate[0]->getAttribute('parent') : '';
 				$version =		$module->xml->document->header[0]->version[0]->getData();
 
-				if ($parent && isset($install_version[$parent]) && is_last_version($install_mod[$parent], $version))
+				if ($parent && (!isset($install_mod[$parent]) || is_last_version($install_mod[$parent], $version)))
 				{
 					continue ;
 				}

@@ -203,9 +203,6 @@ class Module extends Fsb_model
 					$add_node[] = $handler;
 				}
 			}
-			
-			//echo '<xmp>' . $this->xml->document->asXML() . '</xmp>';
-			//exit;
 		}
 	}
 
