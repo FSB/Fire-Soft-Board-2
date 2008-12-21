@@ -280,6 +280,29 @@ class Fsb_frame_child extends Fsb_frame
 			$like_end = ($this->like == 'in' || $this->like == 'begin') ? '%' : '';
 			$sql_search_user = ' AND u.u_nickname ' . Fsb::$db->like() . ' \'' . $like_begin . Fsb::$db->escape($this->search_user) . $like_end . '\'';
 		}
+		
+		// On recupere les ID des membres pour optimiser la requete generale
+		$sql = 'SELECT gu.u_id
+				FROM ' . SQL_PREFIX . 'groups_users gu
+				LEFT JOIN ' . SQL_PREFIX . 'users u
+					ON gu.u_id = u.u_id
+				WHERE gu.g_id = ' . $this->id
+					. ((!$this->is_group_moderator) ? ' AND (gu.gu_status <> ' . GROUP_WAIT . ' OR gu.u_id = ' . Fsb::$session->id() . ')' : '')
+					. $sql_search_user
+			. ' ORDER BY ' . Fsb::$db->escape($this->order) . ' ' . Fsb::$db->escape($this->direction) . ', gu.gu_status DESC
+			LIMIT ' . ($this->page - 1) * $this->limit . ', ' . $this->limit;
+		$result = Fsb::$db->query($sql);
+		$idx = array();
+		while ($row = Fsb::$db->row($result))
+		{
+			$idx[] = $row['u_id'];
+		}
+		Fsb::$db->free($result);
+		
+		if (!$idx)
+		{
+			return ;
+		}
 
 		// On affiche les membres
 		$sql = 'SELECT gu.gu_status, g.g_id, g.g_name, g.g_color, g.g_type, u.u_id, u.u_nickname, u.u_color, u.u_avatar, u.u_avatar_method, u.u_can_use_avatar, u.u_sexe, u.u_birthday, u.u_activate_hidden, u.u_last_visit, u.' . implode(', u.', array_keys($this->columns)) . '
@@ -288,11 +311,9 @@ class Fsb_frame_child extends Fsb_frame
 					ON gu.u_id = u.u_id
 				LEFT JOIN ' . SQL_PREFIX . 'groups g
 					ON g.g_id = u.u_default_group_id
-				WHERE gu.g_id = ' . $this->id
-					. ((!$this->is_group_moderator) ? ' AND (gu.gu_status <> ' . GROUP_WAIT . ' OR gu.u_id = ' . Fsb::$session->id() . ')' : '')
-					. $sql_search_user
-				. ' ORDER BY gu.gu_status, ' . Fsb::$db->escape($this->order) . ' ' . Fsb::$db->escape($this->direction) . ', gu.gu_status DESC
-				LIMIT ' . ($this->page - 1) * $this->limit . ', ' . $this->limit;
+				WHERE gu.g_id = ' . $this->id . '
+					AND gu.u_id IN (' . implode(', ', $idx) . ')
+				ORDER BY ' . Fsb::$db->escape($this->order) . ' ' . Fsb::$db->escape($this->direction) . ', gu.gu_status DESC';
 		$i = 1;
 		$indent = 0;
 		$type_array = array();

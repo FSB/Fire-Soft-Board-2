@@ -267,20 +267,25 @@ class Fsb_frame_child extends Fsb_frame
 
 		$sql = 'SELECT f_name
 				FROM ' . SQL_PREFIX . 'forums
-				WHERE f_id = ' . $this->id;
+				WHERE f_id = ' . $this->data['activ_forum']['f_id'];
 		$this->data['activ_forum']['f_name'] = Fsb::$db->get($sql, 'f_name');
 
 		// Sujet dans lequel le membre est le plus actif
-		$sql = 'SELECT t.t_id, t.t_title, COUNT(p.p_id) AS total
-				FROM ' . SQL_PREFIX . 'posts p
-				LEFT JOIN ' . SQL_PREFIX . 'topics t
-					ON t.t_id = p.t_id
-				WHERE p.u_id = ' . $this->id
-				. (($forums_idx) ? ' AND p.f_id IN (' . implode(', ', $forums_idx) . ')' : '')
-				. ' GROUP BY t.t_id, t.t_title
+		$sql = 'SELECT t_id, COUNT(*) AS total
+				FROM ' . SQL_PREFIX . 'posts
+				WHERE u_id = ' . $this->id
+				. (($forums_idx) ? ' AND f_id IN (' . implode(', ', $forums_idx) . ')' : '')
+				. ' GROUP BY t_id
 				ORDER BY total DESC
 				LIMIT 1';
-		$this->data['activ_topic'] = Fsb::$db->request($sql);
+		$f = Fsb::$db->request($sql);
+		$this->data['activ_topic']['t_id'] = $f['t_id'];
+		$this->data['activ_topic']['total'] = $f['total'];
+		
+		$sql = 'SELECT t_title
+				FROM ' . SQL_PREFIX . 'topics
+				WHERE t_id = ' . $this->data['activ_topic']['t_id'];
+		$this->data['activ_topic']['t_title'] = Fsb::$db->get($sql, 't_title');
 	}
 	
 	/*

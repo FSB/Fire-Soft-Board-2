@@ -203,6 +203,9 @@ class Module extends Fsb_model
 					$add_node[] = $handler;
 				}
 			}
+			
+			//echo '<xmp>' . $this->xml->document->asXML() . '</xmp>';
+			//exit;
 		}
 	}
 
@@ -225,7 +228,7 @@ class Module extends Fsb_model
 		$fd = opendir(ROOT . $dir);
 		while ($file = readdir($fd))
 		{
-			if ($file != '.' && $file != '..' && is_dir(ROOT . $dir . $file) && $file != $default_dir)
+			if ($file != '.' && $file != '..' && $file != '.svn' && is_dir(ROOT . $dir . $file) && $file != $default_dir)
 			{
 				// On peut desormais dupliquer les nodes
 				foreach ($list_node AS $node)
@@ -408,7 +411,7 @@ class Module extends Fsb_model
 				$duplicat = ($file_handler->childExists('duplicat')) ? $file_handler->duplicat[0]->getData() : null;
 				$directory = $file_handler->childExists('directory');
 
-				if ($duplicat[strlen($duplicat) - 1] != '/')
+				if ($duplicat && $duplicat[strlen($duplicat) - 1] != '/')
 				{
 					$duplicat .= '/';
 				}

@@ -137,6 +137,10 @@ class Xml extends Fsb_model
 		else
 		{
 			$ref->setTagName($tag);
+			foreach ($attr AS $k => $v)
+			{
+				$ref->setAttribute($k, $v);
+			}
 		}
 
 		// Ajout du tag a la pile
@@ -343,7 +347,7 @@ class Xml_element extends Fsb_model
 	 */
 	public function AppendXmlChild($string, $pos = 0)
 	{
-		$xml = new Xml;
+		$xml = new Xml();
 		$xml->load_content($string);
 		$this->appendChild($xml->document, $pos);
 	}

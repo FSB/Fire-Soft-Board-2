@@ -864,7 +864,7 @@ class Convert_tree_forums extends Tree
 		parent::add_item($id, $parent, $data);
 
 		$this->merge_item($id, array(
-			'f_level' =>	count($this->getByID($id)->getParents())
+			'f_level' =>	count($this->getByID($id)->getParents()) - 2
 		));
 	}
 

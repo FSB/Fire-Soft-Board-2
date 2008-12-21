@@ -337,6 +337,7 @@ CREATE TABLE fsb2_posts (
   KEY t_id (t_id),
   KEY u_id (u_id),
   KEY f_per_user (u_id, f_id),
+  KEY t_per_user (u_id, f_id, t_id),
   FULLTEXT KEY p_text (p_text)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
