@@ -151,8 +151,10 @@ class Http extends Fsb_model
 	 * Redirige a partir d'une information precise
 	 *
 	 * @param string $redirect Information pour la redirection (vers une page du forum, ou locale au site web)
+	 * @param bool $get_url Si true, ne redirige pas et retourne l'url de redirection
+	 * @return string
 	 */
-	public static function redirect_to($redirect)
+	public static function redirect_to($redirect, $get_url = false)
 	{
 		if ($redirect)
 		{
@@ -174,15 +176,45 @@ class Http extends Fsb_model
 				if (preg_match('#^\s*[a-zA-Z0-9]+://#i', $redirect))
 				{
 					// URL externe interdites pour des raisons de securite
-					Http::redirect('index.' . PHPEXT);
+					if ($get_url)
+					{
+						return ('index.' . PHPEXT);
+					}
+					else
+					{
+						Http::redirect('index.' . PHPEXT);
+					}
 				}
-				Http::redirect($redirect);
+				
+				if ($get_url)
+				{
+					return ($redirect);
+				}
+				else
+				{
+					Http::redirect($redirect);
+				}
 			}
-			Http::redirect($url);
+
+			if ($get_url)
+			{
+				return ($url);
+			}
+			else
+			{
+				Http::redirect($url);
+			}
 		}
 		else
 		{
-			Http::redirect(ROOT . 'index.' . PHPEXT);
+			if ($get_url)
+			{
+				return (ROOT . 'index.' . PHPEXT);
+			}
+			else
+			{
+				Http::redirect(ROOT . 'index.' . PHPEXT);
+			}
 		}
 	}
 

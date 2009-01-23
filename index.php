@@ -150,7 +150,6 @@ class Fsb_frame extends Fsb_model
 			'U_NOTIFICATION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=notification'),
 			'U_NOT_READ' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=newposts'),
 			'U_OWN_POSTS' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=ownposts'),
-			'U_REGISTER' =>			sid(ROOT . 'index.' . PHPEXT . '?p=register'),
 			'U_FAQ' =>				sid(ROOT . 'index.' . PHPEXT . '?p=faq'),
 			'U_PORTAIL' =>			sid(ROOT . 'index.' . PHPEXT . '?p=portail'),
 			'U_SEARCH' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search'),
@@ -346,6 +345,7 @@ class Fsb_frame extends Fsb_model
 		Fsb::$tpl->set_vars( array(
 			'U_LOGIN' =>			sid(ROOT . 'index.' . PHPEXT . '?p=login' . $get_url),
 			'U_LOGOUT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=logout', true),
+			'U_REGISTER' =>			sid(ROOT . 'index.' . PHPEXT . '?p=register' . $get_url),
 			'SITE_NAME' => 			htmlspecialchars(Fsb::$cfg->get('forum_name')),
 			'SITE_DESCRIPTION' =>	Fsb::$cfg->get('forum_description'),
 			'TAG_TITLE' =>			strip_tags($tag_title),
