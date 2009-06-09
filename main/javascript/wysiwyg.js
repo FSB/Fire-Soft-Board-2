@@ -638,13 +638,16 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	_start_editor: function()
 	{
 		// Création de l'iframe
-		var iframe = document.createElement('iframe');
-		iframe.setAttribute('class', 'wysiwyg_frame');
-		iframe.style.width = $(this.id).style.width;
-		iframe.style.height = $(this.id).style.height;
-		iframe.style.display = 'none';
-		iframe.id = this.id + '_tmp';
-		$(this.id).parentNode.appendChild(iframe);
+		var f = new Element('iframe', {
+			'id': this.id + '_tmp',
+			'class': 'wysiwyg_frame',
+			'styles': {
+				'width':	$(this.id).getStyle('width'),
+				'height':	$(this.id).getStyle('height'),
+				'display':	'none'
+			}
+		});
+		$(this.id).getParent().adopt(f);
 
 		// Modification des ID : le textarea devient ID_tmp et l'iframe prend l'ID dans this.id
 		$(this.id).id = this.id + '_wysiwyg'
@@ -671,7 +674,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		}
 		else if (window.opera)
 		{
-			this.doc = $(this.id).document;
+			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id);
 			this.doc.designMode = 'On';
 		}
