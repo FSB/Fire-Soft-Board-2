@@ -393,7 +393,7 @@ class Display extends Fsb_model
 			{
 				Fsb::$tpl->set_blocks('fsbcode_list', array(
 					'CODE' =>		$code,
-					'TEXT' =>		($row['fsbcode_description']) ? htmlspecialchars($row['fsbcode_description']) : Fsb::$session->lang('fsbcode_' . $code),
+					'TEXT' =>		($row['fsbcode_description']) ? htmlspecialchars($row['fsbcode_description']) : Fsb::$session->lang('fsbcode_text_' . $code),
 				));
 			
 				Fsb::$tpl->set_blocks('fsbcode_list.item', array(
