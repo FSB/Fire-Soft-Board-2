@@ -126,6 +126,7 @@ CREATE TABLE fsb2_fsbcode (
   fsbcode_wysiwyg tinyint(4) NOT NULL,
   fsbcode_activated tinyint(4) NOT NULL,
   fsbcode_activated_sig tinyint(4) NOT NULL,
+  fsbcode_menu tinyint(4) NOT NULL default '1',
   fsbcode_inline tinyint(4) NOT NULL,
   fsbcode_img varchar(100) NOT NULL,
   fsbcode_javascript varchar(50) NOT NULL,
