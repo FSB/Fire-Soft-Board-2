@@ -71,7 +71,7 @@ if ($mode == 'generate')
 {
 	Fsb::$db->update('sessions', array(
 		's_visual_code' =>	$captcha->store_str,
-		's_visual_try' =>	intval(Fsb::$session->data['s_visual_try'] + 1),
+		's_visual_try' =>	intval(Fsb::$session->data['s_visual_try']) + 1,
 	), 'WHERE s_sid = \'' . Fsb::$db->escape(Fsb::$session->sid) . '\'');
 }
 else if ($mode == 'post_captcha' || $mode == 'contact_captcha' || $mode == 'refresh')

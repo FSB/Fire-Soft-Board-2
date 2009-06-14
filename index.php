@@ -237,33 +237,35 @@ class Fsb_frame extends Fsb_model
 			}
 		}
 
-		// On recupere les donnees GET de la page
-		$get_url = '&amp;redirect=' . $this->frame_page;
-		foreach ($_GET AS $key => $value)
-		{
-			if (!in_array($key, array('p', 'sid', 'redirect')))
-			{
-				if (is_array($value))
-				{
-					foreach ($value AS $subvalue)
-					{
-						if (preg_match('#^[a-z0-9_\-]*?$#i', $subvalue))
-						{
-							$get_url .= '&amp;' . $key . '[]=' . $subvalue;
-						}
-					}
-				}
-				else if (preg_match('#^[a-z0-9_\-]*?$#i', $value))
-				{
-					$get_url .= '&amp;' . $key . '=' . $value;
-				}
-			}
-		}
-
 		// On peut desactiver la recuperation automatique des donnees GET, avec la propriete $frame_get_url = false
 		if (!$this->frame_get_url)
 		{
 			$get_url = '';
+		}
+		else
+		{
+			// On recupere les donnees GET de la page
+			$get_url = '&amp;redirect=' . $this->frame_page;
+			foreach ($_GET AS $key => $value)
+			{
+				if (!in_array($key, array('p', 'sid', 'redirect')))
+				{
+					if (is_array($value))
+					{
+						foreach ($value AS $subvalue)
+						{
+							if (preg_match('#^[a-z0-9_\-]*?$#i', $subvalue))
+							{
+								$get_url .= '&amp;' . $key . '[]=' . $subvalue;
+							}
+						}
+					}
+					else if (preg_match('#^[a-z0-9_\-]*?$#i', $value))
+					{
+						$get_url .= '&amp;' . $key . '=' . $value;
+					}
+				}
+			}
 		}
 
 		// Affichage du debugage de requetes
