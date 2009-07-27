@@ -1,0 +1,10 @@
+Merci de vous être enregistré sur <a href="{U_FORUM}">{FORUM_NAME}</a>.
+
+Afin de pouvoir vous connecter sur le forum vous devez valider votre inscription en cliquant sur le lien suivant: <a href="{U_CONFIRM}">{U_CONFIRM}</a>
+
+Pour rappel, votre login : {LOGIN}
+
+Merci
+
+~~~~~~~~~~
+{FORUM_SIG}

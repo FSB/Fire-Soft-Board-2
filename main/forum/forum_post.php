@@ -669,6 +669,8 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_switch('preview');
 			Fsb::$tpl->set_vars(array(
 				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map, $parser_info),
+				'AVATAR_WIDTH' =>			Fsb::$cfg->get('avatar_width'),
+				'AVATAR_HEIGHT' =>			Fsb::$cfg->get('avatar_height'),
 			));
 		}
 		else if (Http::request('submit_upload', 'post') && Fsb::$mods->is_active('upload'))
@@ -750,6 +752,8 @@ class Fsb_frame_child extends Fsb_frame
 			'POST_LOGIN_TO' =>		$this->post_login_to,
 			'POST_TITLE' =>			Parser::title($this->title),
 			'POST_DESCRIPTION' =>	htmlspecialchars($this->description),
+			'AVATAR_WIDTH' =>			Fsb::$cfg->get('avatar_width'),
+			'AVATAR_HEIGHT' =>			Fsb::$cfg->get('avatar_height'),
 			'LIST_SHEMA' =>			(isset($list_shema)) ? $list_shema : '',
 			'CONTENT' =>			Html::make_errstr($this->errstr),
 			'FORUM_RULES' =>		$forum_rules,

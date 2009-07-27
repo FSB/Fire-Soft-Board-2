@@ -381,11 +381,10 @@ class Page_modo_user extends Fsb_model
 			$mail = new Notify_mail();
 			$mail->AddAddress($this->userdata['u_email']);
 			$mail->Subject = sprintf(Fsb::$session->lang('subject_register'), Fsb::$cfg->get('forum_name'));
-			$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register_confirm.txt');
+			$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register_reconfirm.txt');
 			$mail->set_vars(array(
 				'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
 				'LOGIN' =>			$this->userdata['u_login'],
-				'PASSWORD' =>		$this->userdata['u_password'],
 				'U_CONFIRM' =>		Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&id=' . $this->id . '&confirm=' . urlencode($this->userdata['u_confirm_hash']),
 				'U_FORUM' =>		Fsb::$cfg->get('fsb_path'),
 			));
