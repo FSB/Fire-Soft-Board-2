@@ -33,7 +33,7 @@ class Http extends Fsb_model
 		$gpc = array('_GET', '_POST', '_COOKIE');
 		$keep_globals = array('_GET', '_POST', '_COOKIE', '_REQUEST', 'GLOBALS', '_SERVER', '_COOKIE', '_ENV', 'debug');
 		$magic_quoted = array('_GET', '_POST', '_COOKIE', '_REQUEST');
-		$magic_quote = get_magic_quotes_gpc() || get_magic_quotes_runtime();
+		$magic_quote = (function_exists('get_magic_quote_gpc'))?(get_magic_quotes_gpc() || get_magic_quotes_runtime()):false;
 		$register_globals = ini_get('register_globals');
 
 		if ($register_globals || $magic_quote)
