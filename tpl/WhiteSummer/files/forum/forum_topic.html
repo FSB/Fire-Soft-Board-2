@@ -127,7 +127,7 @@ InitBulle();
 				</if>
 				</div>
 			</div>
-			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">if (window.webkit && !window.webkit420) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
+			<div class="postcontent" <if content="$post.CAN_EDIT AND $USE_AJAX AND $post.CAN_QUICK_EDIT">ondblclick="if (window.webkit && !window.webkit420) return true; edit_post_dynamic('post_content_{post.ITERATOR}', {post.ID}, <if content="$post.IS_FIRST_POST">true<else>false</if>); return false" title="{LG_TOPIC_DBLCLICK}"</if>>
 				<div class="postheader">
 					<span>
                     	<if content="$post.HAVE_EDIT">{post.EDIT_DATA} &nbsp;</if>
