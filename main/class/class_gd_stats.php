@@ -106,7 +106,7 @@ class Gd_stats extends Fsb_model
 	public function output()
 	{
 		// Creation de l'image
-		$this->img = imagecreate true color($this->width, $this->height);
+		$this->img = imagecreatetruecolor($this->width, $this->height);
 		$background = imagecolorallocate($this->img, 255, 255, 255);
 		imagefill($this->img, 0, 0, $background);
 

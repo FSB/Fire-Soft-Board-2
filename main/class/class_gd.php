@@ -139,7 +139,7 @@ class Gd extends Fsb_model
 	 */
 	private function resize_alpha(&$src, $new_width, $new_height, $old_width, $old_height)
 	{
-		$thumb = imagecreate true color($new_width, $new_height);
+		$thumb = imagecreatetruecolor($new_width, $new_height);
 		imagealphablending($thumb, false);
 		imagecopyresampled($thumb, $src, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height);
 		imagesavealpha($thumb, true);
