@@ -13,7 +13,7 @@ return (array (
   'users_ban_explain_desc' => 'Ce panneau vous permet de bannir des logins, des adresses emails, ou des IP. Vous pouvez utiliser le caractère spécial *, par exemple *@domain.com bannira tous les emails finissant par @domain.com. De même par exemple pour les IP: 127.0.*.*',
   'adm_add_ban' => 'Ajouter un bannissement',
   'adm_ban_type' => 'Type de bannissement',
-  'adm_ban_login' => 'Pseudo',
+  'adm_ban_login' => 'Login',
   'adm_ban_ip' => 'IP',
   'adm_ban_mail' => 'Email',
   'adm_ban_content' => 'Elément à bannir',
