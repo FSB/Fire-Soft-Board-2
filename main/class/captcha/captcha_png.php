@@ -134,7 +134,7 @@ class Png extends Image
 	 *
 	 * @var bool
 	 */
-	protected $ true color = false;
+	protected $truecolor = false;
 
 	/**
 	 * Contenu de l'image (avec les headers)
@@ -157,10 +157,10 @@ class Png extends Image
 	 * @param int $height Hauteur de l'image
 	 * @param bool $ true color Mode vraies couleurs (si false, on passe en niveau de gris)
 	 */
-	public function __construct($width, $height, $ true color = true)
+	public function __construct($width, $height, $truecolor = true)
 	{
 		// Parametres
-		$this-> true color = $ true color;
+		$this->truecolor = $truecolor;
 		$this->width = $width;
 		$this->height = $height;
 
@@ -174,7 +174,7 @@ class Png extends Image
 	private function init()
 	{
 		$repeat = $this->width;
-		if ($this-> true color)
+		if ($this->truecolor)
 		{
 			$repeat *= 3;
 		}
@@ -195,7 +195,7 @@ class Png extends Image
 	 */
 	public function find_index($x, $y)
 	{
-		if (!$this-> true color)
+		if (!$this->truecolor)
 		{
 			return (($y * $this->width) + $x + $y);
 		}
@@ -220,7 +220,7 @@ class Png extends Image
 		}
 
 		$index = $this->find_index($x, $y);
-		if (!$this-> true color)
+		if (!$this->truecolor)
 		{
 			$this->image{$index} = $color;
 		}
@@ -242,7 +242,7 @@ class Png extends Image
 	public function colorat($x, $y)
 	{
 		$index = $this->find_index($x, $y);
-		if (!$this-> true color)
+		if (!$this->truecolor)
 		{
 			$color = array(
 				'red' =>	$this->image{$index},
@@ -323,7 +323,7 @@ class Png extends Image
 		$data .= pack('c', 8);
 
 		// Couleurs
-		$data .= pack('c', ($this-> true color) ? 2 : 0);
+		$data .= pack('c', ($this->truecolor) ? 2 : 0);
 
 		// Compression
 		$data .= pack('c', 0);
