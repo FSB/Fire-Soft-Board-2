@@ -100,7 +100,7 @@ function fsb_import($filename)
 		{
 			include_once(ROOT . 'main/' . $filename . '.' . PHPEXT);
 		}
-		$store[$filename] = TRUE;
+		$store[$filename] = true;
 	}
 }
 
@@ -129,7 +129,7 @@ $config = array('cache_tpl_type' => 'ftp');
 
 // Instance de la classe template
 Fsb::$tpl = new Tpl('./');
-Fsb::$tpl->use_cache = FALSE;
+Fsb::$tpl->use_cache = false;
 Fsb::$tpl->set_file('install.html');
 
 // Langue d'installation
@@ -208,7 +208,7 @@ else if (Http::request('go_to_step_db', 'post'))
 }
 else
 {
-	$current_step = NULL;
+	$current_step = null;
 }
 
 // Chmod ?
@@ -238,7 +238,7 @@ if (Http::request('submit_chmod', 'post'))
 	{
 		if (isset($chmod_files[$k]) && $v)
 		{
-			$file->chmod($chmod_files[$k]['path'], $chmod_files[$k]['chmod'], FALSE);
+			$file->chmod($chmod_files[$k]['path'], $chmod_files[$k]['chmod'], false);
 		}
 	}
 
@@ -268,7 +268,7 @@ function install_config($quick = false)
 		$config_search =	'fulltext_mysql';
 		$default_utc =		1;
 		$default_utc_dst =	0;
-		$config_rewriting =	FALSE;
+		$config_rewriting =	false;
 		$menu_webftp =		ADMIN;
 		$menu_sql =			ADMIN;
 	}
@@ -358,17 +358,17 @@ function install_admin($quick = false)
 	), 'WHERE u_id = 2');
 
 	Fsb::$db->insert('users_password', array(
-		'u_id' =>				array(2, TRUE),
+		'u_id' =>				array(2, true),
 		'u_login' =>			$login,
-		'u_password' =>			Password::hash($password, 'sha1', TRUE),
+		'u_password' =>			Password::hash($password, 'sha1', true),
 		'u_algorithm' =>		'sha1',
-		'u_use_salt' =>			TRUE,
+		'u_use_salt' =>			true,
 		'u_autologin_key' =>	sha1($login . $password . 2),
 	), 'REPLACE');
 
-	Fsb::$cfg->update('last_user_login', $nickname, FALSE);
-	Fsb::$cfg->update('fsb_path', 'http://' . dirname(dirname($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'])), FALSE);
-	Fsb::$cfg->update('fsb_hash', Fsb::$cfg->get('fsb_hash'), FALSE);
+	Fsb::$cfg->update('last_user_login', $nickname, false);
+	Fsb::$cfg->update('fsb_path', 'http://' . dirname(dirname($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'])), false);
+	Fsb::$cfg->update('fsb_hash', Fsb::$cfg->get('fsb_hash'), false);
 	Fsb::$cfg->update('register_time', CURRENT_TIME);
 
 	// Mise a jour du message et du sujet
@@ -451,13 +451,13 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	$config_code .= "define('SQL_PORT', '$sql_port');\n";
 	$config_code .= "define('SQL_PREFIX', '$sql_prefix');\n";
 	$config_code .= "define('SQL_DBAL', '$sql_dbms');\n\n";
-	$config_code .= "define('FSB_INSTALL', 'TRUE');\n";
+	$config_code .= "define('FSB_INSTALL', 'true');\n";
 	$config_code .= "/* EOF */";
 
-	$write_config = FALSE;
+	$write_config = false;
 	if ($fd = @fopen(ROOT . 'config/config.' . PHPEXT, 'w+'))
 	{
-		$write_config = TRUE;
+		$write_config = true;
 		fwrite($fd, $config_code);
 		fclose($fd);
 	}
@@ -477,7 +477,7 @@ if (Http::request('quick_install', 'post'))
 	$sql_server =		'localhost';
 	$sql_login =		'root';
 	$sql_password =		'';
-	$sql_port =			NULL;
+	$sql_port =			null;
 	$sql_dbname =		'fsb2_' . date('d_m_Y_H\Hi');
 	$sql_prefix =		'fsb2_';
 
@@ -493,12 +493,12 @@ if (Http::request('quick_install', 'post'))
 	define('SQL_DB', $sql_dbname);
 	define('SQL_PORT', $sql_port);
 	define('SQL_PREFIX', $sql_prefix);
-	define('FSB_INSTALL', 'TRUE');
-	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, FALSE);
+	define('FSB_INSTALL', 'true');
+	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, false);
 
 	install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
-	install_admin(TRUE);
-	install_config(TRUE);
+	install_admin(true);
+	install_config(true);
 
 	Http::header('location', '../index.php');
 	exit;
@@ -543,11 +543,11 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	// Si on utilise SQLite on met la base de donnee dans ~/main/dbal/sqlite/
 	if ($sql_dbms == 'sqlite')
 	{
-		$sql_dbname = md5(uniqid(rand(), TRUE)) . '.sqlite';
+		$sql_dbname = md5(uniqid(rand(), true)) . '.sqlite';
 	}
 
 	define('SQL_DBAL', $sql_dbms);
-	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, FALSE);
+	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, false);
 	if (!Fsb::$db->_get_id())
 	{
 		$current_step = 'db';
@@ -569,7 +569,7 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 else if (Http::request('go_to_step_admin', 'post'))
 {
 	$current_step = 'admin';
-	$write_config = TRUE;
+	$write_config = true;
 }
 
 // Aucun $current_step ?
@@ -582,7 +582,7 @@ foreach ($steps AS $k => $step_name)
 {
 	Fsb::$tpl->set_blocks('step', array(
 		'NAME' =>			$step_name,
-		'CURRENT_STEP' =>	($current_step == $k) ? TRUE : FALSE,
+		'CURRENT_STEP' =>	($current_step == $k) ? true : false,
 	));
 }
 
@@ -622,7 +622,7 @@ switch ($current_step)
 			'LIST_UTC_DST' =>			Html::list_utc('default_utc_dst', '0', 'dst'),
 			'MENU_WEBFTP' =>			'admin',
 			'MENU_SQL' =>				'admin',
-			'USE_FULLTEXT_MYSQL' =>		TRUE,
+			'USE_FULLTEXT_MYSQL' =>		true,
 		));
 	break;
 
@@ -653,14 +653,17 @@ switch ($current_step)
 
 		// Creation de la liste des bases de donnees
 		$list_db = '<select name="sql_dbms" id="sql_dbms_id" onchange="db_change(this.value);">';
+		$at_least_one_dbms_extension = FALSE;
 		foreach ($dbms AS $extension => $db_name)
 		{
 			if (extension_loaded($extension))
 			{
 				$list_db .= '<option value="' . $extension . '" ' . (((isset($sql_dbms) && $sql_dbms == $extension) || $extension == 'mysql') ? 'selected="selected"' : '') . '>' . $db_name . '</option>';
+				$at_least_one_dbms_extension = TRUE;
 			}
 		}
-		$list_db .= '</select>';
+		if(!$at_least_one_dbms_extension)
+			$list_db = Fsb::$session->lang('install_sql_nosgbd');
 
 		Fsb::$tpl->set_vars(array(
 			'LIST_DBMS' =>			$list_db,

@@ -653,14 +653,17 @@ switch ($current_step)
 
 		// Creation de la liste des bases de donnees
 		$list_db = '<select name="sql_dbms" id="sql_dbms_id" onchange="db_change(this.value);">';
+		$at_least_one_dbms_extension = FALSE;
 		foreach ($dbms AS $extension => $db_name)
 		{
 			if (extension_loaded($extension))
 			{
 				$list_db .= '<option value="' . $extension . '" ' . (((isset($sql_dbms) && $sql_dbms == $extension) || $extension == 'mysql') ? 'selected="selected"' : '') . '>' . $db_name . '</option>';
+				$at_least_one_dbms_extension = TRUE;
 			}
 		}
-		$list_db .= '</select>';
+		if(!$at_least_one_dbms_extension)
+			$list_db = Fsb::$session->lang('install_sql_nosgbd');
 
 		Fsb::$tpl->set_vars(array(
 			'LIST_DBMS' =>			$list_db,
