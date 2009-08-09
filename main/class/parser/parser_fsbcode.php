@@ -354,7 +354,7 @@ class Parser_fsbcode extends Fsb_model
 			$is_content_mail =  true ;
 		}
 
-		if (!preg_match('#^[a-z0-9\-_\.]+?@[a-z0-9\-_]+?\.[a-z0-9]{2,4}$#i', $arg))
+		if (!preg_match('#^[a-z0-9\-_\.]+?@[a-z0-9\-_\.]+?\.[a-z]{2,4}(?![a-z0-9\-_\.]+)$#i', $arg))
 		{
 			return ($arg);
 		}

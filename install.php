@@ -619,7 +619,7 @@ switch ($current_step)
 			'CONFIG_PATH' =>			'http://' . dirname(dirname($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'])),
 			'CONFIG_EMAIL' =>			$email,
 			'LIST_UTC' =>				Html::list_utc('default_utc', 1, 'utc'),
-			'LIST_UTC_DST' =>			Html::list_utc('default_utc_dst', '0', 'dst'),
+			'LIST_UTC_DST' =>			Html::list_utc('default_utc_dst', date("I"), 'dst'),
 			'MENU_WEBFTP' =>			'admin',
 			'MENU_SQL' =>				'admin',
 			'USE_FULLTEXT_MYSQL' =>		true,
