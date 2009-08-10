@@ -925,6 +925,7 @@ class Fsb_frame_child extends Fsb_frame
 
 		$sql = 'SELECT f_id, f_name, f_level, f_parent, f_color
 				FROM ' . SQL_PREFIX . 'forums
+				WHERE f_type < ' . FORUM_TYPE_DIRECT_URL . '
 				ORDER BY f_left';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
