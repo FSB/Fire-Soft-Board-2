@@ -645,6 +645,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->content =		Map::build_map_content($this->post_map);
 			$this->title =			trim(Http::request('post_title', 'post'));
 			$this->description =	trim(Http::request('post_description', 'post'));
+			$this->login = trim(Http::request('post_login', 'post'));
 
 			$parser = new Parser();
 			$parser->parse_html = (Fsb::$cfg->get('activate_html') && Fsb::$session->auth() >= MODOSUP) ? true : false;
@@ -671,6 +672,7 @@ class Fsb_frame_child extends Fsb_frame
 				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map, $parser_info),
 				'AVATAR_WIDTH' =>			Fsb::$cfg->get('avatar_width'),
 				'AVATAR_HEIGHT' =>			Fsb::$cfg->get('avatar_height'),
+				'POST_LOGIN' => $this->login
 			));
 		}
 		else if (Http::request('submit_upload', 'post') && Fsb::$mods->is_active('upload'))
