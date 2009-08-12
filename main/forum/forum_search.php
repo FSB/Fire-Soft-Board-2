@@ -86,7 +86,11 @@ class Fsb_frame_child extends Fsb_frame
 			$this->forums = array_keys(Fsb::$session->data['auth']);
 		}
 		$this->forums = array_intersect(Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read')), $this->forums);
-
+                /* Si le visiteur n'a aucun droit sur le forum, on le redirige
+                 * vers l'index, pas la peine d'effectuer la recherche */
+                if (!$this->forums)
+                        Display::message('search_no_right', ROOT . 'index.' . PHPEXT, 'forum_index');
+                
 		if ($this->direction != 'asc' && $this->direction != 'desc')
 		{
 			$this->direction = 'desc';
