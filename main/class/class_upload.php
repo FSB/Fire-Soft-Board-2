@@ -120,7 +120,6 @@ class Upload extends Fsb_model
 		'gif',
 		'jpg',
 		'jpeg',
-		'bmp',
 		'png',
 	);
 	

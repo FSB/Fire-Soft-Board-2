@@ -262,13 +262,19 @@ class Fsb_frame_child extends Fsb_frame
 				ORDER BY total DESC
 				LIMIT 1';
 		$f = Fsb::$db->request($sql);
-		$this->data['activ_forum']['f_id'] = $f['f_id'];
-		$this->data['activ_forum']['total'] = $f['total'];
-
-		$sql = 'SELECT f_name
+		
+                if ($f['f_id'] != '')
+                {
+                        $this->data['activ_forum']['f_id'] = $f['f_id'];
+                        $this->data['activ_forum']['total'] = $f['total'];
+                        
+                        $sql = 'SELECT f_name
 				FROM ' . SQL_PREFIX . 'forums
 				WHERE f_id = ' . $this->data['activ_forum']['f_id'];
-		$this->data['activ_forum']['f_name'] = Fsb::$db->get($sql, 'f_name');
+                        $this->data['activ_forum']['f_name'] = Fsb::$db->get($sql, 'f_name');
+                }
+                else
+                        $this->data['activ_forum'] = '';
 
 		// Sujet dans lequel le membre est le plus actif
 		$sql = 'SELECT t_id, COUNT(*) AS total
@@ -279,14 +285,20 @@ class Fsb_frame_child extends Fsb_frame
 				ORDER BY total DESC
 				LIMIT 1';
 		$f = Fsb::$db->request($sql);
-		$this->data['activ_topic']['t_id'] = $f['t_id'];
-		$this->data['activ_topic']['total'] = $f['total'];
+
+                if ($f['t_id'] != '')
+                {
+                        $this->data['activ_topic']['t_id'] = $f['t_id'];
+                        $this->data['activ_topic']['total'] = $f['total'];
 		
-		$sql = 'SELECT t_title
+                        $sql = 'SELECT t_title
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . $this->data['activ_topic']['t_id'];
-		$this->data['activ_topic']['t_title'] = Fsb::$db->get($sql, 't_title');
-	}
+                        $this->data['activ_topic']['t_title'] = Fsb::$db->get($sql, 't_title');
+                }
+                else
+                        $this->data['activ_topic'] = '';
+        }
 	
 	/*
 	** Liste les groupes auquel le membre appartient

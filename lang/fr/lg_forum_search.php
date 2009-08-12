@@ -53,6 +53,7 @@ return (array (
   'search_order_view' => 'Nombre de fois que le sujet a été vu',
   'search_order_answer' => 'Nombre de réponses au sujet',
   'search_all' => 'Tous les forums',
+  'search_no_right' => 'Vous n\'avez pas le droit de faire de recherche.'
 ));
 
 
