@@ -287,6 +287,12 @@ class Group extends Fsb_model
 			'u_auth' =>		USER,
 		), 'WHERE u_id <> ' . VISITOR_ID . ' AND u_auth < ' . FONDATOR . (($idx) ? ' AND u_id IN (' . implode(',', $idx) . ')' : ''));
 
+                // Le visiteur redevient à son tour visiteur, au cas où il
+                // aurait reçu des droits de modération avant
+                Fsb::$db->update('users', array(
+                                         'u_auth' => VISITOR,
+                                         ), 'WHERE u_id = ' . VISITOR_ID);
+
 		// Mise a jour des administrateurs, moderateurs globaux et moderateurs
 		foreach (array(ADMIN => GROUP_SPECIAL_ADMIN, MODOSUP => GROUP_SPECIAL_MODOSUP, MODO => GROUP_SPECIAL_MODO) AS $auth_level => $auth_group)
 		{
