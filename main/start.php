@@ -22,10 +22,18 @@ if (strpos($_SERVER['PHP_SELF'], 'start.') !== false)
  *
  * @param string $classname
  */
-function __autoload($classname)
+function fsb__autoload($classname)
 {
 	$classname = strtolower($classname);
 	fsb_import($classname);
+}
+
+if (!(function_exists('spl_autoload_register') && spl_autoload_register('fsb__autoload')))
+{
+	function __autoload($classname)
+	{
+		fsb__autoload($classname);
+	}
 }
 
 /**

@@ -82,7 +82,7 @@ class Debug extends Fsb_model
 	public function __construct()
 	{
 		// Benchmark de depart
-		$this->start = microtime( true );
+		$this->start = $this->get_time();
 
 		$this->can_debug = (!(error_reporting() ^ E_ALL)) ? true : false;
 		$this->debug_query = ($this->can_debug && isset($_GET['debug_query'])) ? true : false;
@@ -135,7 +135,7 @@ class Debug extends Fsb_model
 	 */
 	public function mark($name)
 	{
-		$this->data[] = array('name' => $name, 'time' => microtime( true ));
+		$this->data[] = array('name' => $name, 'time' => $this->get_time());
 	}
 
 	/**
@@ -227,6 +227,11 @@ class Debug extends Fsb_model
 		}
 
 		return (null);
+	}
+
+	public function get_time()
+	{
+		return microtime(true);
 	}
 }
 
