@@ -148,7 +148,7 @@ class Page_modo_move extends Fsb_model
 			if ($this->idx)
 			{
 				Moderation::move_topics($this->idx, $this->f_id, $forum_id, $trace);
-				Log::add(Log::MODO, 'log_move_topics');
+				Log::add(Log::MODO, 'log_topics');
 			}
 
 			Display::message('modo_move_well', ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->f_id, 'forum_forum');
