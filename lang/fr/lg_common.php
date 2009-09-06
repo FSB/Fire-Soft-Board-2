@@ -427,6 +427,7 @@ return (array (
   'utc14' => 'Kiribati, line',
   'dst_0' => 'Heure d\'hiver',
   'dst_1' => 'Heure d\'été (+ 1 heure)',
+  'nickname_chars_low' => 'Vous devez spécifier un pseudonyme',
   'nickname_chars_middle' => 'Vous ne pouvez utiliser que des caractères alphanumériques, des espaces et des tirets',
   'nickname_chars_high' => 'Vous ne pouvez utiliser que des lettres et des espaces',
   'jumpbox_label' => 'Liens du forum',

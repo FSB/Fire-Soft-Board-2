@@ -342,7 +342,11 @@ class Fsb_frame_child extends Fsb_frame
 		// Pseudonyme valide ?
 		if (($valid_nickname = User::nickname_valid($this->data['u_nickname'])) !== true)
 		{
-			$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
+			//On n'affiche pas le message d'erreur si le pseudonyme est vide (une condition précédente le fait)
+			if($valid_nickname != 'low')
+			{
+				$this->errstr[] = Fsb::$session->lang('nickname_chars_' . $valid_nickname);
+			}
 		}
 
 		// Necessite l'entree des deux mots de passe
@@ -638,7 +642,7 @@ class Fsb_frame_child extends Fsb_frame
 			list($this->data['u_password'], $hash) =	$fsbcard->get_password();
 
 			// Verification de l'integrite de la FSBcard
-			if (is_null($this->data['u_login']) || is_null($this->data['u_nickname']) || is_null($this->data['u_password']) || is_null($this->data['u_email']))
+			if (!$this->data['u_login'] || !$this->data['u_nickname'] || !$this->data['u_password'] || !$this->data['u_email'])
 			{
 				$this->errstr[] = Fsb::$session->lang('register_fsbcard_invalid');
 				return (false);
