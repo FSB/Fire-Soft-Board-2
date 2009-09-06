@@ -43,6 +43,8 @@ class User extends Fsb_model
 			'u_utc' =>				Fsb::$cfg->get('default_utc'),
 			'u_utc_dst' =>			Fsb::$cfg->get('default_utc_dst'),
 			'u_default_group_id' =>	GROUP_SPECIAL_USER,
+			'u_signature' =>		'',
+			'u_comment' =>			'',
 		);
 
 		// Fusion avec les informations

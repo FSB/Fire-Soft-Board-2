@@ -22,7 +22,7 @@ CREATE TABLE fsb2_bots (
 );
 CREATE INDEX fsb2_bots_bot_id_index ON fsb2_bots (bot_id);
 CREATE TABLE fsb2_cache (
-  cache_hash char(32),
+  cache_hash varchar(255),
   cache_type varchar(255),
   cache_content longtext,
   cache_time int(11)
@@ -124,9 +124,9 @@ CREATE TABLE fsb2_groups (
   g_type tinyint(4) default '0',
   g_hidden tinyint(4) default '0',
   g_color varchar(255) default '',
-  g_open tinyint(4),
+  g_open tinyint(4) default '0',
   g_online tinyint(4) default '1',
-  g_rank mediumint(9)
+  g_rank mediumint(9) default '0'
 );
 CREATE INDEX fsb2_groups_g_type_index ON fsb2_groups (g_type);
 CREATE TABLE fsb2_groups_auth (
@@ -462,7 +462,7 @@ CREATE TABLE fsb2_users (
   u_activate_email tinyint(4) default '4',
   u_activate_auto_notification tinyint(4) default '2',
   u_activate_mp_notification tinyint(4) default '1',
-  u_activate_hidden tinyint(4),
+  u_activate_hidden tinyint(4) default '0',
   u_activate_fscode tinyint(4) default '6',
   u_activate_avatar tinyint(4) default '1',
   u_activate_sig tinyint(4) default '1',
@@ -481,8 +481,8 @@ CREATE TABLE fsb2_users (
   u_comment text,
   u_register_ip varchar(15),
   u_activated tinyint(4),
-  u_confirm_hash char(32),
-  u_total_warning tinyint(4),
+  u_confirm_hash char(32) default '',
+  u_total_warning tinyint(4) default '0',
   u_warn_post int(11) default '0',
   u_warn_read int(11) default '0',
   u_utc tinyint(4) default '0',

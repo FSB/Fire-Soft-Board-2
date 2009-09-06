@@ -447,7 +447,7 @@ class Session extends Fsb_model
 			's_time' =>					CURRENT_TIME,
 			's_signal_user' =>			CURRENT_TIME,
 			's_session_start_time' =>	($new_session || !isset($this->data['s_session_start_time'])) ? CURRENT_TIME : $this->data['s_session_start_time'],
-			's_bot' =>					(isset($this->data['s_bot'])) ? $this->data['s_bot'] : false,
+			's_bot' =>					(isset($this->data['s_bot'])) ? $this->data['s_bot'] : 0,
 			's_cache' =>				serialize(array('auth' => $this->data['auth'], 'groups' => $this->data['groups'], 'groups_modo' => $this->data['groups_modo'])),
 			's_admin_logged' =>			(isset($this->data['s_admin_logged'])) ? $this->data['s_admin_logged'] : 0,
 		), 'REPLACE');

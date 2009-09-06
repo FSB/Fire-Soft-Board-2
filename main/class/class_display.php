@@ -108,7 +108,15 @@ class Display extends Fsb_model
 
 				if (defined('FSB_INSTALL'))
 				{
-					Log::add_custom(Log::ERROR, $errstr, array(), $errline, $errfile);
+					//Si il s'agit d'une erreur SQL, on log différement car ça peut etre long
+					if(preg_match('#^error_sql #i', $errstr))
+					{
+						Log::add_custom(Log::ERROR, 'Erreur SQL', array($errstr), $errline, $errfile);
+					}
+					else
+					{	
+						Log::add_custom(Log::ERROR, $errstr, array(), $errline, $errfile);
+					}
 				}
 				exit;
 			break;

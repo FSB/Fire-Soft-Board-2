@@ -30,7 +30,7 @@ CREATE TABLE fsb2_bots (
 
 DROP TABLE IF EXISTS fsb2_cache;
 CREATE TABLE fsb2_cache (
-  cache_hash char(32) NOT NULL,
+  cache_hash varchar(255) NOT NULL,
   cache_type varchar(255) NOT NULL,
   cache_content longtext NOT NULL,
   cache_time int(11) NOT NULL,
@@ -145,9 +145,9 @@ CREATE TABLE fsb2_groups (
   g_type tinyint(4) NOT NULL default '0',
   g_hidden tinyint(4) NOT NULL default '0',
   g_color varchar(255) NOT NULL default '',
-  g_open tinyint(4) NOT NULL,
+  g_open tinyint(4) NOT NULL default '0',
   g_online tinyint(4) NOT NULL default '1',
-  g_rank mediumint(9) NOT NULL,
+  g_rank mediumint(9) NOT NULL default '0',
   PRIMARY KEY  (g_id),
   KEY g_type (g_type)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -236,7 +236,7 @@ CREATE TABLE fsb2_mp (
   mp_from int(11) NOT NULL default '0',
   mp_to int(11) NOT NULL default '0',
   mp_title varchar(255) NOT NULL default '',
-  mp_content text NOT NULL default '',
+  mp_content text NOT NULL,
   mp_type tinyint(4) NOT NULL default '0',
   mp_read tinyint(4) NOT NULL default '0',
   mp_time int(11) NOT NULL default '0',
@@ -261,11 +261,11 @@ CREATE TABLE fsb2_mp_blacklist (
 DROP TABLE IF EXISTS fsb2_notify;
 CREATE TABLE fsb2_notify (
   notify_id int(11) NOT NULL auto_increment,
-  notify_time int(11) NOT NULL ,
-  notify_method tinyint(4) NOT NULL ,
-  notify_subject varchar(255) NOT NULL ,
-  notify_body text NOT NULL ,
-  notify_bcc longtext NOT NULL ,
+  notify_time int(11) NOT NULL,
+  notify_method tinyint(4) NOT NULL,
+  notify_subject varchar(255) NOT NULL,
+  notify_body text NOT NULL,
+  notify_bcc longtext NOT NULL,
   notify_try tinyint(4) NOT NULL,
   PRIMARY KEY  (notify_id),
   KEY notify_time (notify_time)
@@ -459,8 +459,8 @@ CREATE TABLE fsb2_smilies_cat (
 DROP TABLE IF EXISTS fsb2_sub_procedure;
 CREATE TABLE fsb2_sub_procedure (
   procedure_id mediumint(9) NOT NULL auto_increment,
-  procedure_name varchar(255) NOT NULL ,
-  procedure_source text NOT NULL ,
+  procedure_name varchar(255) NOT NULL,
+  procedure_source text NOT NULL,
   procedure_auth tinyint(4) NOT NULL default '2',
   PRIMARY KEY (procedure_id) 
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -553,7 +553,7 @@ CREATE TABLE fsb2_users (
   u_activate_email tinyint(4) NOT NULL default '4',
   u_activate_auto_notification tinyint(4) NOT NULL default '2',
   u_activate_mp_notification tinyint(4) NOT NULL default '1',
-  u_activate_hidden tinyint(4) NOT NULL,
+  u_activate_hidden tinyint(4) NOT NULL default '0',
   u_activate_fscode tinyint(4) NOT NULL default '6',
   u_activate_avatar tinyint(4) NOT NULL default '1',
   u_activate_sig tinyint(4) NOT NULL default '1',
@@ -572,8 +572,8 @@ CREATE TABLE fsb2_users (
   u_comment text NOT NULL,
   u_register_ip varchar(15) NOT NULL,
   u_activated tinyint(4) NOT NULL,
-  u_confirm_hash char(32) NOT NULL,
-  u_total_warning tinyint(4) NOT NULL,
+  u_confirm_hash char(32) NOT NULL default '',
+  u_total_warning tinyint(4) NOT NULL default '0',
   u_warn_post int(11) NOT NULL default '0',
   u_warn_read int(11) NOT NULL default '0',
   u_utc tinyint(4) NOT NULL default '0',

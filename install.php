@@ -547,6 +547,7 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	}
 
 	define('SQL_DBAL', $sql_dbms);
+	define('SQL_PREFIX', $sql_prefix);
 	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, false);
 	if (!Fsb::$db->_get_id())
 	{
