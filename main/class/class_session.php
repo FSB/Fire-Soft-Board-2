@@ -323,6 +323,7 @@ class Session extends Fsb_model
 		$this->data['session_start_time'] = CURRENT_TIME;
 		$this->data['s_bot'] = $this->is_bot();
 		$this->data['s_visual_try'] = 0;
+		$this->data['s_admin_logged'] = 0;
 		Fsb::$db->free($result);
 
 		$this->create_auths();
