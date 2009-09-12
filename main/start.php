@@ -83,7 +83,7 @@ class Fsb extends Fsb_model
 }
 
 /**
- * Inclus un fichier dans le dossier main/ de facon inteligente
+ * Inclue un fichier dans le dossier main/ de facon intelligente
  *
  * @param string $filename Nom du fichier
  */

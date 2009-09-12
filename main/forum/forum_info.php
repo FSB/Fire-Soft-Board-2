@@ -142,7 +142,7 @@ class Fsb_frame_child extends Fsb_frame
 			if ($a !== $row['u_auth'])
 			{
 				Fsb::$tpl->set_blocks('auth', array(
-					'LANG' =>	Fsb::$session->lang($GLOBALS['_auth_level'][$row['u_auth']]),
+					'LANG' =>	Fsb::$session->lang('info_admin_' . $GLOBALS['_auth_level'][$row['u_auth']]),
 				));
 				$a = $row['u_auth'];
 			}

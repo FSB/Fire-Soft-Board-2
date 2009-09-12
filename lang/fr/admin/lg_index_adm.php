@@ -44,7 +44,7 @@ return (array (
   'adm_location_index' => 'Sur l\'index du forum',
   'adm_location_forum' => 'Parcourt un forum',
   'adm_location_topic' => 'Parcourt un sujet',
-  'adm_location_post_new' => 'Créé un nouveau sujet',
+  'adm_location_post_new' => 'Crée un nouveau sujet',
   'adm_location_post_reply' => 'Répond à un sujet',
   'adm_location_post_edit' => 'Edite un message',
   'adm_location_userlist' => 'Parcourt la liste des membres',
