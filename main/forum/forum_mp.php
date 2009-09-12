@@ -8,33 +8,43 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Messagerie privee des membres
-** La messagerie privee possede un header bien a elle en plus du header normal, ce header
-** affiche les liens vers les differentes options et boites de la messagerie prive
-*/
+/**
+ * Messagerie privee des membres
+ * La messagerie privee possede un header bien a elle en plus du header normal, ce header
+ * affiche les liens vers les differentes options et boites de la messagerie prive
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Parametres d'affichage de la page (barre de navigation, boite de stats)
+	 */
 	public $_show_page_header_nav = true;
 	public $_show_page_footer_nav = true;
 	public $_show_page_stats = false;
 
-	// Boite
+	/**
+	 * Boite
+	 */
 	public $box;
 	
-	// ID du message prive
+	/**
+	 * ID du message prive
+	 */
 	public $id;
 	
-	// Numero de la page courante
+	/**
+	 *  Numero de la page courante
+	 */
 	public $page;
 
-	// Donnee du MP en cas de lecture
+	/**
+	 * Donnee du MP en cas de lecture
+	 */
 	public $mp_data;
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		// Le membre a le droit d'acceder a cette page ?
@@ -92,9 +102,9 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 	
-	/*
-	** Affiche les boites de liste de messages (reception, envoie, etc ...)
-	*/
+	/**
+	 * Affiche les boites de liste de messages (reception, envoie, etc ...)
+	 */
 	public function show_message_box()
 	{
 		// Si l'argument $id est passe on affiche le contenu du message
@@ -230,13 +240,12 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Supprime les MP en trop dans une boite
-	** -----
-	** $current_total ::			Nombre actuel de MP dans la boite
-	** $quota_total ::			Quota max
-	** $box ::					Boite concernee
-	*/
+	/**
+	 * Supprime les MP en trop dans une boite
+	 * @param int $current_total Nombre actuel de MP dans la boite
+	 * @param int $quota_total Quota max
+	 * @param int $box Boite concernee
+	 */
 	public function delete_quota_mp($current_total, $quota_total, $box)
 	{
 		if ($current_total > $quota_total && Fsb::$session->auth() < MODOSUP)
@@ -263,10 +272,10 @@ class Fsb_frame_child extends Fsb_frame
 			}
 		}
 	}
-	
-	/*
-	** Archive un ou plusieurs messages dans la boite de reception
-	*/
+
+	/**
+	 * Archive un ou plusieurs messages dans la boite de reception
+	 */
 	public function save_mp()
 	{		
 		$action = Http::request('action', 'post');
@@ -296,10 +305,10 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('mp_to_savebox', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box, 'forum_mp');
 	}
 
-	/*
-	** Affiche la page d'option pour la messagerie privee, ainsi que la blacklist et
-	** le repondeur.
-	*/
+	/**
+	 * Affiche la page d'option pour la messagerie privee, ainsi que la blacklist et
+	 * le repondeur.
+	 */
 	public function show_options_box()
 	{
 		Fsb::$tpl->set_file('forum/forum_mp.html');
@@ -343,10 +352,10 @@ class Fsb_frame_child extends Fsb_frame
 			'U_ACTION' =>				sid(ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=' . $this->box),
 		));
 	}
-	
-	/*
-	** Ajout d'un membre dans la blacklist des messages prives
-	*/
+
+	/**
+	 * Ajout d'un membre dans la blacklist des messages prives
+	 */
 	public function add_user_in_blacklist()
 	{
 		if (!Fsb::$mods->is_active('mp_blacklist'))
@@ -387,9 +396,9 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('mp_blacklist_well_add', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=options', 'forum_mp2');
 	}
 	
-	/*
-	** Supprime un ou plusieurs membre de la blacklist
-	*/
+	/**
+	 * Supprime un ou plusieurs membre de la blacklist
+	 */
 	public function delete_user_from_blacklist()
 	{
 		if (!Fsb::$mods->is_active('mp_blacklist'))
@@ -415,9 +424,9 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('mp_blacklist_well_delete', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=options', 'forum_mp2');
 	}
 	
-	/*
-	** Verifie les donnees du formulaire et sauve les modifications du repondeur
-	*/
+	/**
+	 * Verifie les donnees du formulaire et sauve les modifications du repondeur
+	 */
 	public function submit_auto_answer()
 	{
 		$activ =	intval(Http::request('auto_answer_activ', 'post'));
@@ -444,9 +453,9 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('mp_auto_answer_well', ROOT . 'index.' . PHPEXT . '?p=mp&amp;box=options', 'forum_mp2');
 	}
 
-	/*
-	** Recupere les donnees du MP qu'on lit
-	*/
+	/**
+	 * Recupere les donnees du MP qu'on lit
+	 */
 	public function get_read_mp_data()
 	{
 		// Donnees du MP
@@ -492,9 +501,9 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche le message prive qu'on veut lire
-	*/
+	/**
+	 * Affiche le message prive qu'on veut lire
+	 */
 	public function show_message()
 	{
 		// Mise a jour du nombre de messages non lus du membre
@@ -647,9 +656,9 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 	
-	/*
-	** Supprime un ou plusieurs messages prives et redirige vers la boite de reception
-	*/
+	/**
+	 * Supprime un ou plusieurs messages prives et redirige vers la boite de reception
+	 */
 	public function delete_mp()
 	{
 		$action = Http::request('action', 'post');

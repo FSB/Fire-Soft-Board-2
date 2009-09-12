@@ -8,10 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche le formulaire permettant de creer des sujets, repondre a des messages, envoyer
-** des messages prives etc ...
-*/
+/**
+ * Affiche le formulaire permettant de creer des sujets, repondre a des messages, envoyer
+ * des messages prives etc ...
+ */
 class Fsb_frame_child extends Fsb_frame
 {
 	// Parametres d'affichage de la page (barre de navigation, boite de stats)
@@ -65,12 +65,9 @@ class Fsb_frame_child extends Fsb_frame
 	// <title>
 	public $tag_title = '';
 
-	// Taille max du titre
-	public $max_title_length = 60;
-
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 */
 	public function main()
 	{
 		$this->quote =			Http::request('quote');
@@ -1058,10 +1055,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// On tronque le titre s'il est trop grand
-		if (String::strlen($this->title) > $this->max_title_length)
-		{
-			$this->title = String::substr($this->title, 0, $this->max_title_length);
-		}
+		$this->title = Send::truncateTitle(truncate_config());
 
 		// On verifie le code de confirmation visuelle
 		if ($this->use_captcha && !check_captcha(Http::request('captcha_code', 'post')))

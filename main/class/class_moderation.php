@@ -351,6 +351,9 @@ class Moderation extends Fsb_model
 
 		Fsb::$db->transaction('begin');
 
+		// On tronque le titre s'il est trop grand
+		$title = Send::truncateTitle($title);
+
 		// Creation du nouveau sujet
 		$new_topic_id = Send::send_topic($forum_id, $first_post['u_id'], $title, $topic_data['t_map'], count($GLOBALS['_topic_type']) - 1, array(
 			't_total_post' =>		$count_action,
