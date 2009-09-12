@@ -117,6 +117,8 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('rss_caching', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_html', '0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('rsa_public_key', '');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('rsa_private_key', '');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('rsa_last_regen', '0');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('rsa_old_private_key', '');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('flood_post', '30');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('post_min_length', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_next_events', '5');
