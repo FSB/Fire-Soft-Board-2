@@ -11,6 +11,7 @@ function submit_encrypt_rsa(t)
 {
 	<switch name="use_rsa">
 	add_field(t, 'hidden', 'hidden_rsa', '1');
+	add_field(t, 'hidden', 'hidden_rsa_last_regen', '{RSA_LAST_REGEN}');
 	encrypt_rsa_field(t, 'u_login', '{RSA_MOD}', '{RSA_EXP}');
 	encrypt_rsa_field(t, 'u_password', '{RSA_MOD}', '{RSA_EXP}');
 	</switch>

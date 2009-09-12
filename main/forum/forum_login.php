@@ -33,6 +33,9 @@ class Fsb_frame_child extends Fsb_frame
 	// Utilisation du chiffrage RSA ?
 	public $use_rsa = false;
 	
+	// Délai max d'utilisation de l'ancienne clef RSA
+	public $rsa_old_key_ttl = 1800;
+	
 	/*
 	** Constructeur
 	*/
@@ -118,6 +121,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_vars(array(
 				'RSA_MOD' =>	$rsa->public_key->_get('mod'),
 				'RSA_EXP' =>	$rsa->public_key->_get('exp'),
+				'RSA_LAST_REGEN' =>	Fsb::$cfg->get('rsa_last_regen'),
 			));
 		}
 
@@ -145,7 +149,19 @@ class Fsb_frame_child extends Fsb_frame
 		if ($this->use_rsa && Http::request('hidden_rsa', 'post'))
 		{
 			$rsa = new Rsa();
-			$rsa->private_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_private_key'));
+			
+			$form_rsa_last_regen = Http::request('hidden_rsa_last_regen');
+			
+			//Si la clé a changé depuis, on utilise l'ancienne
+			if($form_rsa_last_regen != Fsb::$cfg->get('rsa_last_regen') && ($form_rsa_last_regen + $this->rsa_old_key_ttl > CURRENT_TIME))
+			{
+				$rsa->private_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_old_private_key'));
+			}
+			else
+			{
+				$rsa->private_key = Rsa_key::from_string(Fsb::$cfg->get('rsa_private_key'));
+			}
+
 			if (is_null($rsa->private_key))
 			{
 				$rsa->regenerate_keys();
@@ -173,6 +189,11 @@ class Fsb_frame_child extends Fsb_frame
 
 			if ($result)
 			{
+				// En cas de chiffrage RSA, on ne renvoie pas le mot de passe en clair
+				if ($this->use_rsa && Http::request('hidden_rsa', 'post'))
+				{
+					$this->data['u_password'] = '';
+				}
 				$this->errstr[] = $result;
 			}
 			else

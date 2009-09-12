@@ -92,9 +92,16 @@ class Rsa extends Fsb_model
 	 */
 	public function regenerate_keys()
 	{
+		//On sauvegarde la clef privee actuelle
+		Fsb::$cfg->update('rsa_old_private_key', Fsb::$cfg->get('rsa_private_key'));
+		
+		//Regen des cles
 		$this->generate_keys();
+		
+		//On stocke l'heure du regen pour pouvoir utiliser l'ancienne clef si besoin pendant un certain temps
+		Fsb::$cfg->update('rsa_last_regen', CURRENT_TIME);
 		Fsb::$cfg->update('rsa_public_key', $this->public_key->to_string());
-		Fsb::$cfg->update('rsa_private_key', $this->private_key->to_string());
+		Fsb::$cfg->update('rsa_private_key', $this->private_key->to_string(), true); //On vide le cache
 	}
 
 	/**
