@@ -105,7 +105,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['subject'] = Fsb::$session->lang('no_subject');
 		}
 
-		// On verifie si les membres envoyes existent
+		//On prepare la liste des membres fournie
 		$sql_nickname = array();
 		foreach (explode("\n", $this->data['users']) AS $nickname)
 		{
@@ -115,7 +115,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$sql_nickname[$nickname] = $nickname;
 			}
 		}
-
+		
+		// On verifie si les membres envoyes existent
 		if ($sql_nickname)
 		{
 			$sql = 'SELECT u_id, u_nickname, u_language, u_email
@@ -129,11 +130,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				{
 					$this->data['idx'][$row['u_language']] = array();
 				}
-
-				if ($row['u_email'])
-				{
-					$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
-				}
+				$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
 				$this->total++;
 				unset($sql_nickname[$row['u_nickname']]);
 			}
@@ -145,6 +142,40 @@ class Fsb_frame_child extends Fsb_admin_frame
 				$this->errstr[] = sprintf(Fsb::$session->lang('adm_email_login_not_exists'), htmlspecialchars($nickname));
 			}
 		}
+		
+		// Netoyage de la liste des groupes
+		$this->data['groups'] = array_map('intval', $this->data['groups']);
+		
+		// On recupere les membres du groupe
+		if($this->data['groups'])
+		{
+			$sql = 'SELECT u.u_id, u.u_language, u.u_email
+					FROM ' . SQL_PREFIX . 'groups g
+					LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
+						ON gu.g_id = g.g_id
+					INNER JOIN ' . SQL_PREFIX . 'users u
+						ON gu.u_id = u.u_id
+					WHERE g.g_id IN (' . implode(', ', $this->data['groups']) . ')
+						AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
+					GROUP BY u.u_id, u.u_language, u.u_email';
+			$result = Fsb::$db->query($sql);
+			while ($row = Fsb::$db->row($result))
+			{
+				if (!isset($this->data['idx'][$row['u_language']]))
+				{
+					$this->data['idx'][$row['u_language']] = array();
+				}
+				$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
+				$this->total++;
+			}
+			Fsb::$db->free($result);
+		}
+		
+		//On verifie qu'on ait au moins une personne a mailer
+		if (!$this->data['idx'])
+		{
+			$this->errstr[] = Fsb::$session->lang('adm_email_no_dest');
+		}
 	}
 
 	/**
@@ -154,50 +185,39 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		@set_time_limit(0);
 		
-		if (!$this->data['groups'])
-		{
-			Display::message('adm_email_no_dest');
-		}
-
-		// On recupere les membres des groupes
-		$send_email = true;
 		$result_email = true;
-		$this->data['groups'] = array_map('intval', $this->data['groups']);
-		$sql = 'SELECT u.u_id, u.u_language, u.u_email
-				FROM ' . SQL_PREFIX . 'groups g
-				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
-					ON gu.g_id = g.g_id
-				INNER JOIN ' . SQL_PREFIX . 'users u
-					ON gu.u_id = u.u_id
-				WHERE g.g_id IN (' . implode(', ', $this->data['groups']) . ')
-					AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
-				GROUP BY u.u_id, u.u_language, u.u_email';
-		$result = Fsb::$db->query($sql);
-		while ($row = Fsb::$db->row($result))
+		
+		//On verifie si on fait des envoi multiples ou pas
+		if($this->total < $this->max_user_per_email)
 		{
-			if (!isset($this->data['idx'][$row['u_language']]))
-			{
-				$this->data['idx'][$row['u_language']] = array();
-			}
-			$this->data['idx'][$row['u_language']][$row['u_id']] = $row['u_email'];
-			$this->total++;
-
-			// On limite le nombre de destinataires (100 par defaut) par Email en BCC
-			$send_email = false;
-			if ($this->total == $this->max_user_per_email)
-			{
-				$result_email = true;
-				$this->send_email_part($result_email);
-				$this->data['idx'] = array();
-				$send_email = true;
-				$this->total = 0;
-			}
+			$this->send_email_part($result_email, $this->data['idx']);
 		}
-		Fsb::$db->free($result);
-
-		if (!$send_email)
+		else
 		{
-			$this->send_email_part($result_email);
+			$mail_array = array();
+			$cmpt = 0;
+			foreach($this->data['idx'] as $lang => $mails)
+			{
+				foreach($mails AS $v)
+				{
+					$mail_array[$lang][] = $v;
+					$cmpt++;
+					// On limite le nombre de destinataires (100 par defaut) par Email en BCC
+					if (($cmpt == $this->max_user_per_email) && $result_email)
+					{
+						$this->send_email_part($result_email, $mail_array);
+						$mail_array = array();
+						$cmpt = 0;
+					}
+				}
+			}
+			
+			//Si il reste des mail à envoyer on le fait
+			if($result_email && $mail_array)
+			{
+				$this->send_email_part($result_email, $mail_array);
+				printr($mail_array);
+			}
 		}
 
 		Log::add(Log::EMAIL, 'mass', $this->data['content']);
@@ -208,10 +228,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 * Envoie de l'Email en plusieurs parties
 	 *
 	 * @param bool $result_email Succes d'envoie de l'Email
+	 * @param array $mail_array Tableau des mails tries par langue
 	 */
-	public function send_email_part(&$result_email)
+	public function send_email_part(&$result_email, $mail_array)
 	{
-		foreach ($this->data['idx'] AS $mail_lang => $mail_list)
+		foreach ($mail_array AS $mail_lang => $mail_list)
 		{
 			$mail = new Notify_mail();
 			foreach ($mail_list AS $bcc)
