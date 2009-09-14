@@ -155,7 +155,7 @@ class Png extends Image
 	 *
 	 * @param int $width Largeur de l'image
 	 * @param int $height Hauteur de l'image
-	 * @param bool $ true color Mode vraies couleurs (si false, on passe en niveau de gris)
+	 * @param bool $truecolor Mode vraies couleurs (si false, on passe en niveau de gris)
 	 */
 	public function __construct($width, $height, $truecolor = true)
 	{
@@ -264,7 +264,7 @@ class Png extends Image
 	/**
 	 * Fin du fichier PNG
 	 *
-	 * @param bool $print Si  true , affiche l'image
+	 * @param bool $print Si true, affiche l'image
 	 * @return string Contenu de l'image
 	 */
 	public function close($print = true)
@@ -361,7 +361,7 @@ class Png extends Image
 			$length = ($this->width + 1) * $height;
 			if (extension_loaded('hash'))
 			{
-				$adler_hash = strrev(hash('adler32', $this->image,  true ));
+				$adler_hash = strrev(hash('adler32', $this->image, true));
 			}
 			else if (extension_loaded('mhash'))
 			{
