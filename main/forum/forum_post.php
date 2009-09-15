@@ -1205,7 +1205,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// On tronque le titre s'il est trop grand
-		$this->title = Send::truncateTitle(truncate_config());
+		$this->title = Send::truncate_title($this->title);
 
 		// On verifie le code de confirmation visuelle
 		if ($this->use_captcha && !check_captcha(Http::request('captcha_code', 'post')))

@@ -14,7 +14,7 @@
 class Send extends Fsb_model
 {
 	// Taille max du titre
-	public $max_title_length = 60;
+	public static $max_title_length = 60;
 
 	//
 	// Methodes liees a l'envoie de messages prives
@@ -564,10 +564,10 @@ class Send extends Fsb_model
 	 * @param string $title
 	 * @return string
 	 */
-	public static function truncateTitle($title)
+	public static function truncate_title($title)
 	{
-		if (String::strlen($title) > $this->max_title_length)
-			$title = String::substr($title, 0, $this->max_title_length);
+		if (String::strlen($title) > self::$max_title_length)
+			$title = String::substr($title, 0, self::$max_title_length);
 
 		return $title;
 	}
