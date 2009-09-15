@@ -11,17 +11,23 @@
 // On cache ce module
 $show_this_module = false;
 
-/*
-** Module de moderation pour la suppression d'un sujet
-*/
+/**
+ * Module de moderation pour la suppression d'un sujet
+ *
+ */
 class Page_modo_delete_topic extends Fsb_model
 {
-	// ID du message a supprimer
+	/**
+	 * ID du message a supprimer
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->id = intval(Http::request('id'));

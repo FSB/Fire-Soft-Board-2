@@ -11,23 +11,37 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Module de moderation pour la fusion de sujets
-*/
+/**
+ * Module de moderation pour la fusion de sujets
+ *
+ */
 class Page_modo_merge extends Fsb_model
 {
-	// ID du sujet a fusioner
+	/**
+	 * ID du sujet a fusioner
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// ID du forum du sujet
+	/**
+	 * ID du forum du sujet
+	 *
+	 * @var int
+	 */
 	public $forum_id;
 
-	// Maximum de sujets a afficher pour le filtre de fusion
+	/**
+	 * Maximum de sujets a afficher pour le filtre de fusion
+	 *
+	 * @var int
+	 */
 	public $merge_limit = 200;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->id = intval(Http::request('id', 'post|get'));
@@ -41,9 +55,10 @@ class Page_modo_merge extends Fsb_model
 		$this->form_merge_topics();
 	}
 
-	/*
-	** Verifie si le sujet existe et si on peut le modifier
-	*/
+	/**
+	 * Verifie si le sujet existe et si on peut le modifier
+	 *
+	 */
 	public function check_topic_data()
 	{
 		if (!$this->id)
@@ -70,9 +85,10 @@ class Page_modo_merge extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche le formulaire de choix d'ID du sujet
-	*/
+	/**
+	 * Affiche le formulaire de choix d'ID du sujet
+	 *
+	 */
 	public function form_merge_id()
 	{
 		Fsb::$tpl->set_file('modo/modo_merge.html');
@@ -81,9 +97,10 @@ class Page_modo_merge extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche le formulaire pour entrer les ID des sujets a fusioner
-	*/
+	/**
+	 * Affiche le formulaire pour entrer les ID des sujets a fusioner
+	 *
+	 */
 	public function form_merge_topics()
 	{
 		if (!$this->id)
@@ -128,9 +145,10 @@ class Page_modo_merge extends Fsb_model
 		));
 	}
 
-	/*
-	** Fusion des sujets
-	*/
+	/**
+	 * Fusion des sujets
+	 *
+	 */
 	public function merge_topics()
 	{
 		if (!$this->id)

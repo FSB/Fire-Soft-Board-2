@@ -10,9 +10,10 @@
 
 $GLOBALS['use_register_shutdown'] = false;
 
-/*
-** Effectue un delestage sur les forums concernes
-*/
+/**
+ * Effectue un delestage sur les forums concernes
+ *
+ */
 function prune_forums()
 {
 	Forum::auto_prune();

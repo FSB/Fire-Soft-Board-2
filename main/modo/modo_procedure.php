@@ -14,9 +14,10 @@ if (Fsb::$session->is_authorized('procedure'))
 	$show_this_module = true;
 }
 
-/*
-** Module permettant la creation de procedures de moderation
-*/
+/**
+ * Module permettant la creation de procedures de moderation
+ *
+ */
 class Page_modo_procedure extends Fsb_model
 {
 	public $mode;
@@ -105,9 +106,10 @@ class Page_modo_procedure extends Fsb_model
 		),
 	);
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->mode =	Http::request('mode');
@@ -141,9 +143,10 @@ class Page_modo_procedure extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche la liste des procedures
-	*/
+	/**
+	 * Affiche la liste des procedures
+	 *
+	 */
 	public function list_procedure()
 	{
 		Fsb::$tpl->set_file('modo/modo_procedure.html');
@@ -167,9 +170,12 @@ class Page_modo_procedure extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Ajout de procedure
-	*/
+	/**
+	 * Ajout de procedure
+	 *
+	 * @param string $name
+	 * @param int $auth
+	 */
 	public function new_procedure($name = '', $auth = MODOSUP)
 	{
 		// Droits sur la procedure
@@ -191,9 +197,10 @@ class Page_modo_procedure extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumission de la modification des donnees de la procedure
-	*/
+	/**
+	 * Soumission de la modification des donnees de la procedure
+	 *
+	 */
 	public function submit_procedure_name()
 	{
 		$name =	Http::request('procedure_name', 'post');
@@ -219,9 +226,10 @@ class Page_modo_procedure extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=procedure&mode=edit&id=' . $this->id);
 	}
 
-	/*
-	** Editeur de procedure
-	*/
+	/**
+	 * Editeur de procedure
+	 *
+	 */
 	public function edit_procedure()
 	{
 		// Donnees de la procedure
@@ -264,9 +272,10 @@ class Page_modo_procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Supprime une procedure
-	*/
+	/**
+	 * Supprime une procedure
+	 *
+	 */
 	public function delete_procedure()
 	{
 		if (check_confirm())
@@ -288,9 +297,10 @@ class Page_modo_procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Deplace une ligne de code
-	*/
+	/**
+	 * Deplace une ligne de code
+	 *
+	 */
 	public function move_line()
 	{
 		$nb =	intval(Http::request('line'));
@@ -315,9 +325,10 @@ class Page_modo_procedure extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=procedure&mode=edit&id=' . $this->id);
 	}
 
-	/*
-	** Ajout / edition de lignes
-	*/
+	/**
+	 * Ajout / edition de lignes
+	 *
+	 */
 	public function edit_function()
 	{
 		$nb = intval(Http::request('line'));
@@ -431,9 +442,10 @@ class Page_modo_procedure extends Fsb_model
 		}
 	}
 
-	/*
-	** Soumet les modifications liees a la fonction
-	*/
+	/**
+	 * Soumet les modifications liees a la fonction
+	 *
+	 */
 	public function submit_fct_edit()
 	{
 		$fct =	Http::request('fct_hidden', 'post');
@@ -573,9 +585,10 @@ class Page_modo_procedure extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=procedure&mode=edit&id=' . $this->id);
 	}
 
-	/*
-	** Suppression d'une ligne
-	*/
+	/**
+	 * Suppression d'une ligne
+	 *
+	 */
 	public function delete_line()
 	{
 		$nb = intval(Http::request('line'));
@@ -598,9 +611,10 @@ class Page_modo_procedure extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=procedure&mode=edit&id=' . $this->id);
 	}
 
-	/*
-	** Editeur de source
-	*/
+	/**
+	 * Editeur de source
+	 *
+	 */
 	public function edit_source()
 	{
 		// Donnees de la procedure
@@ -622,9 +636,10 @@ class Page_modo_procedure extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumet l'edition de la source
-	*/
+	/**
+	 * Soumet l'edition de la source
+	 *
+	 */
 	public function submit_edit_full()
 	{
 		Fsb::$db->update('sub_procedure', array(
@@ -638,34 +653,57 @@ class Page_modo_procedure extends Fsb_model
 	// Liste des methodes pour le buffer des arguments
 	//
 
-	/*
-	** Champ cache
-	*/
+	/**
+	 * Champ cache
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @param unknown_type $default
+	 * @return string
+	 */
 	public function method_select_hidden($name, $s, $default)
 	{
 		return (Fsb::$session->lang('modo_proc_default_value') . ' : ' . $default . ' ' . Html::hidden($name, $default));
 	}
 
-	/*
-	** Input type text
-	*/
+	/**
+	 * Input type text
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @param int $size
+	 * @param unknown_type $default
+	 * @param int $maxlength
+	 * @return string
+	 */
 	public function method_select_text($name, $s, $size, $default = '', $maxlength = '60')
 	{
 		$default = ($s) ? $s : $default;
 		return ('<input type="text" name="' . $name . '" maxlength="' . $maxlength . '" size="' . $size . '" value="' . $default . '" />');
 	}
 
-	/*
-	** Textarea
-	*/
+	/**
+	 * Textarea
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @param int $rows
+	 * @param int $cols
+	 * @return string
+	 */
 	public function method_select_textarea($name, $s, $rows, $cols)
 	{
 		return ('<textarea name="' . $name . '" rows="' . $rows . '" cols="' . $cols . '">' . str_replace('[br]', "\n", $s) . '</textarea>');
 	}
 
-	/*
-	** Boolean oui / non
-	*/
+	/**
+	 * Boolean oui / non
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @param unknown_type $default
+	 * @return string
+	 */
 	public function method_select_boolean($name, $s, $default = 0)
 	{
 		$s = ($s) ? $s : $default;
@@ -674,9 +712,13 @@ class Page_modo_procedure extends Fsb_model
 		return ($html);
 	}
 
-	/*
-	** Selection du destinataire pour le message prive
-	*/
+	/**
+	 * Selection du destinataire pour le message prive
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @return string
+	 */
 	public function method_select_mp_to($name, $s)
 	{
 		$default = '';
@@ -703,9 +745,13 @@ class Page_modo_procedure extends Fsb_model
 		)) . '<br /><br /><input type="text" name="' . $name . '_nickname" size="35" maxlength="20" value="' . $default . '" />');
 	}
 
-	/*
-	** Choix d'une URL
-	*/
+	/**
+	 * Choix d'une URL
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @return string
+	 */
 	public function method_select_url($name, $s)
 	{
 		$default = '';
@@ -737,9 +783,13 @@ class Page_modo_procedure extends Fsb_model
 		)) . '<br /><br /><input type="text" name="' . $name . '_url" size="50" maxlength="100" value="' . $default . '" />');
 	}
 
-	/*
-	** Selection du type de champ
-	*/
+	/**
+	 * Selection du type de champ
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @return string
+	 */
 	public function method_select_field($name, $s)
 	{
 		return (Html::make_list($name, $s, array(
@@ -748,17 +798,26 @@ class Page_modo_procedure extends Fsb_model
 		)));
 	}
 
-	/*
-	** Selection d'un forum
-	*/
+	/**
+	 * Selection d'un forum
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @param bool $choose_cat
+	 * @return string
+	 */
 	public function method_select_forum_id($name, $s, $choose_cat = false)
 	{
 		return (Html::list_forums(get_forums(), $s, $name, $choose_cat));
 	}
 
-	/*
-	** Type de banissement
-	*/
+	/**
+	 * Type de banissement
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @return string
+	 */
 	public function method_select_ban_type($name, $s)
 	{
 		return (Html::make_list($name, $s, array(
@@ -768,9 +827,13 @@ class Page_modo_procedure extends Fsb_model
 		)));
 	}
 
-	/*
-	** Duree du banissement
-	*/
+	/**
+	 * Duree du banissement
+	 *
+	 * @param string $name
+	 * @param int $s
+	 * @return string
+	 */
 	public function method_select_ban_length($name, $s)
 	{
 		$html = '<input type="text" name="' . $name . '" size="10" maxlength="10" value="' . (($s) ? $s / ONE_HOUR : 0) . '" /> &nbsp; ';
@@ -784,9 +847,13 @@ class Page_modo_procedure extends Fsb_model
 		return ($html);
 	}
 
-	/*
-	** Mode pour les avertissements
-	*/
+	/**
+	 * Mode pour les avertissements
+	 *
+	 * @param string $name
+	 * @param unknown_type $s
+	 * @return string
+	 */
 	public function method_select_warn_mode($name, $s)
 	{
 		return (Html::make_list($name, $s, array(

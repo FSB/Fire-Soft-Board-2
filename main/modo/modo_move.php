@@ -11,21 +11,37 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Module de moderation pour le deplacement de sujets
-*/
+/**
+ * Module de moderation pour le deplacement de sujets
+ *
+ */
 class Page_modo_move extends Fsb_model
 {
-	// ID du sujet a deplacer
+	/**
+	 * ID du sujet a deplacer
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// ID des sujets a deplacer s'il y en a plusieurs, avec l'ID du forum
+	/**
+	 * ID des sujets a deplacer s'il y en a plusieurs
+	 *
+	 * @var array
+	 */
 	public $idx;
+	
+	/**
+	 * ID du forum
+	 *
+	 * @var int
+	 */
 	public $f_id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->id =		intval(Http::request('id'));
@@ -47,9 +63,10 @@ class Page_modo_move extends Fsb_model
 		$this->show_form();
 	}
 
-	/*
-	** Affiche le formulaire de deplacement du sujet
-	*/
+	/**
+	 * Affiche le formulaire de deplacement du sujet
+	 *
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_switch('show_choose_id');
@@ -85,9 +102,10 @@ class Page_modo_move extends Fsb_model
 		));
 	}
 
-	/*
-	** Deplace le sujet vers le forum indique
-	*/
+	/**
+	 * Deplace le sujet vers le forum indique
+	 *
+	 */
 	public function move_topic()
 	{
 		$forum_id = intval(Http::request('move_forum', 'post'));

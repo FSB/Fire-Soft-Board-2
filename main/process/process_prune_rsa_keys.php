@@ -10,9 +10,10 @@
 
 $GLOBALS['use_register_shutdown'] = false;
 
-/*
-** Regenere les clefs RSA
-*/
+/**
+ * Regenere les clefs RSA
+ *
+ */
 function prune_rsa_keys()
 {
 	$rsa = new Rsa();

@@ -14,24 +14,44 @@ if (Fsb::$session->is_authorized('auth_ip'))
 	$show_this_module = true;
 }
 
-/*
-** Module de moderation pour la recherche sur les IP
-*/
+/**
+ * Module de moderation pour la recherche sur les IP
+ *
+ */
 class Page_modo_ip extends Fsb_model
 {
-	// ID du message
+	/**
+	 * ID du message
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// IP
+	/**
+	 * IP
+	 *
+	 * @var string
+	 */
 	public $ip;
 
-	// ID du membre
+	/**
+	 * ID du membre
+	 *
+	 * @var int
+	 */
 	public $u_id;
+	
+	/**
+	 * Pseudonyme
+	 *
+	 * @var string
+	 */
 	public $nickname = null;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->id =			intval(Http::request('id', 'post|get'));
@@ -47,9 +67,10 @@ class Page_modo_ip extends Fsb_model
 		}
 	}
 
-	/*
-	** Recupere les informations sur le pseudonyme cherche
-	*/
+	/**
+	 * Recupere les informations sur le pseudonyme cherche
+	 *
+	 */
 	public function get_data()
 	{
 		if ($this->u_id)
@@ -68,9 +89,10 @@ class Page_modo_ip extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche le formulaire de recherche d'IP
-	*/
+	/**
+	 * Affiche le formulaire de recherche d'IP
+	 *
+	 */
 	public function search_ip_form()
 	{
 		Fsb::$tpl->set_file('modo/modo_ip.html');
@@ -83,9 +105,10 @@ class Page_modo_ip extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche le resultat de la recherche sur une IP
-	*/
+	/**
+	 * Affiche le resultat de la recherche sur une IP
+	 *
+	 */
 	public function print_result_ip()
 	{
 		if ($this->u_id)

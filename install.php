@@ -8,18 +8,20 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Procedure d'installation du forum
-*/
+/**
+ * Procedure d'installation du forum
+ */
 
 if (!defined('ROOT'))
 {
 	die(utf8_decode('This file must be included.<hr />Ce fichier doit etre inclus'));
 }
 
-/*
-** Methode magique permettant le chargement dynamique de classes
-*/
+/**
+ * Methode magique permettant le chargement dynamique de classes
+ *
+ * @param string $classname
+ */
 function __autoload($classname)
 {
 	$classname = strtolower($classname);
@@ -28,6 +30,7 @@ function __autoload($classname)
 
 /**
  * Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
+ *
  */
 class Fsb extends Fsb_model
 {
@@ -72,11 +75,11 @@ class Fsb extends Fsb_model
 	public static $tpl;
 }
 
-/*
-** Inclus un fichier dans le dossier main/ de facon inteligente
-** -----
-** $file ::		Nom du fichier
-*/
+/**
+ * Inclus un fichier dans le dossier main/ de facon inteligente
+ *
+ * @param string $filename
+ */
 function fsb_import($filename)
 {
 	static $store;
@@ -137,7 +140,10 @@ $GLOBALS['lg'] = array();
 $GLOBALS['lg'] += include(ROOT . 'lang/fr/lg_common.' . PHPEXT);
 $GLOBALS['lg'] += include(ROOT . 'lang/fr/lg_install.' . PHPEXT);
 
-// Pour simuler Fsb::$session->lang()
+/**
+ * Pour simuler Fsb::$session->lang()
+ *
+ */
 class Session extends Fsb_model
 {
 	public function lang($key)
@@ -245,7 +251,11 @@ if (Http::request('submit_chmod', 'post'))
 	$current_step = 'chmod';
 }
 
-// Configuration
+/**
+ * Configuration
+ *
+ * @param bool $quick
+ */
 function install_config($quick = false)
 {
 	if (!$quick)
@@ -312,7 +322,11 @@ function install_config($quick = false)
 	Fsb::$db->destroy_cache();
 }
 
-// Compte administrateur
+/**
+ * Compte administrateur
+ *
+ * @param bool $quick
+ */
 function install_admin($quick = false)
 {
 	global $email;
@@ -397,7 +411,18 @@ function install_admin($quick = false)
 	Log::add(Log::ADMIN, 'install_fsb');
 }
 
-// Installation de la base de donnee
+/**
+ * Installation de la base de donnee
+ *
+ * @param string $sql_dbms
+ * @param string $sql_server
+ * @param string $sql_login
+ * @param string $sql_password
+ * @param string $sql_dbname
+ * @param string $sql_prefix
+ * @param string $sql_port
+ * @return unknown
+ */
 function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port)
 {
 	global $config_code;

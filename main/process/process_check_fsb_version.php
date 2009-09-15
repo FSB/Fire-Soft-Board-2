@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Verifie la derniere version du forum en date, et la stoque dans la table de configuration
-*/
+/**
+ * Verifie la derniere version du forum en date, et la stoque dans la table de configuration
+ *
+ */
 function check_fsb_version()
 {
 	if ($content = Http::get_file_on_server(FSB_REQUEST_SERVER, FSB_REQUEST_VERSION, 10))

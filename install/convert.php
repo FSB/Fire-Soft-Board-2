@@ -8,48 +8,79 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Classe de gestion des convertisseurs
-*/
-
 if (!defined('ROOT'))
 {
 	die('This file must be included.<hr />Ce fichier doit etre inclus');
 }
 
+/**
+ * Classe de gestion des convertisseurs
+ */
 class Convert
 {
-	// Liste des conversions implementees
+	/**
+	 * Liste des conversions implementees
+	 *
+	 * @var array
+	 */
 	protected $implement = array();
 
-	// Page actuelle de conversion
+	/**
+	 * Page actuelle de conversion
+	 *
+	 * @var string
+	 */
 	protected $page = 'index';
 
-	// Offset de depart pour la conversion
+	/**
+	 * Offset de depart pour la conversion
+	 *
+	 * @var int
+	 */
 	protected $offset = 0;
 
-	// URL du script
+	/**
+	 * URL du script
+	 *
+	 * @var string
+	 */
 	protected $url = '';
 
-	// Configuration du convertisseur
+	/**
+	 * Configuration du convertisseur
+	 *
+	 * @var unknown_type
+	 */
 	protected $config;
 
-	// Export dans un fichier, ou injection dans la base de donnee ?
+	/**
+	 * Export dans un fichier, ou injection dans la base de donnee ?
+	 *
+	 */
 	const OUTPUT_FILE = 0;
 	const OUTPUT_DB = 1;
 	const OUTPUT_PRINT = 2;
 
-	// Etat lors du rafraichissement automatique
+	/**
+	 * Etat lors du rafraichissement automatique
+	 *
+	 */
 	const STATE_BEGIN = 2;
 	const STATE_MIDDLE = 4;
 	const STATE_END = 8;
 
-	// Rafraichissement offset ?
+	/**
+	 * Rafraichissement offset ?
+	 *
+	 * @var bool
+	 */
 	protected $refresh_offset = false;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param string $converter
+	 */
 	public function __construct($converter)
 	{
 		@set_time_limit(0);
@@ -94,9 +125,10 @@ class Convert
 		$this->page_footer();
 	}
 
-	/*
-	** Recupere la configuration du convertisseur (stoquee dans la table fsb2_cache de FSB2)
-	*/
+	/**
+	 * Recupere la configuration du convertisseur (stoquee dans la table fsb2_cache de FSB2)
+	 *
+	 */
 	private function get_config()
 	{
 		Fsb::$db = Dbal::factory();
@@ -126,17 +158,21 @@ class Convert
 		}
 	}
 
-	/*
-	** Recupere une clef de configuration
-	*/
+	/**
+	 * Recupere une clef de configuration
+	 *
+	 * @param string $key
+	 * @return unknown
+	 */
 	protected function config($key)
 	{
 		return ((isset($this->config[$key])) ? $this->config[$key] : null);
 	}
 
-	/*
-	** Liste des conversions que le script implemente
-	*/
+	/**
+	 * Liste des conversions que le script implemente
+	 *
+	 */
 	private function get_implement()
 	{
 		$this->implement = array(
@@ -157,9 +193,10 @@ class Convert
 		$this->implement = array_intersect($this->implement, $this->_get_implement());
 	}
 
-	/*
-	** Gestion de la connexion a la base de donnee
-	*/
+	/**
+	 * Gestion de la connexion a la base de donnee
+	 *
+	 */
 	private function database_connexion()
 	{
 		Fsb::$db = Dbal::factory($this->config('sql_server'), $this->config('sql_login'), $this->config('sql_password'), $this->config('sql_dbname'), $this->config('sql_port'), false);
@@ -169,9 +206,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Generation du haut de la page
-	*/
+	/**
+	 * Generation du haut de la page
+	 *
+	 */
 	private function page_header()
 	{
 		if (!defined('CONVERTER_PAGE_HEADER'))
@@ -197,9 +235,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Generation du pied de la page
-	*/
+	/**
+	 * Generation du pied de la page
+	 *
+	 */
 	private function page_footer()
 	{
 		if (!$this->refresh_offset && $this->page != 'index')
@@ -225,9 +264,11 @@ class Convert
 		Fsb::$tpl->parse();
 	}
 
-	/*
-	** Affichage d'une erreur
-	*/
+	/**
+	 * Affichage d'une erreur
+	 *
+	 * @param string $str
+	 */
 	protected function error($str)
 	{
 		if ($this->page == 'index')
@@ -250,9 +291,11 @@ class Convert
 		exit;
 	}
 
-	/*
-	** Lance un rafraichissement automatique de la page
-	*/
+	/**
+	 * Lance un rafraichissement automatique de la page
+	 *
+	 * @param int $total
+	 */
 	protected function refresh_with_offset($total)
 	{
 		$this->refresh_offset = true;
@@ -264,9 +307,11 @@ class Convert
 		));
 	}
 
-	/*
-	** Gestion de la sortie des requetes
-	*/
+	/**
+	 * Gestion de la sortie des requetes
+	 *
+	 * @param array $ary
+	 */
 	protected function output(&$ary)
 	{
 		if (!$this->use_utf8)
@@ -310,9 +355,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Index du convertisseur
-	*/
+	/**
+	 * Index du convertisseur
+	 *
+	 */
 	private function page_index()
 	{
 		Fsb::$tpl->set_switch('page_index');
@@ -340,9 +386,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Sauvegarde de la configuration
-	*/
+	/**
+	 * Sauvegarde de la configuration
+	 *
+	 */
 	private function submit_index()
 	{
 		$this->config['output'] =			intval(Http::request('output', 'post'));
@@ -369,9 +416,10 @@ class Convert
 		Fsb::$db->close();
 	}
 
-	/*
-	** Configuration du forum
-	*/
+	/**
+	 * Configuration du forum
+	 *
+	 */
 	private function page_config()
 	{
 		$data = $this->convert_config();
@@ -385,9 +433,10 @@ class Convert
 		$this->output($query);
 	}
 
-	/*
-	** Liste des membres
-	*/
+	/**
+	 * Liste des membres
+	 *
+	 */
 	private function page_users()
 	{
 		$step = $this->config('step_users');
@@ -507,9 +556,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Groupes d'utilisateurs
-	*/
+	/**
+	 * Groupes d'utilisateurs
+	 *
+	 */
 	private function page_groups()
 	{
 		$queries = array();
@@ -531,9 +581,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Liste des forums
-	*/
+	/**
+	 * Liste des forums
+	 *
+	 */
 	private function page_forums()
 	{
 		$tree = $this->convert_forums();
@@ -550,9 +601,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Autorisations des forums
-	*/
+	/**
+	 * Autorisations des forums
+	 *
+	 */
 	private function page_auths()
 	{
 		$queries = array();
@@ -579,9 +631,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Liste des sujets
-	*/
+	/**
+	 * Liste des sujets
+	 *
+	 */
 	private function page_topics()
 	{
 		$step = $this->config('step_topics');
@@ -622,9 +675,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Liste des messages
-	*/
+	/**
+	 * Liste des messages
+	 *
+	 */
 	private function page_posts()
 	{
 		$step = $this->config('step_posts');
@@ -665,9 +719,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Liste des messages prives
-	*/
+	/**
+	 * Liste des messages prives
+	 *
+	 */
 	private function page_mp()
 	{
 		$step = $this->config('step_posts');
@@ -708,9 +763,10 @@ class Convert
 		}
 	}
 
-	/*
-	** Sondages du forum
-	*/
+	/**
+	 * Sondages du forum
+	 *
+	 */
 	private function page_polls()
 	{
 		$queries = array();
@@ -760,9 +816,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Membres bannis du forum
-	*/
+	/**
+	 * Membres bannis du forum
+	 *
+	 */
 	private function page_bans()
 	{
 		$queries = array();
@@ -785,9 +842,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Liste des rangs
-	*/
+	/**
+	 * Liste des rangs
+	 *
+	 */
 	private function page_ranks()
 	{
 		$queries = array();
@@ -810,9 +868,10 @@ class Convert
 		$this->output($queries);
 	}
 
-	/*
-	** Copie des images
-	*/
+	/**
+	 * Copie des images
+	 *
+	 */
 	private function page_copy()
 	{
 		$dirs = $this->convert_copy();
@@ -846,19 +905,28 @@ class Convert
 	}
 }
 
-/*
-** Classe permettant la creation et la manipulation des forums sous forme d'arbre, afin de faciliter leur import dans FSB2
-*/
+/**
+ * Classe permettant la creation et la manipulation des forums sous forme d'arbre, afin de faciliter leur import dans FSB2
+ *
+ */
 class Convert_tree_forums extends Tree
 {
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->add_item(0, null, array());
 	}
 
-	/*
-	** Surcharge de la methode Tree::add_item() pour ajouter le niveau du sous forum
-	*/
+	/**
+	 * Surcharge de la methode Tree::add_item() pour ajouter le niveau du sous forum
+	 *
+	 * @param int $id
+	 * @param int $parent
+	 * @param array $data
+	 */
 	public function add_item($id, $parent, $data)
 	{
 		parent::add_item($id, $parent, $data);
@@ -868,9 +936,12 @@ class Convert_tree_forums extends Tree
 		));
 	}
 
-	/*
-	** Ajoute les champs f_left et f_right aux forums
-	*/
+	/**
+	 * Ajoute les champs f_left et f_right aux forums
+	 *
+	 * @param unknown_type $node
+	 * @param int $f_left
+	 */
 	public function create_interval($node = null, &$f_left = 0)
 	{
 		if (!$node)
@@ -893,9 +964,12 @@ class Convert_tree_forums extends Tree
 		}
 	}
 
-	/*
-	** Retourne un tableau simple contenant les forums, au lieu d'un arbre
-	*/
+	/**
+	 * Retourne un tableau simple contenant les forums, au lieu d'un arbre
+	 *
+	 * @param unknown_type $node
+	 * @return unknown
+	 */
 	public function plain_data($node = null)
 	{
 		if (!$node)

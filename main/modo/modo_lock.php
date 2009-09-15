@@ -11,14 +11,16 @@
 // On cache ce module
 $show_this_module = false;
 
-/*
-** Module de moderation pour le verrouillage / deverrouillage d'un sujet
-*/
+/**
+ * Module de moderation pour le verrouillage / deverrouillage d'un sujet
+ *
+ */
 class Page_modo_lock extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$id =	intval(Http::request('id'));

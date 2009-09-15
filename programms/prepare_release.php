@@ -8,12 +8,12 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Supprimes les fichiers mis en cache, ainsi que ces foutus Thumbs.db, vide le fichier config, prepare les index.html, etc ...
-** Fait pas le cafe par contre :(
-*/
+/**
+ * Supprimes les fichiers mis en cache, ainsi que ces foutus Thumbs.db, vide le fichier config, prepare les index.html, etc ...
+ * Fait pas le cafe par contre :(
+ */
 
 set_time_limit(0);
 

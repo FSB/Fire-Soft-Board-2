@@ -10,9 +10,10 @@
 
 die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier affiche la liste des fonctions dans le dossier ~/main/fcts/
-*/
+/**
+ * Ce fichier affiche la liste des fonctions dans le dossier ~/main/fcts/
+ * 
+ */
 
 foreach (array('../main/fcts/', '../main/class/') AS $dir)
 {

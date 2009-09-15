@@ -10,11 +10,12 @@
 
 die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier permet de convertir les fichiers en mode UNIX 
-** (en remplacant les retours chariots windows \r\n par \n)
-*/
-
+/**
+ * Cette fonction permet de convertir les fichiers en mode UNIX 
+ * (en remplacant les retours chariots windows \r\n par \n)
+ *
+ * @param string $dir
+ */
 function convert_to_unix($dir)
 {
 

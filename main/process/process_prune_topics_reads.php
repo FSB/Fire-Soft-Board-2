@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Nettoie la table des messages lus
-*/
+/**
+ * Nettoie la table des messages lus
+ *
+ */
 function prune_topics_reads()
 {
 	Fsb::$db->update('users', array(

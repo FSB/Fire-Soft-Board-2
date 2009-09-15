@@ -11,14 +11,16 @@
 // On cache ce module
 $show_this_module = false;
 
-/*
-** Module executant les procedures de moderation
-*/
+/**
+ * Module executant les procedures de moderation
+ *
+ */
 class Page_modo_procedure_exec extends Fsb_model
 {
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$topic_id =		intval(Http::request('id'));

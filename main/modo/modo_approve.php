@@ -11,17 +11,30 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Module d'utilisateur permettant au moderateur de voir les messages non approuves des forums qu'il modere.
-*/
+/**
+ *  Module d'utilisateur permettant au moderateur de voir les messages non approuves des forums qu'il modere.
+ *
+ */
 class Page_modo_approve extends Fsb_model
 {
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Id du forum
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->mode = Http::request('mode');
@@ -41,9 +54,10 @@ class Page_modo_approve extends Fsb_model
 		}
 	}
 
-	/*
-	** Liste les messages non approuves
-	*/
+	/**
+	 * Liste les messages non approuves
+	 *
+	 */
 	public function show_unapproved_topics()
 	{
 		Fsb::$tpl->set_file('modo/modo_approve.html');
@@ -79,7 +93,10 @@ class Page_modo_approve extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	// Affiche les messages non approuves d'un sujet
+	/**
+	 * Affiche les messages non approuves d'un sujet
+	 *
+	 */
 	public function show_unapproved_posts()
 	{
 		Fsb::$tpl->set_file('modo/modo_approve.html');
@@ -137,7 +154,10 @@ class Page_modo_approve extends Fsb_model
 				
 	}
 
-	// Approuve le message
+	/**
+	 * Approuve le message
+	 *
+	 */
 	public function approve_post()
 	{
 		// On verifie que le message soit dans un des forums qu'on modere

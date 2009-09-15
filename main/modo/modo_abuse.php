@@ -14,25 +14,44 @@ if (Fsb::$mods->is_active('abuse'))
 	$show_this_module = true;
 }
 
-/*
-** Module d'utilisateur permettant au moderateur de voir les messages etant signales
-** comme abusif, et de moderer (editer / supprimer) ce message
-*/
+/**
+ * Module d'utilisateur permettant au moderateur de voir les messages etant signales comme abusif, et de moderer (editer / supprimer) ce message
+ *
+ */
 class Page_modo_abuse extends Fsb_model
 {
-	// ID du message abusif a valider
+	/**
+	 * ID du message abusif a valider
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Mode de la page
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// Sujets par page
+	/**
+	 * Sujets par page
+	 *
+	 * @var int
+	 */
 	public $per_page = 30;
+	
+	/**
+	 * Page
+	 *
+	 * @var int
+	 */
 	public $page = 1;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		// Doit etre moderateur
@@ -63,9 +82,10 @@ class Page_modo_abuse extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche la liste des messages abusifs
-	*/
+	/**
+	 * Affiche la liste des messages abusifs
+	 *
+	 */
 	public function show_list_abuse()
 	{
 		Fsb::$tpl->set_file('modo/modo_abuse.html');
@@ -124,9 +144,10 @@ class Page_modo_abuse extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affiche les messages abusifs
-	*/
+	/**
+	 * Affiche les messages abusifs
+	 *
+	 */
 	public function show_abuse()
 	{
 		Fsb::$tpl->set_file('modo/modo_abuse.html');
@@ -257,9 +278,10 @@ class Page_modo_abuse extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Ajoute un commentaire sur l'abus
-	*/
+	/**
+	 * Ajoute un commentaire sur l'abus
+	 *
+	 */
 	public function submit_comment()
 	{
 		$comment = trim(Http::request('comment', 'post'));
@@ -288,9 +310,10 @@ class Page_modo_abuse extends Fsb_model
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=abuse&mode=show&id=' . $this->id);
 	}
 
-	/*
-	** Considere le message abusif comme valide
-	*/
+	/**
+	 * Considere le message abusif comme valide
+	 *
+	 */
 	public function validate_abuse()
 	{
 		// Verification de l'existance du message abusif

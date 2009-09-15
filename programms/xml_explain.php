@@ -10,9 +10,9 @@
 
 die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier parse et affiche correctement une documentation XML
-*/
+/**
+ * Ce fichier parse et affiche correctement une documentation XML
+ */
 
 error_reporting(E_ALL);
 

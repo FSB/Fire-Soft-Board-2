@@ -10,9 +10,9 @@
 
 die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier converti une exportation MySQL en exportation PostGreSQL ou bien SQLite
-*/
+/**
+ * Ce fichier converti une exportation MySQL en exportation PostGreSQL ou bien SQLite
+ */
 
 $gpc = array('_GET', '_POST', '_COOKIE');
 $magic_quote = (get_magic_quotes_gpc()) ? true : false;

@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Supprime les messages prives trop "vieux" (plus de 6 mois)
-*/
+/**
+ * Supprime les messages prives trop "vieux" (plus de 6 mois)
+ *
+ */
 function prune_pm()
 {
 	$sql = 'DELETE FROM ' . SQL_PREFIX . 'mp

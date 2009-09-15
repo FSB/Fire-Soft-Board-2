@@ -14,16 +14,23 @@ if (Fsb::$mods->is_active('calendar') && Fsb::$session->is_authorized('approve_e
 	$show_this_module = true;
 }
 
-/*
-** Module de moderation listant les evenements de calendriers non valides.
-*/
+/**
+ * Module de moderation listant les evenements de calendriers non valides.
+ *
+ */
 class Page_modo_calendar extends Fsb_model
 {
+	/**
+	 * Action en cours
+	 *
+	 * @var unknown_type
+	 */
 	public $mode;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->mode = Http::request('mode');
@@ -39,9 +46,10 @@ class Page_modo_calendar extends Fsb_model
 		$this->list_events();
 	}
 
-	/*
-	** Affiche la liste des evenements non valides
-	*/
+	/**
+	 * Affiche la liste des evenements non valides
+	 *
+	 */
 	public function list_events()
 	{
 		Fsb::$tpl->set_file('modo/modo_calendar.html');
@@ -82,9 +90,10 @@ class Page_modo_calendar extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Approuve un evenement
-	*/
+	/**
+	 * Approuve un evenement
+	 *
+	 */
 	public function approve_event()
 	{
 		$id = intval(Http::request('id'));

@@ -8,10 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Execute les procedures programmees du forum et envoie les messages en attente. Cette page doit etre appelee sous forme
-** d'image, pour que les fonctions s'executent en background.
-*/
+/**
+ * Execute les procedures programmees du forum et envoie les messages en attente. Cette page doit etre appelee sous forme d'image, pour que les fonctions s'executent en background.
+ *
+ */
 
 define('PHPEXT', substr(strrchr(__FILE__,'.'), 1));
 define('ROOT', '../../');

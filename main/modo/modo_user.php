@@ -14,25 +14,51 @@ if (Fsb::$session->is_authorized('auth_edit_user'))
 	$show_this_module = true;
 }
 
-/*
-** Module de moderation pour le profil d'un membre
-*/
+/**
+ * Module de moderation pour le profil d'un membre
+ *
+ */
 class Page_modo_user extends Fsb_model
 {
-	// ID du membre a moderer
+	/**
+	 * ID du membre a moderer
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Pseudonyme du membre
+	 *
+	 * @var string
+	 */
 	public $nickname;
 
-	// Donnees du membre
+	/**
+	 * Donnees du membre
+	 *
+	 * @var array
+	 */
 	public $data = array();
+	
+	/**
+	 * Donnees du membre
+	 *
+	 * @var array
+	 */
 	public $userdata = array();
 
-	// Peut faire de la grosse moderation ?
+	/**
+	 * Peut faire de la grosse moderation ?
+	 *
+	 * @var bool
+	 */
 	public $edit_extra = false;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		// L'utilisateur peut faire de la moderation avancee sur le membre ?
@@ -54,7 +80,11 @@ class Page_modo_user extends Fsb_model
 			$this->show_profile();
 		}
 	}
-
+	
+	/**
+	 * Récupère les informations sur un membre
+	 *
+	 */
 	public function get_user_data()
 	{
 		$this->id =			intval(Http::request('id'));
@@ -73,9 +103,10 @@ class Page_modo_user extends Fsb_model
 		$this->userdata = $row;
 	}
 
-	/*
-	** Affiche le formulaire de base pour entrer l'ID
-	*/
+	/**
+	 * Affiche le formulaire de base pour entrer l'ID
+	 *
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_file('modo/modo_user.html');
@@ -85,9 +116,10 @@ class Page_modo_user extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche les donnees du profil du membre a moderer
-	*/
+	/**
+	 * Affiche les donnees du profil du membre a moderer
+	 *
+	 */
 	public function show_profile()
 	{
 		// On affiche uniquement ce que le moderateur peut moderer
@@ -176,9 +208,10 @@ class Page_modo_user extends Fsb_model
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', $this->id);
 	}
 
-	/*
-	** Modifie le profil du membre
-	*/
+	/**
+	 * Modifie le profil du membre
+	 *
+	 */
 	public function update_user()
 	{
 		// Membre inexistant ?
@@ -311,9 +344,10 @@ class Page_modo_user extends Fsb_model
 		Display::message('modo_user_well', ROOT . 'index.' . PHPEXT . '?p=modo&amp;module=user&amp;id=' . $this->id, 'modo_user');
 	}
 	
-	/*
-	** Confirmation de la suppression du membre + suppression
-	*/
+	/**
+	 * Confirmation de la suppression du membre + suppression
+	 *
+	 */
 	public function confirm_and_delete()
 	{
 		$delete_type = Http::request('delete_type', 'post');
@@ -353,9 +387,10 @@ class Page_modo_user extends Fsb_model
 		}
 	}
 
-	/*
-	** Bannissement du membre
-	*/
+	/**
+	 * Bannissement du membre
+	 *
+	 */
 	public function check_ban_user()
 	{
 		if (Http::request('ban_username'))
@@ -371,9 +406,10 @@ class Page_modo_user extends Fsb_model
 		}
 	}
 
-	/*
-	** Renvoie de l'Email d'activation
-	*/
+	/**
+	 * Renvoie de l'Email d'activation
+	 *
+	 */
 	public function send_act_email()
 	{
 		if ($this->edit_extra && !$this->userdata['u_activated'] && $this->userdata['u_confirm_hash'] && $this->userdata['u_confirm_hash'] != '.')

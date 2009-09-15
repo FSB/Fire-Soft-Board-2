@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Supprime les marqueurs des sujets deplaces dont le dernier message remonte a plus de 2 semaines
-*/
+/**
+ * Supprime les marqueurs des sujets deplaces dont le dernier message remonte a plus de 2 semaines
+ *
+ */
 function prune_moved_topics()
 {
 	Fsb::$db->update('topics', array(

@@ -10,9 +10,10 @@
 
 $GLOBALS['use_register_shutdown'] = false;
 
-/*
-** Supprime les sessions perimees
-*/
+/**
+ * Supprime les sessions perimees
+ *
+ */
 function prune_sessions()
 {
 	$sql = 'DELETE FROM ' . SQL_PREFIX . 'sessions

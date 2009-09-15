@@ -8,12 +8,15 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier donne quelques statistiques sur le projet
-*/
-
+/**
+ * Cette fonction donne quelques statistiques sur le projet
+ *
+ * @param unknown_type $dir
+ * @param unknown_type $exept_dir
+ * @return unknown
+ */
 function php_line($dir, $exept_dir = array())
 {
 	$ary = array('line' => 0, 'size' => 0, 'nb' => 0, 'file' => '');

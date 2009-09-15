@@ -11,9 +11,10 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Module de moderation pour la division de sujet
-*/
+/**
+ * Module de moderation pour la division de sujet
+ *
+ */
 class Page_modo_upload extends Fsb_model
 {
 	public $page;
@@ -21,9 +22,10 @@ class Page_modo_upload extends Fsb_model
 	public $mode;
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->mode = Http::request('mode');
@@ -55,9 +57,10 @@ class Page_modo_upload extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche la liste des fichiers uploades sur le forum
-	*/
+	/**
+	 * Affiche la liste des fichiers uploades sur le forum
+	 *
+	 */
 	public function show_uploaded_files()
 	{
 		// On recupere l'ordre et la direction d'affichage des fichiers
@@ -116,9 +119,10 @@ class Page_modo_upload extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Edition d'un fichier
-	*/
+	/**
+	 * Edition d'un fichier
+	 *
+	 */
 	public function edit_file()
 	{
 		$sql = 'SELECT upload_realname, upload_auth
@@ -156,9 +160,10 @@ class Page_modo_upload extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumission de l'edition d'un fichier
-	*/
+	/**
+	 * Soumission de l'edition d'un fichier
+	 *
+	 */
 	public function submit_edit_file()
 	{
 		$sql = 'SELECT upload_id
@@ -180,9 +185,10 @@ class Page_modo_upload extends Fsb_model
 		Display::message('modo_upload_well_edit', ROOT . 'index.' . PHPEXT . '?p=modo&module=upload', 'modo_upload');
 	}
 
-	/*
-	** Suppression des fichiers uploades
-	*/
+	/**
+	 * Suppression des fichiers uploades
+	 *
+	 */
 	public function delete_uploaded_files()
 	{
 		// Verification des noms de fichiers

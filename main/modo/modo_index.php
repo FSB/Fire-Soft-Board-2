@@ -11,14 +11,16 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Affiche l'index du panneau de moderation
-*/
+/**
+ * Affiche l'index du panneau de moderation
+ *
+ */
 class Page_modo_index extends Fsb_model
 {
-	/*
-	** CONSTRUCTEUR
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		Fsb::$tpl->set_file('modo/modo_index.html');

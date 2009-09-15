@@ -8,7 +8,11 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-// Liste des droits
+/**
+ * Liste des droits
+ * 
+ * @var array
+ */
 $GLOBALS['_auth_type'] = array(
 	'ga_view',
 	'ga_view_topics',
@@ -24,22 +28,34 @@ $GLOBALS['_auth_type'] = array(
 	'ga_moderator',
 );
 
-// Liste des droits reorganises
+/**
+ * Liste des droits reorganises
+ * 
+ * @var array
+ */
 $GLOBALS['_auth_type_format'] = array(
 	'read' =>		array('ga_nothing', 'ga_view', 'ga_view_topics', 'ga_read'),
 	'write' =>		array('ga_nothing', 'ga_answer_post', 'ga_create_post', 'ga_answer_announce', 'ga_create_announce', 'ga_answer_global_announce', 'ga_create_global_announce'),
 	'moderator' =>	array('ga_nothing', 'ga_edit', 'ga_delete', 'ga_moderator'),
 );
 
-// Liste des types de sujet
-// Ne pas supprimer / deplacer global_announce - sous peine de bugs - qui est de toute facon le type le plus important de sujets
+/**
+ * Liste des types de sujets
+ * Ne pas supprimer / deplacer global_announce - sous peine de bugs - qui est de toute facon le type le plus important de sujets
+ * 
+ * @var array
+ */
 $GLOBALS['_topic_type'] = array(
 	'global_announce',
 	'announce',
 	'post',
 );
 
-// Niveaux des droits associes aux clefs de langues
+/**
+ * Niveaux des droits associes aux clefs de langues
+ * 
+ * @var array
+ */
 $GLOBALS['_auth_level'] = array(
 	VISITOR =>	'visitor',
 	USER =>		'user',
@@ -49,7 +65,11 @@ $GLOBALS['_auth_level'] = array(
 	FONDATOR =>	'fondator',
 );
 
-// Liste des boites dans la messagerie privee
+/**
+ * Liste des boites dans la messagerie privee
+ * 
+ * @var array
+ */
 $GLOBALS['_list_box'] = array(
 	'inbox',
 	'outbox',
@@ -58,7 +78,11 @@ $GLOBALS['_list_box'] = array(
 	'options'
 );
 
-// Patterns pour l'URL rewriting
+/**
+ * Patterns pour l'URL rewriting
+ * 
+ * @var array
+ */
 $GLOBALS['_rewrite'] = array(
 	'#index.' . PHPEXT . '\?p=portail$#i' => 'portail.html',
 	'#index.' . PHPEXT . '\?(p=index&(amp;)?)?cat=([0-9]+)$#i' => 'cat-\\3.html',
@@ -75,7 +99,11 @@ $GLOBALS['_rewrite'] = array(
 	'#index.' . PHPEXT . '\?p=rss&(amp;)?mode=([a-z_]+)&(amp;)?id=([0-9]+)#i' => 'rss-\\2-\\4.xml',
 );
 
-// Liste des fuseaux horraires standards UTC
+/**
+ * Liste des fuseaux horraires standards UTC
+ * 
+ * @var array
+ */
 $GLOBALS['_utc'] = array(
 	'-11' =>	'- 1',
 	'-10' =>	'- 10',
@@ -114,11 +142,19 @@ $GLOBALS['_utc'] = array(
 	'14' =>		'+ 14',
 );
 
-// Longueur minimale et maximale des mots pour la recherche (fulltext_fsb, like)
+/**
+ * Longueur minimale et maximale des mots pour la recherche (fulltext_fsb, like)
+ * 
+ * @var array
+ */
 $GLOBALS['_search_min_len'] = 3;
 $GLOBALS['_search_max_len'] = 40;
 
-// Caracteres UTF8 majuscules et leur equivalent minuscule
+/**
+ * Caracteres UTF8 majuscules et leur equivalent minuscule
+ * 
+ * @var array
+ */
 $GLOBALS['UTF8_UPPER_TO_LOWER'] = array(
 	"\x41" => "\x61", "\x42" => "\x62", "\x43" => "\x63", "\x44" => "\x64",
 	"\x45" => "\x65", "\x46" => "\x66", "\x47" => "\x67", "\x48" => "\x68",

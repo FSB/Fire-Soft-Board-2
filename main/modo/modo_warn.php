@@ -14,9 +14,10 @@ if (Fsb::$session->is_authorized('warn_user'))
 	$show_this_module = true;
 }
 
-/*
-** Module de moderation pour donner / supprimer un avertissement a un membre
-*/
+/**
+ * Module de moderation pour donner / supprimer un avertissement a un membre
+ *
+ */
 class Page_modo_warn extends Fsb_model
 {
 	// Parametres de la page
@@ -27,9 +28,10 @@ class Page_modo_warn extends Fsb_model
 	public $nickname;
 	public $data = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->nickname =	Http::request('nickname', 'post');
@@ -71,9 +73,11 @@ class Page_modo_warn extends Fsb_model
 		));
 	}
 
-	/*
-	** Verification du login du membre
-	*/
+	/**
+	 * Verification du login du membre
+	 *
+	 * @return bool
+	 */
 	public function check_login()
 	{
 		if ($this->id || $this->nickname)
@@ -95,9 +99,10 @@ class Page_modo_warn extends Fsb_model
 		return (false);
 	}
 
-	/*
-	** Affiche le formulaire d'avertissement
-	*/
+	/**
+	 * Affiche le formulaire d'avertissement
+	 *
+	 */
 	public function show_warn_form()
 	{
 		// Les administrateurs ne peuvent pas se prendre d'avertissements
@@ -168,9 +173,10 @@ class Page_modo_warn extends Fsb_model
 		));
 	}
 
-	/*
-	** Soumission de l'avertissement
-	*/
+	/**
+	 * Soumission de l'avertissement
+	 *
+	 */
 	public function submit_warn_form()
 	{
 		// On verifie si on peut ajouter / supprimer un avertissement
@@ -228,9 +234,10 @@ class Page_modo_warn extends Fsb_model
 		Display::message('modo_warn_well_' . $this->mode, 'index.' . PHPEXT . '?p=modo&amp;module=warn&amp;mode=show&amp;id=' . $this->id, 'modo_warn');
 	}
 
-	/*
-	** Affiche la liste des avertissements du membre
-	*/
+	/**
+	 * Affiche la liste des avertissements du membre
+	 *
+	 */
 	public function show_warn_list()
 	{
 		Fsb::$tpl->set_switch('warn_list');
@@ -287,9 +294,11 @@ class Page_modo_warn extends Fsb_model
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Retourne true si on peut donner / retirer un avertissement suivant le mode
-	*/
+	/**
+	 * Retourne true si on peut donner / retirer un avertissement suivant le mode
+	 *
+	 * @return bool
+	 */
 	public function can_warn()
 	{
 		return (($this->mode == 'more' && $this->data['u_total_warning'] == 5) || ($this->mode == 'less' && $this->data['u_total_warning'] == 0) ? false : true);

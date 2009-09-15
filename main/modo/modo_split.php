@@ -11,17 +11,23 @@
 // On affiche ce module
 $show_this_module = true;
 
-/*
-** Module de moderation pour la division de sujet
-*/
+/**
+ * Module de moderation pour la division de sujet
+ *
+ */
 class Page_modo_split extends Fsb_model
 {
-	// ID du sujet a diviser
+	/**
+	 * ID du sujet a diviser
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 		$this->id = intval(Http::request('id', 'post|get'));
@@ -38,9 +44,10 @@ class Page_modo_split extends Fsb_model
 		}
 	}
 
-	/*
-	** Affiche le formulaire de base pour entrer l'ID
-	*/
+	/**
+	 * Affiche le formulaire de base pour entrer l'ID
+	 *
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_file('modo/modo_split.html');
@@ -50,9 +57,10 @@ class Page_modo_split extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche les messages du sujet
-	*/
+	/**
+	 * Affiche les messages du sujet
+	 *
+	 */
 	public function show_topic()
 	{
 		$parser = new Parser();
@@ -107,9 +115,10 @@ class Page_modo_split extends Fsb_model
 		}
 	}
 
-	/*
-	** Divise le sujet en reportant les messages selectionnes dans un nouveau sujet
-	*/
+	/**
+	 * Divise le sujet en reportant les messages selectionnes dans un nouveau sujet
+	 *
+	 */
 	public function split_topic()
 	{
 		// Messages selectiones

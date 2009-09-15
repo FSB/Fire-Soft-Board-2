@@ -8,9 +8,10 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Supprime les informations inutiles dans la base de donnee (messages sans sujets, sujets sans messages, etc ..)
-*/
+/**
+ * Supprime les informations inutiles dans la base de donnee (messages sans sujets, sujets sans messages, etc ..)
+ *
+ */
 function prune_bad_data()
 {
 	// Supprime les commentaires des messages abusifs, sans parents

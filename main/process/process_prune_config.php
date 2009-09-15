@@ -10,9 +10,10 @@
 
 $GLOBALS['use_register_shutdown'] = false;
 
-/*
-** Recalcul des donnees en cache dans la configuration
-*/
+/**
+ * Recalcul des donnees en cache dans la configuration
+ *
+ */
 function prune_config()
 {
 	$list_config = array('total_posts', 'total_topics', 'total_users', 'last_user');

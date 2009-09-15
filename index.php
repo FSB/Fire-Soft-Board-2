@@ -13,20 +13,31 @@ define('ROOT', '');
 define('FORUM', true);
 include(ROOT . 'main/start.' . PHPEXT);
 
-/*
-** Gestion de la pseudo frame du forum
-*/
+/**
+ * Gestion de la pseudo frame du forum
+ *
+ */
 class Fsb_frame extends Fsb_model
 {
-	// Page du fils
+	/**
+	 * Page du fils
+	 *
+	 * @var string
+	 */
 	protected $frame_page = 'index';
 
-	// Activation du GET automatique dans le lien de connexion
+	/**
+	 * Activation du GET automatique dans le lien de connexion
+	 *
+	 * @var bool
+	 */
 	protected $frame_get_url = true;
 
-	/*
-	** Recupere la page demandee pour la pseudo frame
-	*/
+	/**
+	 * Recupere la page demandee pour la pseudo frame
+	 *
+	 * @return string
+	 */
 	public static function frame_request_page()
 	{
 		$page = Http::request('p');
@@ -43,11 +54,11 @@ class Fsb_frame extends Fsb_model
 		return ($page);
 	}
 
-	/*
-	** Constructeur
-	** -----
-	** $page ::		Page du fils
-	*/
+	/**
+	 * Constructeur
+	 *
+	 * @param string $page
+	 */
 	public function __construct($page)
 	{
 		$this->frame_page = $page;
@@ -59,9 +70,10 @@ class Fsb_frame extends Fsb_model
 		$this->frame_footer();
 	}
 
-	/*
-	** Affiche le header du forum, avec le logo, menu, etc ...
-	*/
+	/**
+	 * Affiche le header du forum, avec le logo, menu, etc ...
+	 *
+	 */
 	public function frame_header()
 	{
 		if (defined('HEADER_EXISTS'))
@@ -163,9 +175,10 @@ class Fsb_frame extends Fsb_model
 		));
 	}
 
-	/*
-	** Affiche le bas du forum (fermeture des connexions, copyright, etc ...)
-	*/
+	/**
+	 * Affiche le bas du forum (fermeture des connexions, copyright, etc ...)
+	 *
+	 */
 	public function frame_footer()
 	{
 		// META description (sauf pour les sujets, car il y en a deja)

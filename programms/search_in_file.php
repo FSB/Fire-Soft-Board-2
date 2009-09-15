@@ -8,13 +8,13 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-//die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
-/*
-** Ce fichier permet de rechercher des donnees dans des fichiers.
-** Tres utile quand vous souhaitez retrouver tous les fichiers comportant une certaine ligne
-** de code par exemple.
-*/
+/**
+ * Ce fichier permet de rechercher des donnees dans des fichiers.
+ * Tres utile quand vous souhaitez retrouver tous les fichiers comportant une certaine ligne
+ * de code par exemple.
+ */
 
 set_time_limit(0);
 

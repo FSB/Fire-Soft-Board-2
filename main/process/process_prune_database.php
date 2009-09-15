@@ -8,11 +8,11 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Optimize la base de donnee
-** -----
-** $tables ::		Liste des tables a optimiser
-*/
+/**
+ * Optimize la base de donnee
+ *
+ * @param array $tables Liste des tables à optimiser
+ */
 function prune_database($tables = array())
 {
 	switch (SQL_DBAL)
