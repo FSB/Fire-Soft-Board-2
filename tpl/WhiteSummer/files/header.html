@@ -51,7 +51,7 @@
 		<div id="right_menu">
 			<switch name="is_logged">
 				<switch name="modo_panel">
-					<switch name="is_admin"><a href="{U_ADMIN}">{LG_FORUM_MENU_ADMIN}</a> |</switch> <a href="{U_MODO}">{LG_FORUM_MENU_MODO}</a> <if content="$MODO_HAVE_MESSAGE"><b>({MODO_HAVE_MESSAGE})</b></if>
+					<switch name="is_admin"><a href="{U_ADMIN}">{LG_FORUM_MENU_ADMIN}</a> <switch name="ac_mods_root_support"><b>({LG_ROOT_SUPPORT_ACTIVE})</b> </switch>|</switch> <a href="{U_MODO}">{LG_FORUM_MENU_MODO}</a> <if content="$MODO_HAVE_MESSAGE"><b>({MODO_HAVE_MESSAGE})</b></if>
 					<switch name="show_group_modo">| <a href="{U_GROUPS_MODO}">{LG_FORUM_MENU_GROUPS}</a></switch> ::
 				</switch>
 				<a href="{U_NOT_READ}">{LG_FORUM_MENU_NOT_READ}</a> | <a href="{U_OWN_POSTS}">{LG_FORUM_MENU_OWN_POSTS}</a>

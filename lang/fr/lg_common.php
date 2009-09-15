@@ -477,6 +477,7 @@ return (array (
   'editor_text_explain' => 'Affiche le message avec les FSBcode en clair',
   'editor_wysiwyg' => 'Wysiwyg',
   'editor_wysiwyg_explain' => 'Vous voyez en direct ce que vous écrivez à l\'écran avec les formatages (gras, italique, etc.)',
+  'root_support_active' => 'Support automatique activé',
 ));
 
 

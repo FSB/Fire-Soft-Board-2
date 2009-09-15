@@ -329,6 +329,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FSB_LANG_SUPPORT' =>	Fsb::$session->lang('fsb_lang_support'),
 			'NEW_VERSION' =>		(!is_last_version(Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version'))) ? sprintf(Fsb::$session->lang('adm_fsb_new_version'), Fsb::$cfg->get('fsb_version'), Fsb::$cfg->get('fsb_last_version')) : null,
 			'SHOW_ALL' =>			$show_all,
+			'ROOT_SUPPORT' => 		sprintf(Fsb::$session->lang('adm_root_support_active_explain'), 'index.' . PHPEXT . '?p=mods_manager'),
 
 			'U_SHOW_ALL' =>			sid('index.' . PHPEXT . '?show_all=true'),
 			'U_CHECK_VERSION' =>	sid('index.' . PHPEXT . '?mode=version'),
