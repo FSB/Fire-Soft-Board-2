@@ -8,28 +8,58 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la liste des categories et des forums
-*/
+/**
+ * Affiche la liste des categories et des forums
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = true;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// <title>
+	/**
+	 * Titre de la page
+	 *
+	 * @var string
+	 */
 	public $tag_title = '';
 
-	// Categorie affiche
+	/**
+	 * Categorie affiche
+	 *
+	 * @var unknown_type
+	 */
 	public $cat;
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->cat =	intval(Http::request('cat'));
@@ -43,9 +73,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->show_forums();
 	}
 
-	/*
-	** Marquer les forums comme lu
-	*/
+	/**
+	 * Marquer les forums comme lu
+	 *
+	 */
 	public function markread_forums()
 	{
 		if ($this->cat)
@@ -64,9 +95,10 @@ class Fsb_frame_child extends Fsb_frame
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=index' . (($this->cat) ? '&cat=' . $this->cat : ''));
 	}
 	
-	/*
-	** Affiche les categories et les forums
-	*/
+	/**
+	 * Affiche les categories et les forums
+	 *
+	 */
 	public function show_forums()
 	{
 		// Navigation de la page

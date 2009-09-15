@@ -8,28 +8,58 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche le formulaire permettant de signaler aux moderateurs un message abusif
-*/
+/**
+ * Affiche le formulaire permettant de signaler aux moderateurs un message abusif
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// ID du message
+	/**
+	 * ID du message
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Mode (MP ou non)
+	/**
+	 * Mode (MP ou non)
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->id =		intval(Http::request('id'));
@@ -45,9 +75,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->show_form();
 	}
 
-	/*
-	** Verifie si le message existe
-	*/
+	/**
+	 * Verifie si le message existe
+	 *
+	 */
 	public function check_post()
 	{
 		if (!Fsb::$mods->is_active('abuse') || !Fsb::$session->is_logged())
@@ -80,9 +111,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche le formulaire pour signaler le message abusif
-	*/
+	/**
+	 * Affiche le formulaire pour signaler le message abusif
+	 *
+	 */
 	public function show_form()
 	{
 		Fsb::$tpl->set_file('forum/forum_abuse.html');
@@ -91,9 +123,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Enregistre dans la base de donnee le signalement de message abusif
-	*/
+	/**
+	 * Enregistre dans la base de donnee le signalement de message abusif
+	 *
+	 */
 	public function submit_form()
 	{
 		$content = Http::request('content_abuse', 'post');

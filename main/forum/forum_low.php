@@ -8,22 +8,86 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Version bas debit du forum
-*/
+/**
+ * Version bas debit du forum
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = true;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	public $mode, $id, $page;
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
+	public $mode;
+	
+	/**
+	 * ID
+	 *
+	 * @var int
+	 */
+	public $id;
+	
+	/**
+	 * Page en cours
+	 *
+	 * @var int
+	 */
+	public $page;
+	
+	/**
+	 * Sujets par page
+	 *
+	 * @var int
+	 */
 	public $topic_per_page = 100;
+	
+	/**
+	 * Messages par page
+	 *
+	 * @var int
+	 */
 	public $post_per_page = 30;
+	
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
+	
+	/**
+	 * Page bas débit ?
+	 *
+	 * @var bool
+	 */
 	public $is_low_page = true;
 
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->mode =	Http::request('mode');
@@ -52,9 +116,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Affichage des forums sur l'index
-	*/
+	/**
+	 * Affichage des forums sur l'index
+	 *
+	 */
 	public function low_index()
 	{
 		Fsb::$tpl->set_switch('low_index');
@@ -117,9 +182,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affichage des sujets
-	*/
+	/**
+	 * Affichage des sujets
+	 *
+	 */
 	public function low_forum()
 	{
 		// Informations sur le forum
@@ -238,9 +304,11 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Affichage des sujets
-	*/
+	
+	/**
+	 * Affichage des sujets
+	 *
+	 */
 	public function low_topic()
 	{
 		// Si la fonction de notification est activee on ajoute une jointure a la requete

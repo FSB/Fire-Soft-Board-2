@@ -8,44 +8,100 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la liste des messages d'un sujet
-*/
+/**
+ * Affiche la liste des messages d'un sujet
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = true;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// <title>
+	/**
+	 * Titre de la page
+	 *
+	 * @var string
+	 */
 	public $tag_title = '';
 
-	// ID du sujet et du message
+	/**
+	 * ID du sujet
+	 *
+	 * @var int
+	 */
 	public $topic_id;
+	
+	/**
+	 * ID du message
+	 *
+	 * @var int
+	 */
 	public $post_id;
 	
-	// Donnees du sujet courant
+	/**
+	 * Donnees du sujet courant
+	 *
+	 * @var array
+	 */
 	public $topic_data;
 
-	// Page courante
+	/**
+	 * Page courante
+	 *
+	 * @var int
+	 */
 	public $page;
 
-	// Surveiller ou on le sujet
+	/**
+	 * Surveiller ou on le sujet
+	 *
+	 * @var string
+	 */
 	public $notification = 'off';
 
-	// Imprimer le sujet
+	/**
+	 * Imprimer le sujet
+	 *
+	 * @var string
+	 */
 	public $print = '';
 
-	// Peut utiliser la reponse rapide
+	/**
+	 * Peut utiliser la reponse rapide
+	 *
+	 * @var bool
+	 */
 	public $can_quick_reply = false;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->notification =		Http::request('notification');
@@ -103,9 +159,11 @@ class Fsb_frame_child extends Fsb_frame
 		$this->show_posts();
 	}
 
-	/*
-	** Recupere les donnees du sujet courant
-	*/
+	/**
+	 * Recupere les donnees du sujet courant
+	 *
+	 * @return bool
+	 */
 	public function get_topic_data()
 	{
 		// Creation de la requete SELECT de recuperations des donnees du sujet
@@ -219,9 +277,10 @@ class Fsb_frame_child extends Fsb_frame
 		return (true);
 	}
 
-	/*
-	** Affiche les messages
-	*/
+	/**
+	 * Affiche les messages
+	 *
+	 */
 	public function show_posts()
 	{
 		Fsb::$tpl->set_file('forum/forum_topic.html');
@@ -513,9 +572,12 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_procedure();
 	}
 	
-	/*
-	** Recupere les informations statiques du message (donnees sur le membre, rangs, etc ...)
-	*/
+	/**
+	 * Recupere les informations statiques du message (donnees sur le membre, rangs, etc ...)
+	 *
+	 * @param array $row
+	 * @return array
+	 */
 	public function get_post_array(&$row)
 	{
 		$avatar = User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_can_use_avatar']);
@@ -573,9 +635,10 @@ class Fsb_frame_child extends Fsb_frame
 		return ($ary);
 	}
 
-	/*
-	** Modifie la notification
-	*/
+	/**
+	 * Modifie la notification
+	 *
+	 */
 	public function change_notification()
 	{
 		if ($this->notification == 'off')
@@ -597,9 +660,10 @@ class Fsb_frame_child extends Fsb_frame
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=topic&t_id=' . $this->topic_data['t_id'] . '&page=' . $this->page);
 	}
 
-	/*
-	** Met a jour la date de visite du sujet, et le nombre de vue
-	*/
+	/**
+	 * Met a jour la date de visite du sujet, et le nombre de vue
+	 *
+	 */
 	public function update_topic()
 	{
 		// Marquer le sujet lu
@@ -655,9 +719,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche la liste des procedures
-	*/
+	/**
+	 * Affiche la liste des procedures
+	 *
+	 */
 	public function print_procedure()
 	{
 		$sql = 'SELECT procedure_id, procedure_name, procedure_auth

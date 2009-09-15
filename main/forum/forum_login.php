@@ -8,37 +8,79 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page de connexion du membre
-*/
+/**
+ * Page de connexion du membre
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Contient les erreurs
+	/**
+	 * Contient les erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 	
-	// Contient les donnees envoyees par formulaire
+	/**
+	 * Contient les donnees envoyees par formulaire
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	// Donnees de connexion
+	/**
+	 * Donnees de connexion
+	 *
+	 * @var array
+	 */
 	public $login_data = array();
 
-	// Connexion administration ?
+	/**
+	 * Connexion administration ?
+	 *
+	 * @var bool
+	 */
 	public $adm_log = false;
 
-	// Utilisation du chiffrage RSA ?
+	/**
+	 * Utilisation du chiffrage RSA ?
+	 *
+	 * @var bool
+	 */
 	public $use_rsa = false;
 	
-	// Délai max d'utilisation de l'ancienne clef RSA
+	/**
+	 * Délai max d'utilisation de l'ancienne clef RSA
+	 *
+	 * @var int
+	 */
 	public $rsa_old_key_ttl = 1800;
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Pas de redirection automatique sur cette page
@@ -90,9 +132,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Affiche le formulaire de connexion
-	*/
+	/**
+	 * Affiche le formulaire de connexion
+	 *
+	 */
 	public function login_form()
 	{
 		Fsb::$tpl->set_file('forum/forum_login.html');
@@ -140,9 +183,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 	
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 *
+	 */
 	public function check_form()
 	{
 		// En cas de chiffrage RSA, on decrypte les informations
@@ -211,17 +255,19 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche le formulaire permettant de recevoir un nouveau mot de passe par Email
-	*/
+	/**
+	 * Affiche le formulaire permettant de recevoir un nouveau mot de passe par Email
+	 *
+	 */
 	public function forgot_form()
 	{
 		Fsb::$tpl->set_file('forum/forum_login_forgot.html');
 	}
 
-	/*
-	** Envoie un nouveau mot de passe, a activer par Email
-	*/
+	/**
+	 * Envoie un nouveau mot de passe, a activer par Email
+	 *
+	 */
 	public function send_new_password()
 	{
 		$email = trim(Http::request('forgot_email', 'post'));
@@ -263,9 +309,10 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('login_submit_forgot', ROOT . 'index.' . PHPEXT, 'forum_index');
 	}
 
-	/*
-	** Active le mot de passe
-	*/
+	/**
+	 * Active le mot de passe
+	 *
+	 */
 	public function activate_password()
 	{
 		$id =					intval(Http::request('id'));
@@ -301,11 +348,11 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('login_new_password', ROOT . 'index.' . PHPEXT, 'forum_index');
 	}
 
-	/*
-	** Confirmation d'un compte en cas d'inscription avec confirmation par Email
-	** -----
-	** $confirm ::		Hash de confirmation
-	*/
+	/**
+	 * Confirmation d'un compte en cas d'inscription avec confirmation par Email
+	 *
+	 * @param string $confirm Hash de confirmation
+	 */
 	public function confirm_account($confirm)
 	{
 		$id = intval(Http::request('id'));
@@ -337,11 +384,11 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Confirmation de l'inscription pour les administrateurs
-	** -----
-	** $id ::		ID du membre a confirmer
-	*/
+	/**
+	 * Confirmation de l'inscription pour les administrateurs
+	 *
+	 * @param int $id ID du membre a confirmer
+	 */
 	public function confirm_admin($id)
 	{
 		if (!Fsb::$session->is_authorized('confirm_account') || !User::confirm_account($id))

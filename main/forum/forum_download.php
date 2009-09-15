@@ -8,41 +8,71 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Telechargement d'un fichier joint.
-** Les fichiers sont securises par un .HTACCESS, il est necessaire de passer par cette page
-** pour pouvoir les afficher. Donc les liens directs ne marchent pas (sauf si vous decidez de
-** supprimer le .HTACCESS du dossier upload).
-**
-** Il est possible de limiter le telechargement des fichiers a certaines IP, en verifiant le REFERER
-** du client. Pour cela il faut passer la propriete $this->check_referer sur true, et il faut ajout les
-** listes d'IP dans la proriete $this->ip. Par exemple :
-**		public $ip_allow = array('127.0.0.1', '127.0.0.*', etc...);
-** On peut aussi interdire des IP, par exemple :
-**		public $ip_disallow = array('127.0.0.1', etc...);
-** A noter que si vous souhaitez activer la verification par referer, vous DEVEZ fournir une liste
-** d'IP autorisees. Si vous souhaitez passer outre cette liste d'IP autorisee (et donc donner acces a toutes
-** les IP), laissez la propriete $this->ip_allow vide.
-*/
+/**
+ * Telechargement d'un fichier joint.
+ * Les fichiers sont securises par un .HTACCESS, il est necessaire de passer par cette page
+ * pour pouvoir les afficher. Donc les liens directs ne marchent pas (sauf si vous decidez de
+ * supprimer le .HTACCESS du dossier upload).
+ *
+ * Il est possible de limiter le telechargement des fichiers a certaines IP, en verifiant le REFERER
+ * du client. Pour cela il faut passer la propriete $this->check_referer sur true, et il faut ajout les
+ * listes d'IP dans la proriete $this->ip. Par exemple :
+ *		public $ip_allow = array('127.0.0.1', '127.0.0.*', etc...);
+ * On peut aussi interdire des IP, par exemple :
+ *		public $ip_disallow = array('127.0.0.1', etc...);
+ * A noter que si vous souhaitez activer la verification par referer, vous DEVEZ fournir une liste
+ * d'IP autorisees. Si vous souhaitez passer outre cette liste d'IP autorisee (et donc donner acces a toutes
+ * les IP), laissez la propriete $this->ip_allow vide.
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = false;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// A mettre sur true pour la verification des IP
+	/**
+	 *  A mettre sur true pour la verification des IP
+	 *
+	 * @var bool
+	 */
 	public $check_referer = false;
 
-	// Liste des IP autorisees
+	/**
+	 * Liste des IP autorisees
+	 *
+	 * @var array
+	 */
 	public $ip_allow = array('127.0.0.1');
 
-	// Liste des IP interdites
+	/**
+	 * Liste des IP interdites
+	 *
+	 * @var array
+	 */
 	public $ip_disallow = array();
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$id = intval(Http::request('id'));
@@ -95,9 +125,10 @@ class Fsb_frame_child extends Fsb_frame
 		Http::download($row['upload_realname'], file_get_contents(ROOT . 'upload/' . $row['upload_filename']), $row['upload_mimetype']);
 	}
 
-	/*
-	** Si la verification de referer a ete activee on verifie les IP autorisees et interdites
-	*/
+	/**
+	 * Si la verification de referer a ete activee on verifie les IP autorisees et interdites
+	 *
+	 */
 	public function check_ip()
 	{
 		$referer = (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) ? @parse_url($_SERVER['HTTP_REFERER']) : null;

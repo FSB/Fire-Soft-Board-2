@@ -8,42 +8,100 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la liste des sujets d'un forum, ainsi que les sous forums
-*/
+/**
+ * Affiche la liste des sujets d'un forum, ainsi que les sous forums
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = true;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// <title>
+	/**
+	 * Titre de la page
+	 *
+	 * @var string
+	 */
 	public $tag_title = '';
 
-	// Moderation du forum ?
+	/**
+	 * Moderation du forum ?
+	 *
+	 * @var bool
+	 */
 	public $moderation = false;
 
-	// ID du forum
+	/**
+	 * ID du forum
+	 *
+	 * @var int
+	 */
 	public $id;
 	
-	// Donnees sur le forum
+	/**
+	 * Donnees sur le forum
+	 *
+	 * @var array
+	 */
 	public $forum_data;
 
-	// Page actuelle
+	/**
+	 * Page actuelle
+	 *
+	 * @var int
+	 */
 	public $page;
 
-	// Ordre du sujet
+	/**
+	 * Ordres du sujet
+	 *
+	 * @var array
+	 */
 	public $check_order = array('t_last_p_time', 't_title', 't_total_view', 't_total_post', 'f_u_nickname');
+	
+	/**
+	 * Ordre par défaut
+	 *
+	 * @var string
+	 */
 	public $order = 't_last_p_time';
+	
+	/**
+	 * Tri descendant par défaut
+	 *
+	 * @var string
+	 */
 	public $dir = 'desc';
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->id = Http::request('f_id');
@@ -101,9 +159,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->show_topics();
 	}
 
-	/*
-	** Met tous les sujets de ce forum en lu
-	*/
+	/**
+	 * Met tous les sujets de ce forum en lu
+	 *
+	 */
 	public function forum_markread()
 	{
 		$markread_subforum = (Http::request('subforum')) ? true : false;
@@ -131,9 +190,11 @@ class Fsb_frame_child extends Fsb_frame
 		Http::redirect('index.' . PHPEXT . '?p=forum&f_id=' . $return);
 	}
 
-	/*
-	** Donnees du forum, verification du type, du mot de passe, etc ...
-	*/
+	/**
+	 * Donnees du forum, verification du type, du mot de passe, etc ...
+	 *
+	 * @return bool
+	 */
 	public function get_forum_data()
 	{
 		// On recupere les donnees du forum
@@ -215,9 +276,10 @@ class Fsb_frame_child extends Fsb_frame
 		return (true);
 	}
 
-	/*
-	** Affiche les sous forums
-	*/
+	/**
+	 * Affiche les sous forums
+	 *
+	 */
 	public function show_subforums()
 	{
 		// On affiche les sous forums s'il y en a
@@ -267,9 +329,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Affiche la liste des sujets
-	*/
+	/**
+	 * Affiche la liste des sujets
+	 *
+	 */
 	public function show_topics()
 	{
 		// Variable pour garder en memoire les types de sujets deja affiches
@@ -464,9 +527,10 @@ class Fsb_frame_child extends Fsb_frame
 		Http::add_relation($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id . $purl);
 	}
 
-	/*
-	** Moderation de masse du forum
-	*/
+	/**
+	 * Moderation de masse du forum
+	 *
+	 */
 	public function mass_moderation()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -495,9 +559,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Qui a poste dans le sujet ?
-	*/
+	/**
+	 * Qui a poste dans le sujet ?
+	 *
+	 */
 	public function who_posted()
 	{
 		$topic_id = intval(Http::request('who_posted'));

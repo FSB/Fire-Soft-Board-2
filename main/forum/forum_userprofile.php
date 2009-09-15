@@ -8,35 +8,79 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche le profil public d'un membre
-*/
+/**
+ * Affiche le profil public d'un membre
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Module courant
+	/**
+	 * Module courant
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Donnees personnelles du membre
+	/**
+	 * Donnees personnelles du membre
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	// ID du membre
+	/**
+	 * ID du membre
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// <title>
+	/**
+	 * Tag titre
+	 *
+	 * @var string
+	 */
 	public $tag_title = '';
+	
+	/**
+	 * Titre page
+	 *
+	 * @var string
+	 */
 	public $page_title = '';
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->module = Http::request('module');
@@ -112,9 +156,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->{'userprofile_' . $this->module}();
 	}
 
-	/*
-	** Affiche le profil personel d'un membre
-	*/
+	/**
+	 * Affiche le profil personel d'un membre
+	 *
+	 */
 	public function userprofile_view()
 	{
 		// Droit d'acces ?
@@ -211,9 +256,10 @@ class Fsb_frame_child extends Fsb_frame
 		Profil_fields_forum::show_fields(PROFIL_FIELDS_PERSONAL, 'personal', $this->data);
 	}
 	
-	/*
-	** Recuperation des informations personelles du membre (contact, groupes, etc ...)
-	*/
+	/**
+	 * Recuperation des informations personelles du membre (contact, groupes, etc ...)
+	 *
+	 */
 	public function get_user_data()
 	{
 		// Avatar du membre
@@ -300,9 +346,11 @@ class Fsb_frame_child extends Fsb_frame
                         $this->data['activ_topic'] = '';
         }
 	
-	/*
-	** Liste les groupes auquel le membre appartient
-	*/
+	/**
+	 * Liste les groupes auquel le membre appartient
+	 *
+	 * @return string
+	 */
 	public function show_groups()
 	{		
 		$sql = 'SELECT g.g_id, g.g_name, g.g_type, g.g_hidden
@@ -318,9 +366,11 @@ class Fsb_frame_child extends Fsb_frame
 		return (Html::list_groups('list_groups', GROUP_NORMAL|GROUP_SPECIAL, '', false, array(), $sql, $javascript, '<option>' . Fsb::$session->lang('userprofile_choose_group') . '</option>'));
 	}
 
-	/*
-	** Liste des groupes que le visiteur modere
-	*/
+	/**
+	 * Liste des groupes que le visiteur modere
+	 *
+	 * @return string
+	 */
 	public function show_groups_modo()
 	{
 		$sql = 'SELECT g_id
@@ -351,9 +401,10 @@ class Fsb_frame_child extends Fsb_frame
 		return ($html);
 	}
 
-	/*
-	** Affiche les logs du membre
-	*/
+	/**
+	 * Affiche les logs du membre
+	 *
+	 */
 	public function userprofile_logs()
 	{
 		Fsb::$tpl->set_file('forum/forum_userprofile_logs.html');
@@ -377,9 +428,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Redirige vers l'edition du profile du membre
-	*/
+	/**
+	 * Redirige vers l'edition du profile du membre
+	 *
+	 */
 	public function userprofile_edit()
 	{
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=modo&module=user&id=' . $this->id);

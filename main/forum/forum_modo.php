@@ -8,32 +8,63 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page affichant le panneau de controle de moderation
-** Chaque module sera pioche dans le repertoire ~/main/modo/
-**
-** Chaque module doit contenir une variable globale a la page nommee "show_this_module" avec comme
-** valeur true ou false suivant si l'ont souhaite afficher le module dans le menu
-*/
+/**
+ * Page affichant le panneau de controle de moderation
+ * Chaque module sera pioche dans le repertoire ~/main/modo/
+ *
+ * Chaque module doit contenir une variable globale a la page nommee "show_this_module" avec comme
+ * valeur true ou false suivant si l'ont souhaite afficher le module dans le menu
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Module sellectione pour la page
+
+	/**
+	 * Module sellectione pour la page
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
+	/**
+	 * Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
+	 *
+	 * @var array
+	 */
 	public $list = array('index', 'abuse', 'approve', 'calendar', 'ip', 'merge', 'move', 'procedure', 'split', 'upload', 'user', 'warn');
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// On recupere le module du panneau a afficher

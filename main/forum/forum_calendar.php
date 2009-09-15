@@ -8,33 +8,86 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche un calendrier avec planification possible d'evenements
-*/
+/**
+ * Affiche un calendrier avec planification possible d'evenements
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Temps unix
+	/**
+	 * Timestamp
+	 *
+	 * @var int
+	 */
 	public $current;
 
-	// Jour, mois, annee courante
+	/**
+	 * Jour actuel
+	 *
+	 * @var int
+	 */
 	public $current_day;
+	
+	/**
+	 * Mois actuel
+	 *
+	 * @var int
+	 */
 	public $current_month;
+	
+	/**
+	 * Annee actuel
+	 *
+	 * @var int
+	 */
 	public $current_year;
 
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * Id
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		if (!Fsb::$mods->is_active('calendar'))
@@ -76,9 +129,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Affiche le calendrier courant, ainsi que les calendriers des mois suivants et precedents
-	*/
+	/**
+	 * Affiche le calendrier courant, ainsi que les calendriers des mois suivants et precedents
+	 *
+	 */
 	public function show_calendar()
 	{
 		Fsb::$tpl->set_file('forum/forum_calendar.html');
@@ -202,14 +256,15 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Genere un calendrier simple ou complexe
-	** -----
-	** $type ::		Type de calendrier (simple ou complex)
-	** $month ::	Mois
-	** $year ::		Annee
-	** $events ::	Liste des evenements
-	*/
+	/**
+	 * Genere un calendrier simple ou complexe
+	 *
+	 * @param string $type Type de calendrier (simple ou complex)
+	 * @param int $month Mois
+	 * @param int $year Annee 
+	 * @param array $events Liste des evenements
+	 * @return int 
+	 */
 	public function generate_calendar($type, $month, $year, &$events)
 	{
 		// On recupere le jour du premier du mois
@@ -328,9 +383,10 @@ class Fsb_frame_child extends Fsb_frame
 		return ($first_day_time);
 	}
 
-	/*
-	** Affiche les evenements de la journee
-	*/
+	/**
+	 * Affiche les evenements de la journee
+	 *
+	 */
 	public function show_events()
 	{
 		Fsb::$tpl->set_file('forum/forum_calendar_event.html');
@@ -460,9 +516,10 @@ class Fsb_frame_child extends Fsb_frame
 		);
 	}
 
-	/*
-	** Approuve un evenement
-	*/
+	/**
+	 * Approuve un evenement
+	 *
+	 */
 	public function approve_event()
 	{
 		if (Fsb::$session->is_authorized('approve_event'))
@@ -484,9 +541,10 @@ class Fsb_frame_child extends Fsb_frame
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=calendar');
 	}
 
-	/*
-	** Supprime un evenement
-	*/
+	/**
+	 * Supprime un evenement
+	 *
+	 */
 	public function delete_event()
 	{
 		$sql = 'SELECT c_begin, u_id
@@ -522,9 +580,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Change la date du jour courant
-	*/
+	/**
+	 * Change la date du jour courant
+	 *
+	 */
 	public function change_date()
 	{
 		$this->current_day =		intval(Http::request('day'));

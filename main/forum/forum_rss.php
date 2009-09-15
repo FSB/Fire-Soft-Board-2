@@ -8,27 +8,65 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Genere des flux RSS pour les messages ou pour les forums
-*/
+/**
+ * Genere des flux RSS pour les messages ou pour les forums
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = false;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Parametres pour la page
+	/**
+	 * Mode
+	 *
+	 * @var string
+	 */
 	public $mode;
+	
+	/**
+	 * ID
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Type
+	 *
+	 * @var int
+	 */
 	public $type;
 
-	// Objet RSS
+	/**
+	 * Objet RSS
+	 *
+	 * @var Rss
+	 */
 	public $rss;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Acces au flux RSS ?
@@ -73,9 +111,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->rss->close();
 	}
 
-	/*
-	** Affiche un flux RSS du sujet, chaque message etant un item different
-	*/
+	/**
+	 * Affiche un flux RSS du sujet, chaque message etant un item different
+	 *
+	 */
 	public function rss_topic()
 	{
 		if (!$this->id)
@@ -151,9 +190,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche un flux RSS des sujets du forum, chaque sujet etant un item different
-	*/
+	/**
+	 * Affiche un flux RSS des sujets du forum, chaque sujet etant un item different
+	 *
+	 */
 	public function rss_forum()
 	{
 		if (!$this->id || !Fsb::$session->is_authorized($this->id, 'ga_view') || !Fsb::$session->is_authorized($this->id, 'ga_view_topics'))
@@ -227,9 +267,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche un flux RSS des sujets de l'ensemble du forum
-	*/
+	/**
+	 * Affiche un flux RSS des sujets de l'ensemble du forum
+	 *
+	 */
 	public function rss_index()
 	{
 		// Liste des messages
@@ -293,9 +334,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche un flux RSS des 10 derniers messages d'un membre
-	*/
+	/**
+	 * Affiche un flux RSS des 10 derniers messages d'un membre
+	 *
+	 */
 	public function rss_user()
 	{
 		if (!$this->id)
@@ -358,9 +400,12 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Supprimes les RSS mis en cache dont le temps est expire
-	*/
+	/**
+	 * Supprimes les RSS mis en cache dont le temps est expire
+	 *
+	 * @param string $sql
+	 * @param string $prefix
+	 */
 	public function check_caching($sql, $prefix)
 	{
 		$hash = md5($sql);

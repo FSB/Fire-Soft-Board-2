@@ -8,50 +8,157 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Permet une recherche dans les messages du forum en fonction de divers parametres.
-** Le fonctionement global de la page : on recupere une liste de message concerne par la recherche via les methodes
-** search_*() dans la propriete $this->idx, puis on appel la methode print_result() pour afficher le resultat en
-** fonction des messages recuperes.
-*/
+/**
+ * Permet une recherche dans les messages du forum en fonction de divers parametres.
+ * Le fonctionement global de la page : on recupere une liste de message concerne par la recherche via les methodes
+ * search_*() dans la propriete $this->idx, puis on appel la methode print_result() pour afficher le resultat en
+ * fonction des messages recuperes.
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Mode de la page
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// Argument $id
+	/**
+	 * Argument $id
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// Donnees du formulaire pour la recherche
-	public $keywords, $author, $in, $print, $forums, $topic, $date, $order, $direction;
+	/**
+	 * Donnees du formulaire pour la recherche Mots clés
+	 * 
+	 */
+	public $keywords;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Auteur
+	 * 
+	 */
+	public $author;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Recherche dans messages et/ou sujets
+	 * 
+	 */
+	public $in;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Forme d'affichage
+	 * 
+	 */
+	public $print;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Forums
+	 * 
+	 */
+	public $forums;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Sujets
+	 * 
+	 */
+	public $topic;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Date
+	 * 
+	 */
+	public $date;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Ordre
+	 * 
+	 */
+	public $order;
+	
+	/**
+	 * Donnees du formulaire pour la recherche Asc/Desc
+	 * 
+	 */
+	public $direction;
 
-	// Objet de recherche
+	/**
+	 * Objet de recherche
+	 *
+	 * @var Search
+	 */
 	public $search;
 
-	// ID des messages pour le resultat de la recherche
+	/**
+	 * ID des messages pour le resultat de la recherche
+	 *
+	 * @var array
+	 */
 	public $idx = array();
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// Page courante
+	/**
+	 * Page courante
+	 *
+	 * @var string
+	 */
 	public $page;
 
-	// Module de menu
+	/**
+	 * Module de menu
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Recherche independante
+	/**
+	 * Recherche independante (condition)
+	 *
+	 * @var string
+	 */
 	public $where = null;
+	
+	/**
+	 * Recherche independante (nombre)
+	 *
+	 * @var int
+	 */
 	public $count = null;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Type de recherche (fulltext_mysql, fulltext_fsb ou like)
@@ -121,9 +228,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Formulaire de recherche
-	*/
+	/**
+	 * Formulaire de recherche
+	 *
+	 */
 	public function search_form()
 	{
 		// Suivant le type de recherche l'explication change
@@ -167,12 +275,13 @@ class Fsb_frame_child extends Fsb_frame
 		$this->generate_forum_list();
 	}
 
-	/*
-	** Fonction classique de recherche, via le formulaire de recherche.
-	** A chaque soumission du formulaire de recherche un cache pour la recherche est
-	** cree dans la table search_result. Le cache est recupere quand le mode result est passe
-	** en parametre.
-	*/
+	/**
+	 * Fonction classique de recherche, via le formulaire de recherche.
+	 * A chaque soumission du formulaire de recherche un cache pour la recherche est
+	 * cree dans la table search_result. Le cache est recupere quand le mode result est passe
+	 * en parametre.
+	 *
+	 */
 	public function search_result()
 	{
 		// Instance du cache
@@ -222,11 +331,11 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Cherche tous les messages d'un membre
-	** -----
-	** $nickname ::		Pseudonyme de l'auteur
-	*/
+	/**
+	 * Cherche tous les messages d'un membre
+	 *
+	 * @param string $nickname Pseudonyme de l'auteur
+	 */
 	public function search_author($nickname = null)
 	{
 		if ($this->id == VISITOR_ID)
@@ -277,11 +386,11 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
-	/*
-	** Cherche tous les sujets d'un membre
-	** -----
-	** $nickname ::		Pseudonyme de l'auteur
-	*/
+	/**
+	 * Cherche tous les sujets d'un membre
+	 *
+	 * @param string $nickname Pseudonyme de l'auteur
+	 */
 	public function search_author_topic($nickname = null)
 	{
 		if ($this->id == VISITOR_ID)
@@ -332,9 +441,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
-	/*
-	** Cherche les sujets dans lesquels on a poste
-	*/
+	/**
+	 * Cherche les sujets dans lesquels on a poste
+	 *
+	 */
 	public function search_ownposts()
 	{
 		if (!Fsb::$session->is_logged())
@@ -350,9 +460,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
-	/*
-	** Cherche tous les messages non lus
-	*/
+	/**
+	 * Cherche tous les messages non lus
+	 *
+	 */
 	public function search_newposts()
 	{
 		// L'invite ne peut acceder a cette page
@@ -427,9 +538,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
-	/*
-	** Cherche tous les sujets qu'on surveille
-	*/
+	/**
+	 * Cherche tous les sujets qu'on surveille
+	 *
+	 */
 	public function search_notification()
 	{
 		// L'invite ne peut acceder a cette page
@@ -467,9 +579,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
-	/*
-	** Traite les sujets coches
-	*/
+	/**
+	 * Traite les sujets coches
+	 *
+	 */
 	public function check_topics()
 	{
 		switch ($this->mode)
@@ -508,10 +621,11 @@ class Fsb_frame_child extends Fsb_frame
 		Http::redirect(ROOT . 'index.' . PHPEXT . '?p=search&mode=' . $this->mode);
 	}
 
-	/*
-	** Affiche le resultat de la recherche, en se basant sur la propriete
-	** $this->idx qui a recu le tableau des messages trouves pour la recherche
-	*/
+	/**
+	 * Affiche le resultat de la recherche, en se basant sur la propriete
+	 * $this->idx qui a recu le tableau des messages trouves pour la recherche
+	 *
+	 */
 	public function print_result()
 	{
 		if ($this->page < 1)
@@ -888,9 +1002,12 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Liste des forums autorises
-	*/
+	/**
+	 * Liste des forums autorises
+	 *
+	 * @param array $forums
+	 * @return array
+	 */
 	public function get_auths_forums($forums)
 	{
 		$sql = 'SELECT child.f_id
@@ -913,9 +1030,10 @@ class Fsb_frame_child extends Fsb_frame
 		return ($return);
 	}
 
-	/*
-	** Genere la liste des forums pour la recherche
-	*/
+	/**
+	 * Genere la liste des forums pour la recherche
+	 *
+	 */
 	public function generate_forum_list()
 	{
 		// Construction un arbre des forums
@@ -945,9 +1063,11 @@ class Fsb_frame_child extends Fsb_frame
 		$this->generate_forum_list_by_tree($tree->document->children);
 	}
 
-	/*
-	** Generation recursive de la liste des forums
-	*/
+	/**
+	 * Generation recursive de la liste des forums
+	 *
+	 * @param unknown_type $children
+	 */
 	public function generate_forum_list_by_tree(&$children)
 	{
 		foreach ($children AS $child)

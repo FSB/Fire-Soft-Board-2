@@ -8,19 +8,38 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Deconnexion d'un membre
-*/
+/**
+ * Deconnexion d'un membre
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	/*
-	** Constructeur
-	*/
+
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// On verifie si la SID a ete passee par l'URL, pour des raisons de securite

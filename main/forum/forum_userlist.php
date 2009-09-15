@@ -8,46 +8,147 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la liste des membres d'un groupe
-*/
+/**
+ * Affiche la liste des membres d'un groupe
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = true;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Tris par defaut
+
+	/**
+	 * Ordre par defaut
+	 *
+	 * @var string
+	 */
 	public $default_order = 'u_total_post';
+	
+	/**
+	 * Asc/Desc
+	 *
+	 * @var string
+	 */
 	public $default_direction = 'DESC';
+	
+	/**
+	 * Nombre de membres par defaut
+	 *
+	 * @var int
+	 */
 	public $default_limit = 30;
 	
-	// Arguments de la page
+	/**
+	 * Ordre
+	 *
+	 * @var string
+	 */
 	public $order;
+	
+	/**
+	 * Asc/Desc
+	 *
+	 * @var string
+	 */
 	public $direction;
+	
+	/**
+	 * Nombre de membres max
+	 *
+	 * @var int
+	 */
 	public $limit;
+	
+	/**
+	 * ID
+	 *
+	 * @var int
+	 */
 	public $id;
+	
+	/**
+	 * Utilisateur cherché
+	 *
+	 * @var string
+	 */
 	public $search_user;
+	
+	/**
+	 * Groupe
+	 *
+	 * @var array
+	 */
 	public $group_data;
+	
+	/**
+	 * Modérateur du groupe ?
+	 *
+	 * @var bool
+	 */
 	public $is_group_moderator = false;
+	
+	/**
+	 * Type de recherche
+	 *
+	 * @var string
+	 */
 	public $like = 'in';
+	
+	/**
+	 * Module par defaut
+	 *
+	 * @var int
+	 */
 	public $module = USERLIST_SIMPLE;
+	
+	/**
+	 * Nombre max
+	 *
+	 * @var int
+	 */
 	public $max_size = 60;
 	
-	// Liste des ordres
+	/**
+	 * Liste des ordres
+	 *
+	 * @var array
+	 */
 	public $order_array = array('u_joined', 'u_nickname', 'u_total_post', 'u_total_topic', 'u_last_visit');
 
-	// Liste des colones a afficher
+	/**
+	 * Liste des colones a afficher
+	 *
+	 * @var array
+	 */
 	public $columns = array(
 		'u_joined' =>		'date',
 		'u_total_post' =>	'int',
 		'u_total_topic' =>	'int',
 	);
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Droit d'acces ?
@@ -130,9 +231,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Donnees du groupe
-	*/
+	/**
+	 * Donnees du groupe
+	 *
+	 */
 	public function get_group_data()
 	{
 		$sql = 'SELECT g.*, gu.gu_status
@@ -162,9 +264,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Affiche la liste des membres en fonction du resultat de la recherche
-	*/
+	/**
+	 * Affiche la liste des membres en fonction du resultat de la recherche
+	 *
+	 */
 	public function show_userlist()
 	{
 		Fsb::$tpl->set_file('forum/forum_userlist.html');
@@ -391,21 +494,22 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 	
-	/*
-	** Cree l'URL a passee pour les pages de la liste des membres
-	** -----
-	** $order ::		Ordre a passer dans l'url
-	** $direction ::	Sens du tri a passer dans l'url
-	** $module ::		Affichage a passer dans l'url
-	*/
+	/**
+	 * Cree l'URL a passee pour les pages de la liste des membres
+	 *
+	 * @param unknown_type $order Ordre a passer dans l'url
+	 * @param unknown_type $direction Sens du tri a passer dans l'url
+	 * @return string
+	 */
 	public function generate_url($order = '', $direction = '')
 	{
 		return (sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $this->id . '&amp;order=' . (($order) ? $order : $this->order) . '&amp;direction=' . (($direction) ? $direction : $this->direction) . '&amp;search_user=' . $this->search_user . '&amp;limit=' . $this->limit . '&amp;like=' . $this->like));
 	}
 
-	/*
-	** Affiche les noms des colones dynamiques
-	*/
+	/**
+	 * Affiche les noms des colones dynamiques
+	 *
+	 */
 	public function show_columns()
 	{
 		foreach ($this->columns AS $key => $value)
@@ -418,11 +522,11 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche les valeurs des colones dynamiques
-	** -----
-	** $row ::		Valeur pour le membre
-	*/
+	/**
+	 * Affiche les valeurs des colones dynamiques
+	 *
+	 * @param unknown_type $row Valeur pour le membre
+	 */
 	public function show_columns_value(&$row)
 	{
 		foreach ($this->columns AS $key => $value)
@@ -449,9 +553,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Suppression de membres du groupe
-	*/
+	/**
+	 * Suppression de membres du groupe
+	 *
+	 */
 	public function delete_users()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -495,9 +600,10 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('userlist_submit_delete', ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $this->id, 'forum_userlist');
 	}
 
-	/*
-	** Validation de membres du groupe
-	*/
+	/**
+	 * Validation de membres du groupe
+	 *
+	 */
 	public function valid_users()
 	{
 		$action = (array) Http::request('action', 'post');
@@ -542,12 +648,11 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message('userlist_submit_add', ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $this->id, 'forum_userlist');
 	}
 
-	/*
-	** Ajout d'un membre au groupe
-	** -----
-	** $admin ::		true si le membre est ajoute au groupe par un moderateur
-	**					du groupe
-	*/
+	/**
+	 * Ajout d'un membre au groupe
+	 *
+	 * @param bool $admin true si le membre est ajoute au groupe par un moderateur du groupe
+	 */
 	public function add_user($admin)
 	{
 		$add_login = ($admin) ? trim(Http::request('add_login', 'post')) : Fsb::$session->data['u_nickname'];

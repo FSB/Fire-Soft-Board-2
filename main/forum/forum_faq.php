@@ -8,30 +8,72 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche la FAQ du forum
-*/
+/**
+ * Affiche la FAQ du forum
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = true;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Arguments de la page
+	/**
+	 * Mot clé
+	 *
+	 * @var string
+	 */
 	public $keyword = '';
+	
+	/**
+	 * Zone
+	 *
+	 * @var string
+	 */
 	public $area = '';
+	
+	/**
+	 * Section
+	 *
+	 * @var string
+	 */
 	public $section = '';
 	
-	// Contient les sections trouvees lors d'une recherche
+	/**
+	 * Contient les sections trouvees lors d'une recherche
+	 *
+	 * @var array
+	 */
 	public $result = array();
 	
-	// Donnees de la FAQ
+	/**
+	 * Donnees de la FAQ
+	 *
+	 * @var array
+	 */
 	public $faq_data = array();
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{		
 		// Chargement des clefs pour la FAQ
@@ -112,9 +154,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->list_faq();
 	}
 	
-	/*
-	** Affiche la liste des sujets pour la FAQ, en fonction de la recherche et de la section
-	*/
+	/**
+	 * Affiche la liste des sujets pour la FAQ, en fonction de la recherche et de la section
+	 *
+	 */
 	public function list_faq()
 	{		
 		$result_exists = false;
@@ -136,9 +179,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Affiche la reponse
-	*/
+	/**
+	 * Affiche la reponse
+	 *
+	 */
 	public function show_answer()
 	{
 		$fsbcode = new Parser_fsbcode();
@@ -157,9 +201,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 	
-	/*
-	** Recherche dans la FAQ les mots clefs cherches
-	*/
+	/**
+	 * Recherche dans la FAQ les mots clefs cherches
+	 *
+	 */
 	public function search_keyword()
 	{
 		$this->result = array();

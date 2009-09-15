@@ -11,62 +11,205 @@
 /**
  * Affiche le formulaire permettant de creer des sujets, repondre a des messages, envoyer
  * des messages prives etc ...
+ *
  */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	//  Mode de la page
+	/**
+	 * Mode de la page
+	 *
+	 * @var string
+	 */
 	public $mode;
 
-	// ID passee a la page (message prive, message, sujet, forum)
+	/**
+	 * ID passee a la page (message prive, message, sujet, forum)
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	// ID de membre passee a la page (message prive)
+	/**
+	 * ID de membre passee a la page (message prive)
+	 *
+	 * @var int
+	 */
 	public $u_id;
+	
+	/**
+	 * ID du message à l'origine (message prive)
+	 *
+	 * @var int
+	 */
 	public $mp_parent = 0;
 
-	// Definit si on quote le message
+	/**
+	 * Definit si on quote le message
+	 *
+	 * @var bool
+	 */
 	public $quote;
 
-	// Donnees du formulaire envoyees a la page
-	public $post_login_to, $nickname, $title, $content, $description, $to_id = array(), $type, $poll_name, $poll_values, $poll_max_vote, $upload_comment;
+	/**
+	 * Login
+	 * 
+	 */
+	public $post_login_to;
+	
+	/**
+	 * Pseudo
+	 * 
+	 */
+	public $nickname;
+	
+	/**
+	 * Titre
+	 * 
+	 */
+	public $title;
+	
+	/**
+	 * Contenu
+	 * 
+	 */
+	public $content;
+	
+	/**
+	 * Description
+	 * 
+	 */
+	public $description;
+	
+	/**
+	 * Id
+	 * 
+	 */
+	public $to_id = array();
+	
+	/**
+	 * Type
+	 * 
+	 */
+	public $type;
+	
+	/**
+	 * Question vote
+	 * 
+	 */
+	public $poll_name;
+	
+	/**
+	 * Options vote
+	 * 
+	 */
+	public $poll_values;
+	
+	/**
+	 * Votes max
+	 * 
+	 */
+	public $poll_max_vote;
+	
+	/**
+	 * Texte upload
+	 * 
+	 */
+	public $upload_comment;
 
-	// Erreurs
+	/**
+	 * Erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 
-	// Donnees du MP en cas de reponse
+	/**
+	 * Donnees du MP en cas de reponse
+	 *
+	 * @var array
+	 */
 	public $mp_data = array();
 
-	// Donnees du forum / sujet / message
+	/**
+	 * Donnees du forum / sujet / message
+	 *
+	 * @var array
+	 */
 	public $data;
 
-	// Schema du sujet
+	/**
+	 * Schema du sujet
+	 *
+	 * @var string
+	 */
 	public $post_map;
 
-	// En mode preview
+	/**
+	 * En mode preview
+	 *
+	 * @var bool
+	 */
 	public $preview = false;
 
-	// Utilisation du code de confirmation visuelle
+	/**
+	 * Utilisation du code de confirmation visuelle
+	 *
+	 * @var bool
+	 */
 	public $use_captcha = false;
 
-	// true et le message devra etre approuve
+	/**
+	 * Le message devra etre approuve ?
+	 *
+	 * @var bool
+	 */
 	public $approve = IS_APPROVED;
 
-	// Texte uploade
+	/**
+	 * Texte uploade
+	 *
+	 * @var string
+	 */
 	public $onupload = '';
 
-	// <title>
+	/**
+	 * Titre de la page
+	 *
+	 * @var string
+	 */
 	public $tag_title = '';
 
 	/**
 	 * Constructeur
+	 *
 	 */
 	public function main()
 	{
@@ -134,9 +277,11 @@ class Fsb_frame_child extends Fsb_frame
 		$this->show_post_form();
 	}
 
-	/*
-	** Recupere des donnees sur le forum / sujet / message actuel
-	*/
+	/**
+	 * Recupere des donnees sur le forum / sujet / message actuel
+	 *
+	 * @return bool
+	 */
 	public function get_data()
 	{
 		switch ($this->mode)
@@ -364,9 +509,10 @@ class Fsb_frame_child extends Fsb_frame
 		return (true);
 	}
 	
-	/*
-	** Affiche le formulaire permettant de poster des messages
-	*/
+	/**
+	 * Affiche le formulaire permettant de poster des messages
+	 *
+	 */
 	public function show_post_form()
 	{		
 		Fsb::$tpl->set_file('forum/forum_post.html');
@@ -766,9 +912,11 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Revue des anciens messages du sujet
-	*/
+	/**
+	 * Revue des anciens messages du sujet
+	 *
+	 * @param int $post_id
+	 */
 	public function topic_review($post_id = null)
 	{
 		Fsb::$tpl->set_switch('topic_review');
@@ -812,13 +960,13 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Revue des precedentes reponses du sujet
-	** -----
-	** $mp_id ::		ID du message prive auquel on repond
-	** $mp_parent ::	Parent des messages
-	** $mp_time ::		Date du message auquel on repond
-	*/
+	/**
+	 * Revue des precedentes reponses du sujet
+	 *
+	 * @param int $mp_id ID du message prive auquel on repond
+	 * @param int $mp_parent Parent des messages
+	 * @param int $mp_time Date du message auquel on repond
+	 */
 	public function mp_review($mp_id, $mp_parent, $mp_time)
 	{
 		if ($mp_parent > 0)
@@ -867,9 +1015,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Genere la liste des types de sujets
-	*/
+	/**
+	 * Genere la liste des types de sujets
+	 *
+	 */
 	public function generate_post_type()
 	{
 		if (isset($this->data['f_id']))
@@ -889,9 +1038,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Verification des donnees du formulaire
-	*/
+	/**
+	 * Verification des donnees du formulaire
+	 *
+	 */
 	public function check_form()
 	{
 		// On recupere sous forme XML le message
@@ -1099,9 +1249,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Envoie les donnees
-	*/
+	/**
+	 * Envoie les donnees
+	 *
+	 */
 	public function send_data()
 	{
 		switch ($this->mode)
@@ -1214,9 +1365,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Recupere les donnees du message prive en cas de citation / reponse
-	*/
+	/**
+	 * Recupere les donnees du message prive en cas de citation / reponse
+	 *
+	 */
 	public function get_mp_data()
 	{
 		switch ($this->mode)
@@ -1298,9 +1450,10 @@ class Fsb_frame_child extends Fsb_frame
 		Display::header_mp($mp_box);
 	}
 
-	/*
-	** Upload un fichier sur le sevreur
-	*/
+	/**
+	 * Upload un fichier sur le serveur
+	 *
+	 */
 	public function upload_file()
 	{
 		// Upload du fichier
@@ -1331,9 +1484,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->onupload = $attach_code;
 	}
 
-	/*
-	** Mise a jour du membre, suivant s'il souhaite ou non utiliser un editeur WYSIWYG
-	*/
+	/**
+	 * Mise a jour du membre, suivant s'il souhaite ou non utiliser un editeur WYSIWYG
+	 *
+	 */
 	public function update_wysiwyg()
 	{
 		if (Fsb::$session->is_logged())
@@ -1345,11 +1499,11 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Surveillance automatiquement du sujet ?
-	** -----
-	** $topic_id ::		ID du sujet
-	*/
+	/**
+	 * Surveillance automatiquement du sujet ?
+	 *
+	 * @param int $topic_id ID du sujet
+	 */
 	public function auto_notification($topic_id)
 	{
 		if (Fsb::$session->data['u_activate_auto_notification'] & NOTIFICATION_AUTO)
@@ -1362,9 +1516,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche la liste des fichiers uploades
-	*/
+	/**
+	 * Affiche la liste des fichiers uploades
+	 *
+	 */
 	public function show_upload()
 	{
 		Fsb::$tpl->set_file('handler_upload.html');
@@ -1391,9 +1546,11 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Genere une liste des MAPS
-	*/
+	/**
+	 * Genere une liste des MAPS
+	 *
+	 * @return string
+	 */
 	public function list_maps()
 	{
 		$list = Html::make_list('post_map', $this->post_map, Map::get_list(), array(

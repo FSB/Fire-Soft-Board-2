@@ -8,29 +8,59 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page affichant le panneau de controle de l'utilisateur
-** Chaque module sera pioche dans le repertoire ~/main/user/
-*/
+/**
+ * Page affichant le panneau de controle de l'utilisateur
+ * Chaque module sera pioche dans le repertoire ~/main/user/
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Module sellectione pour la page
+	/**
+	 * Module sellectione pour la page
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Navigation
+	/**
+	 * Navigation
+	 *
+	 * @var array
+	 */
 	public $nav = array();
 
-	// Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
+	/**
+	 * Liste des modules par defaut du forum, uniquement afin de les placer dans un certain ordre
+	 *
+	 * @var array
+	 */
 	public $list = array('personal', 'activate', 'password', 'avatar', 'sig', 'contact', 'groups', 'upload', 'fsbcard', 'viewprofile');
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Le membre peut acceder a cette page ?

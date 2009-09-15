@@ -8,50 +8,114 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Page d'inscription au forum
-*/
+/**
+ * Page d'inscription au forum
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
-	// Module de la page
+	/**
+	 * Module de la page
+	 *
+	 * @var string
+	 */
 	public $module;
 
-	// Contient les donnees passees en formulaire
+	/**
+	 * Contient les donnees passees en formulaire
+	 *
+	 * @var array
+	 */
 	public $data = array();
 	
-	// Contient les champs des donnees a traiter
+	/**
+	 * Contient les champs des donnees a traiter
+	 *
+	 * @var array
+	 */
 	public $post_data = array();
 
-	// Contient les informations personelles
+	/**
+	 * Contient les informations personelles
+	 *
+	 * @var array
+	 */
 	public $fields = array();
+	
+	/**
+	 * Contient les informations personelles (insertion)
+	 *
+	 * @var array
+	 */
 	public $insert_fields = array();
 
-	// Contient la liste des erreurs
+	/**
+	 * Contient la liste des erreurs
+	 *
+	 * @var array
+	 */
 	public $errstr = array();
 	
-	// Mode de l'image de confirmation visuelle
+	/**
+	 * Mode de l'image de confirmation visuelle
+	 *
+	 * @var string
+	 */
 	public $img_mode = 'generate';
 
-	// Peut utiliser la confirmation visuelle
+	/**
+	 * Peut utiliser la confirmation visuelle
+	 *
+	 * @var bool
+	 */
 	public $use_visual_confirmation = false;
 
-	// Utilisation du chiffrage RSA ?
+	/**
+	 * Utilisation du chiffrage RSA ?
+	 *
+	 * @var bool
+	 */
 	public $use_rsa = false;
 	
-	// Délai max d'utilisation de l'ancienne clef RSA
+	/**
+	 * Délai max d'utilisation de l'ancienne clef RSA
+	 *
+	 * @var int
+	 */
 	public $rsa_old_key_ttl = 1800;
 
-	// Longueur max du pseudonyme
+	/**
+	 * Longueur max du pseudonyme
+	 *
+	 * @var int
+	 */
 	public $max_nickname_length = 20;
 	
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// Chiffrage RSA ?
@@ -120,9 +184,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Verifie le module d'enregistrement charge
-	*/
+	/**
+	 * Verifie le module d'enregistrement charge
+	 *
+	 */
 	public function check_register_module()
 	{
 		// Recuperation du module
@@ -148,10 +213,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 	
-	/*
-	** Ajoute dans le tableau $this->data les variables passees en formulaires, traitees et
-	** securisees.
-	*/
+	/**
+	 * Ajoute dans le tableau $this->data les variables passees en formulaires, traitees et securisees.
+	 *
+	 */
 	public function post_data()
 	{
 		$this->post_data = array(
@@ -202,9 +267,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 	
-	/*
-	** Affiche le formulaire d'enregistrement
-	*/
+	/**
+	 * Affiche le formulaire d'enregistrement
+	 *
+	 */
 	public function register_page()
 	{
 		Fsb::$tpl->set_file('forum/forum_register.html');
@@ -268,9 +334,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$tpl->set_switch('form');
 	}
 
-	/*
-	** Evalue la robustesse du mot de passe
-	*/
+	/**
+	 * Evalue la robustesse du mot de passe
+	 *
+	 */
 	public function test_password()
 	{
 		$password = new Password();
@@ -308,9 +375,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Genere un mot de passe aleatoirement
-	*/
+	/**
+	 * Genere un mot de passe aleatoirement
+	 *
+	 */
 	public function generate_password()
 	{
 		$random_password = Password::generate(10);
@@ -321,9 +389,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 	
-	/*
-	** Verifie les donnees envoyees par le formulaire
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire
+	 *
+	 */
 	public function check_form()
 	{		
 		$this->errstr = array();
@@ -434,10 +503,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, null, true);
 	}
 	
-	/*
-	** Ajoute l'utilisateur fraichement inscrit dans la base de donnee, et tout le tralala qui va
-	** avec :=)
-	*/
+	/**
+	 * Ajoute l'utilisateur fraichement inscrit dans la base de donnee, et tout le tralala qui va avec :=)
+	 *
+	 */
 	public function submit_user()
 	{
 		$last_id = $this->create_user();
@@ -446,9 +515,11 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message($message . return_to(Http::redirect_to(Http::request('redirect'), true), 'forum_index'));
 	}
 
-	/*
-	** Insertion d'utilisateur
-	*/
+	/**
+	 * Insertion d'utilisateur
+	 *
+	 * @return int
+	 */
 	public function create_user()
 	{
 		Fsb::$db->transaction('begin');
@@ -478,11 +549,12 @@ class Fsb_frame_child extends Fsb_frame
 		return ($last_id);
 	}
 
-	/*
-	** Envoie de l'Email d'inscription
-	** -----
-	** $u_id ::			ID du membre
-	*/
+	/**
+	 * Envoie de l'Email d'inscription
+	 *
+	 * @param int $u_id ID du membre
+	 * @return string
+	 */
 	public function send_mail($u_id)
 	{
 		$mail = new Notify_mail();
@@ -544,9 +616,10 @@ class Fsb_frame_child extends Fsb_frame
 		return ($message);
 	}
 
-	/*
-	** Formulaire d'import de profil
-	*/
+	/**
+	 * Formulaire d'import de profil
+	 *
+	 */
 	public function register_fsbcard()
 	{
 		Fsb::$tpl->set_file('forum/forum_register.html');
@@ -582,9 +655,10 @@ class Fsb_frame_child extends Fsb_frame
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id(), true);
 	}
 
-	/*
-	** Verifie les donnees envoyees par le formulaire d'import de FSBcard
-	*/
+	/**
+	 * Verifie les donnees envoyees par le formulaire d'import de FSBcard
+	 *
+	 */
 	public function check_fsbcard_form()
 	{		
 		$this->errstr = array();
@@ -615,9 +689,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->insert_fields = Profil_fields_forum::validate(PROFIL_FIELDS_PERSONAL, 'personal', $this->errstr, null, true);
 	}
 
-	/*
-	** Inscription via FSBcard
-	*/
+	/**
+	 * Inscription via FSBcard
+	 *
+	 */
 	public function import_user()
 	{
 		// Upload de la FSBcard
@@ -645,11 +720,12 @@ class Fsb_frame_child extends Fsb_frame
 		Display::message($message . return_to('index.' . PHPEXT, 'forum_index'));
 	}
 
-	/*
-	** Informations de connexion contenues dans la FSBcard
-	** -----
-	** $content ::	Contenu de la FSBcard
-	*/
+	/**
+	 * Informations de connexion contenues dans la FSBcard
+	 *
+	 * @param string $content Contenu de la FSBCard
+	 * @return bool
+	 */
 	public function read_fsbcard($content)
 	{
 		// Instance Fsbcard

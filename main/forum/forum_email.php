@@ -8,21 +8,44 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche le profil public d'un membre
-*/
+/**
+ * Affiche le profil public d'un membre
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
+	/**
+	 * ID du membre
+	 *
+	 * @var int
+	 */
 	public $id;
 
-	/*
-	** Constructeur
-	*/
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		$this->id = intval(Http::request('id'));
@@ -43,9 +66,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->form_email();
 	}
 
-	/*
-	** Donnees de l'utilisateur
-	*/
+	/**
+	 * Donnees de l'utilisateur
+	 *
+	 */
 	public function check_data()
 	{
 		// On verifie si l'utilisateur accepte bien les Emails
@@ -67,9 +91,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 	}
 
-	/*
-	** Affiche le formulaire d'envoie d'Email
-	*/
+	/**
+	 * Affiche le formulaire d'envoie d'Email
+	 *
+	 */
 	public function form_email()
 	{
 		Fsb::$tpl->set_file('forum/forum_email.html');
@@ -80,9 +105,10 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Envoie un Email
-	*/
+	/**
+	 * Envoie un Email
+	 *
+	 */
 	public function send_email()
 	{
 		$title =	trim(Http::request('title'));

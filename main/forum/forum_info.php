@@ -8,16 +8,37 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-/*
-** Affiche une liste d'informations sur le forum
-*/
+/**
+ * Affiche une liste d'informations sur le forum
+ *
+ */
 class Fsb_frame_child extends Fsb_frame
 {
-	// Parametres d'affichage de la page (barre de navigation, boite de stats)
+	/**
+	 * Affichage de la barre de navigation du header
+	 *
+	 * @var bool
+	 */
 	public $_show_page_header_nav = true;
+	
+	/**
+	 * Affichage de la barre de navigation du footer
+	 *
+	 * @var bool
+	 */
 	public $_show_page_footer_nav = false;
+	
+	/**
+	 * Affichage de la boite des stats
+	 *
+	 * @var bool
+	 */
 	public $_show_page_stats = false;
 
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function main()
 	{
 		// On recupere le module du panneau a afficher
@@ -51,16 +72,18 @@ class Fsb_frame_child extends Fsb_frame
 		));
 	}
 
-	/*
-	** Informations sur FSB (engagez vous qu'ils disaient :=))
-	*/
+	/**
+	 * Informations sur FSB (engagez vous qu'ils disaient :=))
+	 *
+	 */
 	public function show_info_fsb()
 	{
 	}
 
-	/*
-	** Liste des rangs sur le forum
-	*/
+	/**
+	 *  Liste des rangs sur le forum
+	 *
+	 */
 	public function show_info_rank()
 	{
 		$sql = 'SELECT *
@@ -79,9 +102,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Liste des themes sur le forum
-	*/
+	/**
+	 * Liste des themes sur le forum
+	 *
+	 */
 	public function show_info_tpl()
 	{
 		$fd = opendir(ROOT . 'tpl/');
@@ -102,9 +126,10 @@ class Fsb_frame_child extends Fsb_frame
 		closedir($fd);
 	}
 
-	/*
-	** Liste des MODS sur le forum
-	*/
+	/**
+	 * Liste des MODS sur le forum
+	 *
+	 */
 	public function show_info_mod()
 	{
 		$sql = 'SELECT *
@@ -125,9 +150,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Liste des administrateurs / moderateurs
-	*/
+	/**
+	 * Liste des administrateurs / moderateurs
+	 *
+	 */
 	public function show_info_admin()
 	{
 		$sql = 'SELECT u_id, u_nickname, u_color, u_auth
@@ -154,9 +180,10 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 	}
 
-	/*
-	** Liste des langues sur le forum
-	*/
+	/**
+	 * Liste des langues sur le forum
+	 *
+	 */
 	public function show_info_lang()
 	{
 		$fd = opendir(ROOT . 'lang/');
@@ -189,6 +216,5 @@ class Fsb_frame_child extends Fsb_frame
 		closedir($fd);
 	}
 }
-
 
 /* EOF */
