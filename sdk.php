@@ -116,7 +116,7 @@ if (!defined('FORUM'))
 	// Pas d'appel direct de la page, sauf dans le cadre d'applications internes
 	$sdkmode = Http::request('sdkmode', 'get');
 
-	if (strpos($_SERVER['PHP_SELF'], 'sdk.' . PHPEXT) && !in_array($sdkmode, array('captcha')))
+	if (basename($_SERVER['PHP_SELF']) == 'sdk.'.PHPEXT && !in_array($sdkmode, array('captcha')))
 	{
 		exit;
 	}
