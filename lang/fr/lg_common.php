@@ -232,6 +232,7 @@ return (array (
   'forum_total_topics' => '%d sujets',
   'forum_total_click' => 'Lien visité %d fois',
   'return_to_forum_index' => 'Cliquez <a href="%s">ici</a> pour retourner sur l\'index du forum',
+  'return_to_previous_page' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page précédente',
   'return_to_forum_profil' => 'Cliquez <a href="%s">ici</a> pour retourner sur votre profil',
   'return_to_forum_mp' => 'Cliquez <a href="%s">ici</a> pour retourner dans la boîte de réception',
   'return_to_forum_mp2' => 'Cliquez <a href="%s">ici</a> pour retourner dans la boîte d\'options',

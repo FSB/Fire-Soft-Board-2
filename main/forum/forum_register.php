@@ -512,7 +512,7 @@ class Fsb_frame_child extends Fsb_frame
 		$last_id = $this->create_user();
 		$message = $this->send_mail($last_id);
 
-		Display::message($message . return_to(Http::redirect_to(Http::request('redirect'), true), 'forum_index'));
+		Display::message($message . return_to(Http::redirect_to(Http::request('redirect'), true), 'previous_page'));
 	}
 
 	/**
