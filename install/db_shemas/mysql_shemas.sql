@@ -366,6 +366,7 @@ CREATE TABLE fsb2_process (
   process_last_timestamp int(11) NOT NULL,
   process_step_timestamp int(11) NOT NULL,
   process_function varchar(255) NOT NULL,
+  process_step_minimum int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY  (process_id)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

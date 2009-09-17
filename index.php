@@ -344,6 +344,12 @@ class Fsb_frame extends Fsb_model
 				$modo_have_message = ($modo_have_message) ? sprintf(Fsb::$session->lang('modo_have_abuse_aprove'), Fsb::$session->data['u_total_abuse'], Fsb::$session->data['u_total_unapproved']) : sprintf(Fsb::$session->lang('modo_have_aprove'), Fsb::$session->data['u_total_unapproved']);
 			}
 		}
+		
+		//Affichage du warning comme quoi le root support est activé
+		if(Fsb::$mods->is_active('root_support') && Fsb::$session->auth() >= ADMIN)
+		{
+			Fsb::$tpl->set_switch('root_support_active');
+		}
 
 		// Mise a jour heure d'ete / hiver ?
 		$dst = date('I');

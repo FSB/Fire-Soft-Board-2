@@ -131,7 +131,7 @@ class Cache_ftp extends Cache
 		$fd = opendir($this->path);
 		while ($file = readdir($fd))
 		{
-			if ($file{0} != '.' && filemtime($this->path . $file) < (CURRENT_TIME - $time))
+			if ($file{0} != '.' && $file != 'index.html' && filemtime($this->path . $file) < (CURRENT_TIME - $time))
 			{
 				@unlink($this->path . $file);
 			}

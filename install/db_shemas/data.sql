@@ -308,18 +308,18 @@ INSERT INTO fsb2_posts (p_id, f_id, t_id, p_text, p_time, p_nickname, u_id, u_ip
 <line name="description">Bienvenue sur votre forum FSB2. Vous pouvez supprimer ce message et commencer la creation de vos catégories et de vos forums.</line>
 </root>', 0, 'Admin', 2, '2130706433', 0, 0, 0, 'classic');
 
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (1, 0, 604800, 'prune_forums');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (2, 0, 43200, 'prune_sessions');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (3, 0, 2592000, 'prune_cache');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (4, 0, 604800, 'prune_config');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (5, 0, 2592000, 'prune_database');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (6, 0, 1209600, 'prune_pm');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (7, 0, 86400, 'check_fsb_version');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (8, 0, 604800, 'prune_topics_reads');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (9, 0, 1209600, 'prune_moved_topics');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (10, 0, 1209600, 'prune_bad_data');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (11, 0, 86400, 'prune_rsa_keys');
-INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function) VALUES (12, 0, 2592000, 'sync_forums');
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (1, 0, 604800, 'prune_forums', 4320);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (2, 0, 43200, 'prune_sessions', 4320);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (3, 0, 2592000, 'prune_cache', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (4, 0, 604800, 'prune_config', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (5, 0, 2592000, 'prune_database', 12960);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (6, 0, 1209600, 'prune_pm', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (7, 0, 86400, 'check_fsb_version', 21600);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (8, 0, 604800, 'prune_topics_reads', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (9, 0, 1209600, 'prune_moved_topics', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (10, 0, 1209600, 'prune_bad_data', 864);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (11, 0, 86400, 'prune_rsa_keys', 2592);
+INSERT INTO fsb2_process (process_id, process_last_timestamp, process_step_timestamp, process_function, process_step_minimum) VALUES (12, 0, 2592000, 'sync_forums', 12960);
 
 INSERT INTO fsb2_ranks (rank_id, rank_name, rank_img, rank_quota, rank_special, rank_color) VALUES (1, 'Administrateur', '', 0, 1, 'class="admin"');
 

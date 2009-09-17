@@ -11,11 +11,11 @@
 $GLOBALS['use_register_shutdown'] = false;
 
 /**
- * Supression des fichiers caches SQL datant de plus d'un mois
+ * Supression des fichiers caches SQL
  *
  */
 function prune_cache()
 {
-	Fsb::$db->cache->garbage_colector(ONE_MONTH);
+	Fsb::$db->cache->garbage_colector(0);
 }
 /* EOF */

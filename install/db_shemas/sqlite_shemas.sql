@@ -302,7 +302,8 @@ CREATE TABLE fsb2_process (
   process_id mediumint(9) auto_increment,
   process_last_timestamp int(11),
   process_step_timestamp int(11),
-  process_function varchar(255)
+  process_function varchar(255),
+  process_step_minimum int(11) default '0'
 );
 CREATE INDEX fsb2_process_process_id_index ON fsb2_process (process_id);
 CREATE TABLE fsb2_profil_fields (

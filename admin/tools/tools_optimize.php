@@ -275,7 +275,15 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// Mise a jour de la procedure
 			if (isset($process_launch[$row['process_id']]) || $row['process_step_timestamp'] != $process_step[$row['process_id']] * ONE_DAY)
 			{
-				$update_array['process_step_timestamp'] = $process_step[$row['process_id']] * ONE_DAY;
+				//On impose la valeur minimum si la valeur souhaitée est différente de 0 (0 = process jamais lancé, donc permis)
+				if($process_step[$row['process_id']] > 0 && ($process_step[$row['process_id']] * ONE_DAY) < $row['process_step_minimum'])
+				{
+					$update_array['process_step_timestamp'] = $row['process_step_minimum'];
+				}
+				else
+				{
+					$update_array['process_step_timestamp'] = $process_step[$row['process_id']] * ONE_DAY;
+				}
 				Fsb::$db->update('process', $update_array, 'WHERE process_id = ' . $row['process_id']);
 			}
 		}

@@ -353,6 +353,7 @@ process_id INT DEFAULT nextval('fsb2_process_seq'),
   process_last_timestamp INT4,
   process_step_timestamp INT4,
   process_function varchar(255),
+  process_step_minimum INT4 default '0',
   PRIMARY KEY (process_id)
 );
 DROP TABLE IF EXISTS fsb2_profil_fields;
