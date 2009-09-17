@@ -31,7 +31,8 @@ DROP TABLE IF EXISTS fsb2_cache;
 CREATE TABLE fsb2_cache (
   cache_hash varchar(255) NOT NULL,
   cache_type varchar(255) NOT NULL,
-  cache_content text NOT NULL,
+  cache_content text
+					 NOT NULL,
   cache_time INT4 NOT NULL,
   PRIMARY KEY (cache_hash)
 );
@@ -121,11 +122,11 @@ fsbcode_id INT DEFAULT nextval('fsb2_fsbcode_seq'),
   fsbcode_fct varchar(50),
   fsbcode_priority INT4,
   fsbcode_wysiwyg INT2,
-  fsbcode_activated INT2,
-  fsbcode_activated_sig INT2,
+  fsbcode_activated INT2 default '1',
+  fsbcode_activated_sig INT2 default '1',
+  fsbcode_menu INT2 default '1',
   fsbcode_inline INT2,
   fsbcode_img varchar(100),
-  fsbcode_javascript varchar(50),
   fsbcode_description varchar(255),
   fsbcode_list text,
   fsbcode_order INT4,
@@ -228,7 +229,7 @@ mp_id INT DEFAULT nextval('fsb2_mp_seq'),
   mp_from INT4 default '0',
   mp_to INT4 default '0',
   mp_title varchar(255) default '',
-  mp_content text NOT NULL,
+  mp_content text,
   mp_type INT2 default '0',
   mp_read INT2 default '0',
   mp_time INT4 default '0',
@@ -253,12 +254,12 @@ DROP TABLE IF EXISTS fsb2_notify;
 CREATE SEQUENCE fsb2_notify_seq;
 CREATE TABLE fsb2_notify (
 notify_id INT DEFAULT nextval('fsb2_notify_seq'),
-  notify_time INT4 ,
-  notify_method INT2 ,
-  notify_subject varchar(255) ,
-  notify_body text ,
+  notify_time INT4,
+  notify_method INT2,
+  notify_subject varchar(255),
+  notify_body text,
   notify_bcc text
-					 ,
+					,
   notify_try INT2,
   PRIMARY KEY (notify_id)
 );
@@ -327,6 +328,8 @@ p_id INT DEFAULT nextval('fsb2_posts_seq'),
 CREATE INDEX fsb2_posts_f_id_index ON fsb2_posts (f_id);
 CREATE INDEX fsb2_posts_t_id_index ON fsb2_posts (t_id);
 CREATE INDEX fsb2_posts_u_id_index ON fsb2_posts (u_id);
+CREATE INDEX fsb2_posts_f_per_user_index ON fsb2_posts (u_id, f_id);
+CREATE INDEX fsb2_posts_t_per_user_index ON fsb2_posts (u_id, f_id, t_id);
 DROP TABLE IF EXISTS fsb2_posts_abuse;
 CREATE SEQUENCE fsb2_posts_abuse_seq;
 CREATE TABLE fsb2_posts_abuse (
@@ -353,7 +356,7 @@ process_id INT DEFAULT nextval('fsb2_process_seq'),
   process_last_timestamp INT4,
   process_step_timestamp INT4,
   process_function varchar(255),
-  process_step_minimum INT4 default '0',
+  process_step_minimum INT4 DEFAULT '0',
   PRIMARY KEY (process_id)
 );
 DROP TABLE IF EXISTS fsb2_profil_fields;
@@ -446,8 +449,8 @@ DROP TABLE IF EXISTS fsb2_sub_procedure;
 CREATE SEQUENCE fsb2_sub_procedure_seq;
 CREATE TABLE fsb2_sub_procedure (
 procedure_id INT DEFAULT nextval('fsb2_sub_procedure_seq'),
-  procedure_name varchar(255) ,
-  procedure_source text ,
+  procedure_name varchar(255),
+  procedure_source text,
   procedure_auth INT2 default '2',
   PRIMARY KEY (procedure_id) 
 );
@@ -606,3 +609,4 @@ warn_id INT DEFAULT nextval('fsb2_warn_seq'),
 );
 CREATE INDEX fsb2_warn_u_id_index ON fsb2_warn (u_id);
 CREATE INDEX fsb2_warn_warn_time_index ON fsb2_warn (warn_time);
+

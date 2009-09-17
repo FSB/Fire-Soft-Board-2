@@ -435,7 +435,8 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_shemas.sql'));
 	foreach ($queries AS $query)
 	{
-		$query = preg_replace('#fsb2_#', $sql_prefix, $query, 1);
+		$query = preg_replace('#fsb2_#', $sql_prefix, $query);
+		printr($query);
 		Fsb::$db->query($query);
 	}
 	unset($queries);
@@ -455,7 +456,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 		$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_end.sql'));
 		foreach ($queries AS $query)
 		{
-			$query = preg_replace('#fsb2_#', $sql_prefix, $query, 1);
+			$query = preg_replace('#fsb2_#', $sql_prefix, $query);
 			Fsb::$db->query($query);
 		}
 		unset($queries);

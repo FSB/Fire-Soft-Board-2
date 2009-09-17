@@ -5,7 +5,7 @@ CREATE TABLE fsb2_auths (
 );
 CREATE INDEX fsb2_auths_auth_name_index ON fsb2_auths (auth_name);
 CREATE TABLE fsb2_ban (
-  ban_id INTEGER PRIMARY KEY NOT NULL,
+  ban_id INTEGER PRIMARY KEY NOT null,
   ban_type varchar(255) default '',
   ban_content varchar(255) default '',
   ban_length int(11) default '0',
@@ -30,7 +30,7 @@ CREATE TABLE fsb2_cache (
 CREATE INDEX fsb2_cache_cache_hash_index ON fsb2_cache (cache_hash);
 CREATE INDEX fsb2_cache_cache_type_index ON fsb2_cache (cache_type);
 CREATE TABLE fsb2_calendar (
-  c_id INTEGER PRIMARY KEY NOT NULL,
+  c_id INTEGER PRIMARY KEY NOT null,
   c_begin int(11),
   c_end int(11),
   u_id int(11),
@@ -106,11 +106,11 @@ CREATE TABLE fsb2_fsbcode (
   fsbcode_fct varchar(50),
   fsbcode_priority int(11),
   fsbcode_wysiwyg tinyint(4),
-  fsbcode_activated tinyint(4),
-  fsbcode_activated_sig tinyint(4),
+  fsbcode_activated tinyint(4) default '1',
+  fsbcode_activated_sig tinyint(4) default '1',
+  fsbcode_menu tinyint(4) default '1',
   fsbcode_inline tinyint(4),
   fsbcode_img varchar(100),
-  fsbcode_javascript varchar(50),
   fsbcode_description varchar(255),
   fsbcode_list text,
   fsbcode_order int(11)
@@ -118,7 +118,7 @@ CREATE TABLE fsb2_fsbcode (
 CREATE INDEX fsb2_fsbcode_fsbcode_id_index ON fsb2_fsbcode (fsbcode_id);
 CREATE INDEX fsb2_fsbcode_fsbcode_tag_index ON fsb2_fsbcode (fsbcode_tag);
 CREATE TABLE fsb2_groups (
-  g_id INTEGER PRIMARY KEY NOT NULL,
+  g_id INTEGER PRIMARY KEY NOT null,
   g_name varchar(255) default '',
   g_desc varchar(255) default '',
   g_type tinyint(4) default '0',
@@ -162,7 +162,7 @@ CREATE TABLE fsb2_langs (
 CREATE INDEX fsb2_langs_lang_name_index ON fsb2_langs (lang_name);
 CREATE INDEX fsb2_langs_lang_key_index ON fsb2_langs (lang_key);
 CREATE TABLE fsb2_logs (
-  log_id INTEGER PRIMARY KEY NOT NULL,
+  log_id INTEGER PRIMARY KEY NOT null,
   log_type tinyint(4) default '0',
   log_time int(11) default '0',
   log_key varchar(255) default '',
@@ -198,11 +198,11 @@ CREATE TABLE fsb2_mods (
 );
 CREATE INDEX fsb2_mods_mod_type_index ON fsb2_mods (mod_type);
 CREATE TABLE fsb2_mp (
-  mp_id INTEGER PRIMARY KEY NOT NULL,
+  mp_id INTEGER PRIMARY KEY NOT null,
   mp_from int(11) default '0',
   mp_to int(11) default '0',
   mp_title varchar(255) default '',
-  mp_content text default '',
+  mp_content text,
   mp_type tinyint(4) default '0',
   mp_read tinyint(4) default '0',
   mp_time int(11) default '0',
@@ -213,19 +213,19 @@ CREATE TABLE fsb2_mp (
 CREATE INDEX fsb2_mp_mp_from_index ON fsb2_mp (mp_from);
 CREATE INDEX fsb2_mp_mp_to_index ON fsb2_mp (mp_to);
 CREATE TABLE fsb2_mp_blacklist (
-  blacklist_id INTEGER PRIMARY KEY NOT NULL,
+  blacklist_id INTEGER PRIMARY KEY NOT null,
   blacklist_from_id int(11) default '0',
   blacklist_to_id int(11) default '0'
 );
 CREATE INDEX fsb2_mp_blacklist_blacklist_to_id_index ON fsb2_mp_blacklist (blacklist_to_id);
 CREATE INDEX fsb2_mp_blacklist_blacklist_from_id_index ON fsb2_mp_blacklist (blacklist_from_id);
 CREATE TABLE fsb2_notify (
-  notify_id INTEGER PRIMARY KEY NOT NULL,
-  notify_time int(11) ,
-  notify_method tinyint(4) ,
-  notify_subject varchar(255) ,
-  notify_body text ,
-  notify_bcc longtext ,
+  notify_id INTEGER PRIMARY KEY NOT null,
+  notify_time int(11),
+  notify_method tinyint(4),
+  notify_subject varchar(255),
+  notify_body text,
+  notify_bcc longtext,
   notify_try tinyint(4)
 );
 CREATE INDEX fsb2_notify_notify_time_index ON fsb2_notify (notify_time);
@@ -237,7 +237,7 @@ CREATE TABLE fsb2_poll (
 );
 CREATE INDEX fsb2_poll_t_id_index ON fsb2_poll (t_id);
 CREATE TABLE fsb2_poll_options (
-  poll_opt_id INTEGER PRIMARY KEY NOT NULL,
+  poll_opt_id INTEGER PRIMARY KEY NOT null,
   t_id int(11) default '0',
   poll_opt_name varchar(255) default '',
   poll_opt_total int(11) default '0'
@@ -265,7 +265,7 @@ CREATE TABLE fsb2_portail_module (
 );
 CREATE INDEX fsb2_portail_module_pm_order_index ON fsb2_portail_module (pm_order);
 CREATE TABLE fsb2_posts (
-  p_id INTEGER PRIMARY KEY NOT NULL,
+  p_id INTEGER PRIMARY KEY NOT null,
   f_id mediumint(9) default '0',
   t_id int(11) default '0',
   p_text text,
@@ -282,8 +282,13 @@ CREATE TABLE fsb2_posts (
 CREATE INDEX fsb2_posts_f_id_index ON fsb2_posts (f_id);
 CREATE INDEX fsb2_posts_t_id_index ON fsb2_posts (t_id);
 CREATE INDEX fsb2_posts_u_id_index ON fsb2_posts (u_id);
+CREATE INDEX fsb2_posts_u_id_index ON fsb2_posts (u_id);
+CREATE INDEX fsb2_posts_f_id_index ON fsb2_posts (f_id);
+CREATE INDEX fsb2_posts_u_id_index ON fsb2_posts (u_id);
+CREATE INDEX fsb2_posts_f_id_index ON fsb2_posts (f_id);
+CREATE INDEX fsb2_posts_t_id_index ON fsb2_posts (t_id);
 CREATE TABLE fsb2_posts_abuse (
-  pa_id INTEGER PRIMARY KEY NOT NULL,
+  pa_id INTEGER PRIMARY KEY NOT null,
   p_id int(11) default '0',
   t_id int(11) default '0',
   u_id int(11) default '0',
@@ -303,7 +308,7 @@ CREATE TABLE fsb2_process (
   process_last_timestamp int(11),
   process_step_timestamp int(11),
   process_function varchar(255),
-  process_step_minimum int(11) default '0'
+  process_step_minimum int(11) DEFAULT '0'
 );
 CREATE INDEX fsb2_process_process_id_index ON fsb2_process (process_id);
 CREATE TABLE fsb2_profil_fields (
@@ -341,7 +346,7 @@ CREATE TABLE fsb2_search_match (
 CREATE INDEX fsb2_search_match_word_id_index ON fsb2_search_match (word_id);
 CREATE INDEX fsb2_search_match_p_id_index ON fsb2_search_match (p_id);
 CREATE TABLE fsb2_search_word (
-  word_id INTEGER PRIMARY KEY NOT NULL,
+  word_id INTEGER PRIMARY KEY NOT null,
   word_content varchar(40) default ''
 );
 CREATE TABLE fsb2_sessions (
@@ -380,13 +385,13 @@ CREATE INDEX fsb2_smilies_cat_cat_id_index ON fsb2_smilies_cat (cat_id);
 CREATE INDEX fsb2_smilies_cat_cat_order_index ON fsb2_smilies_cat (cat_order);
 CREATE TABLE fsb2_sub_procedure (
   procedure_id mediumint(9) auto_increment,
-  procedure_name varchar(255) ,
-  procedure_source text ,
+  procedure_name varchar(255),
+  procedure_source text,
   procedure_auth tinyint(4) default '2',
   PRIMARY KEY (procedure_id) 
 );
 CREATE TABLE fsb2_topics (
-  t_id INTEGER PRIMARY KEY NOT NULL,
+  t_id INTEGER PRIMARY KEY NOT null,
   f_id mediumint(9) default '0',
   u_id int(11) default '0',
   t_title varchar(120) default '',
@@ -425,7 +430,7 @@ CREATE TABLE fsb2_topics_read (
 CREATE INDEX fsb2_topics_read_u_id_index ON fsb2_topics_read (u_id);
 CREATE INDEX fsb2_topics_read_t_id_index ON fsb2_topics_read (t_id);
 CREATE TABLE fsb2_upload (
-  upload_id INTEGER PRIMARY KEY NOT NULL,
+  upload_id INTEGER PRIMARY KEY NOT null,
   u_id int(11) default '0',
   upload_filename varchar(255) default '',
   upload_realname varchar(255) default '',
@@ -437,7 +442,7 @@ CREATE TABLE fsb2_upload (
 );
 CREATE INDEX fsb2_upload_u_id_index ON fsb2_upload (u_id);
 CREATE TABLE fsb2_users (
-  u_id INTEGER PRIMARY KEY NOT NULL,
+  u_id INTEGER PRIMARY KEY NOT null,
   u_auth tinyint(4) default '0',
   u_nickname varchar(40) default '',
   u_email varchar(255) default '',
@@ -494,7 +499,7 @@ CREATE TABLE fsb2_users (
 CREATE INDEX fsb2_users_u_nickname_index ON fsb2_users (u_nickname);
 CREATE INDEX fsb2_users_u_birthday_index ON fsb2_users (u_birthday);
 CREATE TABLE fsb2_users_password (
-  u_id INTEGER PRIMARY KEY NOT NULL,
+  u_id INTEGER PRIMARY KEY NOT null,
   u_login varchar(255) default '',
   u_password varchar(255) default '',
   u_autologin_key varchar(40) default '',
@@ -511,7 +516,7 @@ CREATE TABLE fsb2_users_personal (
 );
 CREATE INDEX fsb2_users_personal_u_id_index ON fsb2_users_personal (u_id);
 CREATE TABLE fsb2_warn (
-  warn_id INTEGER PRIMARY KEY NOT NULL,
+  warn_id INTEGER PRIMARY KEY NOT null,
   u_id int(11),
   modo_id int(11),
   warn_type tinyint(4),
