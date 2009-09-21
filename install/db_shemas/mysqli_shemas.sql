@@ -381,7 +381,7 @@ CREATE TABLE fsb2_profil_fields (
   pf_groups text NOT NULL,
   pf_topic tinyint(4) NOT NULL default '0',
   pf_register tinyint(4) NOT NULL,
-  pf_maxlength smallint(5) NOT NULL,
+  pf_maxlength smallint(5) unsigned NOT NULL,
   pf_sizelist tinyint(4) NOT NULL,
   pf_list text NOT NULL,
   pf_output varchar(255) NOT NULL default '',

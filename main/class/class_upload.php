@@ -164,7 +164,7 @@ class Upload extends Fsb_model
 			{
 				case UPLOAD_ERR_INI_SIZE :
 					$ini_size = ini_get_bytes(ini_get('upload_max_filesize'));
-					Display::message(Display::message(sprintf(Fsb::$session->lang('upload_err_ini_size'), convert_size($ini_size))));
+					Display::message(sprintf(Fsb::$session->lang('upload_err_ini_size'), convert_size($ini_size)));
 				break;
 				
 				case UPLOAD_ERR_FORM_SIZE :

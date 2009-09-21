@@ -56,7 +56,7 @@ return (array (
   'register_nickname_exists' => 'Ce pseudonyme est déjà pris',
   'register_email_exists' => 'Cette adresse email existe déjà',
   'register_ban_login' => 'Ce login est banni, vous ne pouvez l\'utiliser',
-  'register_ban_email' => 'Cette adresse email est bannie, vous ne pouvez l\'utiliser',
+  'register_ban_mail' => 'Cette adresse email est bannie, vous ne pouvez l\'utiliser',
   'register_bad_visual_code' => 'Le code de confirmation visuelle entré est mauvais, il vous reste %s essais',
   'register_too_much_try' => 'Vous ne pouvez pas vous inscrire car vous avez dépassé le nombre d\'essais autorisé pour l\'inscription (5)',
   'register_ajax_email_invalid' => 'Email invalide',
