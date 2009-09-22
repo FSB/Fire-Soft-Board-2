@@ -25,7 +25,7 @@ class Dbal_mysqli extends Dbal
 	public function __construct($server, $login, $pass, $db, $port = null, $use_cache = true)
 	{
 		$this->use_cache = $use_cache;
-		$this->mysqli = new mysqli($server, $login, $pass, $db, $port);
+		$this->mysqli = @(new mysqli($server, $login, $pass, $db, $port));
 		$port = (!trim($port)) ? null : $port;
 
 		if (mysqli_connect_errno())
@@ -195,7 +195,7 @@ class Dbal_mysqli extends Dbal
 	 */
 	public function sql_error()
 	{
-		return ($this->mysqli->error);
+		return $this->id ? ($this->mysqli->error) : mysqli_connect_error();
 	}
 
 	/**
