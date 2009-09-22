@@ -18,6 +18,7 @@ function ajax_check_email()
 		method: 'post',
 		onComplete: function(txt, xml)
 		{
+			html = '';
 			switch (txt)
 			{
 				case 'invalid' :
