@@ -981,7 +981,7 @@ class Fsb_frame_child extends Fsb_frame
 		$parser = new Parser();
 
 		// On selectionne les anciens messages
-		$sql = 'SELECT mp.*, u.u_id, u.u_nickname, u.u_color, u.u_auth
+		$sql = 'SELECT mp.*, u.u_id, u.u_nickname, u.u_color, u.u_auth, u.u_avatar, u.u_avatar_method, u.u_activate_avatar
 				FROM ' . SQL_PREFIX . 'mp mp
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = mp.mp_from
@@ -1010,6 +1010,8 @@ class Fsb_frame_child extends Fsb_frame
 				'NICKNAME' =>		Html::nickname($row['u_nickname'], $row['u_id'], $row['u_color']),
 				'DATE' =>			Fsb::$session->print_date($row['mp_time']),
 				'CONTENT' =>		$parser->mapped_message($row['mp_content'], 'classic', $parser_info),
+				'USER_AVATAR' =>	sprintf(Fsb::$session->lang('user_avatar'), htmlspecialchars($row['u_nickname'])),
+				'U_AVATAR' =>		User::get_avatar($row['u_avatar'], $row['u_avatar_method'], $row['u_activate_avatar']),
 			));
 		}
 		Fsb::$db->free($result);
