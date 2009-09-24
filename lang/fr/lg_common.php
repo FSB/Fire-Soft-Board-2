@@ -321,7 +321,7 @@ return (array (
   'fsbcode_strike' => 'Barrer le texte: [strike]mon texte[/strike]',
   'fsbcode_img' => 'Insérer une image à partir d\'une URL: [img]http://url_de_mon_image[/img]',
   'fsbcode_url' => 'Insérer un lien hypertexte: [url]http://mon_url[/url] ou bien [url=http://mon_url]mon site web[/url]',
-  'fsbcode_mail' => 'Insérer un lien vers une adresse email: [mail]mail@dommaine.com[/mail] ou bien [url=mail@dommaine.com]contactez-moi[/url]',
+  'fsbcode_mail' => 'Insérer un lien vers une adresse email: [mail]mail@domaine.com[/mail] ou bien [url=mail@domaine.com]contactez-moi[/url]',
   'fsbcode_quote' => 'Citer le texte: [quote]mon texte[/quote]',
   'fsbcode_list' => 'Insérer une liste d\'éléments: [list][*]élément 1[*]élément 2 ...[/list]',
   'fsbcode_list2' => 'Insérer une liste numérotée d\'éléments: [list=1][*]élément 1[*]élément 2 ...[/list]',
