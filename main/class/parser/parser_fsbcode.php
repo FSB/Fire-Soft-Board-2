@@ -202,7 +202,7 @@ class Parser_fsbcode extends Fsb_model
 	 */
 	private function generate_quote($m)
 	{
-		$arg = $m[2];
+		$arg = str_replace('&amp;#93;', '&#93;', $m[2]);
 		$content = $m[3];
 
 		// Pour l'editeur WYSIWYG, on parse l'affichage differement

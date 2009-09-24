@@ -479,6 +479,21 @@ var FSB_editor_text = FSB_editor.extend(
 
 				if (url != null)
 				{
+					// On inhibe le caractere ] de l'url
+					var escaped_url = '';
+					for (var i = 0; i < url.length; i++)
+					{
+						if (url.charAt(i) == ']')
+						{
+							escaped_url += '%5D';
+						}
+						else
+						{
+							escaped_url += url.charAt(i);
+						}
+					}
+					url = escaped_url;
+					
 					if (str == '')
 					{
 						str = prompt('Donnez un nom au lien :', '');
