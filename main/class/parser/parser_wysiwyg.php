@@ -128,7 +128,7 @@ class Parser_wysiwyg extends Fsb_model
 							$tokens[3][$i] = preg_replace('#size=([0-9]+?)#i', '', $tokens[3][$i][0]);
 						}
 
-						preg_match_all('#\s([a-zA-Z_]+?)="([^"]*?)"#', $tokens[3][$i][0], $m);
+						preg_match_all('#\s([a-zA-Z_]+?)=\\\"([^"]*?)\\\"#', $tokens[3][$i][0], $m);
 						$count_attr = count($m[0]);
 						for ($j = 0; $j < $count_attr; $j++)
 						{
