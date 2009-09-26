@@ -436,7 +436,6 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query);
-		printr($query);
 		Fsb::$db->query($query);
 	}
 	unset($queries);
