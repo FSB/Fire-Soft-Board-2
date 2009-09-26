@@ -57,7 +57,7 @@ var ajax_is_in_edition_mode = new Array;
 var tabindex = 1;
 function edit_post_dynamic(id, post_id, is_first_post)
 {
-	// Si on �tait deja� en mode d'edition on annule
+	// Si on etait deja en mode d'edition on annule
 	if (ajax_is_in_edition_mode[id])
 	{
 		// cancel_post_dynamic(id, post_id);
@@ -84,7 +84,7 @@ function edit_post_dynamic(id, post_id, is_first_post)
 				html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post" onsubmit="advanced_post_dynamic(\'' + id + '\', ' + post_id + ', ' + is_first_post + ')">';
 				if (is_first_post)
 				{
-					html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" value="' + htmlspecialchars(title, true) + '" /><br /><br />';
+					html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" maxlength="60" value="' + htmlspecialchars(title, true) + '" /><br /><br />';
 				}
 	
 				html += '<textarea style="width: 99%" rows="15" name="" id="' + id + '_ajax" tabindex="' + tabindex + '">' + content + '</textarea><p style="text-align: center">';

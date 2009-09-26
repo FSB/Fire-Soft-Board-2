@@ -227,7 +227,7 @@ function ajax_submit_post($id)
 	$content = Map::build_map_content('classic', false);
 
 	// Titre du sujet
-	$post_title = str_replace('&#43;', '+', Http::request('t_title', 'post'));
+	$post_title = Send::truncate_title(str_replace('&#43;', '+', Http::request('t_title', 'post')));
 
 	// Soumission du message
 	Send::edit_post($id, $content, Fsb::$session->id(), array(
