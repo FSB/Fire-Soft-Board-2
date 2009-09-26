@@ -359,7 +359,9 @@ class Fsb_frame_child extends Fsb_frame
 					if ($row && ($this->data['t_map'] == 'classic' || $row['p_id'] != $this->data['t_first_p_id']))
 					{
 						$this->content = $row['p_text'];
-						$this->data['_quote_map'] = '[quote=' . htmlspecialchars($row['p_nickname']) . ',t=' . $row['p_time'] . ',id=' . $row['p_id'] . ']%s[/quote]';
+						
+						$nickname = str_replace(']', '&#93;', $row['p_nickname']);
+						$this->data['_quote_map'] = '[quote=' .  htmlspecialchars($nickname) . ',t=' . $row['p_time'] . ',id=' . $row['p_id'] . ']%s[/quote]';
 					}
 					else
 					{
