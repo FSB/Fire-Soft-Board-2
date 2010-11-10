@@ -125,7 +125,7 @@ class Map extends Fsb_model
 				case 'textarea' :
 					$block['ROWS'] = (Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_rows', 'post')) : (($option->childExists('rows')) ? $option->rows[0]->getData() : 10);
 					$block['COLS'] = (Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) ? intval(Http::request('map_textarea_post_map_' . $name . '_cols', 'post')) : (($option->childExists('cols')) ? $option->cols[0]->getData() : 60);
-					$block['USE_WYSIWYG'] = (Fsb::$session->data['u_activate_wysiwyg']) ? true : false;
+					$block['USE_WYSIWYG'] = (Fsb::$session->data['u_activate_wysiwyg'] && Fsb::$mods->is_active('wysiwyg')) ? true : false;
 					$block['ONUPLOAD'] = ($onupload_set == $name) ? true : false;
 					$block['ONUPLOAD_APPEND'] = ($onupload_append == 'true') ? true : false;
 
