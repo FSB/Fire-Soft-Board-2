@@ -437,7 +437,7 @@ var FSB_editor_text = FSB_editor.extend(
 		var close = type;
 
 		// Gestion des commandes du type align=center
-		var reg = new RegExp('^([a-z0-9_]+)=(.*)$', '');
+		var reg = new RegExp('^([a-zA-Z0-9_]+)=(.*)$', '');
 		if (reg.test(type))
 		{
 			var m = reg.exec(type);
