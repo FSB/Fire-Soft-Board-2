@@ -32,8 +32,7 @@ class Http extends Fsb_model
 		// On stripslashes() toutes les variables GPC pour la compatibilite DBAL
 		$gpc = array('_GET', '_POST', '_COOKIE');
 		$keep_globals = array('_GET', '_POST', '_COOKIE', '_REQUEST', 'GLOBALS', '_SERVER', '_COOKIE', '_ENV', 'debug');
-		$magic_quoted = array('_GET', '_POST', '_COOKIE', '_REQUEST');
-		$magic_quote = (function_exists('get_magic_quote_gpc'))?(get_magic_quotes_gpc() || get_magic_quotes_runtime()):false;
+		$magic_quote = (function_exists('get_magic_quotes_gpc'))?(get_magic_quotes_gpc() || get_magic_quotes_runtime()):false;
 		$register_globals = ini_get('register_globals');
 
 		if ($register_globals || $magic_quote)
@@ -55,7 +54,7 @@ class Http extends Fsb_model
 
 		if ($magic_quote)
 		{
-			foreach ($magic_quoted AS $value)
+			foreach ($gpc AS $value)
 			{
 				$GLOBALS[$value] = array_map_recursive('stripslashes', $GLOBALS[$value]);
 			}
