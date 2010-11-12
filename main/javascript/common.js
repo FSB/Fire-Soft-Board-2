@@ -25,12 +25,18 @@ function check_boxes(form_name, element_name, is_checked)
 	{
 		for (var i = 0; i < count; i++)
 		{
-			chkboxes[i].checked = is_checked;
+			if (!chkboxes[i].disabled)
+			{
+				chkboxes[i].checked = is_checked;
+			}
 		}
 	}
 	else
 	{
-		chkboxes.checked = is_checked;
+		if (!chkboxes.disabled)
+		{
+			chkboxes.checked = is_checked;
+		}
 	}
 	return true;
 }
