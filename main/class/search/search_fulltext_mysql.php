@@ -48,7 +48,14 @@ class Search_fulltext_mysql extends Search
 		{
 			$select = new Sql_select();
 			$select->join_table('FROM', 'posts', 'p_id');
-			$select->where('f_id IN (' . implode(', ', $forum_idx) . ')');
+			if (!$forum_idx)
+			{
+				$select->where('0 = 1');
+			}
+			else
+			{
+				$select->where('f_id IN (' . implode(', ', $forum_idx) . ')');
+			}
 
 			// Recherche de mots clefs
 			if ($keywords_array)
