@@ -449,11 +449,24 @@ class Fsb_frame_child extends Fsb_frame
 				$topic_img = (($is_read) ? '' : 'new_') . 'announce';
 			}
 
+			// Si l'auteur du sujet a ete supprime
+			$topic_author = $row['f_u_nickname'];
+			
+			if(!$topic_author) 
+			{
+				$sql2 = 'SELECT p_nickname
+						 FROM ' . SQL_PREFIX . 'posts 
+						 WHERE p_id = ' . $row['t_first_p_id'];
+				$result2 = Fsb::$db->query($sql2);
+				$row2 = Fsb::$db->row($result2);
+				$topic_author = $row2['p_nickname'];
+			}
+			
 			Fsb::$tpl->set_blocks('topic.t', array(
 				'ID' =>					$row['t_id'],
 				'NAME' =>				Parser::title($row['t_title']),
 				'EXTRA_NAME' =>			(($row['t_trace'] == $this->id) ? '[' . Fsb::$session->lang('moved') . ']' : '') . (($row['t_poll'] == TOPIC_POLL) ? '[' . Fsb::$session->lang('poll') . ']' : ''),
-				'FIRST_LOGIN' =>		Html::nickname($row['f_u_nickname'], $row['f_u_id'], $row['f_u_color']),
+				'FIRST_LOGIN' =>		Html::nickname($topic_author, $row['f_u_id'], $row['f_u_color']),
 				'FIRST_TIME' =>			Fsb::$session->print_date($row['t_time']),
 				'LAST_LOGIN' =>			Html::nickname($row['t_last_p_nickname'], $row['t_last_u_id'], $row['u_color']),
 				'IS_READ' =>			$is_read,
