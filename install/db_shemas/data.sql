@@ -152,7 +152,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'use_smtp', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'smtp_host', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'smtp_username', 'put_text', 'array(''size'' => 35)', '');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'smtp_password', 'put_text', 'array(''size'' => 35)', '');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'smtp_password', 'put_text', 'array(''size'' => 35, ''type'' => ''password'')', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'mail', 'forum_sig', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_default', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'ftp', 'ftp_host', 'put_text', 'array(''size'' => 35)', '');
