@@ -501,11 +501,11 @@ class User extends Fsb_model
 			switch ($sexe)
 			{
 				case SEXE_MALE :
-					$return = '<img src="' . ROOT . 'images/man.gif" alt="' . Fsb::$session->lang('sexe_male') . '" title="' . Fsb::$session->lang('sexe_male') . '" />';
+					$return = '<img src="' . ROOT . 'tpl/'.Fsb::$session->data['u_tpl'].'/img/man.gif" alt="' . Fsb::$session->lang('sexe_male') . '" title="' . Fsb::$session->lang('sexe_male') . '" />';
 				break;
 
 				case SEXE_FEMALE :
-					$return = '<img src="' . ROOT . 'images/woman.gif" alt="' . Fsb::$session->lang('sexe_female') . '" title="' . Fsb::$session->lang('sexe_female') . '" />';
+					$return = '<img src="' . ROOT . 'tpl/'.Fsb::$session->data['u_tpl'].'/img/woman.gif" alt="' . Fsb::$session->lang('sexe_female') . '" title="' . Fsb::$session->lang('sexe_female') . '" />';
 				break;
 			}
 		}
