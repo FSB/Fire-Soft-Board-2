@@ -323,7 +323,7 @@ function ajax_waiter_open()
 	}
 	$('ajax_waiter').style.top = scroll_y + 'px';
 	$('ajax_waiter').style.left = '0px';
-	$('ajax_waiter').innerHTML = '<img src="images/ajax-loader.gif" />';
+	$('ajax_waiter').innerHTML = '<img src="'+FSB_TPL+'img/ajax-loader.gif" />';
 	$('ajax_waiter').style.display = 'block';
 }
 
