@@ -150,7 +150,7 @@ return (array (
   'modo_index_warn_more' => 'Ajout d\'un avertissement à: <i>%s</i>.',
   'modo_index_warn_less' => 'Suppression d\'un avertissement à: <i>%s</i>.',
   'modo_index_last_log' => 'Les dernières actions de modération',
-  'return_to_modo_delete' => 'Cliquez <a href="%s">ici</a> pour retourner sur le sujet que vous venez de modérer.',
+  'return_to_modo_delete' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page précédente.',
   'return_to_modo_delete_topic' => 'Cliquez <a href="%s">ici</a> pour retourner sur le forum du sujet que vous venez de supprimer.',
   'return_to_modo_calendar' => 'Cliquez <a href="%s">ici</a> pour retourner sur la page de validation des événements du calendrier',
   'modo_calendar_list' => 'Liste des événements du calendrier non validés',
