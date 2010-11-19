@@ -67,7 +67,7 @@ class Page_modo_merge extends Fsb_model
 		}
 
 		// Donnees du sujet sellectionne
-		$sql = 'SELECT f_id, t_title
+		$sql = 'SELECT f_id, t_title, u_id
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id = ' . $this->id;
 		$result = Fsb::$db->query($sql);
@@ -194,7 +194,7 @@ class Page_modo_merge extends Fsb_model
 				}
 			}
 
-			Moderation::merge_topics($destination, $this->data['f_id'], $origin);
+			Moderation::merge_topics($destination, $this->data['f_id'], $this->data['u_id'], $origin);
 
 			Log::add(Log::MODO, 'log_merge', $this->data['t_title']);
 

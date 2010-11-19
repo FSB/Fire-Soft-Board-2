@@ -71,6 +71,7 @@
 		</table>
 
 		<div class="content">
+                  <noscript><div class="error">{LG_MODO_MERGE_NEED_JS}</div></noscript>
 			<block name="topic">
 				<if content="$topic.FIRST_ROW"><ul></if>
 				<li><input type="checkbox" onclick="add_merge_id('{topic.ID}', this.checked)" /> &nbsp; <a href="{topic.U_TOPIC}" class="topicname">{topic.TITLE}</a></li>

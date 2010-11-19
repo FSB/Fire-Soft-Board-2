@@ -407,9 +407,10 @@ class Moderation extends Fsb_model
 	 *
 	 * @param int $t_id ID du sujet initial
 	 * @param int $f_id ID du forum du sujet initial
+         * @param int $u_id ID du membre qui a posté le sujet initial
 	 * @param array $idx ID des sujets a fusioner avec le sujet original
 	 */
-	public static function merge_topics($t_id, $f_id, $idx)
+	public static function merge_topics($t_id, $f_id, $u_id, $idx)
 	{
 		// On exclu $t_id du tableau $idx
 		if (in_array($t_id, $idx))
@@ -429,10 +430,16 @@ class Moderation extends Fsb_model
 			return ;
 		}
 
+                /* $nb_topics[$id] contiendra le nombre de
+                   sujets - 1 du membre ayant l'id $id parmi
+                   ceux qui seront fusionés */
+                $nb_topics = array();
+                $nb_topics[$u_id] = 1;
+
 		Fsb::$db->transaction('begin');
 
 		// On recupere les donnees des sujets qui vont etre fusione
-		$sql = 'SELECT t_id, f_id, t_total_post
+		$sql = 'SELECT t_id, f_id, t_total_post, u_id
 				FROM ' . SQL_PREFIX . 'topics
 				WHERE t_id IN (' . implode(', ', $idx) . ')';
 		$result = Fsb::$db->query($sql);
@@ -442,7 +449,13 @@ class Moderation extends Fsb_model
 		{
 			$forums[$row['f_id']] = true;
 			$total_posts += $row['t_total_post'];
+                        
+                        if (isset($nb_topics[$row['u_id']]))
+                                $nb_topics[$row['u_id']]++;
+                        else
+                                $nb_topics[$row['u_id']] = 1;    
 		}
+               
 		Fsb::$db->free($result);
 
 		// Mise a jour du sujet des messages
@@ -482,6 +495,20 @@ class Moderation extends Fsb_model
 			't_first_p_id' =>		$first_post['p_id'],
 			'u_id' =>				$first_post['u_id'],
 		), 'WHERE t_id = ' . $t_id);
+
+                // Mise à jour du compteur de sujets des membres
+                $sum = 0;
+                $nb_topics[$first_post['u_id']]--;
+                foreach ($nb_topics as $m_id => $nb_t)
+                {
+                        $sum += $nb_t;
+                        Fsb::$db->update('users', array(
+                                 'u_total_topic' => array('u_total_topic - ' . $nb_t, 'is_field' => true),
+                        ), 'WHERE u_id = ' . $m_id);
+                }
+
+                // Mise à jour du total des topics du forum
+                Fsb::$cfg->update('total_topics', Fsb::$cfg->get('total_topics') - $sum);
 
 		Moderation::_delete_topics($idx);
 		Fsb::$db->transaction('commit');

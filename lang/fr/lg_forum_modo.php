@@ -178,6 +178,7 @@ return (array (
   'modo_merge_well' => 'Le sujet a bien été fusionné',
   'modo_merge_to' => 'Fusionner avec',
   'modo_merge_to_explain' => 'Si vous cochez la case pour <b>fusionner avec</b>, le sujet actuel ainsi que les sujets sélectionnés dans la liste d\'ID, seront fusionnés avec le sujet entré dans <b>fusionner avec</b>. Vous devez entrer une ID dans ce champ.',
+  'modo_merge_need_js' => 'Vous devez activer javascript pour profiter de cette fonctionnnalité',
   'modo_approve_new' => 'Nouveau sujet',
   'modo_approve' => 'Approuver le message',
   'modo_approve_topic' => 'Sujet contenant des messages à approuver',
