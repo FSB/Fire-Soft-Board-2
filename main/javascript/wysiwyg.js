@@ -1178,12 +1178,26 @@ function fsbcode_background(current, mode, template_path, extended)
 */
 function load_rainbow(name)
 {
-	rainbow_box[rainbow_i++] = instantiate_rainbow(name, 'color');
-	rainbow_box[rainbow_i++] = instantiate_rainbow(name, 'bgcolor');
+	var tmp = instantiate_rainbow(name, 'color');
+	if (tmp)
+	{
+		rainbow_box[rainbow_i++] = tmp;
+	}
+
+	tmp = instantiate_rainbow(name, 'bgcolor');
+	if (tmp)
+	{
+		rainbow_box[rainbow_i++] = tmp;
+	}
 }
 
 function instantiate_rainbow(id, tag)
 {
+	if (!$(id + '_id_' + tag))
+	{
+		return null;
+	}
+
 	return (new MooRainbow(id + '_id_' + tag, {
 		'startColor': [58, 142, 246],
 		'id': 'my' + id + '_id_' + tag,
