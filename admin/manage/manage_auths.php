@@ -269,7 +269,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					LEFT JOIN ' . SQL_PREFIX . 'groups_auth ga
 						ON g.g_id = ga.g_id
 							AND ga.f_id = ' . $sql_id . '
-					WHERE g.g_type ' . (($this->mode_type == MODE_TYPE_SIMPLE || $this->mode_type == MODE_TYPE_EASY) ? '= ' . GROUP_SPECIAL : '<> ' . GROUP_SINGLE) . '
+					WHERE g.g_type IN ('.GROUP_SPECIAL.','.GROUP_NORMAL.')
 					ORDER BY g.g_type, g.g_id';
 		$result = Fsb::$db->query($sql);
 
