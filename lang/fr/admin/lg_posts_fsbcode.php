@@ -11,6 +11,7 @@
 return (array (
   'posts_fsbcode_explain_title' => 'Gestion des FSBcodes',
   'posts_fsbcode_explain_desc' => 'Les FSBcodes sont les balises de mise en forme disponibles dans les messages pour formater le texte (gras, italique, citations, etc ..)..',
+  'posts_fsbcode_warning' => 'L\'utilisation de javascript ou d\'iframes dans le masque de remplacement de votre FSBcode peut provoquer des problèmes de sécurité. N\'hésitez pas à demander de l\'aide sur notre support officiel si vous n\'êtes pas sûr de ce que vous faites.',
   'adm_fsbcode_manage' => 'Liste des FSBcodes',
   'adm_fsbcode_tag' => 'TAG du FSBcode',
   'adm_fsbcode_state' => 'Statut général',
