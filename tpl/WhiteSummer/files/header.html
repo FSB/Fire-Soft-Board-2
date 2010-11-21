@@ -56,7 +56,7 @@
 				</switch>
 				<a href="{U_NOT_READ}">{LG_FORUM_MENU_NOT_READ}</a> | <a href="{U_OWN_POSTS}">{LG_FORUM_MENU_OWN_POSTS}</a>
 				<switch name="ac_mods_topic_notification"> | <a href="{U_NOTIFICATION}">{LG_FORUM_MENU_NOTIFICATION}</a></switch>
-				<if content="$CFG_MP_ACTIVATED">| <a href="{U_MP}">{LG_FORUM_MENU_MP}</a></if>
+				<switch name="ac_mods_mp">| <a href="{U_MP}">{LG_FORUM_MENU_MP}</a></switch>
 			<else>
 				<switch name="ac_mods_contact_form"><a href="{U_CONTACT}">{LG_FORUM_MENU_CONTACT}</a> ::</switch>
 				<a href="{U_LOGIN}">{LG_FORUM_MENU_LOGIN}</a> ::

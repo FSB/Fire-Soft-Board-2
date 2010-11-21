@@ -54,9 +54,6 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_id', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_login', 'Genova');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_color', 'class="admin"');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_activated', '1');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_auto_activated', '1');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_blacklist_activated', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_max_inbox', '50');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_max_outbox', '50');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_max_savebox', '50');
@@ -174,9 +171,6 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'avatar', 'avatar_height', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'avatar', 'avatar_weight', 'put_html_code', 'input_filesize(''avatar_weight'', $this->cfg[''avatar_weight''])', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'avatar', 'avatar_can_same', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_activated', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_auto_activated', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
-INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_blacklist_activated', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_max_inbox', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_max_outbox', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_max_savebox', 'put_text', 'array(''size'' => 5)', 'unsigned int');
@@ -257,6 +251,9 @@ INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) 
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('users_rank', 4, 'users', 5, 3, 'default.png');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('mods_manager', 4, 'mods', 6, 1, 'plugin.png');
 
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('mp', '', 1, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('mp_blacklist', '', 1, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('mp_auto_answer', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('online_show_birthday', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('online_show_current', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('online_show_today', '', 1, '', '', 0);

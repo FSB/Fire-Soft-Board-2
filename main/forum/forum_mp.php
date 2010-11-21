@@ -77,7 +77,7 @@ class Fsb_frame_child extends Fsb_frame
 			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&redirect=mp');
 		}
 
-		if (!Fsb::$cfg->get('mp_activated'))
+		if (!Fsb::$mods->is_active('mp'))
 		{
 			Http::redirect(ROOT . 'index.' . PHPEXT);
 		}

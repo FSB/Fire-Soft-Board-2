@@ -92,7 +92,7 @@ class Send extends Fsb_model
 				$sql_notification[] = $row['u_id'];
 			}
 
-			if ($row['u_mp_auto_answer_activ'] && Fsb::$cfg->get('mp_auto_activated') && $from_id <> VISITOR_ID)
+			if ($row['u_mp_auto_answer_activ'] && Fsb::$mods->is_active('mp_auto_answer') && $from_id <> VISITOR_ID)
 			{
 				// Generation XML du message du repondeur
 				$message = new Xml();

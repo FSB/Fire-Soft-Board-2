@@ -81,7 +81,7 @@ class Fsb_frame_child extends Fsb_frame
 		);
 
 		// MP desactives ?
-		if (!Fsb::$cfg->get('mp_activated'))
+		if (!Fsb::$mods->is_active('mp'))
 		{
 			unset($list_method['mp']);
 		}
@@ -210,7 +210,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'mp' :
-				if (Fsb::$cfg->get('mp_activated'))
+				if (Fsb::$mods->is_active("mp"))
 				{
 					$to_id = array();
 					foreach ($bcc AS $data)

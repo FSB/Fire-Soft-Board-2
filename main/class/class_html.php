@@ -217,7 +217,7 @@ class Html extends Fsb_model
 			$html = '<optgroup label="' . Fsb::$session->lang('jumpbox_label') . '">';
 			$html .= '<option value="?p=index">' . Fsb::$session->lang('forum_index') . '</option>';
 			$html .= '<option value="?p=faq">' . Fsb::$session->lang('jumpbox_faq') . '</option>';
-			$html .= (Fsb::$cfg->get('mp_activated')) ? '<option value="?p=mp">' . Fsb::$session->lang('jumpox_mp') . '</option>' : '';
+			$html .= (Fsb::$mods->is_active('mp')) ? '<option value="?p=mp">' . Fsb::$session->lang('jumpox_mp') . '</option>' : '';
 			$html .= '<option value="?p=userlist&amp;g_id=' . GROUP_SPECIAL_USER . '">' . Fsb::$session->lang('jumpbox_userlist') . '</option>';
 			$html .= '<option value="?p=profile&amp;module=personal">' . Fsb::$session->lang('jumpbox_profile') . '</option>';
 			$html .= '</optgroup>';

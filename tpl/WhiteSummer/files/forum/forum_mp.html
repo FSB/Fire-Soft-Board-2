@@ -66,7 +66,7 @@
 
 <switch name="mp_options">
 	<form action="{U_ACTION}" method="post">
-	<if content="$CFG_MP_BLACKLIST_ACTIVATED">
+	<switch name="ac_mods_mp_blacklist">
 		<div class="round">
 			<h1><a href="{FAQ_FORUM_MP}">{LG_MP_BLACKLIST}</a></h1>
 			<table class="form">
@@ -90,9 +90,9 @@
 				</tr>
 			</table>
 		</div>
-	</if>
+	</switch>
 
-	<if content="$CFG_MP_AUTO_ACTIVATED">
+	<switch name="ac_mods_mp_auto_answer">
 	<div class="round">
 		<h1><a href="{FAQ_FORUM_MP}">{LG_MP_AUTO_ANSWER}</a></h1>
 		<table class="form">
@@ -100,7 +100,7 @@
 				<th><label for="auto_answer_id">{LG_MP_AUTO_ANSWER_ACTIV} :</label></th>
 				<td>
 					<input type="radio" name="auto_answer_activ" value="1" <if content="$AUTO_ANSWER_ACTIV">checked="checked" id="auto_answer_id"</if> /> {LG_YES} &nbsp;
-					<input type="radio" name="auto_answer_activ" value="0" {<if content="!$AUTO_ANSWER_ACTIV">checked="checked" id="auto_answer_id"</if> /> {LG_NO}
+					<input type="radio" name="auto_answer_activ" value="0" <if content="!$AUTO_ANSWER_ACTIV">checked="checked" id="auto_answer_id"</if> /> {LG_NO}
 				</td>
 			</tr>
 			<tr>
@@ -113,7 +113,7 @@
 			</tr>
 		</table>
 	</div>
-	</if>
+	</switch>
 	</form>
 </switch>
 
