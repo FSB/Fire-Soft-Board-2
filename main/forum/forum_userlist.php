@@ -475,6 +475,7 @@ class Fsb_frame_child extends Fsb_frame
 				'JOINED' =>			Fsb::$session->print_date($row['u_joined']),
 				'TOTAL_POSTS' =>	$row['u_total_post'],
 				'TOTAL_TOPICS' =>	$row['u_total_topic'],
+				'DISPLAY_ONLINE' => (Fsb::$mods->is_active('update_last_visit')) ? true : false,
 				'IS_ONLINE' =>		($row['u_last_visit'] > (CURRENT_TIME - ONLINE_LENGTH) && !$row['u_activate_hidden']) ? true : false,
 				'LAST_VISIT' =>		$last_visit,
 				'GROUP_NAME' =>		($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],

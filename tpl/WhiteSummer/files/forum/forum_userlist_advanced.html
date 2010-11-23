@@ -14,10 +14,12 @@
 
 		<td class="userinfo">
 			<div class="online">
-				<if content="$user.IS_ONLINE">
-					<img src="{IMG_ONLINE}" alt="{LG_ONLINE}" title="{LG_ONLINE}" />
-				<else>
-					<img src="{IMG_OFFLINE}" alt="{LG_OFFLINE}" title="{LG_OFFLINE}" />
+				<if content="$user.DISPLAY_ONLINE">
+					<if content="$user.IS_ONLINE">
+						<img src="{IMG_ONLINE}" alt="{LG_ONLINE}" title="{LG_ONLINE}" />
+					<else>
+						<img src="{IMG_OFFLINE}" alt="{LG_OFFLINE}" title="{LG_OFFLINE}" />
+					</if>
 				</if>
 			</div>
 			<div class="avatar" <if content="!$user.AVATAR_WIDTH">style="overflow: hidden; width: {AVATAR_MAX_SIZE}px; height: {AVATAR_MAX_SIZE}px"</if>>
