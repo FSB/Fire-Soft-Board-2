@@ -211,7 +211,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		
 		$sql = 'SELECT mod_name, mod_status
 					FROM ' . SQL_PREFIX . 'mods
-					WHERE mod_type = ' . Mods::INTERN;
+					WHERE mod_type = ' . Mods::INTERN . '
+					AND mod_name <> "wysiwyg"';
 		$result = Fsb::$db->query($sql, 'mods_');
 		while ($row = Fsb::$db->row($result))
 		{
@@ -551,7 +552,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$sql = 'SELECT mod_name
 				FROM ' . SQL_PREFIX . 'mods
-				WHERE mod_type = ' . Mods::EXTERN;
+				WHERE mod_type = ' . Mods::EXTERN . '
+				AND mod_name <> "wysiwyg"';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{

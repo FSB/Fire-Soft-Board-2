@@ -284,7 +284,7 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rss', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('cookie_view', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('bot_list', '', 1, '', '', 0);
-INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('wysiwyg', '', 1, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('wysiwyg', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('root_support', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 1, '', '', 0);
