@@ -1472,7 +1472,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Code a attacher. S'il s'agit d'une image on l'affiche
 		if ($upload->is_img)
 		{
-			$attach_code = '[attach=' . $id . '] [img:alt=' . $upload->filename . ',title=' . $upload->filename . ']' . Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=download&nocount&id=' . $id . "[/img]\n" . htmlspecialchars($this->upload_comment) . '[/attach]';
+			$attach_code = '[attach=' . $id . '] [img:alt=' . strip_tags($upload->basename) . ',title=' . strip_tags($upload->basename) . ']' . Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=download&nocount&id=' . $id . "[/img]\n" . htmlspecialchars($this->upload_comment) . '[/attach]';
 
 			// Editeur wysiwyg ?
 			if ($this->post_map == 'classic' && Http::request('post_map_description_hiden', 'post'))
