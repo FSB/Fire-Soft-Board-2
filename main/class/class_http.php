@@ -293,9 +293,43 @@ class Http extends Fsb_model
 	 */
 	public static function get_file_on_server($server, $filename, $timeout = 5, $port = 80)
 	{
-		if (Fsb::$cfg->get('use_fsockopen') && $content = @file_get_contents($server . $filename))
+		if (!Fsb::$cfg->get('use_fsockopen') && $content = @file_get_contents($server . $filename))
 		{
 			return ($content);
+		}
+		else
+		{
+			$tmp = explode('://', $server);
+			if (($tmp[0] === 'http' || $tmp[0] === 'https') && count($tmp) === 2)
+			{
+				$fp = fsockopen($tmp[1], $port, $errno, $errstr, $timeout);
+				$out = 'GET ' . $filename . " HTTP/1.1\r\n";
+				$out .= 'Host: ' . $tmp[1] . "\r\n";
+				$out .= "Connection: Close\r\n\r\n";
+
+				$content = '';
+				$header_ended = false;
+				fwrite($fp, $out);
+				while (!feof($fp))
+				{
+					$line = stream_get_line($fp, 4096);
+					// rem :: header separation = \r\n\r\n
+					if (!$header_ended && ($pos = strpos($line, "\r\n\r\n")))
+					{
+						// strip header
+						$header_ended = true;
+						$content = substr($line, $pos + 4);
+						$content = (false === $content)?'':$content;
+					}
+					else
+					{
+						$content .= $line;
+					}
+				}
+				fclose($fp);
+
+				return ($content);
+			}
 		}
 		return (false);
 	}
