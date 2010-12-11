@@ -105,7 +105,7 @@ class Page_user_groups extends Fsb_model
 	{
 		$default_group = intval(Http::request('default_group', 'post'));
 		// On verifie que le groupe par defaut existe pour le membre
-		$sql = 'SELECT g.g_color
+		$sql = 'SELECT g.g_color, g.g_hidden
 				FROM ' . SQL_PREFIX . 'groups g
 				INNER JOIN ' . SQL_PREFIX . 'groups_users gu
 					ON g.g_id = gu.g_id
@@ -113,21 +113,26 @@ class Page_user_groups extends Fsb_model
 					AND gu.u_id = ' . Fsb::$session->id();
 		if ($row = Fsb::$db->request($sql))
 		{
-			Fsb::$db->update('users', array(
-				'u_default_group_id' =>		$default_group,
-			), 'WHERE u_id = ' . Fsb::$session->id());
+                        if ($row["g_hidden"] == GROUP_HIDDEN)
+                                Display::message('user_groups_no_hidden_group_as_default', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=groups', 'forum_profil');
+                        else
+                        {
+                                Fsb::$db->update('users', array(
+                                                         'u_default_group_id' =>		$default_group,
+                                ), 'WHERE u_id = ' . Fsb::$session->id());
 
-			Fsb::$db->update('users', array(
-				'u_color' =>	$row['g_color'],
-			), 'WHERE u_id = ' . Fsb::$session->id());
+                                Fsb::$db->update('users', array(
+                                                         'u_color' =>	$row['g_color'],
+                                ), 'WHERE u_id = ' . Fsb::$session->id());
 
-			if (Fsb::$session->id() == Fsb::$cfg->get('last_user_id'))
-			{
-				Fsb::$cfg->update('last_user_color', $row['g_color']);
-			}
+                                if (Fsb::$session->id() == Fsb::$cfg->get('last_user_id'))
+                                {
+                                        Fsb::$cfg->update('last_user_color', $row['g_color']);
+                                }
+
+                                Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=groups', 'forum_profil');
+                        }
 		}
-
-		Display::message('user_profil_submit', ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=groups', 'forum_profil');
 	}
 }
 

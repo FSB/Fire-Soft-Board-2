@@ -659,11 +659,13 @@ class Fsb_frame_child extends Fsb_frame
 		$add_login = ($admin) ? trim(Http::request('add_login', 'post')) : Fsb::$session->data['u_nickname'];
 		if ($add_login)
 		{
-			$sql = 'SELECT u.u_id, gu.gu_status
+			$sql = 'SELECT u.u_id, gu.gu_status, g.g_hidden
 					FROM ' . SQL_PREFIX . 'users u
 					LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
 						ON u.u_id = gu.u_id
 							AND gu.g_id = ' . $this->id . '
+                                        LEFT JOIN ' . SQL_PREFIX . 'groups g
+                                                ON g.g_id = ' . $this->id . '
 					WHERE LOWER(u.u_nickname) = \'' . Fsb::$db->escape(String::strtolower($add_login)) . '\'
 						AND u.u_id <> ' . VISITOR_ID;
 			if (!$row = Fsb::$db->request($sql))
@@ -677,7 +679,9 @@ class Fsb_frame_child extends Fsb_frame
 			}
 
 			// Ajout de l'utilisateur
-			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT, true, false, ($admin) ? true : false);
+                        /* On ne met pas à jour le groupe par défaut si
+                           c'est un groupe invisible */
+			Group::add_users($row['u_id'], $this->id, ($admin) ? GROUP_USER : GROUP_WAIT, true, false, ($admin && $row['g_hidden'] != GROUP_HIDDEN) ? true : false);
 
 			// On donne un rang au membre s'il n'en avait pas
 			Fsb::$db->update('users', array(

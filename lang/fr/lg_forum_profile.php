@@ -105,6 +105,7 @@ return (array (
   'user_groups_special' => 'Groupes spéciaux auxquels vous appartenez',
   'user_groups_none' => 'Groupes auxquels vous n\'appartenez pas',
   'user_groups_member' => 'Groupes auxquels vous appartenez',
+  'user_groups_no_hidden_group_as_default' => "Vous ne pouvez pas choisir un groupe invisible comme groupe par défaut",
   'user_upload_filename' => 'Nom du fichier',
   'user_upload_filesize' => 'Taille',
   'user_upload_filetime' => 'Date',
