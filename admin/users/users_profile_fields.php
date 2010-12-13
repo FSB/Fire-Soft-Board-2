@@ -155,7 +155,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				Display::message('no_result');
 			}
-			$this->data['pf_list'] = (!empty($this->data['pf_list'])) ? implode("\n", $this->data['pf_list']) : '';
+			$this->data['pf_list'] = (!empty($this->data['pf_list'])) ? implode("\n", unserialize($this->data['pf_list'])) : '';
 			$this->data['pf_groups'] = explode(',', $this->data['pf_groups']);
 			$this->type = $this->data['pf_html_type'];
 		}
