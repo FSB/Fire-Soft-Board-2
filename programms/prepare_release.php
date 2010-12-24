@@ -89,7 +89,9 @@ function copy_dir($path, $to, $clean_path)
 	if (!is_dir($to . substr($path, strlen($clean_path))))
 	{
 		//echo 'MKDIR = ' . $to . substr($path, strlen($clean_path)) . '<br />';
-		mkdir($to . substr($path, strlen($clean_path)));
+		$fullpath = $to . substr($path, strlen($clean_path));
+		mkdir($fullpath);
+		@chmod($fullpath, 0777);
 	}
 
 	$fd = opendir($path);
@@ -103,7 +105,10 @@ function copy_dir($path, $to, $clean_path)
 			}
 			else
 			{
-				copy($path . $file, $to . substr($path, strlen($clean_path)) . $file);
+				$fullpath = $to . substr($path, strlen($clean_path)) . $file;
+				@touch($fullpath);
+				@chmod($fullpath, 0777);
+				copy($path . $file, $fullpath);
 			}
 		}
 	}
@@ -128,6 +133,16 @@ truncate_config();
 // Met un index.html dans tous les repertoires en ayant besoin
 set_index_html('../');
 
-copy_dir('../', '../../package_fsb2/fsb2/', '../');
+$path = '../';
+$to = '../../package_fsb2/fsb2/';
+$clean_path = '../';
+
+echo 'If all of this failed, try to create manually ', realpath('../../'), '/package_fsb2/fsb2/ with appropriated chmod and owner', "<br />\n";
+
+echo 'Copy file for package in : ', realpath($to . substr($path, strlen($clean_path))), "<br />\n";
+
+copy_dir($path, $to, $clean_path);
+
+echo 'Copied file for package in : ', realpath($to . substr($path, strlen($clean_path))), "<br />\n";
 
 ?>
