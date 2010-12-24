@@ -1,4 +1,4 @@
-===== 2.0.1 - 8 janvier 2008 =====
+===== 2.0.1 - 25 decembre 2010 =====
 - Refonte de l'éditeur WYSIWYG
 - Optimisations importantes de requêtes SQL
 - Intégration du convertisseur FSB1 -> FSB2 dans la procédure d'installation du forum
@@ -83,6 +83,7 @@
 - Fix de la recherche rapide
 - Fix des limites de tailles de polices dans l'éditeur de texte
 - Fix wysiwyg sous opéra
+- Et beacoup d'autres changements ...
 
 
 ===== 2.0.0 - 25 décembre 2007 =====
