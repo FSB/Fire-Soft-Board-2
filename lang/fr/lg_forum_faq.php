@@ -148,8 +148,8 @@ $GLOBALS['faq_data'] = array (
       'answer' => 'Pour ajouter des événements sur le calendrier vous devez vous rendre sur la <a href="index.php?p=calendar">page du calendrier</a>, et cliquer sur le bouton d\'ajout d\'événement en bas de page. Entrez ensuite la date de l\'événement (la date peut être répartie sur plusieurs jours), le titre et la description de l\'événement. Vous pouvez choisir de ne l\'afficher que pour vous même si vous le souhaitez. Si vous choisissez de l\'afficher pour tous les membres l\'événement sera au préalable validé par un modérateur.',
     ),
 	'color' => array(
-		'question' => "Pourquoi certains utilisateurs apparaissent de couleurs différentes ?",
-		'answer' => "Ces utilisateurs appartiennent à des groupes spéciaux. Par exemple les administrateurs et les modérateurs ont des couleurs particulières.",
+		'question' => 'Pourquoi certains utilisateurs apparaissent de couleurs différentes ?',
+		'answer' => 'Ces utilisateurs appartiennent à des groupes spéciaux. Par exemple les administrateurs et les modérateurs ont des couleurs particulières.',
 	),
     'auth_level' => 
     array (
@@ -337,25 +337,25 @@ $GLOBALS['faq_data'] = array (
   'modo' => 
   array (
 	'abuse' => array(
-		'question' => "Que sont les messages abusifs ?",
-		'answer' => "Les messages abusifs sont des messages signalés par un membre, rapportant à priori des propos non conformes aux règles du forum (insultes, flood, etc ...). Dans l'onglet de modération des messages abusifs vous pouvez voir les messages abusifs signalés sur les forums que vous modérez. Vous pouvez éditer directement ces messages, ou bien vous rendre aux messages en question en cliquant sur le nom du sujet du message. Une fois le message traité, vous pouvez cliquer sur <b>Valider</b> pour valider et supprimer ce rapport de message abusif.",
+		'question' => 'Que sont les messages abusifs ?',
+		'answer' => 'Les messages abusifs sont des messages signalés par un membre, rapportant à priori des propos non conformes aux règles du forum (insultes, flood, etc ...). Dans l\'onglet de modération des messages abusifs vous pouvez voir les messages abusifs signalés sur les forums que vous modérez. Vous pouvez éditer directement ces messages, ou bien vous rendre aux messages en question en cliquant sur le nom du sujet du message. Une fois le message traité, vous pouvez cliquer sur <b>Valider</b> pour valider et supprimer ce rapport de message abusif.',
 	),
 	'delete' => array(
-		'question' => "Comment supprimer un sujet ?",
-		'answer' => "Pour supprimer un sujet il vous suffit de cliquer sur la petite icone de modération de suppression en bas de ce sujet. Vous pouvez également supprimer plusieurs sujets à la fois en passant par la modération globale d'un forum.",
+		'question' => 'Comment supprimer un sujet ?',
+		'answer' => 'Pour supprimer un sujet il vous suffit de cliquer sur la petite icone de modération de suppression en bas de ce sujet. Vous pouvez également supprimer plusieurs sujets à la fois en passant par la modération globale d\'un forum.',
 	),
 	'move' => array(
-		'question' => "Comment déplacer un sujet ?",
-		'answer' => "Pour déplacer un sujet il vous suffit de cliquer sur la petite icone de modération de déplacement en bas de ce sujet. Ensuite choisissez un forum de destination (dans lequel vous avez le droit de poster), choisissez si vous souhaitez ou non qu'une trace du sujet subsiste dans son forum d'origine, puis validez le déplacement. Vous pouvez également déplacer plusieurs sujets à la fois en passant par la modération globale d'un forum.",
+		'question' => 'Comment déplacer un sujet ?',
+		'answer' => 'Pour déplacer un sujet il vous suffit de cliquer sur la petite icone de modération de déplacement en bas de ce sujet. Ensuite choisissez un forum de destination (dans lequel vous avez le droit de poster), choisissez si vous souhaitez ou non qu\'une trace du sujet subsiste dans son forum d\'origine, puis validez le déplacement. Vous pouvez également déplacer plusieurs sujets à la fois en passant par la modération globale d\'un forum.',
 	),
 	'split' => array(
-		'question' => "Comment diviser un sujet ?",
-		'answer' => "Pour diviser un sujet il vous suffit de cliquer sur la petite icone de modération de division en bas de ce sujet. Vous devez ensuite choisir un titre pour le nouveau sujet, ainsi qu'un forum de destination, puis vous devez cocher les messages que vous souhaitez déplacer du message d'origine vers le sujet de destination.",
+		'question' => 'Comment diviser un sujet ?',
+		'answer' => 'Pour diviser un sujet il vous suffit de cliquer sur la petite icone de modération de division en bas de ce sujet. Vous devez ensuite choisir un titre pour le nouveau sujet, ainsi qu\'un forum de destination, puis vous devez cocher les messages que vous souhaitez déplacer du message d\'origine vers le sujet de destination.',
 	),
 	'warn' => array(
-		'question' => "Comment donner / supprimer des avertissements à un membre ?",
-		'answer' => "Si vous souhaitez donner un avertissement à un membre, ou au contraire lui en supprimer un il vous suffit de cliquer sur les icones d'ajout / suppression à côté de la jauge d'avertissement d'un utilisateur dans un de ses messages. Vous pouvez aussi passer directement par le panneau de modération. Entrez ensuite une raison à cet avertissement, puis vous pouvez donner (en cas d'ajout d'avertissement), ou réduire (en cas de suppression d'avertissement) les sanctions du membre. Vous pouvez agir sur ses droits d'écriture (créer des sujets, répondre à des sujets) ou bien sur ses droits de lecture (droit de voir et de lire les forums). Vous pouvez pour finir lui envoyer un message par email ou par messagerie privée pour lui signaler les raisons de cet avertissement.<br />
-		Veuillez noter que les utilisateurs n'ont pas accès à leur niveau d'avertissement. Vous pouvez consulter les avertissements d'un membre depuis le panneau de modération.",
+		'question' => 'Comment donner / supprimer des avertissements à un membre ?',
+		'answer' => 'Si vous souhaitez donner un avertissement à un membre, ou au contraire lui en supprimer un il vous suffit de cliquer sur les icones d\'ajout / suppression à côté de la jauge d\'avertissement d\'un utilisateur dans un de ses messages. Vous pouvez aussi passer directement par le panneau de modération. Entrez ensuite une raison à cet avertissement, puis vous pouvez donner (en cas d\'ajout d\'avertissement), ou réduire (en cas de suppression d\'avertissement) les sanctions du membre. Vous pouvez agir sur ses droits d\'écriture (créer des sujets, répondre à des sujets) ou bien sur ses droits de lecture (droit de voir et de lire les forums). Vous pouvez pour finir lui envoyer un message par email ou par messagerie privée pour lui signaler les raisons de cet avertissement.<br />
+		Veuillez noter que les utilisateurs n\'ont pas accès à leur niveau d\'avertissement. Vous pouvez consulter les avertissements d\'un membre depuis le panneau de modération.',
 	),
   ),
   'admin' => 
