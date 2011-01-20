@@ -409,6 +409,12 @@ function install_admin($quick = false)
 	));
 
 	Log::add(Log::ADMIN, 'install_fsb');
+	
+	// Mise à jour de l'utilisateur ayant installé le forum
+	Fsb::$db->update('logs', array(
+		'u_id' =>			2,
+	), 'WHERE log_key = \'install_fsb\'');
+		
 }
 
 /**
