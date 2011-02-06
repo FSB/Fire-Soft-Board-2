@@ -17,6 +17,11 @@ if (!defined('ROOT'))
 	die(utf8_decode('This file must be included.<hr />Ce fichier doit etre inclus'));
 }
 
+if (!ini_get('date.timezone'))
+{
+	date_default_timezone_set('Europe/Brussels');
+}
+
 /**
  * Methode magique permettant le chargement dynamique de classes
  *
@@ -483,6 +488,12 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	$config_code .= "define('SQL_PREFIX', '$sql_prefix');\n";
 	$config_code .= "define('SQL_DBAL', '$sql_dbms');\n\n";
 	$config_code .= "define('FSB_INSTALL', 'true');\n";
+	
+	if (!ini_get('date.timezone'))
+	{
+		$config_code .= "ini_set('date.timezone', 'Europe/Brussels');\n";
+	}
+	
 	$config_code .= "/* EOF */";
 
 	$write_config = false;
