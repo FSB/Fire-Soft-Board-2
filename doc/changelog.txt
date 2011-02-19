@@ -1,4 +1,4 @@
-===== 2.0.1 - 25 decembre 2010 =====
+===== 2.0.1 - 19 février 2011 =====
 - Refonte de l'éditeur WYSIWYG
 - Optimisations importantes de requêtes SQL
 - Intégration du convertisseur FSB1 -> FSB2 dans la procédure d'installation du forum
@@ -14,6 +14,7 @@
 - Ajout d'une configuration pour désactiver les connexions réseaux
 - Ajout de la revue des messages précédents lors de l'édition d'un message
 - Ajout de langues optionelles pour les thèmes
+- Ajout de la liste des groupes normaux lors de l'édition des droits d'un forum
 - Fix de la mise en cache avec APC / Eaccelerator et Memcache
 - Fix de la suppression des fichiers en cache pour le cache FTP
 - Fix de bugs dans le SDK
@@ -83,7 +84,12 @@
 - Fix de la recherche rapide
 - Fix des limites de tailles de polices dans l'éditeur de texte
 - Fix wysiwyg sous opéra
-- Et beacoup d'autres changements ...
+- Fix du fuseau horaire par défaut si non défini dans la configuration de php
+- Fix du pseudo de la personne ayant installé le forum
+- Fix des clés de langues manquantes et erronées
+- Fix de la suppression automatique des anciens messages privés pour les groupes n'ayant pas de limites
+- Fix des groupes invisibles sur les profils et dans la liste avancée des membres 
+- Et beaucoup d'autres changements ...
 
 
 ===== 2.0.0 - 25 décembre 2007 =====
