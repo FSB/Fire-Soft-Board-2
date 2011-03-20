@@ -287,7 +287,7 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('wysiwyg', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('root_support', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
-INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 1, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 0, '', '', 0);
 
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', false)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('last_posts', 'nb_messages', '5', 'put_text', 'array(''size'' => 5)', 'unsigned int');
