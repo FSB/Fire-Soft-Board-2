@@ -391,9 +391,7 @@ class Display extends Fsb_model
 				Fsb::$tpl->set_blocks('fsbcode', array(
 					'CODE' =>		$code,
 					'IMG' =>		($row['fsbcode_img']) ? ROOT . 'tpl/' . Fsb::$session->data['u_tpl'] . '/img/fsbcode/' . $row['fsbcode_img'] : '',
-					'OPEN' =>		'[' . $code . ']',
 					'TEXT' =>		($row['fsbcode_description']) ? htmlspecialchars($row['fsbcode_description']) : Fsb::$session->lang('fsbcode_' . $code),
-					'CLOSE' =>		'[/' . $code . ']',
 				));
 			}
 			// ... ou liste ?
