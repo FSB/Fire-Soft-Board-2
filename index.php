@@ -295,7 +295,7 @@ class Fsb_frame extends Fsb_model
 		}
 		else if (Fsb::$session->lang('nav_' . $this->frame_page))
 		{
-			$tag_title .= Fsb::$session->getStyle('other', 'title_separator') . Fsb::$session->lang('nav_' . $this->frame_page);
+			$tag_title = Fsb::$session->lang('nav_' . $this->frame_page) . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$cfg->get('forum_name');
 		}
 
 		// Messages abusifs / a approuver
