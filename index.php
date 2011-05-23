@@ -375,6 +375,7 @@ class Fsb_frame extends Fsb_model
 			'SID' =>				Fsb::$session->sid,
 			'PHPEXT' =>				PHPEXT,
 			'USER_TPL' =>			Fsb::$session->data['u_tpl'],
+            'USER_LG' =>            Fsb::$cfg->get('default_lang'),
 			'MODO_HAVE_MESSAGE' =>	$modo_have_message,
 			'U_DEBUG_QUERY' =>		Fsb::$debug->debug_url(),
 			'FSB_VERSION' =>		Fsb::$cfg->get('fsb_version'),
