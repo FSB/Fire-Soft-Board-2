@@ -151,7 +151,7 @@ class Fsb_admin_frame extends Fsb_model
 			'ROOT' =>			ROOT,
 			'SID' =>			Fsb::$session->sid,
 			'PHPEXT' =>			PHPEXT,
-            'USER_LG' =>        Fsb::$cfg->get('default_lang'),
+            'USER_LG' =>        Fsb::$session->data['u_language'],
 			'EXPLAIN_TITLE' =>	Fsb::$session->lang($this->page . '_explain_title'),
 			'EXPLAIN_DESC' =>	Fsb::$session->lang($this->page . '_explain_desc'),
 			'U_INDEX' =>		sid(ROOT . 'admin/index.' . PHPEXT),
