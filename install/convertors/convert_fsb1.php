@@ -360,20 +360,42 @@ class Convert_fsb1 extends Convert
 					$index_cat_id[$f['forum_id']] = $index_cat_id[$parent];
 				}
 
-				$tree->add_item($f['forum_id'], $parent, array(
-					'f_id' =>				$f['forum_id'],
-					'f_name' =>				$f['forum_nom'],
-					'f_text' =>				$f['forum_description'],
-					'f_total_post' =>		$f['forum_nb_message'],
-					'f_total_topic' =>		$f['forum_nb_sujet'],
-					'f_last_p_id' =>		(isset($f['dernier_message_id'])) ? $f['dernier_message_id'] : '',
-					'f_global_announce' =>	true,
-					'f_cat_id' =>			$index_cat_id[$f['forum_id']],
-					'f_map_default' =>		'classic',
-					'f_map_first_post' =>	true,
-					'f_type' =>				FORUM_TYPE_NORMAL,
-					'f_parent' =>			$parent,
-				));
+				if (isset($f['type']) && $f['type'] == 'lien')
+				{
+					$tree->add_item($f['forum_id'], $parent, array(
+						'f_id' =>				$f['forum_id'],
+						'f_name' =>				$f['forum_nom'],
+						'f_text' =>				(isset($f['forum_description'])) ?$f['forum_description'] : '   ',
+						'f_total_post' =>		0,
+						'f_total_topic' =>		0,
+						'f_last_p_id' =>		(isset($f['dernier_message_id'])) ? $f['dernier_message_id'] : '',
+						'f_global_announce' =>	true,
+						'f_cat_id' =>			$index_cat_id[$f['forum_id']],
+						'f_map_default' =>		'classic',
+						'f_map_first_post' =>	true,
+						'f_type' =>				FORUM_TYPE_DIRECT_URL,
+						'f_parent' =>			$parent,
+						'f_location' =>			$f['lien'],
+						'f_location_view' =>	$f['clics'],
+					));
+				}
+				else
+				{
+					$tree->add_item($f['forum_id'], $parent, array(
+						'f_id' =>				$f['forum_id'],
+						'f_name' =>				$f['forum_nom'],
+						'f_text' =>				(isset($f['forum_description'])) ?$f['forum_description'] : '   ',
+						'f_total_post' =>		$f['forum_nb_message'],
+						'f_total_topic' =>		$f['forum_nb_sujet'],
+						'f_last_p_id' =>		(isset($f['dernier_message_id'])) ? $f['dernier_message_id'] : '',
+						'f_global_announce' =>	true,
+						'f_cat_id' =>			$index_cat_id[$f['forum_id']],
+						'f_map_default' =>		'classic',
+						'f_map_first_post' =>	true,
+						'f_type' =>				FORUM_TYPE_NORMAL,
+						'f_parent' =>			$parent,
+					));
+				}
 
 				unset($store[$key]);
 			}
