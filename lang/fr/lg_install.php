@@ -146,6 +146,7 @@ return (array (
   'convert_progress' => 'Requêtes exécutées : %d / %d (%s %%)',
   'convert_next_page' => 'Passer à l\'étape suivante',
   'convert_done' => 'La conversion de votre forum est terminée. N\'oubliez pas de lancer les procédures pour resyncroniser votre configuration et les derniers sujets des forums, dans administration -> optimisations -> procédures sur votre forum FSB2.',
+  'convert_otw'	=> 'La conversion est en cours d\'exécution'
 ));
 
 
