@@ -94,7 +94,7 @@ class Compress extends Fsb_model
 			$this->method = 'tar';
 			$this->obj = new Compress_tar($this->filename, '.tar');
 		}
-		else if (preg_match('#\.tar.gz$#i', $this->filename))
+		else if (preg_match('#\.tar.gz$#i', $this->filename) || preg_match('#\.tgz$#i', $this->filename))
 		{
 			$this->method = 'tar.gz';
 			$this->obj = new Compress_tar($this->filename, '.tar.gz');
