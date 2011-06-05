@@ -187,12 +187,18 @@ class Compress extends Fsb_model
 	public function extract($path = './', $remove = '')
 	{
 		// Extraction des fichiers
+		$toclean = explode(',', FSB_TOCLEAN_FILES);
 		switch ($this->method)
 		{
 			case 'zip' :
 				$unzip = Compress_zip::factory('unzip', ROOT . $this->filename);
-				foreach ($unzip->Entries AS $info)
+				foreach ($unzip->Entries as $info)
 				{
+					if (in_array($info->Name, $toclean))
+					{
+						continue;
+					}
+
 					$filename = $info->Path . '/' . $info->Name;
 					$falsepath = ($remove) ? preg_replace('#^' . preg_quote($remove, '#') . '#i', '', $filename) : $filename;
 					$this->file->write($path . $falsepath, $info->Data);
@@ -202,8 +208,16 @@ class Compress extends Fsb_model
 			case 'tar' :
 			case 'tar.gz' :
 				$this->obj->extract($this->filename);
-				foreach ($this->obj->Entries AS $info)
+				foreach ($this->obj->Entries as $info)
 				{
+					// XXX tocleanup this is ugly!
+					$name = explode('/', $info['filename']);
+					$name = $name[ count($name) -1 ];
+					if (in_array($name, $toclean))
+					{
+						continue;
+					}
+
 					$filename = $info['filename'];
 					$falsepath = ($remove) ? preg_replace('#^' . preg_quote($remove, '#') . '#i', '', $filename) : $filename;
 					$this->file->write($path . $falsepath, $info['data']);
