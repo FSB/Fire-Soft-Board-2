@@ -63,8 +63,12 @@
 						<br /><span>{chmod.EXPLAIN}</span>
 					</dt>
 					<dd>
-						<input type="radio" name="{chmod.NAME}" value="1" <if content="!$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_YES}
-						&nbsp; <input type="radio" name="{chmod.NAME}" value="0" <if content="$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_NO}
+						<if content="$chmod.WRITE">
+							{LG_INSTALL_YES}
+						<else>
+							<input type="radio" name="{chmod.NAME}" value="1" <if content="!$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_YES}
+							&nbsp; <input type="radio" name="{chmod.NAME}" value="0" <if content="$chmod.WRITE">id="chmod_id_{chmod.ITERATOR}" checked="checked"</if> /> {LG_INSTALL_NO}
+						</if>
 					</dd>
 				</dl>
 			</block>
