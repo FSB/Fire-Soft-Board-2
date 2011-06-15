@@ -114,7 +114,7 @@ return (array (
   'convert_welcome' => 'Bienvenue sur le script de conversion du forum "%s". Veuillez suivre les instructions ci dessous afin de convertir les données de votre ancien forum vers FSB2.',
   'convert_form' => 'Configuration du script de conversion',
   'convert_output' => 'Destination des requêtes SQL',
-  'convert_output_file' => 'Les requêtes seront écrites dans le fichier ~/install/export.sql',
+  'convert_output_file' => 'Les requêtes seront écrites dans le fichier ~/install/export.sql (<b>Il doit-être accessible en écriture</b>)',
   'convert_output_db' => 'Les requêtes seront directement executées',
   'convert_output_print' => 'Les requêtes seront affichées',
   'convert_explain_sql' => 'Renseignez ci dessous les paramètres de connexion à la base de donnée du forum que vous voullez convertir.',
@@ -146,6 +146,7 @@ return (array (
   'convert_progress' => 'Requêtes exécutées : %d / %d (%s %%)',
   'convert_next_page' => 'Passer à l\'étape suivante',
   'convert_done' => 'La conversion de votre forum est terminée. N\'oubliez pas de lancer les procédures pour resyncroniser votre configuration et les derniers sujets des forums, dans administration -> optimisations -> procédures sur votre forum FSB2.',
+  'convert_otw'	=> 'La conversion est en cours d\'exécution'
 ));
 
 

@@ -170,4 +170,8 @@ define('FSB_REQUEST_MODS_CAT', '/stream/cat_mods_content.php?id=%d');
 define('FSB_REQUEST_MODS_CONTENT', '/stream/mods_content.php?id=%d');
 define('FSB_REQUEST_ROOT_SUPPORT', '/stream/root_support.php?pwd=%s');
 
+// Fichiers divers a nettoyer des archives lorsque l'on les rencontres
+// afin de ne pas perturber les processus en cours
+define('FSB_TOCLEAN_FILES', 'Thumbs.db,thumbs.db,.DS_Store');
+
 /* EOF */

@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Ce fichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /**
  * Supprimes les fichiers mis en cache, ainsi que ces foutus Thumbs.db, vide le fichier config, prepare les index.html, etc ...
@@ -39,7 +39,7 @@ function delete_thumbs($path)
 	$fd = opendir($path);
 	while ($file = readdir($fd))
 	{
-		if ($file != '.' && $file != '..' && $file != '.svn')
+		if ($file != '.' && $file != '..' && $file != '.git')
 		{
 			if (is_dir($path . $file))
 			{
@@ -73,7 +73,7 @@ function set_index_html($path)
 	$fd = opendir($path);
 	while ($file = readdir($fd))
 	{
-		if ($file != '.' && $file != '..' && $file != '.svn')
+		if ($file != '.' && $file != '..' && $file != '.git')
 		{
 			if (is_dir($path . $file))
 			{
@@ -97,7 +97,7 @@ function copy_dir($path, $to, $clean_path)
 	$fd = opendir($path);
 	while ($file = readdir($fd))
 	{
-		if ($file != '.' && $file != '..' && $file != '.svn')
+		if ($file != '.' && $file != '..' && $file != '.git' && $file != '.gitignore')
 		{
 			if (is_dir($path . $file))
 			{

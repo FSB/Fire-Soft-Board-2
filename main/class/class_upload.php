@@ -121,6 +121,7 @@ class Upload extends Fsb_model
 		'jpg',
 		'jpeg',
 		'png',
+		'bmp'
 	);
 	
 	/**
