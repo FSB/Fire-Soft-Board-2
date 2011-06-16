@@ -587,6 +587,17 @@ CREATE TABLE fsb2_users (
   KEY u_birthday (u_birthday)
 ) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+DROP TABLE IF EXISTS fsb2_users_notes;
+CREATE TABLE fsb2_users_notes (
+  note_id int(11) NOT NULL auto_increment,
+  u_id int(11) NOT NULL,
+  note_title varchar(120) NOT NULL default '',
+  note_text text NOT NULL,
+  note_time int(11) NOT NULL default '0',
+  PRIMARY KEY  (note_id),
+  KEY u_id (u_id)
+) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 DROP TABLE IF EXISTS fsb2_users_password;
 CREATE TABLE fsb2_users_password (
   u_id int(11) NOT NULL auto_increment,

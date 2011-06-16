@@ -1,0 +1,42 @@
+<include name="header.html" />
+<include name="menu_header.html" />
+
+<div class="info">
+	<h1>{LG_USER_MODULE_NOTEPAD}</h1>
+	<div>{LG_USER_NOTES_QUOTA} : {USER_NOTES_QUOTA} / {FORUM_NOTES_QUOTA}</div>
+</div>
+
+<switch name="note_list">
+    <div class="round">
+        <block name="note">
+            <div class="post">
+                <div class="postcontent" style="margin: 0;">
+                    <div class="postheader">
+                        <strong>{note.TITLE}</strong> (<small>{note.TIME}</small>)
+                        <span>
+                            <a href="{note.U_EDIT}"><img src="{IMG_EDIT}" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+                            <a href="{note.U_DELETE}"><img src="{IMG_DELETE}" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>                          
+                        </span>
+                    </div>         
+                    <div class="message">
+                        {note.TEXT}
+                    </div>
+                </div>
+
+            </div>
+        </block>
+        <blockelse name="note">
+            <div class="content">
+                <div class="error">{LG_NO_RESULT}</div>  
+            </div>        
+        </blockelse>
+    </div>
+    <switch name="pagination"><br />{PAGINATION}</switch>
+</switch>
+
+<switch name="note_add">
+
+</switch>
+
+<include name="menu_footer.html" />
+<include name="footer.html" />
