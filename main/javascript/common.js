@@ -24,12 +24,12 @@ function check_boxes(form_name, element_name, is_checked)
 /**
  * Coche / décoche un ensemble de checkbox dans un block container
  * @param string id_block Id du block container des checkboxs
- * @param string element_name Nom du checkbox
+ * @param string class_name Nom de la class du checkbox
  * @param bool is_checked Définit si on coche / décoche le checkbox
  */
-function check_boxes_byid(id_block, element_name, is_checked)
+function check_boxes_byid(id_block, class_name, is_checked)
 {
-	var chkboxes = document.id(id_block).getElements(element_name);
+	var chkboxes = document.id(id_block).getElements('input.' + class_name + '[type=checkbox]');
 	return _check_boxes(chkboxes, is_checked);
 }
 

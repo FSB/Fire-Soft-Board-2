@@ -16,17 +16,19 @@
 		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
 	</tr>
 </table>
-
+<script>
+	var search_forum_checked = [];
+</script>
 <block name="f">
 	<div class="round">
 		<h1>
-			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" onclick="check_boxes_byid('search_result_f_{f.ID}', 'action[]', true)" /></switch>
+			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" onclick="search_forum_checked[{f.ID}] = !search_forum_checked[{f.ID}]; check_boxes_byid('search_result_f_{f.ID}', '_action', search_forum_checked[{f.ID}]);" /></switch>
 			<a href="{f.U_CAT}">{f.CAT}</a> &#187; <a href="{f.U_FORUM}">{f.FORUM}</a>
 		</h1>
 		<table class="t" cellspacing="0" id="search_result_f_{f.ID}">
 		<block name="f.result">
 			<tr>
-				<switch name="can_check"><td width="20" align="center"><input type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>
+				<switch name="can_check"><td width="20" align="center"><input class="_action" type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>
 				<td width="50" align="center"><img src="{f.result.IMG}" /></td>
 				<td class="topicinfo">
 					<h3><a href="{f.result.U_TOPIC}" class="topicname">{f.result.TITLE}</a>  <if content="$f.result.PAGINATION"> &nbsp; {f.result.PAGINATION}</if></h3>
