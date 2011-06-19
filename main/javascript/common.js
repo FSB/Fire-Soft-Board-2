@@ -1,24 +1,45 @@
-/*
-** +---------------------------------------------------+
-** | Name :			~/main/javascript/common.js
-** | Begin :		19/12/2005
-** | Last :			21/01/2008
-** | User :			Genova
-** | Project :		Fire-Soft-Board 2 - Copyright FSB group
-** | License :		GPL v2.0
-** +---------------------------------------------------+
+/**
+* +---------------------------------------------------+
+* | Name :			~/main/javascript/common.js
+* | Begin :			19/12/2005
+* | Last :			19/06/2011
+* | User :			Genova
+* | Project :		Fire-Soft-Board 2 - Copyright FSB group
+* | License :		GPL v2.0
+* +---------------------------------------------------+
 */
 
-/*
-** Coche / décoche un ensemble de checkbox
-** -----
-** form_name ::			Nom du formulaire
-** element_name ::		Nom de la checbox
-** is_checked ::		Définit si on coche / décoche la checkbox
-*/
+/**
+ * Coche / décoche un ensemble de checkbox
+ * @param string form_name Nom du formulaire
+ * @param string element_name Nom du checkbox
+ * @param bool is_checked Définit si on coche / décoche le checkbox
+ */
 function check_boxes(form_name, element_name, is_checked)
 {
 	var chkboxes = document.forms[form_name].elements[element_name];
+	return _check_boxes(chkboxes, is_checked);
+}
+
+/**
+ * Coche / décoche un ensemble de checkbox dans un block container
+ * @param string id_block Id du block container des checkboxs
+ * @param string element_name Nom du checkbox
+ * @param bool is_checked Définit si on coche / décoche le checkbox
+ */
+function check_boxes_byid(id_block, element_name, is_checked)
+{
+	var chkboxes = document.id(id_block).getElements(element_name);
+	return _check_boxes(chkboxes, is_checked);
+}
+
+/**
+ * Coche / décoche un ensemble de checkbox dans un block
+ * @param array|element chkboxes éléments ou  ensemble d'élements a coché/décoché
+ * @param bool is_checked Définit si on coche / décoche le checkbox
+ */
+function _check_boxes(chkboxes, is_checked)
+{
 	var count = chkboxes.length;
 
 	if (count)

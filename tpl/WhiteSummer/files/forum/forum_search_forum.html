@@ -8,8 +8,8 @@
 	<tr>
 		<td width="50%">
 			<switch name="can_check">
-				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
-				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<a href="#" onclick="check_boxes('search', 'action[]', true); check_boxes('search', 'action_f[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); check_boxes('search', 'action_f[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
 				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
 			</switch>
 		</td>
@@ -20,10 +20,10 @@
 <block name="f">
 	<div class="round">
 		<h1>
-			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" /></switch>
+			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" onclick="check_boxes_byid('search_result_f_{f.ID}', 'action[]', true)" /></switch>
 			<a href="{f.U_CAT}">{f.CAT}</a> &#187; <a href="{f.U_FORUM}">{f.FORUM}</a>
 		</h1>
-		<table class="t" cellspacing="0">
+		<table class="t" cellspacing="0" id="search_result_f_{f.ID}">
 		<block name="f.result">
 			<tr>
 				<switch name="can_check"><td width="20" align="center"><input type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>

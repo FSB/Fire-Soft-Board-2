@@ -6290,3 +6290,8 @@ var MooRainbow = new Class({
 
 MooRainbow.implement(new Options);
 MooRainbow.implement(new Events);
+
+document.id = function(id)
+{
+	return $(id);
+};
