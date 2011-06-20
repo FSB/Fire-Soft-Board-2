@@ -8,25 +8,27 @@
 	<tr>
 		<td width="50%">
 			<switch name="can_check">
-				<a href="#" onclick="check_boxes('search', 'action[]', true); return false;" class="reset">{LG_CHECK}</a>
-				<a href="#" onclick="check_boxes('search', 'action[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
+				<a href="#" onclick="check_boxes('search', 'action[]', true); check_boxes('search', 'action_f[]', true); return false;" class="reset">{LG_CHECK}</a>
+				<a href="#" onclick="check_boxes('search', 'action[]', false); check_boxes('search', 'action_f[]', false); return false;" class="reset">{LG_UNCHECK}</a> &nbsp;
 				<input type="submit" name="submit_check" value="{CHECK_LANG}" class="submit" />
 			</switch>
 		</td>
 		<td style="text-align: right"><switch name="pagination">{PAGINATION}</switch></td>
 	</tr>
 </table>
-
+<script>
+	var search_forum_checked = [];
+</script>
 <block name="f">
 	<div class="round">
 		<h1>
-			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" /></switch>
+			<switch name="can_check"><input type="checkbox" name="action_f[]" value="{f.ID}" onclick="search_forum_checked[{f.ID}] = !search_forum_checked[{f.ID}]; check_boxes_byid('search_result_f_{f.ID}', '_action', search_forum_checked[{f.ID}]);" /></switch>
 			<a href="{f.U_CAT}">{f.CAT}</a> &#187; <a href="{f.U_FORUM}">{f.FORUM}</a>
 		</h1>
-		<table class="t" cellspacing="0">
+		<table class="t" cellspacing="0" id="search_result_f_{f.ID}">
 		<block name="f.result">
 			<tr>
-				<switch name="can_check"><td width="20" align="center"><input type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>
+				<switch name="can_check"><td width="20" align="center"><input class="_action" type="checkbox" name="action[]" value="{f.result.ID}" /></td></switch>
 				<td width="50" align="center"><img src="{f.result.IMG}" /></td>
 				<td class="topicinfo">
 					<h3><a href="{f.result.U_TOPIC}" class="topicname">{f.result.TITLE}</a>  <if content="$f.result.PAGINATION"> &nbsp; {f.result.PAGINATION}</if></h3>
