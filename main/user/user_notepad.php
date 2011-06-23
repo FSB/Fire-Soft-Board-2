@@ -11,12 +11,12 @@
 // On affiche le module si il a ete active dans l'administration
 if (Fsb::$mods->is_active('notepad'))
 {
-	/**
-	 * On affiche le module ?
-	 * 
-	 * @var bool
-	 */
-	$show_this_module = true;
+    /**
+     * On affiche le module ?
+     * 
+     * @var bool
+     */
+    $show_this_module = true;
 }
 
 /**
@@ -24,12 +24,12 @@ if (Fsb::$mods->is_active('notepad'))
  */
 class Page_user_notepad extends Fsb_model
 {  
-	/**
-	 * Mode de la page
-	 *
-	 * @var string
-	 */
-	public $mode;
+    /**
+     * Mode de la page
+     *
+     * @var string
+     */
+    public $mode;
     
     /**
      * Les notes du membre
@@ -38,11 +38,11 @@ class Page_user_notepad extends Fsb_model
      */
     public $notes;
     
-	/**
-	 * Page courante
-	 *
-	 * @var int
-	 */
+    /**
+     * Page courante
+     *
+     * @var int
+     */
 	public $page;
     
 	/**
@@ -54,12 +54,12 @@ class Page_user_notepad extends Fsb_model
 
 	/**
 	 * Constructeur
-	 */    
+     *  */    
     public function __construct()
     {
-		$this->mode = Http::request('mode');
+        $this->mode = Http::request('mode');
         $this->page = intval(Http::request('page'));
-		$this->id = intval(Http::request('id'));
+        $this->id = intval(Http::request('id'));
         $this->notes = array();
         
 		if ($this->page <= 0)
@@ -89,7 +89,7 @@ class Page_user_notepad extends Fsb_model
      */
     public function get_notes()
     {
-		$sql = 'SELECT note_id, note_title, note_time, note_text
+        $sql = 'SELECT note_id, note_title, note_time, note_text
 				FROM ' . SQL_PREFIX . 'users_notes
 				WHERE u_id = ' . Fsb::$session->id() . '
 				ORDER BY note_time DESC';
@@ -153,7 +153,34 @@ class Page_user_notepad extends Fsb_model
      */
     public function delete_note()
     {
-
+		// On verifie si la note appartient bien a l'utilisateur
+		$sql = 'SELECT u_id
+				FROM ' . SQL_PREFIX . 'users_notes
+				WHERE note_id = ' . $this->id . '
+					AND u_id = ' . Fsb::$session->id();
+		if (!Fsb::$db->get($sql, 'u_id'))
+		{
+			Display::message('not_allowed');
+		}
+        
+		// Boite de confirmation
+		if (check_confirm())
+		{
+			$sql = 'DELETE FROM ' . SQL_PREFIX . 'users_notes
+					WHERE note_id = ' . $this->id;
+			Fsb::$db->query($sql);
+            Fsb::$db->destroy_cache('notes_');
+            
+			Display::message('user_notepad_well_delete', ROOT . 'index.' . PHPEXT . '?p=profile&module=notepad', 'forum_profil');
+		}
+		else if (Http::request('confirm_no', 'post'))
+		{
+			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=profile&module=notepad');
+		}
+		else
+		{
+			Display::confirmation(Fsb::$session->lang('user_notepad_confirm_delete'), ROOT . 'index.' . PHPEXT . '?p=profile&module=notepad', array('mode' => 'delete', 'id' => $this->id));
+		}        
     }
     
     /**
