@@ -518,7 +518,7 @@ if (Http::request('quick_install', 'post'))
 	$sql_dbms =			'mysql';
 	$sql_server =		'localhost';
 	$sql_login =		'root';
-	$sql_password =		'';
+	$sql_password =		((!empty($_POST['sql_password']))?htmlspecialchars($_POST['sql_password']) : '');
 	$sql_port =			null;
 	$sql_dbname =		'fsb2_' . date('d_m_Y_H\Hi');
 	$sql_prefix =		'fsb2_';
@@ -770,6 +770,10 @@ switch ($current_step)
 
 		if (IS_LOCALHOST)
 		{
+			Fsb::$tpl->set_vars(array(
+				'INSTALL_QUICK_EXPLAIN' =>	sprintf(Fsb::$session->lang('install_quick_explain'), ('<a href="#db_login_fast" onclick="document.getElementById(\'db_login_fast\').style.display = \'block\'">' . Fsb::$session->lang('install_quick_explain_link') . '</a>'))
+			));
+
 			Fsb::$tpl->set_switch('localhost');
 		}
 	break;
