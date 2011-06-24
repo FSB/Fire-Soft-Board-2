@@ -603,10 +603,23 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	}
 	else
 	{
-		$write_config = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
+		// Vérification de l'existance de tables ayant le même préfixe
+		$sql = 'SHOW TABLES LIKE \'' . $sql_prefix . '%\'';
+		$result = Fsb::$db->query($sql);
+		if (Fsb::$db->count($result) > 0)
+		{
+			$current_step = 'db';
+			// ... error
+			// TODO message de confirmation Display::confirmation($str, $url, $hidden = array())
+			die('Table with prefix already exist. If table used by FSB already exist all of they data will be trashed! To allow this operation, remove this die on line ' . __LINE__ . ' in file ' . __FILE__);
+		}
+		else
+		{
+			$write_config = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
 
-		$current_step = 'admin';
-		unset($db);
+			$current_step = 'admin';
+			unset($db);
+		}
 	}
 }
 else if (Http::request('go_to_step_admin', 'post'))
@@ -636,20 +649,23 @@ switch ($current_step)
 		// Fin de l'installation du forum
 		Fsb::$tpl->set_switch('step_end');
 
-		class Convert {}
-
 		// Liste des convertisseurs
-		$fd = opendir(ROOT . 'install/convertors/');
-		while ($file = readdir($fd))
+		if (file_exists(ROOT . 'install/convertors/'))
 		{
-			if (preg_match('#^convert_(.*?)\.' . PHPEXT . '$#i', $file, $m))
+			class Convert {}
+
+			$fd = opendir(ROOT . 'install/convertors/');
+			while ($file = readdir($fd))
 			{
-				include(ROOT . 'install/convertors/' . $file);
-				$info = call_user_func(array('Convert_' . $m[1], 'forum_type'));
-				Fsb::$tpl->set_blocks('convert', array(
-					'NAME' =>	$info,
-					'URL' =>	'index.' . PHPEXT . '?convert=' . $m[1],
-				));
+				if (preg_match('#^convert_(.*?)\.' . PHPEXT . '$#i', $file, $m))
+				{
+					include(ROOT . 'install/convertors/' . $file);
+					$info = call_user_func(array('Convert_' . $m[1], 'forum_type'));
+					Fsb::$tpl->set_blocks('convert', array(
+						'NAME' =>	$info,
+						'URL' =>	'index.' . PHPEXT . '?convert=' . $m[1],
+					));
+				}
 			}
 		}
 		closedir($fd);
