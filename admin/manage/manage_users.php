@@ -101,7 +101,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$call = new Call($this);
 		$call->module(array(
-			'list' =>		array('list', 'add', 'prune', 'gallery'),
+			'list' =>		array('list', 'add', 'prune', 'auths', 'gallery'),
 			'url' =>		'index.' . PHPEXT . '?p=manage_users',
 			'lang' =>		'adm_users_',
 			'default' =>	'list',
@@ -129,9 +129,18 @@ class Fsb_frame_child extends Fsb_admin_frame
 				),
 				'prune' =>		'page_prune_users',
 				'add' =>		'page_add_users',
-				'default' =>	'page_list_users',
+				'auths' =>		'page_auths_users',
+				'default' =>	'page_list_users'
 			),
 		));
+	}
+
+	/**
+	 * Redirige vers manage_auths::page_default_users_auths())
+	 */
+	public function page_auths_users()
+	{
+		Http::redirect('index.' . PHPEXT . '?p=manage_auths&amp;module=users', 0);
 	}
 
 	/**

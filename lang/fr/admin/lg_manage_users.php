@@ -79,6 +79,7 @@ return (array (
   'adm_users_add_error_nickname_exists' => 'Ce pseudonyme existe déjà',
   'adm_users_add_error_email_exists' => 'Cette adresse email existe déjà',
   'adm_users_well_add' => 'Le compte utilisateur a bien été créé sur le forum',
+  'adm_users_auths'	=> 'Droits'
 ));
 
 
