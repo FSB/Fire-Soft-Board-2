@@ -479,6 +479,7 @@ return (array (
 	'editor_wysiwyg' => 'Wysiwyg',
 	'editor_wysiwyg_explain' => 'Vous voyez en direct ce que vous écrivez à l\'écran avec les formatages (gras, italique, etc.)',
 	'root_support_active' => 'Support automatique activé',
+	'profil_of' => 'Profil de %s',
 ));
 
 

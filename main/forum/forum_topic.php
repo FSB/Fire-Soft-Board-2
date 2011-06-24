@@ -612,6 +612,7 @@ class Fsb_frame_child extends Fsb_frame
 			'WARN_LENGTH1' =>		(!$row['u_total_warning']) ? 100 : 100 - ($row['u_total_warning'] * 20),
 			'WARN_LENGTH2' =>		(!$row['u_total_warning']) ? 0 : $row['u_total_warning'] * 20,
 			'USER_AVATAR' =>		sprintf(Fsb::$session->lang('user_avatar'), htmlspecialchars($row['p_nickname'])),
+			'USER_PROFIL' =>		sprintf(Fsb::$session->lang('profil_of'), htmlspecialchars($row['p_nickname'])),
 			'CAN_WARN' =>			($row['u_auth'] >= MODOSUP) ? false : true,
 			
 			'U_AVATAR' =>			$avatar,
