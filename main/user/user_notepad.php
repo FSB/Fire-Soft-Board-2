@@ -32,13 +32,6 @@ class Page_user_notepad extends Fsb_model
     public $mode;
     
     /**
-     * Les notes du membre
-     * 
-     * @var array 
-     */
-    public $notes;
-    
-    /**
      * Page courante
      *
      * @var int
@@ -60,14 +53,11 @@ class Page_user_notepad extends Fsb_model
         $this->mode = Http::request('mode');
         $this->page = intval(Http::request('page'));
         $this->id = intval(Http::request('id'));
-        $this->notes = array();
         
 		if ($this->page <= 0)
 		{
 			$this->page = 1;
 		}
-
-        $this->get_notes();
         
 		$call = new Call($this);
 		$call->post(array(
@@ -81,32 +71,21 @@ class Page_user_notepad extends Fsb_model
 				'delete' =>		'delete_note',
 				'default' =>	'show_notes',
 			),
-		));        
+		));       
     }
-    
-    /**
-     * Recupere toutes les notes du membre
-     */
-    public function get_notes()
-    {
-        $sql = 'SELECT note_id, note_title, note_time, note_text
-				FROM ' . SQL_PREFIX . 'users_notes
-				WHERE u_id = ' . Fsb::$session->id() . '
-				ORDER BY note_time DESC';
-		$result = Fsb::$db->query($sql, 'notes_');
-		while ($row = Fsb::$db->row($result))
-        {
-            $this->notes [] = $row;
-        }
-    }
-    
+      
     /**
      * Liste les notes du membre
      */
     public function show_notes()
     {      
+        // Quota
+		$sql = 'SELECT COUNT(note_id) AS quota
+				FROM ' . SQL_PREFIX . 'users_notes
+				WHERE u_id = ' . Fsb::$session->id();
+		$quota = intval(Fsb::$db->get($sql, 'quota'));
+        
         // Pagination
-        $quota = count($this->notes);
         $total_page = ceil($quota / Fsb::$cfg->get('notes_per_page'));
 		$pagination = Html::pagination($this->page, $total_page, ROOT . 'index.' . PHPEXT . '?p=profile&module=notepad');
 		if ($total_page > 1)
@@ -122,30 +101,54 @@ class Page_user_notepad extends Fsb_model
 			'USER_NOTES_QUOTA' => $quota,
 			'PAGINATION' => $pagination,
         ));
-        
-        $start = ($this->page - 1) * Fsb::$cfg->get('notes_per_page');
-        $next = $start + Fsb::$cfg->get('notes_per_page');
-        $end = $quota < $next ? $quota : $next;
-        
-        for($i = $start; $i < $end; $i++)
+               
+        // Liste des notes
+        $sql = 'SELECT note_id, note_title, note_time, note_text
+				FROM ' . SQL_PREFIX . 'users_notes
+				WHERE u_id = ' . Fsb::$session->id() . '
+				ORDER BY note_time DESC
+                LIMIT ' . ($this->page - 1) * Fsb::$cfg->get('notes_per_page') . ', ' . Fsb::$cfg->get('notes_per_page');
+        $result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
         {
 			Fsb::$tpl->set_blocks('note', array(
-				'TITLE' =>		$this->notes[$i]['note_title'],
-				'TIME' =>		Fsb::$session->print_date($this->notes[$i]['note_time']),
-                'TEXT' => 		$this->notes[$i]['note_text'],
+				'TITLE' =>		$row['note_title'],
+				'TIME' =>		Fsb::$session->print_date($row['note_time']),
+                'TEXT' => 		$row['note_text'],
 
-				'U_EDIT' =>		sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=notepad&amp;mode=edit&amp;id=' . $this->notes[$i]['note_id']),
-				'U_DELETE' =>	sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=notepad&amp;mode=delete&amp;id=' . $this->notes[$i]['note_id']),
-			));            
-        }
+				'U_EDIT' =>		sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=notepad&amp;mode=edit&amp;id=' . $row['note_id']),
+				'U_DELETE' =>	sid(ROOT . 'index.' . PHPEXT . '?p=profile&amp;module=notepad&amp;mode=delete&amp;id=' . $row['note_id']),
+			));       
+        }        
     }
     
     /**
      * Ajout / Edition d'une note
      */
     public function add_edit_note()
-    {
+    {       
+        if ($this->mode == 'edit')
+        {
+			$sql = 'SELECT *
+					FROM ' . SQL_PREFIX . 'users_notes
+					WHERE note_id = ' . $this->id;
+			$data = Fsb::$db->request($sql);
+        }
+        else
+        {
+            $data = array(
+                'note_title' => '',
+                'note_text' =>  '',
+                'note_time' =>  '',                
+            );
+        }
         
+        // Parse de variables de template
+        Fsb::$tpl->set_file('user/user_notepad.html');
+        Fsb::$tpl->set_switch('note_add');
+        Fsb::$tpl->set_vars(array(
+            'L_ADD_EDIT' => Fsb::$session->lang('user_notepad_' . $this->mode),
+        ));
     }
     
     /**
@@ -169,8 +172,7 @@ class Page_user_notepad extends Fsb_model
 			$sql = 'DELETE FROM ' . SQL_PREFIX . 'users_notes
 					WHERE note_id = ' . $this->id;
 			Fsb::$db->query($sql);
-            Fsb::$db->destroy_cache('notes_');
-            
+
 			Display::message('user_notepad_well_delete', ROOT . 'index.' . PHPEXT . '?p=profile&module=notepad', 'forum_profil');
 		}
 		else if (Http::request('confirm_no', 'post'))

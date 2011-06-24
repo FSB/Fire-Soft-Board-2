@@ -103,6 +103,8 @@ return (array (
 	'user_sig_max_line' => 'Votre signature dépasse le nombre de lignes autorisées qui est de %d',
 	'user_your_sig' => 'Votre signature', 
     'user_notepad_quota' => 'Quota de notes',
+    'user_notepad_add' => 'Ajout d\'une note',
+    'user_notepad_edit' => 'Édition d\'une note',
 	'user_notepad_confirm_delete' => 'Etes vous sur de vouloir supprimer cette note ?',
 	'user_notepad_well_delete' => 'La note a bien été supprimée',    
 	'user_groups_explain' => 'Voici la liste des groupes que vous pouvez voir sur le forum. Vous pouvez sélectionner un groupe par défaut en cochant la case associée. En choisissant un groupe par défaut, votre pseudonyme sera affiché dans la couleur de ce groupe.',
