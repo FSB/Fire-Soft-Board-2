@@ -164,9 +164,9 @@ Http::header('Content-Type', 'text/html; charset=UTF-8');
 if ($convert = Http::request('convert'))
 {
 	include(ROOT . 'install/convert.' . PHPEXT);
-	if (file_exists(ROOT . 'install/convertors/convert_' . $convert . '.' . PHPEXT))
+	if (file_exists(ROOT . 'install/converters/convert_' . $convert . '.' . PHPEXT))
 	{
-		include(ROOT . 'install/convertors/convert_' . $convert . '.' . PHPEXT);
+		include(ROOT . 'install/converters/convert_' . $convert . '.' . PHPEXT);
 		$classname = 'Convert_' . $convert;
 		new $classname($convert);
 	}
@@ -415,7 +415,7 @@ function install_admin($quick = false)
 
 	Log::add(Log::ADMIN, 'install_fsb');
 	
-	// Mise à jour de l'utilisateur ayant installé le forum
+	// Mise ï¿½ jour de l'utilisateur ayant installï¿½ le forum
 	Fsb::$db->update('logs', array(
 		'u_id' =>			2,
 	), 'WHERE log_key = \'install_fsb\'');
@@ -603,7 +603,7 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	}
 	else
 	{
-		// Vérification de l'existance de tables ayant le même préfixe
+		// Vï¿½rification de l'existance de tables ayant le mï¿½me prï¿½fixe
 		$sql = 'SHOW TABLES LIKE \'' . $sql_prefix . '%\'';
 		$result = Fsb::$db->query($sql);
 		if (Fsb::$db->count($result) > 0)
@@ -650,16 +650,16 @@ switch ($current_step)
 		Fsb::$tpl->set_switch('step_end');
 
 		// Liste des convertisseurs
-		if (file_exists(ROOT . 'install/convertors/'))
+		if (file_exists(ROOT . 'install/converters/'))
 		{
 			class Convert {}
 
-			$fd = opendir(ROOT . 'install/convertors/');
+			$fd = opendir(ROOT . 'install/converters/');
 			while ($file = readdir($fd))
 			{
 				if (preg_match('#^convert_(.*?)\.' . PHPEXT . '$#i', $file, $m))
 				{
-					include(ROOT . 'install/convertors/' . $file);
+					include(ROOT . 'install/converters/' . $file);
 					$info = call_user_func(array('Convert_' . $m[1], 'forum_type'));
 					Fsb::$tpl->set_blocks('convert', array(
 						'NAME' =>	$info,
