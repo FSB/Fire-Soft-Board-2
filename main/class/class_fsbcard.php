@@ -20,7 +20,7 @@ class Fsbcard extends Fsb_model
 	public $xml;
 
 	/**
-	 * Version du syst�me de FSBcards
+	 * Version du systeme de FSBcards
 	 *
 	 * @var string
 	 */
