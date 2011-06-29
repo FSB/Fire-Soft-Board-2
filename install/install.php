@@ -415,7 +415,7 @@ function install_admin($quick = false)
 
 	Log::add(Log::ADMIN, 'install_fsb');
 	
-	// Mise � jour de l'utilisateur ayant install� le forum
+	// Mise a jour de l'utilisateur ayant installe le forum
 	Fsb::$db->update('logs', array(
 		'u_id' =>			2,
 	), 'WHERE log_key = \'install_fsb\'');
@@ -603,7 +603,7 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	}
 	else
 	{
-		// V�rification de l'existance de tables ayant le m�me pr�fixe
+		// Verification de l'existance de tables ayant le meme prefixe
 		$sql = 'SHOW TABLES LIKE \'' . $sql_prefix . '%\'';
 		$result = Fsb::$db->query($sql);
 		if (Fsb::$db->count($result) > 0)
