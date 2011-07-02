@@ -676,6 +676,7 @@ switch ($current_step)
 		Fsb::$tpl->set_switch('step_config');
 		Fsb::$tpl->set_vars(array(
 			'CONFIG_PATH' =>			'http://' . dirname(dirname($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'])),
+            'CONFIG_COOKIE' =>          'fsb2_' . substr(md5(rand(0, time())), 0, 6),
 			'CONFIG_EMAIL' =>			$email,
 			'LIST_UTC' =>				Html::list_utc('default_utc', 1, 'utc'),
 			'LIST_UTC_DST' =>			Html::list_utc('default_utc_dst', date("I"), 'dst'),
