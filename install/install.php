@@ -652,7 +652,7 @@ switch ($current_step)
 		// Liste des convertisseurs
 		if (file_exists(ROOT . 'install/converters/'))
 		{
-			class Convert {}
+			include(ROOT . 'install/convert.' . PHPEXT);
 
 			$fd = opendir(ROOT . 'install/converters/');
 			while ($file = readdir($fd))
