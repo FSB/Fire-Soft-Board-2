@@ -232,7 +232,7 @@ $GLOBALS['faq_data'] = array (
     ),
 	'img' =>
 	array (
-		'question' => 'Comment poster une image sur le forum',
+		'question' => 'Comment poster une image sur le forum ?',
 		'answer' => 'Pour poster une image sur le forum utilisez la balise &#91;img&#93;.<br />
 			Voici un exemple d\'utilisation :
 			[code][img]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img][/code]
@@ -253,8 +253,9 @@ $GLOBALS['faq_data'] = array (
 			[img:alt=Texte au survol,title=Texte au survol]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]
 			<br /><br />
 			Vous pouvez donner une position flottante à votre image comme ceci :
-			[code][img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img] Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum. Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné...<br />
-			[img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img] Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.
+			[code][img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]
+            Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.[/code]<br />
+			[img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum. 
 		',
 	),
     'list' => 
