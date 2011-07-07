@@ -255,7 +255,8 @@ $GLOBALS['faq_data'] = array (
 			Vous pouvez donner une position flottante à votre image comme ceci :
 			[code][img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]
             Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.[/code]<br />
-			[img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum. 
+			[img:float=left]http://www.fire-soft-board.com/fsb/tpl/WhiteSummer/img/logo.png[/img]Ce texte sera positionné de façon flottante à coté de l\'image, permettant ainsi une mise en page bien plus agréable sur votre forum.
+			<br /><br /><br /><br /><br /> 
 		',
 	),
     'list' => 
