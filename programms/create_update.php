@@ -30,6 +30,8 @@ define('PHPEXT', 'php');
 // Activer ou non le debugage, utile pour le developpement
 define('DEBUG', TRUE);
 
+define('IN_CLI', (!empty($argc)));
+
 // Protection de la page
 if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
 {
@@ -95,7 +97,7 @@ function fsb_import($filename)
 Fsb::$debug = new Debug();
 
 // Inclusion des fonctions / classes communes à toutes les pages
-include_once(ROOT . 'config/config.' . PHPEXT);
+@include_once(ROOT . 'config/config.' . PHPEXT);
 fsb_import('csts');
 fsb_import('globals');
 fsb_import('fcts_common');
@@ -458,11 +460,8 @@ function check_added_files($add)
 }
 
 // Header XML
-function add_header()
+function add_header($from, $to)
 {
-	$from = $_POST['version_from'];
-	$to = $_POST['version_to'];
-
 	$code = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 	$code .= '<?xml-stylesheet href="style/design-mod.xsl" type="text/xsl" ?>' . "\n";
 	$code .= "<mod>\n";
@@ -527,12 +526,12 @@ function create_dir($code, $add, $from)
 }
 
 // Création du fichier de mise à jour
-function create_update($from, $to)
+function create_update($from, $to, $from_version, $to_version)
 {
 	$analyse = analyse_directories($from, $to, $to);
 	$analyse = sort_directories($analyse);
 
-	$code = add_header();
+	$code = add_header($from_version, $to_version);
 	$code .= check_added_files($analyse['add']);
 	$code .= check_updated_files($analyse['update'], $from, $to);
 	$code .= add_footer();
@@ -543,16 +542,35 @@ function create_update($from, $to)
 }
 
 // Main
-if (isset($_POST['submit']))
+if (IN_CLI)
 {
-	$from = $_POST['from'];
-	if ($from[strlen($from) - 1] != '/') $from .= '/';
-	$to = $_POST['to'];
-	if ($to[strlen($to) - 1] != '/') $to .= '/';
-	$code = create_update($from, $to);
+	if ($argc != 5)
+	{
+		echo 'version_source version_destination path_soruce path_destination';
+	}
+	else
+	{
+		$from = $argv[3];
+		if ($from[strlen($from) - 1] != '/') $from .= '/';
+		$to = $argv[4];
+		if ($to[strlen($to) - 1] != '/') $to .= '/';
+		echo create_update($from, $to, $argv[1], $argv[2]);
+	}
 }
+else
+{
+	if (isset($_POST['submit']))
+	{
+		$from_version = $_POST['version_from'];
+		$to_version = $_POST['version_to'];
 
-?>
+		$from = $_POST['from'];
+		if ($from[strlen($from) - 1] != '/') $from .= '/';
+		$to = $_POST['to'];
+		if ($to[strlen($to) - 1] != '/') $to .= '/';
+		$code = htmlspecialchars(create_update($from, $to, $from_version, $to_version));
+	}
+	echo <<<LIH
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
@@ -560,7 +578,7 @@ if (isset($_POST['submit']))
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 </head>
 <body>
-	<?php if (isset($code)) echo '<pre>' . htmlspecialchars($code) . '</pre>'; ?>
+	<pre>{$code}</pre>
 	<form action="create_update.php" method="post">
 		Chemin vers dossier source : <input type="text" name="from" /><br />
 		Chemin vers dossier a comparer : <input type="text" name="to" /><br /><br />
@@ -570,3 +588,7 @@ if (isset($_POST['submit']))
 	</form>
 </body>
 </html>
+LIH;
+}
+
+# EOF
