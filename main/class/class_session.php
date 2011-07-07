@@ -97,7 +97,7 @@ class Session extends Fsb_model
 	{
 		// Recuperation de l'IP, du user_agent et de l'ID de session
 		$this->ip = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
-		$this->user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : null;
+		$this->user_agent = htmlspecialchars((isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : null);
 		$this->get_sid();
 
 		// Recuperation de la page
