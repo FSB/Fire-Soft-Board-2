@@ -459,6 +459,7 @@ class Fsb_frame_child extends Fsb_frame
 		if ($total_page > 1)
 		{
 			Fsb::$tpl->set_switch('topic_pagination');
+            $this->tag_title = Parser::title($this->topic_data['t_title']) . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$session->lang('page') . ' ' . $this->page . Fsb::$session->getStyle('other', 'title_separator') . Fsb::$cfg->get('forum_name');
 		}
 
 		// On regarde si le membre peut creer des messages
