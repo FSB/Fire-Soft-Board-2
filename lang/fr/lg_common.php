@@ -165,7 +165,7 @@ return (array (
 	'forum_menu_read' => 'Messages',
 	'forum_menu_own_posts' => 'postés',
 	'forum_menu_not_read' => 'Messages non lus',
-	'forum_menu_mp' => 'privés',
+	'forum_menu_mp' => 'Messagerie privée',
 	'forum_menu_portail' => 'Portail',
 	'forum_menu_portail_explain' => 'Accéder au portail du forum',
 	'forum_menu_search' => 'Rechercher',
