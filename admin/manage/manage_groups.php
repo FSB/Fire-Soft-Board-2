@@ -118,6 +118,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 				'NAME' =>			($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
 				'DESC' =>			($row['g_type'] == GROUP_SPECIAL) ? Fsb::$session->lang('adm_group_is_special') : $row['g_desc'],
 				'COUNT' =>			sprintf(String::plural('adm_group_count', $row['g_count']), $row['g_count']),
+				'URL' =>            sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $row['g_id']),
 				'STYLE' =>			$row['g_color'],
 				'SEPARATOR' =>		$separator,
 
