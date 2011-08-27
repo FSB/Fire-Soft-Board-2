@@ -77,6 +77,7 @@ class Forum extends Fsb_model
 				'IS_READ' =>		$is_read,
 				'IS_LAST_READ' =>	$is_last_read,
 				'IS_LOCKED' =>		($forum['f_status'] == LOCK) ? true : false,
+				'DISPLAY_MODERATORS' => ($forum['f_display_moderators']) ? true : false,
 
 				'U_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum['f_id']),
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $forum['f_last_t_id']),

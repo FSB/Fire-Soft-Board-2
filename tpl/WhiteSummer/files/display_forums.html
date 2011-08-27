@@ -36,10 +36,12 @@
 					<if content="$cat.forum.subforum.LAST_ROW"></span></if>
 				</block>
 				<switch name="ac_mods_forums_moderators">
-					<block name="cat.forum.moderator">
-						<if content="$cat.forum.moderator.FIRST_ROW"><br /><span class="moderators"><span>{LG_FORUM_MODERATORS} :</span></if>
-						<a href="{cat.forum.moderator.URL}" {cat.forum.moderator.STYLE}>{cat.forum.moderator.NAME}</a><if content="$cat.forum.moderator.LAST_ROW"></span><else>, </if>
-					</block>
+					<if content="$cat.forum.DISPLAY_MODERATORS">
+						<block name="cat.forum.moderator">
+							<if content="$cat.forum.moderator.FIRST_ROW"><br /><span class="moderators"><span>{LG_FORUM_MODERATORS} :</span></if>
+							<a href="{cat.forum.moderator.URL}" {cat.forum.moderator.STYLE}>{cat.forum.moderator.NAME}</a><if content="$cat.forum.moderator.LAST_ROW"></span><else>, </if>
+						</block>
+					</if>
 				</switch>
 			</td>
 			<td width="120" align="center">{cat.forum.TOTAL_TOPIC}<br />{cat.forum.TOTAL_POST}</td>
