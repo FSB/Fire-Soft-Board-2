@@ -112,6 +112,7 @@ CREATE TABLE fsb2_forums (
   f_approve tinyint(4) NOT NULL default '0',
   f_color varchar(255) NOT NULL default '',
   f_display_moderators tinyint(4) NOT NULL default '1',
+  f_display_subforums tinyint(4) NOT NULL default '1',
   PRIMARY KEY  (f_id),
   KEY f_right_left (f_left, f_right)
 ) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

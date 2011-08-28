@@ -242,6 +242,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->data['f_rules'] =			'';
 			$this->data['f_approve'] =			IS_APPROVED;
 			$this->data['f_display_moderators'] = true;
+			$this->data['f_display_subforums'] = true;
 			$this->data['f_color'] =			'';
 			$default_topic_type =				array(count($list_topic_type) - 1);
 		}
@@ -297,6 +298,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'FORUM_GLOBAL_ANNOUNCE' =>	($this->data['f_global_announce']) ? true : false,
 			'FORUM_APPROVE' =>			($this->data['f_approve']) ? true : false,
 		    'FORUM_DISPLAY_MODERATORS' => ($this->data['f_display_moderators']) ? true : false,
+		    'FORUM_DISPLAY_SUBFORUMS' => ($this->data['f_display_subforums']) ? true : false,
 			'FORUM_PRUNE_TIME' =>		$this->data['f_prune_time'],
 			'FORUM_MAP_FP_ONLY' =>		($this->data['f_map_first_post'] == MAP_FP_ONLY) ? true : false,
 			'FORUM_MAP_ALL_POST' =>		($this->data['f_map_first_post'] == MAP_ALL_POST) ? true : false,
@@ -343,6 +345,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->data['f_global_announce'] =		intval(Http::request('f_global_announce', 'post'));
 		$this->data['f_approve'] =				intval(Http::request('f_approve', 'post'));
 		$this->data['f_display_moderators'] =	intval(Http::request('f_display_moderators', 'post'));
+		$this->data['f_display_subforums'] =	intval(Http::request('f_display_subforums', 'post'));		
 		$this->data['f_color'] =				Html::set_style(Http::request('f_style_type', 'post'), trim(Http::request('f_style', 'post')), 'class="forum"');
 		$parent =								intval(Http::request('f_parent', 'post'));
 

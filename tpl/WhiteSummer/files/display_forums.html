@@ -27,14 +27,16 @@
 			<td style="{cat.forum.WIDTH}">
 				<h3><a href="{cat.forum.U_FORUM}" class="forumname">{cat.forum.NAME}</a></h3>
 				<if content="$cat.forum.DESCRIPTION">{cat.forum.DESCRIPTION}</if>
-				<block name="cat.forum.subforum">
-					<if content="$cat.forum.subforum.FIRST_ROW"><br /><span class="subforums"><span>{LG_SUBFORUMS} :</span></if>
-					<switch name="is_logged"><if content="!$cat.forum.subforum.IS_READ"><a href="{cat.forum.subforum.U_MARKREAD}" title="{LG_MARKREAD_FORUM}"></if></switch>
-					<img <if content="$cat.forum.subforum.IS_READ">src="{IMG_SUBFORUM_UNREAD}" alt="{LG_READ_POSTS}" title="{LG_READ_POSTS}"<else>src="{IMG_SUBFORUM_READ}" alt="{LG_UNREAD_POSTS}" title="{LG_UNREAD_POSTS}"</if> />
-					<switch name="is_logged"><if content="!$cat.forum.subforum.IS_READ"></a></if></switch>
-					{cat.forum.subforum.NAME}
-					<if content="$cat.forum.subforum.LAST_ROW"></span></if>
-				</block>
+				<if content="$cat.forum.DISPLAY_SUBFORUMS">
+					<block name="cat.forum.subforum">
+						<if content="$cat.forum.subforum.FIRST_ROW"><br /><span class="subforums"><span>{LG_SUBFORUMS} :</span></if>
+						<switch name="is_logged"><if content="!$cat.forum.subforum.IS_READ"><a href="{cat.forum.subforum.U_MARKREAD}" title="{LG_MARKREAD_FORUM}"></if></switch>
+						<img <if content="$cat.forum.subforum.IS_READ">src="{IMG_SUBFORUM_UNREAD}" alt="{LG_READ_POSTS}" title="{LG_READ_POSTS}"<else>src="{IMG_SUBFORUM_READ}" alt="{LG_UNREAD_POSTS}" title="{LG_UNREAD_POSTS}"</if> />
+						<switch name="is_logged"><if content="!$cat.forum.subforum.IS_READ"></a></if></switch>
+						{cat.forum.subforum.NAME}
+						<if content="$cat.forum.subforum.LAST_ROW"></span></if>
+					</block>
+				</if>
 				<switch name="ac_mods_forums_moderators">
 					<if content="$cat.forum.DISPLAY_MODERATORS">
 						<block name="cat.forum.moderator">
