@@ -215,7 +215,7 @@ INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (3, 'modo', '', 1, 0, 'class="modo"', 0, 0);
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (4, 'modosup', '', 1, 0, 'class="modosup"', 0, 0);
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (5, 'admin', '', 1, 0, 'class="admin"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (6, 'Admin', '', 3, 0, '', 0, 0);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (6, 'founder', '', 3, 0, '', 0, 0);
 
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (2, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0);
