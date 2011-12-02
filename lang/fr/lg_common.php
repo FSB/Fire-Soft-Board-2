@@ -18,6 +18,7 @@ return (array (
 	'reset' => 'Annuler',
 	'edit' => 'Editer',
 	'delete' => 'Supprimer',
+	'delete_all' => 'Tout supprimer',
 	'lock' => 'Verrouiller',
 	'unlock' => 'Déverrouiller',
 	'check' => 'Cocher',
