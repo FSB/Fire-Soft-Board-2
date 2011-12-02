@@ -10,7 +10,7 @@
 
 return (array (
   'log_admin_log_delete' => 'Suppression d\'une ou plusieurs lignes de log dans le fichier log: <i>%s</i>',
-  'log_admin_log_delete_all' => 'Suppresionde toutes les lignes de log dans le fichier log: <i>%s</i>',
+  'log_admin_log_delete_all' => 'Suppresion de toutes les lignes de log dans le fichier log: <i>%s</i>',
   'log_admin_contact_log_add' => 'Création du champ de contact: <i>%s</i>',
   'log_admin_contact_log_edit' => 'Edition du champ de contact: <i>%s</i>',
   'log_admin_contact_log_delete' => 'Suppression du champ de contact: <i>%s</i>',

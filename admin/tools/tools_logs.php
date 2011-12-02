@@ -126,7 +126,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 	/**
 	 * Supprime des lignes du fichier log. Un log "suppression" sera automatiquement
-	 * rajouter dans l'administration.
+	 * rajoute dans l'administration.
 	 */
 	public function page_delete_log_error()
 	{
@@ -145,7 +145,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 	/**
 	 * Supprime toutes les lignes du fichier log. Un log "suppression" sera automatiquement
-	 * rajouter dans l'administration.
+	 * rajoute dans l'administration.
 	 */
 	public function page_delete_all_log_error()
 	{
