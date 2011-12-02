@@ -119,7 +119,10 @@ class Debug extends Fsb_model
 		{
 			$request_method = (isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 			$request_uri = (isset($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
-			$request_uri .= '?' . $_SERVER['QUERY_STRING'];
+			if (!empty($_SERVER['QUERY_STRING']))
+			{
+				$request_uri .= '?' . $_SERVER['QUERY_STRING'];
+			}
 
 			$this->url_begin = str_replace('&', '&amp;', $request_uri) . ((strpos($request_uri, '?') != false) ? '&amp;' : '?');
 			$this->url_end = '&amp;method=' . $request_method . (($request_method == 'POST') ? '&amp;post_ary=' . urlencode(serialize($_POST)) : '');
