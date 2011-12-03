@@ -318,6 +318,12 @@ fieldset div.left
 	float: left;
 }
 
+fieldset div.right
+{
+	background-color: transparent;
+	border: none;
+}
+
 /* Onglets de page */
 .module_border
 {
