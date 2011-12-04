@@ -16,7 +16,7 @@ return (array (
   'adm_tpl_diff' => 'Comparaison',
   'adm_tpl_install' => 'Installer un thème',
   'adm_tpl_choose' => 'Choisissez un thème sur votre PC',
-  'adm_tpl_autor' => 'Auteur',
+  'adm_tpl_author' => 'Auteur',
   'adm_tpl_web' => 'Site WEB',
   'adm_tpl_license' => 'Licence du thème',
   'adm_tpl_edit' => 'Editer les fichiers templates',

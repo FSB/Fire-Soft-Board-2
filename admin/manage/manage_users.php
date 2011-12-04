@@ -228,6 +228,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'u_login' =>		trim(Http::request('u_login', 'post')),
 			'u_nickname' =>		trim(Http::request('u_nickname', 'post')),
 			'u_password' =>		trim(Http::request('u_password', 'post')),
+			'u_confirmation' => trim(Http::request('u_confirmation', 'post')),
 			'u_email' =>		trim(Http::request('u_email', 'post')),
 		);
 
@@ -252,6 +253,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Display::message('adm_users_add_error_password');
 		}
+		
+		if ($data['u_password'] != $data['u_confirmation'])
+		{
+			Display::message('adm_users_add_error_confirmation');
+		}		
 
 		// Verification du pseudonyme
 		if (User::nickname_exists($data['u_nickname']))
