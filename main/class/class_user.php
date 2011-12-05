@@ -96,7 +96,7 @@ class User extends Fsb_model
 	/**
 	 * Suppression d'un utilisateur
 	 *
-	 * @param int|array $idx ID du ou des membres à supprimer
+	 * @param int|array $idx ID du ou des membres a supprimer
 	 * @param string $type Type de suppression : visitor pour passer les messages en invite, topics pour tout supprimer
 	 */
 	public static function delete($idx, $type)
@@ -666,7 +666,7 @@ class User extends Fsb_model
 	 *
 	 * @param int $u_id ID du membre
 	 * @param array $data Informations sur le membre
-	 * @return bool Si l'Email a été envoyé
+	 * @return bool Si l'Email a ete envoye
 	 */
 	public static function confirm_register($u_id, array $data)
 	{
