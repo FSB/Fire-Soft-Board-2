@@ -153,6 +153,7 @@ if (Fsb::$session->is_authorized('online_box'))
 		$sql = 'SELECT u_id, u_nickname, u_color, u_activate_hidden
 				FROM ' . SQL_PREFIX . 'users
 				WHERE u_last_visit > ' . mktime(0, 0, 0, date('m', CURRENT_TIME), date('d', CURRENT_TIME), date('Y', CURRENT_TIME)) . '
+					AND u_joined <> u_last_visit
 					AND u_id <> ' . VISITOR_ID . '
 				ORDER BY u_auth DESC, u_nickname, u_id';
 		$result = Fsb::$db->query($sql);
