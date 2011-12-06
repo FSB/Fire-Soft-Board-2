@@ -461,6 +461,10 @@ class Fsb_frame_child extends Fsb_frame
 		$this->print_result();
 	}
 
+	/**
+	 * Cherche tous les sujets non lus auxquels on a participe
+	 *
+	 */
 	public function search_ownnewposts()
 	{
 		// L'invite ne peut acceder a cette page
@@ -506,8 +510,11 @@ class Fsb_frame_child extends Fsb_frame
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
 					ON t.t_id = tr.t_id
 						AND tr.u_id = ' . intval(Fsb::$session->id()) . '
+				LEFT JOIN ' . SQL_PREFIX . 'posts p
+					ON t.t_id = p.t_id
 				WHERE (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
-					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'];
+					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] . '
+					AND p.u_id = tr.u_id';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
@@ -663,6 +670,7 @@ class Fsb_frame_child extends Fsb_frame
 		switch ($this->mode)
 		{
 			case 'newposts' :
+			case 'ownnewposts' :
 				$action_f = (array) Http::request('action_f', 'post');
 				if ($action_f)
 				{
