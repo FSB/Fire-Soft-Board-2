@@ -165,6 +165,7 @@ return (array (
 	'forum_menu_userlist_explain' => 'Voir la liste des membres du forum',
 	'forum_menu_read' => 'Messages',
 	'forum_menu_own_posts' => 'Mes messages',
+	'forum_menu_own_new_posts' => 'Non lus',
 	'forum_menu_not_read' => 'Nouveaux messages',
 	'forum_menu_mp' => 'Messagerie',
 	'forum_menu_portail' => 'Portail',

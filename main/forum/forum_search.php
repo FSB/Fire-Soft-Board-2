@@ -220,6 +220,7 @@ class Fsb_frame_child extends Fsb_frame
 				'author' =>			'search_author',
 				'author_topic' =>	'search_author_topic',
 				'ownposts' =>		'search_ownposts',
+				'ownnewposts' =>	'search_ownnewposts',
 				'newposts' =>		'search_newposts',
 				'myself' =>			'search_myself',
 				'notification' =>	'search_notification',
@@ -449,13 +450,87 @@ class Fsb_frame_child extends Fsb_frame
 	{
 		if (!Fsb::$session->is_logged())
 		{
-			Http::redirect(ROOT . 'index.' . PHPEXT);
+			Display::message('not_allowed');
 		}
 
 		$this->where = 'p.u_id = ' . intval(Fsb::$session->id());
 
 		// Affichage sous forme de sujets
 		$this->print = 'topic';
+
+		$this->print_result();
+	}
+
+	public function search_ownnewposts()
+	{
+		// L'invite ne peut acceder a cette page
+		if (!Fsb::$session->is_logged())
+		{
+			Display::message('not_allowed');
+		}
+
+		$this->nav[] = array(
+			'name' =>		Fsb::$session->lang('search_nav_not_read'),
+			'url' =>		'',
+		);
+
+		// Recuperation du module
+		$unread_array = array('list', 'forums');
+		$this->module = Http::request('module');
+		if (!$this->module || !in_array($this->module, $unread_array))
+		{
+			if (!$this->module = Http::getcookie('unread_module'))
+			{
+				$this->module = 'list';
+			}
+		}
+		Http::cookie('unread_module', $this->module, CURRENT_TIME + ONE_MONTH);
+
+		// Creation de la liste des modules
+		foreach ($unread_array AS $m)
+		{
+			Fsb::$tpl->set_blocks('module', array(
+				'IS_SELECT' =>	($this->module == $m) ? true : false,
+				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=ownnewposts&amp;module=' . $m),
+				'NAME' =>		Fsb::$session->lang('search_unread_module_' . $m),
+			));
+		}
+
+		Fsb::$tpl->set_vars(array(
+			'MENU_HEADER_TITLE' =>	Fsb::$session->lang('search_title_not_read'),
+		));
+
+		// Generation des messages
+		$sql = 'SELECT t.t_last_p_id, tr.tr_last_time
+				FROM ' . SQL_PREFIX . 'topics t
+				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
+					ON t.t_id = tr.t_id
+						AND tr.u_id = ' . intval(Fsb::$session->id()) . '
+				WHERE (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
+					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'];
+		$result = Fsb::$db->query($sql);
+		while ($row = Fsb::$db->row($result))
+		{
+			$this->idx[] = $row['t_last_p_id'];
+		}
+		Fsb::$db->free($result);
+
+		switch ($this->module)
+		{
+			case 'list' :
+				$this->print = 'topic';
+			break;
+
+			case 'forums' :
+				$this->print = 'forum';
+			break;
+		}
+
+		Fsb::$tpl->set_switch('use_module');
+		Fsb::$tpl->set_switch('can_check');
+		Fsb::$tpl->set_vars(array(
+			'CHECK_LANG' =>		Fsb::$session->lang('search_markread'),
+		));
 
 		$this->print_result();
 	}
