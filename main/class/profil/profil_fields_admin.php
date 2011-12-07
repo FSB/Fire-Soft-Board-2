@@ -49,6 +49,7 @@ class Profil_fields_admin extends Profil_fields
 		$return['pf_html_type'] =	$type;
 		$return['pf_regexp'] =		Http::request('pf_regexp', 'post');
 		$return['pf_lang'] =		trim(Http::request('pf_lang', 'post'));
+		$return['pf_lang_desc'] =	trim(Http::request('pf_desc', 'post'));
 		$return['pf_output'] =		trim(Http::request('pf_output', 'post'));
 		$return['pf_topic'] =		intval(Http::request('pf_topic', 'post'));
 		$return['pf_register'] =	intval(Http::request('pf_register', 'post'));

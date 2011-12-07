@@ -78,6 +78,7 @@ class Profil_fields_forum extends Profil_fields
 				'NAME' =>		$name,
 				'VALUE' =>		(is_string($default_value)) ? htmlspecialchars($default_value) : '',
 				'LANG' =>		String::parse_lang($row['pf_lang']),
+				'DESC' =>		String::parse_lang($row['pf_lang_desc']),
 				'MAXLENGTH' =>	$row['pf_maxlength'],
 				'SIZELIST' =>	$row['pf_sizelist'],
 			));
