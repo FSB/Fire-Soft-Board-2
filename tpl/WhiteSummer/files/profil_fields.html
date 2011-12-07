@@ -2,7 +2,9 @@
 	<tr>
 		<th>
 			<label for="pf_id_{field.NAME}">{field.LANG} :</label>
-			<br /><span class="small">{field.DESC}</span>
+			<if content="$field.DESC">
+				<br /><span class="small">{field.DESC}</span>
+			</if>
 		</th>
 		<td>
 			<if content="$field.TYPE == 'text'">

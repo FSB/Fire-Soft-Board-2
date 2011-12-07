@@ -41,7 +41,7 @@ return (array (
   'adm_pf_type' => 'Type de champ',
   'adm_pf_change_type' => 'Changer de type',
   'adm_pf_name_explain' => 'Le champ qui s\'affichera dans les profils pour ce formulaire personnel. Vous pouvez utiliser une clef de langue en mettant le texte suivant: {LG_CLEF_DE_LANGUE} (et donc en créant une clef de langue nommée "clef_de_langue" dans l\'administration des langues).',
-  'adm_pf_desc_explain' => 'L\'explication du champ qui s\'affichera dans les profils pour ce formulaire personnel. Vous pouvez utiliser une clef de langue en mettant le texte suivant: {LG_CLEF_DE_LANGUE} (et donc en créant une clef de langue nommée "clef_de_langue" dans l\'administration des langues).',
+  'adm_pf_desc_explain' => 'La description du champ qui s\'affichera dans les profils pour ce formulaire personnel. Vous pouvez utiliser une clef de langue en mettant le texte suivant: {LG_CLEF_DE_LANGUE} (et donc en créant une clef de langue nommée "clef_de_langue" dans l\'administration des langues).',
   'adm_pf_regexp' => 'Expression de vérification du champ',
   'adm_pf_regexp_explain' => 'N\'utilisez ce champ que si vous savez ce que vous faîtes ! Il permet de vérifier la validité des champs personnels de type "texte court" à l\'aide d\'une <a href="http://fr.php.net/manual/fr/ref.pcre.php">expression régulière</a>. Par exemple pour vérifier la validité d\'une adresse email entrez: <strong>^.*?@.*?\\..{2,4}$</strong>',
   'adm_pf_maxlength' => 'Nombre maximum de caractères',
