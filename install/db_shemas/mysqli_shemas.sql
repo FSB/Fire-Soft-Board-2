@@ -379,6 +379,7 @@ CREATE TABLE fsb2_profil_fields (
   pf_regexp varchar(255) NOT NULL default '',
   pf_type tinyint(4) NOT NULL default '0',
   pf_lang varchar(255) NOT NULL default '',
+  pf_lang_desc varchar(255) NOT NULL default '',
   pf_order mediumint(9) NOT NULL default '0',
   pf_groups text NOT NULL,
   pf_topic tinyint(4) NOT NULL default '0',
