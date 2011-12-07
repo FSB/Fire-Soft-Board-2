@@ -1,6 +1,9 @@
 <block name="field">
 	<tr>
-		<th><label for="pf_id_{field.NAME}">{field.LANG} :</label></th>
+		<th>
+			<label for="pf_id_{field.NAME}">{field.LANG} :</label>
+			<br /><span class="small">{field.DESC}</span>
+		</th>
 		<td>
 			<if content="$field.TYPE == 'text'">
 				<input type="text" name="{field.NAME}" id="pf_id_{field.NAME}" value="{field.VALUE}" size="35" maxlength="{field.MAXLENGTH}" />
