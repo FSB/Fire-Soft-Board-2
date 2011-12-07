@@ -95,6 +95,7 @@ class Highlight_php extends Highlight
 		$len = strlen($str);
 
 		$result = '';
+		$tmp = '';
 		$word_open = false;
 		for ($i = 0; $i < $len; $i++)
 		{

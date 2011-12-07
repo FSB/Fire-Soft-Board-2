@@ -116,8 +116,12 @@ function edit_post_dynamic(id, post_id, is_first_post)
 */
 function advanced_post_dynamic(id)
 {
+	if ($('title_' + id + '_ajax'))
+	{
+		$('title_' + id + '_ajax').name = 'post_title';
+	}
+
 	$(id + '_ajax').name = 'post_map_description';
-	$('title_' + id + '_ajax').name = 'post_title';
 	document.forms['form_dynamic_' + id].submit();
 }
 
