@@ -24,6 +24,7 @@ return (array (
   'install_sgbd' => 'Type de base de données',
   'install_sgbd_explain' => 'Choisissez ici le type de base de données que vous souhaitez utiliser (et disponible sur le serveur de votre hébergeur). Si vous ne savez pas comment remplir ce champ laissez la valeur par défaut (MySQL)',
   'install_information' => 'Informations',
+  'install_set_config' => 'Le fichier de configuration n\'a pas pu être écrit. Veuillez copier le code ci-dessous et le coller dans le fichier <i>~/config/config.php</i>',
   'install_sgbd_connect' => 'Connexion à la base de données',
   'install_sgbd_connect_explain' => 'Vous devez entrer ici les identifiants de connexion à votre base de données. Ces identifiants vous ont été fournis par votre hébergeur. Si ce n\'est pas le cas veuillez consultez la FAQ (Foire Aux Questions) de celui-ci pour vous renseigner à ce sujet, ou bien contactez le support de votre hébergeur.',
   'install_sql_error' => 'Erreur de connexion à la base de données: %s',

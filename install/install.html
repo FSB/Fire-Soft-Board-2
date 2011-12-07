@@ -319,22 +319,35 @@
 
 <switch name="step_end">
 <!-- FIN -->
-	<fieldset>
-		<legend>{LG_INSTALL_INFORMATION}</legend>
-		<div id="desc">{LG_INSTALL_END}</div>
-		<br />
-		<div><a href="../index.php?p=index" id="submit">{LG_INSTALL_GO_FORUM}</a></div>
-	</fieldset>
+	<switch name="config_download">
+		<fieldset>
+			<legend>{LG_INSTALL_INFORMATION}</legend>
+			<div id="desc">
+				{LG_INSTALL_SET_CONFIG}
+				<hr />
+				{CONFIG_CODE}
+			</div>
+			<br />
+			<div><a href="../index.php?p=index" id="submit">{LG_INSTALL_GO_FORUM}</a></div>
+		</fieldset>
+	<else>
+		<fieldset>
+			<legend>{LG_INSTALL_INFORMATION}</legend>
+			<div id="desc">{LG_INSTALL_END}</div>
+			<br />
+			<div><a href="../index.php?p=index" id="submit">{LG_INSTALL_GO_FORUM}</a></div>
+		</fieldset>
 
-	<fieldset>
-		<legend>{LG_CONVERTERS}</legend>
-		<div id="desc" style="text-align: left">{LG_CONVERTERS_EXPLAIN}</div>
-		<ul>
-		<block name="convert">
-			<li><a href="{convert.URL}" class="convert">{convert.NAME}</a></li>
-		</block>
-		</ul>
-	</fieldset>
+		<fieldset>
+			<legend>{LG_CONVERTERS}</legend>
+			<div id="desc" style="text-align: left">{LG_CONVERTERS_EXPLAIN}</div>
+			<ul>
+			<block name="convert">
+				<li><a href="{convert.URL}" class="convert">{convert.NAME}</a></li>
+			</block>
+			</ul>
+		</fieldset>
+	</switch>
 </switch>
 </form>
 
