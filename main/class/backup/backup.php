@@ -256,7 +256,7 @@ abstract class Backup extends Fsb_model
 	/**
 	 * Cree le schema CREATE d'une table PostGreSQL
 	 *
-	 * @param string $table Nom de la table pour la creation du shema
+	 * @param string $table Nom de la table pour la creation du schema
 	 * @param string $crlf Caractere de retour a la ligne
 	 * @param bool $drop true pour inserer des ennonces DROP avant la creation des tables
 	 * @return string Schema de la table

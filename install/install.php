@@ -443,7 +443,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 
 	// Execution des requetes d'installations pour la base de donnee
 	@set_time_limit(0);
-	$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_shemas.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_schemas.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query);
@@ -451,7 +451,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	}
 	unset($queries);
 
-	$queries = String::split(';', file_get_contents('db_shemas/data.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/data.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query, 1);
@@ -461,9 +461,9 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	unset($queries);
 
 	// Requetes apres les requetes de donnees ?
-	if (file_exists('db_shemas/' . $sql_dbms . '_end.sql'))
+	if (file_exists('db_schemas/' . $sql_dbms . '_end.sql'))
 	{
-		$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_end.sql'));
+		$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_end.sql'));
 		foreach ($queries AS $query)
 		{
 			$query = preg_replace('#fsb2_#', $sql_prefix, $query);
