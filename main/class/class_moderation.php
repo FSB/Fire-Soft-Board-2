@@ -181,7 +181,7 @@ class Moderation extends Fsb_model
 		// On recupere la liste des sujets a supprimer
 		$sql = 'SELECT t_id
 				FROM ' . SQL_PREFIX . 'topics
-				WHERE ' . $where . ($f_id ? ' AND t_trace <> ' . $f_id : '');
+				WHERE ' . $where . ($f_id ? ' AND t_trace <> ' . $f_id);
 		$result = Fsb::$db->query($sql);
 		$topics = array();
 		while ($row = Fsb::$db->row($result))
