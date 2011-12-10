@@ -176,25 +176,42 @@ class Moderation extends Fsb_model
 	 *
 	 * @param string $where Condition de supression des sujets
 	 */
-	public static function delete_topics($where)
+	public static function delete_topics($where, $f_id = null)
 	{
 		// On recupere la liste des sujets a supprimer
 		$sql = 'SELECT t_id
 				FROM ' . SQL_PREFIX . 'topics
-				WHERE ' . $where;
+				WHERE ' . $where . ($f_id ? ' AND t_trace <> ' . $f_id : '');
 		$result = Fsb::$db->query($sql);
 		$topics = array();
 		while ($row = Fsb::$db->row($result))
 		{
-			$topic[] = $row['t_id'];
+			$topics[] = $row['t_id'];
 		}
 		Fsb::$db->free($result);
 
-		if ($topic)
+		if ($topics)
 		{
-			Moderation::delete_posts('t_id IN (' . implode(', ', $topic) . ')');
+			Moderation::delete_posts('t_id IN (' . implode(', ', $topics) . ')');
 		}
+        
+        if($f_id)
+        {
+            Moderation::delete_traces($where);
+        }
 	}
+    
+	/**
+	 * Supprime les traces des sujets
+	 *
+	 * @param string $where Condition de supression des traces
+	 */
+    public static function delete_traces($where)
+    {
+        Fsb::$db->update('topics', array(
+            't_trace' => 0
+		), 'WHERE ' . $where);
+    }
 
 	/**
 	 * Suppression des sujets
