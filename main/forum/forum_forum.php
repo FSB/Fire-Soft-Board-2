@@ -82,7 +82,7 @@ class Fsb_frame_child extends Fsb_frame
 	 *
 	 * @var array
 	 */
-	public $check_order = array('t_last_p_time', 't_title', 't_total_view', 't_total_post', 'f_u_nickname');
+	public $check_order = array('t_time', 't_last_p_time', 't_title', 't_total_view', 't_total_post', 'f_u_nickname');
 	
 	/**
 	 * Ordre par défaut
@@ -488,6 +488,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Liste de classement des sujets
 		$list_order = Html::make_list('order', $this->order, array(
 			't_last_p_time' =>		Fsb::$session->lang('forum_order_time'),
+            't_time' =>		        Fsb::$session->lang('forum_order_creation'),
 			't_title' =>			Fsb::$session->lang('forum_order_title'),
 			't_total_view' =>		Fsb::$session->lang('forum_order_view'),
 			't_total_post' =>		Fsb::$session->lang('forum_order_post'),

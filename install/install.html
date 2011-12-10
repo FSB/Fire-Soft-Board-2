@@ -42,8 +42,15 @@
 		<switch name="localhost">
 			<fieldset>
 				<legend>{LG_INSTALL_QUICK}</legend>
-				<div id="desc">{LG_INSTALL_QUICK_EXPLAIN}</div>
+				<div id="desc">{INSTALL_QUICK_EXPLAIN}</div>
 				<br />
+				<span id="db_login_fast" name="db_login_fast" style="display: none;">
+				<dl>
+					<dt><label>{LG_INSTALL_SQL_PASSWORD} :</label></dt>
+					<dd><input type="password" name="sql_password" value="" size="25" /></dd>
+				</dl>
+				<br />
+				</span>
 				<div><input type="submit" name="quick_install" value="{LG_SUBMIT}" id="submit" /></div>
 			</fieldset>
 		</switch>
@@ -256,7 +263,7 @@
 		</dl>
 		<dl>
 			<dt><label for="config_cookie_id">{LG_INSTALL_CONFIG_COOKIE} :</label><br /><span>{LG_INSTALL_CONFIG_COOKIE_EXPLAIN}</span></dt>
-			<dd><input type="text" name="config_cookie" id="config_cookie_id" size="35" value="fsb2_" /></dd>
+			<dd><input type="text" name="config_cookie" id="config_cookie_id" size="35" value="{CONFIG_COOKIE}" /></dd>
 		</dl>
 		<dl>
 			<dt><label>{LG_INSTALL_UTC} :</label></dt>
@@ -320,8 +327,8 @@
 	</fieldset>
 
 	<fieldset>
-		<legend>{LG_CONVERTORS}</legend>
-		<div id="desc" style="text-align: left">{LG_CONVERTORS_EXPLAIN}</div>
+		<legend>{LG_CONVERTERS}</legend>
+		<div id="desc" style="text-align: left">{LG_CONVERTERS_EXPLAIN}</div>
 		<ul>
 		<block name="convert">
 			<li><a href="{convert.URL}" class="convert">{convert.NAME}</a></li>

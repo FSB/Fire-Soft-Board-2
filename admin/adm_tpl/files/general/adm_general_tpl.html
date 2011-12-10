@@ -26,32 +26,37 @@
 	<block name="tpl">
 	<fieldset>
 		<legend>{tpl.NAME}</legend>
-		<dl>
-			<dt class="strong">{LG_ADM_TPL_AUTOR} :</dt>
-			<dd>{tpl.AUTOR}</dd>
-		</dl>
-		<dl>
-			<dt class="strong">{LG_ADM_TPL_WEB} :</dt>
-			<dd><b>{tpl.WEB}</b></dd>
-		</dl>
-		<dl>
-			<dt class="strong">{LG_ADM_TPL_LICENSE} :</dt>
-			<dd>{tpl.LICENSE}</dd>
-		</dl>
-		<dl>
-			<dt class="strong">{LG_ADM_TPL_USED_BY} :</dt>
-			<dd>{tpl.USED_BY}</dd>
-		</dl>
-		<dl>
-			<dt class="strong">{LG_ADM_TPL_OPT} :</dt>
-			<dd>
-				<ul>
-					<li><b><a href="{tpl.U_EDIT_TPL}">{LG_ADM_TPL_EDIT}</a></b></li>
-					<li><b><a href="{tpl.U_EDIT_CSS}">{LG_ADM_TPL_CSS}</a></b></li>
-					<li><b><a href="{tpl.U_EDIT_IMG}">{LG_ADM_TPL_IMG}</a></b></li>
-				</ul>
-			</dd>
-		</dl>
+		<div class="left">
+			<dl>
+				<dt class="strong">{LG_ADM_TPL_AUTHOR} :</dt>
+				<dd>{tpl.AUTHOR}</dd>
+			</dl>
+			<dl>
+				<dt class="strong">{LG_ADM_TPL_WEB} :</dt>
+				<dd><b>{tpl.WEB}</b></dd>
+			</dl>
+			<dl>
+				<dt class="strong">{LG_ADM_TPL_LICENSE} :</dt>
+				<dd>{tpl.LICENSE}</dd>
+			</dl>
+			<dl>
+				<dt class="strong">{LG_ADM_TPL_USED_BY} :</dt>
+				<dd>{tpl.USED_BY}</dd>
+			</dl>
+			<dl>
+				<dt class="strong">{LG_ADM_TPL_OPT} :</dt>
+				<dd>
+					<ul>
+						<li><b><a href="{tpl.U_EDIT_TPL}">{LG_ADM_TPL_EDIT}</a></b></li>
+						<li><b><a href="{tpl.U_EDIT_CSS}">{LG_ADM_TPL_CSS}</a></b></li>
+						<li><b><a href="{tpl.U_EDIT_IMG}">{LG_ADM_TPL_IMG}</a></b></li>
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		<div class="right">
+			<img src="{tpl.SCREENSHOT}" alt="{tpl.NAME}" />
+		</div>
 	</fieldset>
 	<br />
 	</block>

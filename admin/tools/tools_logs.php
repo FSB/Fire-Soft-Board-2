@@ -76,6 +76,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$call->post(array(
 			'submit_delete' =>		':page_delete_log_error',
+			'submit_delete_all' =>	':page_delete_all_log_error',
 		));
 
 		$this->page_default_logs();
@@ -125,7 +126,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 	/**
 	 * Supprime des lignes du fichier log. Un log "suppression" sera automatiquement
-	 * rajouter dans l'administration.
+	 * rajoute dans l'administration.
 	 */
 	public function page_delete_log_error()
 	{
@@ -138,6 +139,21 @@ class Fsb_frame_child extends Fsb_admin_frame
 	
 			Log::add(Log::ADMIN, 'log_delete', Fsb::$session->lang('adm_logs_' . $this->module));
 		}
+
+		Display::message('adm_log_well_delete', 'index.' . PHPEXT . '?p=tools_logs&amp;module=' . $this->module, 'logs');
+	}
+
+	/**
+	 * Supprime toutes les lignes du fichier log. Un log "suppression" sera automatiquement
+	 * rajoute dans l'administration.
+	 */
+	public function page_delete_all_log_error()
+	{
+		$sql = 'DELETE FROM ' . SQL_PREFIX . 'logs
+				WHERE log_type = ' . $this->logs[$this->module];
+		Fsb::$db->query($sql);
+
+		Log::add(Log::ADMIN, 'log_delete_all', Fsb::$session->lang('adm_logs_' . $this->module));
 
 		Display::message('adm_log_well_delete', 'index.' . PHPEXT . '?p=tools_logs&amp;module=' . $this->module, 'logs');
 	}

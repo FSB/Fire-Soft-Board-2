@@ -50,7 +50,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('display_subforums', '0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('forum_description', 'Description de votre forum');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('forum_name', 'Nom du forum');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_path', 'http://localhost/fsb2');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.1');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_id', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_login', 'Genova');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_color', 'class="admin"');
@@ -98,7 +98,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig_fsbcode', '1
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig_img', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_censor', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig', '1');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_last_version', '2.0.1');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_last_version', '2.0.2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board', 'none');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board_message', '');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('sig_max_height', '120');
@@ -195,7 +195,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('post', 'upload', 'upload_extensions', 'put_text', 'array(''size'' => 35)', '');
 
 INSERT INTO fsb2_forums (f_id, f_left, f_right, f_rules, f_cat_id, f_name, f_text, f_parent, f_status, f_total_topic, f_total_post, f_last_p_id, f_level, f_prune_time, f_prune_topic_type, f_type, f_map_default, f_map_first_post, f_location, f_location_view, f_password, f_tpl, f_global_announce) VALUES (1, 1, 4, '', 1, 'Categorie test', '', 0, 0, 1, 1, 1, 0, 0, '', 0, '', 0, '', 0, '', '', 0);
-INSERT INTO fsb2_forums (f_id, f_left, f_right, f_rules, f_cat_id, f_name, f_text, f_parent, f_status, f_total_topic, f_total_post, f_last_p_id, f_last_t_id, f_last_p_time, f_last_u_id, f_last_p_nickname, f_level, f_prune_time, f_prune_topic_type, f_type, f_map_default, f_map_first_post, f_location, f_location_view, f_password, f_tpl, f_global_announce) VALUES (2, 2, 3, '', 1, 'Forum test', 'Forum de test généré lors de l''installation de votre forum', 1, 0, 1, 1, 1, 1, 0, 2, '', 1, 0, '2', 0, 'classic', 1, '', 0, '', '0', 1);
+INSERT INTO fsb2_forums (f_id, f_left, f_right, f_rules, f_cat_id, f_name, f_text, f_parent, f_status, f_total_topic, f_total_post, f_last_p_id, f_last_t_id, f_last_t_title, f_last_p_time, f_last_u_id, f_last_p_nickname, f_level, f_prune_time, f_prune_topic_type, f_type, f_map_default, f_map_first_post, f_location, f_location_view, f_password, f_tpl, f_global_announce) VALUES (2, 2, 3, '', 1, 'Forum test', 'Forum de test généré lors de l''installation de votre forum', 1, 0, 1, 1, 1, 1, 'Sujet de test', 0, 2, '', 1, 0, '2', 0, 'classic', 1, '', 0, '', '0', 1);
 
 INSERT INTO fsb2_fsbcode (fsbcode_id, fsbcode_tag, fsbcode_search, fsbcode_replace, fsbcode_fct, fsbcode_priority, fsbcode_wysiwyg, fsbcode_activated, fsbcode_activated_sig, fsbcode_menu, fsbcode_inline, fsbcode_img, fsbcode_description, fsbcode_list, fsbcode_order) VALUES (1, 'b', '[b]{TEXT}[/b]', '<b>{TEXT}</b>', '', 0, 1, 1, 1, 1, 0, 'bold.gif', '', '', 1);
 INSERT INTO fsb2_fsbcode (fsbcode_id, fsbcode_tag, fsbcode_search, fsbcode_replace, fsbcode_fct, fsbcode_priority, fsbcode_wysiwyg, fsbcode_activated, fsbcode_activated_sig, fsbcode_menu, fsbcode_inline, fsbcode_img, fsbcode_description, fsbcode_list, fsbcode_order) VALUES (2, 'i', '[i]{TEXT}[/i]', '<i>{TEXT}</i>', '', 0, 1, 1, 1, 1, 0, 'italic.gif', '', '', 2);
@@ -219,7 +219,7 @@ INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (3, 'modo', '', 1, 0, 'class="modo"', 0, 0);
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (4, 'modosup', '', 1, 0, 'class="modosup"', 0, 0);
 INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (5, 'admin', '', 1, 0, 'class="admin"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (6, 'Admin', '', 3, 0, '', 0, 0);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (6, 'founder', '', 3, 0, '', 0, 0);
 
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (2, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0);

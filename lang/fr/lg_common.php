@@ -18,6 +18,7 @@ return (array (
 	'reset' => 'Annuler',
 	'edit' => 'Editer',
 	'delete' => 'Supprimer',
+	'delete_all' => 'Tout supprimer',
 	'lock' => 'Verrouiller',
 	'unlock' => 'Déverrouiller',
 	'check' => 'Cocher',
@@ -155,7 +156,7 @@ return (array (
 	'forum_menu_logout' => 'Déconnexion',
 	'forum_menu_admin' => 'Administration',
 	'forum_menu_modo' => 'Modération',
-	'forum_menu_notification' => 'surveillés',
+	'forum_menu_notification' => 'Sujets suivis',
 	'forum_menu_groups' => 'Groupes',
 	'forum_menu_faq' => 'Aide',
 	'forum_menu_faq_explain' => 'Aide sur le fonctionnement de ce forum',
@@ -163,9 +164,9 @@ return (array (
 	'forum_menu_userlist' => 'Membres',
 	'forum_menu_userlist_explain' => 'Voir la liste des membres du forum',
 	'forum_menu_read' => 'Messages',
-	'forum_menu_own_posts' => 'postés',
-	'forum_menu_not_read' => 'Messages non lus',
-	'forum_menu_mp' => 'privés',
+	'forum_menu_own_posts' => 'Mes messages',
+	'forum_menu_not_read' => 'Nouveaux messages',
+	'forum_menu_mp' => 'Messagerie',
 	'forum_menu_portail' => 'Portail',
 	'forum_menu_portail_explain' => 'Accéder au portail du forum',
 	'forum_menu_search' => 'Rechercher',
@@ -479,6 +480,7 @@ return (array (
 	'editor_wysiwyg' => 'Wysiwyg',
 	'editor_wysiwyg_explain' => 'Vous voyez en direct ce que vous écrivez à l\'écran avec les formatages (gras, italique, etc.)',
 	'root_support_active' => 'Support automatique activé',
+	'profil_of' => 'Profil de %s',
 ));
 
 
