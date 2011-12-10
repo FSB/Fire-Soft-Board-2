@@ -46,6 +46,7 @@ class Profil_fields extends Fsb_model
 	public static $type = array(
 		self::TEXT =>		array(
 			'name' =>		'text',
+			'desc' =>		'text',
 			'maxlength' =>	array('min' => 0, 'max' => 255),
 			'regexp' =>		true,
 			'output' =>		true,

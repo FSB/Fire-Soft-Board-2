@@ -5,7 +5,7 @@
 		<legend>{PF_LIST}</legend>
 		<block name="pf">
 			<dl>
-				<dt class="strong">{pf.NAME}</dt>
+				<dt class="strong"<if content="$pf.DESC"> title="{pf.DESC}"</if>>{pf.NAME}</dt>
 				<dd>
 					<a href="{pf.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
 					<a href="{pf.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a>
@@ -39,6 +39,12 @@
 			<dl>
 				<dt><label for="pf_lang_id">{LG_ADM_PF_NAME} :</label><br /><span>{LG_ADM_PF_NAME_EXPLAIN}</span></dt>
 				<dd><input type="text" name="pf_lang" id="pf_lang_id" value="{PF_LANG}" size="35" /></dd>
+			</dl>
+		</switch>
+		<switch name="profile_field_desc">
+			<dl>
+				<dt><label for="pf_desc_id">{LG_ADM_PF_DESC} :</label><br /><span>{LG_ADM_PF_DESC_EXPLAIN}</span></dt>
+				<dd><input type="text" name="pf_desc" id="pf_desc_id" value="{PF_DESC}" size="35" /></dd>
 			</dl>
 		</switch>
 		<switch name="profile_field_maxlength">

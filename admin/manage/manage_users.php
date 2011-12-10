@@ -277,12 +277,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		Fsb::$db->transaction('begin');
-		User::add($data['u_login'], $data['u_nickname'], $data['u_password'], $data['u_email']);
+		$user_id = User::add($data['u_login'], $data['u_nickname'], $data['u_password'], $data['u_email']);
 		Fsb::$db->transaction('commit');
 
 		Log::add(Log::ADMIN, 'users_add', $data['u_nickname']);
 
-		Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
+		if (!User::confirm_register($user_id, $data))
+		{
+			Display::message('adm_users_add_error_send_email');
+		}
+		else
+		{
+			Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
+		}
 	}
 
 	/**

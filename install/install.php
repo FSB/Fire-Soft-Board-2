@@ -443,7 +443,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 
 	// Execution des requetes d'installations pour la base de donnee
 	@set_time_limit(0);
-	$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_shemas.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_schemas.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query);
@@ -451,7 +451,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	}
 	unset($queries);
 
-	$queries = String::split(';', file_get_contents('db_shemas/data.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/data.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query, 1);
@@ -461,9 +461,9 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	unset($queries);
 
 	// Requetes apres les requetes de donnees ?
-	if (file_exists('db_shemas/' . $sql_dbms . '_end.sql'))
+	if (file_exists('db_schemas/' . $sql_dbms . '_end.sql'))
 	{
-		$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_end.sql'));
+		$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_end.sql'));
 		foreach ($queries AS $query)
 		{
 			$query = preg_replace('#fsb2_#', $sql_prefix, $query);
@@ -496,15 +496,18 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	
 	$config_code .= "/* EOF */";
 
-	$write_config = false;
-	if ($fd = @fopen(ROOT . 'config/config.' . PHPEXT, 'w+'))
+	if (is_writable(ROOT . 'config/config.' . PHPEXT))
 	{
-		$write_config = true;
-		fwrite($fd, $config_code);
-		fclose($fd);
+		if ($fd = @fopen(ROOT . 'config/config.' . PHPEXT, 'w+'))
+		{
+			fwrite($fd, $config_code);
+			fclose($fd);
+
+			return true;
+		}
 	}
 
-	return ($write_config);
+	return ($config_code);
 }
 
 // Soumission des formulaires
@@ -518,7 +521,7 @@ if (Http::request('quick_install', 'post'))
 	$sql_dbms =			'mysql';
 	$sql_server =		'localhost';
 	$sql_login =		'root';
-	$sql_password =		((!empty($_POST['sql_password']))?htmlspecialchars($_POST['sql_password']) : '');
+	$sql_password =		htmlspecialchars(Http::request('sql_password', 'post'));
 	$sql_port =			null;
 	$sql_dbname =		'fsb2_' . date('d_m_Y_H\Hi');
 	$sql_prefix =		'fsb2_';
@@ -538,12 +541,25 @@ if (Http::request('quick_install', 'post'))
 	define('FSB_INSTALL', 'true');
 	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, false);
 
-	install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
+	$result = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
 	install_admin(true);
 	install_config(true);
 
-	Http::header('location', '../index.php');
-	exit;
+	if ($result === true)
+	{
+		Http::header('location', '../index.php');
+		exit;
+	}
+	else
+	{
+		Fsb::$tpl->set_switch('step_end');
+		Fsb::$tpl->set_switch('config_download');
+		Fsb::$tpl->set_vars(array(
+			'CONFIG_CODE'		=> nl2br(htmlspecialchars($result)),
+		));
+		Fsb::$tpl->parse();
+		exit;
+	}
 }
 else if (Http::request('go_to_step_config', 'post') && defined('FSB_INSTALL'))
 {

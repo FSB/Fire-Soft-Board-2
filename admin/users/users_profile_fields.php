@@ -115,7 +115,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ADD' =>		sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=add&amp;module=' . $this->module),
 		));
 		
-		$sql = 'SELECT pf_id, pf_lang
+		$sql = 'SELECT pf_id, pf_lang, pf_lang_desc
 				FROM ' . SQL_PREFIX . 'profil_fields
 				WHERE pf_type = ' . $this->fields_type . '
 				ORDER BY pf_order';
@@ -124,6 +124,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Fsb::$tpl->set_blocks('pf', array(
 				'NAME' =>		String::parse_lang($row['pf_lang']),
+				'DESC' =>		String::parse_lang($row['pf_lang_desc']),
 				
 				'U_EDIT' =>		sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=edit&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
 				'U_DELETE' =>	sid('index.' . PHPEXT . '?p=users_profile_fields&amp;mode=delete&amp;id=' . $row['pf_id'] . '&amp;module=' . $this->module),
@@ -163,6 +164,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			$this->data = array(
 				'pf_lang' =>		'',
+				'pf_lang_desc' =>	'',
 				'pf_regexp' =>		'',
 				'pf_groups' =>		array(),
 				'pf_topic' =>		false,
@@ -197,6 +199,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'CONTENT' =>			Html::make_errstr($this->errstr),
 			'PF_ADD' =>				Fsb::$session->lang('adm_pf_add_' . $this->module),
 			'PF_LANG' =>			htmlspecialchars($this->data['pf_lang']),
+			'PF_DESC' =>			htmlspecialchars($this->data['pf_lang_desc']),
 			'PF_REGEXP' =>			htmlspecialchars($this->data['pf_regexp']),
 			'PF_MAXLENGTH' =>		$this->data['pf_maxlength'],
 			'PF_LIST' =>			$this->data['pf_list'],

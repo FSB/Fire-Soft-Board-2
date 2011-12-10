@@ -96,7 +96,7 @@ class User extends Fsb_model
 	/**
 	 * Suppression d'un utilisateur
 	 *
-	 * @param int|array $idx ID du ou des membres à supprimer
+	 * @param int|array $idx ID du ou des membres a supprimer
 	 * @param string $type Type de suppression : visitor pour passer les messages en invite, topics pour tout supprimer
 	 */
 	public static function delete($idx, $type)
@@ -659,6 +659,73 @@ class User extends Fsb_model
 		}
 
 		return (false);
+	}
+
+	/**
+	 * Envoie de l'Email d'inscription
+	 *
+	 * @param int $u_id ID du membre
+	 * @param array $data Informations sur le membre
+	 * @return bool Si l'Email a ete envoye
+	 */
+	public static function confirm_register($u_id, array $data)
+	{
+		$mail = new Notify_mail();
+		$mail->AddAddress($data['u_email']);
+		$mail->Subject = sprintf(Fsb::$session->lang('subject_register'), Fsb::$cfg->get('forum_name'));
+
+		switch (Fsb::$cfg->get('register_type'))
+		{
+			case 'normal' :
+				$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register.txt');
+				$mail->set_vars(array(
+					'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
+					'LOGIN' =>			$data['u_login'],
+					'PASSWORD' =>		$data['u_password'],
+					'U_FORUM' =>		Fsb::$cfg->get('fsb_path'),
+				));
+				$result = $mail->Send();
+				$mail->SmtpClose();
+			break;
+
+			case 'both' :
+			case 'confirm' :
+				$confirm_hash = md5(rand(0, time()));
+
+				$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register_confirm.txt');
+				$mail->set_vars(array(
+					'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
+					'LOGIN' =>			$data['u_login'],
+					'PASSWORD' =>		$data['u_password'],
+					'U_CONFIRM' =>		Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&id=' . $u_id . '&confirm=' . urlencode($confirm_hash),
+					'U_FORUM' =>		Fsb::$cfg->get('fsb_path'),
+				));
+				$result = $mail->Send();
+				$mail->SmtpClose();
+
+				// On ne fait le controle de validation que si l'Email a pu etre envoye
+				if ($result)
+				{
+					Fsb::$db->update('users', array(
+						'u_activated' =>	false,
+						'u_confirm_hash' =>	$confirm_hash,
+					), 'WHERE u_id = ' . $u_id);
+				}
+			break;
+
+			case 'admin' :
+				Fsb::$db->update('users', array(
+					'u_activated' =>	false,
+					'u_confirm_hash' =>	'.',
+				), 'WHERE u_id = ' . $u_id);
+
+				unset($mail);
+				User::confirm_administrator($u_id, $data['u_nickname'], $data['u_email'], Fsb::$session->ip);
+				$result = true;
+			break;
+		}
+
+		return ($result);
 	}
 }
 /* EOF */

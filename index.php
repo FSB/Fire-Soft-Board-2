@@ -162,6 +162,7 @@ class Fsb_frame extends Fsb_model
 			'U_NOTIFICATION' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=notification'),
 			'U_NOT_READ' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=newposts'),
 			'U_OWN_POSTS' =>		sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=ownposts'),
+			'U_OWN_NEW_POSTS' =>	sid(ROOT . 'index.' . PHPEXT . '?p=search&amp;mode=ownnewposts'),
 			'U_FAQ' =>				sid(ROOT . 'index.' . PHPEXT . '?p=faq'),
 			'U_PORTAIL' =>			sid(ROOT . 'index.' . PHPEXT . '?p=portail'),
 			'U_SEARCH' =>			sid(ROOT . 'index.' . PHPEXT . '?p=search'),
