@@ -210,7 +210,7 @@ class Moderation extends Fsb_model
     {
         Fsb::$db->update('topics', array(
             't_trace' => 0
-		), 'WHERE ' . $where);
+        ), 'WHERE ' . $where);
     }
 
 	/**
