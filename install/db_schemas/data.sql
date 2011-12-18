@@ -52,7 +52,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('forum_name', 'Nom du foru
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_path', 'http://localhost/fsb2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.3');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_id', '2');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_login', 'Genova');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_login', 'admin');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_color', 'class="admin"');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_max_inbox', '50');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('mp_max_outbox', '50');
@@ -121,6 +121,8 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('post_min_length', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_next_events', '5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_date_events', '10');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('use_fsockopen', '1');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('notepad_quota', '20');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('notes_per_page', '10');
 
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_description', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
@@ -175,6 +177,8 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_max_outbox', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_max_savebox', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'mp', 'mp_allow_multiple', 'put_boolean', 'array(''yes'' => 1, ''no'' => 0)', 'unsigned int');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'notepad', 'notepad_quota', 'put_text', 'array(''size'' => 4)', 'unsigned int');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('profile', 'notepad', 'notes_per_page', 'put_text', 'array(''size'' => 4)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('post', '', 'topic_per_page', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('post', '', 'post_per_page', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('post', '', 'flood_post', 'put_text', 'array(''size'' => 5)', 'unsigned int');
@@ -288,6 +292,8 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('root_support', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 0, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('notepad', '', 1, '', '', 0);
+
 
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', false)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('last_posts', 'nb_messages', '5', 'put_text', 'array(''size'' => 5)', 'unsigned int');
@@ -420,4 +426,4 @@ INSERT INTO fsb2_topics (t_id, f_id, u_id, t_title, t_total_view, t_total_post, 
 INSERT INTO fsb2_topics_read (u_id, t_id, p_id, tr_last_time) VALUES (2, 1, 1, 1158230101);
 
 INSERT INTO fsb2_users (u_id, u_auth, u_nickname, u_email, u_avatar, u_signature, u_birthday, u_language, u_tpl, u_joined, u_last_visit, u_total_post, u_total_topic, u_total_mp, u_avatar_method, u_can_use_avatar, u_can_use_sig, u_sexe, u_activate_redirection, u_activate_email, u_activate_auto_notification, u_activate_mp_notification, u_activate_hidden, u_activate_fscode, u_activate_avatar, u_activate_sig, u_activate_img, u_mp_auto_answer_activ, u_mp_auto_answer_message, u_rank_id, u_activate_wysiwyg, u_new_mp, u_newsletter, u_single_group_id, u_color, u_comment, u_register_ip, u_activated, u_confirm_hash, u_total_warning, u_warn_post, u_warn_read, u_utc_dst) VALUES (1, 0, 'Visitor', '', '', '', '00/00/0000', 'fr', 'WhiteSummer', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 1, 1, 6, 0, '', 2, 0, 0, 0, 0, '', '', '', 1, '', 0, 0, 0, 0);
-INSERT INTO fsb2_users (u_id, u_auth, u_nickname, u_email, u_avatar, u_signature, u_birthday, u_language, u_tpl, u_joined, u_last_visit, u_total_post, u_total_topic, u_total_mp, u_avatar_method, u_can_use_avatar, u_can_use_sig, u_sexe, u_activate_redirection, u_activate_email, u_activate_auto_notification, u_activate_mp_notification, u_activate_hidden, u_activate_fscode, u_activate_avatar, u_activate_sig, u_activate_img, u_mp_auto_answer_activ, u_mp_auto_answer_message, u_rank_id, u_activate_wysiwyg, u_new_mp, u_newsletter, u_single_group_id, u_color, u_comment, u_register_ip, u_activated, u_confirm_hash, u_total_warning, u_warn_post, u_warn_read, u_utc_dst, u_default_group_id) VALUES (2, 5, 'Genova', 'genovakiller@yahoo.fr', '', '', '00/00/0000', 'fr', 'WhiteSummer', 0, 0, 1, 1, 0, 0, 1, 1, 0, 8, 4, 2, 1, 0, 6, 1, 1, 6, 0, '', 1, 0, 0, 0, 6, 'class="admin"', '', '2130706433', 1, '', 0, 0, 0, 0, 5);
+INSERT INTO fsb2_users (u_id, u_auth, u_nickname, u_email, u_avatar, u_signature, u_birthday, u_language, u_tpl, u_joined, u_last_visit, u_total_post, u_total_topic, u_total_mp, u_avatar_method, u_can_use_avatar, u_can_use_sig, u_sexe, u_activate_redirection, u_activate_email, u_activate_auto_notification, u_activate_mp_notification, u_activate_hidden, u_activate_fscode, u_activate_avatar, u_activate_sig, u_activate_img, u_mp_auto_answer_activ, u_mp_auto_answer_message, u_rank_id, u_activate_wysiwyg, u_new_mp, u_newsletter, u_single_group_id, u_color, u_comment, u_register_ip, u_activated, u_confirm_hash, u_total_warning, u_warn_post, u_warn_read, u_utc_dst, u_default_group_id) VALUES (2, 5, 'admin', 'root@localhost.com', '', '', '00/00/0000', 'fr', 'WhiteSummer', 0, 0, 1, 1, 0, 0, 1, 1, 0, 8, 4, 2, 1, 0, 6, 1, 1, 6, 0, '', 1, 0, 0, 0, 6, 'class="admin"', '', '2130706433', 1, '', 0, 0, 0, 0, 5);
