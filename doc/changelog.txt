@@ -1,53 +1,36 @@
 ===== 2.0.3 - 23 décembre 2011 =====
-Ticket-150
-	Duplication des messages privés envoyés à soi-mêmeFaute de frappe dans les noms de schemasModification des numeros de versionTabulations...
-Ticket-90 & Bug-9763
-	Ne pas supprimer un sujet si on supprime sa trace
-Ticket-146
-	Désactivation et fonctionalités toujours activesCorrection d'un doublon dans la liste des repertoires a chmoderCorrections des bugs concernant l'édition rapide AJAX
-Ticket-61
-	Complément pour la fonction
-	Explication des champs contact
-Ticket-21
-	Erreur lors d'une installation rapide
-Ticket-135
-	Réduction du code utilisée pour la récupération des messagesAjout d'un commentaire
-Ticket-135
-	Ajouter un lien pour les sujets postés ayant de nouvelles réponses
-Ticket-134
-	Ne pas mettre les nouveaux inscrits dans la liste des connectésRetrait de quelques accents dans les commentaires
-Ticket-136
-	Ajout d'un email de confirmation dans l'ajout de membres
-Ticket-58
-	Ajustement textarea édition rapide
-Ticket-125
-	Ajout d'un champ dans l'ajout de membres
-Ticket-109
-	Ajout des miniatures des themesAjout du readme
-Ticket-58
-	Ajustement textarea édition rapideCorrection de quelques fautes d'orthographeCorrection de quelques fautes d'orthographe
-Ticket-101
-	Vider tous les logs
-Ticket-129
-	Cacher le bloc de prévisualisation quand on vient de la réponse rapideUtilise un type="password" pour le mot de passe de la base de données en "Installation rapide"Correction dans la classe debugAjout du titre du sujet sur l'index apres une nouvelle installation
-Ticket-103
-	Ajout du tri des sujets par date de creation
-Ticket-119 & Amélioration-9468
-	Changement du nom du groupe fondateur
-Ticket-122 & Amélioration-9826
-	Affichage des sous forums
-	Possibilite de ne pas afficher les sous-forums pour chaque forum, au cas par cas.
-Ticket-123 & Amélioration-9827
-	Affichage des moderateurs
-	Possibilite de ne pas afficher les moderateurs pour chaque forum, au cas par cas
-Ticket-120 & Amélioration-9862
-	Modification des liens dans le header
-Ticket-100 & Amélioration-9754
-	Ajout d'un lien dans la gestion des groupes
-9862
-	Changement de valeur de clefs de langues pour les liens de messagesModification des numéros de version
-Ticket-105 & Amélioration-9443
-	Ajout du numero de page dans le titreModification du script de création du fichier de mise à jour de fsb
+Ajout d'un champ dans l'ajout de membres via l'administration
+Ajout d'un email de confirmation dans l'ajout de membres via l'administration
+Ajout d'un lien dans la gestion des groupes
+Ajout d'un lien pour les sujets postés ayant de nouvelles réponses
+Ajout de l'explication des champs contact
+Ajout de la possibilite de ne pas afficher les moderateurs pour chaque forum, au cas par cas
+Ajout de la possibilite de ne pas afficher les sous-forums pour chaque forum, au cas par cas
+Ajout de la possibilité de vider tous les logs d'un coup
+Ajout des miniatures des thèmes
+Ajout du numéro de page dans le titre
+Ajout du titre du sujet sur l'index apres une nouvelle installation
+Ajout du tri des sujets par date de creation
+Ajustement textarea édition rapide
+Cacher le bloc de prévisualisation quand on vient de la réponse rapide
+Changement du nom du groupe fondateur
+Changement des valeurs de clefs de langues pour les liens de messages
+Correction d'un doublon dans la liste des repertoires a chmoder
+Correction d'une erreur lors d'une installation rapide
+Correction d'une faute de frappe dans les noms de schemas
+Corrections dans la classe debug
+Correction de la désactivation des fonctionalités (certaines restent actives)
+Correction de la duplication des messages privés envoyés à soi-même
+Correction de quelques fautes d'orthographe
+Correction des bugs concernant l'édition rapide AJAX
+Modification des liens dans le header
+Modification du script de création du fichier de mise à jour de fsb
+Ne pas mettre les nouveaux inscrits dans la liste des connectés
+Ne pas supprimer un sujet si on supprime sa trace
+Utiliser un type="password" pour le mot de passe de la base de données en "Installation rapide"
+Réduction du code utilisée pour la récupération des messages
+Retrait de quelques accents dans les commentaires
+
 
 ===== 2.0.2 - 07 juillet 2011 =====
 - Fix balise HTML erronee lors de l'installation (merci à minirop)
@@ -56,7 +39,7 @@ Ticket-105 & Amélioration-9443
 - Inclusion des interfaces pour le convertisseur dans l'installateur
 - Correction d'accents dans la documentation du code
 - Modification du nom de dossier des convertisseurs : "convertors" en "converters"
-- Attribut alt des avatars, lorsque l'on est connecté : "Avatar de" devient "Profile de" (sujet 9475)
+- Attribut alt des avatars, lorsque l'on est connecté : "Avatar de" devient "Profil de" (sujet 9475)
 - Amélioration de l'installation rapide
 - Suppression de fichiers inutiles
 - Patch mootools to add document.id
@@ -75,7 +58,7 @@ Ticket-105 & Amélioration-9443
 - [71] Cocher tout les sujets d'un sous forum lors de la recherche de messages non-lus
 - [73] Adresse ip à la ligne si texte édité
 - [79] Inversion des titres des pages pour être plus logique
-- [83] Amlioration de l'installateur, meilleurs visibilités des chmods, etc
+- [83] Amélioration de l'installateur, meilleure visibilité des chmods, etc
 - [87] Avertissement (bloquant) lors de la suppression de table sql à l'installation
 - [88] Fix du problème dans l'affichage de la liste des évènements à approuver.
 - [92] Modification du texte de suppression des fora et catégories
