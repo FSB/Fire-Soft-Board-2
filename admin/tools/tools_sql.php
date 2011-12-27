@@ -41,7 +41,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		$this->module =		htmlspecialchars(Http::request('module'));
 		$this->page =		intval(Http::request('page'));
-		$this->table =		Http::request('table');
+		$this->table =		Http::request('table', 'post');
 		if (!$this->page)
 		{
 			$this->page = 1;
