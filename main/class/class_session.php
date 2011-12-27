@@ -532,18 +532,23 @@ class Session extends Fsb_model
 		{
 			return (Fsb::$session->lang('login_not_activated'));
 		}
+
+		// Membre banni ?
+		if ($reason = $this->is_ban($data['u_id'], $data['u_nickname'], $this->ip, $data['u_email']))
+		{
+			if ($reason['reason'])
+			{
+				return (sprintf(Fsb::$session->lang('you_are_ban_reason'), $reason['reason']));
+			}
+
+			return (Fsb::$session->lang('you_are_ban'));
+		}
 		$this->data = $data;
 
 		// Connexion automatique ?
 		if ($use_auto_connexion)
 		{
 			Http::cookie('auto', $pwd_data['u_autologin_key'], time() + ONE_YEAR);
-		}
-
-		// Membre banni ?
-		if ($reason = $this->is_ban($this->id(), $this->data['u_nickname'], $this->ip, $this->data['u_email']))
-		{
-			return (sprintf(Fsb::$session->lang('you_are_ban'), $reason['reason']));
 		}
 
 		$this->create_auths($this->data);
