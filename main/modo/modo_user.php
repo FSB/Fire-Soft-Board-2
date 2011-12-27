@@ -168,6 +168,14 @@ class Page_modo_user extends Fsb_model
 			'topics' =>		Fsb::$session->lang('modo_user_delete_topics'),
 		);
 
+		$list_ban_length = Html::make_list('ban_length_unit', ONE_HOUR, array(
+			ONE_HOUR =>		Fsb::$session->lang('hour'),
+			ONE_DAY =>		Fsb::$session->lang('day'),
+			ONE_WEEK =>		Fsb::$session->lang('week'),
+			ONE_MONTH =>	Fsb::$session->lang('month'),
+			ONE_YEAR =>		Fsb::$session->lang('year'),
+		));
+
 		Fsb::$tpl->set_switch('modo_user');
 		Fsb::$tpl->set_vars(array(
 			'CAN_USE_AVATAR_YES' =>	($this->userdata['u_can_use_avatar']) ? 'checked="checked"' : '',
@@ -182,6 +190,7 @@ class Page_modo_user extends Fsb_model
 			'NEW_AVATAR' =>			htmlspecialchars($this->userdata['u_avatar']),
 			'COMMENT' =>			htmlspecialchars($this->userdata['u_comment']),
 			'LIST_USER_DELETE' =>	Html::make_list('delete_type', 'none', $list_user_delete),
+			'LIST_BAN_LENGTH' =>	$list_ban_length,
 			'USER_ACTIVATED' =>		$this->userdata['u_activated'],
 			'USER_APPROVED' =>		$this->userdata['u_approve'],
 
@@ -393,15 +402,18 @@ class Page_modo_user extends Fsb_model
 	 */
 	public function check_ban_user()
 	{
+		$length =	intval(Http::request('ban_length', 'post'));
+		$unit =		intval(Http::request('ban_length_unit', 'post'));
+		$total_length = ($length > 0) ? CURRENT_TIME + ($length * $unit) : 0;
 		if (Http::request('ban_username'))
 		{
-			Moderation::ban('login', $this->userdata['u_nickname'], '', 0, false);
+			Moderation::ban('login', $this->userdata['u_nickname'], '', $total_length, false);
 			Log::add(Log::ADMIN, 'ban_log_add_login', $this->userdata['u_nickname']);
 		}
 
 		if (Http::request('ban_email'))
 		{
-			Moderation::ban('mail', $this->userdata['u_email'], '', 0, false);
+			Moderation::ban('mail', $this->userdata['u_email'], '', $total_length, false);
 			Log::add(Log::ADMIN, 'ban_log_add_mail', $this->userdata['u_email']);
 		}
 	}

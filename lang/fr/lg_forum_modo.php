@@ -88,6 +88,8 @@ return (array (
   'modo_user_comment' => 'Commentaire sur le membre',
   'modo_user_comment_explain' => 'Les commentaires donnés aux membres ne seront visibles que par les modérateurs (et non par le membre), dans le profil du membre concerné.',
   'modo_user_activated' => 'Le compte de ce membre est activé',
+  'modo_user_ban' => 'Bannir cet utilisateur',
+  'modo_user_ban_length' => 'Durée',
   'modo_user_ban_username' => 'Bannir le pseudonyme',
   'modo_user_ban_email' => 'Bannir l\'email',
   'modo_user_act_email' => 'Ré-envoyer l\'email d\'activation du compte',

@@ -97,10 +97,14 @@
 					</tr>
 					<tr>
 						<th><label>{LG_MODO_USER_DELETE} :</label><br /><span class="small">{LG_MODO_USER_DELETE_EXPLAIN}</span></th>
+						<td>{LIST_USER_DELETE}</td>
+					</tr>
+					<tr>
+						<th><label>{LG_MODO_USER_BAN} :</label></th>
 						<td>
-							{LIST_USER_DELETE}<br />
 							<input type="checkbox" name="ban_username" value="1" /> {LG_MODO_USER_BAN_USERNAME} &nbsp; &nbsp;
-							<input type="checkbox" name="ban_email" value="1" /> {LG_MODO_USER_BAN_EMAIL}
+							<input type="checkbox" name="ban_email" value="1" /> {LG_MODO_USER_BAN_EMAIL}<br />
+							{LG_MODO_USER_BAN_LENGTH} : <input type="text" name="ban_length" maxlength="10" value="0" /> {LIST_BAN_LENGTH}
 						</td>
 					</tr>
 				</switch>
