@@ -41,6 +41,7 @@ return (array (
   'adm_sql_list_cache' => 'Liste des fichiers du cache SQL',
   'adm_sql_exec_ok' => '%d requête(s) exécutée(s) en %s secondes',
   'adm_sql_result' => 'Résultat',
+  'adm_sql_unknown_table' => 'La table "%s" n\'existe pas',
   'adm_backup_multi_insert' => 'Insertions multiples',
   'adm_backup_multi_insert_exp' => 'Affiche les requêtes d\'exportation de données sous la forme d\'une requête de multi insertion',
   'adm_sql_cache_deleted' => 'Les fichiers en cache ont bien été supprimés',

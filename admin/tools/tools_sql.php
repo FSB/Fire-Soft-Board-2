@@ -47,6 +47,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 			$this->page = 1;
 		}
 
+		if ($this->table && !in_array($this->table, Fsb::$db->list_tables()))
+		{
+			Display::message(sprintf(Fsb::$session->lang('adm_sql_unknown_table'), $this->table));
+		}
+
 		$call = new Call($this);
 		$call->module(array(
 			'list' =>		array('index', 'sql', 'data', 'struct', 'export', 'cache'),
