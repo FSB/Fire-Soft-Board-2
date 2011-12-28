@@ -61,12 +61,18 @@
 			<legend>{LG_INSTALL_CHMOD_TITLE}</legend>
 			<div id="desc">{LG_INSTALL_CHMOD_EXPLAIN}</div>
 			<br />
-			<div><input type="submit" name="go_to_step_db" value="{LG_INSTALL_NEXT}" id="submit" /></div>
+			<div>
+				<switch name="chmod_recheck">
+				<input type="submit" name="go_to_step_chmod" value="{LG_INSTALL_CHMOD_RECHECK}" id="submit" />
+				<else>
+				<input type="submit" name="go_to_step_db" value="{LG_INSTALL_NEXT}" id="submit" />
+				</switch>
+			</div>
 			<block name="chmod">
 				<dl>
 					<dt>
 						<label for="chmod_id_{chmod.ITERATOR}">{chmod.PATH} :</label>
-						(<if content="$chmod.WRITE"><span class="ok">Est inscriptible</span><else><span class="ko">N'est pas inscriptible</span></if>)
+						(<if content="$chmod.WRITE"><span class="ok">{LG_INSTALL_CHMOD_IS_WRITABLE}</span><else><span class="ko">{LG_INSTALL_CHMOD_NOT_WRITABLE}</span></if>)
 						<br /><span>{chmod.EXPLAIN}</span>
 					</dt>
 					<dd>

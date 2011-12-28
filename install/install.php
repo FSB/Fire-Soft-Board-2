@@ -766,26 +766,19 @@ switch ($current_step)
 
 		foreach ($chmod_files AS $k => $f)
 		{
-			if (preg_match('#^tpl_[0-9]+$#i', $k) && preg_match('#^tpl/(.*?)/$#i', $f['path'], $match))
+			$is_writable = is_writable(ROOT . $f['path']);
+			if (!$is_writable && !tpl_switch_exists('chmod_recheck'))
 			{
-				Fsb::$tpl->set_blocks('chmod', array(
-					'PATH' =>		$f['path'],
-					'NAME' =>		$k,
-					'CHMOD' =>		'0' . decoct($f['chmod']),
-					'WRITE' =>		is_writable(ROOT . $f['path']),
-					'EXPLAIN' =>	sprintf(Fsb::$session->lang('install_chmod_tpl_xxx'), $match[1]),
-				));
+				Fsb::$tpl->set_switch('chmod_recheck');
 			}
-			else
-			{
-				Fsb::$tpl->set_blocks('chmod', array(
-					'PATH' =>		$f['path'],
-					'NAME' =>		$k,
-					'CHMOD' =>		'0' . decoct($f['chmod']),
-					'WRITE' =>		is_writable(ROOT . $f['path']),
-					'EXPLAIN' =>	Fsb::$session->lang('install_chmod_' . $k),
-				));
-			}
+
+			Fsb::$tpl->set_blocks('chmod', array(
+				'PATH' =>		$f['path'],
+				'NAME' =>		$k,
+				'CHMOD' =>		'0' . decoct($f['chmod']),
+				'WRITE' =>		$is_writable,
+				'EXPLAIN' =>	Fsb::$session->lang('install_chmod_' . $k),
+			));
 		}
 
 		// Un bon informaticien est un informaticien feneant ...
