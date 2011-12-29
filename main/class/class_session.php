@@ -550,12 +550,22 @@ class Session extends Fsb_model
 		// Membre banni ?
 		if ($reason = $this->is_ban($data['u_id'], $data['u_nickname'], $this->ip, $data['u_email']))
 		{
+			$return = '';
 			if ($reason['reason'])
 			{
-				return (sprintf(Fsb::$session->lang('you_are_ban_reason'), $reason['reason']));
+				$return = sprintf(Fsb::$session->lang('you_are_ban_reason'), $reason['reason']);
+			}
+			else
+			{
+				$return = Fsb::$session->lang('you_are_ban');
 			}
 
-			return (Fsb::$session->lang('you_are_ban'));
+			if ($reason['time'])
+			{
+				return $return . sprintf(Fsb::$session->lang('you_are_ban_time'), Fsb::$session->print_date($reason['time']));
+			}
+
+			return $return . Fsb::$session->lang('you_are_ban_no_time');
 		}
 		$this->data = $data;
 
@@ -700,7 +710,11 @@ class Session extends Fsb_model
 			$cookie_ban = unserialize($cookie_ban);
 			if (!$cookie_ban['time'] || $cookie_ban['time'] > CURRENT_TIME)
 			{
-				return (array('type' => $cookie_ban['type'], 'reason' => $cookie_ban['reason']));
+				return (array(
+					'type' => $cookie_ban['type'],
+					'reason' => $cookie_ban['reason'],
+					'time' => $cookie_ban['time']
+				));
 			}
 			else
 			{
@@ -727,7 +741,11 @@ class Session extends Fsb_model
 							'reason' => $row['ban_reason'],
 						)), CURRENT_TIME + ONE_YEAR);
 					}
-					return (array('type' => $row['ban_type'], 'reason' => $row['ban_reason']));
+					return (array(
+						'type' => $row['ban_type'],
+						'reason' => $row['ban_reason'],
+						'time' => $row['ban_length']
+					));
 				}
 			}
 		}
