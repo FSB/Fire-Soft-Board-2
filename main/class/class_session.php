@@ -230,6 +230,20 @@ class Session extends Fsb_model
 			}
 		}
 
+		// Interdiction de garder le fichier d\'installation sur le serveur
+		if (file_exists(ROOT . 'install/install.' . PHPEXT))
+		{
+			if (file_exists(ROOT . 'fsb2.' . PHPEXT))
+			{
+				@unlink(ROOT . 'fsb2.' . PHPEXT);
+			}
+
+			if (!@unlink(ROOT . 'install/install.' . PHPEXT))
+			{
+				Display::message('remove_install_file');
+			}
+		}
+
 		// A partir de maintenant on peut logguer les erreurs SQL
 		define('CAN_LOG_SQL_ERROR', true);
 
