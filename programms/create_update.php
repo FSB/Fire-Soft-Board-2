@@ -10,7 +10,7 @@
 ** +---------------------------------------------------+
 */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
 
 /*
 ** Ce fichier permet de créer un fichier MOD à partir d'un diff
