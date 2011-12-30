@@ -126,13 +126,17 @@ class Fsb_admin_frame extends Fsb_model
 		}
 
 		// On verifie si le membre peut acceder a cette page de l'administration
-		if (Fsb::$session->auth() < $this->auth || Fsb::$session->auth() < MODOSUP)
+		// L'editeur CSS est accesible pour tout le monde
+		if ($this->page !== 'general_tpl' && Http::request('mode') !== 'css_generator')
 		{
-			Http::redirect(ROOT . 'index.' . PHPEXT);
-		}
-		else if (!Fsb::$session->data['s_admin_logged'])
-		{
-			Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&adm_log=true');
+			if (Fsb::$session->auth() < $this->auth || Fsb::$session->auth() < MODOSUP)
+			{
+				Http::redirect(ROOT . 'index.' . PHPEXT);
+			}
+			else if (!Fsb::$session->data['s_admin_logged'])
+			{
+				Http::redirect(ROOT . 'index.' . PHPEXT . '?p=login&adm_log=true');
+			}
 		}
 
 		// On empeche la mise en cache des pages.
