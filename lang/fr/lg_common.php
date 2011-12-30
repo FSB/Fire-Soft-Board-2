@@ -83,7 +83,7 @@ return (array (
 	'you_are_ban_no_time' => '<br />Vous avez été banni de façon permanente',
 	'board_is_disabled' => 'Le forum est actuellement désactivé.',
 	'board_is_disabled2' => 'Le forum est actuellement désactivé.<br />Raison: %s',
-	'remove_install_file' => 'Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de sécurité.<hr />You must rename (or delete) ~/install/install.php for safety reasons.',
+	'remove_install_file' => 'Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de sécurité.',
 	'rss' => 'Syndication RSS 2.0',
 	'at' => 'à',
 	'h' => 'H',
