@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
 
 /**
  * Cette fonction donne quelques statistiques sur le projet
