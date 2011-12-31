@@ -27,7 +27,7 @@ class Adm_menu extends Fsb_model
 	 *
 	 * @var array
 	 */
-	public $exept = array();
+	public $except = array();
 
 	/**
 	 * Informations sur la page actuelle
@@ -120,7 +120,7 @@ class Adm_menu extends Fsb_model
 		$cat_order = 0;
 		while ($dir = readdir($fd))
 		{
-			if ($dir[0] != '.' && !in_array($dir, $this->exept) && is_dir(ROOT . 'admin/' . $dir))
+			if ($dir[0] != '.' && !in_array($dir, $this->except) && is_dir(ROOT . 'admin/' . $dir))
 			{
 				$cat_order++;
 				$page_order = 0;

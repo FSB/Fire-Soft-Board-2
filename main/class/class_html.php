@@ -382,13 +382,13 @@ class Html extends Fsb_model
 	 * @param int $type_group GROUP_SPECIAL ou GROUP_NORMAL (possibilite d'utilise un OU binaire)
 	 * @param string $value Valeur de la liste
 	 * @param bool $multiple Liste multiple
-	 * @param array $exept ID des groupes qu'on ne veut pas voir dans la liste
+	 * @param array $except ID des groupes qu'on ne veut pas voir dans la liste
 	 * @param string $erase_sql Requete personalisee
 	 * @param string $add_html Code HTML ajoutable dans la liste
 	 * @param string $add_option Options HTML a ajouter
 	 * @return string
 	 */
-	public static function list_groups($list_name, $type_group, $value, $multiple = false, $exept = array(), $erase_sql = null, $add_html = '', $add_option = '')
+	public static function list_groups($list_name, $type_group, $value, $multiple = false, $except = array(), $erase_sql = null, $add_html = '', $add_option = '')
 	{
 		static $groups = null;
 
@@ -407,9 +407,9 @@ class Html extends Fsb_model
 			}
 
 			// Exeptions de groupes
-			if ($exept)
+			if ($except)
 			{
-				$sql_and .= ' AND g_id NOT IN (' . implode(',', $exept) . ') ';
+				$sql_and .= ' AND g_id NOT IN (' . implode(',', $except) . ') ';
 			}
 
 			// Liste des groupes

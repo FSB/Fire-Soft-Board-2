@@ -500,9 +500,9 @@ abstract class Backup extends Fsb_model
 	 * @param string $sgbd_name Type de base de donnee
 	 * @param bool $comment Commentaire pour le dump
 	 * @param bool $multi_insert Gestion des multi insertions
-	 * @param array $exept Contient la liste des champs a ne pas prendre en compte
+	 * @param array $except Contient la liste des champs a ne pas prendre en compte
 	 */
-	public function dump_database($tablename, $sgbd_name, $comment = true, $multi_insert = false, $exept = array())
+	public function dump_database($tablename, $sgbd_name, $comment = true, $multi_insert = false, $except = array())
 	{
 		// Si la SGBD ne supporte pas les multi insertions on force le parametre a false
 		if (!Fsb::$db->can_use_multi_insert)
@@ -530,7 +530,7 @@ abstract class Backup extends Fsb_model
 			foreach ($row AS $field => $value)
 			{
 				// Si on ne prend pas en compte le champ
-				if ($exept && in_array($field, $exept))
+				if ($except && in_array($field, $except))
 				{
 					continue;
 				}
