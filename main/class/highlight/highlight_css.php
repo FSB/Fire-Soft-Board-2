@@ -77,7 +77,7 @@ class Highlight_css extends Highlight
 							$tmp .= $this->escape_special_char($str[$i]);
 							$i++;
 						}
-						$result .= '<a href="http://wiki.media-box.net/documentation/css/' . strtolower($tmp) . '" target="_blank" class="sc_css_propertie">' . $tmp . '</a>' . $this->escape_special_char($str[$i]);
+						$result .= '<a href="http://ressources.mediabox.fr/documentation/css/' . strtolower($tmp) . '" target="_blank" class="sc_css_propertie">' . $tmp . '</a>' . $this->escape_special_char($str[$i]);
 					}
 					else if ($step == 1)
 					{
