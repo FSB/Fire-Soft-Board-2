@@ -183,7 +183,8 @@ CREATE TABLE fsb2_menu_admin (
   cat varchar(255) default '',
   cat_order smallint(5) default '0',
   page_order smallint(5) default '0',
-  page_icon varchar(255)
+  page_icon varchar(255),
+  module_name varchar(255)
 );
 CREATE INDEX fsb2_menu_admin_cat_order_index ON fsb2_menu_admin (cat_order);
 CREATE INDEX fsb2_menu_admin_page_order_index ON fsb2_menu_admin (page_order);

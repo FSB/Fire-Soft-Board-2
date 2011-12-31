@@ -213,6 +213,7 @@ CREATE TABLE fsb2_menu_admin (
   cat_order smallint(5) NOT NULL default '0',
   page_order smallint(5) NOT NULL default '0',
   page_icon varchar(255),
+  module_name varchar(255) NULL,
   KEY cat_page_order (cat_order, page_order)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
