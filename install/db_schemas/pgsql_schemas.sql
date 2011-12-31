@@ -207,7 +207,8 @@ CREATE TABLE fsb2_menu_admin (
   cat varchar(255) NOT NULL default '',
   cat_order INT4 NOT NULL default '0',
   page_order INT4 NOT NULL default '0',
-  page_icon varchar(255)
+  page_icon varchar(255),
+  module_name varchar(255) NULL
 );
 CREATE INDEX fsb2_menu_admin_cat_page_order_index ON fsb2_menu_admin (cat_order, page_order);
 DROP TABLE IF EXISTS fsb2_mods;
