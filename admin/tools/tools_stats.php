@@ -10,10 +10,6 @@
 
 /**
  * Page affichant les statistiques du forum
- *
- * FSB utilise le puissant framework Artichow pour les graphiques en GD. Vous pouvez trouver
- * davantage de documentation et d'informations sur le site officiel de ce framework :
- *		http://www.artichow.org/
  */
 class Fsb_frame_child extends Fsb_admin_frame
 {
