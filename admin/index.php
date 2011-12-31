@@ -142,7 +142,7 @@ class Fsb_admin_frame extends Fsb_model
 		// On empeche la mise en cache des pages.
 		Http::no_cache();
 		
-		Fsb::$menu->exept = array('adm_tpl');
+		Fsb::$menu->except = array('adm_tpl');
 		Fsb::$menu->get_adm_menu($this->page);
 
 		// Est fondateur ?

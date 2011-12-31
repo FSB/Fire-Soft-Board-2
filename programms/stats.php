@@ -14,10 +14,10 @@ die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Cefichi
  * Cette fonction donne quelques statistiques sur le projet
  *
  * @param unknown_type $dir
- * @param unknown_type $exept_dir
+ * @param unknown_type $except_dir
  * @return unknown
  */
-function php_line($dir, $exept_dir = array())
+function php_line($dir, $except_dir = array())
 {
 	$ary = array('line' => 0, 'size' => 0, 'nb' => 0, 'file' => '');
 	$fd = opendir($dir);
@@ -25,9 +25,9 @@ function php_line($dir, $exept_dir = array())
 	{
 		if ($file[0] != '.')
 		{
-			if (is_dir($dir . $file) && !in_array($file, $exept_dir))
+			if (is_dir($dir . $file) && !in_array($file, $except_dir))
 			{
-				$total = php_line($dir . $file . '/', $exept_dir);
+				$total = php_line($dir . $file . '/', $except_dir);
 				$ary['line'] += $total['line'];
 				$ary['size'] += $total['size'];
 				$ary['nb'] += $total['nb'];
