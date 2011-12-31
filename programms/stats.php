@@ -8,7 +8,29 @@
  * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
  */
 
-die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Cefichier est une faille potentielle de securite</b>, ne l\'utilisez qu\'en local, ou si vous etes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+
+/**
+ * Converti une taille en octet dans une unite plus grande si possible
+ *
+ * @param int $size Taille en octet
+ * @return string
+ */
+function convert_size($size)
+{
+	if ($size >= 1048576)
+	{
+		return (substr($size / 1048576, 0, 5) . ' MO');
+	}
+	else if ($size >= 1024)
+	{
+		return (substr($size / 1024, 0, 5) . ' KO');
+	}
+	else
+	{
+		return (substr($size, 0, 5) . ' O');
+	}
+}
 
 /**
  * Cette fonction donne quelques statistiques sur le projet
@@ -33,7 +55,7 @@ function php_line($dir, $except_dir = array())
 				$ary['nb'] += $total['nb'];
 				$ary['file'] .= $total['file'];
 			}
-			else if (preg_match('/.*\.php$/i', $file))
+			else if (preg_match('/\.php$/i', $file))
 			{
 				$ary['line'] += count(file($dir . $file));
 				$ary['size'] += filesize($dir . $file);
@@ -46,5 +68,9 @@ function php_line($dir, $except_dir = array())
 }
 
 $stat = php_line('../', array('cache'));
-echo 'Nombre total de lignes PHP : ' . $stat['line'] . '<br />Nombre de fichiers PHP : ' . $stat['nb'] . '<br />Taille totale des fichiers PHP : ' . $stat['size'] . ' octets<br />Liste des fichiers PHP :<br />' . $stat['file'];
-?>
+echo 'Nombre total de lignes PHP : ' . number_format($stat['line'], 0, '', ' ') . '<br />';
+echo 'Nombre de fichiers PHP : ' . number_format($stat['nb'], 0, '', ' ') . '<br />';
+echo 'Taille totale des fichiers PHP : ' . convert_size($stat['size']) . ' (' . $stat['size'] . ' octets)<br />';
+echo 'Liste des fichiers PHP :<br />' . $stat['file'];
+
+/* EOF */
