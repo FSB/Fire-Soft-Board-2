@@ -60,11 +60,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$call = new Call($this);
 		$call->post(array(
-			'submit_delete' =>			'delete_all',
-			'submit_lock' =>			'lock_all',
-			'submit_unlock' =>			'unlock_all',
-			'submit_add_c' =>			'add_c',
-			'submit_operation_move' =>	':operation_move',
+			'submit_delete' =>			 'delete_all',
+			'submit_lock' =>			 'lock_all',
+			'submit_unlock' =>			 'unlock_all',
+			'submit_add_c' =>			 'add_c',
+			'submit_operation_move' =>	 ':operation_move',
+            'submit_operation_delete' => ':operation_delete',
 		));
 
 		$call->functions(array(
@@ -653,6 +654,51 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::confirmation(Fsb::$session->lang('adm_forum_confirm_operation_move'), 'index.' . PHPEXT . '?p=manage_forums', array('mode' => $this->mode, 'id' => $this->id, 'move_target' => $to_id, 'submit_operation_move' => true));
 		}
 	}
+	/**
+	 * Suppression de tous les sujets du forum courant
+	 */
+	public function operation_delete()
+	{
+		if (check_confirm())
+		{   
+			$tmp = array_select($this->forums, 'f_id', $this->id);
+			if ($tmp != null)
+			{
+                $sql = 'SELECT t_id
+                        FROM ' . SQL_PREFIX . 'topics
+                        WHERE f_id = ' . $this->id;
+                $result = Fsb::$db->query($sql);
+                $idx = array();
+                while ($row = Fsb::$db->row($result))
+                {
+                    $idx[] = $row['t_id'];
+                }
+                Fsb::$db->free($result);
+                
+                if(count($idx) > 0)
+                {
+                    Moderation::delete_topics('t_id IN (' . implode(', ', $idx) . ')'); 
+                   
+                    Log::add(Log::ADMIN, 'forum_log_operation_delete', $tmp['f_name']);
+                    Display::message('adm_forum_operation_delete_well', 'index.' . PHPEXT . '?p=manage_forums', 'manage_forums');
+                }
+                
+                Display::message('adm_forum_operation_delete_no_topics', 'index.' . PHPEXT . '?p=manage_forums', 'manage_forums');
+			}
+			else
+			{
+				Display::message('forum_not_exists');
+			}
+		}
+		else if (Http::request('confirm_no', 'post'))
+		{
+			Http::redirect('index.' . PHPEXT . '?p=manage_forums&mode=operation&id=' . $this->id);
+		}
+		else
+		{
+			Display::confirmation(Fsb::$session->lang('adm_forum_confirm_operation_delete'), 'index.' . PHPEXT . '?p=manage_forums', array('mode' => $this->mode, 'id' => $this->id, 'submit_operation_delete' => true));
+		}
+    }
 }
 
 /* EOF */
