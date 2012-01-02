@@ -571,6 +571,7 @@ u_id INT DEFAULT nextval('fsb2_users_seq'),
   u_utc_dst INT2,
   u_approve INT2 default '0',
   u_flood_post INT4 default '0',
+  u_notepad text,
   PRIMARY KEY (u_id)
 );
 CREATE INDEX fsb2_users_u_nickname_index ON fsb2_users (u_nickname);

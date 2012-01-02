@@ -55,7 +55,7 @@ class Fsb_frame_child extends Fsb_frame
 	 *
 	 * @var array
 	 */
-	public $list = array('personal', 'activate', 'password', 'avatar', 'sig', 'contact', 'groups', 'upload', 'fsbcard', 'viewprofile');
+	public $list = array('personal', 'activate', 'password', 'avatar', 'sig', 'contact', 'groups', 'notepad', 'upload', 'fsbcard', 'viewprofile');
 
 	/**
 	 * Constructeur

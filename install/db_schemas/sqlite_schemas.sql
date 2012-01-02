@@ -498,7 +498,8 @@ CREATE TABLE fsb2_users (
   u_utc tinyint(4) default '0',
   u_utc_dst tinyint(4),
   u_approve tinyint(4) default '0',
-  u_flood_post int(11) default '0'
+  u_flood_post int(11) default '0',
+  u_notepad text
 );
 CREATE INDEX fsb2_users_u_nickname_index ON fsb2_users (u_nickname);
 CREATE INDEX fsb2_users_u_birthday_index ON fsb2_users (u_birthday);

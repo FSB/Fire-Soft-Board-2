@@ -586,6 +586,7 @@ CREATE TABLE fsb2_users (
   u_utc_dst tinyint(4) NOT NULL,
   u_approve tinyint(4) NOT NULL default '0',
   u_flood_post int(11) NOT NULL default '0',
+  u_notepad text NOT NULL,
   PRIMARY KEY  (u_id),
   KEY u_nickname (u_nickname),
   KEY u_birthday (u_birthday)
