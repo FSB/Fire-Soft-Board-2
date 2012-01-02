@@ -121,6 +121,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('post_min_length', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_next_events', '5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_date_events', '10');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('use_fsockopen', '1');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('display_online_empty_groups', '1');
 
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_description', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
@@ -142,6 +143,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_date_events', 'put_text', 'array(''size'' => ''5'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_birthday_activate', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_birthday_required_posts', 'put_text', 'array(''size'' => 5)', 'unsigned int');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general',  'groups',  'display_online_empty_groups',  'put_boolean',  'array(''yes'' => ''1'',''no'' => ''0'')',  'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_path', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_dommain', 'put_text', 'array(''size'' => 35)', '');

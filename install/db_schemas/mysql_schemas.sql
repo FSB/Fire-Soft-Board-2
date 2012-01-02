@@ -149,6 +149,7 @@ CREATE TABLE fsb2_groups (
   g_open tinyint(4) NOT NULL default '0',
   g_online tinyint(4) NOT NULL default '1',
   g_rank mediumint(9) NOT NULL default '0',
+  g_order mediumint(9) NOT NULL default '0',
   PRIMARY KEY  (g_id),
   KEY g_type (g_type)
 ) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

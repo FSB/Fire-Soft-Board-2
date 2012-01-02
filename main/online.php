@@ -25,12 +25,24 @@ if (Fsb::$session->is_authorized('online_box'))
 {
 	if (Fsb::$mods->is_active('online_show_current') || Fsb::$mods->is_active('online_show_today'))
 	{
-		$sql = 'SELECT g_id, g_name, g_type, g_color
-				FROM ' . SQL_PREFIX . 'groups
-				WHERE g_online = 1
-					AND g_type <> ' . GROUP_SINGLE . '
-					AND g_id <> ' . GROUP_SPECIAL_VISITOR . '
-				ORDER BY g_type';
+		$is_empty = array('join' => '', 'having' => '');
+		if (Fsb::$cfg->get('display_online_empty_groups'))
+		{
+			$is_empty = array(
+				'join'	=> 'LEFT JOIN ' . SQL_PREFIX . 'groups_users gu ON g.g_id = gu.g_id',
+				'having' => 'HAVING COUNT(gu.g_id) > 0',
+			);
+		}
+
+		$sql = 'SELECT g.g_id, g.g_name, g.g_type, g.g_color
+				FROM ' . SQL_PREFIX . 'groups g
+				' . $is_empty['join'] . '
+				WHERE g.g_online = 1
+					AND g.g_type <> ' . GROUP_SINGLE . '
+					AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
+				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color
+				' . $is_empty['having'] . '
+				ORDER BY g.g_order, g.g_type, g.g_name';
 		$result = Fsb::$db->query($sql, 'groups_');
 		$legend = array(GROUP_SPECIAL => array(), GROUP_NORMAL => array());
 		while ($row = Fsb::$db->row($result))

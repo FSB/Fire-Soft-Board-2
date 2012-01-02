@@ -103,7 +103,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 					ON g.g_id = gu.g_id
 				WHERE g.g_type <> ' . GROUP_SINGLE . '
 				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color
-				ORDER BY g.g_type, g.g_name';
+				ORDER BY g.g_order, g.g_type, g.g_name';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
