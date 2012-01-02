@@ -51,7 +51,9 @@ return (array (
   'adm_group_rank' => 'Rang du groupe',
   'adm_group_rank_explain' => 'En assignant un rang à ce groupe, tous les membres du groupe auront ce rang.',
   'adm_group_is_special' => 'Groupe spécial (impossible à supprimer)',
-  'adm_group_is_not_special' => 'Groupes d\'utilisateurs',
+  'adm_group_is_not_online' => 'Groupes non visible dans la légende',
+  'adm_down_group' => 'Descendre le groupe',
+  'adm_up_group' => 'Monter le groupe',
 ));
 
 
