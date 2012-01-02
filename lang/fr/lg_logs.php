@@ -96,6 +96,7 @@ return (array (
   'log_user_update_personal' => 'Modification des informations personnelles',
   'log_user_update_nickname' => 'Modification du pseudonyme (ancien: %s ; nouveau: %s)',
   'log_user_update_sig' => 'Modification de la signature',
+  'log_user_update_notepad' => 'Modification du bloc-notes',
   'log_user_update_activate' => 'Modification des préférences',
   'log_user_update_avatar' => 'Modification de l\'avatar',
   'log_user_delete_avatar' => 'Suppression de l\'avatar',

@@ -125,7 +125,7 @@ return (array (
 	'adm_activation_mod_post_captcha' => 'Confirmation visuelle des messages',
 	'adm_activation_mod_post_captcha_explain' => 'Ajoute une image contenant un code aléatoire à écrire pour les visiteurs (non inscrits) lorsqu\'ils postent un message, afin d\'éviter des messages indésirables de spam par des robots',
 	'adm_activation_mod_portail' => 'Portail',
-		'adm_activation_mod_portail_explain' => 'Le portail est une fonction se greffant à la place de l\'index de votre forum. Il affiche plusieurs modules aux visiteurs arrivant sur le forum tels que des news, l\'inscription à la newsletter, les derniers messages postés sur le forum, etc ... Vous pouvez personnaliser votre portail comme vous l\'entendez.',
+	'adm_activation_mod_portail_explain' => 'Le portail est une fonction se greffant à la place de l\'index de votre forum. Il affiche plusieurs modules aux visiteurs arrivant sur le forum tels que des news, l\'inscription à la newsletter, les derniers messages postés sur le forum, etc ... Vous pouvez personnaliser votre portail comme vous l\'entendez.',
 	'adm_activation_mod_rss' => 'Flux RSS',
 	'adm_activation_mod_rss_explain' => 'Permet aux membres d\'utiliser les flux RSS du forum afin d\'être tenus au courant en permanence des derniers messages sur le forum.',
 	'adm_activation_mod_previous_post' => 'Afficher le message précédent',
@@ -159,6 +159,8 @@ return (array (
 	'adm_mods_not_exists' => 'Le mod recherché n\'existe pas',
 	'adm_activation_mod_calendar_stats' => 'Evénements des prochains jours',
 	'adm_activation_mod_calendar_stats_explain' => 'Affiche les événements des 3 prochains jours sur l\'index',
+	'adm_activation_mod_notepad' => 'Bloc-notes',
+	'adm_activation_mod_notepad_explain' => 'En activant ce module, vous permettrez à vos membres d\'utiliser un bloc-notes simple dans leur profil',
 ));
 
 
