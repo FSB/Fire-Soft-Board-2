@@ -46,6 +46,7 @@ return (array (
   'log_admin_forum_log_delete_c' => 'Suppression de la catégorie: <i>%s</i>',
   'log_admin_forum_log_move_c' => 'Déplacement de la catégorie: <i>%s</i>',
   'log_admin_forum_log_operation_move' => 'Déplacement des sujets du forum: <i>%s</i>',
+  'log_admin_forum_log_operation_delete' => 'Suppression des sujets du forum: <i>%s</i>',
   'log_admin_all_log_status' => 'Changement de statut de plusieurs catégories / forums',
   'log_admin_all_log_delete' => 'Suppression de plusieurs catégories / forums',
   'log_admin_smiley_log_add' => 'Ajout d\'un smiley',
