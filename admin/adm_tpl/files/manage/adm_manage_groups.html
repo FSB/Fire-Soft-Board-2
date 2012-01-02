@@ -10,13 +10,13 @@
 					<th width="150">{LG_ADM_GROUP_NAME}</th>
 					<th>{LG_ADM_GROUP_DESC}</th>
 					<th width="100">{LG_ADM_GROUP_TOTAL_MEMBER}</th>
-					<th width="100">{LG_ACTION}</th>
+					<th width="130">{LG_ACTION}</th>
 				</tr>
 			</if>
 			<if content="$group.SEPARATOR">
-				<tr>
-					<th colspan="4">{LG_ADM_GROUP_IS_NOT_SPECIAL}</th>
-				</tr>
+			<tr>
+				<th colspan="4">{LG_ADM_GROUP_IS_NOT_ONLINE}</th>
+			</tr>
 			</if>
 			<tr>
 				<td align="center"><span {group.STYLE}>{group.NAME}</span></td>
@@ -24,7 +24,15 @@
 				<td align="center"><a href="{group.URL}">{group.COUNT}</a></td>
 				<td align="center">
 					<a href="{group.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" border="0" /></a>
-					<if content="$group.U_DELETE"><a href="{group.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a></if>
+					<if content="$group.U_DELETE">
+					<a href="{group.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" border="0" /></a>
+					</if>
+					<if content="!$group.FIRST_ROW">
+					<a href="{group.U_UP_GROUP}"><img src="adm_tpl/img/up.gif" alt="{LG_ADM_UP_GROUP}" title="{LG_ADM_UP_GROUP}" /></a>
+					</if>
+					<if content="!$group.LAST_ROW">
+					<a href="{group.U_DOWN_GROUP}"><img src="adm_tpl/img/down.gif" alt="{LG_ADM_DOWN_GROUP}" title="{LG_ADM_DOWN_GROUP}" /></a>
+					</if>
 				</td>
 			</tr>
 		</block>
