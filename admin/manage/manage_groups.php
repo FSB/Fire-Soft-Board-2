@@ -244,6 +244,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->data['g_modo'] =			trim(Http::request('g_modo', 'post'));
 		$this->data['g_color'] =		Html::set_style(Http::request('g_style_type', 'post'), trim(Http::request('g_style', 'post')), 'class="user"');
 
+        $sql = 'SELECT MAX(g_order) AS max_order FROM ' . SQL_PREFIX . 'groups';
+		$this->data['g_order'] = Fsb::$db->get($sql, 'max_order') + 1;
+        
 		if (empty($this->data['g_name']))
 		{
 			$this->errstr[] = Fsb::$session->lang('fields_empty');
