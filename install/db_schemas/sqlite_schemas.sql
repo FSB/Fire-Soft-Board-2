@@ -128,7 +128,8 @@ CREATE TABLE fsb2_groups (
   g_color varchar(255) default '',
   g_open tinyint(4) default '0',
   g_online tinyint(4) default '1',
-  g_rank mediumint(9) default '0'
+  g_rank mediumint(9) default '0',
+  g_order mediumint(9) default '0'
 );
 CREATE INDEX fsb2_groups_g_type_index ON fsb2_groups (g_type);
 CREATE TABLE fsb2_groups_auth (
