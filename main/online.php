@@ -26,7 +26,7 @@ if (Fsb::$session->is_authorized('online_box'))
 	if (Fsb::$mods->is_active('online_show_current') || Fsb::$mods->is_active('online_show_today'))
 	{
 		$is_empty = array('join' => '', 'having' => '');
-		if (Fsb::$cfg->get('display_online_empty_groups'))
+		if (Fsb::$cfg->get('hide_empty_groups'))
 		{
 			$is_empty = array(
 				'join'	=> 'LEFT JOIN ' . SQL_PREFIX . 'groups_users gu ON g.g_id = gu.g_id',
