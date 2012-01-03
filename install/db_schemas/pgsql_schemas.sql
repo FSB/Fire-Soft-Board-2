@@ -147,6 +147,7 @@ g_id INT DEFAULT nextval('fsb2_groups_seq'),
   g_open INT2 default '0',
   g_online INT2 default '1',
   g_rank INT4 default '0',
+  g_order INT4 default '0',
   PRIMARY KEY (g_id)
 );
 CREATE INDEX fsb2_groups_g_type_index ON fsb2_groups (g_type);
