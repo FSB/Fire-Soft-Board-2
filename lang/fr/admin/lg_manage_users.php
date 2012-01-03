@@ -80,7 +80,7 @@ return (array (
   'adm_users_add_error_login_exists' => 'Ce login existe déjà',
   'adm_users_add_error_nickname_exists' => 'Ce pseudonyme existe déjà',
   'adm_users_add_error_email_exists' => 'Cette adresse email existe déjà',
-  'adm_users_add_error_send_email' => 'Le compte utilisateur a bien été créé, mais l\'email de confirmation n\'a pas pus être envoyé',
+  'adm_users_add_error_send_email' => 'Le compte utilisateur a bien été créé, mais l\'email de confirmation n\'a pas pu être envoyé',
   'adm_users_well_add' => 'Le compte utilisateur a bien été créé sur le forum',
   'adm_users_auths'	=> 'Droits'
 ));
