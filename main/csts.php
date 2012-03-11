@@ -13,7 +13,7 @@
 define('OS_SERVER', (preg_match('/^WIN/', PHP_OS)) ? 'windows' : 'unix');
 define('EOF', (OS_SERVER == 'windows') ? "\r\n" : "\n");
 define('OS_SLASH', (OS_SERVER == 'windows') ? "\\" : "/");
-define('IS_LOCALHOST', (isset($_SERVER['HTTP_HOST']) && (preg_match('#^localhost(:[0-9]+)?$#i', $_SERVER['HTTP_HOST']) || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ? true : false);
+define('IS_LOCALHOST', $_SERVER['SERVER_ADDR'] === '127.0.0.1' || $_SERVER['SERVER_ADDR'] === '::1');
 
 // Extensions PHP importantes pour FSB2
 define('PHP_EXTENSION_GD', (extension_loaded('gd')) ? true : false);
