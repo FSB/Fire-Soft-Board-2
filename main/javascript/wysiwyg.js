@@ -316,18 +316,18 @@ var FSB_editor = new Class(
             url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
             onSuccess: function(txt, xml)
             {
-				ajax_waiter_close();
-				if (this.current == 'wysiwyg')
-				{
-					$(this.id + '_wysiwyg').value = txt;
-					new FSB_editor_text(this.id, this.iface);
-				}
-				else
-				{
-					$(this.id).style.display = 'none';
-					$(this.id).value = txt;
-					new FSB_editor_wysiwyg(this.id, this.iface);
-				}
+                ajax_waiter_close();
+                if (this.current == 'wysiwyg')
+                {
+                    $(this.id + '_wysiwyg').value = txt;
+                    new FSB_editor_text(this.id, this.iface);
+                }
+                else
+                {
+                    $(this.id).style.display = 'none';
+                    $(this.id).value = txt;
+                    new FSB_editor_wysiwyg(this.id, this.iface);
+                }
             }.bind(this)
         });
 
