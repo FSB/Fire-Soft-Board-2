@@ -159,7 +159,7 @@ function submit_post_dynamic(id, post_id, redirect)
 		id: post_id
 	};
 
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Object.toQueryString(obj),
+	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
 	{
 		method: 'post',
 		onComplete: function(txt, xml)

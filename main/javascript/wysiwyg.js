@@ -311,7 +311,7 @@ var FSB_editor = new Class(
 			mode: 'editor_' + this.current
 		}
 
-		var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Object.toQueryString(obj),
+		var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
 		{
 			method: 'post',
 			onComplete: function(txt, xml)
