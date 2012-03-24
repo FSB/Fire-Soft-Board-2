@@ -223,25 +223,25 @@ function trim(str)
 */
 function search_user(value, obj, id, id_field)
 {
-	var ajax = new Request(
-	{
-		url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=search_user',
-		onSuccess: function(txt, xml)
-		{
-			if (!txt)
-			{
-				$(id).style.visibility = 'hidden';
-				return ;
-			}
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=search_user',
+        onSuccess: function(txt, xml)
+        {
+            if (!txt)
+            {
+                $(id).style.visibility = 'hidden';
+                return ;
+            }
 	
-			$(id).innerHTML = txt;
-			$(id).style.visibility = 'visible';
-		}
-	});
+            $(id).innerHTML = txt;
+            $(id).style.visibility = 'visible';
+        }
+    });
 
-	ajax.send({
-		mode: 'get',
-        data: 'nickname=' + value + '&jsid=' + id_field + '&jsid2=' + id,
+    ajax.send({
+        mode: 'get',
+        data: 'nickname=' + value + '&jsid=' + id_field + '&jsid2=' + id
 	});
 }
 
