@@ -242,7 +242,7 @@ function search_user(value, obj, id, id_field)
     ajax.send({
         mode: 'get',
         data: 'nickname=' + value + '&jsid=' + id_field + '&jsid2=' + id
-	});
+    });
 }
 
 /*

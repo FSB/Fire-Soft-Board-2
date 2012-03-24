@@ -311,11 +311,11 @@ var FSB_editor = new Class(
 			mode: 'editor_' + this.current
 		}
 
-		var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
-		{
-			method: 'post',
-			onComplete: function(txt, xml)
-			{
+        var ajax = new Request(
+        {
+            url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
+            onSuccess: function(txt, xml)
+            {
 				ajax_waiter_close();
 				if (this.current == 'wysiwyg')
 				{
@@ -328,8 +328,8 @@ var FSB_editor = new Class(
 					$(this.id).value = txt;
 					new FSB_editor_wysiwyg(this.id, this.iface);
 				}
-			}.bind(this)
-		});
+            }.bind(this)
+        });
 
 		if (this.current == 'wysiwyg')
 		{
@@ -340,10 +340,11 @@ var FSB_editor = new Class(
 			var content = $(this.id).value;
 		}
 		
-		ajax.request({
-			'content': content
-		});
-
+        ajax.send({
+            mode: 'post',
+            data: 'content=' + content
+        });
+        
 		$(this.id).value = '';
 	},
 
