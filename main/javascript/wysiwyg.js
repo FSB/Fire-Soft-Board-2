@@ -27,7 +27,7 @@ var FSB_editor_interface = new Class(
 	
 	initialize: function(id, type, use_wysiwyg)
 	{
-		if (!window.ie7 && !window.gecko && !window.opera && !window.webkit420)
+		if (!(Browser.Engine.trident && Browser.Engine.version == 5) && !Browser.Engine.gecko && !Browser.Engine.presto && !(Browser.Engine.webkit && Browser.Engine.version == 420))
 		{
 			type = 'text';
 		}
@@ -124,7 +124,7 @@ var FSB_editor = new Class(
 			return ;
 		}
 
-		if (!window.ie7 && !window.gecko && !window.opera && !window.webkit420)
+		if (!(Browser.Engine.trident && Browser.Engine.version == 5) && !Browser.Engine.gecko && !Browser.Engine.presto && !(Browser.Engine.webkit && Browser.Engine.version == 420))
 		{
 			return ;
 		}
@@ -139,7 +139,7 @@ var FSB_editor = new Class(
 		ltab.setAttribute('id', this.id + '_tabs_ltab');
 		ltab.setAttribute('class', 'editor_tabs');
 		ltab.setAttribute('title', FSB_editor_lg['ltab_explain']);
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			var add = (this.current == 'text') ? 3 : 0;
 			ltab.style.position = 'absolute';
@@ -174,7 +174,7 @@ var FSB_editor = new Class(
 		rtab.setAttribute('class', 'editor_tabs');
 		rtab.setAttribute('id', this.id + '_tabs_rtab');
 		rtab.setAttribute('title', FSB_editor_lg['rtab_explain']);
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			rtab.style.position = 'absolute';
 			rtab.style.backgroundImage = 'url(tpl/WhiteSummer/img/wysiwyg_tab.png)';
@@ -282,7 +282,7 @@ var FSB_editor = new Class(
 		}
 
 		// Modification graphique des onglets
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			var add = (this.current == 'wysiwyg') ? 2 : 0;
 			tab.style.marginTop = (add + 2) + 'px';
@@ -395,8 +395,9 @@ var FSB_editor = new Class(
 /*
 ** Editeur de texte classique
 */
-var FSB_editor_text = FSB_editor.extend(
+var FSB_editor_text = new Class(
 {
+    Extends: FSB_editor,
 	current: 'text',
 
 	/*
@@ -540,7 +541,7 @@ var FSB_editor_text = FSB_editor.extend(
 	*/
 	_get_selection: function()
 	{
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -643,8 +644,9 @@ var FSB_editor_text = FSB_editor.extend(
 /*
 ** Editeur WYSIWYG
 */
-var FSB_editor_wysiwyg = FSB_editor.extend(
+var FSB_editor_wysiwyg = new Class(
 {
+    Extends: FSB_editor,
 	current: 'wysiwyg',
 
 	/*
@@ -681,24 +683,24 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		$(this.id).parentNode.appendChild(input);
 
 		// Initialisation du designMode
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			this.doc = window.frames[this.id].document;
 			this.win = window.frames[this.id];
 			this.doc.designMode = 'On';
 		}
-		else if (window.opera)
+		else if (Browser.Engine.presto)
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id);
 			this.doc.designMode = 'On';
 		}
-		else if (window.gecko || window.webkit420)
+		else if (Browser.Engine.gecko || (Browser.Engine.webkit && Browser.Engine.version == 420))
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id).contentWindow;
 			
-			if (window.webkit420)
+			if (Browser.Engine.webkit && Browser.Engine.version == 420)
 			{
 				this.doc.designMode = 'On';
 			}
@@ -719,7 +721,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			this.doc.write('<html><head><style type="text/css">body{margin:1px;font-size: 12px;font-family: Verdana, Arial, Helvetica, sans-serif;};p{margin:0px;}</style></head><body>' + this._format_text($(this.id + '_wysiwyg').value) + '</body></html>');
 			this.doc.close();
 
-			if (window.gecko)
+			if (Browser.Engine.gecko)
 			{
 				this.doc.designMode = 'On';
 			}
@@ -903,7 +905,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			case 'bgcolor' :
 				if (args)
 				{
-					if (window.ie)
+					if (Browser.Engine.trident)
 					{
 						this.doc.execCommand('backcolor', false, args);
 					}
@@ -945,7 +947,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_get_selection: function()
 	{
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -966,7 +968,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		str = this.parse_vars(str, this._get_selection());
 		if (!html) str = htmlspecialchars(str);
 		str = this._format_text(str);
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			var sel = this.doc.selection;
 			this.win.focus();
@@ -978,7 +980,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			}
 
 		}
-		else if (window.gecko)
+		else if (Browser.Engine.gecko)
 		{
 			var fragment = this.doc.createDocumentFragment();
 			var div = this.doc.createElement('div');
@@ -989,7 +991,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 			}
 			this._insertNodeAtSelection(fragment);
 		}
-		else if (window.opera)
+		else if (Browser.Engine.presto)
 		{
 			this.doc.execCommand('InsertHTML', false, str);
 		}
@@ -1001,7 +1003,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_insertNodeAtSelection: function(toBeInserted)
 	{
-		if (!window.ie)
+		if (!Browser.Engine.trident)
 		{
 			var sel = this.win.getSelection();
 			var range = this._createRange(sel);
@@ -1059,7 +1061,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 		this.win.focus();
 		var range;
 		var collapsed = (typeof pos != "undefined");
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			range = this.doc.body.createTextRange();
 			range.moveToElementText(node);
@@ -1082,7 +1084,7 @@ var FSB_editor_wysiwyg = FSB_editor.extend(
 	*/
 	_createRange: function(sel)
 	{
-		if (window.ie)
+		if (Browser.Engine.trident)
 		{
 			return sel.createRange();
 		}

@@ -434,7 +434,7 @@ var MooRainbow = new Class({
 			'class': prefix + 'overlay'
 		}).inject(div);
 		
-		if (window.ie6) {
+		if (Browser.Engine.trident && Browser.Engine.version == 4) {
 			div.setStyle('overflow', '');
 			var src = ov.src;
 			ov.src = this.options.imgPath + 'blank.gif';
