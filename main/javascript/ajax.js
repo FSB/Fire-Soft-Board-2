@@ -1,260 +1,116 @@
 /*
-** +---------------------------------------------------+
-** | Name :			~/main/javascript/ajax.js
-** | Begin :		20/10/2006
-** | Last :			16/01/2008
-** | User :			Genova
-** | License :		GPL v2.0
-** +---------------------------------------------------+
+Script: Ajax.js
+	Contains the <Ajax> class. Also contains methods to generate querystings from forms and Objects.
+
+Credits:
+	Loosely based on the version from prototype.js <http://prototype.conio.net>
+
+License:
+	MIT-style license.
 */
 
 /*
-** Basé sur la classe Datarequestor 1.5 (http://mikewest.org/archive/datarequestor) sous licence GPL.
-** Téléchargez cette classe pour davantage d'informations techniques.
+Class: Ajax
+	An Ajax class, For all your asynchronous needs.
+	Inherits methods, properties, options and events from <XHR>.
+
+Arguments:
+	url - the url pointing to the server-side script.
+	options - optional, an object containing options.
+
+Options:
+	data - you can write parameters here. Can be a querystring, an object or a Form element.
+	update - $(element) to insert the response text of the XHR into, upon completion of the request.
+	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
+	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
+	
+Events:
+	onComplete - function to execute when the ajax request completes.
+
+Example:
+	>var myAjax = new Ajax(url, {method: 'get'}).request();
 */
 
-// Constantes utiles
-var AJAX_GET = 0;
-var AJAX_POST = 1;
-var AJAX_MODE_TXT = 0;
-var AJAX_MODE_XML = 1;
+var Ajax = XHR.extend({
 
-/*
-** Classe de gestion AJAX
-*/
-function Ajax()
-{
-	var self = this;
-	
+	options: {
+		data: null,
+		update: null,
+		onComplete: Class.empty,
+		evalScripts: false,
+		evalResponse: false
+	},
+
+	initialize: function(url, options){
+		this.addEvent('onSuccess', this.onComplete);
+		this.setOptions(options);
+		/*compatibility*/
+		this.options.data = this.options.data || this.options.postBody;
+		/*end compatibility*/
+		if (!['post', 'get'].contains(this.options.method)){
+			this._method = '_method=' + this.options.method;
+			this.options.method = 'post';
+		}
+		this.parent();
+		this.setHeader('X-Requested-With', 'XMLHttpRequest');
+		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
+		this.url = url;
+	},
+
+	onComplete: function(){
+		if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
+		if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
+		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
+	},
+
 	/*
-	** Charge un objet XMLHttpRequest
+	Property: request
+		Executes the ajax request.
+
+	Example:
+		>var myAjax = new Ajax(url, {method: 'get'});
+		>myAjax.request();
+
+		OR
+
+		>new Ajax(url, {method: 'get'}).request();
 	*/
-	this.xmlhttp = function()
-	{
-		try
-		{
-			self.httpRequest = new XMLHttpRequest();
-		}
-		catch (e)
-		{
-			try
-			{
-				self.httpRequest = new ActiveXObject("Msxml2.XMLHTTP")
-			}
-			catch(e)
-			{
-				var success = false;
-				var MSXML_XMLHTTP_PROGIDS = new Array('Microsoft.XMLHTTP', 'MSXML2.XMLHTTP', 'MSXML2.XMLHTTP.5.0', 'MSXML2.XMLHTTP.4.0', 'MSXML2.XMLHTTP.3.0');
-				for (var i = 0; i < MSXML_XMLHTTP_PROGIDS.length && !success; i++)
-				{
-					try
-					{
-						self.httpRequest = new ActiveXObject(MSXML_XMLHTTP_PROGIDS[i]);
-						success = true;
-					}
-					catch (e)
-					{
-						self.httpRequest = null;
-					}
-				}
-			}
 
+	request: function(data){
+		data = data || this.options.data;
+		switch($type(data)){
+			case 'element': data = $(data).toQueryString(); break;
+			case 'object': data = Object.toQueryString(data);
 		}
+		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
+		return this.send(this.url, data);
+	},
 
-		return (self.httpRequest);
-	}
-	
 	/*
-	** Ajoute un argument à la requète
-	** -----
-	** type ::	Méthode d'envoie de l'argument (AJAX_GET | AJAX_POST)
-	** name ::	Nom de l'argument
-	** value ::	Valeur de l'argument
+	Property: evalScripts
+		Executes scripts in the response text
 	*/
-	this.set_arg = function(type, name, value)
-	{
-		self.args[type].push(new Array(name, escape(value)));
-	}
-	
+
+	evalScripts: function(){
+		var script, scripts;
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) scripts = this.response.text;
+		else {
+			scripts = [];
+			var regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
+			scripts = scripts.join('\n');
+		}
+		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
+	},
+
 	/*
-	** Envoie les entetes HTTP
-	** -----
-	** url ::	URL de destination
-	** mode ::	Type d'objet de retour (AJAX_MODE_TXT | AJAX_MODE_XML)
+	Property: getHeader
+		Returns the given response header or null
 	*/
-	this.send = function(url, mode)
-	{
-		// Mode d'envoie de la requète
-		self.mode = mode;
 
-		if ((typeof self.httpRequest.abort) != "undefined" && self.httpRequest.readyState != 0)
-		{
-			self.httpRequest.abort();
-		}
-
-		// Fonction appelée lorsque l'état de la transaction http change
-		self.httpRequest.onreadystatechange = self.callback;
-
-		// Construction des URL pour les méthodes GET et POST
-		requestType = "GET";
-		var urlGet = (url.indexOf("?") != -1) ? "&" : "?";
-		for (var i = 0; i < self.args[AJAX_GET].length; i++)
-		{
-			urlGet += self.args[AJAX_GET][i][0] + "=" + self.args[AJAX_GET][i][1] + "&";
-		}
-
-		// En cas d'argument POST, on force l'envoie de la requète en POST (indispensable, sinon seules les données en GET sont receptionnées)
-		var urlPost = "";
-		for (var i = 0; i < self.args[AJAX_POST].length; i++)
-		{
-			requestType = "POST";
-			urlPost += self.args[AJAX_POST][i][0] + "=" + self.args[AJAX_POST][i][1] + "&";
-		}
-
-		// Envoie des requètes HTTP
-		self.httpRequest.open(requestType, url + urlGet, true);
-		if ((typeof self.httpRequest.setRequestHeader) != "undefined")
-		{
-			// On force un header text/xml si on souhaite récupérer sous forme d'objet DOM les données
-			if (mode == AJAX_MODE_XML && (typeof self.httpRequest.overrideMimeType) == "function")
-			{
-				self.httpRequest.overrideMimeType('text/xml');
-			}
-			self.httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		}
-		self.httpRequest.send(urlPost);
-
-		return (true);
-	}
-	
-	/*
-	** Callback appelée lors que l'état de la requète HTTP change
-	*/
-	this.callback = function()
-	{
-		if ((self.httpRequest.readyState == 4 && self.httpRequest.status == 200) || (self.httpRequest.readyState == 4 && self.httpRequest.status == 0))
-		{
-			if (self.onload)
-			{
-				switch (self.mode)
-				{
-					case AJAX_MODE_TXT :
-						self.onload(self.httpRequest.responseText);
-					break;
-	                    
-					case AJAX_MODE_XML :
-						self.onload(self.normalizeWhitespace(self.httpRequest.responseXML));
-					break;
-				}
-			}
-		}
-		else if (self.httpRequest.readyState == 3)
-		{
-			if (self.onprogress && !document.all)
-			{
-				var contentLength = 0;
-				try
-				{
-					contentLength = self.httpRequest.getResponseHeader("Content-Length");
-				}
-				catch (e)
-				{
-					contentLength = -1;
-				}
-				self.onprogress(self.httpRequest.responseText.length, contentLength);
-			}
-
-		}
-		else if (self.httpRequest.readyState == 4)
-		{
-			if (self.onfail)
-			{
-				self.onfail(self.httpRequest.status);
-			}
-			else
-			{
-				throw new Error("La requete HTTP a echouer avec le status " + self.httpRequest.status + "\nReponse recue : " + self.httpRequest.responseText);
-			}
-		}
-	}
-	
-	/*
-	** Supprime les espaces totalement blancs entre les balises
-	** -----
-	** domObj ::	Objet DOM
-	*/
-	this.normalizeWhitespace = function (domObj)
-	{
-		if (document.createTreeWalker)
-		{
-			var filter = {
-				acceptNode: function(node)
-				{
-					if (/\S/.test(node.nodeValue))
-					{
-						return NodeFilter.FILTER_SKIP;
-					}
-					return NodeFilter.FILTER_ACCEPT;
-				}
-			}
-
-			// Safari semble ne pas support correctement DOM ...
-			if (!Nav_Safari)
-			{
-				var treeWalker = document.createTreeWalker(domObj, NodeFilter.SHOW_TEXT, filter, true);
-				while (treeWalker.nextNode())
-				{
-					treeWalker.currentNode.parentNode.removeChild(treeWalker.currentNode);
-					treeWalker.currentNode = domObj;
-				}
-			}
-
-			return (domObj);
-		}
-		else
-		{
-			return (domObj);
-		}
+	getHeader: function(name){
+		try {return this.transport.getResponseHeader(name);} catch(e){};
+		return null;
 	}
 
-	// Propriétés
-	self.args = new Array();
-	self.args[AJAX_GET] = new Array();
-	self.args[AJAX_POST] = new Array();
-	self.httpRequest = null;
-	self.mode = AJAX_MODE_TXT;
-	self.onload = null;
-
-	if (!this.xmlhttp())
-	{
-		throw new Error("Impossible de charger un objet XMLHttpRequest");
-	}
-}
-
-/*
-** Ouvre la fenêtre d'attente ajax
-*/
-function ajax_waiter_open()
-{
-	if (Nav_IE)
-	{
-		var scroll_y = document.body.scrollTop;
-	}
-	else
-	{
-		var scroll_y = window.pageYOffset;
-	}
-	$('ajax_waiter').style.top = scroll_y + 'px';
-	$('ajax_waiter').style.left = '0px';
-	$('ajax_waiter').innerHTML = '<img src="'+FSB_TPL+'img/ajax-loader.gif" />';
-	$('ajax_waiter').style.display = 'block';
-}
-
-/*
-** Ferme la fenête d'attendre ajax
-*/
-function ajax_waiter_close()
-{
-	$('ajax_waiter').style.display = 'none';
-	$('ajax_waiter').innerHTML = '';
-}
+});
