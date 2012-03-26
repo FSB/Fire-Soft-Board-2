@@ -87,6 +87,95 @@ class Fsb_frame_child extends Fsb_admin_frame
         Fsb::$db->free($result);
     }
     
+	/**
+	 * Affiche la page permettant d'ajouter / editer des tags
+	 */
+	public function page_add_edit_tag()
+	{
+        if ($this->mode == 'edit')
+        {
+            $lg_add_edit = Fsb::$session->lang('adm_tag_edit');
+            $sql = 'SELECT tag_name, tag_style, tag_auth
+                    FROM ' . SQL_PREFIX . 'topics_tags
+                    WHERE tag_id = ' . $this->id;
+            $data = Fsb::$db->request($sql);
+        }
+        else
+        {
+            $lg_add_edit = Fsb::$session->lang('adm_tag_add');
+            $data = array(
+                'tag_name' => '',
+                'tag_style' => '',
+                'tag_auth' => '',
+            );
+        }
+        
+        // Style
+        $style_type = $style_content = '';
+        if ($getstyle = Html::get_style($data['tag_style']))
+        {
+            list($style_type, $style_content) = $getstyle;
+        }   
+        
+        // Liste des permissions
+        $auth_list = Html::make_list('tag_auth', $data['tag_auth'], array(
+            VISITOR =>	Fsb::$session->lang('visitor'),
+            USER =>		Fsb::$session->lang('user'),
+            MODO =>		Fsb::$session->lang('modo'),
+            MODOSUP =>	Fsb::$session->lang('modosup'),
+            ADMIN =>	Fsb::$session->lang('admin'),
+        ));
+
+        Fsb::$tpl->set_switch('tag_add');
+        Fsb::$tpl->set_vars(array(
+            'L_ADD_EDIT' =>	$lg_add_edit,
+            'TAG_NAME' => $data['tag_name'],
+            'TAG_STYLE' => htmlspecialchars($style_content),
+            'STYLE_TYPE_NONE' => (!$getstyle) ? 'checked="checked"' : '',
+            'STYLE_TYPE_COLOR' => ($style_type == 'style') ? 'checked="checked"' : '',
+            'STYLE_TYPE_CLASS' => ($style_type == 'class') ? 'checked="checked"' : '',
+            'TAG_AUTH' => $auth_list,
+            'U_ACTION' => sid('index.' . PHPEXT . '?p=posts_tag&amp;mode=' . $this->mode . '&amp;id=' . $this->id)
+        )); 
+    }    
+
+    /**
+     * Valide le formulaire d'ajout / edition des tags
+     */    
+    public function query_add_edit_tag()
+    {
+        $data = array(
+            'tag_name' => Http::request('tag_name', 'post'),
+            'tag_style' => Html::set_style(Http::request('tag_style_type', 'post'), trim(Http::request('tag_style', 'post'))),
+            'tag_auth' => Http::request('tag_auth', 'post'),
+        );
+        
+        $errstr = array();
+        
+		if (!$data['tag_name'])
+		{
+			$errstr[] = Fsb::$session->lang('fields_empty');
+		}
+
+		if ($errstr)
+		{
+			Display::message(Html::make_errstr($errstr));
+		}      
+        
+        if ($this->mode == 'add')
+        {
+			Fsb::$db->insert('topics_tags', $data);
+		}
+		else
+		{
+			Fsb::$db->update('topics_tags', $data, 'WHERE tag_id = ' . $this->id);
+		}
+
+		Fsb::$db->destroy_cache('tags_');
+		Log::add(Log::ADMIN, 'tag_log_' . $this->mode, $data['tag_name']);
+		Display::message('adm_tag_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_tag', 'posts_tag');
+    }
+    
     /**
      * Suppression d'un tag
      */

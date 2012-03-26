@@ -32,5 +32,32 @@
         <div><a href="{U_ADD}" class="submit">{LG_ADM_TAG_ADD}</a></div>
     </fieldset>
 </switch>
+
+<switch name="tag_add">
+    <form action="{U_ACTION}" method="post">
+    <fieldset>
+        <legend>{L_ADD_EDIT}</legend>
+        <dl>
+            <dt><label for="tag_name_id">{LG_ADM_TAG_NAME}* :</label></dt>
+            <dd><input type="text" name="tag_name" id="tag_name_id" value="{TAG_NAME}" maxlength="100" size="35" /></dd>
+        </dl>
+        <dl>
+            <dt><label for="tag_style">{LG_ADM_TAG_STYLE} :</label><br /><span>{LG_ADM_TAG_STYLE_EXP}</span></dt>
+            <dd>
+                <input type="text" id="tag_style" name="tag_style" value="{TAG_STYLE}" maxlength="255" size="50" /><br />
+                <input type="radio" name="tag_style_type" value="" {STYLE_TYPE_NONE} /> {LG_ADM_TAG_STYLE_NONE} &nbsp;
+                <input type="radio" name="tag_style_type" id="tag_style_type_id" value="color" {STYLE_TYPE_COLOR} /> 
+                <a href="#" onclick="window.open('index.<?php echo PHPEXT ?>?p=general_tpl&module=tpl&amp;mode=css_generator&amp;id=tag_style&amp;radio=tag_style_type_id', 'color_window', 'height=275,resizable=yes,width=650,scrollbars'); return false;">{LG_ADM_TAG_STYLE_COLOR}</a> &nbsp;
+                <input type="radio" name="tag_style_type" value="class" {STYLE_TYPE_CLASS} /> {LG_ADM_TAG_STYLE_CLASS}
+            </dd>
+        </dl>
+        <dl>
+            <dt><label>{LG_ADM_TAG_AUTH}* :</label></dt>
+            <dd>{TAG_AUTH}</dd>
+        </dl>
+        <div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
+    </fieldset>
+    </form>
+</switch>
     
 <include name="adm_footer.html">
