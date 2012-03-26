@@ -75,9 +75,10 @@ class Fsb_frame_child extends Fsb_admin_frame
         $result = Fsb::$db->query($sql, 'tags_');
         while ($row = Fsb::$db->row($result))
         {
+            $style = Html::get_style($row['tag_style']);
             Fsb::$tpl->set_blocks('tag', array(
                 'NAME' => $row['tag_name'],
-                'STYLE' => $row['tag_style'],
+                'STYLE' => $style[1],
                 'PREVIEW' => '<span ' . $row['tag_style'] . '>[' . $row['tag_name'] . ']</span>',
                 'AUTH' => $auth_list[$row['tag_auth']],
                 'U_EDIT' => sid('index.' . PHPEXT . '?p=posts_tag&amp;mode=edit&amp;id=' . $row['tag_id']),
