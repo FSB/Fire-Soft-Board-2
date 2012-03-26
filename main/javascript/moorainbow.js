@@ -372,7 +372,7 @@ var MooRainbow = new Class({
 	},
 			
 	doLayout: function() {
-		var id = this.options.id, prefix = this.options.prefix;
+		var id = this.options.id + '_div', prefix = this.options.prefix;
 		var idPrefix = id + ' .' + prefix;
         
 		this.layout = new Element('div', {
@@ -381,7 +381,7 @@ var MooRainbow = new Class({
 		}).inject(document.body);
         
 		// Ajout FSB2
-		//this.fireEvent('onLayout', [this.sets, this]);
+		this.fireEvent('onLayout', [this.sets, this]);
 
 		var box = new Element('div', {
 			'styles':  {'position': 'relative'},
