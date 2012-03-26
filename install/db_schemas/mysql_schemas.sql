@@ -494,6 +494,7 @@ CREATE TABLE fsb2_topics (
   t_map_first_post tinyint(4) NOT NULL default '0',
   t_description varchar(255) NOT NULL default '',
   t_approve tinyint(4) NOT NULL default '0',
+  t_tag int(11) NOT NULL default '0',
   PRIMARY KEY  (t_id),
   KEY f_id (f_id),
   KEY t_last_p_time (t_last_p_time),
@@ -515,6 +516,15 @@ CREATE TABLE fsb2_topics_read (
   p_id int(11) NOT NULL default '0',
   tr_last_time int(11) NOT NULL default '0',
   PRIMARY KEY t_u_id (u_id,t_id)
+) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+DROP TABLE IF EXISTS fsb2_topics_tags;
+CREATE TABLE fsb2_topics_tags (
+  tag_id int(11) NOT NULL auto_increment,
+  tag_name varchar(30) NOT NULL default '',
+  tag_style varchar(255) NOT NULL default '',
+  tag_auth tinyint(4) NOT NULL default '0',
+  PRIMARY KEY (tag_id)
 ) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 DROP TABLE IF EXISTS fsb2_upload;

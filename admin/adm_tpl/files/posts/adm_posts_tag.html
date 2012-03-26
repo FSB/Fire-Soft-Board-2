@@ -1,0 +1,36 @@
+<include name="adm_header.html">
+
+<switch name="tag_list">
+    <fieldset>
+        <legend>{LG_ADM_FSBCODE_MANAGE}</legend>
+        <table class="tab">
+        <block name="tag">
+            <if content="$tag.FIRST_ROW">
+            <tr>
+                <th width="150">{LG_ADM_TAG_NAME}</th>
+                <th align="center">{LG_ADM_TAG_STYLE}</th>
+                <th align="center" width="150">{LG_ADM_TAG_PREVIEW}</th>
+                <th align="center" width="150">{LG_ADM_TAG_AUTH}</th>
+                <th width="150"></th>
+            </tr>
+            </if>
+            <tr class="highlight">
+                <td align="center">{tag.NAME}</td>
+                <td align="center">{tag.STYLE}</td>
+                <td align="center">{tag.PREVIEW}</td>
+                <td align="center">{tag.AUTH}</td>
+                <td align="center">
+                    <a href="{tag.U_EDIT}"><img src="adm_tpl/img/edit.gif" alt="{LG_EDIT}" title="{LG_EDIT}" /></a>
+                    <a href="{tag.U_DELETE}"><img src="adm_tpl/img/delete.gif" alt="{LG_DELETE}" title="{LG_DELETE}" /></a>
+				</td>
+            </tr>
+        </block>
+        <blockelse name="tag">
+            <tr><td class="error">{LG_NO_RESULT}</td></tr>
+        </blockelse>
+        </table>
+        <div><a href="{U_ADD}" class="submit">{LG_ADM_TAG_ADD}</a></div>
+    </fieldset>
+</switch>
+    
+<include name="adm_footer.html">

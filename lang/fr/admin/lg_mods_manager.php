@@ -161,7 +161,8 @@ return (array (
 	'adm_activation_mod_calendar_stats_explain' => 'Affiche les événements des 3 prochains jours sur l\'index',
 	'adm_activation_mod_notepad' => 'Bloc-notes',
 	'adm_activation_mod_notepad_explain' => 'En activant ce module, vous permettrez à vos membres d\'utiliser un bloc-notes simple dans leur profil',
+	'adm_activation_mod_tags' => 'Tags applicables aux sujets',
+	'adm_activation_mod_tags_explain' => 'En activant ce module, vous aurez la possibilité d\'attacher des préfixes (tags) à vos sujets.',
 ));
-
 
 /* EOF */

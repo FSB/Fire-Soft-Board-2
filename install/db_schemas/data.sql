@@ -248,6 +248,7 @@ INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, 
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_censor', 3, 'posts', 4, 1, 'messages.png', '');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_smiley', 3, 'posts', 4, 2, 'clown.gif', '');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_fsbcode', 4, 'posts', 4, 3, 'menu.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_tag', 4, 'posts', 4, 4, 'messages.png', 'tags');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_ban', 3, 'users', 5, 1, 'trash.png', '');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_profile_fields', 4, 'users', 5, 2, 'man.gif', '');
 INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_rank', 4, 'users', 5, 3, 'default.png', '');
@@ -291,6 +292,7 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('notepad', '', 1, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('tags', '', 1, '', '', 0);
 
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', false)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('last_posts', 'nb_messages', '5', 'put_text', 'array(''size'' => 5)', 'unsigned int');

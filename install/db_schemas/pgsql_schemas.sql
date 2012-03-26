@@ -8,7 +8,7 @@ CREATE TABLE fsb2_auths (
 DROP TABLE IF EXISTS fsb2_ban;
 CREATE SEQUENCE fsb2_ban_seq;
 CREATE TABLE fsb2_ban (
-ban_id INT DEFAULT nextval('fsb2_ban_seq'),
+  ban_id INT DEFAULT nextval('fsb2_ban_seq'),
   ban_type varchar(255) default '',
   ban_content varchar(255) default '',
   ban_length INT4 default '0',
@@ -20,7 +20,7 @@ CREATE INDEX fsb2_ban_ban_length_index ON fsb2_ban (ban_length);
 DROP TABLE IF EXISTS fsb2_bots;
 CREATE SEQUENCE fsb2_bots_seq;
 CREATE TABLE fsb2_bots (
-bot_id INT DEFAULT nextval('fsb2_bots_seq'),
+  bot_id INT DEFAULT nextval('fsb2_bots_seq'),
   bot_name varchar(255),
   bot_ip varchar(255),
   bot_agent varchar(255),
@@ -31,8 +31,7 @@ DROP TABLE IF EXISTS fsb2_cache;
 CREATE TABLE fsb2_cache (
   cache_hash varchar(255) NOT NULL,
   cache_type varchar(255) NOT NULL,
-  cache_content text
-					 NOT NULL,
+  cache_content text NOT NULL,
   cache_time INT4 NOT NULL,
   PRIMARY KEY (cache_hash)
 );
@@ -40,7 +39,7 @@ CREATE INDEX fsb2_cache_cache_type_index ON fsb2_cache (cache_type);
 DROP TABLE IF EXISTS fsb2_calendar;
 CREATE SEQUENCE fsb2_calendar_seq;
 CREATE TABLE fsb2_calendar (
-c_id INT DEFAULT nextval('fsb2_calendar_seq'),
+  c_id INT DEFAULT nextval('fsb2_calendar_seq'),
   c_begin INT4,
   c_end INT4,
   u_id INT4,
@@ -54,7 +53,7 @@ CREATE INDEX fsb2_calendar_c_begin_index ON fsb2_calendar (c_begin, c_end);
 DROP TABLE IF EXISTS fsb2_censor;
 CREATE SEQUENCE fsb2_censor_seq;
 CREATE TABLE fsb2_censor (
-censor_id INT DEFAULT nextval('fsb2_censor_seq'),
+  censor_id INT DEFAULT nextval('fsb2_censor_seq'),
   censor_word varchar(255) default '',
   censor_replace varchar(255) default '',
   censor_regexp INT2 default '0',
@@ -79,7 +78,7 @@ CREATE INDEX fsb2_config_handler_cfg_cat_subcat_index ON fsb2_config_handler (cf
 DROP TABLE IF EXISTS fsb2_forums;
 CREATE SEQUENCE fsb2_forums_seq;
 CREATE TABLE fsb2_forums (
-f_id INT DEFAULT nextval('fsb2_forums_seq'),
+  f_id INT DEFAULT nextval('fsb2_forums_seq'),
   f_left INT4,
   f_right INT4,
   f_rules text,
@@ -117,7 +116,7 @@ CREATE INDEX fsb2_forums_f_right_left_index ON fsb2_forums (f_left, f_right);
 DROP TABLE IF EXISTS fsb2_fsbcode;
 CREATE SEQUENCE fsb2_fsbcode_seq;
 CREATE TABLE fsb2_fsbcode (
-fsbcode_id INT DEFAULT nextval('fsb2_fsbcode_seq'),
+  fsbcode_id INT DEFAULT nextval('fsb2_fsbcode_seq'),
   fsbcode_tag varchar(20),
   fsbcode_search text,
   fsbcode_replace text,
@@ -138,7 +137,7 @@ CREATE INDEX fsb2_fsbcode_fsbcode_tag_index ON fsb2_fsbcode (fsbcode_tag);
 DROP TABLE IF EXISTS fsb2_groups;
 CREATE SEQUENCE fsb2_groups_seq;
 CREATE TABLE fsb2_groups (
-g_id INT DEFAULT nextval('fsb2_groups_seq'),
+  g_id INT DEFAULT nextval('fsb2_groups_seq'),
   g_name varchar(255) default '',
   g_desc varchar(255) default '',
   g_type INT2 default '0',
@@ -186,7 +185,7 @@ CREATE TABLE fsb2_langs (
 DROP TABLE IF EXISTS fsb2_logs;
 CREATE SEQUENCE fsb2_logs_seq;
 CREATE TABLE fsb2_logs (
-log_id INT DEFAULT nextval('fsb2_logs_seq'),
+  log_id INT DEFAULT nextval('fsb2_logs_seq'),
   log_type INT2 default '0',
   log_time INT4 default '0',
   log_key varchar(255) default '',
@@ -229,7 +228,7 @@ CREATE UNIQUE INDEX fsb2_mods_mod_name_index ON fsb2_mods (mod_name);
 DROP TABLE IF EXISTS fsb2_mp;
 CREATE SEQUENCE fsb2_mp_seq;
 CREATE TABLE fsb2_mp (
-mp_id INT DEFAULT nextval('fsb2_mp_seq'),
+  mp_id INT DEFAULT nextval('fsb2_mp_seq'),
   mp_from INT4 default '0',
   mp_to INT4 default '0',
   mp_title varchar(255) default '',
@@ -247,7 +246,7 @@ CREATE INDEX fsb2_mp_mp_to_index ON fsb2_mp (mp_to);
 DROP TABLE IF EXISTS fsb2_mp_blacklist;
 CREATE SEQUENCE fsb2_mp_blacklist_seq;
 CREATE TABLE fsb2_mp_blacklist (
-blacklist_id INT DEFAULT nextval('fsb2_mp_blacklist_seq'),
+  blacklist_id INT DEFAULT nextval('fsb2_mp_blacklist_seq'),
   blacklist_from_id INT4 default '0',
   blacklist_to_id INT4 default '0',
   PRIMARY KEY (blacklist_id)
@@ -257,13 +256,12 @@ CREATE INDEX fsb2_mp_blacklist_blacklist_from_id_index ON fsb2_mp_blacklist (bla
 DROP TABLE IF EXISTS fsb2_notify;
 CREATE SEQUENCE fsb2_notify_seq;
 CREATE TABLE fsb2_notify (
-notify_id INT DEFAULT nextval('fsb2_notify_seq'),
+  notify_id INT DEFAULT nextval('fsb2_notify_seq'),
   notify_time INT4,
   notify_method INT2,
   notify_subject varchar(255),
   notify_body text,
-  notify_bcc text
-					,
+  notify_bcc text,
   notify_try INT2,
   PRIMARY KEY (notify_id)
 );
@@ -279,7 +277,7 @@ CREATE TABLE fsb2_poll (
 DROP TABLE IF EXISTS fsb2_poll_options;
 CREATE SEQUENCE fsb2_poll_options_seq;
 CREATE TABLE fsb2_poll_options (
-poll_opt_id INT DEFAULT nextval('fsb2_poll_options_seq'),
+  poll_opt_id INT DEFAULT nextval('fsb2_poll_options_seq'),
   t_id INT4 default '0',
   poll_opt_name varchar(255) default '',
   poll_opt_total INT4 default '0',
@@ -314,7 +312,7 @@ CREATE UNIQUE INDEX fsb2_portail_module_pm_name_index ON fsb2_portail_module (pm
 DROP TABLE IF EXISTS fsb2_posts;
 CREATE SEQUENCE fsb2_posts_seq;
 CREATE TABLE fsb2_posts (
-p_id INT DEFAULT nextval('fsb2_posts_seq'),
+  p_id INT DEFAULT nextval('fsb2_posts_seq'),
   f_id INT4 default '0',
   t_id INT4 default '0',
   p_text text,
@@ -337,7 +335,7 @@ CREATE INDEX fsb2_posts_t_per_user_index ON fsb2_posts (u_id, f_id, t_id);
 DROP TABLE IF EXISTS fsb2_posts_abuse;
 CREATE SEQUENCE fsb2_posts_abuse_seq;
 CREATE TABLE fsb2_posts_abuse (
-pa_id INT DEFAULT nextval('fsb2_posts_abuse_seq'),
+  pa_id INT DEFAULT nextval('fsb2_posts_abuse_seq'),
   p_id INT4 default '0',
   t_id INT4 default '0',
   u_id INT4 default '0',
@@ -356,7 +354,7 @@ CREATE INDEX fsb2_posts_abuse_pa_parent_index ON fsb2_posts_abuse (pa_parent);
 DROP TABLE IF EXISTS fsb2_process;
 CREATE SEQUENCE fsb2_process_seq;
 CREATE TABLE fsb2_process (
-process_id INT DEFAULT nextval('fsb2_process_seq'),
+  process_id INT DEFAULT nextval('fsb2_process_seq'),
   process_last_timestamp INT4,
   process_step_timestamp INT4,
   process_function varchar(255),
@@ -366,7 +364,7 @@ process_id INT DEFAULT nextval('fsb2_process_seq'),
 DROP TABLE IF EXISTS fsb2_profil_fields;
 CREATE SEQUENCE fsb2_profil_fields_seq;
 CREATE TABLE fsb2_profil_fields (
-pf_id INT DEFAULT nextval('fsb2_profil_fields_seq'),
+  pf_id INT DEFAULT nextval('fsb2_profil_fields_seq'),
   pf_html_type INT2 default '1',
   pf_regexp varchar(255) default '',
   pf_type INT2 default '0',
@@ -386,7 +384,7 @@ CREATE INDEX fsb2_profil_fields_pf_order_index ON fsb2_profil_fields (pf_order);
 DROP TABLE IF EXISTS fsb2_ranks;
 CREATE SEQUENCE fsb2_ranks_seq;
 CREATE TABLE fsb2_ranks (
-rank_id INT DEFAULT nextval('fsb2_ranks_seq'),
+  rank_id INT DEFAULT nextval('fsb2_ranks_seq'),
   rank_name varchar(255) default '',
   rank_img varchar(255) default '',
   rank_quota INT4 default '0',
@@ -406,7 +404,7 @@ CREATE INDEX fsb2_search_match_p_id_index ON fsb2_search_match (p_id);
 DROP TABLE IF EXISTS fsb2_search_word;
 CREATE SEQUENCE fsb2_search_word_seq;
 CREATE TABLE fsb2_search_word (
-word_id INT DEFAULT nextval('fsb2_search_word_seq'),
+  word_id INT DEFAULT nextval('fsb2_search_word_seq'),
   word_content varchar(40) default '',
   PRIMARY KEY (word_id)
 );
@@ -434,7 +432,7 @@ CREATE INDEX fsb2_sessions_s_time_index ON fsb2_sessions (s_time);
 DROP TABLE IF EXISTS fsb2_smilies;
 CREATE SEQUENCE fsb2_smilies_seq;
 CREATE TABLE fsb2_smilies (
-smiley_id INT DEFAULT nextval('fsb2_smilies_seq'),
+  smiley_id INT DEFAULT nextval('fsb2_smilies_seq'),
   smiley_cat INT4,
   smiley_tag varchar(255) default '',
   smiley_name varchar(255) default '',
@@ -453,7 +451,7 @@ CREATE INDEX fsb2_smilies_cat_cat_order_index ON fsb2_smilies_cat (cat_order);
 DROP TABLE IF EXISTS fsb2_sub_procedure;
 CREATE SEQUENCE fsb2_sub_procedure_seq;
 CREATE TABLE fsb2_sub_procedure (
-procedure_id INT DEFAULT nextval('fsb2_sub_procedure_seq'),
+  procedure_id INT DEFAULT nextval('fsb2_sub_procedure_seq'),
   procedure_name varchar(255),
   procedure_source text,
   procedure_auth INT2 default '2',
@@ -462,7 +460,7 @@ procedure_id INT DEFAULT nextval('fsb2_sub_procedure_seq'),
 DROP TABLE IF EXISTS fsb2_topics;
 CREATE SEQUENCE fsb2_topics_seq;
 CREATE TABLE fsb2_topics (
-t_id INT DEFAULT nextval('fsb2_topics_seq'),
+  t_id INT DEFAULT nextval('fsb2_topics_seq'),
   f_id INT4 default '0',
   u_id INT4 default '0',
   t_title varchar(120) default '',
@@ -504,7 +502,7 @@ CREATE TABLE fsb2_topics_read (
 DROP TABLE IF EXISTS fsb2_upload;
 CREATE SEQUENCE fsb2_upload_seq;
 CREATE TABLE fsb2_upload (
-upload_id INT DEFAULT nextval('fsb2_upload_seq'),
+  upload_id INT DEFAULT nextval('fsb2_upload_seq'),
   u_id INT4 default '0',
   upload_filename varchar(255) default '',
   upload_realname varchar(255) default '',
@@ -519,7 +517,7 @@ CREATE INDEX fsb2_upload_u_id_index ON fsb2_upload (u_id);
 DROP TABLE IF EXISTS fsb2_users;
 CREATE SEQUENCE fsb2_users_seq;
 CREATE TABLE fsb2_users (
-u_id INT DEFAULT nextval('fsb2_users_seq'),
+  u_id INT DEFAULT nextval('fsb2_users_seq'),
   u_auth INT2 default '0',
   u_nickname varchar(40) default '',
   u_email varchar(255) default '',
@@ -580,7 +578,7 @@ CREATE INDEX fsb2_users_u_birthday_index ON fsb2_users (u_birthday);
 DROP TABLE IF EXISTS fsb2_users_password;
 CREATE SEQUENCE fsb2_users_password_seq;
 CREATE TABLE fsb2_users_password (
-u_id INT DEFAULT nextval('fsb2_users_password_seq'),
+  u_id INT DEFAULT nextval('fsb2_users_password_seq'),
   u_login varchar(255) default '',
   u_password varchar(255) default '',
   u_autologin_key varchar(40) default '',
@@ -603,7 +601,7 @@ CREATE TABLE fsb2_users_personal (
 DROP TABLE IF EXISTS fsb2_warn;
 CREATE SEQUENCE fsb2_warn_seq;
 CREATE TABLE fsb2_warn (
-warn_id INT DEFAULT nextval('fsb2_warn_seq'),
+  warn_id INT DEFAULT nextval('fsb2_warn_seq'),
   u_id INT4,
   modo_id INT4,
   warn_type INT2,
@@ -615,4 +613,3 @@ warn_id INT DEFAULT nextval('fsb2_warn_seq'),
 );
 CREATE INDEX fsb2_warn_u_id_index ON fsb2_warn (u_id);
 CREATE INDEX fsb2_warn_warn_time_index ON fsb2_warn (warn_time);
-

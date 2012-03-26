@@ -203,6 +203,7 @@ return (array (
 	'menu_posts_censor' => 'Censure',
 	'menu_posts_fsbcode' => 'FSBcodes',
 	'menu_posts_smiley' => 'Smilies',
+    'menu_posts_tag' => 'Tags des sujets',
 	'cat_menu_users' => 'Membres',
 	'menu_users_auths' => 'Droits',
 	'menu_users_ban' => 'Bannissement',

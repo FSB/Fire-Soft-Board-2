@@ -517,6 +517,15 @@ CREATE TABLE fsb2_topics_read (
   PRIMARY KEY t_u_id (u_id,t_id)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+DROP TABLE IF EXISTS fsb2_topics_tags;
+CREATE TABLE fsb2_topics_tags (
+  tag_id int(11) NOT NULL auto_increment,
+  tag_name varchar(30) NOT NULL default '',
+  tag_style varchar(255) NOT NULL default '',
+  tag_auth tinyint(4) NOT NULL default '0',
+  PRIMARY KEY (tag_id)
+) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 DROP TABLE IF EXISTS fsb2_upload;
 CREATE TABLE fsb2_upload (
   upload_id int(11) NOT NULL auto_increment,
