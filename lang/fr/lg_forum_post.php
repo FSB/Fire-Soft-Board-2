@@ -34,6 +34,7 @@ return (array (
   'post_poll_max_vote' => 'Nombre de réponses',
   'post_topic_review' => 'Rappel des anciens messages du sujet',
   'post_description' => 'Description du sujet <span>(optionnel)</span>',
+  'post_tag' => 'Tag du sujet <span>(optionnel)</span>',
   'post_upload' => 'Uploader / Joindre un fichier',
   'post_upload_auth' => 'Droits du fichier',
   'post_upload_auth_explain' => 'Qui peut télécharger le fichier ?',

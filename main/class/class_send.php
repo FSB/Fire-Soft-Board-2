@@ -417,6 +417,7 @@ class Send extends Fsb_model
 				't_title' =>		$args['t_title'],
 				't_type' =>			(int) $args['t_type'],
 				't_description' =>	$args['t_description'],
+                't_tag' => $args['t_tag'],
 			), 'WHERE t_id = ' . $args['t_id']);
 
 			Fsb::$db->update('forums', array(
