@@ -4,22 +4,22 @@
 <!--
 function submit_css_generator()
 {
-	var ajax = new Ajax('index.' + FSB_PHPEXT + '?p=general_tpl&module=tpl&mode=css_generator',
-	{
-		method: 'post',
-		onComplete: function(txt, xml)
+    var ajax = new Request(
+    {
+        url: 'index.' + FSB_PHPEXT + '?p=general_tpl&module=tpl&mode=css_generator',
+		onSuccess: function(txt, xml)
 		{
 			if (!txt)
 			{
 				return ;
 			}
-	
+            
 			opener.document.getElementById('{OPENER_ID}').value = txt;
 			<if content="$RADIO_ID">opener.document.getElementById('{RADIO_ID}').checked = true;</if>
 			window.close();
 		}
 	});
-	
+    
 	obj = {
 		submit_css_generator: 	'true',
 		font_color:				document.css_form.font_color.value,
@@ -31,8 +31,11 @@ function submit_css_generator()
 	if (document.css_form.bold.checked) 	obj.bold = document.css_form.bold.checked;
 	if (document.css_form.underline.checked)obj.underline = document.css_form.underline.checked;
 	if (document.css_form.italic.checked)	obj.italic = document.css_form.italic.checked;
-	
-	ajax.request(obj);
+    
+    ajax.send({
+        mode: 'post',
+        data: Hash.toQueryString(obj)
+    });   
 }
 
 var rainbow_box = new Array;

@@ -13,11 +13,11 @@
 */
 function ajax_check_email()
 {
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_email',
-	{
-		method: 'post',
-		onComplete: function(txt, xml)
-		{
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_email',
+        onSuccess: function(txt, xml)
+        {
 			html = '';
 			switch (txt)
 			{
@@ -34,12 +34,13 @@ function ajax_check_email()
 				break;
 			}
 			$('u_email_ajax_id').innerHTML = html;
-		}
-	});
-
-	ajax.request({
-		email: $('u_email_id').value
-	});
+        }
+    });
+    
+    ajax.send({
+        mode: 'post',
+        data: 'email=' + $('u_email_id').value
+    });
 }
 
 /*
@@ -47,14 +48,14 @@ function ajax_check_email()
 */
 function ajax_check_login()
 {
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_login',
-	{
-		method: 'post',
-		onComplete: function(txt, xml)
-		{
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_login',
+        onSuccess: function(txt, xml)
+        {
 			html = '';
 			switch (txt)
-			{
+            {
 				case 'used' :
 					html = '<span class="ko">' + register_lang['login_used'] + '<\/span>';
 				break;
@@ -64,12 +65,13 @@ function ajax_check_login()
 				break;
 			}
 			$('u_login_ajax_id').innerHTML = html;
-		}
-	});
-
-	ajax.request({
-		login: $('u_login_id').value
-	});
+        }
+    });
+    
+    ajax.send({
+        mode: 'post',
+        data: 'login=' + $('u_login_id').value
+    });
 }
 
 /*
@@ -77,11 +79,11 @@ function ajax_check_login()
 */
 function ajax_check_password()
 {
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_password',
-	{
-		method: 'post',
-		onComplete: function(txt, xml)
-		{
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_password',
+        onSuccess: function(txt, xml)
+        {
 			html = '';
 			switch (txt)
 			{
@@ -98,12 +100,13 @@ function ajax_check_password()
 				break;
 			}
 			$('u_password_ajax_id').innerHTML = html;
-		}
-	});
-
-	ajax.request({
-		password: $('u_password_id').value
-	});
+        }
+    });
+    
+    ajax.send({
+        mode: 'post',
+        data: 'password=' + $('u_password_id').value
+    });  
 }
 
 /*
@@ -111,11 +114,11 @@ function ajax_check_password()
 */
 function ajax_check_nickname()
 {
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_nickname',
-	{
-		method: 'post',
-		onComplete: function(txt, xml)
-		{
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=check_nickname',
+        onSuccess: function(txt, xml)
+        {
 			html = '';
 			switch (txt)
 			{
@@ -144,10 +147,11 @@ function ajax_check_nickname()
 				break;
 			}
 			$('u_nickname_ajax_id').innerHTML = html;
-		}
-	});
-
-	ajax.request({
-		nickname: $('u_nickname_id').value
-	});	
+        }
+    });
+    
+    ajax.send({
+        mode: 'post',
+        data: 'nickname=' + $('u_nickname_id').value
+    });    
 }

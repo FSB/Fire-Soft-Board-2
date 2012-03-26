@@ -77,7 +77,7 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 {
 	if (hide_block[id_block] == undefined)
 	{
-		cookie_value = Cookie.get(id_block);
+		cookie_value = Cookie.read(id_block);
 		if (cookie_value == 'C')
 		{
 			hide_block[id_block] = false;
@@ -90,7 +90,7 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 	}
 
 	block_check(id_block, id_img, src_img_open, src_img_close, mooeffect);
-	Cookie.set(id_block, (hide_block[id_block]) ? "O" : "C", {duration: 31});
+	Cookie.write(id_block, (hide_block[id_block]) ? "O" : "C", {duration: 31});
 }
 
 /*
@@ -98,10 +98,10 @@ function block_cookie_check(id_block, id_img, src_img_open, src_img_close, mooef
 */
 function block_cookie_read(block_name, img_name, img_src, mooeffect)
 {
-	cookie_value = Cookie.get(block_name);
+	cookie_value = Cookie.read(block_name);
 	if (cookie_value == 'C')
 	{
-		if (!window.ie6 && mooeffect)
+		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
 		{
 			blocks_height[block_name] = $(block_name).getCoordinates().height;
 			$(block_name).style.height = '0px';
@@ -120,11 +120,11 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 {
 	if ($defined(fxBlocks[id_block]))
 	{
-		fxBlocks[id_block].stop();
+		fxBlocks[id_block].cancel();
 	}
 	else
 	{
-		fxBlocks[id_block] = new Fx.Styles(id_block,
+		fxBlocks[id_block] = new Fx.Morph(id_block,
 		{
 			duration: 500,
 			transition: Fx.Transitions.linear
@@ -134,7 +134,7 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	hide_block[id_block] ^= true;
 	if (hide_block[id_block])
 	{
-		if (!window.ie6 && mooeffect)
+		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
 		{
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), blocks_height[id_block]],
@@ -149,7 +149,7 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	}
 	else
 	{
-		if (!window.ie6 && mooeffect)
+		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
 		{
 			if (!$defined(blocks_height[id_block]))
 			{
@@ -223,28 +223,26 @@ function trim(str)
 */
 function search_user(value, obj, id, id_field)
 {
-	var ajax = new Ajax(FSB_ROOT + 'ajax.' + FSB_PHPEXT,
-	{
-		method: 'get',
-		onComplete: function(txt, xml)
-		{
-			if (!txt)
-			{
-				$(id).style.visibility = 'hidden';
-				return ;
-			}
+    var ajax = new Request(
+    {
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?mode=search_user',
+        onSuccess: function(txt, xml)
+        {
+            if (!txt)
+            {
+                $(id).style.visibility = 'hidden';
+                return ;
+            }
 	
-			$(id).innerHTML = txt;
-			$(id).style.visibility = 'visible';
-		}
-	});
+            $(id).innerHTML = txt;
+            $(id).style.visibility = 'visible';
+        }
+    });
 
-	ajax.request({
-		mode: 'search_user',
-		nickname: value,
-		jsid: id_field,
-		jsid2: id
-	});
+    ajax.send({
+        mode: 'get',
+        data: 'nickname=' + value + '&jsid=' + id_field + '&jsid2=' + id
+    });
 }
 
 /*
@@ -334,7 +332,7 @@ function selectCode(a)
 */
 function ajax_waiter_open()
 {
-	if (window.ie)
+	if (Browser.Engine.trident)
 	{
 		var scroll_y = document.body.scrollTop;
 	}
