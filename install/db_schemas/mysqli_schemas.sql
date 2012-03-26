@@ -494,6 +494,7 @@ CREATE TABLE fsb2_topics (
   t_map_first_post tinyint(4) NOT NULL default '0',
   t_description varchar(255) NOT NULL default '',
   t_approve tinyint(4) NOT NULL default '0',
+  t_tag int(11) NOT NULL default '0',
   PRIMARY KEY  (t_id),
   KEY f_id (f_id),
   KEY t_last_p_time (t_last_p_time),
