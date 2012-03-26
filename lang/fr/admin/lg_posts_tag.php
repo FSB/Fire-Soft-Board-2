@@ -17,6 +17,10 @@ return (array (
   'adm_tag_style' => 'Style associé',
   'adm_tag_preview' => 'Aperçu',
   'adm_tag_auth' => 'Permissions requises',
+  'adm_tag_well_add' => 'Le tag a bien été ajouté',
+  'adm_tag_well_edit' => 'Le tag a bien été édité',
+  'adm_tag_well_delete' => 'Le tag a bien été supprimé',
+  'adm_tag_delete_confirm' => 'Etes-vous sur de vouloir supprimer ce tag ?',
 ));
 
 /* EOF */

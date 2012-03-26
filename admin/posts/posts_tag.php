@@ -75,10 +75,9 @@ class Fsb_frame_child extends Fsb_admin_frame
         $result = Fsb::$db->query($sql, 'tags_');
         while ($row = Fsb::$db->row($result))
         {
-            $style = Html::get_style($row['tag_style']);
             Fsb::$tpl->set_blocks('tag', array(
                 'NAME' => $row['tag_name'],
-                'STYLE' => $style[1],
+                'STYLE' => $row['tag_style'],
                 'PREVIEW' => '<span ' . $row['tag_style'] . '>[' . $row['tag_name'] . ']</span>',
                 'AUTH' => $auth_list[$row['tag_auth']],
                 'U_EDIT' => sid('index.' . PHPEXT . '?p=posts_tag&amp;mode=edit&amp;id=' . $row['tag_id']),
@@ -87,6 +86,45 @@ class Fsb_frame_child extends Fsb_admin_frame
         }
         Fsb::$db->free($result);
     }
+    
+    /**
+     * Suppression d'un tag
+     */
+    public function page_delete_tag()
+    {
+        if (check_confirm())
+        {
+            $sql = 'SELECT tag_name
+                    FROM ' . SQL_PREFIX . 'topics_tags
+                    WHERE tag_id = ' . $this->id;
+            if ($data = Fsb::$db->request($sql))
+            {
+                $sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_tags
+                        WHERE tag_id = ' . $this->id;
+                Fsb::$db->query($sql);
+                Fsb::$db->destroy_cache('tags_');
+                
+                Fsb::$db->update('topics', array(
+                    't_tag' =>	0,
+                ), 'WHERE t_tag = ' . $this->id);
+                                
+                Log::add(Log::ADMIN, 'tag_log_delete', $data['tag_name']);
+                Display::message('adm_tag_well_delete', 'index.' . PHPEXT . '?p=posts_tag', 'posts_tag');
+            }
+            else
+            {
+                Http::redirect('index.' . PHPEXT . '?p=posts_tag');
+            }
+        }
+        else if (Http::request('confirm_no', 'post'))
+        {
+            Http::redirect('index.' . PHPEXT . '?p=posts_tag');
+        }
+        else
+        {
+            Display::confirmation(Fsb::$session->lang('adm_tag_delete_confirm'), 'index.' . PHPEXT . '?p=posts_tag', array('mode' => $this->mode, 'id' => $this->id));
+        }
+	}
 }
 
 /* EOF */
