@@ -70,7 +70,7 @@
 					<td class="icons"><img src="{topic.t.IMG}" alt="{topic.t.IMG_ALT}" title="{topic.t.IMG_ALT}" /></td>
 					<td class="topicinfo">
 						<h3>
-							{topic.t.EXTRA_NAME} <a href="{topic.t.U_TOPIC}" class="topicname">{topic.t.NAME}</a>
+							<switch name="ac_mods_tags">{topic.t.TAG} </switch>{topic.t.EXTRA_NAME} <a href="{topic.t.U_TOPIC}" class="topicname">{topic.t.NAME}</a>
 							<if content="$topic.t.PAGINATION"> &nbsp; {topic.t.PAGINATION}</if>
 						</h3>
 						<span class="small">

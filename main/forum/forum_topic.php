@@ -187,8 +187,14 @@ class Fsb_frame_child extends Fsb_frame
 		{
 			$select->join_table('LEFT JOIN', 'topics_notification tn', 'tn.u_id AS can_notify, tn.tn_status', 'ON tn.t_id = t.t_id AND tn.u_id = ' . Fsb::$session->id());
 		}
-
-		// Autres jointures (donnees du forum, et posteur du premier message)
+        
+        // Si la fonction des tags des sujets est activee on ajoute une jointure a la requete
+        if (Fsb::$mods->is_active('tags'))
+        {
+            $select->join_table('LEFT JOIN', 'topics_tags tt', 'tt.tag_name, tt.tag_style', 'ON t.t_tag = tt.tag_id');
+        }
+        
+		// Autres jointures (donnees du forum et posteur du premier message)
 		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time, tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 		$select->join_table('LEFT JOIN', 'forums f', 'f.f_password, f.f_tpl, f.f_status, f.f_rules', 'ON t.f_id = f.f_id');
 
@@ -504,6 +510,7 @@ class Fsb_frame_child extends Fsb_frame
 			'FORUM_RULES' =>			$parser->message($this->topic_data['f_rules']),
 			'IS_LOCKED' =>				($this->topic_data['t_status'] == LOCK) ? true : false,
 			'JUMPBOX' =>				$jumpbox,
+            'TOPIC_TAG' =>              isset($this->topic_data['tag_name']) ? '<span ' . $this->topic_data['tag_style'] . '>[' . $this->topic_data['tag_name'] . ']</span>' : '',
 			'TOPIC_NAME' =>				Parser::title($this->topic_data['t_title']),
 			'CAN_SEE_AVATAR' =>			(Fsb::$session->data['u_activate_avatar']) ? true : false,
 			'CAN_POST_NEW' =>			(!$can_create_post || ($this->topic_data['f_status'] == LOCK && !Fsb::$session->is_authorized($this->topic_data['f_id'], 'ga_moderator'))) ? false : true,

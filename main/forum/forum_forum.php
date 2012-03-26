@@ -406,7 +406,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Requete recuperant les sujets de ce forum, pagine page par page
-		$sql = 'SELECT t.*, uf.u_id AS f_u_id, uf.u_nickname AS f_u_nickname, uf.u_color AS f_u_color, u.u_nickname, u.u_color, tr.tr_last_time, tr.p_id AS last_unread_id
+		$sql = 'SELECT t.*, uf.u_id AS f_u_id, uf.u_nickname AS f_u_nickname, uf.u_color AS f_u_color, u.u_nickname, u.u_color, tr.tr_last_time, tr.p_id AS last_unread_id, tag_name, tag_style
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = t.t_last_u_id
@@ -414,6 +414,8 @@ class Fsb_frame_child extends Fsb_frame
 					ON uf.u_id = t.u_id
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
 					ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id() . '
+				LEFT JOIN ' . SQL_PREFIX . 'topics_tags tt
+					ON t.t_tag = tt.tag_id
 				WHERE (t.f_id = ' . $this->id . ' OR t.t_trace = ' . $this->id . $sql_announce . ' )
 					AND t.t_approve = 0
 				ORDER BY t.t_type, ' . $this->order . ' ' . $this->dir . '
@@ -465,6 +467,7 @@ class Fsb_frame_child extends Fsb_frame
 			Fsb::$tpl->set_blocks('topic.t', array(
 				'ID' =>                 $row['t_id'],
 				'NAME' =>               Parser::title($row['t_title']),
+                'TAG' =>                isset($row['tag_name']) ? '<span ' . $row['tag_style'] . '>[' . $row['tag_name'] . ']</span>' : '', 
 				'EXTRA_NAME' =>			(($row['t_trace'] == $this->id) ? '[' . Fsb::$session->lang('moved') . ']' : '') . (($row['t_poll'] == TOPIC_POLL) ? '[' . Fsb::$session->lang('poll') . ']' : ''),
 				'FIRST_LOGIN' =>		Html::nickname($topic_author, $row['f_u_id'], $row['f_u_color']),
 				'FIRST_TIME' =>			Fsb::$session->print_date($row['t_time']),
