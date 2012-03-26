@@ -151,29 +151,29 @@ class Fsb_frame_child extends Fsb_admin_frame
         );
         
         $errstr = array();
-        
-		if (!$data['tag_name'])
-		{
-			$errstr[] = Fsb::$session->lang('fields_empty');
-		}
+       
+        if (!$data['tag_name'])
+        {
+            $errstr[] = Fsb::$session->lang('fields_empty');
+        }
 
-		if ($errstr)
-		{
-			Display::message(Html::make_errstr($errstr));
-		}      
+        if ($errstr)
+        {
+            Display::message(Html::make_errstr($errstr));
+        }      
         
         if ($this->mode == 'add')
         {
-			Fsb::$db->insert('topics_tags', $data);
-		}
-		else
-		{
-			Fsb::$db->update('topics_tags', $data, 'WHERE tag_id = ' . $this->id);
-		}
+            Fsb::$db->insert('topics_tags', $data);
+        }
+        else
+        {
+            Fsb::$db->update('topics_tags', $data, 'WHERE tag_id = ' . $this->id);
+        }
 
-		Fsb::$db->destroy_cache('tags_');
-		Log::add(Log::ADMIN, 'tag_log_' . $this->mode, $data['tag_name']);
-		Display::message('adm_tag_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_tag', 'posts_tag');
+        Fsb::$db->destroy_cache('tags_');
+        Log::add(Log::ADMIN, 'tag_log_' . $this->mode, $data['tag_name']);
+        Display::message('adm_tag_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_tag', 'posts_tag');
     }
     
     /**
