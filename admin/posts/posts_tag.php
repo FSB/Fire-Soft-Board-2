@@ -92,23 +92,20 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public function page_add_edit_tag()
 	{
+        $lg_add_edit = ($this->mode == 'edit') ? Fsb::$session->lang('adm_tag_edit') : Fsb::$session->lang('adm_tag_add');
+        $data = array(
+            'tag_name' => '',
+            'tag_style' => '',
+            'tag_auth' => '',
+        );
+
         if ($this->mode == 'edit')
         {
-            $lg_add_edit = Fsb::$session->lang('adm_tag_edit');
             $sql = 'SELECT tag_name, tag_style, tag_auth
                     FROM ' . SQL_PREFIX . 'topics_tags
                     WHERE tag_id = ' . $this->id;
             $data = Fsb::$db->request($sql);
-        }
-        else
-        {
-            $lg_add_edit = Fsb::$session->lang('adm_tag_add');
-            $data = array(
-                'tag_name' => '',
-                'tag_style' => '',
-                'tag_auth' => '',
-            );
-        }
+        }        
         
         // Style
         $style_type = $style_content = '';
@@ -172,6 +169,7 @@ class Fsb_frame_child extends Fsb_admin_frame
         }
 
         Fsb::$db->destroy_cache('tags_');
+        Fsb::$db->destroy_cache('topics_tags_');
         Log::add(Log::ADMIN, 'tag_log_' . $this->mode, $data['tag_name']);
         Display::message('adm_tag_well_' . $this->mode, 'index.' . PHPEXT . '?p=posts_tag', 'posts_tag');
     }
@@ -192,6 +190,7 @@ class Fsb_frame_child extends Fsb_admin_frame
                         WHERE tag_id = ' . $this->id;
                 Fsb::$db->query($sql);
                 Fsb::$db->destroy_cache('tags_');
+                Fsb::$db->destroy_cache('topics_tags_');
                 
                 Fsb::$db->update('topics', array(
                     't_tag' =>	0,

@@ -107,7 +107,13 @@ class Fsb_frame_child extends Fsb_frame
 	 * 
 	 */
 	public $description;
-	
+
+	/**
+	 * Tag
+	 * 
+	 */
+	public $tag;
+    
 	/**
 	 * Id
 	 * 
@@ -222,7 +228,7 @@ class Fsb_frame_child extends Fsb_frame
 		$this->nickname =		trim(Http::request('post_login', 'post'));
 		$this->title =			trim(Http::request('post_title', 'post'));
 		$this->description =	trim(Http::request('post_description', 'post'));
-        $this->tag =            intval(Http::request('post_tag'));
+		$this->tag =            intval(Http::request('post_tag'));
 		$this->content =		trim(Http::request('post_content', 'post'));
 		$this->poll_name =		trim(Http::request('poll_name', 'post'));
 		$this->poll_values =	trim(Http::request('poll_values', 'post'));
@@ -560,7 +566,7 @@ class Fsb_frame_child extends Fsb_frame
 				Fsb::$tpl->set_switch('post_title');
 				Fsb::$tpl->set_switch('post_type');
 				Fsb::$tpl->set_switch('post_description');
-                Fsb::$tpl->set_switch('post_tag');
+				Fsb::$tpl->set_switch('post_tag');
 				Fsb::$tpl->set_switch('post_poll');
 				if (!Fsb::$session->is_logged())
 				{
@@ -625,11 +631,11 @@ class Fsb_frame_child extends Fsb_frame
 					Fsb::$tpl->set_switch('post_title');
 					Fsb::$tpl->set_switch('post_type');
 					Fsb::$tpl->set_switch('post_description');
-                    Fsb::$tpl->set_switch('post_tag');
+					Fsb::$tpl->set_switch('post_tag');
 
 					$this->title = $this->data['t_title'];
 					$this->description = $this->data['t_description'];
-                    $this->tag = $this->data['t_tag'];
+					$this->tag = $this->data['t_tag'];
 
 					// On verifie si le sondage a deja recu des reponses, si ce n'est pas le cas
 					// on permet son edition
@@ -794,7 +800,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->content =		Map::build_map_content($this->post_map);
 			$this->title =			trim(Http::request('post_title', 'post'));
 			$this->description =	trim(Http::request('post_description', 'post'));
-            $this->tag =            intval(Http::request('post_tag', 'post'));
+			$this->tag =            intval(Http::request('post_tag', 'post'));
 			$this->login = trim(Http::request('post_login', 'post'));
 
 			$parser = new Parser();
@@ -903,30 +909,36 @@ class Fsb_frame_child extends Fsb_frame
 		// Affichage de la fenetre de creation de sondages
 		Poll::display_form($this->post_map, $this->poll_name, $this->poll_values, $this->poll_max_vote);
         
-        $tags = array(
+		$tags = array(
             0 => Fsb::$session->lang('none'),
-        );
+		);
         
-        // On recupere les tags
-        $sql = 'SELECT tag_id, tag_name
+		// On recupere les tags
+		$sql = 'SELECT tag_id, tag_name
                 FROM ' . SQL_PREFIX . 'topics_tags
                 WHERE tag_auth <= ' . Fsb::$session->auth() . '
                 ORDER BY tag_name';
-        $result = Fsb::$db->query($sql, 'topics_tags');
+        $result = Fsb::$db->query($sql, 'topics_tags_');
         while ($row = Fsb::$db->row($result))
         {
             $tags[$row['tag_id']] = $row['tag_name'];
         }
         
-        // Liste des tags
-        $tags_list = Html::make_list('post_tag', $this->tag, $tags);
+		// Liste des tags
+		$tags_list = Html::make_list('post_tag', $this->tag, $tags);
+        
+        // Si il n y a pas de tags, on affiche pas le select
+		if (count($tags) == 1) 
+		{
+            Fsb::$tpl->unset_switch('post_tag');
+		}
 
 		Fsb::$tpl->set_vars(array(
 			'POST_PAGE_NAME' =>		$page_name,
 			'POST_LOGIN_TO' =>		$this->post_login_to,
 			'POST_TITLE' =>			Parser::title($this->title),
 			'POST_DESCRIPTION' =>	htmlspecialchars($this->description),
-            'POST_TAG' =>           $tags_list,
+			'POST_TAG' =>           $tags_list,
 			'AVATAR_WIDTH' =>		Fsb::$cfg->get('avatar_width'),
 			'AVATAR_HEIGHT' =>		Fsb::$cfg->get('avatar_height'),
 			'LIST_SHEMA' =>			(isset($list_shema)) ? $list_shema : '',
@@ -1311,7 +1323,7 @@ class Fsb_frame_child extends Fsb_frame
 				// On poste le nouveau sujet
 				$topic_id = Send::send_topic($this->id, Fsb::$session->id(), $this->title, $this->post_map, $this->type, array(
 					't_description' =>		$this->description,
-                    't_tag' =>              $this->tag,
+					't_tag' =>              $this->tag,
 					't_poll' =>				(int) $poll_exists,
 					't_map_first_post' =>	($this->data['f_map_default'] && $this->data['f_map_first_post'] == MAP_FREE) ? MAP_ALL_POST : $this->data['f_map_first_post'],
 					't_approve' =>			$this->approve,
@@ -1349,8 +1361,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'edit' :
-                var_dump($this->tag);
-				// On met a jour le message
+                // On met a jour le message
 				if ($this->data['p_id'] == $this->data['t_first_p_id'])
 				{
 					Send::edit_post($this->id, $this->content, Fsb::$session->id(), array(
@@ -1359,7 +1370,7 @@ class Fsb_frame_child extends Fsb_frame
 						't_title' =>		$this->title,
 						't_id' =>			(int) $this->data['t_id'],
 						't_description' =>	Fsb::$mods->is_active('topic_description') ? $this->description : $this->data['t_description'],
-                        't_tag' =>          Fsb::$mods->is_active('tags') ? $this->tag : $this->data['t_tag'],
+						't_tag' =>          Fsb::$mods->is_active('tags') ? $this->tag : $this->data['t_tag'],
 					));
 				}
 				else
