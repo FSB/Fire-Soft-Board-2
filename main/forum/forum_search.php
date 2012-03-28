@@ -176,7 +176,7 @@ class Fsb_frame_child extends Fsb_frame
 		$this->in =			Http::request('in');
 		$this->order =		Http::request('order');
 		$this->direction =	strtolower(Http::request('direction'));
-		$this->tag =		Http::request('tag') ? intval(Http::request('tag')) : -1;        
+		$this->tag =		is_null(Http::request('tag')) ? -1 : intval(Http::request('tag')); 
 		$this->date =		intval(Http::request('date'));
 		$this->page =		intval(Http::request('page'));
 		$this->id =			intval(Http::request('id'));
@@ -284,6 +284,12 @@ class Fsb_frame_child extends Fsb_frame
 		{
             $tags[$row['tag_id']] = $row['tag_name'];
 		}        
+        
+        // On affiche le select que si il y a des tags
+		if (count($tags) > 2)
+		{
+            Fsb::$tpl->set_switch('search_tags');
+		}
 
 		Fsb::$tpl->set_file('forum/forum_search.html');
 		Fsb::$tpl->set_vars(array(

@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// On vide les tables au debut de la procedure
 			if ($current_post == 0)
 			{
-				Fsb::$db->query_truncate('cache_search');
+				Fsb::$db->query_truncate('cache');
 				Fsb::$db->query_truncate('search_match');
 				Fsb::$db->query_truncate('search_word');
 			}

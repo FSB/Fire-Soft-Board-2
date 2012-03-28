@@ -42,7 +42,7 @@ class Search_fulltext_fsb extends Search
 	/**
 	 * @see Search::_search()
 	 */
-	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date)
+	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date, $tag)
 	{
 		// Suivant si on doit chercher dans les messages / titres, on construit la clause $sql_is_title
 		$sql_is_title = '';
@@ -63,7 +63,13 @@ class Search_fulltext_fsb extends Search
 			$select->join_table('FROM', 'search_word sw');
 			$select->join_table('INNER JOIN', 'search_match sm', 'COUNT(sw.word_content) AS total', 'ON sw.word_id = sm.word_id');
 			$select->join_table('LEFT JOIN', 'posts p', 'p.p_id', 'ON sm.p_id = p.p_id ' . $sql_is_title);
-
+			
+			// Jointure sur les sujets si on fait une recherche de tags
+			if ($tag != -1)
+			{
+                $select->join_table('LEFT JOIN', 'topics t', 't.t_tag', 'ON p.t_id = t.t_id ');
+			} 
+            
 			// Clauses WHERE
 			$select->where('LOWER(sw.word_content) IN (\'' . implode('\', \'', $keywords_array) . '\')');
 			$select->where('AND p.f_id IN (' . implode(', ', $forum_idx) . ')');
@@ -81,6 +87,13 @@ class Search_fulltext_fsb extends Search
 			{
 				$select->where('AND p.t_id = ' . $topic_id);
 			}
+
+			// Recherche sur le tag du sujet
+			if ($tag != -1)
+			{
+				$select->where('AND t.t_tag = ' . $tag);
+			}
+            
 			$select->group_by('p.p_id');
 
 			// Resultats
