@@ -39,7 +39,6 @@ return (array (
   'search_author_topics_title' => 'Sujets de %s',
   'search_tag' => 'Tags des sujets',    
   'search_tag_all' => 'Tous les tags',  
-  'search_tag_none' => 'Sujets n\'ayant pas de tag.',
   'search_date' => 'Messages datant de moins de',
   'search_order' => 'Trier par',
   'search_date_all' => 'Tous les messages',

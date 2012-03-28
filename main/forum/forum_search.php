@@ -264,10 +264,10 @@ class Fsb_frame_child extends Fsb_frame
 		);
         
 		// On recupere les tags
-        $tags = array(
+		$tags = array(
             -1 => Fsb::$session->lang('search_tag_all'),
             0 =>  Fsb::$session->lang('none'),
-        );
+		);
         
 		$sql = 'SELECT tag_id, tag_name
                 FROM ' . SQL_PREFIX . 'topics_tags
