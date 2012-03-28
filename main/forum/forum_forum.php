@@ -82,7 +82,7 @@ class Fsb_frame_child extends Fsb_frame
 	 *
 	 * @var array
 	 */
-	public $check_order = array('t_last_p_time', 't_title', 't_total_view', 't_total_post', 'f_u_nickname');
+	public $check_order = array('t_last_p_time', 't_time', 't_title', 't_total_view', 't_total_post', 'f_u_nickname');
 	
 	/**
 	 * Ordre par défaut
@@ -463,8 +463,8 @@ class Fsb_frame_child extends Fsb_frame
 			}
 			
 			Fsb::$tpl->set_blocks('topic.t', array(
-				'ID' =>					$row['t_id'],
-				'NAME' =>				Parser::title($row['t_title']),
+				'ID' =>                 $row['t_id'],
+				'NAME' =>               Parser::title($row['t_title']),
 				'EXTRA_NAME' =>			(($row['t_trace'] == $this->id) ? '[' . Fsb::$session->lang('moved') . ']' : '') . (($row['t_poll'] == TOPIC_POLL) ? '[' . Fsb::$session->lang('poll') . ']' : ''),
 				'FIRST_LOGIN' =>		Html::nickname($topic_author, $row['f_u_id'], $row['f_u_color']),
 				'FIRST_TIME' =>			Fsb::$session->print_date($row['t_time']),
@@ -472,10 +472,10 @@ class Fsb_frame_child extends Fsb_frame
 				'IS_READ' =>			$is_read,
 				'LAST_DATE' =>			Fsb::$session->print_date($row['t_last_p_time']),
 				'DESCRIPTION' =>		htmlspecialchars(String::truncate($row['t_description'], 50)),
-				'VIEWS' =>				$row['t_total_view'],
+				'VIEWS' =>              $row['t_total_view'],
 				'ANSWERS' =>			$row['t_total_post'] - 1,
 				'PAGINATION' =>			$topic_pagination,
-				'IMG' =>				Fsb::$session->img($topic_img),
+				'IMG' =>                Fsb::$session->img($topic_img),
 				'IMG_ALT' =>			Fsb::$session->lang('alt_' . $topic_img),
 
 				'U_TOPIC' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id']),
@@ -488,6 +488,7 @@ class Fsb_frame_child extends Fsb_frame
 		// Liste de classement des sujets
 		$list_order = Html::make_list('order', $this->order, array(
 			't_last_p_time' =>		Fsb::$session->lang('forum_order_time'),
+            't_time' =>		        Fsb::$session->lang('forum_order_creation'),
 			't_title' =>			Fsb::$session->lang('forum_order_title'),
 			't_total_view' =>		Fsb::$session->lang('forum_order_view'),
 			't_total_post' =>		Fsb::$session->lang('forum_order_post'),
@@ -552,7 +553,7 @@ class Fsb_frame_child extends Fsb_frame
 			$action = array_map('intval', $action);
 			if (Http::request('moderation_delete', 'post'))
 			{
-				Moderation::delete_topics('t_id IN (' . implode(', ', $action) . ')');
+				Moderation::delete_topics('t_id IN (' . implode(', ', $action) . ')', $this->id);
 				Display::message('forum_moderation_delete', ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $this->id . '&amp;moderation=true', 'forum_forum_moderation');
 			}
 			else if (Http::request('moderation_move', 'post'))

@@ -812,7 +812,11 @@ class Fsb_frame_child extends Fsb_frame
 				$parser_info['t_id'] = $this->data['t_id'];
 			}
 
-			Fsb::$tpl->set_switch('preview');
+			if (Http::request('from_quick_reply', 'post') === null)
+			{
+				Fsb::$tpl->set_switch('preview');
+			}
+
 			Fsb::$tpl->set_vars(array(
 				'PREVIEW' =>	$parser->mapped_message($this->content, $this->post_map, $parser_info),
 				'AVATAR_WIDTH' =>			Fsb::$cfg->get('avatar_width'),

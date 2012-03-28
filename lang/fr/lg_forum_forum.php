@@ -22,6 +22,7 @@ return (array (
   'forum_order_topic' => 'Ordonner l\'affichage des sujets',
   'forum_order_submit' => 'Classer',
   'forum_order_time' => 'Date du dernier message',
+  'forum_order_creation' => 'Date de création du sujet',
   'forum_order_title' => 'Titre du sujet',
   'forum_order_view' => 'Nombre de visionnements du sujet',
   'forum_order_post' => 'Nombre de réponses du sujet',

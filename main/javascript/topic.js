@@ -81,22 +81,24 @@ function edit_post_dynamic(id, post_id, is_first_post)
 			{
 				content = xml.getElementsByTagName('root').item(0).getElementsByTagName('line').item(0).firstChild.nodeValue;
 				title = xml.getElementsByTagName('root').item(0).getElementsByTagName('title').item(0).firstChild.nodeValue;
-				html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post" onsubmit="advanced_post_dynamic(\'' + id + '\', ' + post_id + ', ' + is_first_post + ')">';
+				html = '<form action="' + FSB_ROOT + 'index.' + FSB_PHPEXT + '?p=post&mode=edit&id=' + post_id + '&sid=' + FSB_SID + '" name="form_dynamic_' + id + '" method="post" onsubmit="advanced_post_dynamic(\'' + id + '\')">';
 				if (is_first_post)
 				{
 					html += '<input type="text" name="" id="title_' + id + '_ajax" size="60" maxlength="60" value="' + htmlspecialchars(title, true) + '" /><br /><br />';
 				}
-	
-				html += '<textarea style="width: 99%" rows="15" name="" id="' + id + '_ajax" tabindex="' + tabindex + '">' + content + '</textarea><p style="text-align: center">';
+
+				html += '<textarea style="width: 99%" rows="5" name="" id="' + id + '_ajax" tabindex="' + tabindex + '">' + content + '</textarea><p style="text-align: center">';
 				html += '<span style="float: left; margin-top: -13px"> &nbsp; &nbsp; ';
 				html += '<a href="javascript:resize_textarea(\'' + id + '_ajax\', -5)"><img src="' + topic['img_textarea_less'] + '" /></a> ';
 				html += '<a href="javascript:resize_textarea(\'' + id + '_ajax\', 5)"><img src="' + topic['img_textarea_more'] + '" /></a></span>';
 				html += '\<input type="button" class="reset" onclick="cancel_post_dynamic(\'' + id + '\', ' + post_id + ')" value="' + topic['lg_reset'] + '" tabindex="' + (tabindex + 1) + '" /> ';
-				html += '<a onclick="advanced_post_dynamic(\'' + id + '\', ' + post_id + ', ' + is_first_post + ')" class="reset" tabindex="' + (tabindex + 2) + '" >' + topic['lg_topic_advanced_edit'] + '</a> ';
+				html += '<a onclick="advanced_post_dynamic(\'' + id + '\')" class="reset" tabindex="' + (tabindex + 2) + '" >' + topic['lg_topic_advanced_edit'] + '</a> ';
 				html += '<input type="button" class="submit" onclick="submit_post_dynamic(\'' + id + '\', ' + post_id + ', false)" value="' + topic['lg_submit'] + '" tabindex="' + (tabindex + 3) + '" /></p>';
 				html += '<input type="hidden" name="preview_post" value="true" /></form>';
 				$(id).innerHTML = html;
 				tabindex += 4;
+
+				$(id + '_ajax').style.height = $(id + '_ajax').scrollHeight + 'px';
 			}
 			ajax_waiter_close();
 		}
@@ -112,10 +114,14 @@ function edit_post_dynamic(id, post_id, is_first_post)
 /*
 ** Envoie vers l'édition avancée
 */
-function advanced_post_dynamic(id, post_id, is_first_post)
+function advanced_post_dynamic(id)
 {
+	if ($('title_' + id + '_ajax'))
+	{
+		$('title_' + id + '_ajax').name = 'post_title';
+	}
+
 	$(id + '_ajax').name = 'post_map_description';
-	$('title_' + id + '_ajax').name = 'post_title';
 	document.forms['form_dynamic_' + id].submit();
 }
 

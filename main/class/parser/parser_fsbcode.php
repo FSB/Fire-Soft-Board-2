@@ -422,36 +422,14 @@ class Parser_fsbcode extends Fsb_model
 		$content = preg_replace('/\[\*\]/', '</li><li>', $content);
 		$content = preg_replace('/^\s*<\/?li>/', '', $content);
 		$content = str_replace( "\n</li>", '</li>', $content . '</li>');
-
+        
 		if ($arg)
 		{
-			switch ($arg)
-			{
-				case 'alpha' :
-				case 'a' :
-					$type = 'a';
-				break;
-
-				case '1' :
-				case 'num' :
-					$type = '1';
-				break;
-
-				case 'circle' :
-				case 'square' :
-				case 'disc' :
-				case 'none' :
-					$type = $match[1];
-				break;
-
-				default :
-					return ('<ol style="list-style-type: disc">' . $content . '</ol>');
-			}
-			return ('<ol type="' . $type . '">' . $content . '</ol>');
+			return ('<ul style="list-style-type: '.$arg.'">' . $content . '</ul>');
 		}
 		else
 		{
-			return ('<ol style="list-style-type: disc">' . $content . '</ol>');
+			return ('<ul style="list-style-type: disc">' . $content . '</ul>');
 		}
 	}
 
@@ -503,7 +481,7 @@ class Parser_fsbcode extends Fsb_model
 			$attr_str .= 'alt="' . $content . '" ';
 		}
 
-		return ('<div class="image"><img src="' . trim($content) . '" ' . $attr_str . ' /></div>');
+		return ('<img class="image" src="' . trim($content) . '" ' . $attr_str . ' />');
 	}
 
 	/**

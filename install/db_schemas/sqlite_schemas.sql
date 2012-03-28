@@ -93,7 +93,9 @@ CREATE TABLE fsb2_forums (
   f_tpl varchar(255) default '',
   f_global_announce tinyint(4) default '0',
   f_approve tinyint(4) default '0',
-  f_color varchar(255) default ''
+  f_color varchar(255) default '',
+  f_display_moderators tinyint(4) default '1',
+  f_display_subforums tinyint(4) default '1'
 );
 CREATE INDEX fsb2_forums_f_id_index ON fsb2_forums (f_id);
 CREATE INDEX fsb2_forums_f_left_index ON fsb2_forums (f_left);
@@ -317,6 +319,7 @@ CREATE TABLE fsb2_profil_fields (
   pf_regexp varchar(255) default '',
   pf_type tinyint(4) default '0',
   pf_lang varchar(255) default '',
+  pf_lang_desc varchar(255) default '',
   pf_order mediumint(9) default '0',
   pf_groups text,
   pf_topic tinyint(4) default '0',

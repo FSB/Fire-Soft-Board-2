@@ -557,63 +557,14 @@ class Fsb_frame_child extends Fsb_frame
 	 */
 	public function send_mail($u_id)
 	{
-		$mail = new Notify_mail();
-		$mail->AddAddress($this->data['u_email']);
-		$mail->Subject = sprintf(Fsb::$session->lang('subject_register'), Fsb::$cfg->get('forum_name'));
-
-		switch (Fsb::$cfg->get('register_type'))
+		if (User::confirm_register($u_id, $this->data))
 		{
-			case 'normal' :
-				$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register.txt');
-				$mail->set_vars(array(
-					'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
-					'LOGIN' =>			$this->data['u_login'],
-					'PASSWORD' =>		$this->data['u_password'],
-					'U_FORUM' =>		Fsb::$cfg->get('fsb_path'),
-				));
-				$result = $mail->Send();
-				$mail->SmtpClose();
-			break;
-
-			case 'both' :
-			case 'confirm' :
-				$confirm_hash = md5(rand(0, time()));
-
-				$mail->set_file(ROOT . 'lang/' . Fsb::$cfg->get('default_lang') . '/mail/register_confirm.txt');
-				$mail->set_vars(array(
-					'FORUM_NAME' =>		Fsb::$cfg->get('forum_name'),
-					'LOGIN' =>			$this->data['u_login'],
-					'PASSWORD' =>		$this->data['u_password'],
-					'U_CONFIRM' =>		Fsb::$cfg->get('fsb_path') . '/index.' . PHPEXT . '?p=login&id=' . $u_id . '&confirm=' . urlencode($confirm_hash),
-					'U_FORUM' =>		Fsb::$cfg->get('fsb_path'),
-				));
-				$result = $mail->Send();
-				$mail->SmtpClose();
-
-				// On ne fait le controle de validation que si l'Email a pu etre envoye
-				if ($result)
-				{
-					Fsb::$db->update('users', array(
-						'u_activated' =>	false,
-						'u_confirm_hash' =>	$confirm_hash,
-					), 'WHERE u_id = ' . $u_id);
-				}
-			break;
-
-			case 'admin' :
-				Fsb::$db->update('users', array(
-					'u_activated' =>	false,
-					'u_confirm_hash' =>	'.',
-				), 'WHERE u_id = ' . $u_id);
-
-				unset($mail);
-				User::confirm_administrator($u_id, $this->data['u_nickname'], $this->data['u_email'], Fsb::$session->ip);
-				$result = true;
-			break;
+			return (Fsb::$session->lang('register_ok_' . Fsb::$cfg->get('register_type')));
 		}
-
-		$message = ($result) ? Fsb::$session->lang('register_ok_' . Fsb::$cfg->get('register_type')) : Fsb::$session->lang('register_ko');
-		return ($message);
+		else
+		{
+			return (Fsb::$session->lang('register_ko'));
+		}
 	}
 
 	/**

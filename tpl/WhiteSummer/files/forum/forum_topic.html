@@ -65,7 +65,7 @@ InitBulle();
 <div class="round">
 	<h1 id="page_title">{TOPIC_NAME}</h1>
 	<if content="$TOPIC_DESCRIPTION OR tpl_switch_exists('poll')">
-		<if content="$TOPIC_DESCRIPTION"><div id="topic_description">{TOPIC_DESCRIPTION}</div></if>
+		<switch name="ac_mods_topic_description"><if content="$TOPIC_DESCRIPTION"><div id="topic_description">{TOPIC_DESCRIPTION}</div></if></switch>
 		<switch name="poll"><include name="poll.html" /></switch>
 	</if>
 </div>
@@ -99,7 +99,7 @@ InitBulle();
 					
 					<if content="$CAN_SEE_AVATAR AND $post.U_AVATAR">
 						<div class="avatar" style="overflow: hidden; width: {AVATAR_WIDTH}px; max-height: {AVATAR_HEIGHT}px; margin: 0 auto; text-align: center">
-							<a href="{post.U_PROFILE}"><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" title="{post.USER_AVATAR}" /></a>
+							<a href="{post.U_PROFILE}" title="{post.USER_PROFIL}"><img src="{post.U_AVATAR}" alt="{post.USER_AVATAR}" /></a>
 						</div>
 					</if>
 

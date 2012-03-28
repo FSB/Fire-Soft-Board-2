@@ -28,7 +28,7 @@ class Cache_apc extends Cache
 	private $ttl = 86400;
 
 	/**
-	 * Identifiant unique pour diff�rencier les types de cache
+	 * Identifiant unique pour differencier les types de cache
 	 *
 	 * @var int
 	 */
@@ -49,7 +49,7 @@ class Cache_apc extends Cache
 	public $cache_type = 'Alternative PHP Cache';
 
 	/**
-	 * Hash unique pour diff�rencier les clefs
+	 * Hash unique pour differencier les clefs
 	 *
 	 * @var string
 	 */

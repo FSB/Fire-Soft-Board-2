@@ -208,7 +208,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 					$config_tpl = Config_file::read(ROOT . 'tpl/' . $file . '/config_tpl.cfg');
 					Fsb::$tpl->set_blocks('tpl', array(
 						'NAME' =>		$file,
-						'AUTOR' =>		$config_tpl['copyright']['author'],
+						'AUTHOR' =>		$config_tpl['copyright']['author'],
+						'SCREENSHOT' => ROOT . 'tpl/'.Fsb::$session->data['u_tpl'].'/img/' . $config_tpl['img']['screenshot'],
 						'WEB' =>		String::parse_website($config_tpl['copyright']['web']),
 						'LICENSE' =>	$config_tpl['copyright']['license'],
 						'USED_BY' =>	(isset($used_by[$file])) ? $used_by[$file] : 0,

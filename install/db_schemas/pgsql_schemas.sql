@@ -109,6 +109,8 @@ f_id INT DEFAULT nextval('fsb2_forums_seq'),
   f_global_announce INT2 default '0',
   f_approve INT2 default '0',
   f_color varchar(255) default '',
+  f_display_moderators INT2 default '1',
+  f_display_subforums INT2 default '1',
   PRIMARY KEY (f_id)
 );
 CREATE INDEX fsb2_forums_f_right_left_index ON fsb2_forums (f_left, f_right);
@@ -367,6 +369,7 @@ pf_id INT DEFAULT nextval('fsb2_profil_fields_seq'),
   pf_regexp varchar(255) default '',
   pf_type INT2 default '0',
   pf_lang varchar(255) default '',
+  pf_lang_desc varchar(255) default '',
   pf_order INT4 default '0',
   pf_groups text,
   pf_topic INT2 default '0',

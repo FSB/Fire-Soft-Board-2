@@ -20,8 +20,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 */
 	public $chmod = array(
 		'cache_sql' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
-		'cache_tpl' =>	array('path' => 'cache/sql/', 'chmod' => 0777),
-		'cache_xml' =>	array('path' => 'cache/tpl/', 'chmod' => 0777),
+		'cache_tpl' =>	array('path' => 'cache/tpl/', 'chmod' => 0777),
+		'cache_xml' =>	array('path' => 'cache/xml/', 'chmod' => 0777),
 		'avatars' =>	array('path' => 'images/avatars/', 'chmod' => 0777),
 		'ranks' =>		array('path' => 'images/ranks/', 'chmod' => 0777),
 		'smilies' =>	array('path' => 'images/smileys/', 'chmod' => 0777),

@@ -196,6 +196,20 @@
 				<input type="radio" name="f_approve" value="<?php echo IS_APPROVED ?>" <if content="$FORUM_APPROVE == IS_APPROVED">id="f_approve_id" checked="checked"</if> /> {LG_NO}
 			</dd>
 		</dl>
+		<dl>
+			<dt><label for="f_display_moderators_id">{LG_ADM_FORUM_DISPLAY_MODERATORS} :</label><br /><span>{LG_ADM_FORUM_DISPLAY_MODERATORS_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="f_display_moderators" value="1" <if content="$FORUM_DISPLAY_MODERATORS">id="f_display_moderators_id" checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="f_display_moderators" value="0" <if content="!$FORUM_DISPLAY_MODERATORS">id="f_display_moderators_id" checked="checked"</if> /> {LG_NO}
+			</dd>
+		</dl>
+		<dl>			
+			<dt><label for="f_display_subforums_id">{LG_ADM_FORUM_DISPLAY_SUBFORUMS} :</label><br /><span>{LG_ADM_FORUM_DISPLAY_SUBFORUMS_EXPLAIN}</span></dt>
+			<dd>
+				<input type="radio" name="f_display_subforums" value="1" <if content="$FORUM_DISPLAY_SUBFORUMS">id="f_display_subforums_id" checked="checked"</if> /> {LG_YES} &nbsp; 
+				<input type="radio" name="f_display_subforums" value="0" <if content="!$FORUM_DISPLAY_SUBFORUMS">id="f_display_subforums_id" checked="checked"</if> /> {LG_NO}
+			</dd>			
+		</dl>		
 		<div><input type="submit" name="submit" value="{LG_SUBMIT}" class="submit" /></div>
 	</fieldset>
 

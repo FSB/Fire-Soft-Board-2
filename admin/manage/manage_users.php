@@ -101,7 +101,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		$call = new Call($this);
 		$call->module(array(
-			'list' =>		array('list', 'add', 'prune', 'gallery'),
+			'list' =>		array('list', 'add', 'prune', 'auths', 'gallery'),
 			'url' =>		'index.' . PHPEXT . '?p=manage_users',
 			'lang' =>		'adm_users_',
 			'default' =>	'list',
@@ -129,9 +129,18 @@ class Fsb_frame_child extends Fsb_admin_frame
 				),
 				'prune' =>		'page_prune_users',
 				'add' =>		'page_add_users',
-				'default' =>	'page_list_users',
+				'auths' =>		'page_auths_users',
+				'default' =>	'page_list_users'
 			),
 		));
+	}
+
+	/**
+	 * Redirige vers manage_auths::page_default_users_auths())
+	 */
+	public function page_auths_users()
+	{
+		Http::redirect('index.' . PHPEXT . '?p=manage_auths&amp;module=users', 0);
 	}
 
 	/**
@@ -219,6 +228,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'u_login' =>		trim(Http::request('u_login', 'post')),
 			'u_nickname' =>		trim(Http::request('u_nickname', 'post')),
 			'u_password' =>		trim(Http::request('u_password', 'post')),
+			'u_confirmation' => trim(Http::request('u_confirmation', 'post')),
 			'u_email' =>		trim(Http::request('u_email', 'post')),
 		);
 
@@ -243,6 +253,11 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Display::message('adm_users_add_error_password');
 		}
+		
+		if ($data['u_password'] != $data['u_confirmation'])
+		{
+			Display::message('adm_users_add_error_confirmation');
+		}		
 
 		// Verification du pseudonyme
 		if (User::nickname_exists($data['u_nickname']))
@@ -262,12 +277,19 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		Fsb::$db->transaction('begin');
-		User::add($data['u_login'], $data['u_nickname'], $data['u_password'], $data['u_email']);
+		$user_id = User::add($data['u_login'], $data['u_nickname'], $data['u_password'], $data['u_email']);
 		Fsb::$db->transaction('commit');
 
 		Log::add(Log::ADMIN, 'users_add', $data['u_nickname']);
 
-		Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
+		if (!User::confirm_register($user_id, $data))
+		{
+			Display::message('adm_users_add_error_send_email');
+		}
+		else
+		{
+			Display::message('adm_users_well_add', 'index.' . PHPEXT . '?p=manage_users&amp;module=add', 'manage_users');
+		}
 	}
 
 	/**

@@ -21,7 +21,7 @@ class Cache_sql extends Cache
 	private $id = '';
 
 	/**
-	 * Contient les informations sauv�es dans le cache SQL
+	 * Contient les informations sauvees dans le cache SQL
 	 *
 	 * @var array
 	 */

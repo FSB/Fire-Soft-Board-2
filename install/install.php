@@ -164,9 +164,9 @@ Http::header('Content-Type', 'text/html; charset=UTF-8');
 if ($convert = Http::request('convert'))
 {
 	include(ROOT . 'install/convert.' . PHPEXT);
-	if (file_exists(ROOT . 'install/convertors/convert_' . $convert . '.' . PHPEXT))
+	if (file_exists(ROOT . 'install/converters/convert_' . $convert . '.' . PHPEXT))
 	{
-		include(ROOT . 'install/convertors/convert_' . $convert . '.' . PHPEXT);
+		include(ROOT . 'install/converters/convert_' . $convert . '.' . PHPEXT);
 		$classname = 'Convert_' . $convert;
 		new $classname($convert);
 	}
@@ -415,7 +415,7 @@ function install_admin($quick = false)
 
 	Log::add(Log::ADMIN, 'install_fsb');
 	
-	// Mise à jour de l'utilisateur ayant installé le forum
+	// Mise a jour de l'utilisateur ayant installe le forum
 	Fsb::$db->update('logs', array(
 		'u_id' =>			2,
 	), 'WHERE log_key = \'install_fsb\'');
@@ -443,7 +443,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 
 	// Execution des requetes d'installations pour la base de donnee
 	@set_time_limit(0);
-	$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_shemas.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_schemas.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query);
@@ -451,7 +451,7 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	}
 	unset($queries);
 
-	$queries = String::split(';', file_get_contents('db_shemas/data.sql'));
+	$queries = String::split(';', file_get_contents('db_schemas/data.sql'));
 	foreach ($queries AS $query)
 	{
 		$query = preg_replace('#fsb2_#', $sql_prefix, $query, 1);
@@ -461,9 +461,9 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	unset($queries);
 
 	// Requetes apres les requetes de donnees ?
-	if (file_exists('db_shemas/' . $sql_dbms . '_end.sql'))
+	if (file_exists('db_schemas/' . $sql_dbms . '_end.sql'))
 	{
-		$queries = String::split(';', file_get_contents('db_shemas/' . $sql_dbms . '_end.sql'));
+		$queries = String::split(';', file_get_contents('db_schemas/' . $sql_dbms . '_end.sql'));
 		foreach ($queries AS $query)
 		{
 			$query = preg_replace('#fsb2_#', $sql_prefix, $query);
@@ -496,15 +496,18 @@ function install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sq
 	
 	$config_code .= "/* EOF */";
 
-	$write_config = false;
-	if ($fd = @fopen(ROOT . 'config/config.' . PHPEXT, 'w+'))
+	if (is_writable(ROOT . 'config/config.' . PHPEXT))
 	{
-		$write_config = true;
-		fwrite($fd, $config_code);
-		fclose($fd);
+		if ($fd = @fopen(ROOT . 'config/config.' . PHPEXT, 'w+'))
+		{
+			fwrite($fd, $config_code);
+			fclose($fd);
+
+			return true;
+		}
 	}
 
-	return ($write_config);
+	return ($config_code);
 }
 
 // Soumission des formulaires
@@ -518,7 +521,7 @@ if (Http::request('quick_install', 'post'))
 	$sql_dbms =			'mysql';
 	$sql_server =		'localhost';
 	$sql_login =		'root';
-	$sql_password =		'';
+	$sql_password =		htmlspecialchars(Http::request('sql_password', 'post'));
 	$sql_port =			null;
 	$sql_dbname =		'fsb2_' . date('d_m_Y_H\Hi');
 	$sql_prefix =		'fsb2_';
@@ -538,12 +541,25 @@ if (Http::request('quick_install', 'post'))
 	define('FSB_INSTALL', 'true');
 	Fsb::$db = Dbal::factory($sql_server, $sql_login, $sql_password, $sql_dbname, $sql_port, false);
 
-	install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
+	$result = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
 	install_admin(true);
 	install_config(true);
 
-	Http::header('location', '../index.php');
-	exit;
+	if ($result === true)
+	{
+		Http::header('location', '../index.php');
+		exit;
+	}
+	else
+	{
+		Fsb::$tpl->set_switch('step_end');
+		Fsb::$tpl->set_switch('config_download');
+		Fsb::$tpl->set_vars(array(
+			'CONFIG_CODE'		=> nl2br(htmlspecialchars($result)),
+		));
+		Fsb::$tpl->parse();
+		exit;
+	}
 }
 else if (Http::request('go_to_step_config', 'post') && defined('FSB_INSTALL'))
 {
@@ -603,10 +619,23 @@ else if (Http::request('go_to_step_admin', 'post') && !defined('FSB_INSTALL'))
 	}
 	else
 	{
-		$write_config = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
+		// Verification de l'existance de tables ayant le meme prefixe
+		$sql = 'SHOW TABLES LIKE \'' . $sql_prefix . '%\'';
+		$result = Fsb::$db->query($sql);
+		if (Fsb::$db->count($result) > 0)
+		{
+			$current_step = 'db';
+			// ... error
+			// TODO message de confirmation Display::confirmation($str, $url, $hidden = array())
+			die('Table with prefix already exist. If table used by FSB already exist all of they data will be trashed! To allow this operation, remove this die on line ' . __LINE__ . ' in file ' . __FILE__);
+		}
+		else
+		{
+			$write_config = install_database($sql_dbms, $sql_server, $sql_login, $sql_password, $sql_dbname, $sql_prefix, $sql_port);
 
-		$current_step = 'admin';
-		unset($db);
+			$current_step = 'admin';
+			unset($db);
+		}
 	}
 }
 else if (Http::request('go_to_step_admin', 'post'))
@@ -636,20 +665,23 @@ switch ($current_step)
 		// Fin de l'installation du forum
 		Fsb::$tpl->set_switch('step_end');
 
-		class Convert {}
-
 		// Liste des convertisseurs
-		$fd = opendir(ROOT . 'install/convertors/');
-		while ($file = readdir($fd))
+		if (file_exists(ROOT . 'install/converters/'))
 		{
-			if (preg_match('#^convert_(.*?)\.' . PHPEXT . '$#i', $file, $m))
+			include(ROOT . 'install/convert.' . PHPEXT);
+
+			$fd = opendir(ROOT . 'install/converters/');
+			while ($file = readdir($fd))
 			{
-				include(ROOT . 'install/convertors/' . $file);
-				$info = call_user_func(array('Convert_' . $m[1], 'forum_type'));
-				Fsb::$tpl->set_blocks('convert', array(
-					'NAME' =>	$info,
-					'URL' =>	'index.' . PHPEXT . '?convert=' . $m[1],
-				));
+				if (preg_match('#^convert_(.*?)\.' . PHPEXT . '$#i', $file, $m))
+				{
+					include(ROOT . 'install/converters/' . $file);
+					$info = call_user_func(array('Convert_' . $m[1], 'forum_type'));
+					Fsb::$tpl->set_blocks('convert', array(
+						'NAME' =>	$info,
+						'URL' =>	'index.' . PHPEXT . '?convert=' . $m[1],
+					));
+				}
 			}
 		}
 		closedir($fd);
@@ -660,6 +692,7 @@ switch ($current_step)
 		Fsb::$tpl->set_switch('step_config');
 		Fsb::$tpl->set_vars(array(
 			'CONFIG_PATH' =>			'http://' . dirname(dirname($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'])),
+            'CONFIG_COOKIE' =>          'fsb2_' . substr(md5(rand(0, time())), 0, 6),
 			'CONFIG_EMAIL' =>			$email,
 			'LIST_UTC' =>				Html::list_utc('default_utc', 1, 'utc'),
 			'LIST_UTC_DST' =>			Html::list_utc('default_utc_dst', date("I"), 'dst'),
@@ -770,6 +803,10 @@ switch ($current_step)
 
 		if (IS_LOCALHOST)
 		{
+			Fsb::$tpl->set_vars(array(
+				'INSTALL_QUICK_EXPLAIN' =>	sprintf(Fsb::$session->lang('install_quick_explain'), ('<a href="#db_login_fast" onclick="document.getElementById(\'db_login_fast\').style.display = \'block\'">' . Fsb::$session->lang('install_quick_explain_link') . '</a>'))
+			));
+
 			Fsb::$tpl->set_switch('localhost');
 		}
 	break;

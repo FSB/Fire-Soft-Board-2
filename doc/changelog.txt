@@ -1,3 +1,75 @@
+===== 2.0.3 - 23 décembre 2011 =====
+Ajout d'un champ dans l'ajout de membres via l'administration
+Ajout d'un email de confirmation dans l'ajout de membres via l'administration
+Ajout d'un lien dans la gestion des groupes
+Ajout d'un lien pour les sujets postés ayant de nouvelles réponses
+Ajout de l'explication des champs contact
+Ajout de la possibilite de ne pas afficher les moderateurs pour chaque forum, au cas par cas
+Ajout de la possibilite de ne pas afficher les sous-forums pour chaque forum, au cas par cas
+Ajout de la possibilité de vider tous les logs d'un coup
+Ajout des miniatures des thèmes
+Ajout du numéro de page dans le titre
+Ajout du titre du sujet sur l'index apres une nouvelle installation
+Ajout du tri des sujets par date de creation
+Ajustement textarea édition rapide
+Cacher le bloc de prévisualisation quand on vient de la réponse rapide
+Changement du nom du groupe fondateur
+Changement des valeurs de clefs de langues pour les liens de messages
+Correction d'un doublon dans la liste des repertoires a chmoder
+Correction d'une erreur lors d'une installation rapide
+Correction d'une faute de frappe dans les noms de schemas
+Corrections dans la classe debug
+Correction de la désactivation des fonctionalités (certaines restent actives)
+Correction de la duplication des messages privés envoyés à soi-même
+Correction de quelques fautes d'orthographe
+Correction des bugs concernant l'édition rapide AJAX
+Modification des liens dans le header
+Modification du script de création du fichier de mise à jour de fsb
+Ne pas mettre les nouveaux inscrits dans la liste des connectés
+Ne pas supprimer un sujet si on supprime sa trace
+Utiliser un type="password" pour le mot de passe de la base de données en "Installation rapide"
+Réduction du code utilisée pour la récupération des messages
+Retrait de quelques accents dans les commentaires
+
+
+===== 2.0.2 - 07 juillet 2011 =====
+- Fix balise HTML erronee lors de l'installation (merci à minirop)
+- Ajout de la balise code manquante dans la FAQ
+- Correction du titre au survol des avatars
+- Inclusion des interfaces pour le convertisseur dans l'installateur
+- Correction d'accents dans la documentation du code
+- Modification du nom de dossier des convertisseurs : "convertors" en "converters"
+- Attribut alt des avatars, lorsque l'on est connecté : "Avatar de" devient "Profil de" (sujet 9475)
+- Amélioration de l'installation rapide
+- Suppression de fichiers inutiles
+- Patch mootools to add document.id
+- Petite correction pour les archives .tgz
+- Ajout de plusieurs clefs de langues
+- Décommente le die de prepare_release pour eviter tout problèmes de sécu.
+- Script prepare release adapter à git
+- Ajout du support du mods forum liens dans le convertisseur fsb1 -> fsb2
+- Fix problème de non présence de description
+- Fix problème de sécurité potentiel XSS
+- Correction des liens des images dans la faq sur le fsbcode [img]
+- Correction d'un nom d'interface Fsb2_Converter -> FSB2_Converter
+- Ajout d'interface pour els convertisseurs ainsi que d'une documentation d'implémentation
+- [64] Suppression du code en trop dans class_display.php
+- [68] Correction des problème lié au fichiers .Ds_Store à l'importation des smilies
+- [71] Cocher tout les sujets d'un sous forum lors de la recherche de messages non-lus
+- [73] Adresse ip à la ligne si texte édité
+- [79] Inversion des titres des pages pour être plus logique
+- [83] Amélioration de l'installateur, meilleure visibilité des chmods, etc
+- [87] Avertissement (bloquant) lors de la suppression de table sql à l'installation
+- [88] Fix du problème dans l'affichage de la liste des évènements à approuver.
+- [92] Modification du texte de suppression des fora et catégories
+- [93] Attribut lang mis à jour dans le html
+- [94] Ajout d'un lien vers les droits depuis la gestions des membres en administration
+- [98] Ajout du fichier vide config.php qui posait des problème à l'installation
+- [107] Ajout d'une chaine aleatoire dans le nom du cookie
+- [111] Correction du fsbcode img (sujet 9835)
+- [112] Correction du fsbcode list (sujet 9837)
+
+
 ===== 2.0.1 - 19 février 2011 =====
 - Refonte de l'éditeur WYSIWYG
 - Optimisations importantes de requêtes SQL

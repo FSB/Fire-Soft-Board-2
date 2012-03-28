@@ -117,6 +117,7 @@ class Fsb_frame_child extends Fsb_frame
 				Fsb::$tpl->set_blocks('tpl', array(
 					'NAME' =>		$file,
 					'AUTHOR' =>		$config_tpl['copyright']['author'],
+					'SCREENSHOT' => ROOT . 'tpl/'.Fsb::$session->data['u_tpl'].'/img/' . $config_tpl['img']['screenshot'],
 					'WEB' =>		String::parse_website($config_tpl['copyright']['web']),
 					'EMAIL' =>		String::parse_email($config_tpl['copyright']['email']),
 					'LICENSE' =>	$config_tpl['copyright']['license'],
