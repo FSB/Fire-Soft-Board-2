@@ -352,10 +352,10 @@ function preg_replace_multiple($pattern, $replace, $str, $limit = -1)
  */
 function check_read_post($p_id, $p_time, $t_id, $last_time, $last_id)
 {
-	if ((Fsb::$session->is_logged() && (!$last_time || $last_time < $p_time) && $p_time > Fsb::$session->data['u_last_read']))
+	if ((Fsb::$session->is_logged() && (!$last_id || $last_id < $p_id)))
 	{
 		$is_read = false;
-		$last_url = ($last_time) ? 'p_id=' . $last_id . '#p' . $last_id : 't_id=' . $t_id;
+		$last_url = ($last_id) ? 'p_id=' . $last_id . '#p' . $last_id : 't_id=' . $t_id;
 	}
 	else
 	{

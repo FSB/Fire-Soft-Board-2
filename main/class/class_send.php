@@ -347,8 +347,7 @@ class Send extends Fsb_model
 			Fsb::$db->insert('topics_read', array(
 				'u_id' =>			array((int) $user_id, true),
 				't_id' =>			array((int) $topic_id, true),
-				'p_id' =>			(int) $post_id,
-				'tr_last_time' =>	CURRENT_TIME,
+				'p_id' =>			(int) $post_id
 			), 'REPLACE');
 		}
 		else

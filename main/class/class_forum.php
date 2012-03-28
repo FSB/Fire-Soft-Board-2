@@ -247,8 +247,7 @@ class Forum extends Fsb_model
 						ON t.t_id = tr.t_id
 							AND tr.u_id = ' . Fsb::$session->id() . '
 					WHERE t.f_id = ' . $link . 'f_id
-						AND (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
-						AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] . '
+						AND (tr.p_id IS null OR tr.p_id < t.t_last_p_id)
 						AND t.t_approve = ' . IS_APPROVED . '
 				) AS total
 				FROM ' . SQL_PREFIX . 'forums f
