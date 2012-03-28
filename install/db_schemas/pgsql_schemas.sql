@@ -480,6 +480,7 @@ CREATE TABLE fsb2_topics (
   t_map_first_post INT2 default '0',
   t_description varchar(255) default '',
   t_approve INT2 default '0',
+  t_tag INT4 default '0',
   PRIMARY KEY (t_id)
 );
 CREATE INDEX fsb2_topics_f_id_index ON fsb2_topics (f_id);
@@ -498,6 +499,15 @@ CREATE TABLE fsb2_topics_read (
   p_id INT4 NOT NULL default '0',
   tr_last_time INT4 NOT NULL default '0',
   PRIMARY KEY (u_id,t_id)
+);
+DROP TABLE IF EXISTS fsb2_topics_tags;
+CREATE SEQUENCE fsb2_topics_tags_seq;
+CREATE TABLE fsb2_topics_tags (
+  tag_id INT DEFAULT nextval('fsb2_topics_tags_seq'),
+  tag_name varchar(30) default '',
+  tag_style varchar(255) default '',
+  tag_auth INT2 default '0',
+  PRIMARY KEY (tag_id)
 );
 DROP TABLE IF EXISTS fsb2_upload;
 CREATE SEQUENCE fsb2_upload_seq;

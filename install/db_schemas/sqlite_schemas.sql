@@ -415,7 +415,8 @@ CREATE TABLE fsb2_topics (
   t_poll tinyint(4) default '0',
   t_map_first_post tinyint(4) default '0',
   t_description varchar(255) default '',
-  t_approve tinyint(4) default '0'
+  t_approve tinyint(4) default '0',
+  t_tag int(11) default '0'
 );
 CREATE INDEX fsb2_topics_f_id_index ON fsb2_topics (f_id);
 CREATE INDEX fsb2_topics_t_last_p_time_index ON fsb2_topics (t_last_p_time);
@@ -434,6 +435,12 @@ CREATE TABLE fsb2_topics_read (
 );
 CREATE INDEX fsb2_topics_read_u_id_index ON fsb2_topics_read (u_id);
 CREATE INDEX fsb2_topics_read_t_id_index ON fsb2_topics_read (t_id);
+CREATE TABLE fsb2_topics_tags (
+  tag_id INTEGER PRIMARY KEY NOT null,
+  tag_name varchar(30) default '',
+  tag_style varchar(255) default '',
+  tag_auth tinyint(4) default '0'
+) Engine=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 CREATE TABLE fsb2_upload (
   upload_id INTEGER PRIMARY KEY NOT null,
   u_id int(11) default '0',

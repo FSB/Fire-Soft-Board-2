@@ -20,6 +20,7 @@ SELECT SETVAL('fsb2_smilies_seq',(select case when max(smiley_id)>0 then max(smi
 SELECT SETVAL('fsb2_smilies_cat_seq',(select case when max(cat_id)>0 then max(cat_id)+1 else 1 end from fsb2_smilies_cat));
 SELECT SETVAL('fsb2_sub_procedure_seq',(select case when max(procedure_id)>0 then max(procedure_id)+1 else 1 end from fsb2_sub_procedure));
 SELECT SETVAL('fsb2_topics_seq',(select case when max(t_id)>0 then max(t_id)+1 else 1 end from fsb2_topics));
+SELECT SETVAL('fsb2_topics_tags_seq',(select case when max(tag_id)>0 then max(tag_id)+1 else 1 end from fsb2_topics_tags));
 SELECT SETVAL('fsb2_upload_seq',(select case when max(upload_id)>0 then max(upload_id)+1 else 1 end from fsb2_upload));
 SELECT SETVAL('fsb2_users_seq',(select case when max(u_id)>0 then max(u_id)+1 else 1 end from fsb2_users));
 SELECT SETVAL('fsb2_users_password_seq',(select case when max(u_id)>0 then max(u_id)+1 else 1 end from fsb2_users_password));
