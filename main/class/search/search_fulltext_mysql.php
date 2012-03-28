@@ -49,7 +49,7 @@ class Search_fulltext_mysql extends Search
 			$select = new Sql_select();
 			$select->join_table('FROM', 'posts p', 'p_id');
             
-            // Jointure sur les sujets si on fait une recherche de tags
+			// Jointure sur les sujets si on fait une recherche de tags
 			if ($tag != -1)
 			{
 				$select->join_table('INNER JOIN', 'topics t', 't.t_tag', 'ON p.t_id = t.t_id ');
@@ -86,7 +86,7 @@ class Search_fulltext_mysql extends Search
 				$select->where('AND p.p_time > ' . CURRENT_TIME . ' - ' . $date);
 			}
 
-            // Recherche sur le tag du sujet
+			// Recherche sur le tag du sujet
 			if ($tag != -1)
 			{
 				$select->where('AND t.t_tag = ' . $tag);
@@ -126,7 +126,7 @@ class Search_fulltext_mysql extends Search
 			}
 			$select->where('AND MATCH (t.t_title) AGAINST (\'' . implode(' ', $keywords_array) . '\' IN BOOLEAN MODE)');
 
-            // Recherche sur le tag du sujet
+			// Recherche sur le tag du sujet
 			if ($tag != -1)
 			{
 				$select->where('AND t.t_tag = ' . $tag);
