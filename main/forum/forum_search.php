@@ -262,10 +262,26 @@ class Fsb_frame_child extends Fsb_frame
 			'asc' =>	Fsb::$session->lang('asc'),
 			'desc' =>	Fsb::$session->lang('desc'),
 		);
+        
+		// On recupere les tags
+        $tags = array(
+            -1 => Fsb::$session->lang('search_tag_all'),
+            0 =>  Fsb::$session->lang('none'),
+        );
+        
+		$sql = 'SELECT tag_id, tag_name
+                FROM ' . SQL_PREFIX . 'topics_tags
+                ORDER BY tag_name';
+		$result = Fsb::$db->query($sql, 'tags_');
+		while ($row = Fsb::$db->row($result))
+		{
+            $tags[$row['tag_id']] = $row['tag_name'];
+		}        
 
 		Fsb::$tpl->set_file('forum/forum_search.html');
 		Fsb::$tpl->set_vars(array(
 			'SEARCH_EXPLAIN' =>	$search_explain,
+			'LIST_TAG' =>		Html::make_list('tag', -1, $tags, array('id' => 'list_tag_id')),
 			'LIST_DATE' =>		Html::make_list('date', 0, $list_date, array('id' => 'list_date_id')),
 			'LIST_ORDER' =>		Html::make_list('order', 't_last_p_time', $list_order, array('id' => 'list_order_id')),
 			'LIST_DIRECTION' =>	Html::make_list('direction', 'desc', $list_direction),

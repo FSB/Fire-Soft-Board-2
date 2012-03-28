@@ -60,6 +60,7 @@ class Fsb_frame_child extends Fsb_admin_frame
             'U_ADD' => sid('index.' . PHPEXT . '?p=posts_tag&amp;mode=add')
         ));
 
+        // Liste des permissions
         $auth_list = array(
             VISITOR => Fsb::$session->lang('visitor'),
             USER =>	Fsb::$session->lang('user'),
@@ -116,11 +117,11 @@ class Fsb_frame_child extends Fsb_admin_frame
         
         // Liste des permissions
         $auth_list = Html::make_list('tag_auth', $data['tag_auth'], array(
-            VISITOR =>	Fsb::$session->lang('visitor'),
-            USER =>		Fsb::$session->lang('user'),
-            MODO =>		Fsb::$session->lang('modo'),
-            MODOSUP =>	Fsb::$session->lang('modosup'),
-            ADMIN =>	Fsb::$session->lang('admin'),
+            VISITOR => Fsb::$session->lang('visitor'),
+            USER =>	Fsb::$session->lang('user'),
+            MODO => Fsb::$session->lang('modo'),
+            MODOSUP => Fsb::$session->lang('modosup'),
+            ADMIN => Fsb::$session->lang('admin'),     
         ));
 
         Fsb::$tpl->set_switch('tag_add');
