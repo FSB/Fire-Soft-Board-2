@@ -30,7 +30,7 @@ class Search_like extends Search
 	/**
 	 * @see Search::_search()
 	 */
-	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date)
+	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date, $tag)
 	{
 		// Recherche dans les messages
 		$iterator = 0;
@@ -38,11 +38,19 @@ class Search_like extends Search
 		if ($this->search_in_post)
 		{
 			$select = new Sql_select();
-			$select->join_table('FROM', 'posts', 'p_id');
-			$select->where('f_id IN (' . implode(', ', $forum_idx) . ')');
+			$select->join_table('FROM', 'posts p', 'p_id');
+            
+			// Jointure sur les sujets si on fait une recherche de tags
+			if ($tag != -1)
+			{
+				$select->join_table('INNER JOIN', 'topics t', 't.t_tag', 'ON p.t_id = t.t_id ');
+			} 
+            
+			$select->where('p.f_id IN (' . implode(', ', $forum_idx) . ')');
+            
 			if ($author_nickname)
 			{
-				$select->where('AND p_nickname = \'' . Fsb::$db->escape($author_nickname) . '\'');
+				$select->where('AND p.p_nickname = \'' . Fsb::$db->escape($author_nickname) . '\'');
 			}
 
 			if ($topic_id)
@@ -61,12 +69,18 @@ class Search_like extends Search
 			{
 				if ($word)
 				{
-					$select->where((($flag) ? $this->search_link : '') . ' p_text ' . Fsb::$db->like() . ' \'%' . Fsb::$db->escape($word) . '%\'');
+					$select->where((($flag) ? $this->search_link : '') . ' p.p_text ' . Fsb::$db->like() . ' \'%' . Fsb::$db->escape($word) . '%\'');
 					$flag = true;
 				}
 			}
 			$select->where(')');
 
+			// Recherche sur le tag du sujet
+			if ($tag != -1)
+			{
+				$select->where('AND t.t_tag = ' . $tag);
+			}
+            
 			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
@@ -110,6 +124,12 @@ class Search_like extends Search
 			}
 			$select->where(')');
 
+			// Recherche sur le tag du sujet
+			if ($tag != -1)
+			{
+				$select->where('AND t.t_tag = ' . $tag);
+			}
+            
 			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
