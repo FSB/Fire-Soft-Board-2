@@ -87,7 +87,13 @@ class Fsb_frame_child extends Fsb_frame
 	 * 
 	 */
 	public $topic;
-	
+
+	/**
+	 * Donnees du formulaire pour la recherche tag
+	 * 
+	 */
+	public $tag;
+    
 	/**
 	 * Donnees du formulaire pour la recherche Date
 	 * 
@@ -170,6 +176,7 @@ class Fsb_frame_child extends Fsb_frame
 		$this->in =			Http::request('in');
 		$this->order =		Http::request('order');
 		$this->direction =	strtolower(Http::request('direction'));
+		$this->tag =		Http::request('tag') ? intval(Http::request('tag')) : -1;        
 		$this->date =		intval(Http::request('date'));
 		$this->page =		intval(Http::request('page'));
 		$this->id =			intval(Http::request('id'));
@@ -337,7 +344,7 @@ class Fsb_frame_child extends Fsb_frame
 			$this->search->search_in_title =	(isset($this->in['title'])) ? true : false;
 			$this->search->search_link =		strtolower(Http::request('keywords_link', 'post'));
 
-			$this->idx = $this->search->launch($this->keywords, $this->author, $this->forums, $this->topic, $this->date);
+			$this->idx = $this->search->launch($this->keywords, $this->author, $this->forums, $this->topic, $this->date, $this->tag);
 			$this->print_result();
 
 			// Suppression des anciens cache

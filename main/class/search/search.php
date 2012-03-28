@@ -59,9 +59,10 @@ abstract class Search extends Fsb_model
 	 * @param array $forum_idx ID des forums concernes par la recherche
 	 * @param int $topic_id ID du topic concerne par la recherche
 	 * @param int $date Timestamp pour la recherche
+     * @param int $tag Tag pour la recherche
 	 * @return array ID des messages trouves
 	 */
-	abstract public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date);
+	abstract public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date, $tag);
 
 	/*
 	** Retourne le type de recherche utilisee.
@@ -108,9 +109,10 @@ abstract class Search extends Fsb_model
 	 * @param array $forum_idx ID des forums concernes par la recherche
 	 * @param int $topic_id ID du topic concerne par la recherche
 	 * @param int $date Timestamp pour la recherche
+     * @param int $tag Tag pour la recherche
 	 * @return array ID des messages trouves
 	 */
-	public function launch($keywords, $author_nickname, $list_forums, $topic_id = null, $date = 0)
+	public function launch($keywords, $author_nickname, $list_forums, $topic_id = null, $date = 0, $tag = -1)
 	{
 		// Liens
 		$this->search_link = ($this->search_link == 'or') ? 'or' : 'and';
@@ -134,7 +136,7 @@ abstract class Search extends Fsb_model
 		{
 			return (array());
 		}
-		return ($this->_search($keyword_array, $author_nickname, $list_forums, $topic_id, $date));
+		return ($this->_search($keyword_array, $author_nickname, $list_forums, $topic_id, $date, $tag));
 	}
 }
 

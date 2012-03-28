@@ -31,7 +31,7 @@ class Search_fulltext_mysql extends Search
 	/**
 	 * @see Search::_search()
 	 */
-	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date)
+	public function _search($keywords_array, $author_nickname, $forum_idx, $topic_id, $date, $tag)
 	{
 		// Mots clefs
 		if ($this->search_link == 'and')
@@ -47,38 +47,51 @@ class Search_fulltext_mysql extends Search
 		if ($this->search_in_post)
 		{
 			$select = new Sql_select();
-			$select->join_table('FROM', 'posts', 'p_id');
+			$select->join_table('FROM', 'posts p', 'p_id');
+            
+            // Jointure sur les sujets si on fait une recherche de tags
+			if ($tag != -1)
+			{
+				$select->join_table('INNER JOIN', 'topics t', 't.t_tag', 'ON p.t_id = t.t_id ');
+			} 
+            
 			if (!$forum_idx)
 			{
 				$select->where('0 = 1');
 			}
 			else
 			{
-				$select->where('f_id IN (' . implode(', ', $forum_idx) . ')');
+				$select->where('p.f_id IN (' . implode(', ', $forum_idx) . ')');
 			}
 
 			// Recherche de mots clefs
 			if ($keywords_array)
 			{
-				$select->where('AND MATCH (p_text) AGAINST (\'' . implode(' ', $keywords_array) . '\' IN BOOLEAN MODE)');
+				$select->where('AND MATCH (p.p_text) AGAINST (\'' . implode(' ', $keywords_array) . '\' IN BOOLEAN MODE)');
 			}
 
 			// Recherche d'auteur
 			if ($author_nickname)
 			{
-				$select->where('AND p_nickname = \'' . Fsb::$db->escape($author_nickname) . '\'');
+				$select->where('AND p.p_nickname = \'' . Fsb::$db->escape($author_nickname) . '\'');
 			}
 
 			if ($topic_id)
 			{
-				$select->where('AND t_id = ' . $topic_id);
+				$select->where('AND p.t_id = ' . $topic_id);
 			}
 
 			if ($date > 0)
 			{
-				$select->where('AND p_time > ' . CURRENT_TIME . ' - ' . $date);
+				$select->where('AND p.p_time > ' . CURRENT_TIME . ' - ' . $date);
 			}
 
+            // Recherche sur le tag du sujet
+			if ($tag != -1)
+			{
+				$select->where('AND t.t_tag = ' . $tag);
+			}
+            
 			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
@@ -113,6 +126,12 @@ class Search_fulltext_mysql extends Search
 			}
 			$select->where('AND MATCH (t.t_title) AGAINST (\'' . implode(' ', $keywords_array) . '\' IN BOOLEAN MODE)');
 
+            // Recherche sur le tag du sujet
+			if ($tag != -1)
+			{
+				$select->where('AND t.t_tag = ' . $tag);
+			}
+            
 			// Resultats
 			$result = $select->execute();
 			while ($row = Fsb::$db->row($result))
