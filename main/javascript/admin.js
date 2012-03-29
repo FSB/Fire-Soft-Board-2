@@ -21,7 +21,7 @@ function hide_menu(id)
 {
 	adm_menu_pos[id] ^= true;
 	
-	if ($defined(adm_menu_fx[id]))
+	if (adm_menu_fx[id] !== undefined && adm_menu_fx[id] !== null)
 	{
 		adm_menu_fx[id].cancel();
 	}
@@ -37,7 +37,7 @@ function hide_menu(id)
 	// On sauve la position du menu dans un cookie
 	if (adm_menu_pos[id])
 	{
-		if (!$defined(adm_menu_height[id]))
+		if (adm_menu_height[id] === null || adm_menu_height[id] === undefined)
 		{
 			adm_menu_height[id] = $(id).getCoordinates().height;
 		}
