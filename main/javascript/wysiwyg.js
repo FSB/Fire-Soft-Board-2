@@ -27,7 +27,7 @@ var FSB_editor_interface = new Class(
 	
 	initialize: function(id, type, use_wysiwyg)
 	{
-		if (!(Browser.Engine.trident && Browser.Engine.version == 5) && !Browser.Engine.gecko && !Browser.Engine.presto && !(Browser.Engine.webkit && Browser.Engine.version == 420))
+		if (!Browser.ie7 && !Browser.firefox && !Browser.opera && !Browser.safari)
 		{
 			type = 'text';
 		}
@@ -124,7 +124,7 @@ var FSB_editor = new Class(
 			return ;
 		}
 
-		if (!(Browser.Engine.trident && Browser.Engine.version == 5) && !Browser.Engine.gecko && !Browser.Engine.presto && !(Browser.Engine.webkit && Browser.Engine.version == 420))
+		if (!Browser.ie7 && !Browser.firefox && !Browser.opera && !Browser.safari)
 		{
 			return ;
 		}
@@ -139,7 +139,7 @@ var FSB_editor = new Class(
 		ltab.setAttribute('id', this.id + '_tabs_ltab');
 		ltab.setAttribute('class', 'editor_tabs');
 		ltab.setAttribute('title', FSB_editor_lg['ltab_explain']);
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			var add = (this.current == 'text') ? 3 : 0;
 			ltab.style.position = 'absolute';
@@ -174,7 +174,7 @@ var FSB_editor = new Class(
 		rtab.setAttribute('class', 'editor_tabs');
 		rtab.setAttribute('id', this.id + '_tabs_rtab');
 		rtab.setAttribute('title', FSB_editor_lg['rtab_explain']);
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			rtab.style.position = 'absolute';
 			rtab.style.backgroundImage = 'url(tpl/WhiteSummer/img/wysiwyg_tab.png)';
@@ -204,7 +204,7 @@ var FSB_editor = new Class(
 		tabs.appendChild(rtab);
 
 		$(this.id).parentNode.appendChild(tabs);
-		$(this.id + '_tabs').injectBefore(this.id);
+		$(this.id + '_tabs').inject(this.id,'before');
 		$(this.id + '_tabs').style.display = 'block';
 	},
 
@@ -282,7 +282,7 @@ var FSB_editor = new Class(
 		}
 
 		// Modification graphique des onglets
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			var add = (this.current == 'wysiwyg') ? 2 : 0;
 			tab.style.marginTop = (add + 2) + 'px';
@@ -313,7 +313,7 @@ var FSB_editor = new Class(
 
         var ajax = new Request(
         {
-            url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
+            url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Object.toQueryString(obj),
             onSuccess: function(txt, xml)
             {
                 ajax_waiter_close();
@@ -542,7 +542,7 @@ var FSB_editor_text = new Class(
 	*/
 	_get_selection: function()
 	{
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -684,24 +684,24 @@ var FSB_editor_wysiwyg = new Class(
 		$(this.id).parentNode.appendChild(input);
 
 		// Initialisation du designMode
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			this.doc = window.frames[this.id].document;
 			this.win = window.frames[this.id];
 			this.doc.designMode = 'On';
 		}
-		else if (Browser.Engine.presto)
+		else if (Browser.opera)
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id);
 			this.doc.designMode = 'On';
 		}
-		else if (Browser.Engine.gecko || (Browser.Engine.webkit && Browser.Engine.version == 420))
+		else if (Browser.firefox || !Browser.safari)
 		{
 			this.doc = $(this.id).contentDocument;
 			this.win = $(this.id).contentWindow;
 			
-			if (Browser.Engine.webkit && Browser.Engine.version == 420)
+			if (Browser.safari)
 			{
 				this.doc.designMode = 'On';
 			}
@@ -722,7 +722,7 @@ var FSB_editor_wysiwyg = new Class(
 			this.doc.write('<html><head><style type="text/css">body{margin:1px;font-size: 12px;font-family: Verdana, Arial, Helvetica, sans-serif;};p{margin:0px;}</style></head><body>' + this._format_text($(this.id + '_wysiwyg').value) + '</body></html>');
 			this.doc.close();
 
-			if (Browser.Engine.gecko)
+			if (Browser.firefox)
 			{
 				this.doc.designMode = 'On';
 			}
@@ -906,7 +906,7 @@ var FSB_editor_wysiwyg = new Class(
 			case 'bgcolor' :
 				if (args)
 				{
-					if (Browser.Engine.trident)
+					if (Browser.ie)
 					{
 						this.doc.execCommand('backcolor', false, args);
 					}
@@ -948,7 +948,7 @@ var FSB_editor_wysiwyg = new Class(
 	*/
 	_get_selection: function()
 	{
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			return (this.doc.selection.createRange().text);
 		}
@@ -969,7 +969,7 @@ var FSB_editor_wysiwyg = new Class(
 		str = this.parse_vars(str, this._get_selection());
 		if (!html) str = htmlspecialchars(str);
 		str = this._format_text(str);
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			var sel = this.doc.selection;
 			this.win.focus();
@@ -981,7 +981,7 @@ var FSB_editor_wysiwyg = new Class(
 			}
 
 		}
-		else if (Browser.Engine.gecko)
+		else if (Browser.firefox)
 		{
 			var fragment = this.doc.createDocumentFragment();
 			var div = this.doc.createElement('div');
@@ -992,7 +992,7 @@ var FSB_editor_wysiwyg = new Class(
 			}
 			this._insertNodeAtSelection(fragment);
 		}
-		else if (Browser.Engine.presto)
+		else if (Browser.opera)
 		{
 			this.doc.execCommand('InsertHTML', false, str);
 		}
@@ -1004,7 +1004,7 @@ var FSB_editor_wysiwyg = new Class(
 	*/
 	_insertNodeAtSelection: function(toBeInserted)
 	{
-		if (!Browser.Engine.trident)
+		if (!Browser.ie)
 		{
 			var sel = this.win.getSelection();
 			var range = this._createRange(sel);
@@ -1062,7 +1062,7 @@ var FSB_editor_wysiwyg = new Class(
 		this.win.focus();
 		var range;
 		var collapsed = (typeof pos != "undefined");
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			range = this.doc.body.createTextRange();
 			range.moveToElementText(node);
@@ -1085,7 +1085,7 @@ var FSB_editor_wysiwyg = new Class(
 	*/
 	_createRange: function(sel)
 	{
-		if (Browser.Engine.trident)
+		if (Browser.ie)
 		{
 			return sel.createRange();
 		}
