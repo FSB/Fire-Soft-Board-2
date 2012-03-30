@@ -59,7 +59,7 @@ function popup_open(x, y, title, content)
 */
 function popup_position()
 {
-	if (Browser.Engine.trident)
+	if (Browser.ie)
 	{
 		var scroll_y = document.body.scrollTop;
 	}

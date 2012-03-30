@@ -101,7 +101,7 @@ function block_cookie_read(block_name, img_name, img_src, mooeffect)
 	cookie_value = Cookie.read(block_name);
 	if (cookie_value == 'C')
 	{
-		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
+		if (!(Browser.ie6) && mooeffect)
 		{
 			blocks_height[block_name] = $(block_name).getCoordinates().height;
 			$(block_name).style.height = '0px';
@@ -118,7 +118,7 @@ function block_cookie_read(block_name, img_name, img_src, mooeffect)
 var fxBlocks = {};
 function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 {
-	if ($defined(fxBlocks[id_block]))
+	if (fxBlocks[id_block] !== null && fxBlocks[id_block] !== undefined)
 	{
 		fxBlocks[id_block].cancel();
 	}
@@ -134,7 +134,7 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	hide_block[id_block] ^= true;
 	if (hide_block[id_block])
 	{
-		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
+		if (!(Browser.ie6) && mooeffect)
 		{
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), blocks_height[id_block]],
@@ -149,9 +149,9 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 	}
 	else
 	{
-		if (!(Browser.Engine.trident && Browser.Engine.version == 4) && mooeffect)
+		if (!(Browser.ie6) && mooeffect)
 		{
-			if (!$defined(blocks_height[id_block]))
+			if (blocks_height[id_block] === undefined || blocks_height[id_block] === null)
 			{
 				blocks_height[id_block] = $(id_block).getCoordinates().height;
 			}
@@ -332,7 +332,7 @@ function selectCode(a)
 */
 function ajax_waiter_open()
 {
-	if (Browser.Engine.trident)
+	if (Browser.ie)
 	{
 		var scroll_y = document.body.scrollTop;
 	}
