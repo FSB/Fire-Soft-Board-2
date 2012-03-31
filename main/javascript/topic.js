@@ -160,7 +160,7 @@ function submit_post_dynamic(id, post_id, redirect)
 
     var ajax = new Request(
     {
-        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Hash.toQueryString(obj),
+        url: FSB_ROOT + 'ajax.' + FSB_PHPEXT + '?' + Object.toQueryString(obj),
         onSuccess: function(txt, xml)
         {
 			if (!txt)
