@@ -189,7 +189,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Autres jointures (donnees du forum, et posteur du premier message)
-		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time, tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
+		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 		$select->join_table('LEFT JOIN', 'forums f', 'f.f_password, f.f_tpl, f.f_status, f.f_rules', 'ON t.f_id = f.f_id');
 
 		// Resultat de la requete
@@ -671,13 +671,12 @@ class Fsb_frame_child extends Fsb_frame
 		// Marquer le sujet lu
 		if (Fsb::$session->is_logged() && $this->topic_data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
 		{
-			if (!$this->topic_data['tr_last_time'] || $this->topic_data['tr_last_time'] < $this->topic_data['t_last_p_time'])
+			if (!$this->topic_data['last_unread_id'] || $this->topic_data['last_unread_id'] < $this->topic_data['t_last_p_id'])
 			{
 				Fsb::$db->insert('topics_read', array(
 					'u_id' =>			array(Fsb::$session->id(), true),
 					't_id' =>			array($this->topic_data['t_id'], true),
 					'p_id' =>			$this->topic_data['t_last_p_id'],
-					'tr_last_time' =>	$this->topic_data['t_last_p_time'],
 				), 'REPLACE');
 			}
 
