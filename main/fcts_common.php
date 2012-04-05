@@ -346,11 +346,10 @@ function preg_replace_multiple($pattern, $replace, $str, $limit = -1)
  * @param int $p_id ID du dernier message
  * @param int $p_time Date du dernier message
  * @param int $t_id ID du sujet
- * @param int $last_time Date du dernier message lu du sujet
  * @param int $last_id ID du dernier message lu du sujet
  * @return array
  */
-function check_read_post($p_id, $p_time, $t_id, $last_time, $last_id)
+function check_read_post($p_id, $p_time, $t_id, $last_id)
 {
 	if ((Fsb::$session->is_logged() && (!$last_id || $last_id < $p_id)))
 	{

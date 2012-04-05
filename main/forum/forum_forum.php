@@ -406,7 +406,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Requete recuperant les sujets de ce forum, pagine page par page
-		$sql = 'SELECT t.*, uf.u_id AS f_u_id, uf.u_nickname AS f_u_nickname, uf.u_color AS f_u_color, u.u_nickname, u.u_color, tr.tr_last_time, tr.p_id AS last_unread_id
+		$sql = 'SELECT t.*, uf.u_id AS f_u_id, uf.u_nickname AS f_u_nickname, uf.u_color AS f_u_color, u.u_nickname, u.u_color, tr.p_id AS last_unread_id
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON u.u_id = t.t_last_u_id
@@ -437,7 +437,7 @@ class Fsb_frame_child extends Fsb_frame
 			$topic_pagination = ($total_page > 1) ? Html::pagination(0, $total_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 
 			// Sujet lu ?
-			list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
+			list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['last_unread_id']);
 
 			// Image du sujet
 			if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')

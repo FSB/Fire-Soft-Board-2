@@ -54,7 +54,7 @@ class Forum extends Fsb_model
 		else
 		{
 			// Donnees du dernier message
-			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], $forum['f_last_p_time'], $forum['f_last_t_id'], $forum['tr_last_time'], $forum['last_unread_id']);
+			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], null, $forum['f_last_t_id'], $forum['last_unread_id']);
 
 			// On tronque le titre du sujet ?
 			$topic_title = Parser::title($forum['f_last_t_title']);
@@ -110,7 +110,7 @@ class Forum extends Fsb_model
 		// On recupere tous les sujets non lu de ce forum
 		$select = new Sql_select();
 		$select->join_table('FROM', 'topics t', 't.t_id, t.f_id, t.t_last_p_time, t.t_last_p_id');
-		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
+		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.p_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 
 		// On cree la clause WHERE
 		switch ($type)
@@ -189,19 +189,18 @@ class Forum extends Fsb_model
 				$select->where('t.t_id IN (' . $id . ') AND');
 			break;
 		}
-		$select->where('(tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
+		$select->where('(tr.p_id IS null OR tr.p_id < t.t_last_p_id) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
 
 		// On met a jour la table fsb2_topics_read
 		$result = $select->execute();
 		while ($row = Fsb::$db->row($result))
 		{
-			if (!$row['tr_last_time'] || $row['tr_last_time'] < $row['t_last_p_time'])
+			if (!$row['p_id'] || $row['p_id'] < $row['t_last_p_id'])
 			{
 				Fsb::$db->insert('topics_read', array(
 					'u_id' =>			array(Fsb::$session->id(), true),
 					't_id' =>			array($row['t_id'], true),
 					'p_id' =>			$row['t_last_p_id'],
-					'tr_last_time' =>	$row['t_last_p_time'],
 				), 'REPLACE', true);
 			}
 		}
@@ -219,7 +218,7 @@ class Forum extends Fsb_model
 	 */
 	public static function query($where = '')
 	{
-		$sql = 'SELECT f.*, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color
+		$sql = 'SELECT f.*, tr.p_id AS last_unread_id, u.u_color
 				FROM ' . SQL_PREFIX . 'forums f
 				LEFT JOIN ' . SQL_PREFIX . 'users u
 					ON f.f_last_u_id = u.u_id

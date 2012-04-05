@@ -25,8 +25,8 @@ function prune_topics_reads()
 	$result = Fsb::$db->query($sql);
 	while ($row = Fsb::$db->row($result))
 	{
-		$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_read
-				WHERE tr_last_time < ' . ($row['u_last_read'] - (3 * ONE_MONTH)) . '
+		$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_read LEFT JOIN ' . SQL_PREFIX . 'topics t ON tr.t_id = t.t_id
+				WHERE t_last_p_time < ' . ($row['u_last_read'] - (3 * ONE_MONTH)) . '
 					AND u_id = ' . $row['u_id'];
 		Fsb::$db->query($sql);
 	}
