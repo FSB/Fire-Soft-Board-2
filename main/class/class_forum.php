@@ -44,7 +44,7 @@ class Forum extends Fsb_model
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TOTAL_CLICK' =>	sprintf(Fsb::$session->lang('forum_total_click'), $forum['f_location_view']),
 				'TYPE' =>			$forum['f_type'],
-				'NAME' =>			$forum['f_name'],
+				'NAME' =>			Html::forumname($forum['f_name'], $forum['f_id'], $forum['f_color'], $forum['f_location']),
 				'DESCRIPTION' =>	nl2br($forum['f_text']),
 				'WIDTH' =>			$width,
 
@@ -64,7 +64,7 @@ class Forum extends Fsb_model
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
 				'TYPE' =>			$forum['f_type'],
-				'NAME' =>			$forum['f_name'],
+				'NAME' =>			Html::forumname($forum['f_name'], $forum['f_id'], $forum['f_color'], $forum['f_location']),
 				'DESCRIPTION' =>	nl2br($forum['f_text']),
 				'WIDTH' =>			$width,
 				'NICKNAME' =>		Html::nickname($forum['f_last_p_nickname'], $forum['f_last_u_id'], $forum['u_color']),
