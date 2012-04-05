@@ -201,12 +201,6 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 		unset($select);
 
-		// Dernier message lu
-		if (!$this->topic_data['last_unread_id'] || !Fsb::$session->is_logged())
-		{
-			$this->topic_data['last_unread_id'] = $this->topic_data['t_last_p_id'];
-		}
-
 		// Message non approuve ?
 		if ($this->topic_data['t_approve'] == IS_NOT_APPROVED)
 		{
@@ -403,7 +397,7 @@ class Fsb_frame_child extends Fsb_frame
 				'CAN_QUICK_EDIT' =>	($row['p_map'] == 'classic') ? true : false,
 				'CAN_DELETE' =>		(Fsb::$session->can_delete_post($row['u_id'], $row['p_id'], $this->topic_data)) ? true : false,
 				'IS_FIRST_POST' =>	($row['p_id'] == $this->topic_data['t_first_p_id']) ? true : false,
-				'IS_READ' =>		($row['p_id'] <= $this->topic_data['last_unread_id']) ? true : false,
+				'IS_READ' =>		(!$this->topic_data['last_unread_id'] || $row['p_id'] <= $this->topic_data['last_unread_id']) ? true : false,
 
 				'U_LAST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id']) . '#p' . $row['p_id'],
 				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit&amp;id=' . $row['p_id']),
