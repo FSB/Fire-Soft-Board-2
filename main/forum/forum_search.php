@@ -523,13 +523,13 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Generation des messages
-		$sql = 'SELECT t.t_last_p_id, tr.tr_last_time
+		$sql = 'SELECT t.t_last_p_id
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
 					ON t.t_id = tr.t_id
 						AND tr.u_id = ' . intval(Fsb::$session->id()) . 
 				$post_query . '
-				WHERE (tr.tr_last_time IS null OR tr.tr_last_time < t.t_last_p_time)
+				WHERE (tr.p_id IS null OR tr.p_id < t.t_last_p_id)
 					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] .
 					$where;
 		$result = Fsb::$db->query($sql);
@@ -808,7 +808,7 @@ class Fsb_frame_child extends Fsb_frame
 					$total_page = ceil($total / Fsb::$cfg->get('topic_per_page'));
 
 					// Liste des sujets
-					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
+					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
 							FROM ' . SQL_PREFIX . 'posts p
 							INNER JOIN ' . SQL_PREFIX . 'topics t
 								ON p.t_id = t.t_id
@@ -827,7 +827,7 @@ class Fsb_frame_child extends Fsb_frame
 								AND p.p_approve = ' . IS_APPROVED
 							. (($this->forums) ? ' AND f.f_id IN (' . implode(', ', $this->forums) . ')' : '')
 							. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
-							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat_id, cat_name, tr.tr_last_time, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color, f.f_left
+							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, cat_id, cat_name, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color, f.f_left
 							ORDER BY f.f_left, t.' . $this->order . ' ' . $this->direction . '
 							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('topic_per_page')) . ', ' . Fsb::$cfg->get('topic_per_page');
 					$result = Fsb::$db->query($sql);
@@ -851,7 +851,7 @@ class Fsb_frame_child extends Fsb_frame
 						$topic_pagination = ($total_topic_page > 1) ? Html::pagination(0, $total_topic_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 
 						// Sujet lu ?
-						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['last_unread_id']);
 
 						// Image du sujet
 						if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')
@@ -930,7 +930,7 @@ class Fsb_frame_child extends Fsb_frame
 					$total_page = ceil($total / Fsb::$cfg->get('topic_per_page'));
 
 					// Liste des sujets
-					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.tr_last_time, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
+					$sql = 'SELECT t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat.f_id AS cat_id, cat.f_name AS cat_name, tr.p_id AS last_unread_id, u.u_color, owner.u_id AS owner_id, owner.u_nickname AS owner_nickname, owner.u_color AS owner_color
 							FROM ' . SQL_PREFIX . 'posts p
 							INNER JOIN ' . SQL_PREFIX . 'topics t
 								ON p.t_id = t.t_id
@@ -949,14 +949,14 @@ class Fsb_frame_child extends Fsb_frame
 								AND p.p_approve = ' . IS_APPROVED
 							. (($this->forums) ? ' AND f.f_id IN (' . implode(', ', $this->forums) . ')' : '')
 							. (($forums_idx = Forum::get_authorized(array('ga_view', 'ga_view_topics', 'ga_read'))) ? ' AND f.f_id IN (' . implode(', ', $forums_idx) . ')' : '') . '
-							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat_id, cat_name, tr.tr_last_time, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color
+							GROUP BY t.t_id, t.t_title, t.t_time, t.t_last_p_time, t.t_total_view, t.t_total_post, t.t_last_p_nickname, t.t_last_u_id, t.t_last_p_nickname, t.t_last_p_id, t.t_description, t.t_type, t.t_status, f.f_id, f.f_name, f.f_color, cat_id, cat_name, last_unread_id, u.u_color, owner_id, owner_nickname, owner_color
 							ORDER BY t.' . $this->order . ' ' . $this->direction . '
 							LIMIT ' . (($this->page - 1) * Fsb::$cfg->get('topic_per_page')) . ', ' . Fsb::$cfg->get('topic_per_page');
 					$result = Fsb::$db->query($sql);
 					while ($row = Fsb::$db->row($result))
 					{
 						// Sujet lu ?
-						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['tr_last_time'], $row['last_unread_id']);
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['last_unread_id']);
 
 						// Pagination du sujet
 						$total_page_topic = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');

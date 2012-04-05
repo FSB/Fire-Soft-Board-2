@@ -189,7 +189,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Autres jointures (donnees du forum, et posteur du premier message)
-		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.tr_last_time, tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
+		$select->join_table('LEFT JOIN', 'topics_read tr', 'tr.p_id AS last_unread_id', 'ON t.t_id = tr.t_id AND tr.u_id = ' . Fsb::$session->id());
 		$select->join_table('LEFT JOIN', 'forums f', 'f.f_password, f.f_tpl, f.f_status, f.f_rules', 'ON t.f_id = f.f_id');
 
 		// Resultat de la requete
@@ -200,12 +200,6 @@ class Fsb_frame_child extends Fsb_frame
 		}
 		Fsb::$db->free($result);
 		unset($select);
-
-		// Dernier message lu
-		if (!$this->topic_data['last_unread_id'] || !Fsb::$session->is_logged())
-		{
-			$this->topic_data['last_unread_id'] = $this->topic_data['t_last_p_id'];
-		}
 
 		// Message non approuve ?
 		if ($this->topic_data['t_approve'] == IS_NOT_APPROVED)
@@ -403,7 +397,7 @@ class Fsb_frame_child extends Fsb_frame
 				'CAN_QUICK_EDIT' =>	($row['p_map'] == 'classic') ? true : false,
 				'CAN_DELETE' =>		(Fsb::$session->can_delete_post($row['u_id'], $row['p_id'], $this->topic_data)) ? true : false,
 				'IS_FIRST_POST' =>	($row['p_id'] == $this->topic_data['t_first_p_id']) ? true : false,
-				'IS_READ' =>		($row['p_id'] <= $this->topic_data['last_unread_id']) ? true : false,
+				'IS_READ' =>		(!$this->topic_data['last_unread_id'] || $row['p_id'] <= $this->topic_data['last_unread_id']) ? true : false,
 
 				'U_LAST' =>			sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;p_id=' . $row['p_id']) . '#p' . $row['p_id'],
 				'U_EDIT' =>			sid(ROOT . 'index.' . PHPEXT . '?p=post&amp;mode=edit&amp;id=' . $row['p_id']),
@@ -671,13 +665,12 @@ class Fsb_frame_child extends Fsb_frame
 		// Marquer le sujet lu
 		if (Fsb::$session->is_logged() && $this->topic_data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
 		{
-			if (!$this->topic_data['tr_last_time'] || $this->topic_data['tr_last_time'] < $this->topic_data['t_last_p_time'])
+			if (!$this->topic_data['last_unread_id'] || $this->topic_data['last_unread_id'] < $this->topic_data['t_last_p_id'])
 			{
 				Fsb::$db->insert('topics_read', array(
 					'u_id' =>			array(Fsb::$session->id(), true),
 					't_id' =>			array($this->topic_data['t_id'], true),
 					'p_id' =>			$this->topic_data['t_last_p_id'],
-					'tr_last_time' =>	$this->topic_data['t_last_p_time'],
 				), 'REPLACE');
 			}
 

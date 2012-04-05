@@ -320,7 +320,7 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		// Informations sur le sujet
-		$sql = 'SELECT t.*, tr.tr_last_time, tr.p_id AS last_unread_id' . $sql_select . '
+		$sql = 'SELECT t.*, tr.p_id AS last_unread_id' . $sql_select . '
 				FROM ' . SQL_PREFIX . 'topics t
 				LEFT JOIN ' . SQL_PREFIX . 'topics_read tr
 					ON t.t_id = tr.t_id
@@ -411,13 +411,12 @@ class Fsb_frame_child extends Fsb_frame
 		// Marquer le sujet lu
 		if (Fsb::$session->is_logged() && $data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
 		{
-			if (!$data['tr_last_time'] || $data['tr_last_time'] < $data['t_last_p_time'])
+			if (!$data['last_unread_id'] || $data['last_unread_id'] < $data['t_last_p_id'])
 			{
 				Fsb::$db->insert('topics_read', array(
 					'u_id' =>			array(Fsb::$session->id(), true),
 					't_id' =>			array($data['t_id'], true),
 					'p_id' =>			$data['t_last_p_id'],
-					'tr_last_time' =>	$data['t_last_p_time'],
 				), 'REPLACE');
 			}
 			
