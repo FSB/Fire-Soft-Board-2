@@ -1,0 +1,137 @@
+img
+{
+	border: none;
+}
+
+body
+{
+	background-color: #f5f8fc;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+/* Cadre entourant la page entiere */
+.main
+{
+	border: 1px solid #77aadd;
+	padding: 10px;
+	background-color: #ffffff;
+}
+
+td.forum
+{
+	background-color: #f6f9fd;
+	border: 1px solid #77aadd;
+	padding: 5px;
+}
+legend
+{
+	margin-left: 10px;
+	font-weight: bold;
+	color: #DB5D1F;
+	font-size: 1.2em;
+	position: relative;
+	vertical-align: bottom;
+	text-transform: uppercase;
+}
+
+fieldset
+{
+	padding: 8px;
+	border: 3px double #77aadd;
+	background-color: #f6f9fd;
+	position: relative;
+	margin: 10px 0px 0px 0px;
+}
+
+* html fieldset
+{ 
+	padding: 0 10px 5px 10px; 
+}
+
+* html legend
+{ 
+	margin-bottom: -10px; 
+	margin-left: -7px;
+	top: -1.2em;
+}
+
+fieldset dl
+{
+	margin-bottom: 10px;
+	font-size: 11px;
+}
+
+fieldset dt
+{
+	width: 45%;
+	float: left;
+	border-right: 1px dotted #77aadd;
+}
+
+fieldset dt#strong
+{
+	font-weight: bold;
+}
+
+fieldset dt label
+{
+	font-weight: bold;
+}
+
+fieldset dd label
+{
+	font-weight: bold;
+}
+
+fieldset dd
+{
+	margin-left: 45%;
+	padding-left: 5px;
+	border-left: 1px dotted #77aadd;
+}
+
+
+fieldset input.good {
+	
+	background-color : white;
+	color : green;
+	border :none;
+}
+
+fieldset input.bad {
+	
+	background-color : white;
+	border :none;
+}
+
+
+/* Fix pour l'affichage des blocks, voir l'explication sur cette page : From http://www.positioniseverything.net/easyclearing.html */
+fieldset dl:after
+{
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+
+fieldset dl
+{
+	height: 1%;
+}
+
+fieldset dl.title
+{
+	text-align: center;
+	font-weight: bold;
+	background-color: #E0E4EA;
+	padding: 3px;
+	border: 1px dotted #77aadd
+}
+
+fieldset dl.desc
+{
+	text-align: center;
+	font-size: 10px;
+}
