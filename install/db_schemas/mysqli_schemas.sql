@@ -149,6 +149,7 @@ CREATE TABLE fsb2_groups (
   g_open tinyint(4) NOT NULL default '0',
   g_online tinyint(4) NOT NULL default '1',
   g_rank mediumint(9) NOT NULL default '0',
+  g_order mediumint(9) NOT NULL default '0',
   PRIMARY KEY  (g_id),
   KEY g_type (g_type)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -213,6 +214,7 @@ CREATE TABLE fsb2_menu_admin (
   cat_order smallint(5) NOT NULL default '0',
   page_order smallint(5) NOT NULL default '0',
   page_icon varchar(255),
+  module_name varchar(255) NULL,
   KEY cat_page_order (cat_order, page_order)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -585,6 +587,7 @@ CREATE TABLE fsb2_users (
   u_utc_dst tinyint(4) NOT NULL,
   u_approve tinyint(4) NOT NULL default '0',
   u_flood_post int(11) NOT NULL default '0',
+  u_notepad text NOT NULL,
   PRIMARY KEY  (u_id),
   KEY u_nickname (u_nickname),
   KEY u_birthday (u_birthday)

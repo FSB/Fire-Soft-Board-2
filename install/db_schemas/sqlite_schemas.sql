@@ -128,7 +128,8 @@ CREATE TABLE fsb2_groups (
   g_color varchar(255) default '',
   g_open tinyint(4) default '0',
   g_online tinyint(4) default '1',
-  g_rank mediumint(9) default '0'
+  g_rank mediumint(9) default '0',
+  g_order mediumint(9) default '0'
 );
 CREATE INDEX fsb2_groups_g_type_index ON fsb2_groups (g_type);
 CREATE TABLE fsb2_groups_auth (
@@ -183,7 +184,8 @@ CREATE TABLE fsb2_menu_admin (
   cat varchar(255) default '',
   cat_order smallint(5) default '0',
   page_order smallint(5) default '0',
-  page_icon varchar(255)
+  page_icon varchar(255),
+  module_name varchar(255)
 );
 CREATE INDEX fsb2_menu_admin_cat_order_index ON fsb2_menu_admin (cat_order);
 CREATE INDEX fsb2_menu_admin_page_order_index ON fsb2_menu_admin (page_order);
@@ -497,7 +499,8 @@ CREATE TABLE fsb2_users (
   u_utc tinyint(4) default '0',
   u_utc_dst tinyint(4),
   u_approve tinyint(4) default '0',
-  u_flood_post int(11) default '0'
+  u_flood_post int(11) default '0',
+  u_notepad text
 );
 CREATE INDEX fsb2_users_u_nickname_index ON fsb2_users (u_nickname);
 CREATE INDEX fsb2_users_u_birthday_index ON fsb2_users (u_birthday);

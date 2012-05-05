@@ -121,6 +121,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('post_min_length', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_next_events', '5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('calendar_date_events', '10');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('use_fsockopen', '1');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('hide_empty_groups', '0');
 
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'forum_description', 'put_textarea', 'array(''rows'' => 3, ''cols'' => 40)', '');
@@ -142,6 +143,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_date_events', 'put_text', 'array(''size'' => ''5'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_birthday_activate', 'put_boolean', 'array(''yes'' => ''1'',''no'' => ''0'')', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_birthday_required_posts', 'put_text', 'array(''size'' => 5)', 'unsigned int');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general',  'groups',  'hide_empty_groups',  'put_boolean',  'array(''yes'' => ''1'',''no'' => ''0'')',  'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_name', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_path', 'put_text', 'array(''size'' => 35)', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('system', 'cookie', 'cookie_dommain', 'put_text', 'array(''size'' => 35)', '');
@@ -210,12 +212,12 @@ INSERT INTO fsb2_fsbcode (fsbcode_id, fsbcode_tag, fsbcode_search, fsbcode_repla
 INSERT INTO fsb2_fsbcode (fsbcode_id, fsbcode_tag, fsbcode_search, fsbcode_replace, fsbcode_fct, fsbcode_priority, fsbcode_wysiwyg, fsbcode_activated, fsbcode_activated_sig, fsbcode_menu, fsbcode_inline, fsbcode_img, fsbcode_description, fsbcode_list, fsbcode_order) VALUES (15, 'mail', '', '', 'generate_mail', 0, 1, 1, 1, 1, 1, 'mail.gif', '', '', 7);
 INSERT INTO fsb2_fsbcode (fsbcode_id, fsbcode_tag, fsbcode_search, fsbcode_replace, fsbcode_fct, fsbcode_priority, fsbcode_wysiwyg, fsbcode_activated, fsbcode_activated_sig, fsbcode_menu, fsbcode_inline, fsbcode_img, fsbcode_description, fsbcode_list, fsbcode_order) VALUES (16, 'img', '', '', 'generate_img', 0, 1, 1, 1, 1, 1, 'img.gif', '', '', 5);
 
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (1, 'visitor', '', 1, 0, 'class="visitor"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (2, 'user', '', 1, 0, 'class="user"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (3, 'modo', '', 1, 0, 'class="modo"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (4, 'modosup', '', 1, 0, 'class="modosup"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (5, 'admin', '', 1, 0, 'class="admin"', 0, 0);
-INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank) VALUES (6, 'founder', '', 3, 0, '', 0, 0);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (1, 'visitor', '', 1, 0, 'class="visitor"', 0, 0, 6);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (2, 'user', '', 1, 0, 'class="user"', 0, 0, 5);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (3, 'modo', '', 1, 0, 'class="modo"', 0, 0, 4);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (4, 'modosup', '', 1, 0, 'class="modosup"', 0, 0, 3);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (5, 'admin', '', 1, 0, 'class="admin"', 0, 0, 2);
+INSERT INTO fsb2_groups (g_id, g_name, g_desc, g_type, g_hidden, g_color, g_open, g_rank, g_order) VALUES (6, 'founder', '', 3, 0, '', 0, 0, 1);
 
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO fsb2_groups_auth (g_id, f_id, ga_view, ga_view_topics, ga_read, ga_create_post, ga_answer_post, ga_create_announce, ga_answer_announce, ga_edit, ga_delete, ga_moderator, ga_create_global_announce, ga_answer_global_announce) VALUES (2, 2, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0);
@@ -229,27 +231,27 @@ INSERT INTO fsb2_groups_users (g_id, u_id, gu_status) VALUES (2, 2, 2);
 INSERT INTO fsb2_groups_users (g_id, u_id, gu_status) VALUES (5, 2, 2);
 INSERT INTO fsb2_groups_users (g_id, u_id, gu_status) VALUES (6, 2, 1);
 
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('manage_auths', 4, 'manage', 1, 1, 'config.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('manage_forums', 4, 'manage', 1, 2, 'frontpage.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('manage_groups', 4, 'manage', 1, 3, 'module.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('manage_users', 4, 'manage', 1, 4, 'user.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('general_lang', 4, 'general', 2, 1, 'language.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('general_portail', 3, 'general', 2, 2, 'article.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('general_config', 4, 'general', 2, 3, 'config.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('general_tpl', 4, 'general', 2, 4, 'themes.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('general_email', 4, 'general', 2, 5, 'massmail.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('tools_logs', 4, 'tools', 3, 1, 'archive.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('tools_sql', 4, 'tools', 3, 2, 'info.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('tools_webftp', 4, 'tools', 3, 3, 'category.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('tools_optimize', 4, 'tools', 3, 4, 'checkin.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('tools_stats', 3, 'tools', 3, 4, 'stats.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('posts_censor', 3, 'posts', 4, 1, 'messages.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('posts_smiley', 3, 'posts', 4, 2, 'clown.gif');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('posts_fsbcode', 4, 'posts', 4, 3, 'menu.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('users_ban', 3, 'users', 5, 1, 'trash.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('users_profile_fields', 4, 'users', 5, 2, 'man.gif');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('users_rank', 4, 'users', 5, 3, 'default.png');
-INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon) VALUES ('mods_manager', 4, 'mods', 6, 1, 'plugin.png');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('manage_auths', 4, 'manage', 1, 1, 'config.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('manage_forums', 4, 'manage', 1, 2, 'frontpage.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('manage_groups', 4, 'manage', 1, 3, 'module.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('manage_users', 4, 'manage', 1, 4, 'user.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('general_lang', 4, 'general', 2, 1, 'language.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('general_portail', 3, 'general', 2, 2, 'article.png', 'portail');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('general_config', 4, 'general', 2, 3, 'config.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('general_tpl', 4, 'general', 2, 4, 'themes.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('general_email', 4, 'general', 2, 5, 'massmail.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('tools_logs', 4, 'tools', 3, 1, 'archive.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('tools_sql', 4, 'tools', 3, 2, 'info.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('tools_webftp', 4, 'tools', 3, 3, 'category.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('tools_optimize', 4, 'tools', 3, 4, 'checkin.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('tools_stats', 3, 'tools', 3, 4, 'stats.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_censor', 3, 'posts', 4, 1, 'messages.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_smiley', 3, 'posts', 4, 2, 'clown.gif', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('posts_fsbcode', 4, 'posts', 4, 3, 'menu.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_ban', 3, 'users', 5, 1, 'trash.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_profile_fields', 4, 'users', 5, 2, 'man.gif', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('users_rank', 4, 'users', 5, 3, 'default.png', '');
+INSERT INTO fsb2_menu_admin (page, auth, cat, cat_order, page_order, page_icon, module_name) VALUES ('mods_manager', 4, 'mods', 6, 1, 'plugin.png', '');
 
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('mp', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('mp_blacklist', '', 1, '', '', 0);
@@ -288,6 +290,7 @@ INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_des
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('root_support', '', 0, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('contact_form', '', 1, '', '', 0);
 INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('rsa', '', 0, '', '', 0);
+INSERT INTO fsb2_mods (mod_name, mod_real_name, mod_status, mod_version, mod_description, mod_type) VALUES ('notepad', '', 1, '', '', 0);
 
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('news', 'id_forum_news', '2', 'put_html_code', 'Html::list_forums(get_forums(), $this->cfg[''id_forum_news''], ''id_forum_news'', false)', 'unsigned int');
 INSERT INTO fsb2_portail_config (portail_module, portail_name, portail_value, portail_functions, portail_args, portail_type) VALUES ('last_posts', 'nb_messages', '5', 'put_text', 'array(''size'' => 5)', 'unsigned int');

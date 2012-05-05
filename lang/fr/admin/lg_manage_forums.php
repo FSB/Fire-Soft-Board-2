@@ -103,6 +103,11 @@ return (array (
   'adm_forum_target' => 'Forum de destination',
   'adm_forum_confirm_operation_move' => 'Etes-vous sûr de vouloir déplacer tous les sujets de ce forum ?',
   'adm_forum_operation_move_well' => 'Les sujets du forum ont bien été déplacés',
+  'adm_forum_operation_delete' => 'Supprimer les sujets du forum',
+  'adm_forum_operation_delete_explain' => 'Cette action supprimera tous les sujets du forum courant.',
+  'adm_forum_confirm_operation_delete' => 'Etes-vous sûr de vouloir supprimer tous les sujets de ce forum ?',
+  'adm_forum_operation_delete_well' => 'Les sujets du forum ont bien été supprimés',
+  'adm_forum_operation_delete_no_topics' => 'Le forum ne contient aucun sujet',
 ));
 
 

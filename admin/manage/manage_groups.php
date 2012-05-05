@@ -75,6 +75,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 						'add' =>		'page_add_edit_groups',
 						'edit' =>		'page_add_edit_groups',
 						'delete' =>		'page_delete_groups',
+						'up' =>			'move',
+						'down' =>		'move',
 						'default' =>	'page_default_groups',
 					),
 				),
@@ -97,25 +99,24 @@ class Fsb_frame_child extends Fsb_admin_frame
 			'U_ADD' =>	sid('index.' . PHPEXT . '?p=manage_groups&amp;module=list&amp;mode=add'),
 		));
 
-		$sql = 'SELECT g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color, COUNT(gu.g_id) AS g_count
+		$sql = 'SELECT g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color, COUNT(gu.g_id) AS g_count, g_online
 				FROM ' . SQL_PREFIX . 'groups g
 				LEFT JOIN ' . SQL_PREFIX . 'groups_users gu
 					ON g.g_id = gu.g_id
 				WHERE g.g_type <> ' . GROUP_SINGLE . '
 				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color
-				ORDER BY g.g_type, g.g_name';
+				ORDER BY g.g_online DESC, g.g_order, g.g_name';
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
 		{
 			$separator = false;
-			if (!isset($have_separator) && $row['g_type'] != GROUP_SPECIAL)
+			if (!$separator && $row['g_online'] == 0)
 			{
 				$separator = true;
-				$have_separator = true;
 			}
 
 			Fsb::$tpl->set_blocks('group', array(
-				'NAME' =>			($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
+				'NAME' =>			(Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
 				'DESC' =>			($row['g_type'] == GROUP_SPECIAL) ? Fsb::$session->lang('adm_group_is_special') : $row['g_desc'],
 				'COUNT' =>			sprintf(String::plural('adm_group_count', $row['g_count']), $row['g_count']),
 				'URL' =>            sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $row['g_id']),
@@ -124,6 +125,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 				'U_EDIT' =>			sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=edit&amp;id=' . $row['g_id']),
 				'U_DELETE' =>		($row['g_type'] != GROUP_SPECIAL) ? sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=delete&amp;id=' . $row['g_id']) : null,
+				'U_UP_GROUP' =>		sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=up&amp;id=' . $row['g_id']),
+				'U_DOWN_GROUP' =>	sid('index.' . PHPEXT . '?p=manage_groups&amp;mode=down&amp;id=' . $row['g_id']),
 			));
 		}
 		Fsb::$db->free($result);
@@ -241,6 +244,9 @@ class Fsb_frame_child extends Fsb_admin_frame
 		$this->data['g_modo'] =			trim(Http::request('g_modo', 'post'));
 		$this->data['g_color'] =		Html::set_style(Http::request('g_style_type', 'post'), trim(Http::request('g_style', 'post')), 'class="user"');
 
+        $sql = 'SELECT MAX(g_order) AS max_order FROM ' . SQL_PREFIX . 'groups';
+		$this->data['g_order'] = Fsb::$db->get($sql, 'max_order') + 1;
+        
 		if (empty($this->data['g_name']))
 		{
 			$this->errstr[] = Fsb::$session->lang('fields_empty');
@@ -418,6 +424,45 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=manage_groups&amp;module=users'),
 		));
+	}
+
+	public function move()
+	{
+		$sql = 'SELECT g_id, g_order
+			FROM ' . SQL_PREFIX . 'groups
+			WHERE g_id = ' . $this->id;
+		$group = Fsb::$db->request($sql);
+
+		if ($group)
+		{
+			$offset = 1;
+			if ($this->mode === 'up')
+			{
+				$offset = -1;
+			}
+
+			$sql = 'SELECT g_id, g_order
+				FROM ' . SQL_PREFIX . 'groups
+				WHERE g_order = ' . (intval($group['g_order']) + $offset);
+			$result = Fsb::$db->query($sql);
+			$swap = Fsb::$db->row($result);
+			Fsb::$db->free($result);
+
+			if ($swap)
+			{
+				Fsb::$db->update('groups', array(
+					'g_order' => $swap['g_order'],
+				), 'WHERE g_id = ' . $group['g_id']);
+
+				Fsb::$db->update('groups', array(
+					'g_order' => $group['g_order'],
+				), 'WHERE g_id = ' . $swap['g_id']);
+
+				Fsb::$db->destroy_cache('groups_');
+			}
+		}
+
+		Http::redirect('index.' . PHPEXT . '?p=manage_groups');
 	}
 }
 

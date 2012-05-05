@@ -132,19 +132,6 @@ if (!defined('FSB_INSTALL'))
 	Http::header('Location', ROOT . 'install/index.' . PHPEXT);
 	exit;
 }
-// Interdiction de garder le fichier d\'installation sur le serveur
-else if (file_exists(ROOT . 'install/install.' . PHPEXT))
-{
-	if (file_exists(ROOT . 'fsb2.' . PHPEXT))
-	{
-		@unlink(ROOT . 'fsb2.' . PHPEXT);
-	}
-
-	if (!@unlink(ROOT . 'install/install.' . PHPEXT))
-	{
-		trigger_error('Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de securite.<hr />You must rename (or delete) ~/install/install.php for safety reasons.', FSB_ERROR);
-	}
-}
 
 // Netoyage des variables GET, POST et COOKIE
 Http::clean_gpc();

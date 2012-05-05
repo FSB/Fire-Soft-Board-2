@@ -21,13 +21,13 @@ function hide_menu(id)
 {
 	adm_menu_pos[id] ^= true;
 	
-	if ($defined(adm_menu_fx[id]))
+	if (adm_menu_fx[id] !== undefined && adm_menu_fx[id] !== null)
 	{
-		adm_menu_fx[id].stop();
+		adm_menu_fx[id].cancel();
 	}
 	else
 	{
-		adm_menu_fx[id] = new Fx.Styles(id,
+		adm_menu_fx[id] = new Fx.Morph(id,
 		{
 			duration: 500,
 			transition: Fx.Transitions.linear
@@ -37,7 +37,7 @@ function hide_menu(id)
 	// On sauve la position du menu dans un cookie
 	if (adm_menu_pos[id])
 	{
-		if (!$defined(adm_menu_height[id]))
+		if (adm_menu_height[id] === null || adm_menu_height[id] === undefined)
 		{
 			adm_menu_height[id] = $(id).getCoordinates().height;
 		}
@@ -47,7 +47,7 @@ function hide_menu(id)
 			opacity: [$(id).getStyle('opacity'), 0]
 		});
 
-		Cookie.set(id, "C", {duration: 31});
+		Cookie.write(id, "C", {duration: 31});
 	}
 	else
 	{
@@ -57,7 +57,7 @@ function hide_menu(id)
 			opacity: [$(id).getStyle('opacity'), 1]
 		});
 
-		Cookie.set(id, "O", true);
+		Cookie.write(id, "O", true);
 	}
 }
 
@@ -70,12 +70,12 @@ function init_admin()
 	{
 		for (var i = 0; i < len; i++)
 		{
-			if (Cookie.get(block_menu[i]) == "C")
+			if (Cookie.read(block_menu[i]) == "C")
 			{
 				adm_menu_height['menu_' + i] = $(block_menu[i]).getCoordinates().height;
 				$(block_menu[i]).setStyle('display', 'none');
 				$(block_menu[i]).setStyle('height', '0px');
-				$(block_menu[i]).setOpacity('0');
+				$(block_menu[i]).setStyle('opacity', '0');
 				adm_menu_pos['menu_' + i] = true;
 			}
 		}

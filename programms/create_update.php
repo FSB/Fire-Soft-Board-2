@@ -1,20 +1,18 @@
 <?php
-/*
-** +---------------------------------------------------+
-** | Name :		~/programms/create_update.php
-** | Begin :	05/03/2007
-** | Last :		11/10/2007
-** | User :		Genova
-** | Project :	Fire-Soft-Board 2 - Copyright FSB group
-** | License :	GPL v2.0
-** +---------------------------------------------------+
-*/
+/**
+ * Fire-Soft-Board version 2
+ * 
+ * @package FSB2
+ * @author Genova <genova@fire-soft-board.com>
+ * @version $Id$
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU GPL 2
+ */
 
-die('Pour pouvoir utiliser ce fichier veuillez decommenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites');
+die('Pour pouvoir utiliser ce fichier veuillez commenter cette ligne. <b>Ce fichier est une faille potentielle de sécurité</b>, ne l\'utilisez qu\'en local, ou si vous êtes certain de ce que vous faites.');
 
 /*
-** Ce fichier permet de créer un fichier MOD à partir d'un diff
-*/
+ ** Ce fichier permet de creer un fichier MOD a partir d'un diff
+ */
 
 // Han han ça va mettre trois plombes c'est normal ;)
 set_time_limit(0);
@@ -30,7 +28,7 @@ define('PHPEXT', 'php');
 // Activer ou non le debugage, utile pour le developpement
 define('DEBUG', TRUE);
 
-define('IN_CLI', (!empty($argc)));
+define('IN_CLI', !empty($argc));
 
 // Protection de la page
 if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
@@ -39,8 +37,8 @@ if (strpos($_SERVER['PHP_SELF'], 'start.') !== FALSE)
 }
 
 /*
-** Méthode magique permettant le chargement dynamique de classes
-*/
+ ** Methode magique permettant le chargement dynamique de classes
+ */
 function __autoload($classname)
 {
 	$classname = strtolower($classname);
@@ -48,8 +46,8 @@ function __autoload($classname)
 }
 
 /*
-** Permet d'accéder partout aux variables globales necessaires au fonctionement du forum
-*/
+ ** Permet d'acceder partout aux variables globales necessaires au fonctionement du forum
+ */
 class Fsb extends Fsb_model
 {
 	public static $cfg;
@@ -62,10 +60,10 @@ class Fsb extends Fsb_model
 }
 
 /*
-** Inclus un fichier dans le dossier main/ de façon intéligente
-** -----
-** $file ::		Nom du fichier
-*/
+ ** Inclus un fichier dans le dossier main/ de façon intelligente
+ ** -----
+ ** $file ::		Nom du fichier
+ */
 function fsb_import($filename)
 {
 	static $store;
@@ -96,34 +94,24 @@ function fsb_import($filename)
 // Instance de la classe Debug
 Fsb::$debug = new Debug();
 
-// Inclusion des fonctions / classes communes à toutes les pages
+// Inclusion des fonctions / classes communes a toutes les pages
 @include_once(ROOT . 'config/config.' . PHPEXT);
+
 fsb_import('csts');
 fsb_import('globals');
 fsb_import('fcts_common');
 
-
-// Ajoute le tableau $add à la suite du tableau $base
-function _array_add($base, $add)
-{
-	foreach ($add AS $item)
-	{
-		$base[] = $item;
-	}
-	return ($base);
-}
-
-// Récupère une liste des fichiers ajoutés / supprimés / modifiés
+// Recupere une liste des fichiers ajoutes / supprimes / modifies
 function analyse_directories($from, $to, $del)
 {
 	$list = array();
-
-	$forbidden = array('cache/sql/', 'cache/xml/', 'cache/sql_backup/', 'cache/diff/', 'tpl/WhiteSummer/cache/', 'admin/adm_tpl/cache/', 'upload/', 'main/lib/highlight/', 'programms/', 'doc/', 'config/', 'install/', 'main/Artichow/', 'tpl/WhiteSummer/img/', 'admin/adm_tpl/img/', 'img/');
+	// main/lib/highlight/ => main/class/highlight/ ?
+	$forbidden = array('cache/sql/', 'cache/xml/', 'cache/sql_backup/', 'cache/diff/', 'tpl/WhiteSummer/cache/', 'admin/adm_tpl/cache/', 'upload/', 'main/lib/highlight/', 'programms/', 'doc/', 'config/', 'install/', 'tpl/WhiteSummer/img/', 'admin/adm_tpl/img/', 'img/');
 	foreach ($forbidden AS $f)
 	{
 		if (preg_match('#' . $f . '$#', $from) || preg_match('#' . $f . '$#', $to))
 		{
-			return ($list);
+			return (array());
 		}
 	}
 
@@ -139,7 +127,7 @@ function analyse_directories($from, $to, $del)
 
 			if (is_dir($from . $file))
 			{
-				$list = _array_add($list, analyse_directories($from . $file . '/', $to . $file . '/', $del));
+				array_push($list, analyse_directories($from . $file . '/', $to . $file . '/', $del));
 			}
 			else if (file_exists($to . $file))
 			{
@@ -178,7 +166,7 @@ function analyse_directories($from, $to, $del)
 			}
 			else if (!file_exists($from . $file))
 			{
-				$list = _array_add($list, analyse_directories($from . $file . '/', $to . $file . '/', $del));
+				array_push($list, analyse_directories($from . $file . '/', $to . $file . '/', $del));
 			}
 		}
 		closedir($fd);
@@ -212,8 +200,8 @@ function check_updated_files($update, $from, $to)
 	$code = '';
 	foreach ($update AS $k => $file)
 	{
-		$diff = new Diff;
-		$diff->load_file($from . $file, $to . $file, TRUE);
+		$diff = new Diff();
+		$diff->load_file($from . $file, $to . $file, true);
 
 		$exists = false;
 		foreach ($diff->entries AS $data)
@@ -591,4 +579,4 @@ else
 LIH;
 }
 
-# EOF
+/* EOF */

@@ -147,6 +147,7 @@ g_id INT DEFAULT nextval('fsb2_groups_seq'),
   g_open INT2 default '0',
   g_online INT2 default '1',
   g_rank INT4 default '0',
+  g_order INT4 default '0',
   PRIMARY KEY (g_id)
 );
 CREATE INDEX fsb2_groups_g_type_index ON fsb2_groups (g_type);
@@ -207,7 +208,8 @@ CREATE TABLE fsb2_menu_admin (
   cat varchar(255) NOT NULL default '',
   cat_order INT4 NOT NULL default '0',
   page_order INT4 NOT NULL default '0',
-  page_icon varchar(255)
+  page_icon varchar(255),
+  module_name varchar(255) NULL
 );
 CREATE INDEX fsb2_menu_admin_cat_page_order_index ON fsb2_menu_admin (cat_order, page_order);
 DROP TABLE IF EXISTS fsb2_mods;
@@ -570,6 +572,7 @@ u_id INT DEFAULT nextval('fsb2_users_seq'),
   u_utc_dst INT2,
   u_approve INT2 default '0',
   u_flood_post INT4 default '0',
+  u_notepad text,
   PRIMARY KEY (u_id)
 );
 CREATE INDEX fsb2_users_u_nickname_index ON fsb2_users (u_nickname);

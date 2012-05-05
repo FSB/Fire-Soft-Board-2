@@ -230,6 +230,20 @@ class Session extends Fsb_model
 			}
 		}
 
+		// Interdiction de garder le fichier d\'installation sur le serveur
+		if (file_exists(ROOT . 'install/install.' . PHPEXT))
+		{
+			if (file_exists(ROOT . 'fsb2.' . PHPEXT))
+			{
+				@unlink(ROOT . 'fsb2.' . PHPEXT);
+			}
+
+			if (!@unlink(ROOT . 'install/install.' . PHPEXT))
+			{
+				Display::message('remove_install_file');
+			}
+		}
+
 		// A partir de maintenant on peut logguer les erreurs SQL
 		define('CAN_LOG_SQL_ERROR', true);
 
@@ -532,18 +546,33 @@ class Session extends Fsb_model
 		{
 			return (Fsb::$session->lang('login_not_activated'));
 		}
+
+		// Membre banni ?
+		if ($reason = $this->is_ban($data['u_id'], $data['u_nickname'], $this->ip, $data['u_email']))
+		{
+			$return = '';
+			if ($reason['reason'])
+			{
+				$return = sprintf(Fsb::$session->lang('you_are_ban_reason'), $reason['reason']);
+			}
+			else
+			{
+				$return = Fsb::$session->lang('you_are_ban');
+			}
+
+			if ($reason['time'])
+			{
+				return $return . sprintf(Fsb::$session->lang('you_are_ban_time'), Fsb::$session->print_date($reason['time']));
+			}
+
+			return $return . Fsb::$session->lang('you_are_ban_no_time');
+		}
 		$this->data = $data;
 
 		// Connexion automatique ?
 		if ($use_auto_connexion)
 		{
 			Http::cookie('auto', $pwd_data['u_autologin_key'], time() + ONE_YEAR);
-		}
-
-		// Membre banni ?
-		if ($reason = $this->is_ban($this->id(), $this->data['u_nickname'], $this->ip, $this->data['u_email']))
-		{
-			return (sprintf(Fsb::$session->lang('you_are_ban'), $reason['reason']));
 		}
 
 		$this->create_auths($this->data);
@@ -681,7 +710,11 @@ class Session extends Fsb_model
 			$cookie_ban = unserialize($cookie_ban);
 			if (!$cookie_ban['time'] || $cookie_ban['time'] > CURRENT_TIME)
 			{
-				return (array('type' => $cookie_ban['type'], 'reason' => $cookie_ban['reason']));
+				return (array(
+					'type' => $cookie_ban['type'],
+					'reason' => $cookie_ban['reason'],
+					'time' => $cookie_ban['time']
+				));
 			}
 			else
 			{
@@ -708,7 +741,11 @@ class Session extends Fsb_model
 							'reason' => $row['ban_reason'],
 						)), CURRENT_TIME + ONE_YEAR);
 					}
-					return (array('type' => $row['ban_type'], 'reason' => $row['ban_reason']));
+					return (array(
+						'type' => $row['ban_type'],
+						'reason' => $row['ban_reason'],
+						'time' => $row['ban_length']
+					));
 				}
 			}
 		}

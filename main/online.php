@@ -25,29 +25,36 @@ if (Fsb::$session->is_authorized('online_box'))
 {
 	if (Fsb::$mods->is_active('online_show_current') || Fsb::$mods->is_active('online_show_today'))
 	{
-		$sql = 'SELECT g_id, g_name, g_type, g_color
-				FROM ' . SQL_PREFIX . 'groups
-				WHERE g_online = 1
-					AND g_type <> ' . GROUP_SINGLE . '
-					AND g_id <> ' . GROUP_SPECIAL_VISITOR . '
-				ORDER BY g_type';
+		$is_empty = array('join' => '', 'having' => '');
+		if (Fsb::$cfg->get('hide_empty_groups'))
+		{
+			$is_empty = array(
+				'join'	=> 'LEFT JOIN ' . SQL_PREFIX . 'groups_users gu ON g.g_id = gu.g_id',
+				'having' => 'HAVING COUNT(gu.g_id) > 0',
+			);
+		}
+
+		$sql = 'SELECT g.g_id, g.g_name, g.g_color
+				FROM ' . SQL_PREFIX . 'groups g
+				' . $is_empty['join'] . '
+				WHERE g.g_online = 1
+					AND g.g_type <> ' . GROUP_SINGLE . '
+					AND g.g_id <> ' . GROUP_SPECIAL_VISITOR . '
+				GROUP BY g.g_id, g.g_name, g.g_type, g.g_desc, g.g_color
+				' . $is_empty['having'] . '
+				ORDER BY g.g_order, g.g_name';
 		$result = Fsb::$db->query($sql, 'groups_');
-		$legend = array(GROUP_SPECIAL => array(), GROUP_NORMAL => array());
+		$legend = array();
 		while ($row = Fsb::$db->row($result))
 		{
-			$legend[$row['g_type']][] = $row;
+			$legend[] = $row;
 		}
 		Fsb::$db->free($result);
-
-		// Tri des groupes de la legende
-		usort($legend[GROUP_SPECIAL], create_function('$a,$b', 'return (($a[\'g_id\'] < $b[\'g_id\']) ? 1 : -1);'));
-		usort($legend[GROUP_NORMAL], create_function('$a,$b', 'return (($a[\'g_name\'] > $b[\'g_name\']) ? 1 : -1);'));
-		$legend = array_merge($legend[GROUP_SPECIAL], $legend[GROUP_NORMAL]);
 
 		foreach ($legend AS $row)
 		{
 			Fsb::$tpl->set_blocks('online_legend', array(
-				'NAME' =>		($row['g_type'] == GROUP_SPECIAL && Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
+				'NAME' =>		(Fsb::$session->lang($row['g_name'])) ? Fsb::$session->lang($row['g_name']) : $row['g_name'],
 				'URL' =>		sid(ROOT . 'index.' . PHPEXT . '?p=userlist&amp;g_id=' . $row['g_id']),
 				'CLASS' =>		$row['g_color'],
 			));

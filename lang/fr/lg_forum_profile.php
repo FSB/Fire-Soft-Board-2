@@ -18,6 +18,7 @@ return (array (
 	'user_module_personal' => 'Infos personnelles',
 	'user_module_password' => 'Login / Email / Mot de passe',
 	'user_module_sig' => 'Signature',
+    'user_module_notepad' => 'Bloc-notes',
 	'user_module_upload' => 'Fichiers joints',
 	'user_module_viewprofile' => 'Voir mon profil',
 	'user_module_fsbcard' => 'Import / export de profil',

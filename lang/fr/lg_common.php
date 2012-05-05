@@ -77,9 +77,13 @@ return (array (
 	'none' => 'Aucun',
 	'not_allowed_to_post' => 'Suite à un avertissement, vous n\'êtes plus autorisé à poster sur ce forum.',
 	'not_allowed_to_post_until' => 'Suite à un avertissement, vous n\'êtes plus autorisé à poster sur ce forum jusque: %s',
-	'you_are_ban' => 'Vous avez été banni du forum.<br />Raison: %s',
+	'you_are_ban' => 'Vous avez été banni du forum.',
+	'you_are_ban_reason' => 'Vous avez été banni du forum.<br />Raison : %s',
+	'you_are_ban_time' => '<br />Vous pourrez revenir sur le forum à partir du : %s',
+	'you_are_ban_no_time' => '<br />Vous avez été banni de façon permanente',
 	'board_is_disabled' => 'Le forum est actuellement désactivé.',
 	'board_is_disabled2' => 'Le forum est actuellement désactivé.<br />Raison: %s',
+	'remove_install_file' => 'Vous devez supprimer (ou renommer) le fichier ~/install/install.php pour pouvoir utiliser votre forum, pour des raisons de sécurité.',
 	'rss' => 'Syndication RSS 2.0',
 	'at' => 'à',
 	'h' => 'H',
@@ -482,6 +486,7 @@ return (array (
 	'editor_wysiwyg_explain' => 'Vous voyez en direct ce que vous écrivez à l\'écran avec les formatages (gras, italique, etc.)',
 	'root_support_active' => 'Support automatique activé',
 	'profil_of' => 'Profil de %s',
+	'page_up' => 'Remonter en haut de la page',
 ));
 
 

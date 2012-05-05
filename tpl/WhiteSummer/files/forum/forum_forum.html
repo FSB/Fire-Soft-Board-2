@@ -131,7 +131,10 @@
 				<a href="{U_TOPIC_NEW}"><img src="<if content="$CAN_POST_NEW">{IMG_NEW_TOPIC}<else>{IMG_NEW_TOPIC_OFF}</if>" alt="{LG_TOPIC_NEW}" title="{LG_TOPIC_NEW}" /></a>
 			</switch>
 		</td>
-		<td align="right" style="padding: 5px;"><switch name="forum_pagination">{PAGINATION}</switch></td>
+		<td align="right" style="line-height: 22px">
+			<a href="#up"><img src="{IMG_UP}" alt="{LG_PAGE_UP}" title="{LG_PAGE_UP}" /></a>
+			<switch name="forum_pagination"><br />{PAGINATION}</switch>
+		</td>
 	</tr>
 </table>
 

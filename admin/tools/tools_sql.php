@@ -41,10 +41,15 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		$this->module =		htmlspecialchars(Http::request('module'));
 		$this->page =		intval(Http::request('page'));
-		$this->table =		Http::request('table');
+		$this->table =		Http::request('table', 'post');
 		if (!$this->page)
 		{
 			$this->page = 1;
+		}
+
+		if ($this->table && !in_array($this->table, Fsb::$db->list_tables()))
+		{
+			Display::message(sprintf(Fsb::$session->lang('adm_sql_unknown_table'), $this->table));
 		}
 
 		$call = new Call($this);

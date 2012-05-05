@@ -77,7 +77,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 
 		// Generation des listes et de la page
 		$list_ban_type = Html::make_list('ban_type', 'login', array(
-			'login' =>		Fsb::$session->lang('adm_ban_login'),
+			'login' =>		Fsb::$session->lang('adm_ban_username'),
 			'ip' =>			Fsb::$session->lang('adm_ban_ip'),
 			'mail' =>		Fsb::$session->lang('adm_ban_mail'),
 		));
