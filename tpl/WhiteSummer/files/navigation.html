@@ -1,10 +1,6 @@
 <div class="nav">
-	<div class="left"></div>
-	<div class="right"></div>
-	<strong>
-		<img src="{IMG_HOME}" alt="{LG_FORUM_INDEX}" title="{LG_FORUM_INDEX}"/> <a href="{U_INDEX}">{LG_FORUM_INDEX}</a>
-		<block name="nav_link">
-			&#187; <if content="$nav_link.URL"><a href="{nav_link.URL}" {nav_link.STYLE}>{nav_link.NAME}</a><else>{nav_link.NAME}</if>
-		</block>
-	</strong>
+<img src="{IMG_HOME}" alt="{LG_FORUM_INDEX}" title="{LG_FORUM_INDEX}"/> <a href="{U_INDEX}">{LG_FORUM_INDEX}</a>
+	<block name="nav_link">
+		&#187; <if content="$nav_link.URL"><a href="{nav_link.URL}" {nav_link.STYLE}>{nav_link.NAME}</a><else>{nav_link.NAME}</if>
+	</block>
 </div>
