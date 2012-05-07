@@ -22,7 +22,9 @@ html, body, table, tr, th, td, blockquote, div, span, img, li, form, dl, dd, dt,
 /* Remise à zéro des images */
 img
 {
-	border: none;
+    border: none;
+    max-height:100%;
+    max-width:100%;
 }
 
 h3
