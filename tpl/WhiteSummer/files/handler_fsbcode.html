@@ -14,12 +14,12 @@ if (use_wysiwyg['map_textarea_{map.NAME}'])
 //-->
 </script>
 
-<div>
-    <block name="fsbcode">	
+<div class="fsbcode">
+    <block name="fsbcode">
         <if content="$fsbcode.IMG">
-            <img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{fsbcode.IMG}" onclick="insert_text('map_textarea_{map.NAME}', '{fsbcode.FCT}', '{fsbcode.OPEN}', '', '{fsbcode.CLOSE}', '{fsbcode.CODE}', null)" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}')" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" /> 
+            <img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" src="{fsbcode.IMG}" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" />
         <else>
-            <div class="fsbcode" onclick="insert_text('map_textarea_{map.NAME}', '{fsbcode.FCT}', '{fsbcode.OPEN}', '', '{fsbcode.CLOSE}', '{fsbcode.CODE}', null)" title="{fsbcode.TEXT}" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}', true)" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}', true)">{fsbcode.CODE}</div> 
+            <span onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}">{fsbcode.CODE}</span>
         </if>
     </block>
 </div>
