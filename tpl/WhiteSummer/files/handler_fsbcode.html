@@ -14,34 +14,28 @@ if (use_wysiwyg['map_textarea_{map.NAME}'])
 //-->
 </script>
 
-<block name="fsbcode">
-	<if content="$fsbcode.ITERATOR > 0 AND $fsbcode.ITERATOR % 13 == 0"></tr></table></if>
-	<if content="$fsbcode.ITERATOR == 0 OR $fsbcode.ITERATOR % 13 == 0"><table><tr></if>
+<div class="fsbcode">
+    <block name="fsbcode">
+        <if content="$fsbcode.IMG">
+            <img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" src="{fsbcode.IMG}" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" />
+        <else>
+            <span onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}">{fsbcode.CODE}</span>
+        </if>
+    </block>
+</div>
 
-	<td>
-		<if content="$fsbcode.IMG">
-			<img id="map_textarea_{map.NAME}_id_{fsbcode.CODE}" style="cursor: pointer; margin: 3px; background-image: url({IMG_FSBCODE_BACKGROUND})" src="{fsbcode.IMG}" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}')" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}')" title="{fsbcode.TEXT}" alt="{fsbcode.TEXT}" />
-		<else>
-			<div class="fsbcode" onclick="textEditor['map_textarea_{map.NAME}'].add('{fsbcode.CODE}')" title="{fsbcode.TEXT}" onmouseover="fsbcode_background(this, true, '{ROOT}tpl/{USER_TPL}', true)" onmouseout="fsbcode_background(this, false, '{ROOT}tpl/{USER_TPL}', true)"><div>{fsbcode.CODE}</div><span></span></div>
-		</if>
-	</td>
+<script type="text/javascript">
+<!--
+load_rainbow('{map.NAME}');
+//-->
+</script>
 
-	<if content="$fsbcode.LAST_ROW"></tr></table></if>
-</block>
-
-<table>
+<div>
 	<block name="fsbcode_list">
-		<if content="$fsbcode_list.ITERATOR > 0 AND $fsbcode_list.ITERATOR % 15 == 0"></tr></if>
-		<if content="$fsbcode_list.ITERATOR == 0 OR $fsbcode_list.ITERATOR % 15 == 0"><tr></if>
-
-		<td>
-			<select title="{fsbcode_list.TEXT}" onchange="textEditor['map_textarea_{map.NAME}'].add('{fsbcode_list.CODE}=' + this.value); this.selectedIndex=0">
-				<block name="fsbcode_list.item">
-					<option value="{fsbcode_list.item.VALUE}" {fsbcode_list.item.STYLE}>{fsbcode_list.item.LANG}</option>
-				</block>
-			</select>
-		</td>
-
-		<if content="$fsbcode_list.LAST_ROW"></tr></if>
+	<select title="{fsbcode_list.TEXT}" onchange="insert_text('map_textarea_{map.NAME}', '{fsbcode_list.FCT}', '[{fsbcode_list.CODE}=' + this.value + ']', '', '[/{fsbcode_list.CODE}]', '{fsbcode_list.CODE}', this.value); this.selectedIndex=0">
+		<block name="fsbcode_list.item">
+		<option value="{fsbcode_list.item.VALUE}" {fsbcode_list.item.STYLE}>{fsbcode_list.item.LANG}</option>
+		</block>
+	</select>
 	</block>
-</table>
+</div>

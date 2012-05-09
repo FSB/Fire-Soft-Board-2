@@ -22,7 +22,9 @@ html, body, table, tr, th, td, blockquote, div, span, img, li, form, dl, dd, dt,
 /* Remise à zéro des images */
 img
 {
-	border: none;
+    border: none;
+    max-height:100%;
+    max-width:100%;
 }
 
 h3
@@ -152,6 +154,7 @@ a:hover
 #header_left
 {
 	float: left;
+    position: absolute;
 	width: 300px;
 }
 
@@ -220,34 +223,18 @@ a:hover
 /* Barre de navigation */
 .nav
 {
-	background: url(img/layout/nav_background.png);
-	height: 35px;
-	line-height: 35px;
-	vertical-align: middle;
-}
-
-/* Bordure gauche de la barre de navigation */
-.nav .left
-{
-	background-image: url(img/layout/nav_left.png);
-	height: 35px;
-	width: 15px;
-	float: left;
-}
-
-/* Bordure droite de la barre de navigation */
-.nav .right
-{
-	background-image: url(img/layout/nav_right.png);
-	height: 35px;
-	width: 15px;
-	float: right;
+    background: #CEF;
+    border: 1px solid #999;
+    border-radius:6px; -moz-border-radius:6px; -webkit-border-radius:6px;
+    font-weight:700;
+    margin: 5px 6px;
+    padding: 2px 5px;
 }
 
 /* Image de navigation */
 .nav img
 {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 /* Copyright au pied du forum */
