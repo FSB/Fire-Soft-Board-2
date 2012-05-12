@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -63,6 +63,8 @@ return (array (
   'adm_location_email' => 'Envoie un email',
   'adm_root_support_active_title' => 'Support automatique activé',
   'adm_root_support_active_explain' => 'Le support automatique de votre forum est activé, cela signifie que les membres de l\'équipe de support de FSB2 pourront se connecter en administrateur sur votre forum.<br />Si vous n\'avez pas souvenir d\'avoir activé cette option, ou si son usage est terminé, veuillez désactiver le module intitulé "Support automatique" via le <strong><a href="%s">gestionnaire des modules</a></strong>.',
+  'adm_sdk_disabled' => 'SDK désactivé',
+  'adm_sdk_disabled_explain' => 'Le SDK est actuellement désactivé. Cela peut poser des problèmes si vous l\'utilisez sur votre site. Vous pouvez le réactiver depuis l\'onglet "général" dans la configuration du forum.',
 ));
 
 

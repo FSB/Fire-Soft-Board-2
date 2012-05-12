@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -128,7 +128,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			{
 				$location = Fsb::$session->lang('adm_location_adm');
 				$url = 'admin/index.' . PHPEXT;
-				
+
 			}
 			else
 			{
@@ -322,6 +322,12 @@ class Fsb_frame_child extends Fsb_admin_frame
 					));
 				}
 			}
+		}
+
+		// On verifie si le SDK n'a pas ete desactive
+		if(intval(Fsb::$cfg->get('disable_sdk')))
+		{
+			Fsb::$tpl->set_switch('sdk_disabled');
 		}
 
 		Fsb::$tpl->set_vars(array(
