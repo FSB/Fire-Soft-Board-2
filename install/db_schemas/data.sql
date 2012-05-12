@@ -101,6 +101,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_last_version', '2.0.3');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board', 'none');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board_message', '');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_sdk', '0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('sig_max_height', '120');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('default_utc', '0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('default_utc_dst', '0');
@@ -137,6 +138,7 @@ INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cf
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'register_type', 'put_boolean', 'array(''register_type_disabled'' => ''disabled'', ''register_type_normal'' => ''normal'', ''register_type_confirm'' => ''confirm'', ''register_type_admin'' => ''admin'', ''register_type_both'' => ''both'')', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'disable_board', 'put_boolean', 'array(''disable_board_none'' => ''none'', ''disable_board_modo'' => ''modo'', ''disable_board_admin'' => ''admin'')', '');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'disable_board_message', 'put_text', 'array(''size'' => 35)', '');
+INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'disable_sdk', 'put_boolean', 'array(''yes'' => 1, ''no'' => 0)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'check_email_dns', 'put_boolean', 'array(''yes'' => 1, ''no'' => 0)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', '', 'rss_caching', 'put_text', 'array(''size'' => 5)', 'unsigned int');
 INSERT INTO fsb2_config_handler (cfg_cat, cfg_subcat, cfg_name, cfg_function, cfg_args, cfg_type) VALUES ('general', 'calendar', 'calendar_next_events', 'put_text', 'array(''size'' => ''5'')', 'unsigned int');

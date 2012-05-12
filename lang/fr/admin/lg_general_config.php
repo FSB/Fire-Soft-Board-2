@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -95,6 +95,8 @@ return (array (
 	'disable_board_modo' => 'Le forum n\'est pas désactivé pour les modérateurs / administrateurs',
 	'disable_board_admin' => 'Le forum est désactivé pour tout le monde, sauf les administrateurs',
 	'adm_config_disable_board_message' => 'Raison de la désactivation du forum',
+	'adm_config_disable_sdk' => 'Désactivation du SDK',
+	'adm_config_disable_sdk_explain' => 'En activant cette option, vous désactiverez le SDK sur votre forum ou votre site.',
 	'adm_config_sig_max_height' => 'Hauteur maximale de la signature',
 	'adm_config_sig_max_height_explain' => 'Taille exprimée en pixels (px). Permet de limiter les tailles de signatures, en cachant les parties dépassant les dimensions maximales. Cette fonction ne marchera cependant pas pour les utilisateurs d\'Internet Explorer 7 et moins',
 	'adm_config_mp_allow_multiple' => 'Autoriser les envois multiples',
