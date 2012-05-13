@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -13,7 +13,7 @@
  *
  * Ce fichier contient le SDK de FSB2, c'est a dire une librairie de methodes permettant de
  * faire communiquer votre forum FSB2 avec d'autres applications PHP (votre site web par exemple).
- * 
+ *
  * L'utilisation est faite pour etre simple : vous devez en premier lieu inclure ce fichier
  * le plus haut possible dans votre site web. C'est a dire que si vous voullez utiliser ce SDK
  * dans votre page web test.php vous devez inclure la librairie au tout debut du programme. En
@@ -121,6 +121,12 @@ if (!defined('FORUM'))
 		exit;
 	}
 
+	// Si le SDK est desactive, on affiche un message d'erreur
+	if(intval(Fsb::$cfg->get('disable_sdk')))
+	{
+		trigger_error('SDK can\'t be initialized, check your forum configuration.', FSB_ERROR);
+	}
+
 	// Session
 	Fsb::$session->start('');
 }
@@ -148,7 +154,7 @@ class Fsb_sdk extends Fsb_model
 	 * @var Rsa
 	 */
 	private $rsa;
-	
+
 	/**
 	 * Variables a crypter en RSA
 	 *
@@ -445,7 +451,7 @@ class Fsb_sdk extends Fsb_model
 
 	/**
 	 * Recuperation d'une liste de messages.
-	 * 
+	 *
 	 *
 	 * @param string|array $forums Forums dans lesquels on va chercher les sujets. On peut lui donner un tableau d'ID de forums ou bien lui passer le joker * pour chercher dans tous les forums (en prenant compte des droits bien sur)
 	 * @param int $total Total de messages a afficher. Un nombre <= 0 ou le joker * aura pour effet d'afficher tous les messages
@@ -689,7 +695,7 @@ class Fsb_sdk extends Fsb_model
 				WHERE s.s_time > ' . intval(CURRENT_TIME - ONLINE_LENGTH) . '
 				ORDER BY u.u_auth DESC, u.u_nickname, s.s_id';
 		$result = Fsb::$db->query($sql);
-		
+
 		$total_visitor = 0;
 		$total_user = 0;
 		$total_hidden = 0;
@@ -733,7 +739,7 @@ class Fsb_sdk extends Fsb_model
 					continue;
 				}
 				$id_array[] = $row['s_id'];
-				
+
 				if ($row['u_activate_hidden'])
 				{
 					$total_hidden++;
@@ -833,7 +839,7 @@ class Fsb_sdk extends Fsb_model
 		{
 			$current_day = '0' . $current_day;
 		}
-		
+
 		$current_month = strval(date('m', CURRENT_TIME));
 		if (strlen($current_month) == 1)
 		{
@@ -846,7 +852,7 @@ class Fsb_sdk extends Fsb_model
 			Fsb::$cfg->update('cache_birthday', $current_day);
 			Fsb::$db->destroy_cache('users_birthday_');
 		}
-		
+
 		// Liste des anniversaires des membres
 		$sql = 'SELECT u_id, u_nickname, u_birthday, u_color
 				FROM ' . SQL_PREFIX . 'users
@@ -895,7 +901,7 @@ class Fsb_sdk extends Fsb_model
 			$end_timestamp =	intval(mktime(23, 59, 59, date('m', CURRENT_TIME + $calendar_days * ONE_DAY), date('d', CURRENT_TIME + $calendar_days * ONE_DAY), date('Y', CURRENT_TIME + $calendar_days * ONE_DAY)));
 			$sql = 'SELECT c_begin, c_end, c_title, c_approve, u_id, c_view, c_content
 					FROM ' . SQL_PREFIX . 'calendar
-					WHERE c_end >= ' . $begin_timestamp . ' 
+					WHERE c_end >= ' . $begin_timestamp . '
 						AND c_begin <= ' . $end_timestamp . '
 						AND (c_view = -1 OR c_view > 0)
 						AND c_approve = 1
