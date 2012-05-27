@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -26,7 +26,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		'ranks' =>		array('path' => 'images/ranks/', 'chmod' => 0777),
 		'smilies' =>	array('path' => 'images/smileys/', 'chmod' => 0777),
 		'save' =>		array('path' => 'mods/save/', 'chmod' => 0777),
-		'upload' =>		array('path' => 'upload/', 'chmod' => 0777),	
+		'upload' =>		array('path' => 'upload/', 'chmod' => 0777),
 	);
 
 	/**
@@ -160,7 +160,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// On vide les tables au debut de la procedure
 			if ($current_post == 0)
 			{
-				Fsb::$db->query_truncate('cache_search');
+				Fsb::$db->query_truncate('cache');
 				Fsb::$db->query_truncate('search_match');
 				Fsb::$db->query_truncate('search_word');
 			}
