@@ -1327,7 +1327,7 @@ class Fsb_frame_child extends Fsb_frame
 				// On met a jour le message
 				$args = array('t_title' => $this->title);
 
-                if ($this->data['p_id'] == $this->data['t_first_p_id'])
+				if ($this->data['p_id'] == $this->data['t_first_p_id'])
 				{
 					$args = array_merge($args, array(
 						'update_topic' =>	true,
@@ -1341,11 +1341,11 @@ class Fsb_frame_child extends Fsb_frame
 				{
 					$args = array_merge($args, array(
 						'is_last' => true,
-                        't_id' => (int) $this->data['t_id']
+						't_id' => (int) $this->data['t_id']
 					));
 				}
 
-                Send::edit_post($this->id, $this->content, Fsb::$session->id(), $args);
+				Send::edit_post($this->id, $this->content, Fsb::$session->id(), $args);
 
 				// Edition du sondage
 				if ($this->data['t_poll'] && !$this->data['poll_total_vote'])
