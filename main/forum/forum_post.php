@@ -371,7 +371,7 @@ class Fsb_frame_child extends Fsb_frame
 			break;
 
 			case 'edit' :
-				$sql = 'SELECT p.p_id, p.f_id, p.t_id, p.p_text, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_map, t.t_type, t.t_first_p_id, t.t_last_p_id, t.t_poll, t.t_map_first_post, t.t_description, t.t_status, f.f_id, f.f_map_default, f.f_password, f.f_tpl, f.f_status, f.f_rules, po.poll_name, po.poll_total_vote, po.poll_max_vote
+				$sql = 'SELECT p.p_id, p.f_id, p.t_id, p.p_text, p.u_id, p.p_nickname, p.p_map, t.t_title, t.t_map, t.t_type, t.t_first_p_id, t.t_poll, t.t_map_first_post, t.t_description, t.t_status, f.f_id, f.f_map_default, f.f_password, f.f_tpl, f.f_status, f.f_rules, po.poll_name, po.poll_total_vote, po.poll_max_vote
 						FROM ' . SQL_PREFIX . 'posts p
 						INNER JOIN ' . SQL_PREFIX . 'topics t
 							ON p.t_id = t.t_id
@@ -1325,27 +1325,22 @@ class Fsb_frame_child extends Fsb_frame
 
 			case 'edit' :
 				// On met a jour le message
-				$args = array('t_title' => $this->title);
-
-                if ($this->data['p_id'] == $this->data['t_first_p_id'])
+				if ($this->data['p_id'] == $this->data['t_first_p_id'])
 				{
-					$args = array_merge($args, array(
+					Send::edit_post($this->id, $this->content, Fsb::$session->id(), array(
 						'update_topic' =>	true,
 						't_type' =>			(int) $this->type,
+						't_title' =>		$this->title,
 						't_id' =>			(int) $this->data['t_id'],
 						't_description' =>	$this->description
 					));
 				}
-
-				if ($this->data['p_id'] == $this->data['t_last_p_id'])
+				else
 				{
-					$args = array_merge($args, array(
-						'is_last' => true,
-                        't_id' => (int) $this->data['t_id']
+					Send::edit_post($this->id, $this->content, Fsb::$session->id(), array(
+						't_title' =>		$this->title,
 					));
 				}
-
-                Send::edit_post($this->id, $this->content, Fsb::$session->id(), $args);
 
 				// Edition du sondage
 				if ($this->data['t_poll'] && !$this->data['poll_total_vote'])
