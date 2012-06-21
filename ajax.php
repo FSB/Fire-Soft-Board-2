@@ -203,7 +203,7 @@ function ajax_edit_post($id)
  */
 function ajax_submit_post($id)
 {
-	$sql = 'SELECT p.u_id, p.p_nickname, p.p_map, t.f_id, t.t_first_p_id, t.t_last_p_id, t.t_type, t.t_description, t.t_id, t.t_status, f.f_status, u.u_auth
+	$sql = 'SELECT p.u_id, p.p_nickname, p.p_map, t.f_id, t.t_first_p_id, t.t_type, t.t_description, t.t_id, t.t_status, f.f_status, u.u_auth
 			FROM ' . SQL_PREFIX . 'posts p
 			LEFT JOIN ' . SQL_PREFIX . 'topics t
 				ON p.t_id = t.t_id
@@ -232,7 +232,6 @@ function ajax_submit_post($id)
 	// Soumission du message
 	Send::edit_post($id, $content, Fsb::$session->id(), array(
 		'update_topic' =>	($data['t_first_p_id'] == $id) ? true : false,
-		'is_last' =>		$data['t_last_p_id'] == $id,
 		't_title' =>		$post_title,
 		't_type' =>			$data['t_type'],
 		't_description' =>	$data['t_description'],
