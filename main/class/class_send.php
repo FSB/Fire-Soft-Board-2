@@ -424,26 +424,25 @@ class Send extends Fsb_model
 		}
 
 		// si édition du dernier message, mise à jour de la table des lus
-		if (isset($args['is_last']) && $args['is_last'] === true)
-		{
-			// Selection de l'avant dernier message
-			$select = new Sql_Select;
+        if (isset($args['is_last']) && $args['is_last'] === true) {
+            // Selection de l'avant dernier message
+            $select = new Sql_Select;
 
-			$select->join_table('FROM', 'posts p', 'p.p_id, p.p_time');
-			$select->where('p.t_id = ' . intval($args['t_id']));
-			$select->where('AND p.p_id < ' . intval($post_id));
-			$select->order_by('p.p_time DESC');
-			$select->limit(1, null);
+            $select->join_table('FROM', 'posts p', 'p.p_id, p.p_time');
+            $select->where('p.t_id = ' . intval($args['t_id']));
+            $select->where('AND p.p_id < ' . intval($post_id));
+            $select->order_by('p.p_time DESC');
+            $select->limit(1, null);
 
-			$result = $select->execute();
-			$data = Fsb::$db->row($result, 'assoc');
-			Fsb::$db->free($result);
+            $result = $select->execute();
+            $data = Fsb::$db->row($result, 'assoc');
+            Fsb::$db->free($result);
 
-			// Update de la table des non-lus pour les non auteurs de l'edit
-			Fsb::$db->update('topics_read', array(
-				'p_id' =>			(int) $data['p_id'],
-			), 'WHERE t_id = ' . intval($args['t_id']) . ' AND u_id <> ' . intval($user_id) . ' AND p_id = ' . $post_id);
-		}
+            // Update de la table des non-lus pour les non auteurs de l'edit
+            Fsb::$db->update('topics_read', array(
+                'p_id' =>			(int) $data['p_id'],
+            ), 'WHERE t_id = ' . intval($args['t_id']) . ' AND u_id <> ' . intval($user_id) . ' AND p_id = ' . $post_id);
+        }
 
 		// Suppression des anciens index du message, puis ajout des nouveaux pour la recherche
 		if (Fsb::$cfg->get('search_method') == 'fulltext_fsb')
