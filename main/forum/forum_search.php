@@ -530,7 +530,7 @@ class Fsb_frame_child extends Fsb_frame
 						AND tr.u_id = ' . intval(Fsb::$session->id()) . 
 				$post_query . '
 				WHERE (tr.p_id IS null OR tr.p_id < t.t_last_p_id)
-					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] .
+					AND t.t_last_p_time > ' . MAX_UNREAD_TOPIC_TIME .
 					$where;
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))

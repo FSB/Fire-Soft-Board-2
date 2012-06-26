@@ -663,7 +663,7 @@ class Fsb_frame_child extends Fsb_frame
 	public function update_topic()
 	{
 		// Marquer le sujet lu
-		if (Fsb::$session->is_logged() && $this->topic_data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
+		if (Fsb::$session->is_logged() && $this->topic_data['t_last_p_time'] > MAX_UNREAD_TOPIC_TIME)
 		{
 			if (!$this->topic_data['last_unread_id'] || $this->topic_data['last_unread_id'] < $this->topic_data['t_last_p_id'])
 			{
