@@ -513,7 +513,6 @@ CREATE TABLE fsb2_topics_read (
   u_id int(11) NOT NULL default '0',
   t_id int(11) NOT NULL default '0',
   p_id int(11) NOT NULL default '0',
-  tr_last_time int(11) NOT NULL default '0',
   PRIMARY KEY t_u_id (u_id,t_id)
 ) Type=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -545,8 +544,6 @@ CREATE TABLE fsb2_users (
   u_tpl varchar(255) NOT NULL default '',
   u_joined int(11) NOT NULL default '0',
   u_last_visit int(11) NOT NULL default '0',
-  u_last_read int(11) NOT NULL default '0',
-  u_last_read_flag tinyint(4) NOT NULL default '0',
   u_total_post int(11) NOT NULL default '0',
   u_total_topic int(11) NOT NULL default '0',
   u_total_abuse int(11) NOT NULL default '-1',
