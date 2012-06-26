@@ -54,7 +54,7 @@ class Forum extends Fsb_model
 		else
 		{
 			// Donnees du dernier message
-			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], $forum['f_last_t_id'], $forum['last_unread_id']);
+			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], null, $forum['f_last_t_id'], $forum['last_unread_id']);
 
 			// On tronque le titre du sujet ?
 			$topic_title = Parser::title($forum['f_last_t_title']);
