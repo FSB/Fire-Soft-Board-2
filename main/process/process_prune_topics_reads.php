@@ -14,22 +14,10 @@
  */
 function prune_topics_reads()
 {
-	Fsb::$db->update('users', array(
-		'u_last_read' =>	MAX_UNREAD_TOPIC_TIME,
-	), 'WHERE u_last_read < ' . MAX_UNREAD_TOPIC_TIME);
+	$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_read
+			LEFT JOIN ' . SQL_PREFIX . 'topics ON topics_read.t_id = topics.t_id
+			WHERE topics.t_last_p_time < ' . MAX_UNREAD_TOPIC_TIME . ';';
 
-	$sql = 'SELECT u_id, u_last_read
-			FROM ' . SQL_PREFIX . 'users
-			WHERE u_id <> ' . VISITOR_ID . '
-			ORDER BY u_id ASC';
-	$result = Fsb::$db->query($sql);
-	while ($row = Fsb::$db->row($result))
-	{
-		$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_read LEFT JOIN ' . SQL_PREFIX . 'topics t ON tr.t_id = t.t_id
-				WHERE t_last_p_time < ' . ($row['u_last_read'] - (3 * ONE_MONTH)) . '
-					AND u_id = ' . $row['u_id'];
-		Fsb::$db->query($sql);
-	}
-	Fsb::$db->free($result);
+	Fsb::$db->query($sql);
 }
 /* EOF */

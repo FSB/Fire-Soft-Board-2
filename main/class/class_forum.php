@@ -115,13 +115,6 @@ class Forum extends Fsb_model
 		// On cree la clause WHERE
 		switch ($type)
 		{
-			case 'all' :
-				Fsb::$db->update('users', array(
-					'u_last_read' =>		CURRENT_TIME,
-					'u_last_read_flag' =>	true,
-				), 'WHERE u_id = ' . Fsb::$session->id());
-			break;
-
 			case 'cat' :
 				$sql = 'SELECT f_id
 						FROM ' . SQL_PREFIX . 'forums
@@ -189,7 +182,7 @@ class Forum extends Fsb_model
 				$select->where('t.t_id IN (' . $id . ') AND');
 			break;
 		}
-		$select->where('(tr.p_id IS null OR tr.p_id < t.t_last_p_id) AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read']);
+		$select->where('(tr.p_id IS null OR tr.p_id < t.t_last_p_id) AND t.t_last_p_time > ' . MAX_UNREAD_TOPIC_TIME);
 
 		// On met a jour la table fsb2_topics_read
 		$result = $select->execute();
@@ -285,24 +278,6 @@ class Forum extends Fsb_model
 			{
 				$have_unread = true;
 				break;
-			}
-		}
-
-		// En cas de message non lu / lu on met a jour les informations sur le dernier message lu dans la table des membres
-		if (Fsb::$session->is_logged())
-		{
-			if ($have_unread && Fsb::$session->data['u_last_read_flag'])
-			{
-				Fsb::$db->update('users', array(
-					'u_last_read_flag' =>		false,
-				), 'WHERE u_id = ' . Fsb::$session->id());
-			}
-			else if (!$have_unread && !Fsb::$session->data['u_last_read_flag'])
-			{
-				Fsb::$db->update('users', array(
-					'u_last_read' =>		CURRENT_TIME,
-					'u_last_read_flag' =>	true,
-				), 'WHERE u_id = ' . Fsb::$session->id());
 			}
 		}
 

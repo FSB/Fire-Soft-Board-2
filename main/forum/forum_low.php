@@ -409,7 +409,7 @@ class Fsb_frame_child extends Fsb_frame
 		Fsb::$db->free($result);
 		
 		// Marquer le sujet lu
-		if (Fsb::$session->is_logged() && $data['t_last_p_time'] > Fsb::$session->data['u_last_read'])
+		if (Fsb::$session->is_logged() && $data['t_last_p_time'] > MAX_UNREAD_TOPIC_TIME)
 		{
 			if (!$data['last_unread_id'] || $data['last_unread_id'] < $data['t_last_p_id'])
 			{

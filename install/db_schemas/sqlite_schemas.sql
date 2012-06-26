@@ -429,8 +429,7 @@ CREATE INDEX fsb2_topics_notification_t_id_index ON fsb2_topics_notification (t_
 CREATE TABLE fsb2_topics_read (
   u_id int(11) default '0',
   t_id int(11) default '0',
-  p_id int(11) default '0',
-  tr_last_time int(11) default '0'
+  p_id int(11) default '0'
 );
 CREATE INDEX fsb2_topics_read_u_id_index ON fsb2_topics_read (u_id);
 CREATE INDEX fsb2_topics_read_t_id_index ON fsb2_topics_read (t_id);
@@ -458,8 +457,6 @@ CREATE TABLE fsb2_users (
   u_tpl varchar(255) default '',
   u_joined int(11) default '0',
   u_last_visit int(11) default '0',
-  u_last_read int(11) default '0',
-  u_last_read_flag tinyint(4) default '0',
   u_total_post int(11) default '0',
   u_total_topic int(11) default '0',
   u_total_abuse int(11) default '-1',

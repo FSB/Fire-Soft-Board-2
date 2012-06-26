@@ -475,7 +475,6 @@ CREATE TABLE fsb2_topics_read (
   u_id INT4 NOT NULL default '0',
   t_id INT4 NOT NULL default '0',
   p_id INT4 NOT NULL default '0',
-  tr_last_time INT4 NOT NULL default '0',
   PRIMARY KEY (u_id,t_id)
 );
 DROP TABLE IF EXISTS fsb2_upload;
@@ -505,8 +504,6 @@ CREATE TABLE fsb2_users (
   u_tpl varchar(255) default '',
   u_joined INT4 default '0',
   u_last_visit INT4 default '0',
-  u_last_read INT4 default '0',
-  u_last_read_flag INT2 default '0',
   u_total_post INT4 default '0',
   u_total_topic INT4 default '0',
   u_total_abuse INT4 default '-1',
