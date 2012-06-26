@@ -31,7 +31,6 @@ class User extends Fsb_model
 		$insert_ary = array(
 			'u_auth' =>				USER,
 			'u_joined' =>			CURRENT_TIME,
-			'u_last_read' =>		CURRENT_TIME,
 			'u_last_visit' =>		CURRENT_TIME,
 			'u_total_post' =>		0,
 			'u_total_topic' =>		0,

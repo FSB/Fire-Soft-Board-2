@@ -530,7 +530,7 @@ class Fsb_frame_child extends Fsb_frame
 						AND tr.u_id = ' . intval(Fsb::$session->id()) . 
 				$post_query . '
 				WHERE (tr.p_id IS null OR tr.p_id < t.t_last_p_id)
-					AND t.t_last_p_time > ' . Fsb::$session->data['u_last_read'] .
+					AND t.t_last_p_time > ' . MAX_UNREAD_TOPIC_TIME .
 					$where;
 		$result = Fsb::$db->query($sql);
 		while ($row = Fsb::$db->row($result))
@@ -851,7 +851,7 @@ class Fsb_frame_child extends Fsb_frame
 						$topic_pagination = ($total_topic_page > 1) ? Html::pagination(0, $total_topic_page, 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $row['t_id'], null, true) : false;
 
 						// Sujet lu ?
-						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['last_unread_id']);
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_id'], $row['last_unread_id']);
 
 						// Image du sujet
 						if ($GLOBALS['_topic_type'][$row['t_type']] == 'post')
@@ -956,7 +956,7 @@ class Fsb_frame_child extends Fsb_frame
 					while ($row = Fsb::$db->row($result))
 					{
 						// Sujet lu ?
-						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_last_p_time'], $row['t_id'], $row['last_unread_id']);
+						list($is_read, $last_url) = check_read_post($row['t_last_p_id'], $row['t_id'], $row['last_unread_id']);
 
 						// Pagination du sujet
 						$total_page_topic = $row['t_total_post'] / Fsb::$cfg->get('post_per_page');
