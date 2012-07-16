@@ -32,7 +32,7 @@ load_rainbow('{map.NAME}');
 
 <div>
 	<block name="fsbcode_list">
-	<select title="{fsbcode_list.TEXT}" onchange="insert_text('map_textarea_{map.NAME}', '{fsbcode_list.FCT}', '[{fsbcode_list.CODE}=' + this.value + ']', '', '[/{fsbcode_list.CODE}]', '{fsbcode_list.CODE}', this.value); this.selectedIndex=0">
+    <select title="{fsbcode_list.TEXT}" onchange="textEditor['map_textarea_{map.NAME}'].add('{fsbcode_list.CODE}=' + this.value); this.selectedIndex=0">
 		<block name="fsbcode_list.item">
 		<option value="{fsbcode_list.item.VALUE}" {fsbcode_list.item.STYLE}>{fsbcode_list.item.LANG}</option>
 		</block>
