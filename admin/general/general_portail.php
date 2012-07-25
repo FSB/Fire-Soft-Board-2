@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -19,14 +19,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 * @var string
 	 */
 	public $activ;
-	
+
 	/**
 	 * Module du portail
 	 *
 	 * @var int
 	 */
 	public $module;
-	
+
 	/**
 	 * Déplacement du module
 	 *
@@ -59,7 +59,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		else if (Http::request('submit', 'post'))
 		{
 			$this->update_config();
-		}		
+		}
 
 		$this->show_config();
 		$this->show_module();
@@ -123,7 +123,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Fsb::$tpl->set_blocks('pos', array());
 		}
-		
+
 		Fsb::$tpl->set_vars(array(
 			'U_ACTION' =>		sid('index.' . PHPEXT . '?p=general_portail&amp;module=' . $this->module),
 		));
@@ -236,7 +236,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	 * Configuration du portail
 	 */
 	public function show_config()
-	{		
+	{
 		if (Http::request('config'))
 		{
 			// On instancie la classe de configuration dynamique
@@ -246,7 +246,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			// On affiche ligne par ligne la configuration
 			$sql = 'SELECT *
 					FROM ' . SQL_PREFIX . 'portail_config
-					WHERE portail_module = \'' . $this->module . '\'
+					WHERE portail_module = \'' . Fsb::$db->escape($this->module) . '\'
 					ORDER BY portail_name';
 			$result = Fsb::$db->query($sql, 'portail_config_');
 
@@ -266,7 +266,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$db->free($result);
 		}
 	}
-	
+
 	/**
 	 * Traitement des information du formulaire de configuration soumis
 	 */
@@ -280,8 +280,8 @@ class Fsb_frame_child extends Fsb_admin_frame
 		foreach ($data AS $key => $value)
 		{
 			Fsb::$db->update('portail_config', array(
-				'portail_value' =>	$value,
-			), 'WHERE portail_name = \'' . $key . '\'');
+				'portail_value' =>	Fsb::$db->escape($value),
+			), 'WHERE portail_name = \'' . Fsb::$db->escape($key) . '\'');
 		}
 		Fsb::$db->destroy_cache('portail_config_');
 

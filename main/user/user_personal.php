@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -10,7 +10,7 @@
 
 /**
  * On affiche le module ?
- * 
+ *
  * @var bool
  */
 $show_this_module = true;
@@ -47,7 +47,7 @@ class Page_user_personal extends Fsb_model
 	 * @var bool
 	 */
 	public $can_edit_nickname = false;
-	
+
 	/**
 	 * Champs du profil
 	 *
@@ -94,7 +94,7 @@ class Page_user_personal extends Fsb_model
 			array('field' => 'u_utc', 'insert' => true),
 			array('field' => 'u_utc_dst', 'insert' => true),
 		);
-		
+
 		foreach ($this->post_data AS $value)
 		{
 			$this->data[$value['field']] = Http::request($value['field'], 'post');
@@ -194,7 +194,7 @@ class Page_user_personal extends Fsb_model
 			'SEXE_NONE' =>			($this->data['u_sexe'] == SEXE_NONE) ? 'checked="checked"' : '',
 			'CONTENT' =>			Html::make_errstr($this->errstr),
 		));
-		
+
 		// Champs personals crees par l'administrateur
 		Profil_fields_forum::form(PROFIL_FIELDS_PERSONAL, 'personal', Fsb::$session->id());
 	}
@@ -273,7 +273,7 @@ class Page_user_personal extends Fsb_model
 			$this->data['u_birthday'] .= $item . '/';
 		}
 		$this->data['u_birthday'] = substr($this->data['u_birthday'], 0, -1);
-		
+
 		// On verifie les champs personels
 		if (!$this->errstr)
 		{
@@ -297,7 +297,7 @@ class Page_user_personal extends Fsb_model
 			}
 			Fsb::$db->free($result);
 
-			if ($rank_exists && !$exists)
+			if (!$rank_exists || !$exists)
 			{
 				$this->data['u_rank_id'] = '';
 			}
@@ -334,6 +334,12 @@ class Page_user_personal extends Fsb_model
 		else
 		{
 			unset($update_array['u_nickname']);
+		}
+
+		//Si le rank_id est vide on ne le met pas à jour
+		if ($this->data['u_rank_id'] == '')
+		{
+			unset($update_array['u_rank_id']);
 		}
 
 		// Mise a jour des donnees du membre
