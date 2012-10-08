@@ -1,6 +1,6 @@
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -154,8 +154,6 @@ a:hover
 #header_left
 {
 	float: left;
-    position: absolute;
-	width: 300px;
 }
 
 /* Zone à droite du header contenant la recherche rapide le profil et la deconnexion */
