@@ -1,3 +1,24 @@
+===== 2.0.4 - 13 octobre 2012 =====
+Correction de deux failles potentielles sur le portail et dans l'administration
+Correction d'une erreur avec les FSBcodes de type select
+Modification prenant en compte les messages edites comme "non lus"
+Ajout de la possibilite de desactiver le SDK
+Correction de la barre de navigation pour prendre en compte le multilignes
+Correction de la dimension des avatars dans la liste des membres
+Amelioration de la liste des smileys
+Correction des styles de la pagination
+Correction des styles sur les noms de forums
+Optimisation de l'algorithme des messages non lus
+Correction dans le generateur CSS
+Ajout de quelques composants de Mootools More
+Mise a jour de Moorainbow
+Mise a jour complete de Mootools (1.1x -> 1.4.x)
+Correction dans l'installation rapide si on est en local
+Ajout de la possibilite de ne pas afficher les groupes vides dans la legende
+Ajout de la possibilite de reorganiser les groupes dans la legende du forum
+Ajout de la possibilite de supprimer tous les sujets d'un forum dans l'administration
+Ajout d'un bloc-notes simple dans le profil des utilisateurs
+
 ===== 2.0.3 - 23 décembre 2011 =====
 Ajout d'un champ dans l'ajout de membres via l'administration
 Ajout d'un email de confirmation dans l'ajout de membres via l'administration
