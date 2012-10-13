@@ -14,9 +14,9 @@
  */
 function prune_topics_reads()
 {
-	$sql = 'DELETE FROM ' . SQL_PREFIX . 'topics_read
-			LEFT JOIN ' . SQL_PREFIX . 'topics ON topics_read.t_id = topics.t_id
-			WHERE topics.t_last_p_time < ' . MAX_UNREAD_TOPIC_TIME . ';';
+	$sql = 'DELETE ' . SQL_PREFIX . 'topics_read FROM ' . SQL_PREFIX . 'topics_read
+			LEFT JOIN ' . SQL_PREFIX . 'topics ON ' . SQL_PREFIX . 'topics_read.t_id = ' . SQL_PREFIX . 'topics.t_id
+			WHERE ' . SQL_PREFIX . 'topics.t_last_p_time < ' . MAX_UNREAD_TOPIC_TIME . ';';
 
 	Fsb::$db->query($sql);
 }
