@@ -254,7 +254,7 @@ class Forum extends Fsb_model
 			$forum_topic_read[$f_id] = 0;
 			if (Fsb::$session->is_authorized($row['f_id'], 'ga_view') && Fsb::$session->is_authorized($row['f_id'], 'ga_view_topics'))
 			{
-				$forum_topic_read[$f_id] = $row['total'];
+				$forum_topic_read[$f_id] = intval($row['total']);
 				$break = 0;
 				while ($parents[$f_id] && $break++ < 1000)
 				{
