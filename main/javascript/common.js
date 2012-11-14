@@ -106,6 +106,7 @@ function block_cookie_read(block_name, img_name, img_src, mooeffect)
 			blocks_height[block_name] = $(block_name).getCoordinates().height;
 			$(block_name).style.height = '0px';
 			$(block_name).style.opacity = 0;
+			$(block_name).style.display = 'none';
 		}
 		else
 		{
@@ -138,7 +139,8 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 		{
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), blocks_height[id_block]],
-				opacity: [$(id_block).getStyle('opacity'), 1]
+				opacity: [$(id_block).getStyle('opacity'), 1],
+				display: [$(id_block).getStyle('display'), 'block']
 			});
 		}
 		else
@@ -158,7 +160,8 @@ function block_check(id_block, id_img, src_img_open, src_img_close, mooeffect)
 
 			fxBlocks[id_block].start({
 				height: [$(id_block).getStyle('height'), 0],
-				opacity: [$(id_block).getStyle('opacity'), 0]
+				opacity: [$(id_block).getStyle('opacity'), 0],
+				display: [$(id_block).getStyle('display'), 'none']
 			});
 		}
 		else
@@ -233,7 +236,7 @@ function search_user(value, obj, id, id_field)
                 $(id).style.visibility = 'hidden';
                 return ;
             }
-	
+
             $(id).innerHTML = txt;
             $(id).style.visibility = 'visible';
         }
