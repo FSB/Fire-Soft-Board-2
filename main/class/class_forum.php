@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -31,11 +31,11 @@ class Forum extends Fsb_model
 		if ($type == 'subforum')
 		{
 			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread= true &amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread= true &amp;forum=' . $forum['f_id'];
-			
+
 			Fsb::$tpl->set_blocks('cat.forum.subforum', array(
 				'NAME' =>		Html::forumname($forum['f_name'], $forum['f_id'], $forum['f_color'], $forum['f_location']),
 				'IS_READ' =>	$is_read,
-				
+
 				'U_MARKREAD' =>		sid(ROOT . 'index.' . PHPEXT . '?p=' . $markread),
 			));
 		}
@@ -54,12 +54,12 @@ class Forum extends Fsb_model
 		else
 		{
 			// Donnees du dernier message
-			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], null, $forum['f_last_t_id'], $forum['last_unread_id']);
+			list($is_last_read, $last_url) = check_read_post($forum['f_last_p_id'], $forum['f_last_p_time'], $forum['f_last_t_id'], $forum['last_unread_id']);
 
 			// On tronque le titre du sujet ?
 			$topic_title = Parser::title($forum['f_last_t_title']);
 			$substr_topic_title = (strlen($topic_title) <= 20) ? $topic_title : Parser::title(String::substr($forum['f_last_t_title'], 0, 20)) . '...';
-			
+
 			$markread = (Fsb::$frame->_get_frame_page() == 'forum') ? 'forum&amp;markread= true &amp;f_id=' . $forum['f_id'] . '&amp;return=' . $forum['f_parent'] : 'index&amp;markread= true &amp;forum=' . $forum['f_id'];
 
 			Fsb::$tpl->set_blocks('cat.forum', array(
@@ -79,7 +79,7 @@ class Forum extends Fsb_model
 				'IS_LOCKED' =>		($forum['f_status'] == LOCK) ? true : false,
 				'DISPLAY_MODERATORS' => ($forum['f_display_moderators']) ? true : false,
 			    'DISPLAY_SUBFORUMS' => ($forum['f_display_subforums']) ? true : false,
-			
+
 				'U_FORUM' =>		sid(ROOT . 'index.' . PHPEXT . '?p=forum&amp;f_id=' . $forum['f_id']),
 				'U_TOPIC' =>		sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;t_id=' . $forum['f_last_t_id']),
 				'U_LAST_POST' =>	sid(ROOT . 'index.' . PHPEXT . '?p=topic&amp;' . $last_url),
@@ -241,6 +241,7 @@ class Forum extends Fsb_model
 					WHERE t.f_id = ' . $link . 'f_id
 						AND (tr.p_id IS null OR tr.p_id < t.t_last_p_id)
 						AND t.t_approve = ' . IS_APPROVED . '
+						AND t.t_last_p_time > ' . MAX_UNREAD_TOPIC_TIME . '
 				) AS total
 				FROM ' . SQL_PREFIX . 'forums f
 				ORDER BY f.f_left';
@@ -368,7 +369,7 @@ class Forum extends Fsb_model
 	 * @return int ID du nouveau forum
 	 */
 	public static function add($parent, $var)
-	{	
+	{
 		$last_id = Sql_interval::put($parent, $var);
 		Fsb::$db->destroy_cache('forums_');
 		return ($last_id);
@@ -462,7 +463,7 @@ class Forum extends Fsb_model
 				$sql = 'DELETE FROM ' . SQL_PREFIX . $table . ' WHERE f_id IN(' . $list_childs . ')';
 				Fsb::$db->query($sql);
 			}
-			
+
 			// Mise a jour des couleurs et des droits de moderation
 			if ($gu_idx)
 			{
@@ -471,7 +472,7 @@ class Forum extends Fsb_model
 
 			// Suppression des forums dans l'interval
 			Sql_interval::delete($id);
-			
+
 			Sync::forums();
 			Sync::total_posts();
 			Sync::total_topics();
@@ -587,7 +588,7 @@ class Forum extends Fsb_model
 						ON g.g_id = ga.g_id
 					LEFT JOIN ' . SQL_PREFIX . 'users u
 						ON u.u_single_group_id = g.g_id
-					WHERE (g.g_type = ' . GROUP_SINGLE . ' 
+					WHERE (g.g_type = ' . GROUP_SINGLE . '
 						OR g.g_type = ' . GROUP_NORMAL . ') AND ga.ga_moderator = 1 ' .
 					((Fsb::$session->auth() >= MODOSUP) ? 'AND g.g_hidden = 0' : '') .
 					(($limit) ? ' AND ga.f_id = ' . $f_id : '') .
