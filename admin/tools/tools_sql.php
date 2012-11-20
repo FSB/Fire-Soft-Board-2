@@ -1,7 +1,7 @@
 <?php
 /**
  * Fire-Soft-Board version 2
- * 
+ *
  * @package FSB2
  * @author Genova <genova@fire-soft-board.com>
  * @version $Id$
@@ -41,7 +41,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 	{
 		$this->module =		htmlspecialchars(Http::request('module'));
 		$this->page =		intval(Http::request('page'));
-		$this->table =		Http::request('table', 'post');
+		$this->table =		Http::request('table');
 		if (!$this->page)
 		{
 			$this->page = 1;
@@ -135,7 +135,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Fsb::$tpl->set_vars(array(
 				'EXEC_IN' =>	sprintf(Fsb::$session->lang('adm_sql_exec_ok'), count($queries), substr(Fsb::$debug->get_time() - $begin_time, 0, 8)),
 			));
-			
+
 			// Destruction du cache SQL a chaque requete
 			Fsb::$db->destroy_cache();
 
@@ -367,7 +367,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 			Display::confirmation(Fsb::$session->lang('adm_sql_confirm_truncate'), 'index.' . PHPEXT . '?p=tools_sql', array('action' => $action, 'submit_truncate' => true));
 		}
 	}
-	
+
 	/**
 	 * Affiche le resultat d'une requete renvcoyant un resultat dans un tableau HTML
 	 *
@@ -408,7 +408,7 @@ class Fsb_frame_child extends Fsb_admin_frame
 		Fsb::$tpl->set_vars(array(
 			'COLSPAN' =>	$colspan,
 		));
-		
+
 		Fsb::$tpl->set_switch('show_query');
 	}
 }
