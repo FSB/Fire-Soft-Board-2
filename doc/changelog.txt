@@ -1,3 +1,9 @@
+===== 2.0.5 - 22 novembre 2012 =====
+Correctif pour la visualisation d'une table dans l'administration
+Corrections pour les messages non lus
+Ajout du correctif de Tranber pour le probleme de reduction des categories
+Petit intval pour les calculs
+
 ===== 2.0.4 - 13 octobre 2012 =====
 Correction de deux failles potentielles sur le portail et dans l'administration
 Correction d'une erreur avec les FSBcodes de type select
