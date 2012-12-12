@@ -393,7 +393,7 @@ class Fsb_sdk extends Fsb_model
 		// Requete de recuperation des sujets
 		$sql = 'SELECT *
 				FROM ' . SQL_PREFIX . 'topics
-				WHERE 1AND f_id IN (' . implode(', ', $forums) . ') '
+				WHERE 1 AND f_id IN (' . implode(', ', $forums) . ') '
 				. (($order) ? ' ORDER BY ' . $order : '')
 				. (($total > 0) ? ' LIMIT ' . $total : '');
 		$result = Fsb::$db->query($sql);
