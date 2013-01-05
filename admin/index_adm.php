@@ -351,7 +351,20 @@ class Fsb_frame_child extends Fsb_admin_frame
 		{
 			Display::message('adm_unable_check_version');
 		}
-		@list($last_version, $url, $level) = explode("\n", $content);
+
+		$content = explode("\n", $content);
+
+		if (count($content) < 3)
+		{
+			Display::message('adm_unable_check_version');
+		}
+
+		if (strpos('http', $content[2]) === false)
+		{
+			array_shift($content);
+		}
+
+		@list($last_version, $url, $level) = $content;
 
 		// Aucune redirection
 		Fsb::$session->data['u_activate_redirection'] = 2;
