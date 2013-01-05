@@ -365,13 +365,14 @@ class Fsb_frame_child extends Fsb_admin_frame
 		}
 
 		@list($last_version, $url, $level) = $content;
+		$last_version = trim($last_version);
 
 		// Aucune redirection
 		Fsb::$session->data['u_activate_redirection'] = 2;
 
 		if (!is_last_version(Fsb::$cfg->get('fsb_version'), $last_version))
 		{
-			Display::message(sprintf(Fsb::$session->lang('adm_old_version'), $last_version, Fsb::$cfg->get('fsb_version'), $url, $url, Fsb::$session->lang('adm_version_' . $level)) . '<br /><br />' . sprintf(Fsb::$session->lang('adm_click_view_newer'), $url));
+			Display::message(sprintf(Fsb::$session->lang('adm_old_version'), $last_version, Fsb::$cfg->get('fsb_version'), $url, $url, Fsb::$session->lang('adm_version_' . trim($level))) . '<br /><br />' . sprintf(Fsb::$session->lang('adm_click_view_newer'), $url));
 		}
 		else
 		{
