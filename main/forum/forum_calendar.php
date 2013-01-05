@@ -100,16 +100,16 @@ class Fsb_frame_child extends Fsb_frame
 			Display::message('not_allowed');
 		}
 
-		$this->mode =			Http::request('mode');
+		$this->mode =			htmlspecialchars(Http::request('mode'));
 		$this->id =				intval(Http::request('id'));
-		$this->current =			intval(Http::request('time'));
+		$this->current =		intval(Http::request('time'));
 
 		if (!$this->current)
 		{
 			$this->current = CURRENT_TIME;
 		}
 
-		$this->current_day =		date('d', $this->current);
+		$this->current_day =	date('d', $this->current);
 		$this->current_month =	date('n', $this->current);
 		$this->current_year =	date('Y', $this->current);
 

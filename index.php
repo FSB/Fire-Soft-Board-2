@@ -40,7 +40,7 @@ class Fsb_frame extends Fsb_model
 	 */
 	public static function frame_request_page()
 	{
-		$page = Http::request('p');
+		$page = htmlspecialchars(Http::request('p'));
 		if (!preg_match('#^[a-z0-9_]*?$#i', $page) || !file_exists(ROOT . 'main/forum/forum_' . $page . '.' . PHPEXT))
 		{
 			$page = 'index';
@@ -264,19 +264,24 @@ class Fsb_frame extends Fsb_model
 			{
 				if (!in_array($key, array('p', 'sid', 'redirect')))
 				{
+					if (!preg_match('#^[a-z0-9_\-]*?$#i', $key))
+					{
+						continue;
+					}
+
 					if (is_array($value))
 					{
 						foreach ($value AS $subvalue)
 						{
 							if (preg_match('#^[a-z0-9_\-]*?$#i', $subvalue))
 							{
-								$get_url .= '&amp;' . $key . '[]=' . $subvalue;
+								$get_url .= '&amp;' . $key . '[]=' . htmlspecialchars($subvalue);
 							}
 						}
 					}
-					else if (preg_match('#^[a-z0-9_\-]*?$#i', $value))
+					elseif (preg_match('#^[a-z0-9_\-]*?$#i', $value))
 					{
-						$get_url .= '&amp;' . $key . '=' . $value;
+						$get_url .= '&amp;' . $key . '=' . htmlspecialchars($value);
 					}
 				}
 			}

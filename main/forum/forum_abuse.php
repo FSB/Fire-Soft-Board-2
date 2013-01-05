@@ -63,7 +63,7 @@ class Fsb_frame_child extends Fsb_frame
 	public function main()
 	{
 		$this->id =		intval(Http::request('id'));
-		$this->mode =	Http::request('mode');
+		$this->mode =	htmlspecialchars(Http::request('mode'));
 
 		$this->check_post();
 

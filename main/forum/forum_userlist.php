@@ -158,10 +158,10 @@ class Fsb_frame_child extends Fsb_frame
 		}
 
 		$this->search_user =	Http::request('search_user', 'post|get');
-		$this->like =			Http::request('like', 'post|get');
-		$this->order =			Http::request('order', 'post|get');
-		$this->module =			Http::request('module');
-		$this->direction =		strtoupper(Http::request('direction', 'post|get'));
+		$this->like =			htmlspecialchars(Http::request('like', 'post|get'));
+		$this->order =			htmlspecialchars(Http::request('order', 'post|get'));
+		$this->module =			htmlspecialchars(Http::request('module'));
+		$this->direction =		htmlspecialchars(strtoupper(Http::request('direction', 'post|get')));
 		$this->id =				intval(Http::request('g_id', 'post|get'));
 		$this->limit =			intval(Http::request('limit', 'post|get'));
 		$this->page =			intval(Http::request('page', 'post|get'));
