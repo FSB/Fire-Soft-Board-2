@@ -50,7 +50,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('display_subforums', '0');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('forum_description', 'Description de votre forum');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('forum_name', 'Nom du forum');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_path', 'http://localhost/fsb2');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.4');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_version', '2.0.5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_id', '2');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_login', 'admin');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('last_user_color', 'class="admin"');
@@ -98,7 +98,7 @@ INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig_fsbcode', '1
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig_img', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_censor', '1');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('activate_sig', '1');
-INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_last_version', '2.0.4');
+INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('fsb_last_version', '2.0.5');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board', 'none');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_board_message', '');
 INSERT INTO fsb2_config (cfg_name, cfg_value) VALUES ('disable_sdk', '0');
